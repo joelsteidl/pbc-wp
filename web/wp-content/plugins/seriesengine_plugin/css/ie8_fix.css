@@ -1,0 +1,10 @@
+/* ----- Series Engine - Fixes for IE 8 ----- */
+
+
+#seriesengine .enmse-content-container.enmse-opaque, #seriesengine .enmse-related-area.enmse-opaque, #seriesengine .enmse-archive-container.enmse-opaque {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+}
+
+#seriesengine .enmse-audio {
+	background: #000;
+}

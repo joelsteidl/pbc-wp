@@ -1,0 +1,30 @@
+/*
+Theme Name: PBC Oshin
+Description: PBC custom theme built on Oshin.
+Author: Brand Exponents
+Template: oshin
+Version: 1.0
+*/
+
+@import url("../oshin/style.css");
+
+#header-inner-wrap.semi-transparent:not(.no-transparent).background--dark .logo .light-scheme-logo, #header-inner-wrap.semi-transparent:not(.no-transparent).background--light .logo .dark-scheme-logo, #header-inner-wrap.transparent:not(.no-transparent).background--dark .logo .light-scheme-logo, #header-inner-wrap.transparent:not(.no-transparent).background--light .logo .dark-scheme-logo, .top-animate .logo .sticky-logo, body:not(.side-menu-opened) #header-inner-wrap.transparent:not(.background--dark):not(.background--light):not(.top-animate) .logo .normal-logo, body:not(.side-menu-opened) #header-inner-wrap:not(.transparent):not(.top-animate) .logo .normal-logo {
+  height: 110px;
+}
+
+/* #header-inner-wrap.background--dark.transparent #navigation, #header-inner-wrap.background--dark.transparent #navigation-left-side, #header-inner-wrap.background--dark.transparent #navigation-right-side, #header-inner-wrap.background--dark.transparent .header-cart-controls i.font-icon, #header-inner-wrap.background--dark.transparent .header-search-controls .search-button, #header-inner-wrap.background--dark.transparent .menu-controls, #header-inner-wrap.background--dark.transparent .menu-controls i.font-icon, #portfolio-title-nav-bottom-wrap .background--dark, .single_portfolio_info_close.background--dark .font-icon {
+  color: #ffffff;
+} */
+
+.style4 .logo {
+  padding: 0;
+}
+
+#navigation-left-side .children, #navigation-left-side .sub-menu, #navigation-right-side .children, #navigation-right-side .sub-menu, #navigation .children, #navigation .sub-menu {
+  top: 75% !important;
+}
+
+/* .special-header-menu .menu-container, #navigation .mega .sub-menu .highlight .sf-with-ul, #navigation, .style2 #navigation, .style13 #navigation, #navigation-left-side, #navigation-right-side, .sb-left #slidebar-menu, .header-widgets, .header-code-widgets, body #header-inner-wrap.top-animate.style2 #navigation, .top-overlay-menu .sb-right #slidebar-menu {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+} */

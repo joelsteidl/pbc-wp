@@ -1,0 +1,12 @@
+{
+	"home_page_title": "V4 Home Slider",
+	"sliders": {
+		"masterslider": "v4.json"
+	},
+	"menus": {
+		"main_nav": "V4 Main Menu"
+	},	
+	"content_plugins": {
+		"masterslider": "Master Slider"
+	}
+}

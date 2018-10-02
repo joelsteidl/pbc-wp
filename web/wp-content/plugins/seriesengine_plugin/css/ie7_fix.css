@@ -1,0 +1,56 @@
+/* ----- Series Engine - Fixes for IE 7 ----- */
+
+#seriesengine ul.enmse-player-tabs {
+	height: 29px;
+}
+
+#seriesengine ul.enmse-player-tabs li {
+	display: block;
+	margin: 0 4px 0 0;
+}
+
+#seriesengine ul.enmse-player-tabs li.enmse-listen-tab {
+	display: block;
+	margin: -29px 4px 0 100px;
+}
+
+#seriesengine ul.enmse-player-tabs li.enmse-alternate-tab {
+	display: block;
+	margin: -29px 0 0 200px;
+}
+
+#seriesengine ul.enmse-player-tabs li a {
+	display: block;
+	position: absolute;
+	zoom: 1;
+	float: left;
+}
+
+#seriesengine ul.enmse-player-options {
+	margin-top: -30px;
+}
+
+#seriesengine ul.enmse-player-options li.enmse-details {
+	display: block;
+	margin: 0 4px 0 -150px;
+	float: right;
+}
+
+#seriesengine ul.enmse-player-options li.enmse-extras {
+	display: block;
+	margin: 0 4px 0 -226px;
+	float: right;
+}
+
+#seriesengine ul.enmse-player-options li.enmse-share-this {
+	display: block;
+	float: right;
+}
+
+#seriesengine .enmse-content-container.enmse-opaque, #seriesengine .enmse-related-area.enmse-opaque, #seriesengine .enmse-archive-container.enmse-opaque {
+	filter: alpha(opacity=20);
+}
+
+#seriesengine .enmse-audio {
+	background: #000;
+}

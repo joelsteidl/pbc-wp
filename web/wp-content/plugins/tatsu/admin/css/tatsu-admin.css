@@ -1,0 +1,191 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+.tatsu_edit_button {
+	padding: 12px 35px 12px 70px;
+	border-radius: 50px;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 11px;
+	text-decoration: none;
+	display: inline-block;
+	margin: 10px 0;
+	box-shadow: 0 0 10px rgba(0,0,0,0.2);
+	position: relative;	
+}
+
+#edit_with_tatsu_button {
+	background-color: #20cbd4;
+	color: #e8fcfd;
+	border: 2px solid #2dacb3;
+}
+
+#edit_with_wordpress_editor  {
+	background-color: #24a1ce;
+	color: #fff;
+	border: 2px solid #1d7fa2;
+	padding-left: 35px;
+}
+
+
+.tatsu_edit_button svg {
+	fill: #136a6f;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	font-size: 30px;
+	position: absolute;
+	top: 50%;
+	left: 20px;
+	margin-top: -0.5em;
+}
+
+#tatsu-buttons {
+	margin-top: 15px;
+}
+
+#tatsu_edit_post_wrap {
+	box-sizing: border-box;
+	height: 300px; 
+	position: relative;
+	background: #32373d;
+	margin-top: 15px;
+	transition: all 0.6s ease;
+}
+
+#tatsu_edit_post_wrap:hover {
+	background: #202327;
+}
+
+
+
+#tatsu_edit_post_wrap a {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+#tatsu_edit_dragon_wrap {
+	display: inline-block;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate( -50%, -50% );
+	text-align: center;
+}
+#tatsu_edit_dragon_wrap span {
+	display: block;
+	color: #20cbd4;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+	font-size: 11px;
+	text-decoration: none;
+	margin-top: 15px;
+	padding: 10px 35px;
+	border: 1px solid #20cbd4;
+	border-radius: 50px;
+	transition: all 0.6s ease;	
+}
+
+#tatsu_edit_post_wrap:hover #tatsu_edit_dragon_wrap span {
+	background: #20cbd4;
+	color: #fff;
+}
+
+#tatsu_edit_post_wrap svg {
+	fill: #20cbd4;
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	font-size: 120px;	
+}
+
+
+body.edited_with_tatsu #postdivrich,
+body.edited_with_tatsu #edit_with_tatsu_button,
+body.edited_with_editor #edit_with_wordpress_editor,
+body.edited_with_editor #tatsu_edit_post_wrap {
+	display: none;
+}
+
+.be-settings-page-option{
+	display: flex;
+	align-items: center;
+	padding: 10px 0;
+	border-bottom: 1px solid #f1f1f1;
+}
+
+.be-settings-page-option-label{
+	width:320px;
+	display: inline-block;
+}
+
+.be-settings-page-option-checkbox{
+	margin-right: 20px;
+}
+
+/***** chosen select  custom styles*********/
+
+.chosen-container-multi .chosen-choices li.search-choice .search-choice-close:hover{
+	background-position: -42px 1px !important;
+}
+
+
+/* global section settings CSS */
+.tatsu_myselectclass{
+	width:200px !important;
+}
+
+.tatsu_global-section-panel {
+	background-color:#fff;
+	border-radius:5px;
+	padding:30px;
+	margin-bottom:5px;
+	position: relative;
+	/* box-shadow: 4px 37px 167px -108px rgba(0,0,0,0.71); */
+	}
+  .tatsu_global-section-settings{
+
+	display:inline-block;	
+  }
+
+  .tatsu_global-section-settings h1{
+  	margin-left:20px;
+  }
+  #tatsu_global_section_settings_wrap {
+	margin:20px;
+	margin-bottom: 10px;
+  }
+
+  #tatsu_add-new-ruleset{
+  	background:#fff;
+  	padding:10px;
+  	margin:20px;
+  	text-align:center;
+  	cursor:pointer;
+  	border-radius:5px;
+  	box-sizing:border-box;
+  }
+
+  .tatsu_remove-ruleset{
+  	position: absolute;
+  	right: 10px;
+  	cursor: pointer;
+  	color: #00000070;
+  	font-weight: 600;
+  	top: 7px;
+  }
+
+  #tatsu_global_section_settings_submit{
+  	margin-left:20px;
+  }
+
+.tatsu_global-section-empty-warn {
+    position: absolute;
+    right: 30px;
+    font-size: 10px;
+    top: 64px;
+    color: red;
+}

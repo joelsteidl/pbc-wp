@@ -1,0 +1,6 @@
+<ul>
+	<li class="enmse-facebook"><a href="http://www.facebook.com/sharer.php?u=<?php echo $enmse_sharelink; ?>" target="_blank"><span>Facebook</span></a></li>
+	<li class="enmse-twitter"><a href="http://twitter.com/home/?status=%22<?php echo stripslashes($enmse_singlemessage->title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:%20<?php echo $enmse_sharelink; ?>" target="_blank"><span>Tweet Link</span></a></li>
+	<li class="enmse-share-link"><a href="<?php echo rawurldecode($enmse_sharelink); ?>"><span>Share Link</span></a><input type="hidden" class="enmsecopylink" value="<?php echo rawurldecode($enmse_sharelink); ?>" /></li>
+	<li class="enmse-email"><a href="mailto:TypeEmailHere@address.com?subject=Check%20out%20%22<?php echo htmlspecialchars(stripslashes($enmse_singlemessage->title)); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>&body=Check%20out%20%22<?php echo htmlspecialchars(stripslashes($enmse_singlemessage->title)); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>%20at%20the%20link%20below:%0A%0A<?php echo $enmse_sharelink; ?>"><span>Send Email</span></a></li>
+</ul>

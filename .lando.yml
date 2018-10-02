@@ -1,0 +1,4 @@
+name: pbc-new-site
+recipe: wordpress
+config:
+  webroot: web

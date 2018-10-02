@@ -1,0 +1,215 @@
+/* ----- Series Engine - Backend Styles ----- */
+
+/* ---------- ADMIN LOGO ----------- */
+
+#adminmenu #toplevel_page_seriesengine_plugin-seriesengine_plugin div.wp-menu-image {
+	background:transparent url('../images/se_icon_small.png') no-repeat scroll 1px -66px;
+}
+
+#adminmenu #toplevel_page_seriesengine_plugin-seriesengine_plugin:hover div.wp-menu-image {
+	background:transparent url('../images/se_icon_small.png') no-repeat scroll 1px -34px;
+}
+
+#adminmenu #toplevel_page_seriesengine_plugin-seriesengine_plugin.wp-has-current-submenu div.wp-menu-image {
+	background:transparent url('../images/se_icon_small.png') no-repeat scroll 1px -2px;
+}
+
+/* ---------- VARIOUS PRAYER ENGINE ADMIN STYLES ----------- */
+
+a.seriesengine_delete:link, a.seriesengine_filedelete:link, a.seriesengine_delete:visited, a.seriesengine_filedelete:visited {
+	color: #892516;
+}
+
+a.seriesengine_delete:hover, a.seriesengine_filedelete:hover, a.seriesengine_delete:active, a.seriesengine_filedelete:active {
+	color: #ca1b0a;
+}
+
+#seriesengine_icon {
+	background: url('../images/se_icon_large.png') no-repeat;
+}
+
+p#se-copyright {
+	text-align: right;
+	font-size: 0.8em;
+	color: #cacaca;
+}
+
+p#se-copyright a:link, p#se-copyright a:visited {
+	color: #cacaca;
+	text-decoration: none;
+}
+
+p#se-copyright a:hover, p#se-copyright a:active {
+	color: #a7a7a7;
+	text-decoration: none;
+}
+
+.se-colorpicker {
+	width: 18px; 
+	height: 18px; 
+	background-color: #fff; 
+	float: left; 
+	margin: 1px 0 0 0; 
+	border: 1px solid #000;
+	margin: 0 6px 0 0;
+}
+
+td.enmse-sort {
+	width: 30px;
+	background: url('../images/draggable.gif') no-repeat;
+	background-position: -6px -4px;
+}
+
+td.enmse-sort:hover {
+	cursor: move;
+}
+
+td.enmse-delete {
+	width: 80px;
+}
+
+a.se-upload-link {
+	text-decoration: none;
+	color: #333333;
+}
+
+.se-form-instructions {
+	color: #cccccc;
+}
+
+.se-form-instructions a {
+	color: #a8a8a8;
+}
+
+#enmse-message-options {
+	margin: 28px 0 20px 0;
+	height: 29px;
+	border-bottom: 1px solid #dfdfdf;
+	z-index: 1;
+}
+
+#enmse-message-options li {
+	list-style-type: none;
+	float: left;
+	margin: 0 35px 0 0;
+	z-index: 2;
+}
+
+#enmse-message-options li a:link, #enmse-message-options li a:visited {
+	text-decoration: none;
+	color: #8b8b8b;
+	font-weight: 300;
+}
+
+#enmse-message-options li a:hover, #enmse-message-options li a:active {
+	text-decoration: none;
+	color: #000;
+	font-weight: 300;
+}
+
+#enmse-message-options li.selected {
+	height: 30px;
+	background: url('../images/message_option_arrow2.jpg') no-repeat;
+	background-position: bottom center;
+}
+
+#enmse-message-options li.selected a {
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+}
+
+.embed-error {
+	color: #af5c5c;
+}
+
+ul#enmse-topiclist {
+	margin: 20px 0 0 0;
+}
+
+ul.enmse-series-topic {
+	width: 450px;
+}
+
+ul.enmse-series-topic li {
+	width: 140px;
+	margin: 0 10px 10px 0;
+	float: left;
+	line-height: 100%;
+}
+
+ul.enmse-series-topic li input {
+	float: left;
+	margin: 0 6px 5px 0;
+}
+
+input#speaker_first_name {
+	margin: 10px 0 0 0;
+}
+
+/* ----- User Guide ----- */
+
+#enmse-user-guide h1 {
+	margin: 50px 0 20px 0;
+}
+
+#enmse-user-guide h2 {
+	margin: 40px 0 20px 0;
+}
+
+#enmse-user-guide h3 {
+	margin: 25px 0 10px 0;
+}
+
+#enmse-user-guide p {
+	margin-left: 30px;
+	font-size: 1.1em;
+}
+
+#enmse-user-guide h4 {
+	margin-left: 30px;
+}
+
+#enmse-user-guide ul {
+	margin: 15px 0 15px 0;
+}
+
+#enmse-user-guide ul li {
+	list-style-type: disc;
+	margin: 0 0 15px 70px;
+	font-size: 1.1em;
+}
+
+#enmse-user-guide ul.legal li {
+	list-style-type: none;
+	margin: 0 0 0 30px;
+	font-size: 1.1em;
+}
+
+a.enmse-learn-more {
+	color: #c6c6c6;
+}
+
+#enmse-se-logo {
+	width: 100%;
+	height: 120px;
+	background: url('../images/se_logo.jpg') no-repeat;
+	background-position: top center;
+	background-color: #323232;
+}
+
+#enmse-se-logo img {
+	width: 318px;
+	margin: 0 auto;
+}
+
+select.enmse-disabled {
+	opacity: 0.5;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+
+@media 
+(-webkit-min-device-pixel-ratio: 2) { 
+    /* ---------- ADMIN LOGO ----------- */
+
+}

@@ -1,0 +1,1461 @@
+/*********************************************************************
+           TEXT
+*********************************************************************/
+
+.tatsu-text-inner, 
+.tatsu-text-block, 
+.tatsu-text-block img,
+.tatsu-inline-text {
+    margin-bottom: 30px;
+}
+
+.tatsu-text-block-wrap{
+    width: 100%;
+    margin-bottom: 30px;
+}
+
+.tatsu-text-inner.tatsu-align-center,
+.tatsu-inline-text-inner.tatsu-align-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tatsu-text-inner.tatsu-align-right,
+.tatsu-inline-text-inner.tatsu-align-right {
+    margin-left: auto;
+    margin-right: 0;
+}
+/***********************************************
+*             COLUMN IMAGE HOVER EFFECTS       *
+***********************************************/
+
+.tatsu-column-image-zoom > div{
+    overflow: hidden;
+}
+.tatsu-column-image-zoom .tatsu-column-bg-image{
+    transition: transform 0.4s ease;
+}
+.tatsu-column-image-zoom .tatsu-column-inner:hover .tatsu-column-bg-image {
+    transform: scale(1.1);
+}
+.tatsu-column-image-slow-zoom > div {
+    overflow: hidden;
+}
+.tatsu-column-image-slow-zoom .tatsu-column-bg-image{
+    transition: transform 12s cubic-bezier(0.23,1,0.32,1);
+}
+.tatsu-column-image-slow-zoom .tatsu-column-inner:hover .tatsu-column-bg-image {
+    transform: scale(1.2);
+}
+
+/***********************************************
+*             COLUMN HOVER EFFECTS       *
+***********************************************/
+
+.tatsu-column-effect-slideup > .tatsu-column-inner:hover{
+    transform: translateY(-10px);
+}
+
+.tatsu-column-effect-scale > .tatsu-column-inner:hover{
+    transform: scale(1.05);
+}
+.tatsu-column-effect-tilt > div {
+    transform-style: preserve-3d;
+}
+
+.tatsu-column-effect-tilt .tatsu-column-pad-wrap{
+    transition: transform .4s ease;
+}
+.tatsu-column-effect-tilt .tatsu-column-pad-wrap:hover {
+    transform : translateZ(20px);
+}
+.tatsu-column-effect-tilt:hover, .tatsu-column-effect-scale:hover{
+    z-index: 3 !important;
+}
+
+
+/*********************************************************************
+            ANIMATED NUMBERS
+*********************************************************************/
+
+.tatsu-an,
+.tatsu-an-caption {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+.tatsu-an-wrap {
+    text-align: center;
+}
+.tatsu-an-wrap.align-left {
+    text-align: left;
+}
+.tatsu-an-wrap.align-right {
+    text-align: right;
+}
+.tatsu-an {
+    line-height: 1.2 !important;
+}
+.tatsu-an-caption{
+    line-height: initial;
+}
+
+
+/*********************************************************************
+            BUTTONS
+*********************************************************************/
+.tatsu-normal-button.tatsu-button-wrap,
+.tatsu-button-container {
+    margin:0 20px 10px 0;
+}
+
+.tatsu-normal-button.tatsu-button-wrap:last-child,
+.tatsu-button-container:last-child {
+    margin-right : 0;
+}
+
+.tatsu-button-wrap.align-block,
+.tatsu-button-container.align-block {
+    display: block;
+    margin: 0 0 40px;
+}
+.align-block .tatsu-button-wrap {
+    display: block;
+}
+
+.tatsu-button {
+    text-decoration: none;
+    border-color: transparent;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap {
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.tatsu-button-wrap,
+.tatsu-button,
+.tatsu-button-text,
+.tatsu-button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap {
+    vertical-align: middle;
+}
+
+.tatsu-button {
+    padding: 15px 36px;
+}
+
+/* Gradient Button */  
+
+.tatsu-gradient-button .tatsu-button:after, 
+.tatsu-gradient-button .tatsu-button:before,
+.tatsu-gradient-button .tatsu-button-wrap:after,
+.tatsu-gradient-button .tatsu-button-wrap:before,
+.tatsu-gradient-button .tatsu-button-text:after {
+    content: '';
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+}
+
+.tatsu-gradient-button .tatsu-button {
+    background-clip: padding-box;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:after,
+.tatsu-gradient-button .tatsu-button-wrap:before {
+    border-style: solid;
+    border-color: transparent;
+    box-sizing: border-box;
+}
+
+.tatsu-gradient-button .tatsu-button:after, 
+.tatsu-gradient-button .tatsu-button:before {
+    width: 100%;
+    height: 100%;
+}
+
+.tatsu-gradient-button .tatsu-button:before {
+    z-index: -1;
+}
+
+.tatsu-gradient-button .tatsu-button:after {
+    z-index: -2;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:before {
+    z-index: -3;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:after {
+    z-index: -4;
+}
+
+.tatsu-gradient-button .tatsu-button-text span {
+    display: inline-block;
+}
+
+.tatsu-gradient-button .tatsu-button-text:after {
+    content: attr(data-text);
+}
+
+.tatsu-frame .tatsu-gradient-button .tatsu-button-text:after {
+    content: none;
+}
+
+.tatsu-gradient-button .tatsu-button:before,
+.tatsu-gradient-button .tatsu-button-wrap:before,
+.tatsu-gradient-button .tatsu-button:after,
+.tatsu-gradient-button .tatsu-button-wrap:after,
+.tatsu-gradient-button .tatsu-button-text span,
+.tatsu-gradient-button .tatsu-button-text:after {
+    transition: 0.3s all linear;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:before,
+.tatsu-gradient-button .tatsu-button:before,
+.tatsu-gradient-button .tatsu-button-text:after {
+    opacity: 0;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:after,
+.tatsu-gradient-button .tatsu-button:after,
+.tatsu-gradient-button .tatsu-button-text span {
+    opacity: 1;
+}
+
+.tatsu-gradient-button .tatsu-button-wrap:hover:before,
+.tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button:before,
+.tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button-text:after {
+    opacity: 1;
+}
+
+/* .tatsu-gradient-button .tatsu-button-wrap:hover:after,
+.tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button:after, */
+.tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button-text span {
+    opacity: 0;
+    transition: opacity 0s linear 300ms;
+}
+
+.tatsu-frame .tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button-text span {
+    visibility: visible;
+    transition: none;
+}
+
+.tatsu-gradient-button.transparent_hover_bg .tatsu-button-wrap:hover .tatsu-button:after {
+    opacity: 0;
+}
+
+.tatsu-gradient-button.block-center {
+    text-align: center;
+}
+.tatsu-gradient-button.block-right {
+    text-align: right;
+}
+.tatsu-gradient-button.align-block .tatsu-button-wrap {
+    display:  block;
+}
+
+/* End Gradient Button */  
+
+.tatsu-button a, 
+.tatsu-button a:hover {
+    color: inherit;
+}
+.tatsu-buttton-wrap.block-center .tatsu-button {
+    margin:0px 0px 10px 0;
+}
+.tatsu-buttton-wrap.block-center .tatsu-icon {
+    margin-right: 0px;
+}
+p .be-button {
+    margin-bottom: 0; 
+}
+
+.tatsu-button.circular,
+.tatsu-button.circular:after,
+.tatsu-button.circular:before,
+.tatsu-button-wrap.circular,
+.tatsu-button-wrap.circular:after,
+.tatsu-button-wrap.circular:before {
+    border-radius: 50px;
+}
+
+.tatsu-button.rounded,
+.tatsu-button.rounded:after,
+.tatsu-button.rounded:before,
+.tatsu-button-wrap.rounded,
+.tatsu-button-wrap.rounded:after,
+.tatsu-button-wrap.rounded:before {
+  border-radius: 3px;
+}
+
+
+.smallbtn {
+    font-size: 11px;
+    line-height: 12px;
+    padding: 12px 15px;
+}
+.circular.smallbtn{
+    padding: 12px 25px;
+}
+.mediumbtn {
+    font-size: 13px;
+    line-height: 14px;
+    padding: 15px 20px;
+}
+.circular.mediumbtn{
+    padding: 15px 30px;
+}
+.largebtn {
+    font-size: 15px;
+    line-height: 16px;
+    padding: 18px 25px;
+}
+.circular.largebtn{
+    padding: 18px 35px;
+}
+.x-largebtn {
+    font-size: 16px;
+    padding: 20px 51px;
+    line-height: 16px; 
+}
+.tatsu-button-wrap.blockbtn .tatsu-button,
+.tatsu-button.blockbtn {
+    font-size: 17px;
+    display: block;
+    padding: 22px 0;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+}
+.tatsu-button-wrap.blockbtn,
+.tatsu-button.blockbtn {
+    display: block;
+}
+.tatsu-button i {
+    margin-right: 1em;
+}
+.tatsu-button.link {
+    padding-left:0px;
+}
+
+.tatsu-button-wrap.block-left {
+    text-align: left;
+}
+.tatsu-button-wrap.block-center {
+    text-align: center;
+}
+.tatsu-button-wrap.block-right{
+    text-align: right;
+}
+.tatsu-button-wrap.block-right a.tatsu-button {
+    margin-right: 0px;
+}
+
+.tatsu-button.bg-animation-slide-bottom,
+.tatsu-button.bg-animation-slide-top {
+    background-size: 100% 200%;
+}
+.tatsu-button.bg-animation-slide-bottom:hover {
+    background-position: 0 100%;
+}
+.tatsu-button.bg-animation-slide-top:hover {
+    background-position: 0 -100%;
+}
+.tatsu-button.bg-animation-slide-left,
+.tatsu-button.bg-animation-slide-right {
+    background-size: 220% 100%;
+}
+.tatsu-button.bg-animation-slide-right:hover {
+    background-position: 95% 0;
+}
+.tatsu-button.bg-animation-slide-left:hover {
+    background-position: -90% 0;
+}
+.tatsu-button-wrap.popup-gallery {
+    display: block !important;
+}
+
+/* icon inside button  */
+.tatsu-icon-shortcode {
+    margin-bottom: 15px;
+}
+.tatsu-icon-shortcode .tatsu-icon.tiny.diamond{
+    margin: 9px !important;
+}
+.tatsu-icon-shortcode .tatsu-icon.small.diamond{
+    margin: 11px !important;
+}
+.tatsu-icon-shortcode .tatsu-icon.medium.diamond{
+    margin: 17px !important;
+}
+.tatsu-icon-shortcode .tatsu-icon.large.diamond{
+    margin: 22px !important;
+}
+.tatsu-icon-shortcode .tatsu-icon.xlarge.diamond{
+    margin: 27px !important;
+}
+a.tatsu-icon-shortcode.icon-plain{
+    display: inline-block;
+}
+.tatsu-icon-shortcode.block-center .tatsu-icon { 
+    margin-right: 0; 
+}
+.tatsu-button.right-icon i.tatsu-icon {
+    margin: 0px 0px 0px 1em;
+}
+
+/*********************** Button Addons *************************/
+.tatsu-button-wrap.button-transform .tatsu-button:hover,
+.tatsu-gradient-button.button-transform:hover .tatsu-button-wrap{
+    transform: translateY(-5px);
+}
+.tatsu-button-wrap.button-scale .tatsu-button:hover,
+.tatsu-gradient-button.button-scale .tatsu-button-wrap:hover{
+    transform: scale(1.05);
+}
+.tatsu-gradient-button.button-transform .tatsu-button-wrap,
+.tatsu-gradient-button.button-scale .tatsu-button-wrap{
+    transition: all .3s ease;
+} 
+/* .tatsu-button-wrap.button-scale .tatsu-button,
+.tatsu-button-wrap.button-transform .tatsu-button{
+    box-shadow: 2px 14px 66px -14px rgba(140,140,140,1);
+} */
+
+
+/*********************************************************************
+            For Gradient Text and Border
+*********************************************************************/
+
+.tatsu-gradient-text{
+    -webkit-background-clip: text !important;  
+    -webkit-text-fill-color: transparent;
+}
+
+.tatsu-gradient-border{
+    border-image-slice: 1 !important;
+}
+
+.tatsu-normal-button .tatsu-button {
+    transition: 0.3s all linear;
+    border-style: solid;
+}
+/*********************************************************************
+    BUTTON GROUP
+*********************************************************************/
+#content .tatsu-button-group{
+  margin-bottom:20px;
+}
+.tatsu-button-group .tatsu-button-wrap{
+  margin-right: 20px;
+}
+.tatsu-button-group .tatsu-button-wrap.align-right{
+  margin-right: 0px;
+  margin-left: 20px;
+}
+.tatsu-button-group .tatsu-button-wrap.align-block{
+  display: inline;
+}
+
+
+/*********************************************************************
+            CALL TO ACTION
+*********************************************************************/
+
+.tatsu-call-to-action {
+    padding: 30px 0px;
+    display: table;
+    width: 100%;
+    text-align: center;
+}
+.tatsu-action-content {
+    display: inline;
+    margin-bottom: 0;
+    line-height: 47px;
+    margin-right: 40px;
+}
+.tatsu-action-button {
+    position: relative;
+    top: -4px;
+    border-style: solid;
+    border-width: 0px;
+    border-color: transparent;
+    transition: 0.3s all linear;
+    background-clip: padding-box !important;
+}
+
+.tatsu-action-button span {
+    display: inline-block;
+}
+
+
+
+/*********************************************************************
+            DROP CAPS
+*********************************************************************/
+
+.tatsu-dropcap .tatsu-icon:before{
+    width: auto;
+    margin: 0;
+}   
+
+.tatsu-dropcap-circle, 
+.tatsu-dropcap-letter, 
+.tatsu-dropcap-icon,
+.tatsu-dropcap-rounded{
+    float: left;
+    text-transform: uppercase;
+}
+
+.tatsu-dropcap-circle.small, 
+.tatsu-dropcap-square.small, 
+.tatsu-dropcap-rounded.small {
+    margin-top: 3px;
+    font-size: 19px;
+    line-height: 36px;
+    margin-right: 10px;
+    width: 36px;
+    height: 35px;
+    text-align: center;
+    position: relative;
+}
+.tatsu-dropcap-circle {
+    border-radius: 50%;
+}
+
+.tatsu-dropcap-rounded {
+    border-radius: 3px;
+}
+
+.tatsu-dropcap-letter {
+    font-size: 35px;
+    margin: 5px 10px 0 0;
+} 
+.tatsu-dropcap-letter.small{
+    font-size: 24px;
+    margin: 5px 15px 0 0;
+}
+.tatsu-dropcap-circle.big, 
+.tatsu-dropcap-square.big, 
+.tatsu-dropcap-rounded.big {
+    margin-top: 5px;
+    font-size: 26px;
+    line-height: 47px;
+    width: 47px;
+    height: 47px;
+    margin-right: 10px;
+    text-align: center;
+}
+.tatsu-dropcap-circle,
+.tatsu-dropcap-rounded {
+    color:#fff;
+}
+.tatsu-dropcap i:before {
+    line-height: inherit;
+}
+
+.tatsu-dropcap-wrap.style2,
+.tatsu-dropcap-wrap.style2 .tatsu-dropcap {
+    position: relative;
+}
+.tatsu-dropcap-wrap.style2 .tatsu-dropcap{
+    /*opacity: 0.3;*/
+    font-weight: bold;
+    line-height: 1em;
+    display: inline-block;
+}
+.tatsu-dropcap-wrap.style2 .tatsu-dropcap-title{
+    position: absolute;
+    left: 1%;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    -moz-transform: translateY(-50%);
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 100%;
+    line-height: 1em;
+} 
+ 
+.tatsu-dropcap-wrap.style2 i:before {
+    line-height: initial;
+}
+.tatsu-dropcap {
+    display: inline-block;
+}
+/*********************************************************************
+            ICONS
+*********************************************************************/
+
+
+.tatsu-icon-bg,
+.tatsu-icon {
+    display: inline-block;
+    position:relative;
+    vertical-align: middle;
+}
+
+.tatsu-icon-bg {
+    width: 70px;
+    height: 70px;
+    line-height: 0;
+}
+
+.tatsu-normal-icon .tatsu-icon {
+    border-width: 0;
+    border-style: solid;
+    transition: all .3s linear;
+}
+
+.tatsu-normal-icon .tatsu-icon:before {
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+/* Gradient Icon  */
+
+.tatsu-icon-bg:after,
+.tatsu-icon-bg:before {
+    border-style: solid;
+    border-color: transparent;
+    border-width: 0;
+    box-sizing: border-box;
+    transition: 0.3s all linear;
+}
+
+
+.tatsu-gradient-icon .tatsu-icon-bg:before,
+.tatsu-gradient-icon .tatsu-icon-bg:after {
+    content: "";
+    position:absolute;
+}
+
+.tatsu-gradient-icon .tatsu-icon {
+    font-family: "icomoon";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%); 
+    transition : all 0.3s linear;   
+}
+
+
+.tatsu-gradient-icon .tatsu-icon-bg:before {
+    z-index: -1;
+}
+.tatsu-gradient-icon .tatsu-icon-bg:after {
+    z-index: -2;
+}
+
+
+.tatsu-gradient-icon .tatsu-icon-bg:before,
+.tatsu-gradient-icon .tatsu-icon-bg:after {
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    transition: 0.3s all linear;
+}
+
+.tatsu-gradient-icon .tatsu-icon-bg:after {
+  opacity: 1;
+}
+.tatsu-gradient-icon .tatsu-icon-bg:before {
+    opacity: 0;
+}
+
+
+.tatsu-gradient-icon .tatsu-icon.hover {
+    opacity: 0;
+}
+
+.tatsu-gradient-icon .tatsu-icon-bg:hover .tatsu-icon.default {
+    opacity: 0;
+    transition : opacity 0s 0.3s;
+}
+
+.tatsu-gradient-icon .tatsu-icon-bg:hover .tatsu-icon.hover {
+    opacity: 1;
+}
+
+.tatsu-gradient-icon .tatsu-icon-bg:hover:before {
+    opacity: 1;
+}
+
+.tatsu-gradient-icon .tatsu-icon-bg:hover:after {
+    opacity: 0;
+}
+
+.tatsu-gradient-icon.align-none .tatsu-icon-bg {
+    margin-right: 10px;
+}
+.tatsu-gradient-icon.align-none:last-child .tatsu-icon-bg {
+    margin-right: 0;    
+}
+
+/* End Gradient Icon  */
+
+.tatsu-icon-shortcode {
+    margin-bottom: 20px;
+}
+
+.tatsu-icon-wrap {
+    line-height: 0;
+}
+
+.tatsu-icon-shortcode.align-none{
+    display: inline-block;
+}
+.tatsu-normal-icon.align-none .tatsu-icon {
+    margin-right: 10px;
+}
+.tatsu-normal-icon.align-none:last-child .tatsu-icon {
+    margin-right: 0;    
+}
+.tatsu-icon-shortcode a {
+    display: inline-block;
+}
+.tatsu-icon-bg.tiny .tatsu-icon,
+.tatsu-icon.tiny {
+    font-size: 12px;
+}
+.tatsu-icon-bg.small .tatsu-icon,
+.tatsu-icon.small {
+    font-size: 16px;
+}
+.tatsu-icon-bg.medium .tatsu-icon,
+.tatsu-icon.medium {
+    font-size: 25px;
+}
+.tatsu-icon-bg.large .tatsu-icon,
+.tatsu-icon.large {
+    font-size: 40px;
+}
+.tatsu-icon-bg.xlarge .tatsu-icon,
+.tatsu-icon.xlarge {
+    font-size: 55px;
+}
+.tatsu-icon-bg.tiny.plain .tatsu-icon,
+.tatsu-icon.tiny.plain {
+    font-size: 16px;
+}
+.tatsu-icon-bg.small.plain .tatsu-icon,
+.tatsu-icon.small.plain {
+    font-size: 24px;
+}
+.tatsu-icon-bg.medium.plain .tatsu-icon,
+.tatsu-icon.medium.plain {
+    font-size: 35px;
+}
+.tatsu-icon-bg.large.plain .tatsu-icon,
+.tatsu-icon.large.plain {
+    font-size: 50px;  
+}
+.tatsu-icon-bg.xlarge.plain .tatsu-icon,
+.tatsu-icon.xlarge.plain {
+    font-size: 80px;
+}
+.tatsu-icon-bg.tiny,
+.tatsu-icon.tiny {
+    width: 28px;
+    height: 28px;
+}
+.tatsu-icon-bg.small,
+.tatsu-icon.small {
+    width: 45px;
+    height: 45px;
+}
+.tatsu-icon-bg.medium,
+.tatsu-icon.medium {
+    height: 75px;
+    width: 75px;
+}
+.tatsu-icon-bg.large,
+.tatsu-icon.large {
+    width: 100px;
+    height: 100px;
+}
+.tatsu-icon-bg.xlarge,
+.tatsu-icon.xlarge {
+    width: 125px;
+    height: 125px;
+}
+.tatsu-icon-bg.plain,
+.tatsu-icon.plain {
+    width: auto;
+    height: auto;
+}
+.tatsu-icon.plain {
+    line-height: 1;
+}
+.tatsu-icon.circle {
+    border-radius: 50%;
+}
+.tatsu-icon-bg.plain .tatsu-icon.default,
+.tatsu-normal-icon .tatsu-icon.plain:before {
+    position: static;
+}
+.tatsu-icon-bg.plain .tatsu-icon.hover {
+    top: 0;
+    left: 0;
+    transform: none;
+}
+.tatsu-icon-bg.plain .tatsu-icon {
+    display: inline;
+}
+
+.tatsu-icon-shortcode.block-center, 
+.tatsu-icon-shortcode.block-center, 
+.tatsu-icon-shortcode.block-right {
+    display: block;
+    margin-bottom: 30px;
+}
+.tatsu-icon-shortcode.block-left {
+    text-align: left;
+}
+.tatsu-icon-shortcode.block-center {
+    text-align: center;
+}
+.tatsu-icon-shortcode.block-right {
+    text-align: right;
+}
+
+.tatsu-icon.diamond {
+    transform: rotate(45deg);
+}
+.tatsu-icon.diamond:before {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/**************** ICON - ADDONS ****************/
+
+.tatsu-normal-icon.icon-transform .tatsu-icon:hover,
+.icon-transform .tatsu-icon-bg:hover {
+    transform: translateY(-5px);
+}
+
+.tatsu-normal-icon.icon-scale .tatsu-icon:hover,
+.icon-scale .tatsu-icon-bg:hover {
+    transform: scale(1.1);
+} 
+
+.tatsu-icon-shortcode{
+    transform: none;
+}
+
+
+/*********************************************************************
+    ICON GROUP
+*********************************************************************/
+
+#content .tatsu-icon-group{
+  margin-bottom:20px;
+  line-height: 0;
+}
+.tatsu-icon-group div.tatsu-icon-shortcode {
+    display: inline-block;
+    margin-right: 15px;
+}
+.tatsu-icon-group.align-right div.tatsu-icon-shortcode{
+  margin-right: 0px;
+  margin-left: 15px;
+}
+.tatsu-icon-group .tatsu-icon-shortcode:last-child, .tatsu-icon-group .tatsu-icon-shortcode:last-child .tatsu-icon{
+    margin-right: 0;
+}
+
+
+/*********************************************************************
+            LISTS
+*********************************************************************/
+
+.tatsu-list {
+    list-style: none;
+    padding: 0;
+}
+.tatsu-list .tatsu-icon {
+    font-size: 15px;
+    line-height: 0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    display: block;
+}
+.tatsu-list-content {
+    width: auto;
+    line-height: 25px;
+    margin-bottom: 12px;
+    position: relative;
+    display: flex;
+}
+.tatsu-list-inner {
+    padding-left: 30px;
+    display: inline-block;
+}
+
+.tatsu-list-icon-wrap {
+    height: 30px;
+    width: 30px;
+    display: inline-block;
+    border-radius: 50%;
+    position: relative;
+    flex-shrink: 0;
+}
+.tatsu-reverse-list .tatsu-list-icon-wrap {
+    order: 1;
+}
+.tatsu-reverse-list .tatsu-list-inner {
+    padding : 0 30px 0 0;
+}
+.tatsu-list-vertical-align-top .tatsu-list-content{
+    align-items: flex-start;
+}
+.tatsu-list-vertical-align-center .tatsu-list-content{
+    align-items: center;
+}
+.tatsu-list-vertical-align-bottom .tatsu-list-content{
+    align-items: flex-end;
+}
+.tatsu-list-bordered .tatsu-list-content {
+    margin-bottom: 0;
+}
+
+/*********************************************************************
+            NOTIFICATION
+*********************************************************************/
+
+.tatsu-notification {
+    margin-bottom: 20px;
+}
+
+.tatsu-success, .wpcf7-response-output.wpcf7-mail-sent-ok {
+    background: #26cda4;
+    color: #000;   
+}
+.tatsu-error, .wpcf7-response-output.wpcf7-validation-errors{
+    background: #de4141;
+    color:#ffd6d6;
+}
+.tatsu-notification, .wpcf7-response-output.wpcf7-validation-errors, .wpcf7-response-output.wpcf7-mail-sent-ok {
+    cursor: default;
+    line-height:20px;
+    margin-bottom:20px;
+    padding: 15px;
+    border:none;
+    text-align: center;
+    position: relative;
+    border-radius: 2px;
+}  
+.tatsu-notification span.close {
+    cursor: pointer;
+    margin-top: -7px;
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    line-height: 14px;
+    width: 15px;
+    height: 15px;
+    font-size: 14px;
+    color: #fff;
+}
+
+
+/*********************************************************************
+            TITLE WITH ICON 
+*********************************************************************/
+
+/* ti - title icon
+   tc - title content 
+*/ 
+
+.tatsu-ti {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+.tatsu-ti.align-right {
+    float: right;
+    margin-left: 30px;
+    margin-right: 0px;
+}
+
+.tatsu-ti-wrap {
+    float: left;
+    margin-right: 30px;
+}
+.tatsu-ti-wrap.circled {
+    position: relative;
+    border-radius: 50px;
+    text-align: center;
+    border-style: solid;
+    border-width: 1px;
+    border-color: transparent;
+    background-clip: padding-box !important;
+}
+.tatsu-ti-wrap.circled .tatsu-ti-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.tatsu-ti-wrap.small {
+    font-size: 21px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    margin-right: 20px;
+}
+.tatsu-ti-wrap.medium {
+    width: 70px;
+    height: 70px;
+    line-height: 70px;
+    font-size: 28px;
+}
+.tatsu-ti-wrap.large {
+    width: 90px;
+    height: 90px;
+    line-height: 90px;
+    font-size: 32px;
+}
+
+.tatsu-ti-wrap.medium.plain {
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    font-size: 28px;
+}
+.tatsu-ti-wrap.large.plain {
+    width: 50px;
+    height: 34px;
+    line-height: 34px;
+    font-size: 34px;
+}
+
+.tatsu-ti-icon {
+    font-size: inherit;
+    line-height: 0;
+    vertical-align: middle;
+}
+
+.tatsu-tc {
+    padding-left: 80px;
+}
+.tatsu-tc.small.plain {
+    padding-left: 50px;
+}
+.tatsu-ti-wrap.small.circled {
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+}
+.tatsu-tc.small {
+    padding-left: 70px;
+}
+.tatsu-tc.small.align-right {
+    padding-right: 70px;
+}
+.tatsu-ti.small.align-right {
+    margin-left: 20px;
+    margin-right: 0;
+}
+.tatsu-tc.medium {
+    padding-left: 100px;
+}
+.tatsu-tc.medium.plain {
+    padding-left: 60px;
+}
+
+.tatsu-tc.align-right {
+    padding-right: 80px;
+}
+.tatsu-tc.small.plain.align-right {
+    padding-right: 50px;
+}
+.tatsu-tc.medium.align-right {
+    padding-right: 100px;
+}
+.tatsu-tc.medium.plain.align-right {
+    padding-right: 60px;
+}
+.tatsu-tc.align-right,
+.tatsu-tc.small.plain.align-right,
+.tatsu-tc.medium.align-right,
+.tatsu-tc.medium.plain.align-right {
+    padding-left: 0px;
+    text-align: right;
+}
+
+
+/*********************************************************************
+            DIVIDER
+*********************************************************************/
+
+.tatsu-divider{
+    display: inline-block;
+    border: none;
+}
+hr.tatsu-divider{
+    margin: 0px;
+}
+
+.tatsu-module.tatsu-divider-wrap {
+    line-height: 0;
+    margin-bottom: 20px;
+}
+
+
+/*********************************************************************
+            GOOGLE MAPS
+*********************************************************************/
+
+.tatsu-gmap {
+    height: inherit;
+}
+
+
+
+/*********************************************************************
+BUBBLE TESTIMONIAL
+*********************************************************************/
+
+.tatsu_testimonial_wrap {
+    position: relative;
+    margin-bottom: 30px;
+}
+.tatsu_testimonial_wrap i.tatsu-icon.icon-quote {
+    font-size: 100px;
+    position: absolute;
+    top: -18px;
+    opacity: 0.2;
+    right: -14px;
+    display: inline-block;
+    z-index: 3;
+}
+.tatsu_testimonial_inner_wrap:after {
+    content: "";
+    display: block;
+    position: absolute;
+}
+.bubble_left .tatsu_testimonial_inner_wrap:after{
+    left: 45px;
+    border: 9px solid;
+    border-top-color: inherit;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: inherit;  
+}
+.bubble_center .tatsu_testimonial_inner_wrap:after{
+    left: 50%;
+    transform:translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    border: 15px solid;
+    border-top-color: inherit;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;  
+}
+.bubble_right .tatsu_testimonial_inner_wrap:after{
+    right: 45px;
+    border: 9px solid;
+    border-top-color: inherit;
+    border-right-color: inherit;
+    border-bottom-color: transparent;
+    border-left-color: transparent;  
+}
+.tatsu_testimonial_content {
+    padding: 30px 23px;
+    border-radius: 3px;    
+    -moz-border-radius: 3px;    
+    -webkit-border-radius: 3px;
+    margin-bottom: 0;    
+}
+.tatsu_testimonial_description {
+    display: inline-block;
+}
+.tatsu_testimonial_author{
+    margin-bottom: 0px;
+}
+.tatsu_testimonial.bubble_left .tatsu_testimonial_info_wrap {
+    margin-left: 20px;
+}
+
+.tatsu_testimonial_img {
+    width: 70px;
+    display: inline-block;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.tatsu_testimonial_info {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.tatsu_testimonial_wrap.bubble_right .tatsu_testimonial_info_wrap {
+    text-align: right;
+}
+/*.tatsu_testimonial_wrap.bubble_center .tatsu_testimonial_info_wrap {
+    text-align: center;
+}*/
+.tatsu_testimonial_wrap.bubble_center .tatsu_testimonial_img {
+    display: block;
+    padding-bottom: 10px;
+    margin: 0 auto;
+}
+.tatsu_testimonial_wrap.bubble_center .tatsu_testimonial_info {
+    text-align: center;
+    display: block;
+}
+
+.tatsu_testimonial_wrap.bubble_right .tatsu_testimonial_img {
+    float: right;
+    display: inline-block;
+    margin-right: 0;
+    margin-left: 20px;
+}
+.tatsu_testimonial_wrap.bubble_right .tatsu_testimonial_info {
+    margin-top: 10px;
+}
+
+
+.tatsu-vimeo-wrap .fluid-width-video-wrapper {
+    padding-top: 56% !important;
+}
+
+/*********************************************************************
+            CODE
+*********************************************************************/
+.tatsu-code{
+    margin-bottom: 0px;
+}
+
+/*********************************************************************
+            SINGLE IMAGE
+*********************************************************************/
+.tatsu-single-image{
+    width : 100%;
+    line-height: 0;
+}
+.tatsu-single-image.be-shadow-light .tatsu-single-image-inner {
+    box-shadow : 0px 0px 10px rgba(0,0,0,0.10), 0px 3px 5px rgba(0,0,0,0.10);
+}
+.tatsu-single-image.be-shadow-medium .tatsu-single-image-inner {
+    box-shadow: 0px 5px 50px rgba(0,0,0,0.12), 0px 5px 20px rgba(0,0,0,0.10);
+}
+.tatsu-single-image.be-shadow-dark .tatsu-single-image-inner {
+    box-shadow: 0px 50px 120px rgba(0,0,0,0.12), 0px 10px 90px rgba(0,0,0,0.10);
+}
+.tatsu-image-lazyload img{
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+body:not( .tatsu-frame ) .tatsu-single-image:not( .tatsu-external-image ) a {
+    position: absolute;
+    top : 0;
+    left : 0;
+    width : 100%;
+    height : 100%;
+}
+.tatsu-single-image:not(.tatsu-image-overflow)  .tatsu-single-image-inner{
+    display: inline-block;
+    max-width : 100%;
+}
+.tatsu-single-image img{
+    box-sizing: border-box;
+    position : relative;
+    border-width: 0;
+    border-style: solid;
+    border-color: transparent;
+}
+body:not( .tatsu-frame ) .tatsu-single-image img{
+    max-width : 100%;
+    height: auto;    
+    position: absolute;
+    left : 0;
+    top : 0;
+}
+body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
+    position: static;
+}
+.tatsu-image-overflow img{
+    width : 100%;
+}
+.tatsu-single-image-inner{
+    width : 100%;
+    position: relative;
+    transition : background-color 0.3s;
+}
+
+.tatsu-single-image.align-none{
+    display: inline-block;
+}
+.tatsu-single-image.align-left{
+    text-align: left;
+}
+.tatsu-single-image.align-center{
+    text-align: center;
+}
+.tatsu-single-image.align-right{
+    text-align: right;
+}
+/*********************************************************************
+           TABLET
+*********************************************************************/
+
+
+@media only screen and ( min-width: 768px ) and ( max-width: 959px ) {
+    .tatsu-call-to-action{
+        padding: 30px 30px;
+    }
+    .tatsu-action-content, 
+    .tatsu-action-button { 
+    	float: none; 
+    }
+}
+
+/*********************************************************************
+            TABLET AND MOBILES ALL SIZES
+*********************************************************************/
+
+@media only screen and (max-width: 959px) {
+    .be-section-pad.be-edge-padding{
+        padding-left: 20px !important;
+        padding-right: 20px !important;
+    }
+}
+
+/*********************************************************************
+            MOBILE PORTRAIT AND LANDSCAPE
+*********************************************************************/
+
+@media only screen and (max-width: 767px) {
+	/* Text block */
+    .tatsu-text-inner,
+    .tatsu-inline-text-inner {
+      /* width: 100% !important; */
+      width: 100%;
+    }
+
+    /* single image */
+    .tatsu-image-overflow .tatsu-single-image-inner {
+        width : 100% !important;
+        transform : translateX(0) !important; 
+    }
+
+    /* Call to Action */
+    .tatsu-action-content, 
+    .tatsu-action-button { 
+        float: none; 
+    }
+    .tatsu-action-content {
+        display: block;
+        margin: 0 0 25px;
+    }
+
+
+
+    /* Title With Icon */
+    .tatsu-tc.align-right, 
+    .tatsu-tc.small.plain.align-right, 
+    .tatsu-tc.medium.align-right, 
+    .tatsu-tc.medium.plain.align-right {
+        text-align: left;
+    }
+    .tatsu-ti.align-right {
+        float: left;
+        margin-right: 30px;
+        margin-left: 0px;
+    }
+    .tatsu-tc.medium.align-right {
+        padding-left: 100px;
+        padding-right: 0px; 
+    }
+    .tatsu-ti.small.align-right {
+        margin-left: 0px;
+        margin-right: 20px;
+    }
+    .tatsu-tc.small.plain.align-right {
+        padding-left: 50px;
+        padding-right: 0px;
+    }
+    .tatsu-tc.medium.plain.align-right {
+        padding-right: 0px;
+        padding-left: 60px;
+    }
+    .tatsu-tc * {
+        text-align: left !important;
+    }    
+
+    /* utility */
+    .hide-mobile {
+        display: none !important;
+    }
+    body.disable-animation-on-mobile .animated {
+        -webkit-animation-duration: 0s !important;
+        -moz-animation-duration: 0s !important;
+        -ms-animation-duration: 0s !important;
+        -o-animation-duration: 0s !important;
+        animation-duration: 0s !important;
+        visibility: visible !important;
+    }
+}
+
+
+ 
+/* =========================================================================
+                                   Simple Text
+   ========================================================================= */
+
+   .tatsu-module.simple-text{
+    width: 100%;
+    display: block;
+    border-style: solid;
+    box-sizing: border-box;
+} 
+
+.simple-text-inner h1.simple-text-tag{
+    line-height: 70px
+}
+
+/* .simple-text-inner.tatsu-align-center{
+    text-align: center;
+}
+
+.simple-text-inner.tatsu-align-right{
+    text-align: right;
+} */
+
+/*********************************************************************
+                    Google Maps GDPR Warning
+*********************************************************************/
+
+.static-map-overlay {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.4);
+}
+.static-map-content {
+    color: #fff;
+    font-size: 15px;
+    text-align: center;
+    padding: 20px;
+    display: inline-block;
+    background: #000;
+}

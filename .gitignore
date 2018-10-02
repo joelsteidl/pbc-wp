@@ -1,0 +1,8 @@
+.idea
+.DS_Store
+web/wp-content/*
+!web/wp-content/index.php
+!web/wp-content/plugins/
+!web/wp-content/themes/
+web/wp-config.php
+.vscode

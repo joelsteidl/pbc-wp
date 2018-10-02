@@ -1,0 +1,174 @@
+
+#wp-tatsu_editor-wrap .wp-switch-editor{
+	border: 0;
+	top: 0px;
+	padding: 3px 11px 4px;
+	background-color: #1b1d20;
+	height: 20px;
+	border-radius: 3px 3px 0 0;
+	box-sizing : content-box;
+}
+
+#wp-tatsu_editor-wrap.tmce-active #tatsu_editor-tmce,#wp-tatsu_editor-wrap.html-active #tatsu_editor-html{
+		background-color: #32373d;
+}
+
+#wp-tatsu_editor-editor-container #qt_tatsu_editor_toolbar{
+	background-color: #32373d;
+	border: 0;
+
+}
+
+#wp-tatsu_editor-editor-container div.mce-widget.mce-btn {
+    border: 0;
+    margin: 1px 1px;
+    box-sizing: border-box;
+    box-shadow: none;
+}
+
+#wp-tatsu_editor-editor-container div.mce-widget.mce-btn:hover {
+    background: #232323;
+}
+#wp-tatsu_editor-editor-container .mce-toolbar .mce-ico{
+	color: #767b7d;
+
+}
+
+#wp-tatsu_editor-media-buttons #insert-media-button{
+	border: 0;
+	box-shadow: none;
+}
+
+#be-pb-leftpanel-outer-wrap .wp-core-ui .button, #be-pb-leftpanel-outer-wrap .wp-core-ui .button-secondary{
+	color: #767b7d;
+	background-color: #32373d;
+}
+
+#be-pb-leftpanel-outer-wrap .wp-core-ui .button:hover{
+	color: #767b7d;
+	background-color: #232323;
+}
+
+.screen-reader-text {
+	display: none;
+}
+
+#wp-tatsu_editor-editor-container .mce-toolbar-grp.mce-container, #wp-tatsu_editor-editor-container div.mce-statusbar{
+	border: 0;
+}
+
+#wp-tatsu_editor-editor-container div.mce-statusbar{
+	background: #32373d;
+}
+#tinymce{
+	background-color: #232629;
+	color: white;
+}
+
+div#wp-tatsu_editor-editor-container .ed_button{
+	border: 0;
+	box-shadow: none;
+	background: #2a323a;
+}
+
+div#wp-tatsu_editor-editor-container .ed_button:hover{
+	background: #232323;
+}
+
+#wp-tatsu_editor-wrap .wp-editor-container textarea.wp-editor-area{
+	background: #232629;
+	color : #939fab;
+}
+
+#wp-tatsu_editor-wrap .mce-btn.mce-active{
+	background:#232629; 
+}
+
+#wp-tatsu_editor-wrap .mce-toolbar .mce-btn:hover .mce-open{
+	border-left-color: #32373d;
+}
+
+ #wp-tatsu_editor-wrap .mce-btn.mce-listbox{
+	background: #2a323a;
+}
+ #wp-tatsu_editor-wrap .mce-btn.mce-listbox button{
+ 	color: #767b7d;
+ }
+.mce-container.mce-panel{
+	background: rgb(50, 55, 61);
+}
+.mce-container.mce-panel.mce-menu{
+	border: 0;
+}
+.mce-panel.mce-menu .mce-menu-item:hover .mce-text{
+	color: #767b7d;
+}
+.mce-panel.mce-menu .mce-menu-item:hover{
+		background: rgba(118,123,125,0.098);
+}
+.mce-panel .mce-menu-item-normal.mce-active .mce-text{
+	color: #20cbd4;
+	
+}
+.mce-menu.mce-panel .mce-menu-item-normal.mce-active{
+	background: none;
+}
+.mce-panel .mce-text, #wp-tatsu_editor-wrap .mce-menu-item:hover .mce-text{
+	color: #767b7d;
+}
+.mce-panel.mce-menu .mce-menu-item:hover.mce-active .mce-text{
+	color: #20cbd4;
+}
+.mce-stack-layout .mce-menu-item .mce-text{
+	color : #727b7d;
+}
+
+/******************** custom color picker ***********************/
+
+.mce-container.mce-window[ aria-label = "Color" ] {
+	background:  #1b1d20;
+	font-family: Montserrat;
+	color : #727b7d;
+}
+
+.mce-container.mce-window[ aria-label = "Color" ] .mce-foot {
+	background: #1b1d20;
+}
+
+.mce-window.mce-container[ aria-label = "Color" ] .mce-window-head {
+    background: #1b1d20;
+}
+
+.mce-container.mce-window[ aria-label = "Color" ] .mce-window-head .mce-title {
+    color: #20cbd4;
+}
+
+.mce-window .mce-window-head[ aria-label = "Color" ] .mce-close .mce-i-remove:before {
+    color: red;
+}
+
+.mce-window.mce-container[ aria-label = "Color" ] .mce-window-head {
+    border: 0;
+}
+
+.mce-window.mce-container[ aria-label = "Color" ] .mce-foot {
+    border: 0;
+}
+
+
+.mce-window[ aria-label = "Color" ] .mce-colorpicker-sv {
+    border: 0;
+}
+
+.mce-window[ aria-label = "Color" ] .mce-colorpicker-h {
+    border: 0;
+}
+
+.mce-window[ aria-label = "Color" ] .mce-textbox {
+    background: #32373d;
+    border: 0;
+}
+
+
+
+/*****************************************************************/

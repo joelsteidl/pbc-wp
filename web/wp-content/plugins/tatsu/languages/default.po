@@ -1,0 +1,713 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Tatsu\n"
+"POT-Creation-Date: 2016-12-14 16:10+0530\n"
+"PO-Revision-Date: 2016-12-14 16:10+0530\n"
+"Last-Translator: \n"
+"Language-Team: Brand Exponents <help@brandexponents.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8\n"
+"X-Poedit-Basepath: ../\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: builder/tatsu-index.php:9
+msgid "Tatsu Page Builder"
+msgstr ""
+
+#: includes/class-tatsu.php:342
+msgid "Edit with Tatsu"
+msgstr ""
+
+#: includes/helpers/api.php:15
+msgid "You cannot deregister core modules such as Section, Row or Columns"
+msgstr ""
+
+#: includes/helpers/api.php:22
+msgid ""
+"Unable to register icon kit, either the kit name is missing or the icons "
+"array and stylesheet url are not in the correct format"
+msgstr ""
+
+#: includes/helpers/api.php:37
+msgid "Arguments for registering a template should be an array"
+msgstr ""
+
+#: includes/helpers/api.php:44
+msgid ""
+"Unable to register the color, either the slug is missing or the color is not "
+"in a valid hex or rgb or rgba format"
+msgstr ""
+
+#: includes/icons/font-awesome.php:793
+msgid "Font Awesome Icons"
+msgstr ""
+
+#: includes/modules/gmaps.php:62
+msgid ""
+"Your Server is Unable to connect to the Google Geocoding API, kindly visit "
+"<a href=\"http://www.latlong.net/convert-address-to-lat-long.html\" target="
+"\"_blank\">THIS LINK </a>, find out the latitude and longitude of your "
+"address and enter it manually in the Google Maps Module of the Page Builder "
+msgstr ""
+
+#: includes/modules/gmaps.php:67
+msgid "Google Maps API KEY is missing"
+msgstr ""
+
+#: includes/modules/module_options.php:7
+msgid "Section"
+msgstr ""
+
+#: includes/modules/module_options.php:16
+#: includes/modules/module_options.php:336
+#: includes/modules/module_options.php:790
+#: includes/modules/module_options.php:1009
+#: includes/modules/module_options.php:1377
+#: includes/modules/module_options.php:1797
+msgid "Background Color"
+msgstr ""
+
+#: includes/modules/module_options.php:29
+#: includes/modules/module_options.php:350
+msgid "Background Repeat"
+msgstr ""
+
+#: includes/modules/module_options.php:43
+#: includes/modules/module_options.php:364
+msgid "Background Attachment"
+msgstr ""
+
+#: includes/modules/module_options.php:55
+#: includes/modules/module_options.php:376
+msgid "Background Position"
+msgstr ""
+
+#: includes/modules/module_options.php:74
+msgid "Background Size"
+msgstr ""
+
+#: includes/modules/module_options.php:88
+msgid "Background Image Animation"
+msgstr ""
+
+#: includes/modules/module_options.php:102
+#: includes/modules/module_options.php:409
+msgid "Padding"
+msgstr ""
+
+#: includes/modules/module_options.php:109
+msgid "Border Thickness"
+msgstr ""
+
+#: includes/modules/module_options.php:116
+#: includes/modules/module_options.php:829
+#: includes/modules/module_options.php:1047
+msgid "Border Color"
+msgstr ""
+
+#: includes/modules/module_options.php:124
+msgid "Offset Section"
+msgstr ""
+
+#: includes/modules/module_options.php:131
+msgid "Offset Top By"
+msgstr ""
+
+#: includes/modules/module_options.php:143
+#: includes/modules/module_options.php:430
+msgid "Enable Background Video"
+msgstr ""
+
+#: includes/modules/module_options.php:150
+#: includes/modules/module_options.php:437
+msgid ".MP4 Source"
+msgstr ""
+
+#: includes/modules/module_options.php:157
+#: includes/modules/module_options.php:444
+msgid ".OGG Source"
+msgstr ""
+
+#: includes/modules/module_options.php:164
+#: includes/modules/module_options.php:451
+msgid ".WEBM Source"
+msgstr ""
+
+#: includes/modules/module_options.php:171
+#: includes/modules/module_options.php:458
+msgid "Enable Background Overlay"
+msgstr ""
+
+#: includes/modules/module_options.php:178
+msgid "Section Overlay"
+msgstr ""
+
+#: includes/modules/module_options.php:186
+msgid "Section Id"
+msgstr ""
+
+#: includes/modules/module_options.php:193
+msgid "Section Class"
+msgstr ""
+
+#: includes/modules/module_options.php:200
+msgid "Section Title"
+msgstr ""
+
+#: includes/modules/module_options.php:207
+msgid "Enable Full Screen Section"
+msgstr ""
+
+#: includes/modules/module_options.php:214
+msgid "Header Color Scheme"
+msgstr ""
+
+#: includes/modules/module_options.php:226
+#: includes/modules/module_options.php:312
+#: includes/modules/module_options.php:538
+#: includes/modules/module_options.php:1766
+msgid "Hide in"
+msgstr ""
+
+#: includes/modules/module_options.php:240
+msgid "Row"
+msgstr ""
+
+#: includes/modules/module_options.php:250
+msgid "Full Width Row"
+msgstr ""
+
+#: includes/modules/module_options.php:257
+msgid "Set margin bottom of all columns to zero"
+msgstr ""
+
+#: includes/modules/module_options.php:264
+msgid "Set all columns to be of equal height"
+msgstr ""
+
+#: includes/modules/module_options.php:271
+msgid "Spacing between columns"
+msgstr ""
+
+#: includes/modules/module_options.php:286
+msgid "Column Spacing"
+msgstr ""
+
+#: includes/modules/module_options.php:298
+msgid "Row Id"
+msgstr ""
+
+#: includes/modules/module_options.php:305
+msgid "Row Class"
+msgstr ""
+
+#: includes/modules/module_options.php:327
+msgid "Column"
+msgstr ""
+
+#: includes/modules/module_options.php:343
+#: includes/modules/module_options.php:871
+msgid "Background Image"
+msgstr ""
+
+#: includes/modules/module_options.php:395
+msgid "Enable Background Cover Property"
+msgstr ""
+
+#: includes/modules/module_options.php:416
+msgid "Custom Margin ?"
+msgstr ""
+
+#: includes/modules/module_options.php:423
+msgid "Margin"
+msgstr ""
+
+#: includes/modules/module_options.php:465
+msgid "Column Overlay"
+msgstr ""
+
+#: includes/modules/module_options.php:473
+msgid "Animate Column Overlay"
+msgstr ""
+
+#: includes/modules/module_options.php:485
+msgid "Link Overlay/Column URL"
+msgstr ""
+
+#: includes/modules/module_options.php:493
+msgid "Vertical Alignment"
+msgstr ""
+
+#: includes/modules/module_options.php:508
+#: includes/modules/module_options.php:595
+#: includes/modules/module_options.php:1113
+#: includes/modules/module_options.php:1317
+#: includes/modules/module_options.php:1477
+#: includes/modules/module_options.php:1533
+#: includes/modules/module_options.php:1715
+#: includes/modules/module_options.php:1932
+#: includes/modules/module_options.php:2148
+msgid "Enable CSS Animation"
+msgstr ""
+
+#: includes/modules/module_options.php:515
+#: includes/modules/module_options.php:602
+#: includes/modules/module_options.php:909
+#: includes/modules/module_options.php:1120
+#: includes/modules/module_options.php:1324
+#: includes/modules/module_options.php:1484
+#: includes/modules/module_options.php:1540
+#: includes/modules/module_options.php:1722
+#: includes/modules/module_options.php:1939
+#: includes/modules/module_options.php:2155
+msgid "Animation Type"
+msgstr ""
+
+#: includes/modules/module_options.php:524
+msgid "Column Id"
+msgstr ""
+
+#: includes/modules/module_options.php:531
+msgid "Column Class"
+msgstr ""
+
+#: includes/modules/module_options.php:552
+msgid "Text Block"
+msgstr ""
+
+#: includes/modules/module_options.php:561
+#: includes/modules/module_options.php:1310
+#: includes/modules/module_options.php:1619
+msgid "Content"
+msgstr ""
+
+#: includes/modules/module_options.php:568
+msgid "Content Width"
+msgstr ""
+
+#: includes/modules/module_options.php:582
+msgid "Wrap Alignment"
+msgstr ""
+
+#: includes/modules/module_options.php:626
+msgid "Animated Numbers"
+msgstr ""
+
+#: includes/modules/module_options.php:635
+msgid "Number"
+msgstr ""
+
+#: includes/modules/module_options.php:641
+msgid "Caption"
+msgstr ""
+
+#: includes/modules/module_options.php:650
+msgid "Font Size of Number"
+msgstr ""
+
+#: includes/modules/module_options.php:659
+msgid "Font Size of Caption"
+msgstr ""
+
+#: includes/modules/module_options.php:665
+msgid "Number Color"
+msgstr ""
+
+#: includes/modules/module_options.php:671
+msgid "Caption Color"
+msgstr ""
+
+#: includes/modules/module_options.php:677
+#: includes/modules/module_options.php:947
+#: includes/modules/module_options.php:1063
+#: includes/modules/module_options.php:1158
+#: includes/modules/module_options.php:1265
+#: includes/modules/module_options.php:1418
+msgid "Alignment"
+msgstr ""
+
+#: includes/modules/module_options.php:711
+msgid "Button"
+msgstr ""
+
+#: includes/modules/module_options.php:721
+#: includes/modules/module_options.php:1833
+msgid "Button Text"
+msgstr ""
+
+#: includes/modules/module_options.php:728
+msgid "URL to be linked"
+msgstr ""
+
+#: includes/modules/module_options.php:735
+msgid "Open in a new tab"
+msgstr ""
+
+#: includes/modules/module_options.php:743
+msgid "Button Size"
+msgstr ""
+
+#: includes/modules/module_options.php:756
+msgid "Button Style"
+msgstr ""
+
+#: includes/modules/module_options.php:768
+msgid "Button Alignment"
+msgstr ""
+
+#: includes/modules/module_options.php:797
+msgid "Hover Color"
+msgstr ""
+
+#: includes/modules/module_options.php:804
+msgid "Text Color"
+msgstr ""
+
+#: includes/modules/module_options.php:811
+msgid "Hover Text Color"
+msgstr ""
+
+#: includes/modules/module_options.php:818
+msgid "Border Size"
+msgstr ""
+
+#: includes/modules/module_options.php:837
+#: includes/modules/module_options.php:1055
+msgid "Hover Border Color"
+msgstr ""
+
+#: includes/modules/module_options.php:845
+#: includes/modules/module_options.php:966
+#: includes/modules/module_options.php:975
+#: includes/modules/module_options.php:1246
+#: includes/modules/module_options.php:1590
+msgid "Icon"
+msgstr ""
+
+#: includes/modules/module_options.php:852
+msgid "Icon Alignment"
+msgstr ""
+
+#: includes/modules/module_options.php:865
+#: includes/modules/module_options.php:1092
+#: includes/modules/module_options.php:1911
+msgid "Enable Lightbox Image / Video"
+msgstr ""
+
+#: includes/modules/module_options.php:879
+#: includes/modules/module_options.php:1105
+#: includes/modules/module_options.php:1924
+msgid "Youtube / Vimeo Url in lightbox"
+msgstr ""
+
+#: includes/modules/module_options.php:887
+msgid "Background Animation"
+msgstr ""
+
+#: includes/modules/module_options.php:902
+msgid "Enable Css Animations"
+msgstr ""
+
+#: includes/modules/module_options.php:936
+msgid "Button Group"
+msgstr ""
+
+#: includes/modules/module_options.php:982
+#: includes/modules/module_options.php:1253
+msgid "Size"
+msgstr ""
+
+#: includes/modules/module_options.php:996
+#: includes/modules/module_options.php:1276
+#: includes/modules/module_options.php:1695
+msgid "Style"
+msgstr ""
+
+#: includes/modules/module_options.php:1016
+msgid "Hover Background Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1023
+#: includes/modules/module_options.php:1295
+#: includes/modules/module_options.php:1612
+msgid "Icon Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1030
+msgid "Hover Icon Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1037
+msgid "Border Width"
+msgstr ""
+
+#: includes/modules/module_options.php:1076
+msgid "URL to be linked to the Icon"
+msgstr ""
+
+#: includes/modules/module_options.php:1083
+msgid "Open as new tab"
+msgstr ""
+
+#: includes/modules/module_options.php:1098
+#: includes/modules/module_options.php:1917
+msgid "Select Lightbox image / video"
+msgstr ""
+
+#: includes/modules/module_options.php:1149
+msgid "Icon Group"
+msgstr ""
+
+#: includes/modules/module_options.php:1177
+msgid "Divider"
+msgstr ""
+
+#: includes/modules/module_options.php:1186
+msgid "Divider Thickness"
+msgstr ""
+
+#: includes/modules/module_options.php:1199
+msgid "Divider Width"
+msgstr ""
+
+#: includes/modules/module_options.php:1212
+msgid "Divider Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1237
+msgid "Title with Icon"
+msgstr ""
+
+#: includes/modules/module_options.php:1287
+msgid "Background Color of Icon if circled"
+msgstr ""
+
+#: includes/modules/module_options.php:1302
+msgid "Icon Border Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1354
+msgid "Bubble Testimonial"
+msgstr ""
+
+#: includes/modules/module_options.php:1363
+msgid "Testimonial Content"
+msgstr ""
+
+#: includes/modules/module_options.php:1370
+msgid "Testimonial Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1384
+msgid "Testimonial Author Image"
+msgstr ""
+
+#: includes/modules/module_options.php:1390
+msgid "Testimonial Author"
+msgstr ""
+
+#: includes/modules/module_options.php:1397
+msgid "Testimonial Author Text Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1404
+msgid "Testimonial Author Role"
+msgstr ""
+
+#: includes/modules/module_options.php:1411
+msgid "Testimonial Author Role Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1450
+msgid "Video"
+msgstr ""
+
+#: includes/modules/module_options.php:1458
+msgid "Choose Video Source"
+msgstr ""
+
+#: includes/modules/module_options.php:1470
+msgid "Enter the video url"
+msgstr ""
+
+#: includes/modules/module_options.php:1510
+msgid "Notifications"
+msgstr ""
+
+#: includes/modules/module_options.php:1519
+msgid "Background Color of Notification box"
+msgstr ""
+
+#: includes/modules/module_options.php:1526
+msgid "Notification Content"
+msgstr ""
+
+#: includes/modules/module_options.php:1566
+msgid "Lists"
+msgstr ""
+
+#: includes/modules/module_options.php:1582
+msgid "List"
+msgstr ""
+
+#: includes/modules/module_options.php:1597
+msgid "Circle the Icon"
+msgstr ""
+
+#: includes/modules/module_options.php:1604
+msgid "Background Color if circled"
+msgstr ""
+
+#: includes/modules/module_options.php:1644
+msgid "Google Maps"
+msgstr ""
+
+#: includes/modules/module_options.php:1652
+msgid "Address"
+msgstr ""
+
+#: includes/modules/module_options.php:1659
+msgid "Latitude"
+msgstr ""
+
+#: includes/modules/module_options.php:1666
+msgid "Longitude"
+msgstr ""
+
+#: includes/modules/module_options.php:1673
+#: includes/modules/module_options.php:1756
+msgid "Height"
+msgstr ""
+
+#: includes/modules/module_options.php:1683
+msgid "Zoom Value"
+msgstr ""
+
+#: includes/modules/module_options.php:1709
+msgid "Custom Marker Pin"
+msgstr ""
+
+#: includes/modules/module_options.php:1748
+msgid "Extra Spacing"
+msgstr ""
+
+#: includes/modules/module_options.php:1789
+msgid "Call to Action"
+msgstr ""
+
+#: includes/modules/module_options.php:1804
+msgid "Title"
+msgstr ""
+
+#: includes/modules/module_options.php:1811
+msgid "Heading tag to use for Title"
+msgstr ""
+
+#: includes/modules/module_options.php:1826
+#: includes/modules/module_options.php:2141
+msgid "Title Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1840
+msgid "URL to be linked to the button"
+msgstr ""
+
+#: includes/modules/module_options.php:1847
+msgid "Open Link in New Tab"
+msgstr ""
+
+#: includes/modules/module_options.php:1855
+msgid "Button Background Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1862
+msgid "Button Hover Background Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1869
+msgid "Button Text Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1876
+msgid "Button Hover Text Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1883
+msgid "Button Border Size"
+msgstr ""
+
+#: includes/modules/module_options.php:1893
+msgid "Button Border Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1901
+msgid "Button Hover Border Color"
+msgstr ""
+
+#: includes/modules/module_options.php:1974
+msgid "Dropcap"
+msgstr ""
+
+#: includes/modules/module_options.php:1982
+#: includes/modules/module_options.php:2084
+msgid "Letter to be Dropcapped"
+msgstr ""
+
+#: includes/modules/module_options.php:1989
+msgid "Icon to be Dropcapped"
+msgstr ""
+
+#: includes/modules/module_options.php:1996
+msgid "Dropcap Style"
+msgstr ""
+
+#: includes/modules/module_options.php:2008
+msgid "Dropcap Size"
+msgstr ""
+
+#: includes/modules/module_options.php:2075
+msgid "Dropcap - 2"
+msgstr ""
+
+#: includes/modules/module_options.php:2118
+msgid "Dropcap Title"
+msgstr ""
+
+#: includes/modules/module_options.php:2125
+msgid "Font for Title"
+msgstr ""
+
+#: includes/modules/module_options.php:2182
+msgid "Shortcode Modules"
+msgstr ""
+
+#: includes/modules/module_options.php:2191
+msgid "Shortcode"
+msgstr ""
+
+#: plugin-update-checker/github-checker.php:119
+msgid "There is no changelog available."
+msgstr ""
+
+#: plugin-update-checker/plugin-update-checker.php:776
+msgid "Check for updates"
+msgstr ""
+
+#: plugin-update-checker/plugin-update-checker.php:820
+msgid "This plugin is up to date."
+msgstr ""
+
+#: plugin-update-checker/plugin-update-checker.php:822
+msgid "A new version of this plugin is available."
+msgstr ""
+
+#: plugin-update-checker/plugin-update-checker.php:824
+#, php-format
+msgid "Unknown update checker status \"%s\""
+msgstr ""
