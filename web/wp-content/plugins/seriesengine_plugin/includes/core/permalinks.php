@@ -234,6 +234,12 @@ function enmse_seriesengine_ogtags() {
 		$permalinks_ogtags = 1;
 	}
 
+	if ( isset($se_options['permaclicktoview']) ) { 
+		$enmse_permaclicktoview = $se_options['permaclicktoview'];
+	} else {
+		$enmse_permaclicktoview = "Click to view more.";
+	}
+
 	if ( $permalinks_ogtags == 1 ) {
 		if ( is_singular('enmse_message') ) {
 			if (have_posts()) : while (have_posts()) : the_post();
@@ -251,7 +257,7 @@ function enmse_seriesengine_ogtags() {
 				if ( has_excerpt() ) {
 					echo '<meta property="og:description" content="' . htmlspecialchars(get_the_excerpt()) . '" />';
 				} else {
-					echo '<meta property="og:description" content="Click to view more." />';
+					echo '<meta property="og:description" content="' . $enmse_permaclicktoview . '" />';
 				}
 				echo '<meta property="og:title" content="' . get_the_title() . '" />';
 				if ( $enmse_single->message_thumbnail != null || $enmse_single->message_thumbnail != ""  ) {

@@ -31,76 +31,133 @@ $enmse_tid = $enmse_podcast->topic_id;
 $enmse_spid = $enmse_podcast->speaker_id;
 $enmse_stid = $enmse_podcast->series_type_id;
 
+// Language Settings
+
+$enmse_options = get_option( 'enm_seriesengine_options' ); 
+
+if ( isset($enmse_options['messaget']) ) { // Find Message Title
+	$enmsemessaget = $enmse_options['messaget'];
+} else {
+	$enmsemessaget = "Message";
+}
+
+// Message from
+if ( isset($enmse_options['lang_podcastmessagefrom']) ) { 
+	$lang_podcastmessagefrom = $enmse_options['lang_podcastmessagefrom'];
+	$enmse_podcastmessagefrom =  str_replace("MESSAGE_LABEL", $enmsemessaget, $lang_podcastmessagefrom);
+} else {
+	$lang_podcastmessagefrom = "MESSAGE_LABEL from";
+	$enmse_podcastmessagefrom =  str_replace("MESSAGE_LABEL", $enmsemessaget, $lang_podcastmessagefrom);
+}
+
+// Podcast language
+if ( isset($enmse_options['language']) ) { 
+	$langval = $enmse_options['language'];
+	if ( $langval == 3 ) { // German
+		$enmse_podcastlanguage =  "de";
+	} elseif ( $langval == 2 ) { // Spanish
+		$enmse_podcastlanguage =  "es";
+	} else { // English
+		$enmse_podcastlanguage =  "en";
+	}
+} else {
+	$enmse_podcastlanguage =  "en";
+}
+
+// Shorten Message Descriptions
+function substrwords($text, $maxchar, $end='...') {
+    if (strlen($text) > $maxchar || $text == '') {
+        $words = preg_split('/\s/', $text);      
+        $output = '';
+        $i      = 0;
+        while (1) {
+            $length = strlen($output)+strlen($words[$i]);
+            if ($length > $maxchar) {
+                break;
+            } 
+            else {
+                $output .= " " . $words[$i];
+                ++$i;
+            }
+        }
+        $output .= $end;
+    } 
+    else {
+        $output = $text;
+    }
+    return $output;
+}
+
 // Find Messages
 
 if ( $enmse_podcast->audio_video == "Audio" ) { // Audio Podcast?
 	if ( $enmse_sid > 0 ) { // Did they specify a series?
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_sid, $enmse_stid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_sid, $enmse_stid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		} else {
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_sid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_sid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		}
 	} elseif ( $enmse_tid > 0 ) { // Did they specify a topic?
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_tid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid, $enmse_tid  );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		} else {
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_tid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_tid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		}
 	} elseif ( $enmse_spid > 0 ) { // Did they specify a speaker?
 	 	if ( $enmse_stid > 0 ) { // Series type?
-	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 	 		$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_spid, $enmse_podcast->podcast_display );
 	 		$enmse_messages = $wpdb->get_results( $enmse_sql );
 	 		
-	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 	 		$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid, $enmse_spid );
 	 		$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 	 		$enmse_datecount = $wpdb->num_rows;
 	 	} else {
-	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 	 		$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_spid, $enmse_podcast->podcast_display );
 	 		$enmse_messages = $wpdb->get_results( $enmse_sql );
 	 		
-	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 	 		$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_spid );
 	 		$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 	 		$enmse_datecount = $wpdb->num_rows;
 	 	}
 	 } else {
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  audio_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  audio_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid  );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
@@ -117,71 +174,71 @@ if ( $enmse_podcast->audio_video == "Audio" ) { // Audio Podcast?
 } elseif ( $enmse_podcast->audio_video == "Video" ) { // Video Podcast?
 	if ( $enmse_sid > 0 ) { // Did they specify a series?
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_sid, $enmse_stid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_id = %d AND series_type_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_sid, $enmse_stid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		} else {
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_sid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_sid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		}
 	} elseif ( $enmse_tid > 0 ) { // Did they specify a topic?
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_tid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid, $enmse_tid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		} else {
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_tid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_topic_matches" . " USING (message_id) WHERE topic_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_tid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
 		}
 	} elseif ( $enmse_spid > 0 ) { // Did they specify a speaker?
 	 	if ( $enmse_stid > 0 ) { // Series type?
-	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 	 		$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_spid, $enmse_podcast->podcast_display );
 	 		$enmse_messages = $wpdb->get_results( $enmse_sql );
 	 		
-	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 	 		$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid, $enmse_spid );
 	 		$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 	 		$enmse_datecount = $wpdb->num_rows;
 	 	} else {
-	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d";  
+	 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d";  
 	 		$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_spid, $enmse_podcast->podcast_display );
 	 		$enmse_messages = $wpdb->get_results( $enmse_sql );
 	 		
-	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+	 		$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches" . " USING (message_id) WHERE speaker_id = %d AND video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 	 		$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_spid );
 	 		$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 	 		$enmse_datecount = $wpdb->num_rows;
 	 	}
 	 } else {
 		if ( $enmse_stid > 0 ) { // Series type?
-			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT %d"; 
+			$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT %d"; 
 			$enmse_sql = $wpdb->prepare( $enmse_preparredsql, $enmse_stid, $enmse_podcast->podcast_display );
 			$enmse_messages = $wpdb->get_results( $enmse_sql );
 			
-			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  video_url != '0' AND date <= CURDATE() GROUP BY title ORDER BY date DESC LIMIT 1"; 
+			$enmse_preparredsqltwo = "SELECT date FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE series_type_id = %d AND  video_url != '0' AND date <= CURDATE() GROUP BY message_id ORDER BY date DESC LIMIT 1"; 
 			$enmse_sqltwo = $wpdb->prepare( $enmse_preparredsqltwo, $enmse_stid );
 			$enmse_getdate = $wpdb->get_row( $enmse_sqltwo, OBJECT );
 			$enmse_datecount = $wpdb->num_rows;
@@ -218,7 +275,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
     <link><?php echo home_url(); ?></link>
     <description><?php echo htmlspecialchars(stripslashes($enmse_podcast->description)); ?></description>
     <copyright><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?> <?php echo date('Y'); ?></copyright>
-    <language>en-us</language>
+    <language><?php echo $enmse_podcastlanguage; ?></language>
     <?php if ( $enmse_podcast->redirect_podcast == 2 ) { ?><itunes:new-feed-url><?php echo $enmse_podcast->redirect_url; ?></itunes:new-feed-url><?php }; ?>
     <itunes:subtitle><?php echo htmlspecialchars(stripslashes($enmse_podcast->description)); ?></itunes:subtitle>
     <itunes:author><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:author>
@@ -251,11 +308,11 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 	<item>
         <title><?php echo htmlspecialchars(stripslashes($enmse_message->title)); ?><?php if ( $enmse_message->podcast_series == 1 || $enmse_message->podcast_series == NULL  ) { ?><?php $enmse_s_comma = 1; foreach ( $enmse_s as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_message->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo " - " . htmlspecialchars(stripslashes($s->s_title)); $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?><?php } ?></title>	      
 		<link><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></link>
-	    <description><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></description>
+	    <description><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
 	    <?php if ( $enmse_message->podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->podcast_image; ?>" /><?php } elseif ( $enmse_message->series_podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->series_podcast_image; ?>" /><?php } ?>
 	    <itunes:author><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:author>
-	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></itunes:subtitle>      
-		<itunes:summary><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></itunes:summary>
+	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
+		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>
 	    <?php if ($enmse_message->message_length != null) { ?><itunes:duration><?php echo $enmse_message->message_length; ?></itunes:duration><?php } ?>
 	    <pubDate><?php echo date(DATE_RFC2822, strtotime($enmse_message->date)); ?></pubDate>      
 		<guid><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></guid>
@@ -275,11 +332,11 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 	<item>
         <title><?php echo htmlspecialchars(stripslashes($enmse_message->title)); ?><?php if ( $enmse_message->podcast_series == 1 || $enmse_message->podcast_series == NULL  ) { ?><?php $enmse_s_comma = 1; foreach ( $enmse_s as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_message->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo " - " . htmlspecialchars(stripslashes($s->s_title)); $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?><?php } ?></title>	      
 		<link><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></link>
-	    <description><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></description>
+	    <description><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
 	    <?php if ( $enmse_message->podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->podcast_image; ?>" /><?php } elseif ( $enmse_message->series_podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->series_podcast_image; ?>" /><?php } ?>
 	    <itunes:author><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:author>		   
-	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></itunes:subtitle>      
-		<itunes:summary><?php if ($enmse_message->description == null) { ?>Message from <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes($enmse_message->description)); } ?></itunes:summary>		  
+	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
+		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>		  
 	    <?php if ($enmse_message->message_video_length != null) { ?><itunes:duration><?php echo $enmse_message->message_video_length; ?></itunes:duration><?php } ?>
 	    <pubDate><?php echo date(DATE_RFC2822, strtotime($enmse_message->date)); ?></pubDate>      	
 		<guid><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></guid>		 

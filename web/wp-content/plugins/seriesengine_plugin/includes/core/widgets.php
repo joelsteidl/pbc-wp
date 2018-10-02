@@ -55,6 +55,20 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmsemessagetp = "Messages";
 		}
 
+		if ( isset($se_options['language']) ) { // Find the Language
+			$enmse_language = $se_options['language'];
+		} else {
+			$enmse_language = 1;
+		}
+
+		if ( $enmse_language == 3 ) { // German
+			$enmse_from =  "von";
+		} elseif ( $enmse_language == 2 ) { // Spanish
+			$enmse_from =  "de";
+		} else { // English
+			$enmse_from =  "from";
+		}
+
         $widget_ops = array( 
 			'classname' => 'enmse_seriesengine_widget_class', 
 			'description' => 'Display a list of ' . $enmsemessagetp . ', ' . $enmseseriestp . ', ' . $enmsetopictp . ' or ' . $enmsespeakertp . ' from the Series Engine plugin.' 
@@ -233,9 +247,30 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 		} else {
 			$enmsemessagetp = "Messages";
 		}
+
+		if ( isset($se_options['language']) ) { // Find the Language
+			$enmse_language = $se_options['language'];
+		} else {
+			$enmse_language = 1;
+		}
+
+		if ( $enmse_language == 3 ) { // German
+			$enmse_from =  "von";
+		} elseif ( $enmse_language == 2 ) { // Spanish
+			$enmse_from =  "de";
+		} else { // English
+			$enmse_from =  "from";
+		}
 		
-		$enmse_get_url = parse_url( strtok( $instance['link_page'], '&' ) );
+		/*$enmse_get_url = parse_url( strtok( $instance['link_page'], '&' ) );
 		if ( $enmse_get_url['query'] == null ) {
+			$link_page = strtok( $instance['link_page'], '&' ) . "?enmse=1";
+		} else {
+			$link_page = strtok( $instance['link_page'], '&' );
+		}*/
+
+		$enmse_get_url = parse_url( strtok( $instance['link_page'], '&' ) );
+		if ( !isset($enmse_get_url['query']) ) {
 			$link_page = strtok( $instance['link_page'], '&' ) . "?enmse=1";
 		} else {
 			$link_page = strtok( $instance['link_page'], '&' );
@@ -324,14 +359,14 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 				
 				if ( $extra_details == 1 ) {
 					// Get All Speaker Message Matches for Number of Messages
-					$enmse_preparredmspmsql = "SELECT speaker_id, message_id FROM " . $wpdb->prefix . "se_message_speaker_matches LEFT JOIN " . $wpdb->prefix . "se_messages" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() AND series_id = IS NOT NULL AND message_id IS NOT NULL GROUP BY message_id"; 
+					$enmse_preparredmspmsql = "SELECT speaker_id, message_id FROM " . $wpdb->prefix . "se_message_speaker_matches LEFT JOIN " . $wpdb->prefix . "se_messages" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() AND series_id IS NOT NULL AND message_id IS NOT NULL GROUP BY message_id"; 
 					$enmse_mspm = $wpdb->get_results( $enmse_preparredmspmsql );
 				}
 			}
 		} else { // Most Recent Message (Beta)
 			if ( $series_type > 0 ) { 
-				$enmse_sempreparredsql = "SELECT message_id, title, date, description, series_id FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() AND series_type_id = %d AND message_id IS NOT NULL GROUP BY title ORDER BY date DESC LIMIT %d"; 	
-				$enmse_semsql = $wpdb->prepare( $enmse_sempreparredsql, $series_type, 1 );
+				$enmse_sempreparredsql = "SELECT message_id, title, date, description, series_id FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) LEFT JOIN " . $wpdb->prefix . "se_series_type_matches" . " USING (series_id) WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() AND series_type_id = %d AND message_id IS NOT NULL GROUP BY title ORDER BY date DESC LIMIT 1"; 	
+				$enmse_semsql = $wpdb->prepare( $enmse_sempreparredsql, $series_type );
 				$enmse_messages = $wpdb->get_row( $enmse_semsql, OBJECT );
 
 				if ( !empty($enmse_messages) ) {
@@ -345,9 +380,8 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 					$enmse_singleseries = $wpdb->get_row( $enmse_findtheseries, OBJECT );
 				}
 			} else { 
-				$enmse_sempreparredsql = "SELECT message_id, title, speaker, date, description, series_id FROM " . $wpdb->prefix . "se_messages" . " WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() ORDER BY date DESC LIMIT %d"; 	
-				$enmse_semsql = $wpdb->prepare( $enmse_sempreparredsql, $series_type, 1 );
-				$enmse_messages = $wpdb->get_row( $enmse_semsql, OBJECT );
+				$enmse_sempreparredsql = "SELECT message_id, title, speaker, date, description, series_id FROM " . $wpdb->prefix . "se_messages" . " WHERE (embed_code != '0' OR video_embed_url != '0' OR audio_url != '0' OR (alternate_toggle = 'Yes' AND ( alternate_embed != '0' OR additional_video_embed_url != '0' ))) AND date <= CURDATE() ORDER BY date DESC LIMIT 1"; 	
+				$enmse_messages = $wpdb->get_row( $enmse_sempreparredsql, OBJECT );
 
 				if ( !empty($enmse_messages) ) {
 					// Get the Speaker
@@ -413,7 +447,7 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 						} else {
 							$description = null;
 						}
-						echo '<li class="enmse-widgetmessage"><h5>' . date($enmse_dateformat, strtotime($enmse_m->date)) . '</h5><a href="' . $link_page . '&amp;enmse_mid=' . $enmse_m->message_id . '">' . stripslashes($enmse_m->title) . '</a><h4>from ' . stripslashes($enmse_m->speaker) . '</h4>' . $description . '</li>';
+						echo '<li class="enmse-widgetmessage"><h5>' . date($enmse_dateformat, strtotime($enmse_m->date)) . '</h5><a href="' . $link_page . '&amp;enmse_mid=' . $enmse_m->message_id . '">' . stripslashes($enmse_m->title) . '</a><h4>' . $enmse_from . ' ' . stripslashes($enmse_m->speaker) . '</h4>' . $description . '</li>';
 					};
 				} else {
 					foreach ($enmse_messages as $enmse_m) {

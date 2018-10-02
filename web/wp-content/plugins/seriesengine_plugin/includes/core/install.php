@@ -10,7 +10,7 @@
 	
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.6.1";
+	$enmse_db_version = "2.7";
 	if( !defined(get_option( 'enmse_db_version' )) ) {
 		add_option("enmse_db_version", $enmse_db_version);
 	} else {
@@ -586,6 +586,7 @@
 		'bibleoption' => '1',
 		'playerstyle' => '1',
 		'deftrans' => '59',
+		'usepermalinks' => '1',
 		'permalinkslug' => 'messages',
 		'permalink_ogtags' => '1',
 		'permalink_single_seriestype' => '0',
@@ -602,7 +603,37 @@
 		'permalink_show_post_type' => '0',
 		'default_permalink_prefix' => '1',
 		'default_permalink_speaker' => '1',
-		'default_podcast_series' => '1'
+		'default_podcast_series' => '1',
+		'language' => '1',
+		'lang_loading' => 'Loading Content...',
+		'lang_sharelinktitle' => 'Share a Link to this MESSAGE_LABEL',
+		'lang_sharelinkinstructions' => 'The link has been copied to your clipboard; paste it anywhere you would like to share it.',
+		'lang_sharelinkclosebutton' => 'Close',
+		'lang_archiveexplore' => 'Explore This SERIES_LABEL',
+		'lang_explorerbrowseseries' => 'Browse PLURAL_SERIES_LABEL',
+		'lang_explorerbrowsespeakers' => 'Browse PLURAL_SPEAKERS_LABEL',
+		'lang_explorerbrowsetopics' => 'Browse PLURAL_TOPICS_LABEL',
+		'lang_explorerbrowsebooks' => 'Browse PLURAL_BOOKS_LABEL',
+		'lang_explorerarchives' => 'View SERIES_LABEL Archives',
+		'lang_explorermessages' => 'View All PLURAL_MESSAGE_LABEL',
+		'lang_relatedtopics' => 'Related PLURAL_TOPICS_LABEL:',
+		'lang_moremessagesfrom' => 'More PLURAL_MESSAGES_LABEL from',
+		'lang_downloadaudio' => 'Download Audio',
+		'lang_fromseries' => 'From SERIES_LABEL:',
+		'lang_sharefb' => 'Facebook',
+		'lang_sharetw' => 'Tweet Link',
+		'lang_sharepop' => 'Share Link',
+		'lang_shareemail' => 'Send Email',
+		'lang_morefromtopics' => 'More PLURAL_MESSAGES_LABEL Associated With',
+		'lang_morefrombooks' => 'More From the BOOK_LABEL of',
+		'lang_morefromspeakers' => 'More PLURAL_MESSAGES_LABEL from',
+		'lang_morefromgeneric' => 'More PLURAL_MESSAGES_LABEL',
+		'lang_morefromseries' => 'More From',
+		'lang_pagemore' => 'More',
+		'lang_pageback' => 'Back',
+		'lang_podcastmessagefrom' => 'MESSAGE_LABEL from',
+		'lang_permaclicktoview' => 'Click to view more.',
+		'lang_permalinkblankexcerpt' => 'A MESSAGE_LABEL from the SERIES_LABEL'
 		);
 	add_option( 'enm_seriesengine_options', $enm_seriesengine_options ); 
 

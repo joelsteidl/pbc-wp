@@ -54,10 +54,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	
 	<blockquote>
 	<ul>
-		<li><strong><a href="#se-videoguides">NEW: Video Guides!</a></strong></li>
+		<li style="font-size: 1.2em; margin-bottom: 16px;"><strong><a href="#se-videoguides">NEW: Video Guides!</a></strong></li>
 		<li><a href="#se-gettingstarted">Getting Started</a></li>
 		<li>&nbsp;&nbsp;&nbsp;<a href="#se-embed">- Embedding Series Engine into a Page/Post</a></li>
 		<li>&nbsp;&nbsp;&nbsp;<a href="#se-settings">- Changing Series Engine Settings</a></li>
+		<li>&nbsp;&nbsp;&nbsp;<a href="#se-language">- Choose Your Language Settings</a></li>
 		<li>&nbsp;&nbsp;&nbsp;<a href="#se-styles">- Choosing Fonts and Colors</a></li>
 		<li><a href="#se-customizing">Customizing Series Engine Pages</a></li>
 		<li>&nbsp;&nbsp;&nbsp;<a href="#se-simpleembed">- Simple Embed Code</a></li>
@@ -77,7 +78,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<li><a href="#se-users">Managing Series Engine Users</a></li>
 		<li><a href="#se-updates">Updating the Series Engine Plugin</a></li>
 		<li><a href="#se-troubleshooting">FAQ/Troubleshooting</a></li>
-		<li><strong><a href="#se-twozero">Updating to Version 2.5</a></strong></li>
+		<li><strong><a href="#se-twozero">Updating to Version 2.7</a></strong></li>
 		<li><strong><a href="#se-otherplugins">Importing from Other Plugins</a></strong></li>
 		<li><a href="#se-usage">Acceptable Usage and Legal</a></li>
 	</ul>
@@ -106,7 +107,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<p>From this page, you'll be able to change the width of the images used throughout the plugin, customize labels, set the permalink slug you want to use for Messages, and more. You'll also want to choose the type of Series Archives to display. When you're done, simply choose "Save Changes" at the bottom of the page.</p>
 	<p><em>Please note: You can adjust Series Engine settings at any time, and all changes will be preserved when you update the plugin to the newest version. Uninstalling the plugin will permanently delete any changes that you've made.</em></p>
 
-	<h3 id="se-styles">3) Choose Fonts and Colors for Your Embed</h3>
+	<h3 id="se-language">3) Choose Your Language</h3>
+
+	<p>Series Engine offers official translations for English, German, and Spanish, with more translations on the way in the coming months. To change your language settings, visit <a href="<?php echo admin_url() . "options-general.php?page=enm_seriesengine"; ?>">Settings > Series Engine</a> and select the "Labels and Language" tab at the top of the page.</p>
+	<p>If your ministry uses a language that isn't officially supported yet, this screen also gives you complete control over every piece of text that your users will see. Modify the labels as you fit, and your changes will be immediately reflected on the site. If you want us to work on an official translation for you, submit a request using the form <a href="http://seriesengine.com/questions.php">at the top of the Questions page at seriesengine.com</a>.</p>
+	<p><em>Please note that official translations only effect the front-end Series Engine content (your embedded shortcodes, podcasts, Bible references, widgets, etc). New Bible references will reflect the change, but previous references will not. Language customizations only effect the modern layout released in v2.5. All admin functions will remain in English.</em></p>
+
+	<h3 id="se-styles">4) Choose Fonts and Colors for Your Embed</h3>
 
 	<p>Series Engine was built to fit right into your site; with a few quick tweaks to your font and color settings, you can style Series Engine to complement just about any theme.</p>
 	<p>Navigate to <a href="<?php echo admin_url() . "options-general.php?page=enm_seriesengine"; ?>">Settings > Series Engine</a>. Near the top of the page, choose the "Fonts and Colors" option.</p>
@@ -114,7 +121,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<p>To adjust the color of various Series Engine elements, simply click the input field of the item you want to change, and select a new color using the color picker.</p>
 	<p>When you've made all of the changes you want, click " Save Changes" at the bottom of the page. Your style changes will now be reflected on all Series Engine media browsers throughout your site.</p>
 	
-	<h3>4) Go Update Your Permalinks</h3>
+	<h3>5) Go Update Your Permalinks</h3>
 
 	<p>To make sure Series Engine's permalinks are working correctly, stop by Settings > Permalinks and just click save at the bottom of the page (no need to change any settings here unless you want to). Sometimes it can take WordPress a while to recognize a new permalink schema, and this will address that right away.</p>
 	
@@ -703,8 +710,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<h3>How can I back up my data?</h3>
 	<p>There's a lot of valuable content in your Series Engine archives, so it's probably a good idea to back up your data periodically. The easiest way to do this is to visit <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_export"; ?>">Series Engine > Import and Export</a>, and export your content, settings, and styles. It only takes a few seconds, and will give you some peace of mind in case disaster ever strikes.</p>
 
-	<h1 id="se-twozero">Housekeeping After Upgrading to Version 2.0-2.5</h1>
-	<p>If you're upgrading to v2.0-2.5 from a previous version of Series Engine, there's a little bit of data cleanup you'll want to do for the best results. Thankfully, this will only take you a few clicks.</p>
+	<h3>How can I change the plugin's wording/language?</h3>
+	<p>As of Version 2.7, Series Engine now officially supports English, Spanish, and German translations, and offers complete control over every front-end label and phrase. To change your language settings, visit <a href="<?php echo admin_url() . "options-general.php?page=enm_seriesengine"; ?>">Settings > Series Engine</a> and select the "Labels and Language" tab at the top of the page.</p>
+	<p>If your ministry uses a language that isn't officially supported yet (or you just want to alter some labels as you see fit), this screen gives you complete control over every label and piece of text that your users will see. Modify the labels as you fit, and your changes will be immediately reflected on the site. If you want us to work on an official translation for you, submit a request using the form <a href="http://seriesengine.com/questions.php">at the top of the Questions page at seriesengine.com</a>.</p>
+	<p><em>Please note that official translations only effect the front-end Series Engine content (your embedded shortcodes, podcasts, Bible references, widgets, etc). New Bible references will reflect the change, but previous references will not. Language customizations only effect the modern layout released in v2.5.  All admin functions will remain in English.</em></p>
+
+	<h1 id="se-twozero">Housekeeping After Upgrading to Version 2.0-2.7</h1>
+	<p>If you're upgrading to v2.0-2.7 from a previous version of Series Engine, there's a little bit of data cleanup you'll want to do for the best results. Thankfully, this will only take you a few clicks.</p>
 	<p>Simply visit the "Import and Export" page and follow the directions under "Update Series Engine Data" at the bottom of the page.</p>
 
 	<h1 id="se-otherplugins">Switching to Series Engine from Other Plugins</h1>

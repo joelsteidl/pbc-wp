@@ -15,7 +15,7 @@
 					<h4><?php echo stripslashes($enmse_s->s_title); ?></h4>
 					<h5><?php echo date($enmse_dateformat, strtotime($enmse_s->start_date)); ?></h5>
 					<p><?php $enmse_smm_count = 0; foreach ( $enmse_smm as $smm ) { ?><?php if ( $smm->series_id == $enmse_s->series_id ) { $enmse_smm_count = $enmse_smm_count+1; } ?><?php } ?><?php if ( $enmse_smm_count == 1 ) { echo "1 " . $enmsemessaget; } elseif ( $enmse_smm_count > 1 ) { echo $enmse_smm_count . " " . $enmsemessagetp; } ?></p>
-					<p class="enmse-archive-link"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-imgarchivetext-ajax">Explore This <?php echo $enmseseriest; ?></a></p>
+					<p class="enmse-archive-link"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-imgarchivetext-ajax"><?php echo $enmse_archiveexplore; ?></a></p>
 				</div>
 			<?php }; ?>
 				<div style="clear: both"></div>
@@ -34,7 +34,7 @@
 					<td class="enmse-archive-title-cell"><?php echo stripslashes($enmse_s->s_title); ?></td>
 					<td class="enmse-archive-date-cell"><?php echo date($enmse_dateformat, strtotime($enmse_s->start_date)); ?></td>
 					<td class="enmse-archive-count-cell"><?php $enmse_smm_count = 0; foreach ( $enmse_smm as $smm ) { ?><?php if ( $smm->series_id == $enmse_s->series_id ) { $enmse_smm_count = $enmse_smm_count+1; } ?><?php } ?><?php if ( $enmse_smm_count == 1 ) { echo "1 " . $enmsemessaget; } elseif ( $enmse_smm_count > 1 ) { echo $enmse_smm_count . " " . $enmsemessagetp; } ?></td>
-					<td class="enmse-explore-cell"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-archive-ajax">Explore This <?php echo $enmseseriest; ?></a></td>
+					<td class="enmse-explore-cell"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-archive-ajax"><?php echo $enmse_archiveexplore . $enmseseriest; ?></a></td>
 				</tr>
 			<?php }; ?>
 			</table>

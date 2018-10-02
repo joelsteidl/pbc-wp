@@ -186,6 +186,12 @@ if ( isset($enmse_options['customfont']) ) {
 	$enmse_customfont = '';
 }
 
+if ( isset($enmse_options['language']) ) { // Find the Language
+	$enmse_language = $enmse_options['language'];
+} else {
+	$enmse_language = 1;
+}
+
 ?>
 /* ----- Series Engine ----- */
 
@@ -1657,6 +1663,7 @@ if ( isset($enmse_options['customfont']) ) {
 	display: none;
 }
 
+<?php if ( $enmse_language == 1 ) { ?>
 #seriesengine .se-pagination.ge-small a.next.page-numbers, #seriesengine .se-pagination.ge-small a.previous.page-numbers {
 	display: inline-block;
 	width: 70px;
@@ -1669,9 +1676,11 @@ if ( isset($enmse_options['customfont']) ) {
 	text-transform: uppercase;
 }
 
+
 #seriesengine .se-pagination.ge-small a.page-numbers span {
 	display: inline;
 }
+<?php } ?>
 
 /* ----- AJAX Loading Indicator ----- */
 
@@ -2820,6 +2829,7 @@ if ( isset($enmse_options['customfont']) ) {
 		display: none;
 	}
 
+	<?php if ( $enmse_language == 1 ) { ?>
 	#seriesengine a.next.page-numbers, #seriesengine a.previous.page-numbers {
 		display: inline-block;
 		width: 70px;
@@ -2835,6 +2845,7 @@ if ( isset($enmse_options['customfont']) ) {
 	#seriesengine a.page-numbers span {
 		display: inline;
 	}
+	<?php } ?>
 
 	#seriesengine .enmse-audio a#enmse-download {
 		display: none;

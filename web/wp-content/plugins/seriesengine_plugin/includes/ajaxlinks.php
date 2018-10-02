@@ -15,6 +15,12 @@
 	$enmse_poweredby = $enmse_options['poweredby'];
 	$enmse_dateformat = get_option( 'date_format' ); 
 
+	if ( isset($enmse_options['usepermalinks']) ) { 
+		$enmse_usepermalinks = $enmse_options['usepermalinks'];
+	} else {
+		$enmse_usepermalinks = 1;
+	}
+
 	if ( isset($enmse_options['archiveliststyle']) ) { 
 		$enmse_archivetype = $enmse_options['archiveliststyle'];
 	} else {
@@ -32,6 +38,10 @@
 	} else {
 		$enmse_force = 1;
 	}
+
+	// ***** Get Language
+
+	include('lang/language_settings.php');
 
 
 	// ***** Get Labels
@@ -108,6 +118,20 @@
 		$enmseplayerstyle = 1;
 	}
 
+	if ( isset($enmse_options['language']) ) { // Find the Language
+		$enmse_language = $enmse_options['language'];
+	} else {
+		$enmse_language = 1;
+	}
+
+	if ( $enmse_language == 3 ) { // German
+		include('lang/ger_bible_books.php');
+	} elseif ( $enmse_language == 2 ) { // Spanish
+		include('lang/spa_bible_books.php');
+	} else { // English
+		include('lang/eng_bible_books.php');
+	}
+
 	// ***** DEFINE EMBED OPTIONS
 	$enmse_lo = strip_tags($_GET['enmse_lo']);
 	$enmse_a = strip_tags($_GET['enmse_a']);
@@ -152,6 +176,24 @@
 		$enmse_reftext = $enmse_options['scripturelabel'];
 	} else {
 		$enmse_reftext = "Scripture References";
+	}
+
+	if ( isset($_GET['enmse_hs']) )  { // Hide Series Details
+		$enmse_hs = strip_tags($_GET['enmse_hs']);
+	} else {
+		$enmse_hs = 0;
+	}
+
+	if ( isset($_GET['enmse_hsh']) )  { // Hide Sharing Options
+		$enmse_hsh = strip_tags($_GET['enmse_hsh']);
+	} else {
+		$enmse_hsh = 0;
+	}
+
+	if ( isset($_GET['enmse_had']) )  { // Hide Audio Downloads
+		$enmse_had = strip_tags($_GET['enmse_had']);
+	} else {
+		$enmse_had = 0;
 	}
 
 	// ***** DISPLAY SERIES ARCHIVES
@@ -352,9 +394,9 @@
 			<?php } ?>
 		<?php } ?>
 		<?php if ( $enmse_poweredby != "text" ) { ?>
-		<h3 class="enmse-poweredby"><a href="http://seriesengine.com" target="_blank">Powered by Series Engine</a></h3>	
+		<h3 class="enmse-poweredby"><a href="http://seriesengine.com" target="_blank"><?php echo $enmse_poweredby; ?></a></h3>	
 		<?php } else { ?>
-		<p class="enmse-poweredbytext">Powered by <a href="http://seriesengine.com" target="_blank">Series Engine</a></p>
+		<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 		<?php } ?>
 		<div style="clear: right"></div>
 	<?php // Deny access to sneaky people!

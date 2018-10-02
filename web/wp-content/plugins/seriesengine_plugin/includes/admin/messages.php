@@ -120,6 +120,31 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		} else {
 			$default_podcast_series = 1;
 		}
+
+		if ( isset($enmse_options['language']) ) { // Find the Language
+			$enmse_language = $enmse_options['language'];
+		} else {
+			$enmse_language = 1;
+		}
+
+		if ( $enmse_language == 3 ) { 
+			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
+		} elseif ( $enmse_language == 2 ) { 
+			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');
+		} else {
+			include(dirname(__FILE__) . '/../lang/eng_bible_books.php');
+		}
+
+		// Message from
+		if ( isset($enmse_options['lang_permalinkblankexcerpt']) ) { 
+			$lang_permalinkblankexcerpt = $enmse_options['lang_permalinkblankexcerpt'];
+			$lang1_permalinkblankexcerpt =  str_replace("MESSAGE_LABEL", strtolower($enmsemessaget), $lang_permalinkblankexcerpt);
+			$enmse_permalinkblankexcerpt =  str_replace("SERIES_LABEL", strtolower($enmseseriest), $lang1_permalinkblankexcerpt);
+		} else {
+			$lang_permalinkblankexcerpt = "A MESSAGE_LABEL from the SERIES_LABEL";
+			$lang1_permalinkblankexcerpt =  str_replace("MESSAGE_LABEL", strtolower($enmsemessaget), $lang_permalinkblankexcerpt);
+			$enmse_permalinkblankexcerpt =  str_replace("SERIES_LABEL", strtolower($enmseseriest), $lang1_permalinkblankexcerpt);
+		}
 		
 		$enmse_errors = array(); //Set up errors array
 		$enmse_messages = array(); //Set up messages array
@@ -523,7 +548,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							
 
 							if ( $enmse_noseries == 1 ) {
-								$finalexcerpt = "A " . strtolower($enmsemessaget) . " from the " . strtolower($enmseseriest) . " \"" . $enmse_primary->s_title . ".\" " . $enmse_cpt_description;
+								$finalexcerpt = $enmse_permalinkblankexcerpt . " \"" . $enmse_primary->s_title . ".\" " . $enmse_cpt_description;
 							} else {
 								$finalexcerpt = $enmse_cpt_description;
 							}
@@ -570,7 +595,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							$convertdate = date('Y-m-d', strtotime($enmse_date)) . ' 13:46:46';
 
 							if ( $enmse_noseries == 1 ) {
-								$finalexcerpt = "A " . strtolower($enmsemessaget) . " from the " . strtolower($enmseseriest) . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
+								$finalexcerpt = $enmse_permalinkblankexcerpt . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
 							} else {
 								$finalexcerpt = $enmse_cpt_description;
 							}
@@ -1123,7 +1148,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						$convertdate = date('Y-m-d', strtotime($enmse_date)) . ' 13:46:46';
 
 						if ( $enmse_noseries == 1 ) {
-							$finalexcerpt = "A " . strtolower($enmsemessaget) . " from the " . strtolower($enmseseriest) . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
+							$finalexcerpt = $enmse_permalinkblankexcerpt . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
 						} else {
 							$finalexcerpt = $enmse_cpt_description;
 						}
@@ -1584,72 +1609,72 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<th scope="row">Start Verse:</th>
 							<td>
 								<select name="scripture_start_book" id="scripture_start_book" tabindex="15">
-									<option value="1">Genesis</option>
-									<option value="2">Exodus</option>
-									<option value="3">Leviticus</option>
-									<option value="4">Numbers</option>
-									<option value="5">Deuteronomy</option>
-									<option value="6">Joshua</option>
-									<option value="7">Judges</option>
-									<option value="8">Ruth</option>
-									<option value="9">1 Samuel</option>
-									<option value="10">2 Samuel</option>
-									<option value="11">1 Kings</option>
-									<option value="12">2 Kings</option>
-									<option value="13">1 Chronicles</option>
-									<option value="14">2 Chronicles</option>
-									<option value="15">Ezra</option>
-									<option value="16">Nehemiah</option>
-									<option value="17">Esther</option>
-									<option value="18">Job</option>
-									<option value="19">Psalms</option>
-									<option value="20">Proverbs</option>
-									<option value="21">Ecclesiastes</option>
-									<option value="22">Song of Solomon</option>
-									<option value="23">Isaiah</option>
-									<option value="24">Jeremiah</option>
-									<option value="25">Lamentations</option>
-									<option value="26">Ezekiel</option>
-									<option value="27">Daniel</option>
-									<option value="28">Hosea</option>
-									<option value="29">Joel</option>
-									<option value="30">Amos</option>
-									<option value="31">Obadiah</option>
-									<option value="32">Jonah</option>
-									<option value="33">Micah</option>
-									<option value="34">Nahum</option>
-									<option value="35">Habakkuk</option>
-									<option value="36">Zephaniah</option>
-									<option value="37">Haggai</option>
-									<option value="38">Zechariah</option>
-									<option value="39">Malachi</option>
-									<option value="40">Matthew</option>
-									<option value="41">Mark</option>
-									<option value="42">Luke</option>
-									<option value="43">John</option>
-									<option value="44">Acts</option>
-									<option value="45">Romans</option>
-									<option value="46">1 Corinthians</option>
-									<option value="47">2 Corinthians</option>
-									<option value="48">Galatians</option>
-									<option value="49">Ephesians</option>
-									<option value="50">Philippians</option>
-									<option value="51">Colossians</option>
-									<option value="52">1 Thessalonians</option>
-									<option value="53">2 Thessalonians</option>
-									<option value="54">1 Timothy</option>
-									<option value="55">2 Timothy</option>
-									<option value="56">Titus</option>
-									<option value="57">Philemon</option>
-									<option value="58">Hebrews</option>
-									<option value="59">James</option>
-									<option value="60">1 Peter</option>
-									<option value="61">2 Peter</option>
-									<option value="62">1 John</option>
-									<option value="63">2 John</option>
-									<option value="64">3 John</option>
-									<option value="65">Jude</option>
-									<option value="66">Revelation</option>
+									<option value="1"><?php echo $enmse_booknames[1]; ?></option>
+									<option value="2"><?php echo $enmse_booknames[2]; ?></option>
+									<option value="3"><?php echo $enmse_booknames[3]; ?></option>
+									<option value="4"><?php echo $enmse_booknames[4]; ?></option>
+									<option value="5"><?php echo $enmse_booknames[5]; ?></option>
+									<option value="6"><?php echo $enmse_booknames[6]; ?></option>
+									<option value="7"><?php echo $enmse_booknames[7]; ?></option>
+									<option value="8"><?php echo $enmse_booknames[8]; ?></option>
+									<option value="9"><?php echo $enmse_booknames[9]; ?></option>
+									<option value="10"><?php echo $enmse_booknames[10]; ?></option>
+									<option value="11"><?php echo $enmse_booknames[11]; ?></option>
+									<option value="12"><?php echo $enmse_booknames[12]; ?></option>
+									<option value="13"><?php echo $enmse_booknames[13]; ?></option>
+									<option value="14"><?php echo $enmse_booknames[14]; ?></option>
+									<option value="15"><?php echo $enmse_booknames[15]; ?></option>
+									<option value="16"><?php echo $enmse_booknames[16]; ?></option>
+									<option value="17"><?php echo $enmse_booknames[17]; ?></option>
+									<option value="18"><?php echo $enmse_booknames[18]; ?></option>
+									<option value="19"><?php echo $enmse_booknames[19]; ?></option>
+									<option value="20"><?php echo $enmse_booknames[20]; ?></option>
+									<option value="21"><?php echo $enmse_booknames[21]; ?></option>
+									<option value="22"><?php echo $enmse_booknames[22]; ?></option>
+									<option value="23"><?php echo $enmse_booknames[23]; ?></option>
+									<option value="24"><?php echo $enmse_booknames[24]; ?></option>
+									<option value="25"><?php echo $enmse_booknames[25]; ?></option>
+									<option value="26"><?php echo $enmse_booknames[26]; ?></option>
+									<option value="27"><?php echo $enmse_booknames[27]; ?></option>
+									<option value="28"><?php echo $enmse_booknames[28]; ?></option>
+									<option value="29"><?php echo $enmse_booknames[29]; ?></option>
+									<option value="30"><?php echo $enmse_booknames[30]; ?></option>
+									<option value="31"><?php echo $enmse_booknames[31]; ?></option>
+									<option value="32"><?php echo $enmse_booknames[32]; ?></option>
+									<option value="33"><?php echo $enmse_booknames[33]; ?></option>
+									<option value="34"><?php echo $enmse_booknames[34]; ?></option>
+									<option value="35"><?php echo $enmse_booknames[35]; ?></option>
+									<option value="36"><?php echo $enmse_booknames[36]; ?></option>
+									<option value="37"><?php echo $enmse_booknames[37]; ?></option>
+									<option value="38"><?php echo $enmse_booknames[38]; ?></option>
+									<option value="39"><?php echo $enmse_booknames[39]; ?></option>
+									<option value="40"><?php echo $enmse_booknames[40]; ?></option>
+									<option value="41"><?php echo $enmse_booknames[41]; ?></option>
+									<option value="42"><?php echo $enmse_booknames[42]; ?></option>
+									<option value="43"><?php echo $enmse_booknames[43]; ?></option>
+									<option value="44"><?php echo $enmse_booknames[44]; ?></option>
+									<option value="45"><?php echo $enmse_booknames[45]; ?></option>
+									<option value="46"><?php echo $enmse_booknames[46]; ?></option>
+									<option value="47"><?php echo $enmse_booknames[47]; ?></option>
+									<option value="48"><?php echo $enmse_booknames[48]; ?></option>
+									<option value="49"><?php echo $enmse_booknames[49]; ?></option>
+									<option value="50"><?php echo $enmse_booknames[50]; ?></option>
+									<option value="51"><?php echo $enmse_booknames[51]; ?></option>
+									<option value="52"><?php echo $enmse_booknames[52]; ?></option>
+									<option value="53"><?php echo $enmse_booknames[53]; ?></option>
+									<option value="54"><?php echo $enmse_booknames[54]; ?></option>
+									<option value="55"><?php echo $enmse_booknames[55]; ?></option>
+									<option value="56"><?php echo $enmse_booknames[56]; ?></option>
+									<option value="57"><?php echo $enmse_booknames[57]; ?></option>
+									<option value="58"><?php echo $enmse_booknames[58]; ?></option>
+									<option value="59"><?php echo $enmse_booknames[59]; ?></option>
+									<option value="60"><?php echo $enmse_booknames[60]; ?></option>
+									<option value="61"><?php echo $enmse_booknames[61]; ?></option>
+									<option value="62"><?php echo $enmse_booknames[62]; ?></option>
+									<option value="63"><?php echo $enmse_booknames[63]; ?></option>
+									<option value="64"><?php echo $enmse_booknames[64]; ?></option>
+									<option value="65"><?php echo $enmse_booknames[65]; ?></option>
+									<option value="66"><?php echo $enmse_booknames[66]; ?></option>
 								</select>
 								<input id='scripture_start_chapter' name='scripture_start_chapter' type='text' value='Chapter' tabindex="16" size="10" /> :
 								<input id='scripture_start_verse' name='scripture_start_verse' type='text' value='Verse' tabindex="17" size="10" />
@@ -1659,72 +1684,72 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<th scope="row">End Verse:</th>
 							<td>
 								<select name="scripture_end_book" id="scripture_end_book" class="enmse-disabled" disabled>
-									<option value="1">Genesis</option>
-									<option value="2">Exodus</option>
-									<option value="3">Leviticus</option>
-									<option value="4">Numbers</option>
-									<option value="5">Deuteronomy</option>
-									<option value="6">Joshua</option>
-									<option value="7">Judges</option>
-									<option value="8">Ruth</option>
-									<option value="9">1 Samuel</option>
-									<option value="10">2 Samuel</option>
-									<option value="11">1 Kings</option>
-									<option value="12">2 Kings</option>
-									<option value="13">1 Chronicles</option>
-									<option value="14">2 Chronicles</option>
-									<option value="15">Ezra</option>
-									<option value="16">Nehemiah</option>
-									<option value="17">Esther</option>
-									<option value="18">Job</option>
-									<option value="19">Psalms</option>
-									<option value="20">Proverbs</option>
-									<option value="21">Ecclesiastes</option>
-									<option value="22">Song of Solomon</option>
-									<option value="23">Isaiah</option>
-									<option value="24">Jeremiah</option>
-									<option value="25">Lamentations</option>
-									<option value="26">Ezekiel</option>
-									<option value="27">Daniel</option>
-									<option value="28">Hosea</option>
-									<option value="29">Joel</option>
-									<option value="30">Amos</option>
-									<option value="31">Obadiah</option>
-									<option value="32">Jonah</option>
-									<option value="33">Micah</option>
-									<option value="34">Nahum</option>
-									<option value="35">Habakkuk</option>
-									<option value="36">Zephaniah</option>
-									<option value="37">Haggai</option>
-									<option value="38">Zechariah</option>
-									<option value="39">Malachi</option>
-									<option value="40">Matthew</option>
-									<option value="41">Mark</option>
-									<option value="42">Luke</option>
-									<option value="43">John</option>
-									<option value="44">Acts</option>
-									<option value="45">Romans</option>
-									<option value="46">1 Corinthians</option>
-									<option value="47">2 Corinthians</option>
-									<option value="48">Galatians</option>
-									<option value="49">Ephesians</option>
-									<option value="50">Philippians</option>
-									<option value="51">Colossians</option>
-									<option value="52">1 Thessalonians</option>
-									<option value="53">2 Thessalonians</option>
-									<option value="54">1 Timothy</option>
-									<option value="55">2 Timothy</option>
-									<option value="56">Titus</option>
-									<option value="57">Philemon</option>
-									<option value="58">Hebrews</option>
-									<option value="59">James</option>
-									<option value="60">1 Peter</option>
-									<option value="61">2 Peter</option>
-									<option value="62">1 John</option>
-									<option value="63">2 John</option>
-									<option value="64">3 John</option>
-									<option value="65">Jude</option>
-									<option value="66">Revelation</option>
+									<option value="1"><?php echo $enmse_booknames[1]; ?></option>
+									<option value="2"><?php echo $enmse_booknames[2]; ?></option>
+									<option value="3"><?php echo $enmse_booknames[3]; ?></option>
+									<option value="4"><?php echo $enmse_booknames[4]; ?></option>
+									<option value="5"><?php echo $enmse_booknames[5]; ?></option>
+									<option value="6"><?php echo $enmse_booknames[6]; ?></option>
+									<option value="7"><?php echo $enmse_booknames[7]; ?></option>
+									<option value="8"><?php echo $enmse_booknames[8]; ?></option>
+									<option value="9"><?php echo $enmse_booknames[9]; ?></option>
+									<option value="10"><?php echo $enmse_booknames[10]; ?></option>
+									<option value="11"><?php echo $enmse_booknames[11]; ?></option>
+									<option value="12"><?php echo $enmse_booknames[12]; ?></option>
+									<option value="13"><?php echo $enmse_booknames[13]; ?></option>
+									<option value="14"><?php echo $enmse_booknames[14]; ?></option>
+									<option value="15"><?php echo $enmse_booknames[15]; ?></option>
+									<option value="16"><?php echo $enmse_booknames[16]; ?></option>
+									<option value="17"><?php echo $enmse_booknames[17]; ?></option>
+									<option value="18"><?php echo $enmse_booknames[18]; ?></option>
+									<option value="19"><?php echo $enmse_booknames[19]; ?></option>
+									<option value="20"><?php echo $enmse_booknames[20]; ?></option>
+									<option value="21"><?php echo $enmse_booknames[21]; ?></option>
+									<option value="22"><?php echo $enmse_booknames[22]; ?></option>
+									<option value="23"><?php echo $enmse_booknames[23]; ?></option>
+									<option value="24"><?php echo $enmse_booknames[24]; ?></option>
+									<option value="25"><?php echo $enmse_booknames[25]; ?></option>
+									<option value="26"><?php echo $enmse_booknames[26]; ?></option>
+									<option value="27"><?php echo $enmse_booknames[27]; ?></option>
+									<option value="28"><?php echo $enmse_booknames[28]; ?></option>
+									<option value="29"><?php echo $enmse_booknames[29]; ?></option>
+									<option value="30"><?php echo $enmse_booknames[30]; ?></option>
+									<option value="31"><?php echo $enmse_booknames[31]; ?></option>
+									<option value="32"><?php echo $enmse_booknames[32]; ?></option>
+									<option value="33"><?php echo $enmse_booknames[33]; ?></option>
+									<option value="34"><?php echo $enmse_booknames[34]; ?></option>
+									<option value="35"><?php echo $enmse_booknames[35]; ?></option>
+									<option value="36"><?php echo $enmse_booknames[36]; ?></option>
+									<option value="37"><?php echo $enmse_booknames[37]; ?></option>
+									<option value="38"><?php echo $enmse_booknames[38]; ?></option>
+									<option value="39"><?php echo $enmse_booknames[39]; ?></option>
+									<option value="40"><?php echo $enmse_booknames[40]; ?></option>
+									<option value="41"><?php echo $enmse_booknames[41]; ?></option>
+									<option value="42"><?php echo $enmse_booknames[42]; ?></option>
+									<option value="43"><?php echo $enmse_booknames[43]; ?></option>
+									<option value="44"><?php echo $enmse_booknames[44]; ?></option>
+									<option value="45"><?php echo $enmse_booknames[45]; ?></option>
+									<option value="46"><?php echo $enmse_booknames[46]; ?></option>
+									<option value="47"><?php echo $enmse_booknames[47]; ?></option>
+									<option value="48"><?php echo $enmse_booknames[48]; ?></option>
+									<option value="49"><?php echo $enmse_booknames[49]; ?></option>
+									<option value="50"><?php echo $enmse_booknames[50]; ?></option>
+									<option value="51"><?php echo $enmse_booknames[51]; ?></option>
+									<option value="52"><?php echo $enmse_booknames[52]; ?></option>
+									<option value="53"><?php echo $enmse_booknames[53]; ?></option>
+									<option value="54"><?php echo $enmse_booknames[54]; ?></option>
+									<option value="55"><?php echo $enmse_booknames[55]; ?></option>
+									<option value="56"><?php echo $enmse_booknames[56]; ?></option>
+									<option value="57"><?php echo $enmse_booknames[57]; ?></option>
+									<option value="58"><?php echo $enmse_booknames[58]; ?></option>
+									<option value="59"><?php echo $enmse_booknames[59]; ?></option>
+									<option value="60"><?php echo $enmse_booknames[60]; ?></option>
+									<option value="61"><?php echo $enmse_booknames[61]; ?></option>
+									<option value="62"><?php echo $enmse_booknames[62]; ?></option>
+									<option value="63"><?php echo $enmse_booknames[63]; ?></option>
+									<option value="64"><?php echo $enmse_booknames[64]; ?></option>
+									<option value="65"><?php echo $enmse_booknames[65]; ?></option>
+									<option value="66"><?php echo $enmse_booknames[66]; ?></option>
 								</select>
 								<input id='scripture_end_chapter' name='scripture_end_chapter' type='text' value='Chapter' size="10" class="enmse-disabled" disabled /> :
 								<input id='scripture_end_verse' name='scripture_end_verse' type='text' value='Verse' tabindex="18" size="10" />
@@ -1734,6 +1759,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<th scope="row">Translation:</th>
 							<td>
 								<select name="scripture_trans" id="scripture_trans" tabindex="19">
+									<option value="<?php echo $deftrans; ?>">------ ENGLISH ------</option>
 									<option value="1588"<?php if ( $deftrans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 									<option value="12"<?php if ( $deftrans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 									<option value="1713"<?php if ( $deftrans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
@@ -1747,7 +1773,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 									<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 									<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
-									<option value="<?php echo $deftrans; ?>">-------------</option>
+									<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
+									<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+									<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+									<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+									<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
+									<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
+									<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
+									<option value="<?php echo $deftrans; ?>">------ OTHER ------</option>
 									<option value="6"<?php if ( $deftrans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 								</select>
 							</td>
@@ -2223,72 +2256,72 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						<th scope="row">Start Verse:</th>
 						<td>
 							<select name="scripture_start_book" id="scripture_start_book" tabindex="15">
-								<option value="1">Genesis</option>
-								<option value="2">Exodus</option>
-								<option value="3">Leviticus</option>
-								<option value="4">Numbers</option>
-								<option value="5">Deuteronomy</option>
-								<option value="6">Joshua</option>
-								<option value="7">Judges</option>
-								<option value="8">Ruth</option>
-								<option value="9">1 Samuel</option>
-								<option value="10">2 Samuel</option>
-								<option value="11">1 Kings</option>
-								<option value="12">2 Kings</option>
-								<option value="13">1 Chronicles</option>
-								<option value="14">2 Chronicles</option>
-								<option value="15">Ezra</option>
-								<option value="16">Nehemiah</option>
-								<option value="17">Esther</option>
-								<option value="18">Job</option>
-								<option value="19">Psalms</option>
-								<option value="20">Proverbs</option>
-								<option value="21">Ecclesiastes</option>
-								<option value="22">Song of Solomon</option>
-								<option value="23">Isaiah</option>
-								<option value="24">Jeremiah</option>
-								<option value="25">Lamentations</option>
-								<option value="26">Ezekiel</option>
-								<option value="27">Daniel</option>
-								<option value="28">Hosea</option>
-								<option value="29">Joel</option>
-								<option value="30">Amos</option>
-								<option value="31">Obadiah</option>
-								<option value="32">Jonah</option>
-								<option value="33">Micah</option>
-								<option value="34">Nahum</option>
-								<option value="35">Habakkuk</option>
-								<option value="36">Zephaniah</option>
-								<option value="37">Haggai</option>
-								<option value="38">Zechariah</option>
-								<option value="39">Malachi</option>
-								<option value="40">Matthew</option>
-								<option value="41">Mark</option>
-								<option value="42">Luke</option>
-								<option value="43">John</option>
-								<option value="44">Acts</option>
-								<option value="45">Romans</option>
-								<option value="46">1 Corinthians</option>
-								<option value="47">2 Corinthians</option>
-								<option value="48">Galatians</option>
-								<option value="49">Ephesians</option>
-								<option value="50">Philippians</option>
-								<option value="51">Colossians</option>
-								<option value="52">1 Thessalonians</option>
-								<option value="53">2 Thessalonians</option>
-								<option value="54">1 Timothy</option>
-								<option value="55">2 Timothy</option>
-								<option value="56">Titus</option>
-								<option value="57">Philemon</option>
-								<option value="58">Hebrews</option>
-								<option value="59">James</option>
-								<option value="60">1 Peter</option>
-								<option value="61">2 Peter</option>
-								<option value="62">1 John</option>
-								<option value="63">2 John</option>
-								<option value="64">3 John</option>
-								<option value="65">Jude</option>
-								<option value="66">Revelation</option>
+									<option value="1"><?php echo $enmse_booknames[1]; ?></option>
+									<option value="2"><?php echo $enmse_booknames[2]; ?></option>
+									<option value="3"><?php echo $enmse_booknames[3]; ?></option>
+									<option value="4"><?php echo $enmse_booknames[4]; ?></option>
+									<option value="5"><?php echo $enmse_booknames[5]; ?></option>
+									<option value="6"><?php echo $enmse_booknames[6]; ?></option>
+									<option value="7"><?php echo $enmse_booknames[7]; ?></option>
+									<option value="8"><?php echo $enmse_booknames[8]; ?></option>
+									<option value="9"><?php echo $enmse_booknames[9]; ?></option>
+									<option value="10"><?php echo $enmse_booknames[10]; ?></option>
+									<option value="11"><?php echo $enmse_booknames[11]; ?></option>
+									<option value="12"><?php echo $enmse_booknames[12]; ?></option>
+									<option value="13"><?php echo $enmse_booknames[13]; ?></option>
+									<option value="14"><?php echo $enmse_booknames[14]; ?></option>
+									<option value="15"><?php echo $enmse_booknames[15]; ?></option>
+									<option value="16"><?php echo $enmse_booknames[16]; ?></option>
+									<option value="17"><?php echo $enmse_booknames[17]; ?></option>
+									<option value="18"><?php echo $enmse_booknames[18]; ?></option>
+									<option value="19"><?php echo $enmse_booknames[19]; ?></option>
+									<option value="20"><?php echo $enmse_booknames[20]; ?></option>
+									<option value="21"><?php echo $enmse_booknames[21]; ?></option>
+									<option value="22"><?php echo $enmse_booknames[22]; ?></option>
+									<option value="23"><?php echo $enmse_booknames[23]; ?></option>
+									<option value="24"><?php echo $enmse_booknames[24]; ?></option>
+									<option value="25"><?php echo $enmse_booknames[25]; ?></option>
+									<option value="26"><?php echo $enmse_booknames[26]; ?></option>
+									<option value="27"><?php echo $enmse_booknames[27]; ?></option>
+									<option value="28"><?php echo $enmse_booknames[28]; ?></option>
+									<option value="29"><?php echo $enmse_booknames[29]; ?></option>
+									<option value="30"><?php echo $enmse_booknames[30]; ?></option>
+									<option value="31"><?php echo $enmse_booknames[31]; ?></option>
+									<option value="32"><?php echo $enmse_booknames[32]; ?></option>
+									<option value="33"><?php echo $enmse_booknames[33]; ?></option>
+									<option value="34"><?php echo $enmse_booknames[34]; ?></option>
+									<option value="35"><?php echo $enmse_booknames[35]; ?></option>
+									<option value="36"><?php echo $enmse_booknames[36]; ?></option>
+									<option value="37"><?php echo $enmse_booknames[37]; ?></option>
+									<option value="38"><?php echo $enmse_booknames[38]; ?></option>
+									<option value="39"><?php echo $enmse_booknames[39]; ?></option>
+									<option value="40"><?php echo $enmse_booknames[40]; ?></option>
+									<option value="41"><?php echo $enmse_booknames[41]; ?></option>
+									<option value="42"><?php echo $enmse_booknames[42]; ?></option>
+									<option value="43"><?php echo $enmse_booknames[43]; ?></option>
+									<option value="44"><?php echo $enmse_booknames[44]; ?></option>
+									<option value="45"><?php echo $enmse_booknames[45]; ?></option>
+									<option value="46"><?php echo $enmse_booknames[46]; ?></option>
+									<option value="47"><?php echo $enmse_booknames[47]; ?></option>
+									<option value="48"><?php echo $enmse_booknames[48]; ?></option>
+									<option value="49"><?php echo $enmse_booknames[49]; ?></option>
+									<option value="50"><?php echo $enmse_booknames[50]; ?></option>
+									<option value="51"><?php echo $enmse_booknames[51]; ?></option>
+									<option value="52"><?php echo $enmse_booknames[52]; ?></option>
+									<option value="53"><?php echo $enmse_booknames[53]; ?></option>
+									<option value="54"><?php echo $enmse_booknames[54]; ?></option>
+									<option value="55"><?php echo $enmse_booknames[55]; ?></option>
+									<option value="56"><?php echo $enmse_booknames[56]; ?></option>
+									<option value="57"><?php echo $enmse_booknames[57]; ?></option>
+									<option value="58"><?php echo $enmse_booknames[58]; ?></option>
+									<option value="59"><?php echo $enmse_booknames[59]; ?></option>
+									<option value="60"><?php echo $enmse_booknames[60]; ?></option>
+									<option value="61"><?php echo $enmse_booknames[61]; ?></option>
+									<option value="62"><?php echo $enmse_booknames[62]; ?></option>
+									<option value="63"><?php echo $enmse_booknames[63]; ?></option>
+									<option value="64"><?php echo $enmse_booknames[64]; ?></option>
+									<option value="65"><?php echo $enmse_booknames[65]; ?></option>
+									<option value="66"><?php echo $enmse_booknames[66]; ?></option>
 							</select>
 							<input id='scripture_start_chapter' name='scripture_start_chapter' type='text' value='Chapter' tabindex="16" size="10" /> :
 							<input id='scripture_start_verse' name='scripture_start_verse' type='text' value='Verse' tabindex="17" size="10" />
@@ -2298,72 +2331,72 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						<th scope="row">End Verse:</th>
 						<td>
 							<select name="scripture_end_book" id="scripture_end_book" class="enmse-disabled" disabled>
-								<option value="1">Genesis</option>
-								<option value="2">Exodus</option>
-								<option value="3">Leviticus</option>
-								<option value="4">Numbers</option>
-								<option value="5">Deuteronomy</option>
-								<option value="6">Joshua</option>
-								<option value="7">Judges</option>
-								<option value="8">Ruth</option>
-								<option value="9">1 Samuel</option>
-								<option value="10">2 Samuel</option>
-								<option value="11">1 Kings</option>
-								<option value="12">2 Kings</option>
-								<option value="13">1 Chronicles</option>
-								<option value="14">2 Chronicles</option>
-								<option value="15">Ezra</option>
-								<option value="16">Nehemiah</option>
-								<option value="17">Esther</option>
-								<option value="18">Job</option>
-								<option value="19">Psalms</option>
-								<option value="20">Proverbs</option>
-								<option value="21">Ecclesiastes</option>
-								<option value="22">Song of Solomon</option>
-								<option value="23">Isaiah</option>
-								<option value="24">Jeremiah</option>
-								<option value="25">Lamentations</option>
-								<option value="26">Ezekiel</option>
-								<option value="27">Daniel</option>
-								<option value="28">Hosea</option>
-								<option value="29">Joel</option>
-								<option value="30">Amos</option>
-								<option value="31">Obadiah</option>
-								<option value="32">Jonah</option>
-								<option value="33">Micah</option>
-								<option value="34">Nahum</option>
-								<option value="35">Habakkuk</option>
-								<option value="36">Zephaniah</option>
-								<option value="37">Haggai</option>
-								<option value="38">Zechariah</option>
-								<option value="39">Malachi</option>
-								<option value="40">Matthew</option>
-								<option value="41">Mark</option>
-								<option value="42">Luke</option>
-								<option value="43">John</option>
-								<option value="44">Acts</option>
-								<option value="45">Romans</option>
-								<option value="46">1 Corinthians</option>
-								<option value="47">2 Corinthians</option>
-								<option value="48">Galatians</option>
-								<option value="49">Ephesians</option>
-								<option value="50">Philippians</option>
-								<option value="51">Colossians</option>
-								<option value="52">1 Thessalonians</option>
-								<option value="53">2 Thessalonians</option>
-								<option value="54">1 Timothy</option>
-								<option value="55">2 Timothy</option>
-								<option value="56">Titus</option>
-								<option value="57">Philemon</option>
-								<option value="58">Hebrews</option>
-								<option value="59">James</option>
-								<option value="60">1 Peter</option>
-								<option value="61">2 Peter</option>
-								<option value="62">1 John</option>
-								<option value="63">2 John</option>
-								<option value="64">3 John</option>
-								<option value="65">Jude</option>
-								<option value="66">Revelation</option>
+									<option value="1"><?php echo $enmse_booknames[1]; ?></option>
+									<option value="2"><?php echo $enmse_booknames[2]; ?></option>
+									<option value="3"><?php echo $enmse_booknames[3]; ?></option>
+									<option value="4"><?php echo $enmse_booknames[4]; ?></option>
+									<option value="5"><?php echo $enmse_booknames[5]; ?></option>
+									<option value="6"><?php echo $enmse_booknames[6]; ?></option>
+									<option value="7"><?php echo $enmse_booknames[7]; ?></option>
+									<option value="8"><?php echo $enmse_booknames[8]; ?></option>
+									<option value="9"><?php echo $enmse_booknames[9]; ?></option>
+									<option value="10"><?php echo $enmse_booknames[10]; ?></option>
+									<option value="11"><?php echo $enmse_booknames[11]; ?></option>
+									<option value="12"><?php echo $enmse_booknames[12]; ?></option>
+									<option value="13"><?php echo $enmse_booknames[13]; ?></option>
+									<option value="14"><?php echo $enmse_booknames[14]; ?></option>
+									<option value="15"><?php echo $enmse_booknames[15]; ?></option>
+									<option value="16"><?php echo $enmse_booknames[16]; ?></option>
+									<option value="17"><?php echo $enmse_booknames[17]; ?></option>
+									<option value="18"><?php echo $enmse_booknames[18]; ?></option>
+									<option value="19"><?php echo $enmse_booknames[19]; ?></option>
+									<option value="20"><?php echo $enmse_booknames[20]; ?></option>
+									<option value="21"><?php echo $enmse_booknames[21]; ?></option>
+									<option value="22"><?php echo $enmse_booknames[22]; ?></option>
+									<option value="23"><?php echo $enmse_booknames[23]; ?></option>
+									<option value="24"><?php echo $enmse_booknames[24]; ?></option>
+									<option value="25"><?php echo $enmse_booknames[25]; ?></option>
+									<option value="26"><?php echo $enmse_booknames[26]; ?></option>
+									<option value="27"><?php echo $enmse_booknames[27]; ?></option>
+									<option value="28"><?php echo $enmse_booknames[28]; ?></option>
+									<option value="29"><?php echo $enmse_booknames[29]; ?></option>
+									<option value="30"><?php echo $enmse_booknames[30]; ?></option>
+									<option value="31"><?php echo $enmse_booknames[31]; ?></option>
+									<option value="32"><?php echo $enmse_booknames[32]; ?></option>
+									<option value="33"><?php echo $enmse_booknames[33]; ?></option>
+									<option value="34"><?php echo $enmse_booknames[34]; ?></option>
+									<option value="35"><?php echo $enmse_booknames[35]; ?></option>
+									<option value="36"><?php echo $enmse_booknames[36]; ?></option>
+									<option value="37"><?php echo $enmse_booknames[37]; ?></option>
+									<option value="38"><?php echo $enmse_booknames[38]; ?></option>
+									<option value="39"><?php echo $enmse_booknames[39]; ?></option>
+									<option value="40"><?php echo $enmse_booknames[40]; ?></option>
+									<option value="41"><?php echo $enmse_booknames[41]; ?></option>
+									<option value="42"><?php echo $enmse_booknames[42]; ?></option>
+									<option value="43"><?php echo $enmse_booknames[43]; ?></option>
+									<option value="44"><?php echo $enmse_booknames[44]; ?></option>
+									<option value="45"><?php echo $enmse_booknames[45]; ?></option>
+									<option value="46"><?php echo $enmse_booknames[46]; ?></option>
+									<option value="47"><?php echo $enmse_booknames[47]; ?></option>
+									<option value="48"><?php echo $enmse_booknames[48]; ?></option>
+									<option value="49"><?php echo $enmse_booknames[49]; ?></option>
+									<option value="50"><?php echo $enmse_booknames[50]; ?></option>
+									<option value="51"><?php echo $enmse_booknames[51]; ?></option>
+									<option value="52"><?php echo $enmse_booknames[52]; ?></option>
+									<option value="53"><?php echo $enmse_booknames[53]; ?></option>
+									<option value="54"><?php echo $enmse_booknames[54]; ?></option>
+									<option value="55"><?php echo $enmse_booknames[55]; ?></option>
+									<option value="56"><?php echo $enmse_booknames[56]; ?></option>
+									<option value="57"><?php echo $enmse_booknames[57]; ?></option>
+									<option value="58"><?php echo $enmse_booknames[58]; ?></option>
+									<option value="59"><?php echo $enmse_booknames[59]; ?></option>
+									<option value="60"><?php echo $enmse_booknames[60]; ?></option>
+									<option value="61"><?php echo $enmse_booknames[61]; ?></option>
+									<option value="62"><?php echo $enmse_booknames[62]; ?></option>
+									<option value="63"><?php echo $enmse_booknames[63]; ?></option>
+									<option value="64"><?php echo $enmse_booknames[64]; ?></option>
+									<option value="65"><?php echo $enmse_booknames[65]; ?></option>
+									<option value="66"><?php echo $enmse_booknames[66]; ?></option>
 							</select>
 							<input id='scripture_end_chapter' name='scripture_end_chapter' type='text' value='Chapter' size="10" class="enmse-disabled" disabled /> :
 							<input id='scripture_end_verse' name='scripture_end_verse' type='text' value='Verse' tabindex="18" size="10" />
@@ -2373,6 +2406,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						<th scope="row">Translation:</th>
 						<td>
 							<select name="scripture_trans" id="scripture_trans" tabindex="19">
+								<option value="<?php echo $deftrans; ?>">------ ENGLISH ------</option>
 								<option value="1588"<?php if ( $deftrans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 								<option value="12"<?php if ( $deftrans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 								<option value="1713"<?php if ( $deftrans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
@@ -2386,7 +2420,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 								<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 								<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
-								<option value="<?php echo $deftrans; ?>">-------------</option>
+								<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
+								<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+								<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+								<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+								<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
+								<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
+								<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
+								<option value="<?php echo $deftrans; ?>">------ OTHER ------</option>
 								<option value="6"<?php if ( $deftrans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 							</select>
 						</td>
@@ -2602,7 +2643,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<select name="enmse_book" id="enmse_book" <?php if ( !isset($_GET['enmse_bid']) ) { ?>style="display: none"<?php } ?>>
 			<option value="0">- Select -</option>
 			<?php foreach ( $enmse_fbooks as $b) { ?>
-			<option value="<?php echo $b->book_id; ?>" <?php if ( isset($_GET['enmse_bid']) && $_GET['enmse_bid'] == $b->book_id ) { ?>selected="selected"<?php } ?>><?php echo stripslashes($b->book_name); ?></option>
+			<option value="<?php echo $b->book_id; ?>" <?php if ( isset($_GET['enmse_bid']) && $_GET['enmse_bid'] == $b->book_id ) { ?>selected="selected"<?php } ?>><?php echo $enmse_booknames[$b->book_id]; ?></option>
 			<?php } ?>
 		</select>
 	</div>
@@ -2628,7 +2669,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				<td><?php echo date($enmse_dateformat, strtotime($enmse_single->date)) ?></td>
 				<td><?php $enmse_s_comma = 1; foreach ( $enmse_ss as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_single->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_sid=' . $s->series_id, __FILE__ ) . "\">" . stripslashes($s->s_title) . "</a>"; $enmse_s_comma = $enmse_s_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_sid=' . $s->series_id, __FILE__ ) . "\">" . stripslashes($s->s_title) . "</a>"; $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?></td>
 				<td><?php $enmse_t_comma = 1; foreach ( $enmse_t as $t) { ?><?php foreach ( $enmse_mtm as $mtm) { ?><?php if ( ($mtm->message_id == $enmse_single->message_id) && ($mtm->topic_id == $t->topic_id) ) { if ( $enmse_t_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->name) . "</a>"; $enmse_t_comma = $enmse_t_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->name) . "</a>"; $enmse_t_comma = $enmse_t_comma+1; } } ?><?php } ?><?php } ?></td>
-				<td><?php $enmse_b_comma = 1; foreach ( $enmse_b as $b) { ?><?php foreach ( $enmse_mbm as $mbm) { ?><?php if ( ($mbm->message_id == $enmse_single->message_id) && ($mbm->book_id == $b->book_id) ) { if ( $enmse_b_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . stripslashes($b->book_name) . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . stripslashes($b->book_name) . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } } ?><?php } ?><?php } ?></td>
+				<td><?php $enmse_b_comma = 1; foreach ( $enmse_b as $b) { ?><?php foreach ( $enmse_mbm as $mbm) { ?><?php if ( ($mbm->message_id == $enmse_single->message_id) && ($mbm->book_id == $b->book_id) ) { if ( $enmse_b_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . $enmse_booknames[$b->book_id] . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . $enmse_booknames[$b->book_id] . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } } ?><?php } ?><?php } ?></td>
 				<td><?php $enmse_plays = $enmse_single->audio_count + $enmse_single->video_count; if ( $enmse_plays != 0 ) { echo "<span class=\"enmseplaycount\" title=\"Audio: " . $enmse_single->audio_count . ", Video: " . $enmse_single->video_count . ", Other Video: " . $enmse_single->alternate_count . "\">" . $enmse_plays . "</span>"; } ?></td>
 				<td class="enmse-delete"><form action="<?php echo $_SERVER['REQUEST_URI']; ?>&amp;enmse_did=1" method="post" id="seriesengine-deleteform<?php echo $enmse_single->message_id ?>"><input type="hidden" name="message_delete" value="<?php echo $enmse_single->message_id ?>"></form><a href="#" class="seriesengine_delete" name="<?php echo $enmse_single->message_id ?>">Delete</a></td>
 			</tr>

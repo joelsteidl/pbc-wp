@@ -18,7 +18,7 @@ if ( current_user_can( 'edit_posts' ) ) {
 	<ul id="enmse-message-options">
 		<li class="selected"><a href="#" id="enmse-settings-general">General Settings</a></li>
 		<li><a href="#" id="enmse-settings-styles">Fonts and Colors</a></li>
-		<li><a href="#" id="enmse-settings-labels">Labels</a></li>
+		<li><a href="#" id="enmse-settings-labels">Labels and Language</a></li>
 		<li><a href="#" id="enmse-settings-archivesection">Advanced</a></li>
 	</ul>
 	<form action="options.php" method="post"> 

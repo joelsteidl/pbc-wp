@@ -1,14 +1,14 @@
 <!-- Related Messages -->
 <?php if ( isset($_GET['enmse_tid']) && is_numeric($_GET['enmse_tid']) ) { // Only show if a series is relevant ?>
-<h3 class="enmse-more-title">More <?php echo $enmsemessagetp; ?> Associated With "<em><?php echo stripslashes($enmse_singletopic->name); ?></em>"...</h3>
+<h3 class="enmse-more-title"><?php echo $enmse_morefromtopics; ?> "<em><?php echo stripslashes($enmse_singletopic->name); ?></em>"...</h3>
 <?php } elseif ( isset($_GET['enmse_bid']) && is_numeric($_GET['enmse_bid']) ) { // Only show if a book is relevant ?>
-<h3 class="enmse-more-title">More From the <?php echo $enmsebookt; ?> of <?php echo stripslashes($enmse_singlebook->book_name); ?>...</h3>
+<h3 class="enmse-more-title"><?php echo $enmse_morefrombooks; ?> <?php echo $enmse_booknames[$enmse_singlebook->book_id]; ?>...</h3>
 <?php } elseif ( isset($_GET['enmse_spid']) && is_numeric($_GET['enmse_spid']) ) { // Only show if a series is relevant ?>
-<h3 class="enmse-more-title">More <?php echo $enmsemessagetp; ?> From <?php echo stripslashes($enmse_speaker->first_name) . " " . stripslashes($enmse_speaker->last_name); ?>...</h3>
+<h3 class="enmse-more-title"><?php echo $enmse_morefromspeakers; ?> <?php echo stripslashes($enmse_speaker->first_name) . " " . stripslashes($enmse_speaker->last_name); ?>...</h3>
 <?php } elseif ( isset($_GET['enmse_am']) && is_numeric($_GET['enmse_am']) && ( !isset($_GET['enmse_sid']) && !isset($_GET['enmse_tid']) && !isset($_GET['enmse_spid']) )) { ?>
-<h3 class="enmse-more-title">More <?php echo $enmsemessagetp; ?></em></h3>
+<h3 class="enmse-more-title"><?php echo $enmse_morefromgeneric; ?></em></h3>
 <?php } else { ?>
-<h3 class="enmse-more-title">More From "<em><?php echo stripslashes($enmse_singleseries->s_title); ?></em>"</h3>
+<h3 class="enmse-more-title"><?php echo $enmse_morefromseries; ?> "<em><?php echo stripslashes($enmse_singleseries->s_title); ?></em>"</h3>
 <?php } ?>
 <?php if ( $enmse_cardview == 1 ) { // Card View ?>
 	<div class="enmse-related-area card-view" id="enmse-related<?php echo $enmse_randomval; ?>">

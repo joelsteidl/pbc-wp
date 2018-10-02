@@ -159,6 +159,14 @@ input#speaker_first_name {
 	margin: 10px 0 0 0;
 }
 
+h3.enmse-settings-title {
+	font-size: 1.6em;
+}
+
+p.enmse-settings-instructions {
+	font-size: 1.1em;
+}
+
 /* ----- User Guide ----- */
 
 #enmse-user-guide h1 {

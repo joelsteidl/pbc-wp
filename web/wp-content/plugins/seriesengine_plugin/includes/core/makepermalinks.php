@@ -14,6 +14,17 @@
 				$enmseseriest = "Series";
 			}
 
+			// Message from
+			if ( isset($enmse_options['lang_permalinkblankexcerpt']) ) { 
+				$lang_permalinkblankexcerpt = $enmse_options['lang_permalinkblankexcerpt'];
+				$lang1_permalinkblankexcerpt =  str_replace("MESSAGE_LABEL", strtolower($enmsemessaget), $lang_permalinkblankexcerpt);
+				$enmse_permalinkblankexcerpt =  str_replace("SERIES_LABEL", strtolower($enmseseriest), $lang1_permalinkblankexcerpt);
+			} else {
+				$lang_permalinkblankexcerpt = "A MESSAGE_LABEL from the SERIES_LABEL";
+				$lang1_permalinkblankexcerpt =  str_replace("MESSAGE_LABEL", strtolower($enmsemessaget), $lang_permalinkblankexcerpt);
+				$enmse_permalinkblankexcerpt =  str_replace("SERIES_LABEL", strtolower($enmseseriest), $lang1_permalinkblankexcerpt);
+			}
+
 			$enmse_findpermamessagesql = "SELECT message_id, date, title, speaker, primary_series, description FROM " . $wpdb->prefix . "se_messages" . " WHERE wp_post_id IS NULL"; 
 			$permamessages = $wpdb->get_results( $enmse_findpermamessagesql );
 			
@@ -69,7 +80,7 @@
 				$convertdate = date('Y-m-d', strtotime($enmse_date)) . ' 13:46:46';
 
 				if ( $enmse_noseries == 1 ) {
-					$finalexcerpt = "A " . strtolower($enmsemessaget) . " from the " . strtolower($enmseseriest) . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
+					$finalexcerpt = $enmse_permalinkblankexcerpt . " \"" . stripslashes($enmse_primary->s_title) . ".\" " . $enmse_cpt_description;
 				} else {
 					$finalexcerpt = $enmse_cpt_description;
 				}

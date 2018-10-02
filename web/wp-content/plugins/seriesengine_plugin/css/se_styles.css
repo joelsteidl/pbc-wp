@@ -1320,6 +1320,7 @@
 	text-transform: uppercase;
 }
 
+
 #seriesengine .se-pagination.ge-small a.page-numbers span {
 	display: inline;
 }
@@ -2302,7 +2303,7 @@
 		display: none;
 	}
 
-	#seriesengine a.next.page-numbers, #seriesengine a.previous.page-numbers {
+		#seriesengine a.next.page-numbers, #seriesengine a.previous.page-numbers {
 		display: inline-block;
 		width: 70px;
 		height: 30px;
@@ -2317,7 +2318,7 @@
 	#seriesengine a.page-numbers span {
 		display: inline;
 	}
-
+	
 	#seriesengine .enmse-audio a#enmse-download {
 		display: none;
 	}

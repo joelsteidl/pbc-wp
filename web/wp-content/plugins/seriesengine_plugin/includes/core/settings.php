@@ -118,6 +118,14 @@
 		'seriesengine_plugin' 
 	);
 
+	// Language Settings
+	add_settings_section( 
+		'enm_seriesengine_language_settings', 
+		'', 
+		'enm_seriesengine_language_text', 
+		'seriesengine_plugin' 
+	);
+
 	// Archive Settings
 	add_settings_section( 
 		'enm_seriesengine_archivesection_settings', 
@@ -151,67 +159,71 @@
 	);
 	
 	function enm_seriesengine_settings_text() {
-		echo '<div id="enmse-general-settings"><h3>General Settings</h3><p>Use the fields below to modify the core settings of the Series Engine.</p>';
+		echo '<div id="enmse-general-settings"><h3 class="enmse-settings-title">General Settings</h3><p class="enmse-settings-instructions">Use the fields below to modify the core settings of the Series Engine.</p>';
 	};
 	
 	function enm_seriesengine_font_text() {
-		echo '</div><div id="enmse-style-settings" style="display: none"><h3>Series Engine Font</h3><p>Choose a font for the Series Engine media browser. You can specify a custom font if it\'s already included in your theme or another plugin. Some fonts are larger/smaller than others, so you may see some rendering issues if you choose something unusual.</p>';
+		echo '</div><div id="enmse-style-settings" style="display: none"><h3 class="enmse-settings-title">Series Engine Font</h3><p class="enmse-settings-instructions">Choose a font for the Series Engine media browser. You can specify a custom font if it\'s already included in your theme or another plugin. Some fonts are larger/smaller than others, so you may see some rendering issues if you choose something unusual.</p>';
 	};
 	
 	function enm_seriesengine_style_text() {
-		echo '<h3>Message Explorer</h3><p>Modify the colors of the optional Message Explorer bar (with the dropdown menus) at the top of the Series Engine media browser.</p>';
+		echo '<h3 class="enmse-settings-title">Message Explorer</h3><p class="enmse-settings-instructions">Modify the colors of the optional Message Explorer bar (with the dropdown menus) at the top of the Series Engine media browser.</p>';
 	};
 	
 	function enm_seriesengine_playerbox_text() {
-		echo '<h3>Media Player</h3><p>Modify the colors of the main media player(s) and the related button/tab controls.</p>';
+		echo '<h3 class="enmse-settings-title">Media Player</h3><p class="enmse-settings-instructions">Modify the colors of the main media player(s) and the related button/tab controls.</p>';
 	};
 	
 	function enm_seriesengine_messagedetails_text() {
-		echo '<h3>Message Details</h3><p>Modify the text and link colors in the Message\'s details section immediately below the media player(s).</p>';
+		echo '<h3 class="enmse-settings-title">Message Details</h3><p class="enmse-settings-instructions">Modify the text and link colors in the Message\'s details section immediately below the media player(s).</p>';
 	};
 	
 	function enm_seriesengine_sharing_text() {
-		echo '<h3>Sharing</h3><p>Modify the colors of the buttons and popover windows for sharing a Message.</p>';
+		echo '<h3 class="enmse-settings-title">Sharing</h3><p class="enmse-settings-instructions">Modify the colors of the buttons and popover windows for sharing a Message.</p>';
 	};
 	
 	function enm_seriesengine_complimentary_text() {
-		echo '<h3>Related Messages (Classic List View)</h3><p>Modify the colors of the classic list view of optional related Messages below the Video/Audio player.</p>';
+		echo '<h3 class="enmse-settings-title">Related Messages (Classic List View)</h3><p class="enmse-settings-instructions">Modify the colors of the classic list view of optional related Messages below the Video/Audio player.</p>';
 	};
 
 	function enm_seriesengine_gridrow_text() {
-		echo '<h3>Related Messages (Grid/Row View)</h3><p>Modify the colors of the grid/row views of optional related Messages below the Video/Audio player.</p>';
+		echo '<h3 class="enmse-settings-title">Related Messages (Grid/Row View)</h3><p class="enmse-settings-instructions">Modify the colors of the grid/row views of optional related Messages below the Video/Audio player.</p>';
 	};
 	
 	function enm_seriesengine_loading_text() {
-		echo '<h3>Loading Popover</h3><p>Modify the loading graphic that appears in the Series Engine media browser.</p>';
+		echo '<h3 class="enmse-settings-title">Loading Popover</h3><p class="enmse-settings-instructions">Modify the loading graphic that appears in the Series Engine media browser.</p>';
 	};
 	
 	function enm_seriesengine_archives_text() {
-		echo '<h3>Series Archives</h3><p>Modify the colors for Series Engine\'s Series archives.</p>';
+		echo '<h3 class="enmse-settings-title">Series Archives</h3><p class="enmse-settings-instructions">Modify the colors for Series Engine\'s Series archives.</p>';
 	};
 
 	function enm_seriesengine_pagination_text() {
-		echo '<h3>Pagination</h3><p>Modify the colors for Series Engine\'s pagination below related messages and series.</p>';
+		echo '<h3 class="enmse-settings-title">Pagination</h3><p class="enmse-settings-instructions">Modify the colors for Series Engine\'s pagination below related messages and series.</p>';
 	};
 	
 	function enm_seriesengine_poweredby_text() {
-		echo '<h3>Series Engine Branding</h3><p>The tiny Series Engine credits at the bottom of each Series Engine embed.</p>';
+		echo '<h3 class="enmse-settings-title">Series Engine Branding</h3><p class="enmse-settings-instructions">The tiny Series Engine credits at the bottom of each Series Engine embed.</p>';
 	};
 
 	function enm_seriesengine_labels_text() {
-		echo '</div><div id="enmse-label-settings" style="display: none"><h3>Customize Series Engine Labels</h3><p>Customize the terminology used throughout the plugin.</p>';
+		echo '</div><div id="enmse-label-settings" style="display: none"><h3 class="enmse-settings-title">Customize Series Engine Labels</h3><p class="enmse-settings-instructions">By default, Series Engine uses labels like "Messages, Series, Topics" and more throughout the plugin. When you change those labels below, they will change everywhere they\'re found in the plugin, from the media browser your visitors see to the Series Engine admin interface. It\'s a simple way to make Series Engine match your naming conventions.</p>';
+	};
+
+	function enm_seriesengine_language_text() {
+		echo '<h3 class="enmse-settings-title">Language Settings and Detailed Labels</h3><p class="enmse-settings-instructions">Whether you want to quickly change the language of all public-facing Series Engine components, or you manually want to tweak every label and text snippet in the plugin, the fields below give you full control over what Series Engine displays. <em>Uppercase variable names LIKE_THIS should not be modified.</em></p><p class="enmse-settings-instructions"><strong>Warning:</strong> Changing the display language below will <em>reset all labels</em> on this page to their language defaults. You can customize every label further after you first save the language change.</p>';
 	};
 
 	function enm_seriesengine_archivesection_text() {
-		echo '</div><div id="enmse-archivesection-settings" style="display: none"><h3>Customize the Series Archive Page</h3><p>Choose between a list and grid of images. When using the image-based archives, we recommend uploading all images at a 16x9 ratio with a width of at least 600px for the best results.</p>';
+		echo '</div><div id="enmse-archivesection-settings" style="display: none"><h3 class="enmse-settings-title">Customize the Series Archive Page</h3><p class="enmse-settings-instructions">Choose between a list and grid of images. When using the image-based archives, we recommend uploading all images at a 16x9 ratio with a width of at least 600px for the best results.</p>';
 	};
 
 	function enm_seriesengine_responsivesection_text() {
-		echo '<h3>Customize Responsive Breakpoints</h3><p>Series Engine is designed with full-width pages in mind. If you\'re embedding onto a page with sidebars, or would just like more control over the different views, adjust the values below to reflect where you want each set of styles to kick in. For instance, you may want the mobile view (designed for narrow screens) to kick in at a higher pixel width if there are columns on one or both sides of your Series Engine media player.</p>';
+		echo '<h3 class="enmse-settings-title">Customize Responsive Breakpoints</h3><p class="enmse-settings-instructions">Series Engine is designed with full-width pages in mind. If you\'re embedding onto a page with sidebars, or would just like more control over the different views, adjust the values below to reflect where you want each set of styles to kick in. For instance, you may want the mobile view (designed for narrow screens) to kick in at a higher pixel width if there are columns on one or both sides of your Series Engine media player.</p>';
 	};
 
 	function enm_seriesengine_permalinksection_text() {
-		echo '<h3>Customize Series Engine Permalinks</h3><p>Series Engine automatically creates pretty, SEO-friendly permalinks that are great for sharing. The options below give you control over the permalink slug/url structure, and the content displayed along with a message on every permalink page. <strong>Reading through the permalink section of the User Guide is strongly</strong> encouraged if you tweak any of the settings below.</p>';
+		echo '<h3 class="enmse-settings-title">Customize Series Engine Permalinks</h3><p class="enmse-settings-instructions">Series Engine automatically creates pretty, SEO-friendly permalinks that are great for sharing. The options below give you control over the permalink slug/url structure, and the content displayed along with a message on every permalink page. <strong>Reading through the permalink section of the User Guide is strongly</strong> encouraged if you tweak any of the settings below.</p>';
 	};
 	
 	function enm_seriesengine_blank_text() {
@@ -369,6 +381,26 @@
 			echo "<input id='maxwidth' name='enm_seriesengine_options[maxwidth]' type='text' value='{$se_options['maxwidth']}' size='5' /> px";
 		} else {
 			echo "<input id='maxwidth' name='enm_seriesengine_options[maxwidth]' type='text' value='1000' size='5' /> px";
+		}
+	};
+
+	add_settings_field(
+		'enm_seriesengine_usepermalinks_style', 
+		'Use WordPress Permalinks?: <p class="se-form-instructions">If no, Series Engine will revert its sharing links to classic mode with URL parameters instead.</p>', 
+		'enm_seriesengine_usepermalinks_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_permalinksection_settings' 
+	);
+	
+	function enm_seriesengine_usepermalinks_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$usepermalinks = $se_options['usepermalinks'];
+		if ($usepermalinks == "1") {
+			echo "<select id='usepermalinks' name='enm_seriesengine_options[usepermalinks]'><option value='1' selected='selected'>Yes</option><option value='0'>No</option></select>";
+		} elseif ($usepermalinks == "0" ) {
+			echo "<select id='usepermalinks' name='enm_seriesengine_options[usepermalinks]'><option value='1'>Yes</option><option value='0' selected='selected'>No</option></select>";
+		} else {
+			echo "<select id='usepermalinks' name='enm_seriesengine_options[usepermalinks]'><option value='1' selected='selected'>Yes</option><option value='0'>No</option></select>";
 		}
 	};
 
@@ -906,6 +938,7 @@
 		$deftrans = $se_options['deftrans'];
 		if ($deftrans == "1588") {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588' selected='selected'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -919,11 +952,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "12" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12' selected='selected'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -937,12 +978,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
-
 					</select><br /><br />";
 		} elseif ($deftrans == "1713" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713' selected='selected'>CSB - Christian Standard Bible</option>
@@ -956,12 +1004,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
-
 					</select><br /><br />";
 		} elseif ($deftrans == "59" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -975,11 +1030,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "72" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -993,11 +1056,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "1359" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1011,11 +1082,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "1" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1029,11 +1108,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "1171" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1047,11 +1134,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "97" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1065,11 +1160,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "100" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1083,11 +1186,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "111" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1101,11 +1212,19 @@
 						<option value='111' selected='selected'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "114" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1119,11 +1238,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114' selected='selected'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "116" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1137,11 +1264,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116' selected='selected'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} elseif ($deftrans == "6" ) {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1155,11 +1290,149 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6' selected='selected'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "157") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157' selected='selected'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "57") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57' selected='selected'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "108") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108' selected='selected'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "149") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149' selected='selected'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "128") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128' selected='selected'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		} else {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
@@ -1173,7 +1446,14 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
-						<option value='" . $deftrans . "'>--------------</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
 		}
@@ -1517,24 +1797,6 @@
 		echo "<input id='booktp' name='enm_seriesengine_options[booktp]' type='text' value=" . $enmsebooktp . " size='10' />";
 	};
 
-	add_settings_field( //Scripture Reference Label
-		'enm_seriesengine_scripturelabel', 
-		'Scripture Reference Label: <p class="se-form-instructions">The title of the scripture link section in the details section of a message.</p>', 
-		'enm_seriesengine_scripturelabel_input', 
-		'seriesengine_plugin', 
-		'enm_seriesengine_labels_settings' 
-	);
-	
-	function enm_seriesengine_scripturelabel_input() {
-		$se_options = get_option( 'enm_seriesengine_options' );
-		if ( isset($se_options['scripturelabel']) ) {
-			$enmsescripturelabel = $se_options['scripturelabel'];
-		} else {
-			$enmsescripturelabel = "Scripture References";
-		};
-		echo "<input id='scripturelabel' name='enm_seriesengine_options[scripturelabel]' type='text' value=\"{$enmsescripturelabel}\" size='20' />";
-	};
-
 	add_settings_field( //Video Tab Label
 		'enm_seriesengine_videotablabel', 
 		'Player Video Tab Label: <p class="se-form-instructions">The title of the video tab in the Series Engine media browser.</p>', 
@@ -1562,6 +1824,577 @@
 		$audiotablabel = $se_options['audiotablabel'];
 		echo "<input id='audiotablabel' name='enm_seriesengine_options[audiotablabel]' type='text' value=" . $se_options['audiotablabel'] . " size='10' />";
 	};
+
+
+
+	/* TEST -------------
+	-----------------------
+	---------------------
+	----------------------
+	----------------------
+	----------------------- */
+
+	add_settings_field(
+		'enm_seriesengine_language', 
+		'Display Language: <p class="se-form-instructions">Choose the language for the front-end display of all Series Engine content.</p>', 
+		'enm_seriesengine_language_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_language_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$language = $se_options['language'];
+		if ($language == "3") { //German
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} elseif ($language == "2") { //Spanish
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} else { // English
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		}
+	};
+
+	add_settings_field( // Loading Content...
+		'enm_seriesengine_lang_loading', 
+		'Loading Popover Text: <p class="se-form-instructions">The text below the loading icon.</p>', 
+		'enm_seriesengine_lang_loading_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_loading_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_loading = $se_options['lang_loading'];
+		if ( !isset($se_options['lang_loading']) ) {
+			echo "<input id='lang_loading' name='enm_seriesengine_options[lang_loading]' type='text' value='Loading Content...' size='30' />";
+		} else {
+			echo "<input id='lang_loading' name='enm_seriesengine_options[lang_loading]' type='text' value='" . $se_options['lang_loading'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Share Link Title
+		'enm_seriesengine_lang_sharelinktitle', 
+		'Share Popover Title: <p class="se-form-instructions">The title of the Share Link popover message.</p>', 
+		'enm_seriesengine_lang_sharelinktitle_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharelinktitle_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharelinktitle = $se_options['lang_sharelinktitle'];
+		if ( !isset($se_options['lang_sharelinktitle']) ) {
+			echo "<input id='lang_sharelinktitle' name='enm_seriesengine_options[lang_sharelinktitle]' type='text' value='Share a Link to this MESSAGE_LABEL' size='40' />";
+		} else {
+			echo "<input id='lang_sharelinktitle' name='enm_seriesengine_options[lang_sharelinktitle]' type='text' value='" . $se_options['lang_sharelinktitle'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // Share Link Instructions
+		'enm_seriesengine_lang_sharelinkinstructions', 
+		'Share Popover Instructions: <p class="se-form-instructions">The instructions found in the Share Link popover view.</p>', 
+		'enm_seriesengine_lang_sharelinkinstructions_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharelinkinstructions_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharelinkinstructions = $se_options['lang_sharelinkinstructions'];
+		if ( !isset($se_options['lang_sharelinkinstructions']) ) {
+			echo "<input id='lang_sharelinkinstructions' name='enm_seriesengine_options[lang_sharelinkinstructions]' type='text' value='The link has been copied to your clipboard; paste it anywhere you would like to share it.' size='40' />";
+		} else {
+			echo "<input id='lang_sharelinkinstructions' name='enm_seriesengine_options[lang_sharelinkinstructions]' type='text' value='" . $se_options['lang_sharelinkinstructions'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // Share Link Close Button
+		'enm_seriesengine_lang_sharelinkclosebutton', 
+		'Share Popover Button: <p class="se-form-instructions">The text on the close button in the Share Link popover.</p>', 
+		'enm_seriesengine_lang_sharelinkclosebutton_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharelinkclosebutton_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharelinkclosebutton = $se_options['lang_sharelinkclosebutton'];
+		if ( !isset($se_options['lang_sharelinkclosebutton']) ) {
+			echo "<input id='lang_sharelinkclosebutton' name='enm_seriesengine_options[lang_sharelinkclosebutton]' type='text' value='Close' size='10' />";
+		} else {
+			echo "<input id='lang_sharelinkclosebutton' name='enm_seriesengine_options[lang_sharelinkclosebutton]' type='text' value='" . $se_options['lang_sharelinkclosebutton'] . "' size='10' />";
+		}
+	};
+
+	add_settings_field( // Archives Explore Text
+		'enm_seriesengine_lang_archiveexplore', 
+		'Series Archives Explore Text: <p class="se-form-instructions">The text links in the Series Archives view.</p>', 
+		'enm_seriesengine_lang_archiveexplore_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_archiveexplore_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_archiveexplore = $se_options['lang_archiveexplore'];
+		if ( !isset($se_options['lang_archiveexplore']) ) {
+			echo "<input id='lang_archiveexplore' name='enm_seriesengine_options[lang_archiveexplore]' type='text' value='Explore This SERIES_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_archiveexplore' name='enm_seriesengine_options[lang_archiveexplore]' type='text' value='" . $se_options['lang_archiveexplore'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer Browse Series
+		'enm_seriesengine_lang_explorerbrowseseries', 
+		'Browse Series Dropdown: <p class="se-form-instructions">The text in the Browse Series dropdown menu.</p>', 
+		'enm_seriesengine_lang_explorerbrowseseries_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorerbrowseseries_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorerbrowseseries = $se_options['lang_explorerbrowseseries'];
+		if ( !isset($se_options['lang_explorerbrowseseries']) ) {
+			echo "<input id='lang_explorerbrowseseries' name='enm_seriesengine_options[lang_explorerbrowseseries]' type='text' value='Browse PLURAL_SERIES_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_explorerbrowseseries' name='enm_seriesengine_options[lang_explorerbrowseseries]' type='text' value='" . $se_options['lang_explorerbrowseseries'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer Browse Speakers
+		'enm_seriesengine_lang_explorerbrowsespeakers', 
+		'Browse Speakers Dropdown: <p class="se-form-instructions">The text in the Browse Speakers dropdown menu.</p>', 
+		'enm_seriesengine_lang_explorerbrowsespeakers_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorerbrowsespeakers_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorerbrowsespeakers = $se_options['lang_explorerbrowsespeakers'];
+		if ( !isset($se_options['lang_explorerbrowsespeakers']) ) {
+			echo "<input id='lang_explorerbrowsespeakers' name='enm_seriesengine_options[lang_explorerbrowsespeakers]' type='text' value='Browse PLURAL_SPEAKERS_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_explorerbrowsespeakers' name='enm_seriesengine_options[lang_explorerbrowsespeakers]' type='text' value='" . $se_options['lang_explorerbrowsespeakers'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer Browse Topics
+		'enm_seriesengine_lang_explorerbrowsetopics', 
+		'Browse Topics Dropdown: <p class="se-form-instructions">The text in the Browse Topics dropdown menu.</p>', 
+		'enm_seriesengine_lang_explorerbrowsetopics_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorerbrowsetopics_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorerbrowsetopics = $se_options['lang_explorerbrowsetopics'];
+		if ( !isset($se_options['lang_explorerbrowsetopics']) ) {
+			echo "<input id='lang_explorerbrowsetopics' name='enm_seriesengine_options[lang_explorerbrowsetopics]' type='text' value='Browse PLURAL_TOPICS_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_explorerbrowsetopics' name='enm_seriesengine_options[lang_explorerbrowsetopics]' type='text' value='" . $se_options['lang_explorerbrowsetopics'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer Browse Books
+		'enm_seriesengine_lang_explorerbrowsebooks', 
+		'Browse Books Dropdown: <p class="se-form-instructions">The text in the Browse Books dropdown menu.</p>', 
+		'enm_seriesengine_lang_explorerbrowsebooks_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorerbrowsebooks_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorerbrowsebooks = $se_options['lang_explorerbrowsebooks'];
+		if ( !isset($se_options['lang_explorerbrowsebooks']) ) {
+			echo "<input id='lang_explorerbrowsebooks' name='enm_seriesengine_options[lang_explorerbrowsebooks]' type='text' value='Browse PLURAL_BOOKS_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_explorerbrowsebooks' name='enm_seriesengine_options[lang_explorerbrowsebooks]' type='text' value='" . $se_options['lang_explorerbrowsebooks'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer View Series Archives
+		'enm_seriesengine_lang_explorerarchives', 
+		'View Series Archives: <p class="se-form-instructions">The option to view Series Archives from the Browse Series dropdown.</p>', 
+		'enm_seriesengine_lang_explorerarchives_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorerarchives_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorerarchives = $se_options['lang_explorerarchives'];
+		if ( !isset($se_options['lang_explorerarchives']) ) {
+			echo "<input id='lang_explorerarchives' name='enm_seriesengine_options[lang_explorerarchives]' type='text' value='View SERIES_LABEL Archives' size='30' />";
+		} else {
+			echo "<input id='lang_explorerarchives' name='enm_seriesengine_options[lang_explorerarchives]' type='text' value='" . $se_options['lang_explorerarchives'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Explorer View All Messages
+		'enm_seriesengine_lang_explorermessages', 
+		'View All Messages: <p class="se-form-instructions">The option to View All Messages from the Browse Series dropdown.</p>', 
+		'enm_seriesengine_lang_explorermessages_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_explorermessages_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_explorermessages = $se_options['lang_explorermessages'];
+		if ( !isset($se_options['lang_explorermessages']) ) {
+			echo "<input id='lang_explorermessages' name='enm_seriesengine_options[lang_explorermessages]' type='text' value='View All PLURAL_MESSAGES_LABEL' size='30' />";
+		} else {
+			echo "<input id='lang_explorermessages' name='enm_seriesengine_options[lang_explorermessages]' type='text' value='" . $se_options['lang_explorermessages'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( //Scripture Reference Label
+		'enm_seriesengine_scripturelabel', 
+		'Scripture Reference Label: <p class="se-form-instructions">The title of the scripture link section in the details section of a Message.</p>', 
+		'enm_seriesengine_scripturelabel_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_scripturelabel_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		if ( isset($se_options['scripturelabel']) ) {
+			$enmsescripturelabel = $se_options['scripturelabel'];
+		} else {
+			$enmsescripturelabel = "Scripture References";
+		};
+		echo "<input id='scripturelabel' name='enm_seriesengine_options[scripturelabel]' type='text' value=\"{$enmsescripturelabel}\" size='20' />";
+	};
+
+	add_settings_field( // Related Topics
+		'enm_seriesengine_lang_relatedtopics', 
+		'Related Topics: <p class="se-form-instructions">The title of the Related Topics section in the details section of a Message.</p>', 
+		'enm_seriesengine_lang_relatedtopics_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_relatedtopics_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_relatedtopics = $se_options['lang_relatedtopics'];
+		if ( !isset($se_options['lang_relatedtopics']) ) {
+			echo "<input id='lang_relatedtopics' name='enm_seriesengine_options[lang_relatedtopics]' type='text' value='Related PLURAL_TOPICS_LABEL:' size='30' />";
+		} else {
+			echo "<input id='lang_relatedtopics' name='enm_seriesengine_options[lang_relatedtopics]' type='text' value='" . $se_options['lang_relatedtopics'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // More Messages from
+		'enm_seriesengine_lang_moremessagesfrom', 
+		'More Messages From: <p class="se-form-instructions">The link to view more Messages from a certain Speaker in the details section of a Message.</p>', 
+		'enm_seriesengine_lang_moremessagesfrom_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_moremessagesfrom_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_moremessagesfrom = $se_options['lang_moremessagesfrom'];
+		if ( !isset($se_options['lang_moremessagesfrom']) ) {
+			echo "<input id='lang_moremessagesfrom' name='enm_seriesengine_options[lang_moremessagesfrom]' type='text' value='More PLURAL_MESSAGES_LABEL from' size='30' />";
+		} else {
+			echo "<input id='lang_moremessagesfrom' name='enm_seriesengine_options[lang_moremessagesfrom]' type='text' value='" . $se_options['lang_moremessagesfrom'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Download Audio
+		'enm_seriesengine_lang_downloadaudio', 
+		'Download Audio: <p class="se-form-instructions">The link to download audio in the details section of a Message.</p>', 
+		'enm_seriesengine_lang_downloadaudio_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_downloadaudio_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_downloadaudio = $se_options['lang_downloadaudio'];
+		if ( !isset($se_options['lang_downloadaudio']) ) {
+			echo "<input id='lang_downloadaudio' name='enm_seriesengine_options[lang_downloadaudio]' type='text' value='Download Audio' size='30' />";
+		} else {
+			echo "<input id='lang_downloadaudio' name='enm_seriesengine_options[lang_downloadaudio]' type='text' value='" . $se_options['lang_downloadaudio'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // From Series:
+		'enm_seriesengine_lang_fromseries', 
+		'From Series: <p class="se-form-instructions">The heading for the Series details in the details section of a Message.</p>', 
+		'enm_seriesengine_lang_fromseries_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_fromseries_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_fromseries = $se_options['lang_fromseries'];
+		if ( !isset($se_options['lang_fromseries']) ) {
+			echo "<input id='lang_fromseries' name='enm_seriesengine_options[lang_fromseries]' type='text' value='From SERIES_LABEL:' size='30' />";
+		} else {
+			echo "<input id='lang_fromseries' name='enm_seriesengine_options[lang_fromseries]' type='text' value='" . $se_options['lang_fromseries'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Facebook
+		'enm_seriesengine_lang_sharefb', 
+		'Facebook: <p class="se-form-instructions">The (hidden) text title of the Facebook share button.</p>', 
+		'enm_seriesengine_lang_sharefb_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharefb_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharefb = $se_options['lang_sharefb'];
+		if ( !isset($se_options['lang_sharefb']) ) {
+			echo "<input id='lang_sharefb' name='enm_seriesengine_options[lang_sharefb]' type='text' value='Facebook' size='30' />";
+		} else {
+			echo "<input id='lang_sharefb' name='enm_seriesengine_options[lang_sharefb]' type='text' value='" . $se_options['lang_sharefb'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Twitter
+		'enm_seriesengine_lang_sharetw', 
+		'Twitter: <p class="se-form-instructions">The (hidden) text title of the Twitter share button.</p>', 
+		'enm_seriesengine_lang_sharetw_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharetw_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharetw = $se_options['lang_sharetw'];
+		if ( !isset($se_options['lang_sharetw']) ) {
+			echo "<input id='lang_sharetw' name='enm_seriesengine_options[lang_sharetw]' type='text' value='Tweet Link' size='30' />";
+		} else {
+			echo "<input id='lang_sharetw' name='enm_seriesengine_options[lang_sharetw]' type='text' value='" . $se_options['lang_sharetw'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Share Link
+		'enm_seriesengine_lang_sharepop', 
+		'Share Link: <p class="se-form-instructions">The (hidden) text title of the share a link share button.</p>', 
+		'enm_seriesengine_lang_sharepop_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_sharepop_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_sharepop = $se_options['lang_sharepop'];
+		if ( !isset($se_options['lang_sharepop']) ) {
+			echo "<input id='lang_sharepop' name='enm_seriesengine_options[lang_sharepop]' type='text' value='Share Link' size='30' />";
+		} else {
+			echo "<input id='lang_sharepop' name='enm_seriesengine_options[lang_sharepop]' type='text' value='" . $se_options['lang_sharepop'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Share Email
+		'enm_seriesengine_lang_shareemail', 
+		'Email Link: <p class="se-form-instructions">The (hidden) text title of the Email share button.</p>', 
+		'enm_seriesengine_lang_shareemail_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_shareemail_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_shareemail = $se_options['lang_shareemail'];
+		if ( !isset($se_options['lang_shareemail']) ) {
+			echo "<input id='lang_shareemail' name='enm_seriesengine_options[lang_shareemail]' type='text' value='Send Email' size='30' />";
+		} else {
+			echo "<input id='lang_shareemail' name='enm_seriesengine_options[lang_shareemail]' type='text' value='" . $se_options['lang_shareemail'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // More Topics Associated with
+		'enm_seriesengine_lang_morefromtopics', 
+		'More Messages Associated with: <p class="se-form-instructions">The title above a list of related Messages when a Topic has been chosen.</p>', 
+		'enm_seriesengine_lang_morefromtopics_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_morefromtopics_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_morefromtopics = $se_options['lang_morefromtopics'];
+		if ( !isset($se_options['lang_morefromtopics']) ) {
+			echo "<input id='lang_morefromtopics' name='enm_seriesengine_options[lang_morefromtopics]' type='text' value='More PLURAL_MESSAGES_LABEL Associated With' size='40' />";
+		} else {
+			echo "<input id='lang_morefromtopics' name='enm_seriesengine_options[lang_morefromtopics]' type='text' value='" . $se_options['lang_morefromtopics'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // More From the Book of
+		'enm_seriesengine_lang_morefrombooks', 
+		'More From the Book of: <p class="se-form-instructions">The title above a list of related Messages when a Book has been chosen.</p>', 
+		'enm_seriesengine_lang_morefrombooks_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_morefrombooks_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_morefrombooks = $se_options['lang_morefrombooks'];
+		if ( !isset($se_options['lang_morefrombooks']) ) {
+			echo "<input id='lang_morefrombooks' name='enm_seriesengine_options[lang_morefrombooks]' type='text' value='More From the BOOK_LABEL of' size='40' />";
+		} else {
+			echo "<input id='lang_morefrombooks' name='enm_seriesengine_options[lang_morefrombooks]' type='text' value='" . $se_options['lang_morefrombooks'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // More Messages from
+		'enm_seriesengine_lang_morefromspeakers', 
+		'More Messages from: <p class="se-form-instructions">The title above a list of related Messages when a Speaker has been chosen.</p>', 
+		'enm_seriesengine_lang_morefromspeakers_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_morefromspeakers_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_morefromspeakers = $se_options['lang_morefromspeakers'];
+		if ( !isset($se_options['lang_morefromspeakers']) ) {
+			echo "<input id='lang_morefromspeakers' name='enm_seriesengine_options[lang_morefromspeakers]' type='text' value='More PLURAL_MESSAGES_LABEL from' size='40' />";
+		} else {
+			echo "<input id='lang_morefromspeakers' name='enm_seriesengine_options[lang_morefromspeakers]' type='text' value='" . $se_options['lang_morefromspeakers'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // More Messages
+		'enm_seriesengine_lang_morefromgeneric', 
+		'More Messages: <p class="se-form-instructions">The title above a list of related Messages when viewing Messages from all Series.</p>', 
+		'enm_seriesengine_lang_morefromgeneric_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_morefromgeneric_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_morefromgeneric = $se_options['lang_morefromgeneric'];
+		if ( !isset($se_options['lang_morefromgeneric']) ) {
+			echo "<input id='lang_morefromgeneric' name='enm_seriesengine_options[lang_morefromgeneric]' type='text' value='More PLURAL_MESSAGES_LABEL' size='40' />";
+		} else {
+			echo "<input id='lang_morefromgeneric' name='enm_seriesengine_options[lang_morefromgeneric]' type='text' value='" . $se_options['lang_morefromgeneric'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // More From
+		'enm_seriesengine_lang_morefromseries', 
+		'More From: <p class="se-form-instructions">The title above a list of related Messages when a Series has been chosen..</p>', 
+		'enm_seriesengine_lang_morefromseries_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_morefromseries_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_morefromseries = $se_options['lang_morefromseries'];
+		if ( !isset($se_options['lang_morefromseries']) ) {
+			echo "<input id='lang_morefromseries' name='enm_seriesengine_options[lang_morefromseries]' type='text' value='More From' size='40' />";
+		} else {
+			echo "<input id='lang_morefromseries' name='enm_seriesengine_options[lang_morefromseries]' type='text' value='" . $se_options['lang_morefromseries'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // Pagination More Button
+		'enm_seriesengine_lang_pagemore', 
+		'Pagination More Button: <p class="se-form-instructions">The label for the More button in pagination links.</p>', 
+		'enm_seriesengine_lang_pagemore_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_pagemore_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_pagemore = $se_options['lang_pagemore'];
+		if ( !isset($se_options['lang_pagemore']) ) {
+			echo "<input id='lang_pagemore' name='enm_seriesengine_options[lang_pagemore]' type='text' value='More' size='20' />";
+		} else {
+			echo "<input id='lang_pagemore' name='enm_seriesengine_options[lang_pagemore]' type='text' value='" . $se_options['lang_pagemore'] . "' size='20' />";
+		}
+	};
+
+	add_settings_field( // Pagination Back Button
+		'enm_seriesengine_lang_pageback', 
+		'Pagination Back Button: <p class="se-form-instructions">The label for the Back button in pagination links.</p>', 
+		'enm_seriesengine_lang_pageback_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_pageback_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_pageback = $se_options['lang_pageback'];
+		if ( !isset($se_options['lang_pageback']) ) {
+			echo "<input id='lang_pageback' name='enm_seriesengine_options[lang_pageback]' type='text' value='Back' size='20' />";
+		} else {
+			echo "<input id='lang_pageback' name='enm_seriesengine_options[lang_pageback]' type='text' value='" . $se_options['lang_pageback'] . "' size='20' />";
+		}
+	};
+
+	add_settings_field( // Podcast "Message from"
+		'enm_seriesengine_lang_podcastmessagefrom', 
+		'"Message from" in Podcasts: <p class="se-form-instructions">Text found in Messages without descriptions in thier podcast feeds.</p>', 
+		'enm_seriesengine_lang_podcastmessagefrom_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_podcastmessagefrom_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_podcastmessagefrom = $se_options['lang_podcastmessagefrom'];
+		if ( !isset($se_options['lang_podcastmessagefrom']) ) {
+			echo "<input id='lang_podcastmessagefrom' name='enm_seriesengine_options[lang_podcastmessagefrom]' type='text' value='MESSAGE_LABEL from' size='30' />";
+		} else {
+			echo "<input id='lang_podcastmessagefrom' name='enm_seriesengine_options[lang_podcastmessagefrom]' type='text' value='" . $se_options['lang_podcastmessagefrom'] . "' size='30' />";
+		}
+	};
+
+	add_settings_field( // Permalink "Click to view more."
+		'enm_seriesengine_lang_permaclicktoview', 
+		'"Click to view more" in Permalinks: <p class="se-form-instructions">Filler text in OG tags on permalink pages.</p>', 
+		'enm_seriesengine_lang_permaclicktoview_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_permaclicktoview_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_permaclicktoview = $se_options['lang_permaclicktoview'];
+		if ( !isset($se_options['lang_permaclicktoview']) ) {
+			echo "<input id='lang_permaclicktoview' name='enm_seriesengine_options[lang_permaclicktoview]' type='text' value='Click to view more.' size='40' />";
+		} else {
+			echo "<input id='lang_permaclicktoview' name='enm_seriesengine_options[lang_permaclicktoview]' type='text' value='" . $se_options['lang_permaclicktoview'] . "' size='40' />";
+		}
+	};
+
+	add_settings_field( // Permalink Excerpt
+		'enm_seriesengine_lang_permalinkblankexcerpt', 
+		'Permalink Blank Excerpt Description: <p class="se-form-instructions">More filler text in OG tags on permalink pages.</p>', 
+		'enm_seriesengine_lang_permalinkblankexcerpt_input', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_language_settings' 
+	);
+	
+	function enm_seriesengine_lang_permalinkblankexcerpt_input() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$lang_permalinkblankexcerpt = $se_options['lang_permalinkblankexcerpt'];
+		if ( !isset($se_options['lang_permalinkblankexcerpt']) ) {
+			echo "<input id='lang_permalinkblankexcerpt' name='enm_seriesengine_options[lang_permalinkblankexcerpt]' type='text' value='A MESSAGE_LABEL from the SERIES_LABEL' size='40' />";
+		} else {
+			echo "<input id='lang_permalinkblankexcerpt' name='enm_seriesengine_options[lang_permalinkblankexcerpt]' type='text' value='" . $se_options['lang_permalinkblankexcerpt'] . "' size='40' />";
+		}
+	};
+
+	/* TEST */
 
 
 	// BEGIN CSS Colors
@@ -2528,6 +3361,8 @@
 		$valid['default_podcast_series'] = $input['default_podcast_series'];
 		$valid['noajax'] = $input['noajax'];
 		$valid['cardview'] = $input['cardview'];
+		$valid['language'] = $input['language'];
+		$valid['languageprev'] = $input['languageprev'];
 		$valid['bibleoption'] = $input['bibleoption'];
 		$valid['playerstyle'] = $input['playerstyle'];
 		$valid['deftrans'] = $input['deftrans'];
@@ -2613,6 +3448,7 @@
 		$valid['pagenumberselectedbg'] = strip_tags( $input['pagenumberselectedbg'] );
 		$valid['pagenumberselectedtext'] = strip_tags( $input['pagenumberselectedtext'] );
 
+		$valid['usepermalinks'] = $input['usepermalinks'];
 		$valid['permalinkslug'] = $input['permalinkslug'];
 		$valid['permalink_ogtags'] = $input['permalink_ogtags'];
 		$valid['permalink_show_post_type'] = $input['permalink_show_post_type'];
@@ -2629,6 +3465,36 @@
 		$valid['permalink_single_blurb'] = $input['permalink_single_blurb'];
 		$valid['default_permalink_prefix'] = $input['default_permalink_prefix'];
 		$valid['default_permalink_speaker'] = $input['default_permalink_speaker'];
+
+		$valid['lang_fromseries'] = $input['lang_fromseries'];
+		$valid['lang_sharelinktitle'] = $input['lang_sharelinktitle'];
+		$valid['lang_sharelinkinstructions'] = $input['lang_sharelinkinstructions'];
+		$valid['lang_sharelinkclosebutton'] = $input['lang_sharelinkclosebutton'];
+		$valid['lang_archiveexplore'] = $input['lang_archiveexplore'];
+		$valid['lang_explorerbrowseseries'] = $input['lang_explorerbrowseseries'];
+		$valid['lang_explorerbrowsespeakers'] = $input['lang_explorerbrowsespeakers'];
+		$valid['lang_explorerbrowsetopics'] = $input['lang_explorerbrowsetopics'];
+		$valid['lang_explorerbrowsebooks'] = $input['lang_explorerbrowsebooks'];
+		$valid['lang_explorerarchives'] = $input['lang_explorerarchives'];
+		$valid['lang_explorermessages'] = $input['lang_explorermessages'];
+		$valid['lang_relatedtopics'] = $input['lang_relatedtopics'];
+		$valid['lang_moremessagesfrom'] = $input['lang_moremessagesfrom'];
+		$valid['lang_downloadaudio'] = $input['lang_downloadaudio'];
+		$valid['lang_sharefb'] = $input['lang_sharefb'];
+		$valid['lang_sharetw'] = $input['lang_sharetw'];
+		$valid['lang_sharepop'] = $input['lang_sharepop'];
+		$valid['lang_shareemail'] = $input['lang_shareemail'];
+		$valid['lang_morefromtopics'] = $input['lang_morefromtopics'];
+		$valid['lang_morefrombooks'] = $input['lang_morefrombooks'];
+		$valid['lang_morefromspeakers'] = $input['lang_morefromspeakers'];
+		$valid['lang_morefromgeneric'] = $input['lang_morefromgeneric'];
+		$valid['lang_morefromseries'] = $input['lang_morefromseries'];
+		$valid['lang_pagemore'] = $input['lang_pagemore'];
+		$valid['lang_pageback'] = $input['lang_pageback'];
+		$valid['lang_loading'] = $input['lang_loading'];
+		$valid['lang_podcastmessagefrom'] = $input['lang_podcastmessagefrom'];
+		$valid['lang_permaclicktoview'] = $input['lang_permaclicktoview'];
+		$valid['lang_permalinkblankexcerpt'] = $input['lang_permalinkblankexcerpt'];
 
 		if ( empty( $input['permalinkslug'] ) ) { 
 			$valid['permalinkslug'] = 'messages';
@@ -2686,58 +3552,6 @@
 		if ( !is_numeric($input['widgetwidth']) ) {
 			add_settings_error( 'enm_seriesengine_widgetwidth_input', 'enm_seriesengine_texterror', 'You must enter a valid width for the size of the Series graphics used in your widgets.', 'error' );
 			$valid['widgetwidth'] = '200';
-		}
-		
-		if ( empty( $input['videotablabel'] ) ) {
-			$valid['videotablabel'] = 'Watch';
-		}
-		
-		if ( empty( $input['audiotablabel'] ) ) {
-			$valid['audiotablabel'] = 'Listen';
-		}
-
-		if ( empty( $input['seriest'] ) ) { 
-			$valid['seriest'] = 'Series';
-		}
-
-		if ( empty( $input['seriestp'] ) ) { 
-			$valid['seriestp'] = 'Series';
-		}
-
-		if ( empty( $input['topict'] ) ) { 
-			$valid['topict'] = 'Series';
-		}
-
-		if ( empty( $input['topictp'] ) ) { 
-			$valid['topictp'] = 'Series';
-		}
-
-		if ( empty( $input['speakert'] ) ) { 
-			$valid['speakert'] = 'Speaker';
-		}
-
-		if ( empty( $input['speakertp'] ) ) { 
-			$valid['speakertp'] = 'Speakers';
-		}
-
-		if ( empty( $input['messaget'] ) ) { 
-			$valid['messaget'] = 'Message';
-		}
-
-		if ( empty( $input['messagetp'] ) ) { 
-			$valid['messagetp'] = 'Messages';
-		}
-
-		if ( empty( $input['bookt'] ) ) { 
-			$valid['bookt'] = 'Book';
-		}
-
-		if ( empty( $input['booktp'] ) ) { 
-			$valid['booktp'] = 'Books';
-		}
-
-		if ( empty( $input['scripturelabel'] ) ) { 
-			$valid['scripturelabel'] = 'Scripture References';
 		}
 		
 		/*if ( empty( $input['enableseraw'] ) ) {
@@ -2976,6 +3790,24 @@
 
 		if ( empty( $input['pagenumberselectedtext'] ) ) { 
 			$valid['pagenumberselectedtext'] = 'D4D4D4';
+		}
+
+		if ( $input['language'] == 3 ) { //German
+			include(dirname(__FILE__) . '/../lang/ger_default_values.php');
+		} elseif ( $input['language'] == 2 ) { // Spanish
+			include(dirname(__FILE__) . '/../lang/spa_default_values.php');
+		} else { // English
+			include(dirname(__FILE__) . '/../lang/eng_default_values.php');
+		}
+
+		if ( $input['languageprev'] == "" || ( $input['languageprev'] >= 1 && ( $input['languageprev'] != $input['language'] ) ) ) {
+			if ( $input['language'] == 3 ) { //German
+				include(dirname(__FILE__) . '/../lang/ger_trans.php');
+			} elseif ( $input['language'] == 2 ) { // Spanish
+				include(dirname(__FILE__) . '/../lang/spa_trans.php');
+			} else { // English
+				include(dirname(__FILE__) . '/../lang/eng_trans.php');
+			}
 		}
 		
 		return $valid; 

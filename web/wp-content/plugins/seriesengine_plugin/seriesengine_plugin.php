@@ -2,7 +2,7 @@
 /* Plugin Name: Series Engine 
 Plugin URI: http://seriesengine.com
 Description: Series Engine is the best way to share audio and video with WordPress. To get started, activate the plugin and open the new "Series Engine" menu. Follow the instructions on the <a href="admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide">User Guide page</a> to embed a media browser, change the color scheme and more.
-Version: 2.6.1
+Version: 2.7
 Author: Eric Murrell (Volacious) 
 Author URI: http://seriesengine.com */ 
 
@@ -18,7 +18,7 @@ $ENMSEUpdateChecker = PucFactory::buildUpdateChecker(
 
 /* ----- Install the Plugin ----- */
 
-define ( 'ENMSE_CURRENT_VERSION', '2.6.1' );
+define ( 'ENMSE_CURRENT_VERSION', '2.7' );
 
 $enmse_options = get_option( 'enm_seriesengine_options' ); 
 
@@ -1039,7 +1039,7 @@ endif;
 
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.6.1" ) {
+if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7" ) {
 	include('includes/core/updates.php');
 }
 

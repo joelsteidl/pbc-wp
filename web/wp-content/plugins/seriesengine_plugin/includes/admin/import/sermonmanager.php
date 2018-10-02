@@ -381,336 +381,336 @@
 								$start_book = 0;
 								if (preg_match('/(Genesis|genesis|GEN|Gen|gen)+/i', $verse)) {
 									$start_book = 1;
-									$shortbookname = "Gen";
-									$bookname = "Genesis";
+									$bookname = $enmse_booknames[$start_book];
+									$shortbookname = $enmse_bookabr[$start_book];
 									$bookcode = "GEN";
 								} elseif (preg_match('/(Exodus|exodus|EXO|Exo|exo)+/i', $verse)) {
 									$start_book = 2;
-									$shortbookname = "Exo";
-									$bookname = "Exodus";
+									$bookname = $enmse_booknames[$start_book];
+									$shortbookname = $enmse_bookabr[$start_book];
 									$bookcode = "EXO";
 								} elseif (preg_match('/(Leviticus|leviticus|LEV|Lev|lev)+/i', $verse)) {
 									$start_book = 3;
-									$shortbookname = "Lev";
-									$bookname = "Leviticus";
+									$bookname = $enmse_booknames[$start_book];
+									$shortbookname = $enmse_bookabr[$start_book];
 									$bookcode = "LEV";
 								} elseif (preg_match('/(Numbers|numbers|NUM|Num|num)+/i', $verse)) {
 									$start_book = 4;
-									$shortbookname = "Num";
-									$bookname = "Numbers";
+									$bookname = $enmse_booknames[$start_book];
+									$shortbookname = $enmse_bookabr[$start_book];
 									$bookcode = "NUM";
 								} elseif (preg_match('/(Deuteronomy|deuteronomy|DEUT|Deut|deut)+/i', $verse)) {
 									$start_book = 5;
-									$shortbookname = "Deut";
-									$bookname = "Deuteronomy";
+									$bookname = $enmse_booknames[$start_book];
+									$shortbookname = $enmse_bookabr[$start_book];
 									$bookcode = "DEU";
 								} elseif (preg_match('/(Joshua|joshua|JOSH|Josh|josh)+/i', $verse)) {
 									$start_book = 6;
-									$bookname = "Joshua";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JOS";
-									$shortbookname = "Josh";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Judges|judges|JUDG|Judg|judg)+/i', $verse)) {
 									$start_book = 7;
-									$bookname = "Judges";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JDG";
-									$shortbookname = "Judg";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Ruth|ruth)+/i', $verse)) {
 									$start_book = 8;
-									$bookname = "Ruth";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "RUT";
-									$shortbookname = "Ruth";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Samuel|1 samuel|1 SAM|1 Sam|1 sam)+/i', $verse)) {
 									$start_book = 9;
-									$bookname = "1 Samuel";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1SA";
-									$shortbookname = "1 Sam";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Samuel|2 samuel|2 SAM|2 Sam|2 sam)+/i', $verse)) {
 									$start_book = 10;
-									$bookname = "2 Samuel";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2SA";
-									$shortbookname = "2 Sam";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Kings|1 kings)+/i', $verse)) {
 									$start_book = 11;
-									$bookname = "1 Kings";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1KI";
-									$shortbookname = "1 Kings";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Kings|2 kings)+/i', $verse)) {
 									$start_book = 12;
-									$bookname = "2 Kings";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2KI";
-									$shortbookname = "2 Kings";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Chronicles|1 chronicles|1 CHR|1 Chr|1 chr)+/i', $verse)) {
 									$start_book = 13;
-									$bookname = "1 Chronicles";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1CH";
-									$shortbookname = "1 Chr";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Chronicles|2 chronicles|2 CHR|2 Chr|2 chr)+/i', $verse)) {
 									$start_book = 14;
-									$bookname = "2 Chronicles";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2CH";
-									$shortbookname = "2 Chr";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Ezra|ezra)+/i', $verse)) {
 									$start_book = 15;
-									$bookname = "Ezra";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "EZR";
-									$shortbookname = "Ezra";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Nehemiah|nehemiah|NEH|Neh|neh)+/i', $verse)) {
 									$start_book = 16;
-									$bookname = "Nehemiah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "NEH";
-									$shortbookname = "Neh";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Esther|esther|ESTH|Esth|esth)+/i', $verse)) {
 									$start_book = 17;
-									$bookname = "Esther";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "EST";
-									$shortbookname = "Esth";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Job|job)+/i', $verse)) {
 									$start_book = 18;
-									$bookname = "Job";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JOB";
-									$shortbookname = "Job";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Psalms|psalms|Psalm|psalm|PS|Ps|ps)+/i', $verse)) {
 									$start_book = 19;
-									$bookname = "Psalms";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "PSA";
-									$shortbookname = "Ps";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Proverbs|proverbs|PROV|Prov|prov)+/i', $verse)) {
 									$start_book = 20;
-									$bookname = "Proverbs";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "PRO";
-									$shortbookname = "Prov";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Ecclesiastes|ecclesiastes|ECC|Ecc|ecc)+/i', $verse)) {
 									$start_book = 21;
-									$bookname = "Ecclesiastes";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ECC";
-									$shortbookname = "Ecc";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Song of Solomon|song of solomon|Song of Songs|song of songs|SONG|Song|song)+/i', $verse)) {
 									$start_book = 22;
-									$bookname = "Song of Solomon";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "SNG";
-									$shortbookname = "Song";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Isaiah|isaiah|ISA|Isa|isa)+/i', $verse)){
 									$start_book = 23;
-									$bookname = "Isaiah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ISA";
-									$shortbookname = "Isa";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Jeremiah|jeremiah|JER|Jer|jer)+/i', $verse)) {
 									$start_book = 24;
-									$bookname = "Jeremiah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JER";
-									$shortbookname = "Jer";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Lamentations|lamentations|LAM|Lam|lam)+/i', $verse)) {
 									$start_book = 25;
-									$bookname = "Lamentations";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "LAM";
-									$shortbookname = "Lam";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Ezekiel|ezekiel|EZEK|Ezek|ezek)+/i', $verse)) {
 									$start_book = 26;
-									$bookname = "Ezekiel";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "EZK";
-									$shortbookname = "Ezek";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Daniel|daniel|DAN|Dan|dan)+/i', $verse)) {
 									$start_book = 27;
-									$bookname = "Daniel";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "DAN";
-									$shortbookname = "Dan";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Hosea|hosea|HOS|Hos|hos)+/i', $verse)) {
 									$start_book = 28;
-									$bookname = "Hosea";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "HOS";
-									$shortbookname = "Hos";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Joel|joel)+/i', $verse)) {
 									$start_book = 29;
-									$bookname = "Joel";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JOL";
-									$shortbookname = "Joel";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Amos|amos)+/i', $verse)) {
 									$start_book = 30;
-									$bookname = "Amos";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "AMO";
-									$shortbookname = "Amos";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Obadiah|obadiah|OBAD|Obad|obad)+/i', $verse)) {
 									$start_book = 31;
-									$bookname = "Obadiah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "OBA";
-									$shortbookname = "Obad";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Jonah|jonah|JON|Jon|jon)+/i', $verse)) {
 									$start_book = 32;
-									$bookname = "Jonah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JON";
-									$shortbookname = "Jon";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Micah|micah|MIC|Mic|mic)+/i', $verse)) {
 									$start_book = 33;
-									$bookname = "Micah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "MIC";
-									$shortbookname = "Mic";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Nahum|nahum|NAH|Nah|nah)+/i', $verse)) {
 									$start_book = 34;
-									$bookname = "Nahum";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "NAM";
-									$shortbookname = "Nah";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Habakkuk|habakkuk|HAB|Hab|hab)+/i', $verse)) {
 									$start_book = 35;
-									$bookname = "Habakkuk";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "HAB";
-									$shortbookname = "Hab";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Zephaniah|zephaniah|ZEPH|Zeph|zeph)+/i', $verse)) {
 									$start_book = 36;
-									$bookname = "Zephaniah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ZEP";
-									$shortbookname = "Zeph";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Haggai|haggai|HAG|Hag|hag)+/i', $verse)) {
 									$start_book = 37;
-									$bookname = "Haggai";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "HAG";
-									$shortbookname = "Hag";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Zechariah|zechariah|ZECH|Zech|zech)+/i', $verse)) {
 									$start_book = 38;
-									$bookname = "Zechariah";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ZEC";
-									$shortbookname = "Zech";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Malachi|malachi|MAL|Mal|mal)+/i', $verse)) {
 									$start_book = 39;
-									$bookname = "Malachi";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "MAL";
-									$shortbookname = "Mal";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Matthew|matthew|MATT|Matt|matt)+/i', $verse)) {
 									$start_book = 40;
-									$bookname = "Matthew";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "MAT";
-									$shortbookname = "Mt";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Mark|mark|MK|Mk|mk)+/i', $verse)) {
 									$start_book = 41;
-									$bookname = "Mark";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "MRK";
-									$shortbookname = "Mk";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Luke|luke|LK|Lk|lk)+/i', $verse)) {
 									$start_book = 42;
-									$bookname = "Luke";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "LUK";
-									$shortbookname = "Lk";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(John|john|JN|Jn|jn)+/i', $verse)) {
 									if (preg_match('/(1 John|1 john|1 JN|1 Jn|1 jn)+/i', $verse)) {
 										$start_book = 62;
-										$bookname = "1 John";
+										$bookname = $enmse_booknames[$start_book];
 										$bookcode = "1JN";
-										$shortbookname = "1 Jn";
+										$shortbookname = $enmse_bookabr[$start_book];
 									} elseif (preg_match('/(2 John|2 john|2 JN|2 Jn|2 jn)+/i', $verse)) {
 										$start_book = 63;
-										$bookname = "2 John";
+										$bookname = $enmse_booknames[$start_book];
 										$bookcode = "2JN";
-										$shortbookname = "2 Jn";
+										$shortbookname = $enmse_bookabr[$start_book];
 									} elseif (preg_match('/(3 John|3 john|3 JN|3 Jn|3 jn)+/i', $verse)) {
 										$start_book = 64;
-										$bookname = "3 John";
+										$bookname = $enmse_booknames[$start_book];
 										$bookcode = "3JN";
-										$shortbookname = "3 Jn";
+										$shortbookname = $enmse_bookabr[$start_book];
 									} else {
 										$start_book = 43;
-										$bookname = "John";
+										$bookname = $enmse_booknames[$start_book];
 										$bookcode = "JHN";
-										$shortbookname = "Jn";
+										$shortbookname = $enmse_bookabr[$start_book];
 									}
 								} elseif (preg_match('/(Acts|acts)+/i', $verse)) {
 									$start_book = 44;
-									$bookname = "Acts";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ACT";
-									$shortbookname = "Acts";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Romans|romans|ROM|Rom|rom)+/i', $verse)){
 									$start_book = 45;
-									$bookname = "Romans";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "ROM";
-									$shortbookname = "Rom";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Corinthians|1 corinthians|1 COR|1 Cor|1 cor)+/i', $verse)) {
 									$start_book = 46;
-									$bookname = "1 Corinthians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1CO";
-									$shortbookname = "1 Cor";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Corinthians|2 corinthians|2 COR|2 Cor|2 cor)+/i', $verse)) {
 									$start_book = 47;
-									$bookname = "2 Corinthians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2CO";
-									$shortbookname = "2 Cor";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Galatians|galatians|GAL|Gal|gal)+/i', $verse)) {
 									$start_book = 48;
-									$bookname = "Galatians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "GAL";
-									$shortbookname = "Gal";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Ephesians|ephesians|EPH|Eph|eph)+/i', $verse)) {
 									$start_book = 49;
-									$bookname = "Ephesians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "EPH";
-									$shortbookname = "Eph";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Philippians|philippians|PHIL|Phil|phil)+/i', $verse)) {
 									$start_book = 50;
-									$bookname = "Philippians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "PHP";
-									$shortbookname = "Phil";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Colossians|colossians|COL|Col|col)+/i', $verse)) {
 									$start_book = 51;
-									$bookname = "Colossians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "COL";
-									$shortbookname = "Col";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Thessalonians|1 thessalonians|1 THESS|1 Thess|1 thess)+/i', $verse)) {
 									$start_book = 52;
-									$bookname = "1 Thessalonians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1TH";
-									$shortbookname = "1 Thess";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Thessalonians|2 thessalonians|2 THESS|2 Thess|2 thess)+/i', $verse)) {
 									$start_book = 53;
-									$bookname = "2 Thessalonians";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2TH";
-									$shortbookname = "2 Thess";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Timothy|1 timothy|1 TIM|1 Tim|1 tim)+/i', $verse)) {
 									$start_book = 54;
-									$bookname = "1 Timothy";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1TI";
-									$shortbookname = "1 Tim";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2 Timothy|2 timothy|2 TIM|2 Tim|2 tim)+/i', $verse)) {
 									$start_book = 55;
-									$bookname = "2 Timothy";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2TI";
-									$shortbookname = "2 Tim";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Titus|titus)+/i', $verse)) {
 									$start_book = 56;
-									$bookname = "Titus";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "TIT";
-									$shortbookname = "Titus";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Philemon|philemon)+/i', $verse)) {
 									$start_book = 57;
-									$bookname = "Philemon";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "PHM";
-									$shortbookname = "Philemon";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Hebrews|hebrews|HEB|Heb|heb)+/i', $verse)) {
 									$start_book = 58;
-									$bookname = "Hebrews";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "HEB";
-									$shortbookname = "Heb";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(James|james|JAS|Jas|jas)+/i', $verse)) {
 									$start_book = 59;
-									$bookname = "James";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JAS";
-									$shortbookname = "Jas";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(1 Peter|1 peter|1 PET|1 Pet|1 pet)+/i', $verse)) {
 									$start_book = 60;
-									$bookname = "1 Peter";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "1PE";
-									$shortbookname = "1 Pet";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(2+\s+Peter|2 peter|2 PET|2 Pet|2 pet)+/i', $verse)) {
 									$start_book = 61;
-									$bookname = "2 Peter";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "2PE";
-									$shortbookname = "2 Pet";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Jude|jude)+/i', $verse)) {
 									$start_book = 65;
-									$bookname = "Jude";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "JUD";
-									$shortbookname = "Jude";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} elseif (preg_match('/(Revelation|revelation|Revelations|revelations|REV|Rev|rev)+/i', $verse)) {
 									$start_book = 66;
-									$bookname = "Revelation";
+									$bookname = $enmse_booknames[$start_book];
 									$bookcode = "REV";
-									$shortbookname = "Rev";
+									$shortbookname = $enmse_bookabr[$start_book];
 								} else {
 									$start_book = 0;
 								}

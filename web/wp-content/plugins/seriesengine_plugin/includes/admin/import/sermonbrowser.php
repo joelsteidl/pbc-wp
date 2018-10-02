@@ -203,276 +203,342 @@
 
 						if ( $sc->book_name == "Genesis" ) {
 							$start_book = 1;
-							$shortbookname = "Gen";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 							$bookcode = "GEN";
 						} elseif ( $sc->book_name == "Exodus" ) {
 							$start_book = 2;
-							$shortbookname = "Exo";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 							$bookcode = "EXO";
 						} elseif ( $sc->book_name == "Leviticus" ) {
 							$start_book = 3;
-							$shortbookname = "Lev";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 							$bookcode = "LEV";
 						} elseif ( $sc->book_name == "Numbers" ) {
 							$start_book = 4;
-							$shortbookname = "Num";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 							$bookcode = "NUM";
 						} elseif ( $sc->book_name == "Deuteronomy" ) {
 							$start_book = 5;
-							$shortbookname = "Deut";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 							$bookcode = "DEU";
 						} elseif ( $sc->book_name == "Joshua" ) {
 							$start_book = 6;
 							$bookcode = "JOS";
-							$shortbookname = "Josh";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Judges" ) {
 							$start_book = 7;
 							$bookcode = "JDG";
-							$shortbookname = "Judg";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Ruth" ) {
 							$start_book = 8;
 							$bookcode = "RUT";
-							$shortbookname = "Ruth";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Samuel" ) {
 							$start_book = 9;
 							$bookcode = "1SA";
-							$shortbookname = "1 Sam";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Samuel" ) {
 							$start_book = 10;
 							$bookcode = "2SA";
-							$shortbookname = "2 Sam";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Kings" ) {
 							$start_book = 11;
 							$bookcode = "1KI";
-							$shortbookname = "1 Kings";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Kings" ) {
 							$start_book = 12;
 							$bookcode = "2KI";
-							$shortbookname = "2 Kings";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Chronicles" ) {
 							$start_book = 13;
 							$bookcode = "1CH";
-							$shortbookname = "1 Chr";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Chronicles" ) {
 							$start_book = 14;
 							$bookcode = "2CH";
-							$shortbookname = "2 Chr";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Ezra" ) {
 							$start_book = 15;
 							$bookcode = "EZR";
-							$shortbookname = "Ezra";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Nehemiah" ) {
 							$start_book = 16;
 							$bookcode = "NEH";
-							$shortbookname = "Neh";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Esther" ) {
 							$start_book = 17;
 							$bookcode = "EST";
-							$shortbookname = "Esth";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Job" ) {
 							$start_book = 18;
 							$bookcode = "JOB";
-							$shortbookname = "Job";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Psalms" ) {
 							$start_book = 19;
 							$bookcode = "PSA";
-							$shortbookname = "Ps";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Proverbs" ) {
 							$start_book = 20;
 							$bookcode = "PRO";
-							$shortbookname = "Prov";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Ecclesiastes" ) {
 							$start_book = 21;
 							$bookcode = "ECC";
-							$shortbookname = "Ecc";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Song of Solomon" ) {
 							$start_book = 22;
 							$bookcode = "SNG";
-							$shortbookname = "Song";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Isaiah" ) {
 							$start_book = 23;
 							$bookcode = "ISA";
-							$shortbookname = "Isa";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Jeremiah" ) {
 							$start_book = 24;
 							$bookcode = "JER";
-							$shortbookname = "Jer";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Lamentations" ) {
 							$start_book = 25;
 							$bookcode = "LAM";
-							$shortbookname = "Lam";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Ezekiel" ) {
 							$start_book = 26;
 							$bookcode = "EZK";
-							$shortbookname = "Ezek";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Daniel" ) {
 							$start_book = 27;
 							$bookcode = "DAN";
-							$shortbookname = "Dan";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Hosea" ) {
 							$start_book = 28;
 							$bookcode = "HOS";
-							$shortbookname = "Hos";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Joel" ) {
 							$start_book = 29;
 							$bookcode = "JOL";
-							$shortbookname = "Joel";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Amos" ) {
 							$start_book = 30;
 							$bookcode = "AMO";
-							$shortbookname = "Amos";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Obadiah" ) {
 							$start_book = 31;
 							$bookcode = "OBA";
-							$shortbookname = "Obad";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Jonah" ) {
 							$start_book = 32;
 							$bookcode = "JON";
-							$shortbookname = "Jon";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Micah" ) {
 							$start_book = 33;
 							$bookcode = "MIC";
-							$shortbookname = "Mic";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Nahum" ) {
 							$start_book = 34;
 							$bookcode = "NAM";
-							$shortbookname = "Nah";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Habakkuk" ) {
 							$start_book = 35;
 							$bookcode = "HAB";
-							$shortbookname = "Hab";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Zephaniah" ) {
 							$start_book = 36;
 							$bookcode = "ZEP";
-							$shortbookname = "Zeph";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Haggai" ) {
 							$start_book = 37;
 							$bookcode = "HAG";
-							$shortbookname = "Hag";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Zechariah" ) {
 							$start_book = 38;
 							$bookcode = "ZEC";
-							$shortbookname = "Zech";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Malachi" ) {
 							$start_book = 39;
 							$bookcode = "MAL";
-							$shortbookname = "Mal";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name =="Matthew") {
 							$start_book = 40;
 							$bookcode = "MAT";
-							$shortbookname = "Mt";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Mark" ) {
 							$start_book = 41;
 							$bookcode = "MRK";
-							$shortbookname = "Mk";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Luke" ) {
 							$start_book = 42;
 							$bookcode = "LUK";
-							$shortbookname = "Lk";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "John" ) {
 							$start_book = 43;
 							$bookcode = "JHN";
-							$shortbookname = "Jn";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Acts" ) {
 							$start_book = 44;
 							$bookcode = "ACT";
-							$shortbookname = "Acts";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Romans" ) {
 							$start_book = 45;
 							$bookcode = "ROM";
-							$shortbookname = "Rom";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Corinthians" ) {
 							$start_book = 46;
 							$bookcode = "1CO";
-							$shortbookname = "1 Cor";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Corinthians") {
 							$start_book = 47;
 							$bookcode = "2CO";
-							$shortbookname = "2 Cor";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Galatians" ) {
 							$start_book = 48;
 							$bookcode = "GAL";
-							$shortbookname = "Gal";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Ephesians" ) {
 							$start_book = 49;
 							$bookcode = "EPH";
-							$shortbookname = "Eph";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Philippians" ) {
 							$start_book = 50;
 							$bookcode = "PHP";
-							$shortbookname = "Phil";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Colossians" ) {
 							$start_book = 51;
 							$bookcode = "COL";
-							$shortbookname = "Col";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Thessalonians" ) {
 							$start_book = 52;
 							$bookcode = "1TH";
-							$shortbookname = "1 Thess";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Thessalonians" ) {
 							$start_book = 53;
 							$bookcode = "2TH";
-							$shortbookname = "2 Thess";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Timothy" ) {
 							$start_book = 54;
 							$bookcode = "1TI";
-							$shortbookname = "1 Tim";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Timothy" ) {
 							$start_book = 55;
 							$bookcode = "2TI";
-							$shortbookname = "2 Tim";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Titus" ) {
 							$start_book = 56;
 							$bookcode = "TIT";
-							$shortbookname = "Titus";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Philemon" ) {
 							$start_book = 57;
 							$bookcode = "PHM";
-							$shortbookname = "Philemon";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Hebrews" ) {
 							$start_book = 58;
 							$bookcode = "HEB";
-							$shortbookname = "Heb";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "James" ) {
 							$start_book = 59;
 							$bookcode = "JAS";
-							$shortbookname = "Jas";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 Peter" ) {
 							$start_book = 60;
 							$bookcode = "1PE";
-							$shortbookname = "1 Pet";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 Peter" ) {
 							$start_book = 61;
 							$bookcode = "2PE";
-							$shortbookname = "2 Pet";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "1 John" ) {
 							$start_book = 62;
 							$bookcode = "1JN";
-							$shortbookname = "1 Jn";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "2 John" ) {
 							$start_book = 63;
 							$bookcode = "2JN";
-							$shortbookname = "2 Jn";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "3 John" ) {
 							$start_book = 64;
 							$bookcode = "3JN";
-							$shortbookname = "3 Jn";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} elseif ( $sc->book_name == "Jude" ) {
 							$start_book = 65;
 							$bookcode = "JUD";
-							$shortbookname = "Jude";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];;
 						} elseif ( $sc->book_name == "Revelation" ) {
 							$start_book = 66;
 							$bookcode = "REV";
-							$shortbookname = "Rev";
+							$sb_bookname = $enmse_booknames[$start_book];
+							$shortbookname = $enmse_bookabr[$start_book];
 						} 
 
 						if ( $start_verse != $end_verse ) {
-							$text = $sc->book_name . " " . $start_chapter . ":" . $start_verse . "-" . $end_verse;
+							$text = $sb_bookname . " " . $start_chapter . ":" . $start_verse . "-" . $end_verse;
 							$short_text = $shortbookname . " " . $start_chapter . ":" . $start_verse . "-" . $end_verse;
 							$link = "https://bible.com/bible/" . $trans . "/" . $bookcode . "." . $start_chapter . "." . $start_verse . "-" . $end_verse;
 						} else {
-							$text = $sc->book_name . " " . $start_chapter . ":" . $start_verse;
+							$text = $sb_bookname . " " . $start_chapter . ":" . $start_verse;
 							$short_text = $shortbookname . " " . $start_chapter . ":" . $start_verse;
 							$link = "https://bible.com/bible/" . $trans . "/" . $bookcode . "." . $start_chapter . "." . $start_verse;
 						}                                       

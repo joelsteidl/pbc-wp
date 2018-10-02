@@ -14,6 +14,13 @@ $enmse_playerdetailsbackground = $enmse_options['playerdetailsbackground'];
 $enmse_poweredby = $enmse_options['poweredby'];
 $enmse_dateformat = get_option( 'date_format' ); 
 
+
+if ( isset($enmse_options['usepermalinks']) ) { 
+	$enmse_usepermalinks = $enmse_options['usepermalinks'];
+} else {
+	$enmse_usepermalinks = 1;
+}
+
 if ( isset($enmse_options['archiveliststyle']) ) { 
 	$enmse_archivetype = $enmse_options['archiveliststyle'];
 } else {
@@ -72,79 +79,98 @@ if ( isset($enmse_options['playerstyle']) ) { // Style of media player and detai
 	$enmseplayerstyle = 1;
 }
 
+// ***** Get Language
+
+include('lang/language_settings.php');
+
 // ***** Get Labels
 
-		if ( isset($enmse_options['seriest']) ) { // Find Series Title
-			$enmseseriest = $enmse_options['seriest'];
-		} else {
-			$enmseseriest = "Series";
-		}
+if ( isset($enmse_options['seriest']) ) { // Find Series Title
+	$enmseseriest = $enmse_options['seriest'];
+} else {
+	$enmseseriest = "Series";
+}
 
-		if ( isset($enmse_options['seriestp']) ) { // Find Series Title (plural)
-			$enmseseriestp = $enmse_options['seriestp'];
-		} else {
-			$enmseseriestp = "Series";
-		}
+if ( isset($enmse_options['seriestp']) ) { // Find Series Title (plural)
+	$enmseseriestp = $enmse_options['seriestp'];
+} else {
+	$enmseseriestp = "Series";
+}
 
-		if ( isset($enmse_options['topict']) ) { // Find Topic Title
-			$enmsetopict = $enmse_options['topict'];
-		} else {
-			$enmsetopict = "Topic";
-		}
+if ( isset($enmse_options['topict']) ) { // Find Topic Title
+	$enmsetopict = $enmse_options['topict'];
+} else {
+	$enmsetopict = "Topic";
+}
 
-		if ( isset($enmse_options['topictp']) ) { // Find Topic Title (plural)
-			$enmsetopictp = $enmse_options['topictp'];
-		} else {
-			$enmsetopictp = "Topics";
-		}
+if ( isset($enmse_options['topictp']) ) { // Find Topic Title (plural)
+	$enmsetopictp = $enmse_options['topictp'];
+} else {
+	$enmsetopictp = "Topics";
+}
 
-		if ( isset($enmse_options['speakert']) ) { // Find Speaker Title
-			$enmsespeakert = $enmse_options['speakert'];
-		} else {
-			$enmsespeakert = "Speaker";
-		}
+if ( isset($enmse_options['speakert']) ) { // Find Speaker Title
+	$enmsespeakert = $enmse_options['speakert'];
+} else {
+	$enmsespeakert = "Speaker";
+}
 
-		if ( isset($enmse_options['speakertp']) ) { // Find Speakers Title (plural)
-			$enmsespeakertp = $enmse_options['speakertp'];
-		} else {
-			$enmsespeakertp = "Speakers";
-		}
+if ( isset($enmse_options['speakertp']) ) { // Find Speakers Title (plural)
+	$enmsespeakertp = $enmse_options['speakertp'];
+} else {
+	$enmsespeakertp = "Speakers";
+}
 
-		if ( isset($enmse_options['messaget']) ) { // Find Message Title
-			$enmsemessaget = $enmse_options['messaget'];
-		} else {
-			$enmsemessaget = "Message";
-		}
+if ( isset($enmse_options['messaget']) ) { // Find Message Title
+	$enmsemessaget = $enmse_options['messaget'];
+} else {
+	$enmsemessaget = "Message";
+}
 
-		if ( isset($enmse_options['messagetp']) ) { // Find Message Title (plural)
-			$enmsemessagetp = $enmse_options['messagetp'];
-		} else {
-			$enmsemessagetp = "Messages";
-		}
+if ( isset($enmse_options['messagetp']) ) { // Find Message Title (plural)
+	$enmsemessagetp = $enmse_options['messagetp'];
+} else {
+	$enmsemessagetp = "Messages";
+}
 
-		if ( isset($enmse_options['bookt']) ) { // Find Book Title
-			$enmsebookt = $enmse_options['bookt'];
-		} else {
-			$enmsebookt = "Book";
-		}
+if ( isset($enmse_options['bookt']) ) { // Find Book Title
+	$enmsebookt = $enmse_options['bookt'];
+} else {
+	$enmsebookt = "Book";
+}
 
-		if ( isset($enmse_options['booktp']) ) { // Find Book Title (plural)
-			$enmsebooktp = $enmse_options['booktp'];
-		} else {
-			$enmsebooktp = "Books";
-		}
+if ( isset($enmse_options['booktp']) ) { // Find Book Title (plural)
+	$enmsebooktp = $enmse_options['booktp'];
+} else {
+	$enmsebooktp = "Books";
+}
 
-		if ( isset($enmse_options['scripturelabel']) ) { // Find Scripture Label
-			$enmse_reftext = $enmse_options['scripturelabel'];
-		} else {
-			$enmse_reftext = "Scripture References";
-		}
+if ( isset($enmse_options['scripturelabel']) ) { // Find Scripture Label
+	$enmse_reftext = $enmse_options['scripturelabel'];
+} else {
+	$enmse_reftext = "Scripture References";
+}
 
-		if ( isset($enmse_options['bibleoption']) ) { // Is Scripture Enabled?
-			$bibleoption = $enmse_options['bibleoption'];
-		} else {
-			$bibleoption = 0;
-		}
+if ( isset($enmse_options['bibleoption']) ) { // Is Scripture Enabled?
+	$bibleoption = $enmse_options['bibleoption'];
+} else {
+	$bibleoption = 0;
+}
+
+if ( isset($enmse_options['language']) ) { // Find the Language
+	$enmse_language = $enmse_options['language'];
+} else {
+	$enmse_language = 1;
+}
+
+if ( $enmse_language == 3 ) { // German
+	include('lang/ger_bible_books.php');
+} elseif ( $enmse_language == 2 ) { // Spanish
+	include('lang/spa_bible_books.php');
+} else { // English
+	include('lang/eng_bible_books.php');
+}
+
 
 // ***** DISPLAY SERIES ARCHIVES
 if ( isset($_GET['enmse_archives']) || ($enmse_lo == 1 && $enmse_a == 1 && !isset($_GET['enmse_mid']) && !isset($_GET['enmse_sid']) && !isset($_GET['enmse_spid']) && !isset($_GET['enmse_tid']) && !isset($_GET['enmse_bid']) ) ) {
@@ -263,12 +289,12 @@ if ( !defined('ENMSE_FIND_PAGE') ) { // Find current page for building URLs
 	<script src="https://player.vimeo.com/api/player.js"></script>
 	<input type="hidden" name="enmse-random" value="<?php echo $enmse_randomval; ?>" class="enmse-random">
 	<div class="enmse-loading-icon" style="display: none;">
-		<p>Loading Content...</p>
+		<p><?php echo $enmse_loadingmessage; ?></p>
 	</div>
 	<div class="enmse-copy-link-box" style="display: none;">
-		<h4>Share a Link to this <?php echo $enmsemessaget; ?></h4>
-		<p>The link has been copied to your clipboard; paste it anywhere you would like to share it.</p>
-		<a href="#" class="enmse-copy-link-done">Close</a>
+		<h4><?php echo $enmse_sharelinktitle; ?></h4>
+		<p><?php echo $enmse_sharelinkinstructions; ?></p>
+		<a href="#" class="enmse-copy-link-done"><?php echo $enmse_sharelinkclosebutton; ?></a>
 	</div>
 	<div class="enmse-content-container" id="enmse-top<?php echo $enmse_randomval; ?>">
 		<input type="hidden" name="enmse-rrandom" value="<?php echo $enmse_randomval; ?>" class="enmse-rrandom">
@@ -309,12 +335,12 @@ if ( !defined('ENMSE_FIND_PAGE') ) { // Find current page for building URLs
 <?php } ?>
 
 	<?php if ( $enmse_poweredby != "text" ) { ?>
-	<h3 class="enmse-poweredby"><a href="http://seriesengine.com" target="_blank">Powered by Series Engine</a></h3>	
+	<h3 class="enmse-poweredby"><a href="http://seriesengine.com" target="_blank"><?php echo $enmse_poweredby; ?></a></h3>	
 	<?php } else { ?>
-	<p class="enmse-poweredbytext">Powered by <a href="http://seriesengine.com" target="_blank">Series Engine</a></p>
+	<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v2.6.1.042718 -->
+	<!-- v2.7.080418 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

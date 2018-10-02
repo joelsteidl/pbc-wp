@@ -22,7 +22,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -75,7 +75,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_tid=' . $enmse_singletopic->topic_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	
@@ -96,7 +96,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -149,7 +149,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_bid=' . $enmse_singlebook->book_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	
@@ -170,7 +170,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -223,7 +223,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	
@@ -244,7 +244,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -297,7 +297,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_spid=' . $enmse_singlespeaker->speaker_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	
@@ -317,7 +317,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_am=1&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_am=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_am=1&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_am=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -370,7 +370,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_am=1&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_am=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_am=1&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_am=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	
@@ -391,7 +391,7 @@
 
 
 				if ($enmse_current_page != 1) { // make previous button if not first page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '">&laquo;<span> Back</span></a> ';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="previous page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start - $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '">&laquo;<span> ' . $enmse_pageback . '</span></a> ';
 				}
 
 				if ($enmse_pages > 11) { // Make no more than 10 links to other pages at a time.
@@ -444,7 +444,7 @@
 				}
 
 				if ($enmse_current_page != $enmse_pages) { // make next button if not the last page
-					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '"><span>More </span>&raquo;</a>';
+					echo '<a href="' . $enmse_thispage . '&amp;enmse_o=1&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '" class="next page-numbers enmse-ajax-page" name="&amp;enmse_c=' . ($enmse_start + $enmse_display) . '&amp;enmse_p=' . $enmse_pages . '&amp;enmse_mid=' . $enmse_singlemessage->message_id . '&amp;enmse_sid=' . $enmse_singleseries->series_id . $enmse_mval . '"><span>' . $enmse_pagemore . ' </span>&raquo;</a>';
 				}
 
 				echo "<div style=\"clear: both;\"></div></div>\n"; 	

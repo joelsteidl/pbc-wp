@@ -2,7 +2,7 @@
 	require '../../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
 
 	// output headers so that the file is downloaded rather than displayed
-	header('Content-Type: text/csv; charset=utf-8');
+	header('Content-Type: text/csv; charset=utf-8', true, 200);
 	header('Content-Disposition: attachment; filename=series_engine_archive.csv');
 
 	// create a file pointer connected to the output stream
