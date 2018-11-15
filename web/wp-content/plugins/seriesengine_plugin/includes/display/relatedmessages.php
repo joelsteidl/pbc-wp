@@ -1,8 +1,8 @@
 <!-- Related Messages -->
 <?php if ( isset($_GET['enmse_tid']) && is_numeric($_GET['enmse_tid']) ) { // Only show if a series is relevant ?>
-<h3 class="enmse-more-title"><?php echo $enmse_morefromtopics; ?> "<em><?php echo stripslashes($enmse_singletopic->name); ?></em>"...</h3>
+<h3 class="enmse-more-title"><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_morefromtopics; ?> "<em><?php echo stripslashes($enmse_singletopic->name); ?></em>"...<?php } else { ?><em><?php echo stripslashes($enmse_singletopic->name); ?></em> <?php echo $enmse_morefromtopics; ?>...<?php } ?></h3>
 <?php } elseif ( isset($_GET['enmse_bid']) && is_numeric($_GET['enmse_bid']) ) { // Only show if a book is relevant ?>
-<h3 class="enmse-more-title"><?php echo $enmse_morefrombooks; ?> <?php echo $enmse_booknames[$enmse_singlebook->book_id]; ?>...</h3>
+<h3 class="enmse-more-title"><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_morefrombooks; ?> <?php echo $enmse_booknames[$enmse_singlebook->book_id]; ?>...<?php } else { ?><?php echo $enmse_booknames[$enmse_singlebook->book_id]; ?> <?php echo $enmse_morefrombooks; ?>...<?php } ?></h3>
 <?php } elseif ( isset($_GET['enmse_spid']) && is_numeric($_GET['enmse_spid']) ) { // Only show if a series is relevant ?>
 <h3 class="enmse-more-title"><?php echo $enmse_morefromspeakers; ?> <?php echo stripslashes($enmse_speaker->first_name) . " " . stripslashes($enmse_speaker->last_name); ?>...</h3>
 <?php } elseif ( isset($_GET['enmse_am']) && is_numeric($_GET['enmse_am']) && ( !isset($_GET['enmse_sid']) && !isset($_GET['enmse_tid']) && !isset($_GET['enmse_spid']) )) { ?>

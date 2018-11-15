@@ -53,7 +53,9 @@ if ( isset($enmse_options['lang_podcastmessagefrom']) ) {
 // Podcast language
 if ( isset($enmse_options['language']) ) { 
 	$langval = $enmse_options['language'];
-	if ( $langval == 3 ) { // German
+	if ( $langval == 4 ) { // Turkish
+		$enmse_podcastlanguage =  "tr";
+	} elseif ( $langval == 3 ) { // German
 		$enmse_podcastlanguage =  "de";
 	} elseif ( $langval == 2 ) { // Spanish
 		$enmse_podcastlanguage =  "es";
@@ -62,6 +64,12 @@ if ( isset($enmse_options['language']) ) {
 	}
 } else {
 	$enmse_podcastlanguage =  "en";
+}
+
+if ( $enmse_podcastlanguage == "tr" ) {
+	$enmse_langswitch = 1;
+} else {
+	$enmse_langswitch = 0;
 }
 
 // Shorten Message Descriptions
@@ -289,12 +297,12 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
     <itunes:category text="<?php echo htmlspecialchars(stripslashes($enmse_podcast->category)); ?>">
                   <itunes:category text="<?php echo htmlspecialchars(stripslashes($enmse_podcast->subcategory)); ?>" />
     </itunes:category>
-    <lastBuildDate><?php if ( !empty($enmse_datecount) && $enmse_datecount > 0 ) { echo date(DATE_RFC2822, strtotime($enmse_getdate->date)); } else { echo date(DATE_RFC2822); }; ?></lastBuildDate>
-    <pubDate><?php if ( !empty($enmse_datecount) && $enmse_datecount > 0 ) { echo date(DATE_RFC2822, strtotime($enmse_getdate->date)); } else { echo date(DATE_RFC2822); }; ?></pubDate>
+    <lastBuildDate><?php if ( !empty($enmse_datecount) && $enmse_datecount > 0 ) { echo date('D, d M Y ', strtotime($enmse_getdate->date)) . '12:00:00' . date(' O', strtotime($enmse_getdate->date)); } else { echo date(DATE_RFC2822); }; ?></lastBuildDate>
+    <pubDate><?php if ( !empty($enmse_datecount) && $enmse_datecount > 0 ) { echo date('D, d M Y ', strtotime($enmse_getdate->date)) . '12:00:00' . date(' O', strtotime($enmse_getdate->date)); } else { echo date(DATE_RFC2822); }; ?></pubDate>
     <webMaster><?php echo htmlspecialchars(stripslashes($enmse_podcast->email)); ?> (<?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?>)</webMaster>
 	<?php if ( $enmse_podcast->audio_video == "Audio" ) { ?>
 	<?php if ( !empty($enmse_messages) ) { foreach ( $enmse_messages as $enmse_message ) { ?>
-	<?php $enmse_sp_comma = 1; foreach ( $enmse_sp as $sp) { ?><?php foreach ( $enmse_mspm as $mspm) { ?><?php if ( ($mspm->message_id == $enmse_message->message_id) && ($mspm->speaker_id == $sp->speaker_id) ) { if ( $enmse_sp_comma == 1 ) { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " on "; $enmse_sp_comma = $enmse_sp_comma+1; } } ?><?php } ?><?php } ?>
+	<?php $enmse_sp_comma = 1; foreach ( $enmse_sp as $sp) { ?><?php foreach ( $enmse_mspm as $mspm) { ?><?php if ( ($mspm->message_id == $enmse_message->message_id) && ($mspm->speaker_id == $sp->speaker_id) ) { if ( $enmse_sp_comma == 1 ) { if ( $enmse_langswitch == 0) { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " on "; } else { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " "; } $enmse_sp_comma = $enmse_sp_comma+1; } } ?><?php } ?><?php } ?>
 	<?php if (preg_match('/(.mp3)/', $enmse_message->audio_url)) { // Find correct MIME type
 			$enmse_mime = 'audio/mpeg';
 		} elseif (preg_match('/(.m4a)/', $enmse_message->audio_url) || preg_match('/(.aac)/', $enmse_message->audio_url) || preg_match('/(.m4p)/', $enmse_message->audio_url)) {
@@ -308,19 +316,19 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 	<item>
         <title><?php echo htmlspecialchars(stripslashes($enmse_message->title)); ?><?php if ( $enmse_message->podcast_series == 1 || $enmse_message->podcast_series == NULL  ) { ?><?php $enmse_s_comma = 1; foreach ( $enmse_s as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_message->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo " - " . htmlspecialchars(stripslashes($s->s_title)); $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?><?php } ?></title>	      
 		<link><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></link>
-	    <description><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
+	    <description><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
 	    <?php if ( $enmse_message->podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->podcast_image; ?>" /><?php } elseif ( $enmse_message->series_podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->series_podcast_image; ?>" /><?php } ?>
 	    <itunes:author><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:author>
-	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
-		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>
+	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
+		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>
 	    <?php if ($enmse_message->message_length != null) { ?><itunes:duration><?php echo $enmse_message->message_length; ?></itunes:duration><?php } ?>
-	    <pubDate><?php echo date(DATE_RFC2822, strtotime($enmse_message->date)); ?></pubDate>      
+	    <pubDate><?php echo date('D, d M Y ', strtotime($enmse_message->date)) . '12:00:00' . date(' O', strtotime($enmse_message->date)); ?></pubDate>      
 		<guid><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></guid>
 	    <enclosure type="<?php echo $enmse_mime; ?>" <?php if ($enmse_message->audio_file_size > 1) {echo 'length="' . $enmse_message->audio_file_size . '"';}; ?> url="<?php echo $enmse_message->audio_url; ?>"/>	</item>	
 	<?php }} ?>
 	<?php } elseif ( $enmse_podcast->audio_video == "Video" ) { ?>
 	<?php if ( !empty($enmse_messages) ) { foreach ( $enmse_messages as $enmse_message ) { ?>
-	<?php $enmse_sp_comma = 1; foreach ( $enmse_sp as $sp) { ?><?php foreach ( $enmse_mspm as $mspm) { ?><?php if ( ($mspm->message_id == $enmse_message->message_id) && ($mspm->speaker_id == $sp->speaker_id) ) { if ( $enmse_sp_comma == 1 ) { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " on "; $enmse_sp_comma = $enmse_sp_comma+1; } } ?><?php } ?><?php } ?>
+	<?php $enmse_sp_comma = 1; foreach ( $enmse_sp as $sp) { ?><?php foreach ( $enmse_mspm as $mspm) { ?><?php if ( ($mspm->message_id == $enmse_message->message_id) && ($mspm->speaker_id == $sp->speaker_id) ) { if ( $enmse_sp_comma == 1 ) { if ( $enmse_langswitch == 0) { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " on "; } else { $enmse_thisspeaker =  htmlspecialchars(stripslashes($sp->first_name)) . " " . htmlspecialchars(stripslashes($sp->last_name)) . " "; } $enmse_sp_comma = $enmse_sp_comma+1; } } ?><?php } ?><?php } ?>
 		<?php if (preg_match('/(.mp4)/', $enmse_message->video_url)) { // Find correct MIME type
 			$enmse_mime = 'video/mp4';
 		} elseif (preg_match('/(.m4v)/', $enmse_message->video_url)) {
@@ -332,13 +340,13 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
 	<item>
         <title><?php echo htmlspecialchars(stripslashes($enmse_message->title)); ?><?php if ( $enmse_message->podcast_series == 1 || $enmse_message->podcast_series == NULL  ) { ?><?php $enmse_s_comma = 1; foreach ( $enmse_s as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_message->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo " - " . htmlspecialchars(stripslashes($s->s_title)); $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?><?php } ?></title>	      
 		<link><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></link>
-	    <description><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
+	    <description><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></description>
 	    <?php if ( $enmse_message->podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->podcast_image; ?>" /><?php } elseif ( $enmse_message->series_podcast_image != null ) { ?><itunes:image href="<?php echo $enmse_message->series_podcast_image; ?>" /><?php } ?>
 	    <itunes:author><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:author>		   
-	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
-		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>		  
+	    <itunes:subtitle><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:subtitle>      
+		<itunes:summary><?php if ($enmse_message->description == null) { ?><?php if ( $enmse_langswitch == 0 ) { ?><?php echo $enmse_podcastmessagefrom; ?> <?php echo $enmse_thisspeaker; ?><?php echo date('M j, Y', strtotime($enmse_message->date)); ?><?php } else { ?><?php echo $enmse_thisspeaker; ?> <?php echo $enmse_podcastmessagefrom; ?><?php } ?><?php } else { echo htmlspecialchars(stripslashes(substrwords($enmse_message->description,250))); } ?></itunes:summary>		  
 	    <?php if ($enmse_message->message_video_length != null) { ?><itunes:duration><?php echo $enmse_message->message_video_length; ?></itunes:duration><?php } ?>
-	    <pubDate><?php echo date(DATE_RFC2822, strtotime($enmse_message->date)); ?></pubDate>      	
+	    <pubDate><?php echo date('D, d M Y ', strtotime($enmse_message->date)) . '12:00:00' . date(' O', strtotime($enmse_message->date)); ?></pubDate>      	
 		<guid><?php if ($enmse_podcast->link_url != null) { echo $enmse_podcast->link_url . "?enmse_mid=" . $enmse_message->message_id;} else { echo home_url() . "?enmse_mid=" . $enmse_message->message_id;} ?></guid>		 
 	    <enclosure type="<?php echo $enmse_mime; ?>" <?php if ($enmse_message->video_file_size > 1) {echo 'length="' . $enmse_message->video_file_size . '"';}; ?> url="<?php echo $enmse_message->video_url; ?>"/>
 	</item>			

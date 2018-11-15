@@ -959,6 +959,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -985,6 +987,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1011,6 +1015,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1037,6 +1043,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1063,6 +1071,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1089,6 +1099,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1115,6 +1127,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1141,6 +1155,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1167,6 +1183,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1193,6 +1211,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1219,6 +1239,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1245,6 +1267,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1271,6 +1295,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1297,6 +1323,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6' selected='selected'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1323,6 +1351,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1349,6 +1379,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1375,6 +1407,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1401,6 +1435,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149' selected='selected'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1427,6 +1463,36 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128' selected='selected'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "170") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170' selected='selected'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1453,6 +1519,8 @@
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value='" . $deftrans . "'>------- OTHER ------</option>
 						<option value='6'>AFR83 - Afrikaans 1983</option>
 					</select><br /><br />";
@@ -1845,12 +1913,14 @@
 	function enm_seriesengine_language_input() {
 		$se_options = get_option( 'enm_seriesengine_options' );
 		$language = $se_options['language'];
-		if ($language == "3") { //German
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		if ($language == "4") { //Turkish
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} elseif ($language == "3") { //German
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "2") { //Spanish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} else { // English
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		}
 	};
 
@@ -3792,7 +3862,9 @@
 			$valid['pagenumberselectedtext'] = 'D4D4D4';
 		}
 
-		if ( $input['language'] == 3 ) { //German
+		if ( $input['language'] == 4 ) { //Turkish
+			include(dirname(__FILE__) . '/../lang/turk_default_values.php');
+		} elseif ( $input['language'] == 3 ) { //German
 			include(dirname(__FILE__) . '/../lang/ger_default_values.php');
 		} elseif ( $input['language'] == 2 ) { // Spanish
 			include(dirname(__FILE__) . '/../lang/spa_default_values.php');
@@ -3801,7 +3873,9 @@
 		}
 
 		if ( $input['languageprev'] == "" || ( $input['languageprev'] >= 1 && ( $input['languageprev'] != $input['language'] ) ) ) {
-			if ( $input['language'] == 3 ) { //German
+			if ( $input['language'] == 4 ) { //Turkish
+				include(dirname(__FILE__) . '/../lang/turk_trans.php');
+			} elseif ( $input['language'] == 3 ) { //German
 				include(dirname(__FILE__) . '/../lang/ger_trans.php');
 			} elseif ( $input['language'] == 2 ) { // Spanish
 				include(dirname(__FILE__) . '/../lang/spa_trans.php');

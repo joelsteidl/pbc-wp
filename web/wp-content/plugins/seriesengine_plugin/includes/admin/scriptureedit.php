@@ -34,7 +34,9 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 3 ) { 
+		if ( $enmse_language == 4 ) { 
+			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
+		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
 		} elseif ( $enmse_language == 2 ) { 
 			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');
@@ -294,6 +296,8 @@
 						<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value="<?php echo $deftrans; ?>">------ TURKISH ------</option>
+						<option value="170"<?php if ( $deftrans == 170 ) { echo " selected=\"selected\""; } ?>>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value="<?php echo $deftrans; ?>">------ OTHER ------</option>
 						<option value="6"<?php if ( $deftrans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 					</select>
@@ -489,6 +493,8 @@
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $enmse_scripture->trans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $enmse_scripture->trans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value="<?php echo $deftrans; ?>">------ TURKISH ------</option>
+						<option value="170"<?php if ( $enmse_scripture->trans == 170 ) { echo " selected=\"selected\""; } ?>>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ OTHER ------</option>
 						<option value="6"<?php if ( $enmse_scripture->trans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 					</select>

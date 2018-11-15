@@ -124,12 +124,20 @@
 		$enmse_language = 1;
 	}
 
-	if ( $enmse_language == 3 ) { // German
+	if ( $enmse_language == 4 ) { // Turkish
+		include('lang/turk_bible_books.php');
+	} elseif ( $enmse_language == 3 ) { // German
 		include('lang/ger_bible_books.php');
 	} elseif ( $enmse_language == 2 ) { // Spanish
 		include('lang/spa_bible_books.php');
 	} else { // English
 		include('lang/eng_bible_books.php');
+	}
+
+	if ( $enmse_language == 4 ) {
+		$enmse_langswitch = 1;
+	} else {
+		$enmse_langswitch = 0;
 	}
 
 	// ***** DEFINE EMBED OPTIONS

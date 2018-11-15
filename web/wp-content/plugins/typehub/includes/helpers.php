@@ -195,44 +195,48 @@ function typehub_google_fonts_url( $config ) {
     return $font_url;
 }
 if( !function_exists( 'get_typekit_data' ) ) {
-function get_typekit_data($typekitId){
-	$typekit_response = json_decode(file_get_contents('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
-	$font_array = $typekit_response->kit->families;
-	$typekit_fonts = array();
-	$typekit_variant_helper = array(
-		100 => "Ultra-Light",
-		200 => "Light",
-		300 => 'Book',
-		400 => "Normal",
-		500 => "Medium",
-		600 => "Semi-Bold",
-		700 => "Bold",
-		800 => "Extra-Bold",
-		900 => "Ultra-Bold",
-	);
-	if(isset($font_array)){
-		foreach($font_array as $fam ){
-			$temp_array = array();
-			foreach($fam->variations as $vars){
-				$temp_id = ((int) filter_var($vars, FILTER_SANITIZE_NUMBER_INT))*100;
-				$temp_name = $typekit_variant_helper[$temp_id]." ". $temp_id;
-				if( $vars[0] == 'i' ){
-					$temp_id = $temp_id.'italic';
-					$temp_name = $temp_name.' Italic';
-				}
-				array_push($temp_array,array(
-					'id' => $temp_id,
-					'name' => $temp_name,
-				));
-			}
-			$typekit_fonts[$fam->name]["variants"] = $temp_array;
-			$typekit_fonts[$fam->name]["subsets"] = [];
-			$typekit_fonts[$fam->name]["cssname"] = $fam->css_names[0];
+	function get_typekit_data($typekitId){
+		$typekit_response = get_transient( 'typehub_typekit_'.$typekitId );
+		if( !$typekit_response ) {
+			$typekit_response = json_decode(file_get_contents('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
+			set_transient( 'typehub_typekit_'.$typekitId, $typekit_response, 60*60*24*365 );
 		}
+		$font_array = $typekit_response->kit->families;
+		$typekit_fonts = array();
+		$typekit_variant_helper = array(
+			100 => "Ultra-Light",
+			200 => "Light",
+			300 => 'Book',
+			400 => "Normal",
+			500 => "Medium",
+			600 => "Semi-Bold",
+			700 => "Bold",
+			800 => "Extra-Bold",
+			900 => "Ultra-Bold",
+		);
+		if(isset($font_array)){
+			foreach($font_array as $fam ){
+				$temp_array = array();
+				foreach($fam->variations as $vars){
+					$temp_id = ((int) filter_var($vars, FILTER_SANITIZE_NUMBER_INT))*100;
+					$temp_name = $typekit_variant_helper[$temp_id]." ". $temp_id;
+					if( $vars[0] == 'i' ){
+						$temp_id = $temp_id.'italic';
+						$temp_name = $temp_name.' Italic';
+					}
+					array_push($temp_array,array(
+						'id' => $temp_id,
+						'name' => $temp_name,
+					));
+				}
+				$typekit_fonts[$fam->name]["variants"] = $temp_array;
+				$typekit_fonts[$fam->name]["subsets"] = [];
+				$typekit_fonts[$fam->name]["cssname"] = $fam->css_names[0];
+			}
+		}
+		
+		return $typekit_fonts;
 	}
-	
-	return $typekit_fonts;
-}
 }
 
 if( !function_exists( 'get_saved_fonts' ) ){

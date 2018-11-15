@@ -9,7 +9,7 @@
  * Plugin Name:       Type Hub
  * Plugin URI:        http://brandexponents.com
  * Description:       Typehub lets you take complete control over the typography of your website.
- * Version:           1.3
+ * Version:           1.4
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+

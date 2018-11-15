@@ -80,7 +80,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 3 ) { 
+		if ( $enmse_language == 4 ) { 
+			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
+		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
 		} elseif ( $enmse_language == 2 ) { 
 			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');

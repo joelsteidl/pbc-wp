@@ -1,6 +1,8 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 3 ) { 
+	if ( $enmse_language == 4 ) { 
+		include('../lang/turk_bible_books.php');
+	} elseif ( $enmse_language == 3 ) { 
 		include('../lang/ger_bible_books.php');
 	} elseif ( $enmse_language == 2 ) { 
 		include('../lang/spa_bible_books.php');
@@ -312,6 +314,8 @@
 		$trans = " (RVR1960)";
 	} elseif ( $enmse_trans == 128 ) {
 		$trans = " (NVI)";
+	} elseif ( $enmse_trans == 170 ) {
+		$trans = " (TCL02)";
 	}
 
  ?>
