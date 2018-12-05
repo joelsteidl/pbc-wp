@@ -1011,6 +1011,9 @@ TABLE OF CONTENTS
        position: relative;
        z-index: 10;
    }
+   .be-sticky-sections #header {
+    z-index: 99;
+   }
    #header-inner-wrap.top-animate #navigation, 
    #header-inner-wrap.top-animate .header-controls, 
    #header-inner-wrap.top-animate .social-media-icons-mid-header,
@@ -1936,6 +1939,11 @@ TABLE OF CONTENTS
       margin: 0px !important;
       height: 100% !important;
    }
+    .placeholder.style1_placehloder  .fluid-width-video-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+    } 
    .fluid-width-video-wrapper {
       width: 100%;
       position: relative;
@@ -5426,7 +5434,29 @@ TABLE OF CONTENTS
        }
        .placeholder .fluid-width-video-wrapper {
            padding-top: 50% !important;
+           
        }
+       .placeholder.style1_placehloder .fluid-width-video-wrapper {
+        height: auto !important;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        width: auto;
+        bottom : 0px;
+        padding-top : 0 !important;
+       }
+
+       .gallery-all-container .placeholder .gdpr-alt-image:after{
+        height: auto;
+        width: auto;
+        top: 20px;
+        left: 0;
+        right: 40px;
+        bottom: 0;
+        }
+        .gallery-all-container .placeholder .gdpr-alt-image .gdpr-video-alternate-image-content {
+            left: 45%;
+        }
        
        .portfolio-title-nav-bottom {
            display: none !important;
@@ -5552,6 +5582,21 @@ TABLE OF CONTENTS
                    flex: 0 0 100%;
            padding: 0 30px;
        }	
+   }
+   
+   .portfolio-sliders.be-centered .be-vimeo-embed,
+    .portfolio-sliders .be-flickity .be-vimeo-embed,
+    .gallery-all-container .placeholder.style4_placehloder .be-vimeo-embed {
+       height: 100%;
+   }
+
+   .portfolio-sliders .be-centered .fluid-width-video-wrapper iframe,
+    .portfolio-sliders .be-flickity .fluid-width-video-wrapper iframe{
+       opacity: 1;
+   }
+
+   #gallery-container .style4_placehloder.placeholder:before {
+       content: none;
    }
    
    /* =========================================================================

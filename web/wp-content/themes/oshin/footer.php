@@ -1,4 +1,5 @@
 <?php
+do_action( 'tatsu_footer' );
 	global $be_themes_data;
 	$post_id = be_get_page_id();
 	$fixed_footer = ( isset( $be_themes_data['fixed-footer'] ) && !empty( $be_themes_data['fixed-footer'] ) && be_is_fixed_footer_possible() ) ? true : false;

@@ -393,6 +393,10 @@ body.section-scroll .be-section * {
     -webkit-transform: translateZ(0);
 }
 
+body.section-scroll #main > .tatsu-section{
+    display: none;
+}
+
 /* ====================================
     FixedSidebar Page
    ==================================== */

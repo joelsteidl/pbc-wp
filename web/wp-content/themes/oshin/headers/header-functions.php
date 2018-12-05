@@ -377,9 +377,46 @@ if ( !function_exists( 'be_themes_header_details' ) ) {
 				}
 			}else{
 				$pattern = get_shortcode_regex();
-				if (  preg_match_all( '/'. $pattern .'/s', $post->post_content, $matches ) && array_key_exists( 2, $matches ) && in_array( 'tatsu_section', $matches[2] ) && isset( $matches[ 3 ] ) && !empty( $matches[ 3 ] ) ) {
+				$scheme_post_content = $post->post_content;
+				if( current_theme_supports('tatsu-global-sections') ){
+					$global_section_id = null;
+
+					$global_section_post_meta = get_post_meta($post_id, 'tatsu_global_section_data',true);
+					
+					if( !empty($global_section_post_meta['top']) && $global_section_post_meta['top'] !== 'inherit' ){
+						if( $global_section_post_meta['top'] !== 'none' ){
+							$global_section_id = $global_section_post_meta['top'];
+						}
+					} else {
+						$post_type = get_post_type( $post_id );
+
+						$global_section_data = get_option( 'tatsu_global_section_data', array() );
+						if( gettype( $global_section_data ) === 'string' ){
+							$global_section_data = json_decode( $global_section_data,true );
+						}
+						$post_settings = '';
+						if( array_key_exists('post_settings',$global_section_data) ){
+							$post_settings = $global_section_data['post_settings'];
+						}else{
+							$post_settings = array();
+						}
+						if( array_key_exists( $post_type,$post_settings ) ){
+							if( $post_settings[ $post_type ]['top'] !== 'none' ){
+								$global_section_id = (int) $post_settings[ $post_type ]['top'];
+							}
+						}
+					}
+
+					if( $global_section_id !== null ){
+						$global_section_post = get_post( $global_section_id );
+						$scheme_post_content = $global_section_post->post_content;
+					}
+
+				}
+				if (  preg_match_all( '/'. $pattern .'/s', $scheme_post_content , $matches ) && array_key_exists( 2, $matches ) && in_array( 'tatsu_section', $matches[2] ) && isset( $matches[ 3 ] ) && !empty( $matches[ 3 ] ) ) {
 					// shortcode is being used
 					$shortcode_atts = shortcode_parse_atts( $matches[3][0] );
+					//var_dump( $shortcode_atts );
 					if( !empty( $shortcode_atts ) && array_key_exists( 'full_screen_header_scheme', $shortcode_atts ) ) {
 						$first_section_header_background_scheme = $shortcode_atts[ 'full_screen_header_scheme' ];
 						$header_class .= ' ' . $first_section_header_background_scheme;
@@ -1002,7 +1039,7 @@ if (!function_exists( 'be_themes_calculate_logo_height' )) {
 			}
 		}else{
 			$nav_text_height = $be_themes_data['navigation_text']['font-size'];
-			$logo_height = $logo_sticky_height = $logo_transparent_height = $nav_text_height;
+			$logo_height = $logo_sticky_height = $logo_transparent_height = intval($nav_text_height);
 		}
 
 		$result['logo_sticky_height'] = $padding + $logo_sticky_height;

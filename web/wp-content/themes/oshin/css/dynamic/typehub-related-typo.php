@@ -28,11 +28,6 @@ if( !empty( $typehub_data ) ) :
 #header-controls-left {
   color: <?php echo $typehub_data['navigation_text']['color'] ; ?>
 }
-
-#header .be-mobile-menu-icon span {
-  background-color: <?php echo $typehub_data['navigation_text']['color'] ; ?>
-}
-
 #be-left-strip .be-mobile-menu-icon span {
     background-color: <?php echo ( empty( $be_themes_data[ 'mobile_menu_icon_color' ] ) ) ?  $typehub_data['navigation_text']['color'] : $be_themes_data[ 'mobile_menu_icon_color' ] ; ?>
 }

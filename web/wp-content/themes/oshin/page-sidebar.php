@@ -4,7 +4,7 @@
  * Template Name: Page With Sidebar
  *
 */
-get_header(); 
+get_header();
 global $be_themes_options; 
 while(have_posts()): the_post(); 
 	$sidebar = get_post_meta( get_the_ID(), 'be_themes_page_layout', true );

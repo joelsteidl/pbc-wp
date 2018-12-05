@@ -423,10 +423,6 @@ h6{
   color: <?php echo $be_themes_data['navigation_text']['color'] ; ?>
 }
 
-#header .be-mobile-menu-icon span {
-  background-color: <?php echo $be_themes_data['navigation_text']['color'] ; ?>
-}
-
 #be-left-strip .be-mobile-menu-icon span {
     background-color: <?php echo ( !isset( $be_themes_data[ 'mobile_menu_icon_color' ] ) || empty( $be_themes_data[ 'mobile_menu_icon_color' ] ) ) ?  $be_themes_data['navigation_text']['color'] : $be_themes_data[ 'mobile_menu_icon_color' ] ; ?>
 }

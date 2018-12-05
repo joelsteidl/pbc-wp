@@ -182,56 +182,55 @@ if (!function_exists('get_portfolio_image')) {
 }
 
 /*************************************
- *  Video details
+ *  		Video details
  *************************************/
 if( !function_exists( 'be_get_video_details' ) ){
-	function be_get_video_details($url){
-		$pattern = 
-		'%^# Match any youtube URL
-		(?:https?://)?  # Optional scheme. Either http or https
-		(?:www\.)?      # Optional www subdomain
-		(?:             # Group host alternatives
-		  youtu\.be/    # Either youtu.be,
-		| youtube\.com  # or youtube.com
-		  (?:           # Group path alternatives
-			/embed/     # Either /embed/
-		  | /v/         # or /v/
-		  | /watch\?v=  # or /watch\?v=
-		  )             # End path alternatives.
-		)               # End host alternatives.
-		([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
-		$%x'
-		;
+	function be_get_video_details($url,$size = 'large'){
+		$pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 		$details = array();
 
 		if( $result = preg_match($pattern, $url, $matches) ){
-
+			
+			if( $size  === 'small'){
+				$size = 'mqdefault';
+			}elseif( $size === 'large' ){
+				$size = 'maxresdefault';
+			}
+	
 			$video_id = $matches[1];
-			$youtube_url = "https://img.youtube.com/vi/".$video_id."/hqdefault.jpg";
+			$youtube_url = "https://img.youtube.com/vi/".$video_id."/".$size.".jpg";
 
 			return array(
 				'source' => 'youtube',
 				'thumb_url' => $youtube_url,
+				'video_id' => $video_id
 			);
 
 		}else if( strpos( $url,'vimeo' ) !== false ) {
 
 			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-
 			$response = wp_remote_get( "http://vimeo.com/api/v2/video/$vimeo_id.php" );
+
+			if( $size  === 'small'){
+				$size = '_320x180';
+			}elseif( $size === 'large' ){
+				$size = '_1280x720';
+			}
 
 			if( !is_wp_error( $response ) ){
 				$hash = unserialize( $response['body']);
 				$vimeo_url = $hash[0]['thumbnail_large'];
-				$vimeo_url = str_replace( '_640','_1280x720',$vimeo_url );
+				$vimeo_url = str_replace( '_640',$size,$vimeo_url );
 				return array(
 					'source' => 'vimeo',
 					'thumb_url' => $vimeo_url,
+					'video_id' => $vimeo_id
 				);
 			}else{
 				return array(
 					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720'
+					'thumb_url' => 'https://placehold.it/1280x720',
+					'video_id' => ''
 				);
 			}
 		}
@@ -239,63 +238,53 @@ if( !function_exists( 'be_get_video_details' ) ){
 }
 
 /* ---------------------------------------------  */
-// Function to determine video source
+// Function to load video from video source
 /* ---------------------------------------------  */
 
-if( ! function_exists('be_gal_video')) :
-	function be_gal_video($url) {
-
-		$video_details = be_get_video_details($url);
-		if (strpos($url, 'youtube') > 0) {
-			if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('youtube') : true ){
-				return be_gallery_youtube($url);
-			}else{
-				return '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" > '. do_shortcode( str_replace('[tatsu_gdpr_api_name]','[tatsu_gdpr_api_name api="youtube" ]', get_option( 'text_on_overlay', 'Your consent is required to display this content from [tatsu_gdpr_api_name]' ))) .' - <a class="mfp-popup" href="#gdpr-popup">Privacy Settings</a></div></div>';
-			}
-		} elseif (strpos($url, 'vimeo') > 0) {
-			if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('vimeo') : true ){
-				return be_gallery_vimeo($url);
-			}else{
-				return '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" >'.do_shortcode( str_replace('[tatsu_gdpr_api_name]','[tatsu_gdpr_api_name api='.$src.' ]', get_option( 'text_on_overlay', 'Your consent is required to display this content from [tatsu_gdpr_api_name]' ))) .' - <a class="mfp-popup" href="#gdpr-popup">Privacy Settings</a></div></div>';
-			}
-		} else {
-			return '';
+if( ! function_exists('be_carousel_video')) :
+	function be_carousel_video($url) {
+		$output = '';
+		$video_details = be_get_video_details( $url );
+		$video_id = '';
+		if ( $video_details['source'] === 'youtube'  ){
+			$video_id = ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) ? $match[1] : '' ;
+		} elseif ( $video_details['source'] === 'vimeo' ) {
+			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
 		}
+		if( !empty( $video_details ) ){
+				$embed_class = 'be-'.$video_details['source'].'-embed be-'.$video_details['source'].'-video';
+				$source = $video_details['source'];
+				$thumb_url = $video_details[ 'thumb_url' ];
+
+			if( function_exists( 'be_gdpr_privacy_ok' ) ){
+				if( !empty( $_COOKIE ) ){
+					if( be_gdpr_privacy_ok( $source ) ){
+						$output .= '<div class="'.$embed_class.'" data-video-id="'.$video_id.'" ></div>';
+					} else {
+						$output .= be_gdpr_get_video_alt_content( $thumb_url, $source, false );
+					}
+				} else {
+					$output .= '<div class="'.$embed_class.' be-gdpr-consent-replace" data-gdpr-concern="'.$source.'" data-video-id="'.$video_id.'" ></div>';
+
+					$output .= be_gdpr_get_video_alt_content( $thumb_url, $source, true );
+				}
+			} else {
+				$output .= '<div class="'.$embed_class.'" data-video-id="'.$video_id.'" ></div>';
+			}
+		}
+		return $output;
 	}
 endif;
 
+if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
+	function be_gdpr_get_video_alt_content( $img_src, $concern, $hide_by_default ){
 
-/* ---------------------------------------------  */
-// Function to generate youtube video iframe 
-/* ---------------------------------------------  */
-
-if (!function_exists('be_gallery_youtube')) {
-	function be_gallery_youtube( $url ) {
-		$video_id = '';
-		if( ! empty( $url ) ) {
-			if ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) {
-				$video_id = $match[1];
-			}
-			return '<iframe class="be-youtube-video gallery check" src="https://www.youtube.com/embed/'.$video_id.'?rel=0&wmode=transparent" style="border: none;"></iframe>';		
-		} else {
-			return '';
+		$hide_class = '';
+		if( $hide_by_default ){
+			$hide_class = ' be-gdpr-message-hide ';
 		}
-	}
-}
 
-/* ---------------------------------------------  */
-// Function to generate vimeo video iframe 
-/* ---------------------------------------------  */
-
-if (!function_exists('be_gallery_vimeo')) {
-	function be_gallery_vimeo( $url ) {
-		$video_id = '';
-		if( ! empty( $url ) ) {
-			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
-			return '<iframe class="be-vimeo-video gallery" src="https://player.vimeo.com/video/'.$video_id.'?api=1&title=0&byline=0&portrait=0" id="be-vimeo-'.$video_id.'" frameborder=0 width="500" height="281" style="border: none;" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-		} else {
-			return '';
-		}
+		return '<div class="gdpr-alt-image '.$hide_class.' be-gdpr-consent-message"><img style="opacity:1;" src="'.$img_src.'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="'.$concern.'" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>';
 	}
 }
 

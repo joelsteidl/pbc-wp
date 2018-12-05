@@ -32,7 +32,7 @@
 							}
 							echo '<p>';
 							if($video_url) {
-								echo be_gal_video($video_url);
+								echo be_carousel_video($video_url);
 							} else {
 								echo '<img src="'.$data_source.'" style="display: block;" alt="'.$attachment_info['alt'].'" />';
 							}

@@ -47,20 +47,14 @@
 						$video_url = get_post_meta($attachment_id, 'be_themes_featured_video_url', true);
 						$attachment_info = be_wp_get_attachment( $attachment_id );
 						if($video_url) {
-							
-							if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('youtube') : true ){
-								$data_source = 'video';
-							}else{
-								$video_details = be_get_video_details($video_url);
-								$data_source = $video_details['thumb_url'];
-							}
-							
+							$video_details = be_get_video_details($video_url);
+							$data_source = $video_details['thumb_url'];
 						} else {
 							$data_source = $attach_img[0];
 						}
 						echo '<div class="placeholder style1_placehloder load show-title" data-source="'.$data_source.'" data-alt="'.$attachment_info['alt'].'" style="margin-right: '.$gutter_width.'px">';
 						if($video_url) {
-							echo be_gal_video($video_url);
+							echo be_carousel_video($video_url);
 						} else {
 							echo '<img src="" style="opacity: 0; display: block;" />';
 						}

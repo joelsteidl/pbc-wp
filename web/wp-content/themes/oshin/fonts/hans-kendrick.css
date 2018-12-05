@@ -1,7 +1,7 @@
 
 @font-face {
     font-family: 'Hans Kendrick';
-    src: url('custom-fonts/hanskendrick-heavy-webfont.oft') format("oft");
+    src: url('custom-fonts/hanskendrick-heavy-webfont.otf') format("otf");
     src: url('custom-fonts/hanskendrick-heavy-webfont.eot?#iefix') format('embedded-opentype'),
          url('custom-fonts/hanskendrick-heavy-webfont.woff') format('woff'),
          url('custom-fonts/hanskendrick-heavy-webfont.ttf') format('truetype'),
@@ -13,7 +13,7 @@
 
 @font-face {
     font-family: 'Hans Kendrick';
-    src: url('custom-fonts/hanskendrick-light-webfont.oft') format("oft");
+    src: url('custom-fonts/hanskendrick-light-webfont.otf') format("otf");
     src: url('custom-fonts/hanskendrick-light-webfont.eot?#iefix') format('embedded-opentype'),
          url('custom-fonts/hanskendrick-light-webfont.woff') format('woff'),
          url('custom-fonts/hanskendrick-light-webfont.ttf') format('truetype'),
@@ -25,7 +25,7 @@
 
 @font-face {
     font-family: 'Hans Kendrick';
-    src: url('custom-fonts/hanskendrick-medium-webfont.oft') format("oft");
+    src: url('custom-fonts/hanskendrick-medium-webfont.otf') format("otf");
     src: url('custom-fonts/hanskendrick-medium-webfont.eot?#iefix') format('embedded-opentype'),
          url('custom-fonts/hanskendrick-medium-webfont.woff') format('woff'),
          url('custom-fonts/hanskendrick-medium-webfont.ttf') format('truetype'),
@@ -37,7 +37,7 @@
 
 @font-face {
     font-family: 'Hans Kendrick';
-    src: url('custom-fonts/hanskendrick-regular-webfont.oft') format("oft");
+    src: url('custom-fonts/hanskendrick-regular-webfont.otf') format("otf");
     src: url('custom-fonts/hanskendrick-regular-webfont.eot?#iefix') format('embedded-opentype'),
          url('custom-fonts/hanskendrick-regular-webfont.woff') format('woff'),
          url('custom-fonts/hanskendrick-regular-webfont.ttf') format('truetype'),

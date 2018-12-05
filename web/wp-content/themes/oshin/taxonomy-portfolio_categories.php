@@ -13,8 +13,10 @@ if(!isset($be_themes_data['hide_breadcrumbs']) || empty($be_themes_data['hide_br
 $be_wrap = 'be-wrap';
 $gutter_width = (!isset($be_themes_data['portfolio_grid_gutter']) && empty($be_themes_data['portfolio_grid_gutter'])) ? '30' : $be_themes_data['portfolio_grid_gutter'] ;
 // Grid Style
+$grid_style = 'style1';
 if(isset($be_themes_data['portfolio_grid_style']) && !empty($be_themes_data['portfolio_grid_style']) && 'full' == $be_themes_data['portfolio_grid_style']){
 	$be_wrap = '';
+	$grid_style = 'style2';
 }
 // Portfolio Column
 if(isset($be_themes_data['portfolio_col']) && !empty($be_themes_data['portfolio_col'])) {
@@ -77,7 +79,7 @@ if(isset($be_themes_data['portfolio_style']) && $be_themes_data['portfolio_style
 						// }else {
 						// 	$gutter_width = 30 ;
 						// }					
-						echo do_shortcode('[portfolio col= "'.$portfolio_col.'" gutter_width = "'.$gutter_width.'" show_filters= "no" filter = "categories" tax_name="portfolio_categories" category= "'.$term->slug.'" items_per_page="-1" pagination="none" overlay_color= "'.$portfolio_hover_color.'"]');
+						echo do_shortcode('[portfolio col= "'.$portfolio_col.'" gutter_style="'.$grid_style.'" gutter_width = "'.$gutter_width.'" show_filters= "no" filter = "categories" tax_name="portfolio_categories" category= "'.$term->slug.'" items_per_page="-1" pagination="none" overlay_color= "'.$portfolio_hover_color.'"]');
 					else:
 						echo '<p class="inner-content">'.__( 'Apologies, but no results were found. Perhaps searching will help find a related post.', 'oshin' ).'</p>';
 					endif;

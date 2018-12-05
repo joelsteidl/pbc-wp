@@ -316,7 +316,9 @@ include get_template_directory().'/css/dynamic/typography.php';
         background-color : <?php echo $be_themes_data[ 'mobile_menu_icon_color' ]; ?>;
     } 
     #header-controls-right,
-    #header-controls-left {
+    #header-controls-left,
+    .overlay-menu-close,
+    .be-overlay-menu-close {
       color : <?php echo $be_themes_data[ 'mobile_menu_icon_color' ]; ?>;
     }
 <?php }  ?>

@@ -46,7 +46,7 @@
 						}					
 						echo '<div class="placeholder style4_placehloder load center show-title" data-source="'.$data_source.'" style="height: '.$slide_height.'">';					
 						if($video_url) {						
-							echo be_gal_video($video_url);					
+							echo be_carousel_video($video_url);					
 						}
 						if(isset($overlay) && $overlay == 1) {
 							$overlay_color = get_post_meta( get_the_ID(), 'be_themes_single_horizontal_slider_overlay_color', true );

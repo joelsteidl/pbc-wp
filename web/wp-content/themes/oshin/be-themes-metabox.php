@@ -659,7 +659,13 @@ function be_themes_register_meta_boxes( $meta_boxes )
 				'options'=> array('none' => 'Default', 'dark' => 'Dark', 'light' => 'Light'),
 				'std'  => 'dark',
 				'tab'  => 'general',
-				'hidden' => array( 'be_themes_header_transparent', '=', 'none' ),
+				'visible' => array(
+					'when' => array(
+						array( 'be_themes_header_transparent', '!=', 'none' ),
+						array( 'be_themes_hero_section', '!=', 'none' ),
+					),
+					'relation' => 'and',
+				),
 			),
 			array (
 				'name' => __('Sticky Header','oshin'),

@@ -30,4 +30,5 @@ while(have_posts()): the_post();
 		</div>
 	</section> <?php 
 endwhile;
-get_footer(); ?>
+get_footer();
+?>

@@ -38,3 +38,4 @@
 		}
 		// based on the choice of header style call its header-default.php
 		get_template_part('headers/'.$opt_header_type.'/header', 'default');
+		do_action( 'tatsu_head' );

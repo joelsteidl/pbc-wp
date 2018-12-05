@@ -5,6 +5,7 @@
             'selector' => 'h1',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family' => 'google:Montserrat',
                 'font-variant' => '700',
@@ -20,6 +21,7 @@
             'selector' => 'h2',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family' => 'google:Montserrat',
                 'font-variant' => '700',
@@ -35,6 +37,7 @@
             'selector' => 'h3',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family' => 'google:Montserrat',
                 'font-variant' => '700',
@@ -54,6 +57,7 @@
                 .woocommerce-view-order .woocommerce h3',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family' => 'google:Montserrat',
                 'font-variant' => '400',
@@ -69,6 +73,7 @@
             'selector' => 'h5, #reply-title',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family' => 'google:Montserrat',
                 'font-variant' => '400',
@@ -94,6 +99,7 @@
                 #bbpress-forums ul.bbp-replies li.bbp-header',  
             'responsive' => true, 
             'img' => get_template_directory_uri().'/img/typehub/h1_h6.jpg',
+            'expose' => true,
             'options' => array(  
                 'font-family' => 'google:Montserrat', 
                 'font-variant' => '400',  
@@ -114,6 +120,7 @@
                 .woocommerce-page .woocommerce-ordering select.orderby',
             'responsive' => true,
             'img' => get_template_directory_uri().'/img/typehub/body.jpg',  
+            'expose' => true,
             'options' => array( 
                 'font-family' => 'google:Raleway', 
                 'font-variant' => '400', 
@@ -144,6 +151,7 @@
             'label' => __( 'Sub Title', 'oshin' ),
             'selector' => '.sub-title, .special-subtitle',
             'img' => get_template_directory_uri().'/img/typehub/sub_title.jpg',
+            'expose' => true,
             'options' => array(
                 'font-family'   => 'google:Crimson Text',
                 'font-variant'   => '400italic',
@@ -246,7 +254,7 @@
         'sidebar_menu_text' => array(
             'label' => __( 'Sidebar Menu Text', 'oshin' ),
             'selector' => '.top-right-sliding-menu .sb-right ul#slidebar-menu li,
-                .overlay-menu-close,.be-overlay-menu-close, .sb-right #slidebar-menu .mega .sub-menu .highlight .sf-with-ul ',
+            .sb-right #slidebar-menu .mega .sub-menu .highlight .sf-with-ul ',
             'img' => get_template_directory_uri().'/img/typehub/sidebar_menu_text.jpg',
             'options' => array( 
                 'color'         => '#ffffff', 

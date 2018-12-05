@@ -88,4 +88,5 @@ if(isset($be_themes_data['portfolio_style']) && $be_themes_data['portfolio_style
 		</section>
 	</div>
 </section>
+
 <?php get_footer(); ?>

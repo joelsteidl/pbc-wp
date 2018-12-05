@@ -187,12 +187,13 @@
                 wrapper = document.createElement( 'div' );
             wrapper.setAttribute( 'class', 'sticky-footer-wrap' );
             selectorArray.forEach( function( selector ) {
-
-                var element = __get( selector );
-                if( null != element ) {
-                    footerParent = element.parentElement;
-                    footerParent.removeChild( element );
-                    wrapper.appendChild( element );
+                var elements = __getAll( selector );
+                if( null != elements ) {
+                    [].forEach.call( elements, function(element){
+                        footerParent = element.parentElement;
+                        footerParent.removeChild( element );
+                        wrapper.appendChild( element );
+                    });
                 }
 
             } );
@@ -425,9 +426,14 @@
             min : 0,
             max : 0
         };
-        var currentActive = stickyObj.active;
+        var currentActive = stickyObj.active,
+            scrollAreaLeft;
         scrollingRange.min = getDistanceFromContainer( getActiveIndex() );
         scrollingRange.max = scrollingRange.min + ( hasClass( currentActive, overflowSection ) ? currentActive.offsetHeight : fullScreenHeight );
+        if( getActiveIndex() === ( stickyObj.sections.length- 1 ) ) {
+            scrollAreaLeft = offsetHeight('html') - ( __get('html').scrollTop + window.innerHeight );
+            scrollingRange.max += scrollAreaLeft;
+        }
     }
 
     function getElementWithActiveClass() {
@@ -1212,6 +1218,15 @@
                 element.classList.add( className );
             }
         }
+    }
+
+    function offsetHeight( element ) {
+        var element = (typeof element === 'string') ? document.querySelector(element) : element,
+            styles = window.getComputedStyle(element),
+            margin = parseFloat(styles['marginTop']) +
+                    parseFloat(styles['marginBottom']);
+        element = (typeof element === 'string') ? document.querySelector(element) : element; 
+        return Math.ceil(element.offsetHeight + margin);
     }
 
     function equalArray( arr1, arr2 ) {

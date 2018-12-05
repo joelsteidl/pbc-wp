@@ -120,7 +120,7 @@
 							$data_img_width = 'data-image-width="16"';
 							$data_img_height = 'data-image-height="9"';
 							echo '<div class="img-wrap" '.$data_img_width. ' '.$data_img_height. ' style="margin-left: '.$gutter_width.'px;">';
-							echo be_gal_video($video_url);
+							echo be_carousel_video($video_url);
 							if($overlay_flag == 1) {
 								echo '<div class="img-overlay-wrap" style="background: '.$thumb_overlay_color.';"></div>';								
 							}

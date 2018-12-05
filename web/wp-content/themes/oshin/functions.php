@@ -25,9 +25,10 @@ if ( ! function_exists( 'be_themes_setup' ) ):
 		add_theme_support( 'automatic-feed-links' );
 		add_theme_support( 'post-thumbnails' );
 		add_theme_support( 'post-formats', array( 'gallery', 'image', 'quote', 'video', 'audio','link' ) );
-		 add_theme_support( 'custom-header' );
-		 add_theme_support( 'custom-background' );
+		add_theme_support( 'custom-header' );
+		add_theme_support( 'custom-background' );
 		add_theme_support( 'woocommerce' );
+		add_theme_support( 'tatsu-global-sections' );
 	}
 endif;
 // Welcome Screen
@@ -884,4 +885,146 @@ function oshine_register_custom_font() {
     );
 	typehub_register_font( $hkgrotesk );	
 }
+
+/* Yoast SEO sitemap images */
+
+if( !function_exists( 'be_yoast_sitemap_integration' ) ) {
+    function be_yoast_sitemap_integration( $images, $post_id ) {
+        $post = get_post($post_id);
+        if( is_object( $post ) ) {
+            $content = $post->post_content;
+            preg_match_all( '/' . get_shortcode_regex( array( 'oshine_gallery', 'portfolio', 'flex_slide' , 'tatsu_image' , 'tatsu_text' ) ) . '/s', $content, $matches );
+            if( !empty( $matches[2] ) ) {
+                foreach( ( array )$matches[2] as $key => $value ) {
+                    $atts = $matches[3][$key];
+                    if( !empty( $atts ) ) {
+                        $atts_array = shortcode_parse_atts( $atts );
+                        switch( $value ) {
+                            case 'portfolio' :
+                                $cats = !empty( $atts_array[ 'category' ] ) ? $atts_array[ 'category' ] : '';
+                                $items_per_page = !empty( $atts_array[ 'items_per_page' ] ) ? $atts_array[ 'items_per_page' ] : '-1';
+                                $tax_name = !empty( $atts_array[ 'tax_name' ] ) ? $atts_array[ 'tax_name' ] : 'portfolio_categories';
+                                $cats_array = explode( ',', $cats );
+                                if( empty( $cats_array[0] ) ) {
+                                    $query_args = array (
+                                        'post_type' => 'portfolio',
+                                        'posts_per_page' => $items_per_page,
+                                        'orderby'=> apply_filters('be_portfolio_order_by','date'),
+                                        'order'=> apply_filters('be_portfolio_order','DESC'),
+                                        'post_status'=> 'publish'
+                                    );
+                                }else {
+                                    $query_args = array (
+                                        'post_type' => 'portfolio',
+                                        'posts_per_page' => $items_per_page,
+                                        'orderby'=> apply_filters('be_portfolio_order_by','date'),
+                                        'order'=> apply_filters('be_portfolio_order','DESC'),
+                                        'post_status'=> 'publish',
+                                        'tax_query' => array (
+                                            array (
+                                                'taxonomy' => $tax_name,
+                                                'field' => 'slug',
+                                                'terms' => $cats_array,
+                                                'operator' => 'IN',
+                                            ),
+                                        ),
+                                    );
+                                }
+                                $the_query = new WP_Query( $query_args );
+                                while ( $the_query->have_posts() ) {
+                                    $the_query->the_post();
+                                    if ( has_post_thumbnail( get_the_ID() ) ) {
+                                        $attachment_id = get_post_thumbnail_id( get_the_ID() );
+                                        if( !empty( $attachment_id ) ) {
+                                            $image_src = wp_get_attachment_image_src( $attachment_id );
+                                            $title = get_the_title( $attachment_id );
+                                            $alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+                                            if( !empty( $image_src ) ) {
+                                                $images[] = array (
+                                                    'src'   => $image_src,
+                                                    'title' => $title,
+                                                    'alt'   => $alt,    
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
+                                wp_reset_postdata();
+                                break;
+                            case 'oshine_gallery' :
+                                if( array_key_exists( 'ids', $atts_array ) && !empty( $atts_array[ 'ids' ] ) ) {
+                                    $ids_array = explode( ',', $atts_array[ 'ids' ] );
+                                    if( !empty( $ids_array[0] ) ) {
+                                        foreach( $ids_array as $id ) {
+                                            $title = get_the_title( $id );
+                                            $image_details = wp_get_attachment_image_src( $id );
+                                            $src = is_array( $image_details ) ? $image_details[0] : false;
+                                            $alt = get_post_meta( $id, '_wp_attachment_image_alt', true );
+                                            if( !empty( $src ) ) {
+                                                $images[] = array (
+                                                'src'    => $src,
+                                                'title'  => $title,
+                                                'alt'    => $alt
+                                                );
+                                            }
+                                        }
+                                    }
+                                }
+                                break;          
+                            case 'flex_slide' :
+                                if( array_key_exists( 'image', $atts_array ) && !empty( $atts_array[ 'image' ] ) ) {
+                                    $image_url = $atts_array[ 'image' ];
+                                    $attachment_id = function_exists( 'attachment_url_to_postid' ) ? attachment_url_to_postid( $image_url ) : false;
+                                    if( !empty( $attachment_id ) ) {
+                                        $title = get_the_title( $attachment_id );
+                                        $image_details = wp_get_attachment_image_src( $attachment_id );
+                                        $src = is_array( $image_details ) ? $image_details[0] : false;
+                                        $alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+                                        if( !empty( $src ) ) {
+                                            $images[] = array (
+                                            'src'    => $src,
+                                            'title'  => $title,
+                                            'alt'    => $alt
+                                            );
+                                        }
+                                    }
+                                }   
+                                break;
+                            case 'tatsu_image' :
+                                if( array_key_exists( 'image', $atts_array ) && !empty( $atts_array[ 'image' ] ) ) {
+                                    $image_url = $atts_array[ 'image' ];
+                                    $attachment_id = function_exists( 'attachment_url_to_postid' ) ? attachment_url_to_postid( $image_url ) : false;
+                                    if( !empty( $attachment_id ) ) {
+                                        $title = get_the_title( $attachment_id );
+                                        $image_details = wp_get_attachment_image_src( $attachment_id );
+                                        $src = is_array( $image_details ) ? $image_details[0] : false;
+                                        $alt = get_post_meta( $attachment_id, '_wp_attachment_image_alt', true );
+                                        if( !empty( $src ) ) {
+                                            $images[] = array (
+                                            'src'    => $src,
+                                            'title'  => $title,
+                                            'alt'    => $alt
+                                            );
+                                        }
+                                    }
+                                } 
+                            default : 
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        return $images;
+    }        
+    add_filter('wpseo_sitemap_urlimages', 'be_yoast_integration', 10, 2);
+}
+
+if( !function_exists( 'be_themes_tatsu_lazyload_blur_size' ) ) {
+	function be_themes_tatsu_lazyload_blur_size( $size ) {
+		return 'carousel-thumb';
+	}
+	add_filter( 'tatsu_bg_lazyload_blur_size', 'be_themes_tatsu_lazyload_blur_size' );
+}
+
 ?>

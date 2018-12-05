@@ -4,7 +4,8 @@
  *
  */
 
-get_header(); ?>
+get_header(); 
+?>
 	<section id="content" class="no-sidebar-page">
 		<div id="content-wrap" class="">
 			<section id="page-content">

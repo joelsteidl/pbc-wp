@@ -4,7 +4,8 @@
  * The default full width template for displaying pages.
  *
 */
-get_header(); 
+get_header();
+
 global $be_themes_data; 
 while(have_posts()): the_post();
 	$be_pb_class = 'page-builder';
@@ -21,6 +22,8 @@ while(have_posts()): the_post();
 			<section id="page-content">
 				<div class="clearfix<?php echo ( ( isset( $sticky_sections ) && !empty( $sticky_sections ) ) ? " be-sections-wrap" : ""); ?>" <?php echo ( isset( $sticky_sections ) && !empty( $sticky_sections ) ) ? ( 'data-sticky-scroll = "' . $sticky_scroll_type . '" data-sticky-overlay = "' . $sticky_overlay . '"'  ) : ""; ?> >
 					<?php 
+
+
 						if ( post_password_required() ) {
 	       	 				$content  = get_the_password_form();
 

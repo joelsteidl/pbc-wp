@@ -77,20 +77,15 @@
 						$visit_site_url = get_post_meta( get_the_ID(), 'be_themes_portfolio_external_url', true );
 						$permalink = ( $link_to == 'external_url' ) ? $visit_site_url : get_permalink();
 				
-						if($video_url) {						
-							if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('youtube') : true ){
-								$data_source = 'video';
-							}else{
-								$video_details = be_get_video_details($video_url);
-								$data_source = $video_details['thumb_url'];
-							}	
+						if($video_url) {
+							 $data_source = 'video';
 						} else {						
 							$data_source = $attach_img[0];					
 						}
 
 						echo '<div class="placeholder style4_placehloder load center show-title" data-target = "'.$data_target.'" data-source="'.$data_source.'" data-href="'.$permalink.'" style="height: '.$slide_height.'%">';			
 						if($video_url) {						
-							echo be_gal_video($video_url);					
+							echo be_carousel_video($video_url);					
 						}
 						if(isset($overlay) && $overlay == 1 && $normal_scroll != 'normal-scroll') {
 							echo '<div class="overlay_placeholder" style="background: '.$thumb_overlay_color.';"></div>';
@@ -124,7 +119,7 @@
 									$attachment_id = get_post_thumbnail_id(get_the_ID());
 									$attach_img = wp_get_attachment_image_src($attachment_id, 'carousel-thumb');
 									$video_url = get_post_meta($attachment_id, 'be_themes_featured_video_url', true);
-									if($video_url && $video) {
+									if($video_url && !empty($video) ) {
 										$data_source = '<img width="75" height="50" src="'.get_template_directory_uri().'/img/video-placeholder.jpg" class="attachment-carousel-thumb" alt="hanging_on_reduced">';
 									} else {
 										$data_source = '<img width="75" height="50" src="'.$attach_img[0].'" class="attachment-carousel-thumb" alt="hanging_on_reduced">';

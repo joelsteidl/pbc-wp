@@ -3040,7 +3040,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         array(
                             'id'        => 'mobile_menu_icon_bg',
                             'type'      => 'color_rgba',
-                            'title'     => __('Mobile Menu Icon Background', 'oshin'), 
+                            'title'     => __('Hamburger Menu Background', 'oshin'), 
                             'subtitle'  => __('', 'oshin'),
                             'desc'      => __('', 'oshin'),
                             'default'   => array('color' => '#ffffff', 'alpha' => '0'),
@@ -3049,7 +3049,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         array(
                             'id'        => 'mobile_menu_icon_color',
                             'type'      => 'color',
-                            'title'     => __('Mobile Menu Icon Color', 'oshin'), 
+                            'title'     => __('Hamburger Menu Color', 'oshin'), 
                             'subtitle'  => __('', 'oshin'),
                             'desc'      => __('', 'oshin'),
                             'default'   => '#323232',
@@ -3057,7 +3057,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                     array(
                         'id'        => 'mobile_menu_width',
                         'type'      => 'text',
-                        'title'     => __('Mobile Menu Icon Width', 'oshin'), 
+                        'title'     => __('Hamburger Menu Width', 'oshin'), 
                         'subtitle'  => __('', 'oshin'),
                         'desc'      => __('', 'oshin'),
                         'default'   => '18',
@@ -3065,7 +3065,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                     array(
                         'id'        => 'mobile_menu_thickness',
                         'type'      => 'text',
-                        'title'     => __('Mobile Menu Icon Thickness', 'oshin'), 
+                        'title'     => __('Hamburger Thickness', 'oshin'), 
                         'subtitle'  => __('', 'oshin'),
                         'desc'      => __('', 'oshin'),
                         'default'   => '2',
@@ -3073,7 +3073,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                     array(
                         'id'        => 'mobile_menu_gap',
                         'type'      => 'text',
-                        'title'     => __('Mobile Menu Icon Gap', 'oshin'), 
+                        'title'     => __('Hamburger Gap', 'oshin'), 
                         'subtitle'  => __('', 'oshin'),
                         'desc'      => __('', 'oshin'),
                         'default'   => '5',
