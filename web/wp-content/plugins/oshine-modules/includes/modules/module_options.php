@@ -110,7 +110,7 @@ function oshine_register_blog() {
 
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_team');
+add_action( 'tatsu_register_modules', 'oshine_register_team', 11);
 function oshine_register_team() {
 		$controls = array (
 	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#team',
@@ -482,7 +482,11 @@ function oshine_register_team() {
 				),
 			),
 	    );
-	tatsu_register_module( 'team', $controls );
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'team', 'tatsu_team' ], $controls, 'be_team' );
+	}else {
+		tatsu_register_module( 'team', $controls );
+	}
 }
 
 add_action( 'tatsu_register_modules', 'oshine_register_icon_card');
@@ -678,169 +682,185 @@ function oshine_register_icon_card() {
 }
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_tabs');
+add_action( 'tatsu_register_modules', 'oshine_register_tabs', 11);
 function oshine_register_tabs() {
-		$controls = array (
-	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#tabs',
-	        'title' => __( 'Tabs', 'oshine-modules' ),
-	        'is_js_dependant' => true,
-	        'child_module' => 'tab',
-	        'type' => 'multi',
-	        'initial_children' => 2,
-	        'is_built_in' => true,
-	        'atts' => array (),
-	    );
-	tatsu_register_module( 'tabs', $controls );
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#tabs',
+		'title' => __( 'Tabs', 'oshine-modules' ),
+		'is_js_dependant' => true,
+		'child_module' => 'tab',
+		'type' => 'multi',
+		'initial_children' => 2,
+		'is_built_in' => true,
+		'atts' => array (),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( ['tabs', 'tatsu_tabs'], $controls, 'be_tabs' );
+	}else {
+		tatsu_register_module( 'tabs', $controls );
+	}
 }
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_tab');
+add_action( 'tatsu_register_modules', 'oshine_register_tab', 11);
 function oshine_register_tab() {
-		$controls = array (
-	        'icon' => '',
-	        'title' => __( 'Tab', 'oshine-modules' ),
-	        'child_module' => '',
-	        'type' => 'sub_module',
-	        'is_built_in' => true,
-	        'atts' => array (
-	        		array (
-	        		'att_name' => 'title',
-	        		'type' => 'text',
-	        		'label' => __( 'Tab Title', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'icon',
-	        		'type' => 'icon_picker',
-	        		'label' => __( 'Choose icon', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'content',
-	        		'type' => 'tinymce',
-	        		'label' => __( 'Tab Content', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
- 	        	),	
- 	        	array (
-		            'att_name' => 'title_color',
-		            'type' => 'color',
-		            'label' => __('Title Color','oshine-modules'),
-		            'default' => '',//sec_color
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-					  '#tatsu-{UUID}' => array(
-						  'property' => 'color',
-					  ),
-				  ),
-	            ),
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'title' => 'Tab Title',
-	        			'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'
-	        		),
-	        	)
-	        ),
-	    );
-	tatsu_register_module( 'tab', $controls );
-}
-
-
-add_action( 'tatsu_register_modules', 'oshine_register_accordion');
-function oshine_register_accordion() {
-		$controls = array (
-	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#accordion',
-	        'title' => __( 'Accordion Toggles', 'oshine-modules' ),
-	        'is_js_dependant' => true,
-	        'child_module' => 'toggle',
-	        'allowed_sub_modules' => array( 'toggle' ),
-	        'type' => 'multi',
-	        'initial_children' => 2,
-	        'is_built_in' => true,
-	        'atts' => array (
-	            array (
-	              	'att_name' => 'collapsed',
-	              	'type' => 'switch',
-	              	'label' => __( 'Collapse content', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),
-	        ),
-	    );
-	tatsu_register_module( 'accordion', $controls );
-}
-
-
-add_action( 'tatsu_register_modules', 'oshine_register_toggle');
-function oshine_register_toggle() {
-		$controls = array (
-	        'icon' => '',
-	        'title' => __( 'Toggle', 'oshine-modules' ),
-	        'child_module' => '',
-	        'type' => 'sub_module',
-	        'is_built_in' => true,
-	        'atts' => array (
-	            array (
-	        		'att_name' => 'title',
-	        		'type' => 'text',
-	        		'label' => __( 'Accordian Title', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'content',
-	        		'type' => 'tinymce',
-	        		'label' => __( 'Accordian Content', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
- 	        	),	
- 	        	array (
-		            'att_name' => 'title_color',
-		            'type' => 'color',
-		            'label' => __( 'Title Color', 'oshine-modules' ),
-		            'default' => '',//sec_color
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-					  '.tatsu-{UUID}.accordion-head' => array(
-						  'property' => 'color',
-					  ),
-				  ),
-					
-	            ),
-	            array (
-		            'att_name' => 'title_bg_color',
-		            'type' => 'color',
-		            'label' => __( 'Title Background Color', 'oshine-modules' ),
-		            'default' => '',//sec_bg
-					'tooltip' => '',
-					'css' => true,
- 					'selectors' => array(
-						'.tatsu-{UUID}.accordion-head' => array(
- 							'property' => 'background'
- 						),
+	$controls = array (
+		'icon' => '',
+		'title' => __( 'Tab', 'oshine-modules' ),
+		'child_module' => '',
+		'type' => 'sub_module',
+		'is_built_in' => true,
+		'atts' => array (
+				array (
+				'att_name' => 'title',
+				'type' => 'text',
+				'label' => __( 'Tab Title', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'icon',
+				'type' => 'icon_picker',
+				'label' => __( 'Choose icon', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'content',
+				'type' => 'tinymce',
+				'label' => __( 'Tab Content', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),	
+			array (
+				'att_name' => 'title_color',
+				'type' => 'color',
+				'label' => __('Title Color','oshine-modules'),
+				'default' => '',//sec_color
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'#tatsu-{UUID}' => array(
+						'property' => 'color',
 					),
+				),
 			),
 		),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'title' => 'Here goes your title',
-	        			'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'
-	        		),
-	        	)
-			),  
-	    );
-	tatsu_register_module( 'toggle', $controls );
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'title' => 'Tab Title',
+					'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( ['tab', 'tatsu_tab'], $controls, 'be_tab' );
+	}else {
+		tatsu_register_module( 'tab', $controls );
+	}
+}
+
+
+add_action( 'tatsu_register_modules', 'oshine_register_accordion', 11);
+function oshine_register_accordion() {
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#accordion',
+		'title' => __( 'Accordion Toggles', 'oshine-modules' ),
+		'is_js_dependant' => true,
+		'child_module' => 'toggle',
+		'allowed_sub_modules' => array( 'toggle' ),
+		'type' => 'multi',
+		'initial_children' => 2,
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'collapsed',
+				'type' => 'switch',
+				'label' => __( 'Collapse content', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'accordion', 'tatsu_accordion' ], $controls, 'be_accordion' );
+	}else {
+		tatsu_register_module( 'accordion', $controls );
+	}
+}
+
+
+add_action( 'tatsu_register_modules', 'oshine_register_toggle', 11);
+function oshine_register_toggle() {
+	$controls = array (
+		'icon' => '',
+		'title' => __( 'Toggle', 'oshine-modules' ),
+		'child_module' => '',
+		'type' => 'sub_module',
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'title',
+				'type' => 'text',
+				'label' => __( 'Accordian Title', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'content',
+				'type' => 'tinymce',
+				'label' => __( 'Accordian Content', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),	
+			array (
+				'att_name' => 'title_color',
+				'type' => 'color',
+				'label' => __( 'Title Color', 'oshine-modules' ),
+				'default' => '',//sec_color
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.accordion-head' => array(
+						'property' => 'color',
+					),
+				),
+				
+			),
+			array (
+				'att_name' => 'title_bg_color',
+				'type' => 'color',
+				'label' => __( 'Title Background Color', 'oshine-modules' ),
+				'default' => '',//sec_bg
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.accordion-head' => array(
+						'property' => 'background'
+					),
+				),
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'title' => 'Here goes your title',
+					'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.'
+				),
+			)
+		),  
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'toggle', 'tatsu_toggle' ], $controls, 'be_toggle' );
+	}else {
+		tatsu_register_module( 'toggle', $controls );
+	}
 }
 
 
@@ -921,208 +941,216 @@ function oshine_register_flex_slide() {
 
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_testimonials');
+add_action( 'tatsu_register_modules', 'oshine_register_testimonials', 11);
 function oshine_register_testimonials() {
-		$controls = array (
-	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#testimonials',
-	        'title' => __( 'Testimonials', 'oshine-modules' ),
-	        'is_js_dependant' => false, //custom js implementation
-	        'child_module' => 'testimonial',
-	        'type' => 'multi',
-	        'initial_children' => 2,
-	        'is_built_in' => true,
-	        'atts' => array (
-	            array (
-	        		'att_name' => 'testimonial_font_size',
-	        		'type' => 'slider',
-	        		'label' => __( 'Testimonial Font Size', 'oshine-modules' ),
-	        		'options' => array(
-	        			'unit' => 'px',
-	        		),
-	        		'default' => '14',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID} .testimonial-content' => array(
-							'property' => 'font-size',
-							'append' => 'px',
-						),
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#testimonials',
+		'title' => __( 'Testimonials', 'oshine-modules' ),
+		'is_js_dependant' => false, //custom js implementation
+		'child_module' => 'testimonial',
+		'type' => 'multi',
+		'initial_children' => 2,
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'testimonial_font_size',
+				'type' => 'slider',
+				'label' => __( 'Testimonial Font Size', 'oshine-modules' ),
+				'options' => array(
+					'unit' => 'px',
+				),
+				'default' => '14',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .testimonial-content' => array(
+						'property' => 'font-size',
+						'append' => 'px',
 					),
-	        	),
-	        	array (
-	        		'att_name' => 'author_role_font',
-	        		'type' => 'select',
-	        		'label' => __( 'Author Role - Font Type', 'oshine-modules' ),
-	        		'options' => array (
-						'body'=> 'Body', 
-						'special' => 'Special Title Font', 
-						'h6' => 'Heading 6'
-					),
-	        		'default' => 'h6',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'alignment',
-	        		'type' => 'button_group',
-	        		'label' => __( 'Alignment', 'oshine-modules' ),
-	        		'options' => array(
-	        			'left' => 'Left',
-	        			'center' => 'Center',
-	        			'right' => 'Right'
-	        		),
-	        		'default' => 'center',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	              	'att_name' => 'pagination',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable Pagination', 'oshine-modules' ),
-	              	'default' => false,
-	              	'tooltip' => '',
-	            ),
-	            array (
-	        		'att_name' => 'slide_show',
-	        		'type' => 'switch',
-	        		'label' => __( 'Enable Slide Show', 'oshine-modules' ),
-	        		'default' => 'no',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'slide_show_speed',
-	        		'type' => 'slider',
-	        		'label' => __( 'Slide Show Speed', 'oshine-modules' ),
-	        		'options' => array(
-	        			'min' => '0',
-	        			'max' => '10000',
-	        			'step' => '1000',
-	        			'unit' => 'ms',
-	        		),
-	        		'default' => '4000',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	              	'att_name' => 'animate',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable CSS Animation', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),
-	            array (
-	              	'att_name' => 'animation_type',
-	              	'type' => 'select',
-	              	'label' => __( 'Animation Type', 'oshine-modules' ),
-	              	'options' => tatsu_css_animations(),
-	              	'default' => 'fadeIn',
-	            ),
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'testimonial_font_size' => '22',
-	        		),
-	        	)
-	        ),
-	    );
-	tatsu_register_module( 'testimonials', $controls );
+				),
+			),
+			array (
+				'att_name' => 'author_role_font',
+				'type' => 'select',
+				'label' => __( 'Author Role - Font Type', 'oshine-modules' ),
+				'options' => array (
+					'body'=> 'Body', 
+					'special' => 'Special Title Font', 
+					'h6' => 'Heading 6'
+				),
+				'default' => 'h6',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'alignment',
+				'type' => 'button_group',
+				'label' => __( 'Alignment', 'oshine-modules' ),
+				'options' => array(
+					'left' => 'Left',
+					'center' => 'Center',
+					'right' => 'Right'
+				),
+				'default' => 'center',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'pagination',
+				'type' => 'switch',
+				'label' => __( 'Enable Pagination', 'oshine-modules' ),
+				'default' => false,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'slide_show',
+				'type' => 'switch',
+				'label' => __( 'Enable Slide Show', 'oshine-modules' ),
+				'default' => 'no',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'slide_show_speed',
+				'type' => 'slider',
+				'label' => __( 'Slide Show Speed', 'oshine-modules' ),
+				'options' => array(
+					'min' => '0',
+					'max' => '10000',
+					'step' => '1000',
+					'unit' => 'ms',
+				),
+				'default' => '4000',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'animate',
+				'type' => 'switch',
+				'label' => __( 'Enable CSS Animation', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'animation_type',
+				'type' => 'select',
+				'label' => __( 'Animation Type', 'oshine-modules' ),
+				'options' => tatsu_css_animations(),
+				'default' => 'fadeIn',
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'testimonial_font_size' => '22',
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'testimonials', 'tatsu_testimonials_carousel' ], $controls, 'be_testimonials' );
+	}else {
+		tatsu_register_module( 'testimonials', $controls );
+	}
 }
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_testimonial');
+add_action( 'tatsu_register_modules', 'oshine_register_testimonial', 11);
 function oshine_register_testimonial() {
-		$controls = array (
-	        'icon' => '',
-	        'title' => __( 'Testimonial', 'oshine-modules' ),
-	        'is_js_dependant' => false,
-	        'child_module' => '',
-	        'type' => 'sub_module',
-	        'is_built_in' => true,
-	        'atts' => array (
-	            array (
-	        		'att_name' => 'content',
-	        		'type' => 'tinymce',
-	        		'label' => __( 'Testimonial Content', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
- 	        	),
- 	        	array (
-	              	'att_name' => 'author_image',
-	              	'type' => 'single_image_picker',
-	              	'options' => array(
-	              		'size' => 'thumbnail',
-	              	),
-	              	'label' => __( 'Testimonial Author Image', 'oshine-modules' ),
-	              	'tooltip' => '',
-	            ),
-	            array (
-		            'att_name' => 'quote_color',
-					'type' => 'color',
-		            'label' => __( 'Quote Icon Color', 'oshine-modules' ),
-		            'default' => '',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID} .icon-quote' => array(
-							'property' => 'color',
-						),
+	$controls = array (
+		'icon' => '',
+		'title' => __( 'Testimonial', 'oshine-modules' ),
+		'is_js_dependant' => false,
+		'child_module' => '',
+		'type' => 'sub_module',
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'content',
+				'type' => 'tinymce',
+				'label' => __( 'Testimonial Content', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'author_image',
+				'type' => 'single_image_picker',
+				'options' => array(
+					'size' => 'thumbnail',
+				),
+				'label' => __( 'Testimonial Author Image', 'oshine-modules' ),
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'quote_color',
+				'type' => 'color',
+				'label' => __( 'Quote Icon Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .icon-quote' => array(
+						'property' => 'color',
 					),
-	            ),
-	            array (
-	        		'att_name' => 'author',
-	        		'type' => 'text',
-	        		'label' => __( 'Testimonial Author', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-		            'att_name' => 'author_color',
-					'type' => 'color',
-		            'label' => __( 'Testimonial Author Text Color', 'oshine-modules' ),
-		            'default' => '',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID} .testimonial-author' => array(
-							'property' => 'color',
-						),
+				),
+			),
+			array (
+				'att_name' => 'author',
+				'type' => 'text',
+				'label' => __( 'Testimonial Author', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'author_color',
+				'type' => 'color',
+				'label' => __( 'Testimonial Author Text Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .testimonial-author' => array(
+						'property' => 'color',
 					),
-	            ),
-	            array (
-	        		'att_name' => 'author_role',
-	        		'type' => 'text',
-	        		'label' => __( 'Testimonial Author Role', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-		            'att_name' => 'author_role_color',
-					'type' => 'color',
-		            'label' => __( 'Testimonial Author Role Color', 'oshine-modules' ),
-		            'default' => '',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID} .testimonial-author-role' => array(
-							'property' => 'color',
-						),
+				),
+			),
+			array (
+				'att_name' => 'author_role',
+				'type' => 'text',
+				'label' => __( 'Testimonial Author Role', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'author_role_color',
+				'type' => 'color',
+				'label' => __( 'Testimonial Author Role Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .testimonial-author-role' => array(
+						'property' => 'color',
 					),
-	            ),
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
-	        			'author_image' => 'http://placehold.it/100x100',
-	        			'author' => 'Swami',
-	        			'author_role' => 'Designer',
-	        		),
-	        	)
-	        ),
-	    );
-	tatsu_register_module( 'testimonial', $controls );
+				),
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
+					'author_image' => 'http://placehold.it/100x100',
+					'author' => 'Swami',
+					'author_role' => 'Designer',
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules(['testimonial', 'tatsu_testimonial_carousel'], $controls, 'be_testimonial');
+	}else {
+		tatsu_register_module( 'testimonial', $controls );
+	}
 }
 
 
@@ -1729,7 +1757,7 @@ function oshine_register_pricing_feature() {
 }
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_skills');
+add_action( 'tatsu_register_modules', 'oshine_register_skills', 11 );
 function oshine_register_skills() {
 		$controls = array (
 	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#skills',
@@ -1771,11 +1799,14 @@ function oshine_register_skills() {
 	        ),
 	    );
 	tatsu_register_module( 'skills', $controls );
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( array( 'skills', 'tatsu_skills' ), $controls, 'be_skills' );
+	}
 }
 
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_skill');
+add_action( 'tatsu_register_modules', 'oshine_register_skill', 11 );
 function oshine_register_skill() {
 		$controls = array (
 	        'icon' => '',
@@ -1865,6 +1896,9 @@ function oshine_register_skill() {
 	        ),
 	    );
 	tatsu_register_module( 'skill', $controls );
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( array( 'skill', 'tatsu_skill' ), $controls, 'be_skill' );
+	}
 }
 
 
@@ -3249,133 +3283,141 @@ function oshine_register_be_slide() {
 
 //Change Module to process , instead of process_style1
 
-add_action( 'tatsu_register_modules', 'oshine_register_process');
+add_action( 'tatsu_register_modules', 'oshine_register_process', 11 );
 function oshine_register_process() {
-		$controls = array (
-	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#process',
-	        'title' => __( 'Process', 'oshine-modules' ),
-	        'is_js_dependant' => false,
-	        'child_module' => 'process_col',
-	        'initial_children' => 4,
-	        'type' => 'multi',
-	        'is_built_in' => true,
-	        'atts' => array (
-				array (
-		            'att_name' => 'border_color',
-		            'type' => 'color',
-		            'label' => __( 'Border Color', 'oshine-modules' ),
-		            'default' => '',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID} .process-sep' => array(
-							'property' => 'background'
-						)
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#process',
+		'title' => __( 'Process', 'oshine-modules' ),
+		'is_js_dependant' => false,
+		'child_module' => 'process_col',
+		'initial_children' => 4,
+		'type' => 'multi',
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'border_color',
+				'type' => 'color',
+				'label' => __( 'Border Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .process-sep' => array(
+						'property' => 'background'
 					)
-	            ),
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'border_color' => '#efefef', //sec_border
-	        		),
-	        	)
-	        ),	        
-	    );
-	tatsu_register_module( 'process_style1', $controls );
+				)
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'border_color' => '#efefef', //sec_border
+				),
+			)
+		),	        
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'process_style1', 'tatsu_process' ], $controls, 'be_process_style1' );
+	}else {
+		tatsu_register_module( 'process_style1', $controls );
+	}
 }
 
 
 
-add_action( 'tatsu_register_modules', 'oshine_register_process_col');
+add_action( 'tatsu_register_modules', 'oshine_register_process_col', 11);
 function oshine_register_process_col() {
-		$controls = array (
-	        'icon' => '',
-	        'title' => __( 'Process Item', 'oshine-modules' ),
-	        'type' => 'sub_module',
-	        'is_built_in' => true,
-	        'atts' => array (
- 	        	array (
-	        		'att_name' => 'icon',
-	        		'type' => 'icon_picker',
-	        		'label' => __( 'Icon', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => '',
-	        	),
-				array (
-		            'att_name' => 'icon_color',
-					'type' => 'color',
-					'options' => array(
-						'gradient' => true
+	$controls = array (
+		'icon' => '',
+		'title' => __( 'Process Item', 'oshine-modules' ),
+		'type' => 'sub_module',
+		'is_built_in' => true,
+		'atts' => array (
+			array (
+				'att_name' => 'icon',
+				'type' => 'icon_picker',
+				'label' => __( 'Icon', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'icon_color',
+				'type' => 'color',
+				'options' => array(
+					'gradient' => true
+				),
+				'label' => __( 'Icon Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.process-col .font-icon' => array(
+						'property' => 'color',
 					),
-		            'label' => __( 'Icon Color', 'oshine-modules' ),
-		            'default' => '',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID}.process-col .font-icon' => array(
-							'property' => 'color',
-						),
+				),
+			),
+			array (
+				'att_name' => 'icon_size',
+				'type' => 'slider',
+				'label' => __( 'Icon Size', 'oshine-modules' ),
+				'options' => array(
+					'min' => '0',
+					'max' => '120',
+					'step' => '1',
+					'unit' => 'px',
+				),		        		
+				'default' => '60',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.process-col .font-icon' => array(
+						'property' => 'font-size',
+							'append' => 'px'
 					),
-	            ),
-	        	array (
-	        		'att_name' => 'icon_size',
-	        		'type' => 'slider',
-	        		'label' => __( 'Icon Size', 'oshine-modules' ),
-	        		'options' => array(
-	        			'min' => '0',
-	        			'max' => '120',
-	        			'step' => '1',
-	        			'unit' => 'px',
-	        		),		        		
-	        		'default' => '60',
-					'tooltip' => '',
-					'css' => true,
-					'selectors' => array(
-						'.tatsu-{UUID}.process-col .font-icon' => array(
-							'property' => 'font-size',
-							 'append' => 'px'
-						),
-					),
-	        	),
-	            array (
-	        		'att_name' => 'content',
-	        		'type' => 'tinymce',
-	        		'label' => __( 'Content', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => ''
- 	        	),
-				array (
-	              	'att_name' => 'animate',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable CSS Animation', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),
-	            array (
-	              	'att_name' => 'animation_type',
-	              	'type' => 'select',
-	              	'label' => __( 'Animation Type', 'oshine-modules' ),
-	              	'options' => tatsu_css_animations(),
-	              	'default' => 'fadeIn',
-	            ), 	        	        		            	        	
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'icon' => 'icon-icon_desktop',
-	        			'icon_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
-	        			'icon_size' => '45',
-	        			'content' => '<h6>Here is a Title</h6><p>Proin facilisis varius nunc. Curabitur eros risus, ultrices et dui ut, luctus accumsan nibh.</p>',
-	        		),
-	        	)
-	        ),
-	    );
-	tatsu_register_module( 'process_col', $controls );
+				),
+			),
+			array (
+				'att_name' => 'content',
+				'type' => 'tinymce',
+				'label' => __( 'Content', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'animate',
+				'type' => 'switch',
+				'label' => __( 'Enable CSS Animation', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'animation_type',
+				'type' => 'select',
+				'label' => __( 'Animation Type', 'oshine-modules' ),
+				'options' => tatsu_css_animations(),
+				'default' => 'fadeIn',
+			), 	        	        		            	        	
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'icon' => 'icon-icon_desktop',
+					'icon_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
+					'icon_size' => '45',
+					'content' => '<h6>Here is a Title</h6><p>Proin facilisis varius nunc. Curabitur eros risus, ultrices et dui ut, luctus accumsan nibh.</p>',
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'process_col', 'tatsu_process_col' ], $controls, 'be_process_col' );
+	}else {
+		tatsu_register_module( 'process_col', $controls );
+	}
 }
 
 
@@ -3979,313 +4021,316 @@ function oshine_register_portfolio() {
 
 add_action( 'tatsu_register_modules', 'oshine_register_gallery');
 function oshine_register_gallery() {
-		$controls = array (
-	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#gallery',
-	        'title' => __( 'Gallery', 'oshine-modules' ),
-	        'is_js_dependant' => true,
-	        'type' => 'single',
-	        'is_built_in' => false,
-	        'atts' => array (
-	        	array (
-	        		'att_name' => 'image_source',
-	        		'type' => 'select',
-	        		'label' => __( 'Image Source', 'oshine-modules' ),
-					'options' => array (
-						'selected' => 'Selected Images',
-						'instagram' => 'Instagram',
-						//'pintrest' => 'Pintrest',
-						//'dribble' => 'Dribble',
-						'flickr' => 'Flickr', 
-					),
-					'default'=> 'selected',
-	        		'tooltip' => ''
-	        	),
-				array (
-	              	'att_name' => 'ids',
-	              	'type' => 'multi_image_picker',
-	              	'label' => __( 'Upload / Select Gallery Images', 'oshine-modules' ),
-	              	'tooltip' => '',
-	              	'visible' => array( 'image_source', '=', 'selected' ),
-	            ),
-	        	array (
-	        		'att_name' => 'account_name',
-	        		'type' => 'text',
-	        		'label' => __( 'Account Name', 'oshine-modules' ),
-	        		'default' => '',
-	        		'tooltip' => '',
-	        		'hidden' => array( 'image_source', '=', 'selected' ),
-	        	),
-	        	array (
-	        		'att_name' => 'count',
-	        		'type' => 'slider',
-	        		'label' => __( 'Images Count', 'oshine-modules' ),
-	        		'options' => array(
-	        			'min' => '1',
-	        			'max' => '20',
-	        			'step' => '1',
-	        		),
-	        		'default' => '10',
-	        		'tooltip' => '',
-	        		'hidden' => array( 'image_source', '=', 'selected' ),
-	        	),		        	
-	        	array (
-	        		'att_name' => 'columns',
-	        		'type' => 'button_group',
-	        		'label' => __( 'Number of Columns', 'oshine-modules' ),
-					'options'=> array (
-						'1' => 'One',
-						'2' => 'Two',
-						'3' => 'Three',
-						'4' => 'Four',
-						'5' => 'Five', 
-					),
-	        		'default' => '3',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'lightbox_type',
-	        		'type' => 'select',
-	        		'label' => __( 'Lightbox Style', 'oshine-modules' ),
-					'options' => array(
-						'photoswipe' => 'Photo Swipe',
-						'magnific' => 'Magnific Popup (Supports Video)',
-					),
-	        		'default' => 'photoswipe',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'lazy_load',
-	        		'type' => 'switch',
-	        		'label' => __( 'Enable Lazy Load', 'oshine_modules' ),
-	        		'default' => 0,
-	        		'tooltip' => 'Lazy Load'
-	        	),
-	        	array (
-	        		'att_name' => 'delay_load',
-	        		'type' => 'switch',
-	        		'label' => __( 'Reveal items only on scroll', 'oshine_modules' ),
-	        		'default' => 0,
-	        		'tooltip' => 'Delay Load Grid'
-	        	),
-				array (
-					'att_name' => 'placeholder_color',
-					'type' => 'color',
-					'label' => __( 'Grid Placeholder Color', 'oshine_modules' ),
-					'default' => '',
-					'tooltip' => ''
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#gallery',
+		'title' => __( 'Gallery', 'oshine-modules' ),
+		'is_js_dependant' => true,
+		'type' => 'single',
+		'is_built_in' => false,
+		'atts' => array (
+			array (
+				'att_name' => 'image_source',
+				'type' => 'select',
+				'label' => __( 'Image Source', 'oshine-modules' ),
+				'options' => array (
+					'selected' => 'Selected Images',
+					'instagram' => 'Instagram',
+					//'pintrest' => 'Pintrest',
+					//'dribble' => 'Dribble',
+					'flickr' => 'Flickr', 
 				),
-	        	array (
-	        		'att_name' => 'gallery_paginate',
-	        		'type' => 'select',
-	        		'label' => __( 'Gallery Pagination Style', 'oshine-modules' ),
-					'options' => array (
-						'none'	=> 'None',
-						'infinite' => 'Infinite Scrolling',
-						'loadmore' => 'Load More',
-					),
-	        		'default' => 'none',
-	        		'tooltip' => '',
-	        		'visible' => array( 'image_source', '=', 'selected' ),
-	        	),	
-	        	array (
-	        		'att_name' => 'items_per_load',
-	        		'type' => 'text',
-	        		'label' => __( 'Items Per Load', 'oshine-modules' ),
-	        		'default' => '9',
-	        		'tooltip' => '',
-	        		'hidden' => array( 'gallery_paginate', '=', 'none' ),
-	        	),
-	        	array (
-	        		'att_name' => 'gutter_style',
-	        		'type' => 'select',
-	        		'label' => __( 'Gutter Style', 'oshine-modules' ),
-					'options' => array (
-						'style1' => 'With Margin',
-						'style2' => 'Without Margin',
-					),
-	        		'default' => 'style2',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'gutter_width',
-	        		'type' => 'number',
-	        		'label' => __('Gutter Width','oshine-modules'),
-	        		'options' => array(
-	        			'unit' => 'px',
-	        		),
-	        		'default' => '40',
-	        		'tooltip' => ''
-	        	),
-	            array (
-	              	'att_name' => 'masonry',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable Masonry Layout', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
+				'default'=> 'selected',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'ids',
+				'type' => 'multi_image_picker',
+				'label' => __( 'Upload / Select Gallery Images', 'oshine-modules' ),
+				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
+			),
+			array (
+				'att_name' => 'account_name',
+				'type' => 'text',
+				'label' => __( 'Account Name', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'hidden' => array( 'image_source', '=', 'selected' ),
+			),
+			array (
+				'att_name' => 'count',
+				'type' => 'slider',
+				'label' => __( 'Images Count', 'oshine-modules' ),
+				'options' => array(
+					'min' => '1',
+					'max' => '20',
+					'step' => '1',
 				),
-				array (
-					'att_name' => 'maintain_order',
-					'type' => 'switch',
-					'label' => __( 'Maintain Order', 'oshine-modules' ),
-					'default' => 0,
-					'tooltip' => '',
+				'default' => '10',
+				'tooltip' => '',
+				'hidden' => array( 'image_source', '=', 'selected' ),
+			),		        	
+			array (
+				'att_name' => 'columns',
+				'type' => 'button_group',
+				'label' => __( 'Number of Columns', 'oshine-modules' ),
+				'options'=> array (
+					'1' => 'One',
+					'2' => 'Two',
+					'3' => 'Three',
+					'4' => 'Four',
+					'5' => 'Five', 
 				),
-	        	array (
-	        		'att_name' => 'initial_load_style',
-	        		'type' => 'select',
-	        		'label' => __( 'Image Load Animation', 'oshine-modules' ),
-					'options' => array (
-						'init-slide-left' => 'Slide Left',
-						'init-slide-right' => 'Slide Right',
-						'init-slide-top' => 'Slide Top',
-						'init-slide-bottom' => 'Slide Bottom',
-						'init-scale' => 'Scale',
-						'fadeIn' => 'Fade In',
-						'none' => 'None',
-					),
-	        		'default' => 'none',
-	        		'tooltip' => ''
-	        	),
-	            array (
-	              	'att_name' => 'item_parallax',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable Parallax Effect to Portfolio Items', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),
-	        	array (
-	        		'att_name' => 'hover_style',
-	        		'type' => 'select',
-	        		'label' => __( 'Hover Style', 'oshine-modules' ),
-					'options' => array (
-						'style1-hover' => 'Style1 - Fade Toggle',
-						'style2-hover' => 'Style2 - 3D FLIP Horizontal',
-						'style3-hover' => 'Style3 - Direction Aware',
-						'style4-hover' => 'Style4 - Direction Aware Inverse',
-						'style5-hover' => 'Style5 - FadeIn & Scale',
-						'style6-hover' => 'Style6 - Fall',
-						'style7-hover' => 'Style7 - 3D FLIP Vertical',
-						'style8-hover' => 'Style8 - 3D Rotate',
-					),
-	        		'default' => 'style1-hover',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'hover_content_option',
-	        		'type' => 'button_group',
-	        		'label' => __( 'On Image Hover', 'oshine-modules' ),
-					'options'=> array(
-						'none' => 'None', 
-						'icon' => 'Show Icon', 
-						'title' => 'Show Title', 
-					),
-	        		'default' => 'icon',
-	        		'tooltip' => ''
-	        	),	        	
-				array (
-		            'att_name' => 'hover_content_color',
-		            'type' => 'color',
-		            'label' => __( 'Hover Content Color', 'oshine-modules' ),
-		            'default' => '',
-		            'tooltip' => '',
-	            ),
-	        	array (
-	        		'att_name' => 'default_image_style',
-	        		'type' => 'select',
-	        		'label' => __( 'Default Image Style', 'oshine-modules' ),
-	        		'options' => array (
-						'black_white' => 'Black And White',
-						'color' => 'Color'
-					),
-	        		'default' => 'color',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'hover_image_style',
-	        		'type' => 'select',
-	        		'label' => __( 'Hover Image Style', 'oshine-modules' ),
-	        		'options' => array (
-						'black_white' => 'Black And White',
-						'color' => 'Color'
-					),
-	        		'default' => 'color',
-	        		'tooltip' => ''
-	        	),
-	        	array (
-	        		'att_name' => 'image_effect',
-	        		'type' => 'select',
-	        		'label' => __( 'Image Effects', 'oshine-modules' ),
-					'options' => array (
-						'zoom-in' => 'Zoom In',
-						'zoom-out' => 'Zoom Out',
-						'zoom-in-rotate' => 'Zoom In Rotate',
-						'zoom-out-rotate' => 'Zoom Out Rotate',
-						'none' => 'None'
-					),
-	        		'default' => 'none',
-	        		'tooltip' => ''
-	        	),
-				array (
-		            'att_name' => 'overlay_color',
-		            'type' => 'color',
-		            'label' => __( 'Thumbnail Overlay Color / Gradient Start Color', 'oshine-modules' ),
-		            'default' => '',
-		            'tooltip' => '',
-	            ),
-	            array (
-	              	'att_name' => 'gradient',
-	              	'type' => 'switch',
-	              	'label' => __( 'Enable Gradient Overlay', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),	            
-				array (
-					'att_name' => 'gradient_color',
-					'type' => 'color',
-					'options' => array(
-						'gradient' => true,
-					),
-		            'label' => __( 'Thumbnail Overlay Gradient End Color', 'oshine-modules' ),
-					'default' => '',
-					'visible' => array('gradient', '=', '1'),
-		            'tooltip' => '',
-	            ),
-	        	array (
-	        		'att_name' => 'gradient_direction',
-	        		'type' => 'button_group',
-	        		'label' => __( 'Gradient Direction', 'oshine-modules' ),
-					'options' => array (
-						'right' => 'Horizontal',
-						'bottom' => 'Vertical', 
-					),
-	        		'default' => 'right',
-	        		'tooltip' => ''
-	        	),
-	            array (
-	              	'att_name' => 'like_button',
-	              	'type' => 'switch',
-	              	'label' => __( 'Disable Like Button', 'oshine-modules' ),
-	              	'default' => 0,
-	              	'tooltip' => '',
-	            ),
+				'default' => '3',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'lightbox_type',
+				'type' => 'select',
+				'label' => __( 'Lightbox Style', 'oshine-modules' ),
+				'options' => array(
+					'photoswipe' => 'Photo Swipe',
+					'magnific' => 'Magnific Popup (Supports Video)',
+				),
+				'default' => 'photoswipe',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'lazy_load',
+				'type' => 'switch',
+				'label' => __( 'Enable Lazy Load', 'oshine_modules' ),
+				'default' => 0,
+				'tooltip' => 'Lazy Load'
+			),
+			array (
+				'att_name' => 'delay_load',
+				'type' => 'switch',
+				'label' => __( 'Reveal items only on scroll', 'oshine_modules' ),
+				'default' => 0,
+				'tooltip' => 'Delay Load Grid'
+			),
+			array (
+				'att_name' => 'placeholder_color',
+				'type' => 'color',
+				'label' => __( 'Grid Placeholder Color', 'oshine_modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'gallery_paginate',
+				'type' => 'select',
+				'label' => __( 'Gallery Pagination Style', 'oshine-modules' ),
+				'options' => array (
+					'none'	=> 'None',
+					'infinite' => 'Infinite Scrolling',
+					'loadmore' => 'Load More',
+				),
+				'default' => 'none',
+				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
+			),	
+			array (
+				'att_name' => 'items_per_load',
+				'type' => 'text',
+				'label' => __( 'Items Per Load', 'oshine-modules' ),
+				'default' => '9',
+				'tooltip' => '',
+				'hidden' => array( 'gallery_paginate', '=', 'none' ),
+			),
+			array (
+				'att_name' => 'gutter_style',
+				'type' => 'select',
+				'label' => __( 'Gutter Style', 'oshine-modules' ),
+				'options' => array (
+					'style1' => 'With Margin',
+					'style2' => 'Without Margin',
+				),
+				'default' => 'style2',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'gutter_width',
+				'type' => 'number',
+				'label' => __('Gutter Width','oshine-modules'),
+				'options' => array(
+					'unit' => 'px',
+				),
+				'default' => '40',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'masonry',
+				'type' => 'switch',
+				'label' => __( 'Enable Masonry Layout', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'maintain_order',
+				'type' => 'switch',
+				'label' => __( 'Maintain Order', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'initial_load_style',
+				'type' => 'select',
+				'label' => __( 'Image Load Animation', 'oshine-modules' ),
+				'options' => array (
+					'init-slide-left' => 'Slide Left',
+					'init-slide-right' => 'Slide Right',
+					'init-slide-top' => 'Slide Top',
+					'init-slide-bottom' => 'Slide Bottom',
+					'init-scale' => 'Scale',
+					'fadeIn' => 'Fade In',
+					'none' => 'None',
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'item_parallax',
+				'type' => 'switch',
+				'label' => __( 'Enable Parallax Effect to Portfolio Items', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'hover_style',
+				'type' => 'select',
+				'label' => __( 'Hover Style', 'oshine-modules' ),
+				'options' => array (
+					'style1-hover' => 'Style1 - Fade Toggle',
+					'style2-hover' => 'Style2 - 3D FLIP Horizontal',
+					'style3-hover' => 'Style3 - Direction Aware',
+					'style4-hover' => 'Style4 - Direction Aware Inverse',
+					'style5-hover' => 'Style5 - FadeIn & Scale',
+					'style6-hover' => 'Style6 - Fall',
+					'style7-hover' => 'Style7 - 3D FLIP Vertical',
+					'style8-hover' => 'Style8 - 3D Rotate',
+				),
+				'default' => 'style1-hover',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'hover_content_option',
+				'type' => 'button_group',
+				'label' => __( 'On Image Hover', 'oshine-modules' ),
+				'options'=> array(
+					'none' => 'None', 
+					'icon' => 'Show Icon', 
+					'title' => 'Show Title', 
+				),
+				'default' => 'icon',
+				'tooltip' => ''
+			),	        	
+			array (
+				'att_name' => 'hover_content_color',
+				'type' => 'color',
+				'label' => __( 'Hover Content Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'default_image_style',
+				'type' => 'select',
+				'label' => __( 'Default Image Style', 'oshine-modules' ),
+				'options' => array (
+					'black_white' => 'Black And White',
+					'color' => 'Color'
+				),
+				'default' => 'color',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'hover_image_style',
+				'type' => 'select',
+				'label' => __( 'Hover Image Style', 'oshine-modules' ),
+				'options' => array (
+					'black_white' => 'Black And White',
+					'color' => 'Color'
+				),
+				'default' => 'color',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'image_effect',
+				'type' => 'select',
+				'label' => __( 'Image Effects', 'oshine-modules' ),
+				'options' => array (
+					'zoom-in' => 'Zoom In',
+					'zoom-out' => 'Zoom Out',
+					'zoom-in-rotate' => 'Zoom In Rotate',
+					'zoom-out-rotate' => 'Zoom Out Rotate',
+					'none' => 'None'
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'overlay_color',
+				'type' => 'color',
+				'label' => __( 'Thumbnail Overlay Color / Gradient Start Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'gradient',
+				'type' => 'switch',
+				'label' => __( 'Enable Gradient Overlay', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),	            
+			array (
+				'att_name' => 'gradient_color',
+				'type' => 'color',
+				'options' => array(
+					'gradient' => true,
+				),
+				'label' => __( 'Thumbnail Overlay Gradient End Color', 'oshine-modules' ),
+				'default' => '',
+				'visible' => array('gradient', '=', '1'),
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'gradient_direction',
+				'type' => 'button_group',
+				'label' => __( 'Gradient Direction', 'oshine-modules' ),
+				'options' => array (
+					'right' => 'Horizontal',
+					'bottom' => 'Vertical', 
+				),
+				'default' => 'right',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'like_button',
+				'type' => 'switch',
+				'label' => __( 'Disable Like Button', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
 
-	        ),
-	        'presets' => array(
-	        	'default' => array(
-	        		'title' => '',
-	        		'image' => '',
-	        		'preset' => array(
-	        			'overlay_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
-	        			'hover_content_color' => array( 'id' => 'palette:1', 'color' => tatsu_get_color( 'tatsu_accent_twin_color' ) ),
-	        			'initial_load_style' => 'scale',
-	        		),
-	        	)
-	        ),
-	    );
-	tatsu_register_module( 'oshine_gallery', $controls );
-	tatsu_register_module( 'gallery', $controls );
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'overlay_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
+					'hover_content_color' => array( 'id' => 'palette:1', 'color' => tatsu_get_color( 'tatsu_accent_twin_color' ) ),
+					'initial_load_style' => 'scale',
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'oshine_gallery', 'tatsu_gallery', 'gallery' ], $controls, 'be_gallery' );
+	}else {
+		tatsu_register_module( 'oshine_gallery', $controls );
+		tatsu_register_module( 'gallery', $controls );	
+	}
 }
-
 
 add_action( 'tatsu_register_modules', 'oshine_register_justified_gallery');
 function oshine_register_justified_gallery() {
@@ -6059,10 +6104,9 @@ function oshine_register_special_heading5() {
 	    );
 	tatsu_register_module( 'special_heading5', $controls );
 }
-add_action( 'tatsu_register_modules', 'oshine_register_special_heading6' );
+add_action( 'tatsu_register_modules', 'oshine_register_special_heading6', 11);
 if( !function_exists( 'oshine_register_special_heading6' ) ) {
 	function oshine_register_special_heading6() {
-		
 		$controls = array(
 			'icon' 				=> OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#special_heading3',
 			'title' 			=> __( 'Special Title - Style 6', 'oshine_modules' ),
@@ -6099,7 +6143,7 @@ if( !function_exists( 'oshine_register_special_heading6' ) ) {
 						'add_unit_to_value'	=> true,
 						'step'				=> 1
 					),
-					'default'		=> 13,
+					'default'		=> '13px',
 					'tooltip'		=> '',
 					'css' => true,
 					'selectors' => array(
@@ -6119,7 +6163,7 @@ if( !function_exists( 'oshine_register_special_heading6' ) ) {
 						'add_unit_to_value'	=> true,
 						'step'				=> 1
 					),
-					'default'		=> 2,
+					'default'		=> '2px',
 					'tooltip'		=> '',
 					'css' => true,
 					'selectors' => array(
@@ -6231,13 +6275,17 @@ if( !function_exists( 'oshine_register_special_heading6' ) ) {
 						'border_style' => 'style2',
 						'border_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
 						'expand_border' => '1',
-						'letter_spacing' => '2',
-						'font_size' => '13',	        			
+						'letter_spacing' => '2px',
+						'font_size' => '13px',	        			
 	        		),
 	        	)
 	        ),			
 		);
-		tatsu_register_module( 'be_special_heading6', $controls );
+		if( function_exists( 'tatsu_remap_modules' ) ) {
+			tatsu_remap_modules(['be_special_heading6', 'tatsu_special_heading'], $controls, 'be_special_heading6');
+		}else {
+			tatsu_register_module( 'be_special_heading6', $controls );
+		}
 	} 
 }
 
@@ -6399,7 +6447,7 @@ function oshine_register_svg_icon() {
 	tatsu_register_module( 'oshine_svg_icon', $controls );
 }
 
-add_action( 'tatsu_register_modules', 'oshine_register_animated_link');
+add_action( 'tatsu_register_modules', 'oshine_register_animated_link', 11 );
 function oshine_register_animated_link() {
 		$controls = array (
 	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#svg_icon',
@@ -6606,5 +6654,8 @@ function oshine_register_animated_link() {
 	        ),
 	    );
 	tatsu_register_module( 'oshine_animated_link', $controls );
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( array( 'oshine_animated_link', 'tatsu_animated_link' ), $controls, 'oshine_animated_link' );
+	}
 }
 ?>

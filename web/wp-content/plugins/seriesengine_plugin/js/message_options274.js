@@ -82,7 +82,6 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		} else {
 			jQuery('#newspeakersection').hide();
 		};
-		jQuery("#message_audio_url_dummy").val(audiovalue);
 	});
 	
 	function limitText(limitField, limitCount, limitNum) {
@@ -101,7 +100,8 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 			var findurl = jQuery('#enmsepluginurl').val();
 			var serandom = Math.floor(Math.random()*1001);
 			var encodedval = encodeURIComponent(newtopicname);
-			var urltoload = findurl+"?topicname="+encodedval+"&enmse_random="+serandom;
+			var xxse = encodeURIComponent(jQuery('#xxse').val());
+			var urltoload = findurl+"?topicname="+encodedval+"&xxse="+xxse+"&enmse_random="+serandom;
 
 			function loadrefreshedtopiclist() {
 				jQuery("#topic_name").val('');
@@ -165,7 +165,8 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 				var serandom = Math.floor(Math.random()*1001);
 				var encodedvalone = encodeURIComponent(newspeakerfirst);
 				var encodedvaltwo = encodeURIComponent(newspeakerlast);
-				var urltoload = findurl+"?firstname="+encodedvalone+"&lastname="+encodedvaltwo+"&enmse_random="+serandom;
+				var xxse = encodeURIComponent(jQuery('#xxse').val());
+				var urltoload = findurl+"?firstname="+encodedvalone+"&lastname="+encodedvaltwo+"&xxse="+xxse+"&enmse_random="+serandom;
 				
 				function loadrefreshedspeakerlist() {
 					jQuery('#newspeakersection').hide();
@@ -204,8 +205,9 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 				var encodedvaltwo = encodeURIComponent(newfileurl);
 				var encodedvalfive = encodeURIComponent(newfilenewwindow);
 				var encodedvalsix = encodeURIComponent(newfilefeatured);
-				var urltoload = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&message_id="+encodedvalthree+"&featured="+encodedvalsix+"&enmse_random="+serandom+"&new=1";
-				var urltoloadtwo = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&message_id="+encodedvalthree+"&featured="+encodedvalsix+"&enmse_random="+serandom;
+				var xxse = encodeURIComponent(jQuery('#xxse').val());
+				var urltoload = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&message_id="+encodedvalthree+"&featured="+encodedvalsix+"&xxse="+xxse+"&enmse_random="+serandom+"&new=1";
+				var urltoloadtwo = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&message_id="+encodedvalthree+"&featured="+encodedvalsix+"&xxse="+xxse+"&enmse_random="+serandom;
 				function loadrefreshedfilelist() {
 					jQuery("#file_name").val('');
 					jQuery("#file_url").val('');
@@ -243,8 +245,9 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 				var encodedvalthree = fileid;
 				var encodedvalfour = encodeURIComponent(fileusername);
 				var encodedvalsix = encodeURIComponent(newfilefeatured);
-				var urltoload = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&fid="+encodedvalthree+"&mid="+messageid+"&featured="+encodedvalsix+"&enmse_random="+serandom+"&update=1";
-				var anotherurltoload = anotherfindurl+"?message_id="+messageid+"&file_username="+encodedvalfour+"&featured="+encodedvalsix+"&enmse_random="+serandom;
+				var xxse = encodeURIComponent(jQuery('#xxse').val());
+				var urltoload = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_new_window="+encodedvalfive+"&file_username="+encodedvalfour+"&fid="+encodedvalthree+"&mid="+messageid+"&featured="+encodedvalsix+"&xxse="+xxse+"&enmse_random="+serandom+"&update=1";
+				var anotherurltoload = anotherfindurl+"?message_id="+messageid+"&file_username="+encodedvalfour+"&featured="+encodedvalsix+"&xxse="+xxse+"&enmse_random="+serandom;
 
 				function loadrefreshedfilelist() {
 					jQuery('#enmsefileform').load(urltoload+"&done=1");
@@ -270,10 +273,11 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 			var formdata = jQuery("#enmseform").serialize();
 			var findurl = jQuery('#enmsefiledelete').val();
 			var serandom = Math.floor(Math.random()*1001);
-			var urltoload = findurl+"?did="+id+"&mid="+messageid+featured+"&enmse_random="+serandom;
+			var xxse = encodeURIComponent(jQuery('#xxse').val());
+			var urltoload = findurl+"?did="+id+"&mid="+messageid+featured+"&xxse="+xxse+"&enmse_random="+serandom;
 			
 			function loadrefreshedfilelist() {
-				jQuery("#row_"+id).fadeOut();
+				jQuery("#frow_"+id).fadeOut();
 			};
 			jQuery.post(urltoload, formdata, loadrefreshedfilelist);
 		};
@@ -285,7 +289,8 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		var findurl = jQuery('#enmsefileedit').val();
 		var username = jQuery('#file_username').val();
 		var serandom = Math.floor(Math.random()*1001);
-		var urltoload = findurl+"?fid="+id+"&file_username="+username+"&enmse_random="+serandom;
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
+		var urltoload = findurl+"?fid="+id+"&file_username="+username+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery('#enmsefileform').load(urltoload);
 		sescroll();
 		return false;
@@ -318,8 +323,9 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 				var valtrans = encodeURIComponent(newtrans);
 				var valfocus = encodeURIComponent(newfocus);
 				var valusername = encodeURIComponent(scriptureusername);
-				var urltoload = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&enmse_random="+serandom+"&new=1";
-				var urltoloadtwo = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&enmse_random="+serandom;
+				var xxse = encodeURIComponent(jQuery('#xxse').val());
+				var urltoload = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&xxse="+xxse+"&enmse_random="+serandom+"&new=1";
+				var urltoloadtwo = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&xxse="+xxse+"&enmse_random="+serandom;
 				function loadrefreshedfilelist() {
 					jQuery("#scripture_start_chapter").val('Chapter').css('color','#bebebe');
 					jQuery("#scripture_start_verse").val('Verse').css('color','#bebebe');
@@ -363,8 +369,9 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 			var valtrans = encodeURIComponent(newtrans);
 			var valfocus = encodeURIComponent(newfocus);
 			var valusername = encodeURIComponent(scriptureusername);
-			var urltoload = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&scripture_id="+scriptureid+"&enmse_random="+serandom+"&update=1";
-			var anotherurltoload = anotherfindurl+"?message_id="+messageid+"&username="+valusername+"&focus="+valfocus+"&enmse_random="+serandom;
+			var xxse = encodeURIComponent(jQuery('#xxse').val());
+			var urltoload = findurl+"?start_book="+valbook+"&start_chapter="+valchapter+"&start_verse="+valverse+"&end_verse="+valendverse+"&trans="+valtrans+"&focus="+valfocus+"&username="+valusername+"&message_id="+encodedvalthree+"&scripture_id="+scriptureid+"&xxse="+xxse+"&enmse_random="+serandom+"&update=1";
+			var anotherurltoload = anotherfindurl+"?message_id="+messageid+"&username="+valusername+"&focus="+valfocus+"&xxse="+xxse+"&enmse_random="+serandom;
 			function loadrefreshedfilelist() {
 				jQuery('#enmsescriptureform').load(urltoload+"&done=1");
 				jQuery('#enmsescripturearea').load(anotherurltoload+"&done=1");
@@ -380,7 +387,8 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		var findurl = jQuery('#enmsescriptureedit').val();
 		var username = jQuery('#scripture_username').val();
 		var serandom = Math.floor(Math.random()*1001);
-		var urltoload = findurl+"?scripture_id="+id+"&username="+username+"&enmse_random="+serandom;
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
+		var urltoload = findurl+"?scripture_id="+id+"&username="+username+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery('#enmsescriptureform').load(urltoload);
 		sescroll();
 		return false;
@@ -399,8 +407,9 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 			var messageid = jQuery("#enmsemid").val();
 			var formdata = jQuery("#enmseform").serialize();
 			var findurl = jQuery('#enmsescripturedelete').val();
+			var xxse = encodeURIComponent(jQuery('#xxse').val());
 			var serandom = Math.floor(Math.random()*1001);
-			var urltoload = findurl+"?did="+id+"&mid="+messageid+featured+"&enmse_random="+serandom;
+			var urltoload = findurl+"?did="+id+"&mid="+messageid+featured+"&xxse="+xxse+"&enmse_random="+serandom;
 			
 			function loadrefreshedfilelist() {
 				jQuery("#row_"+id).fadeOut();

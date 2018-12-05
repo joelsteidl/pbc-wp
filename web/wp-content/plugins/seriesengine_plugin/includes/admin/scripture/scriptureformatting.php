@@ -1,6 +1,10 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 4 ) { 
+	if ( $enmse_language == 6 ) { 
+		include('../lang/chint_bible_books.php');
+	} elseif ( $enmse_language == 5 ) { 
+		include('../lang/chins_bible_books.php');
+	} elseif ( $enmse_language == 4 ) { 
 		include('../lang/turk_bible_books.php');
 	} elseif ( $enmse_language == 3 ) { 
 		include('../lang/ger_bible_books.php');
@@ -316,6 +320,10 @@
 		$trans = " (NVI)";
 	} elseif ( $enmse_trans == 170 ) {
 		$trans = " (TCL02)";
+	} elseif ( $enmse_trans == 48 ) {
+		$trans = "";
+	} elseif ( $enmse_trans == 414 ) {
+		$trans = "";
 	}
 
  ?>

@@ -120,23 +120,23 @@ class Colorhub_Public {
 		foreach( $swatches as $swatch => $value ){
 
 			if( !is_array( $value['color'] ) ){
-				$output .= '.swatch-'.$swatch.'{color:'.$value['color'].';}';
+				$output .= '.swatch-'.$swatch.', .swatch-'. $swatch .' a{color:'.$value['color'].';}';
 			}else{
 				if( function_exists('be_gradient_color') ){
 					$gradient_color = be_gradient_color($value['color']);
-					$output .= '.swatch-'.$swatch.'{background:'.$gradient_color[0].';';
+					$output .= '.swatch-'.$swatch.', .swatch-'. $swatch .' a{background:'.$gradient_color[0].';';
 					$output .= '-webkit-background-clip:text;-webkit-text-fill-color:transparent;}';
 				}
 			}
 		}
 		foreach( $palettes as $palette => $value ){
 
-			if( !is_array( $palette ) ){
-				$output .= '.palette-'.$palette.'{color:'.$value.';}';
+			if( !is_array( $value ) ){
+				$output .= '.palette-'.$palette.', .palette-'. $palette .' a{color:'.$value.';}';
 			}else{
 				if( function_exists('be_gradient_color') ){
 					$gradient_color = be_gradient_color($value);
-					$output .= '.palette-'.$palette.'{background:'.$gradient_color[0].';';
+					$output .= '.palette-'.$palette.', .palette-'. $palette .' a{background:'.$gradient_color[0].';';
 					$output .= '-webkit-background-clip:text;-webkit-text-fill-color:transparent;}';
 				}
 			}

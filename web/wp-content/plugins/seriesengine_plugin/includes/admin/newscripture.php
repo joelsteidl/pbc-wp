@@ -1,6 +1,6 @@
 <?php /* ----- Series Engine - Add a new file straight from the Messages admin page ----- */
 
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 
 	if ( current_user_can( 'edit_pages' ) ) { 
@@ -163,7 +163,7 @@
 			};
 			jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize"); 
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php'; ?>", order, function(){}); 
+				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
 			}});
 		});
 		</script>
@@ -206,7 +206,7 @@
 			};
 			jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize");
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php'; ?>", order, function(){}); 
+				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
 			}});
 		});
 		</script>

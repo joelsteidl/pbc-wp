@@ -83,7 +83,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		
 ?>
 <div class="wrap">
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/embed_code.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/embed_code274.js'; ?>"></script>
 
 	
 	<h2 class="enmse">Embed Into a Page or Post</h2>
@@ -97,9 +97,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<div id="enmse-simple">
 		<h3>Using the Simple Shortcode Code</h3>
 		
-		<p>Series Engine includes <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide#se-customizing"; ?>">a simple shortcode</a> that allows you to add a media page to your site in a matter of seconds. The Series Engine media browser can be easily embedded within any page or post on your WordPress site by entering the following shortcode into the visual editor:</p>
+		<p>Series Engine includes <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide#se-customizing"; ?>">a simple shortcode</a> that allows you to add a media page to your site in a matter of seconds. The Series Engine media browser can be easily embedded within any page or post on your WordPress site by entering the following shortcode into the visual editor (or into the "Shortcode" block in Gutenberg):</p>
 		<blockquote><strong>[seriesengine]</strong></blockquote>
-		<p>You can place content above and below the shortcode to flesh out the page however you wish (just make sure the shortcode is on its own line). See the example below:</p>
+		<p>You can place content above and below the shortcode to flesh out the page however you wish (just make sure the shortcode is on its own line if you're using visual editor). See the example below:</p>
 		<p style="text-align: center"><img src="<?php echo plugins_url() .'/seriesengine_plugin/images/newexamplescreen.jpg'; ?>" width="633" height="399" alt="Example of using the Series Engine shortcode" style="border: 5px solid #ECECEC" /></p>
 		
 	</div>
@@ -148,7 +148,8 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		</div>
 		
 	</div>
-	
+
+	<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 	<?php include ('secredits.php'); ?>	
 </div>
 <?php }  // Deny access to sneaky people!

@@ -183,7 +183,7 @@ class Be_Gdpr {
 		$plugin_public = new Be_Gdpr_Public( $this->get_plugin_name(), $this->get_version() );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts',1 );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_privacy_elements' );
 
 	}
@@ -262,7 +262,7 @@ class Be_Gdpr {
 	}
 
 	public function privacy_settings_popup(){
-		return '<a href="#gdpr-popup" class="mfp-popup white-popup">'. get_option( 'be_gdpr_popup_title_text','Privacy Settings' ) .'</a>';
+		$default_popup_html = '<a href="#gdpr-popup" class="mfp-popup white-popup privacy-settings" data-type="HTML" >'. get_option( 'be_gdpr_popup_title_text','Privacy Settings' ) .'</a>';
+		return apply_filters( 'be_gdpr_privacy_settings_popup', $default_popup_html);
 	}
-
 }

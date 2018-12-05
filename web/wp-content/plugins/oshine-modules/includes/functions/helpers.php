@@ -189,69 +189,6 @@ if (!function_exists('get_portfolio_image')) {
 	}
 }
 
-
-
-/* ---------------------------------------------  */
-// Function to determine video source
-/* ---------------------------------------------  */
-
-if( ! function_exists('be_gal_video')) :
-	function be_gal_video($url) {
-
-		$video_details = be_get_video_details($url);
-		if (strpos($url, 'youtube') > 0) {
-			if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('youtube') : true ){
-				return be_gallery_youtube($url);
-			}else{
-				return '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" > '.do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="youtube" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))) .'</div></div>';
-			}
-		} elseif (strpos($url, 'vimeo') > 0) {
-			if( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('vimeo') : true ){
-				return be_gallery_vimeo($url);
-			}else{
-				return '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="vimeo" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))) .'</div></div>';
-			}
-		} else {
-			return '';
-		}
-	}
-endif;
-
-
-/* ---------------------------------------------  */
-// Function to generate youtube video iframe 
-/* ---------------------------------------------  */
-
-if (!function_exists('be_gallery_youtube')) {
-	function be_gallery_youtube( $url ) {
-		$video_id = '';
-		if( ! empty( $url ) ) {
-			if ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) {
-				$video_id = $match[1];
-			}
-			return '<iframe class="be-youtube-video gallery check" src="https://www.youtube.com/embed/'.$video_id.'?rel=0&wmode=transparent" style="border: none;"></iframe>';		
-		} else {
-			return '';
-		}
-	}
-}
-
-/* ---------------------------------------------  */
-// Function to generate vimeo video iframe 
-/* ---------------------------------------------  */
-
-if (!function_exists('be_gallery_vimeo')) {
-	function be_gallery_vimeo( $url ) {
-		$video_id = '';
-		if( ! empty( $url ) ) {
-			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
-			return '<iframe class="be-vimeo-video gallery" src="https://player.vimeo.com/video/'.$video_id.'?api=1&title=0&byline=0&portrait=0" id="be-vimeo-'.$video_id.'" frameborder=0 width="500" height="281" style="border: none;" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-		} else {
-			return '';
-		}
-	}
-}
-
 /* ---------------------------------------------  */
 // Function to retrieve taxonomies from ID
 /* ---------------------------------------------  */

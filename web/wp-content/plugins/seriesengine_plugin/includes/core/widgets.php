@@ -61,7 +61,11 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 4 ) { // Turkish
+		if ( $enmse_language == 6 ) { // Traditional Chinese
+			$enmse_from =  "來自";
+		} elseif ( $enmse_language == 5 ) { // Simplified Chinese
+			$enmse_from =  "什么时候";
+		} elseif ( $enmse_language == 4 ) { // Turkish
 			$enmse_from =  "itibaren";
 		} elseif ( $enmse_language == 3 ) { // German
 			$enmse_from =  "von";
@@ -256,7 +260,11 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 4 ) { // Turkish
+		if ( $enmse_language == 6 ) { // Traditional Chinese
+			$enmse_from =  "來自";
+		} elseif ( $enmse_language == 5 ) { // Simplified Chinese
+			$enmse_from =  "什么时候";
+		} elseif ( $enmse_language == 4 ) { // Turkish
 			$enmse_from =  "itibaren";
 		} elseif ( $enmse_language == 3 ) { // German
 			$enmse_from =  "von";
@@ -428,7 +436,7 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 						} else {
 							$thumbnail = null;
 						}
-						echo '<li class="enmse-widgetseries">' . $thumbnail . '<h5>'. date($enmse_dateformat, strtotime($enmse_s->date)) .'</h5><a href="' . $link_page . '&amp;enmse_sid=' . $enmse_s->series_id . '">' . stripslashes($enmse_s->s_title) . '</a><h4>' . $messagecount . '</h4>' . $description . '</li>';
+						echo '<li class="enmse-widgetseries">' . $thumbnail . '<h5>'. date_i18n($enmse_dateformat, strtotime($enmse_s->date)) .'</h5><a href="' . $link_page . '&amp;enmse_sid=' . $enmse_s->series_id . '">' . stripslashes($enmse_s->s_title) . '</a><h4>' . $messagecount . '</h4>' . $description . '</li>';
 					};
 					if ( $series_archives == 1 ) {
 						echo '<li class="enmse-widgetseries"><a href="' . $link_page . '&amp;enmse_archives=1' . '">View ' . $enmseseriest . ' Archives...</a></li>';
@@ -451,7 +459,7 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 						} else {
 							$description = null;
 						}
-						echo '<li class="enmse-widgetmessage"><h5>' . date($enmse_dateformat, strtotime($enmse_m->date)) . '</h5><a href="' . $link_page . '&amp;enmse_mid=' . $enmse_m->message_id . '">' . stripslashes($enmse_m->title) . '</a><h4>' . $enmse_from . ' ' . stripslashes($enmse_m->speaker) . '</h4>' . $description . '</li>';
+						echo '<li class="enmse-widgetmessage"><h5>' . date_i18n($enmse_dateformat, strtotime($enmse_m->date)) . '</h5><a href="' . $link_page . '&amp;enmse_mid=' . $enmse_m->message_id . '">' . stripslashes($enmse_m->title) . '</a><h4>' . $enmse_from . ' ' . stripslashes($enmse_m->speaker) . '</h4>' . $description . '</li>';
 					};
 				} else {
 					foreach ($enmse_messages as $enmse_m) {

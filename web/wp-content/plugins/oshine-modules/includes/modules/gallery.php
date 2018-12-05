@@ -43,7 +43,7 @@ if (!function_exists('be_gallery')) {
 		),$atts );		
 
 		extract( $atts );
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'pricing_column', $key );
+		$custom_style_tag = be_generate_css_from_atts( $atts, 'be_gallery', $key );
 		$unique_class_name = 'tatsu-'.$key;
 
 
@@ -225,5 +225,14 @@ if (!function_exists('be_gallery')) {
 	}
 	add_shortcode( 'oshine_gallery' , 'be_gallery' );
 	add_shortcode( 'gallery' , 'be_gallery' );
+}
+if( !function_exists( 'oshine_prevent_gallery_autop' ) ) {
+	function oshine_prevent_gallery_autop( $should_filter, $tag ) {
+		if( 'oshine_gallery' === $tag ) {
+			$should_filter = false;
+		}
+		return $should_filter;
+	}
+	add_filter( 'tatsu_shortcode_output_content_filter', 'oshine_prevent_gallery_autop', 10, 2 );
 }
 ?>

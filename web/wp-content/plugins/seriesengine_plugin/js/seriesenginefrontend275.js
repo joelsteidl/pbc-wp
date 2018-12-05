@@ -7,13 +7,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 				var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 			};
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(this).ajaxSend(function(){
 				jQuery(this).parent().parent().addClass("enmse-opaque");
 				jQuery(this).parent().parent().siblings(".enmse-loading-icon").show();
@@ -33,13 +35,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(this).ajaxSend(function(){
 				jQuery(this).parent().parent().addClass("enmse-opaque");
 				jQuery(this).parent().parent().siblings(".enmse-loading-icon").show();
@@ -59,13 +63,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(this).ajaxSend(function(){
 				jQuery(this).parent().parent().addClass("enmse-opaque");
 				jQuery(this).parent().parent().siblings(".enmse-loading-icon").show();
@@ -85,13 +91,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(document).ajaxSend(function(){
 				jQuery(this).parent().parent().addClass("enmse-opaque");
 				jQuery(this).parent().parent().siblings(".enmse-loading-icon").show();
@@ -212,13 +220,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(this).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			jQuery(getthis).parent().parent().parent().parent().siblings(".enmse-loading-icon").show();
@@ -238,13 +248,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(this).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			jQuery(getthis).parent().parent().parent().parent().siblings(".enmse-loading-icon").show();
@@ -264,13 +276,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(this).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			jQuery(getthis).parent().parent().parent().parent().siblings(".enmse-loading-icon").show();
@@ -292,13 +306,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(this).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			jQuery(getthis).parent().parent().parent().parent().parent().siblings(".enmse-loading-icon").show();
@@ -356,13 +372,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);	
 		if (loadurl==null) {
 				var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings().children(".xxse").val());
 			};	
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(this).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			jQuery(getthis).parent().parent().parent().parent().parent().siblings(".enmse-loading-icon").show();
@@ -381,18 +399,18 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var getthis = jQuery(this);
 		var randval = jQuery(this).parent().parent().parent().siblings(".enmse-random").val();
 		var ajaxvalues = jQuery(this).attr("name");
-
 		var loadurl = jQuery(this).parent().parent().siblings(".enmse-plugin-url").val();
-
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/display/pagination/newrelated.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/display/pagination/newrelated.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().addClass("enmse-opaque");
 		});
@@ -411,18 +429,18 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var getthis = jQuery(this);
 		var randval = jQuery(this).parent().parent().parent().siblings(".enmse-random").val();
 		var ajaxvalues = jQuery(this).attr("name");
-
 		var loadurl = jQuery(this).parent().parent().siblings(".enmse-plugin-url").val();
-
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/display/pagination/newarchives.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/display/pagination/newarchives.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().addClass("enmse-opaque");
 		});
@@ -443,6 +461,7 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 
 	jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -451,13 +470,14 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "audio";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -466,13 +486,14 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "video";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -481,7 +502,7 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "alternate";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
@@ -530,13 +551,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 				var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 			};
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(document).ajaxSend(function(){
 				jQuery(ajaxitem).parent().parent().addClass("enmse-opaque");
 				sescroll(randval);
@@ -561,13 +584,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(document).ajaxSend(function(){
 				jQuery(ajaxitem).parent().parent().addClass("enmse-opaque");
 				sescroll(randval);
@@ -592,13 +617,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(document).ajaxSend(function(){
 				jQuery(ajaxitem).parent().parent().addClass("enmse-opaque");
 				sescroll(randval);
@@ -623,13 +650,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 			var loadurl = jQuery(this).parent().siblings(".enmse-plugin-url").val();
 			var embedoptions = jQuery(this).parent().siblings(".enmse-embed-options").val();
 			var permalinkurl = jQuery(this).parent().siblings(".enmse-permalink").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().siblings(".xxse").val());
 			var serandom = Math.floor(Math.random()*1001);
 			if (loadurl==null) {
 					var loadurl = jQuery(this).parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().siblings().children(".xxse").val());
 				};	
-			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+			var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 			jQuery(document).ajaxSend(function(){
 				jQuery(ajaxitem).parent().parent().addClass("enmse-opaque");
 				sescroll(randval);
@@ -754,13 +783,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -784,13 +815,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -814,13 +847,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -845,13 +880,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -875,13 +912,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -905,13 +944,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -973,13 +1014,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);	
 		if (loadurl==null) {
 				var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().parent().siblings().children(".xxse").val());
 			};	
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -1004,13 +1047,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);	
 		if (loadurl==null) {
 				var loadurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().parent().parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().parent().parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().siblings().children(".xxse").val());
 			};	
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -1035,13 +1080,15 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);	
 		if (loadurl==null) {
 				var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
 				var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-embed-options").val();
 				var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-permalink").val();
+				var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings().children(".xxse").val());
 			};	
-		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/ajaxlinks.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -1063,18 +1110,18 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var getthis = jQuery(this);
 		var randval = jQuery(this).parent().parent().siblings(".enmse-rrandom").val();
 		var ajaxvalues = jQuery(this).attr("name");
-
 		var loadurl = jQuery(this).parent().parent().siblings(".enmse-plugin-url").val();
-
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/display/pagination/newrelated.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/display/pagination/newrelated.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().addClass("enmse-opaque");
 			serscroll(randval);
@@ -1094,18 +1141,18 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var getthis = jQuery(this);
 		var randval = jQuery(this).parent().parent().parent().siblings(".enmse-random").val();
 		var ajaxvalues = jQuery(this).attr("name");
-
 		var loadurl = jQuery(this).parent().parent().siblings(".enmse-plugin-url").val();
-
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmse-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmse-permalink").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings(".xxse").val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().siblings().children(".enmse-plugin-url").val();
 					var embedoptions = jQuery(this).parent().parent().siblings().children(".enmse-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().siblings().children(".enmse-permalink").val();
+					var xxse = encodeURIComponent(jQuery(this).parent().parent().siblings().children(".xxse").val());
 				};		
-		var loadthis = loadurl+"/includes/display/pagination/newarchives.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&enmse_random="+serandom;
+		var loadthis = loadurl+"/includes/display/pagination/newarchives.php?enmse=1"+ajaxvalues+embedoptions+"&enmse_permalink="+permalinkurl+"&xxse="+xxse+"&enmse_random="+serandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().addClass("enmse-opaque");
 			sescroll(randval);
@@ -1127,6 +1174,7 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 
 	jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -1135,13 +1183,14 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "audio";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -1150,13 +1199,14 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "video";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(".xxse").val());
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -1165,7 +1215,7 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "alternate";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
@@ -1176,10 +1226,12 @@ if (enmsevercheck < 1.7 && enmsevercheck > 1.3) { //IF USING JQUERY OLDER THAN 1
 		var ajaxurl = jQuery(this).attr("href");
 		var ajaxvalues = jQuery(this).attr("title");
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmse-plugin-url").val();
+		var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings(".xxse").val());
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmse-plugin-url").val();
+			var xxse = encodeURIComponent(jQuery(this).parent().parent().parent().parent().siblings().children(".xxse").val());
 		};	
-		window.location.assign(loadurl+"/includes/download.php?enmsepath="+ajaxurl);
+		window.location.assign(loadurl+"/includes/download.php?enmsepath="+ajaxurl+"&xxse="+xxse);
 		return false;
 	});
 

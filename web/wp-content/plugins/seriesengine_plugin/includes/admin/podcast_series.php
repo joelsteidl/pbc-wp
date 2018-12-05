@@ -1,6 +1,6 @@
 <?php /* ----- Series Engine - Load Relevant Series for Podcast Generation ----- */
 	
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 	
 	if ( current_user_can( 'edit_pages' ) ) { 

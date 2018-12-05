@@ -1,5 +1,5 @@
 <!-- Single Message and Related Series Details -->
-<h3 class="enmse-message-meta"><?php if ( !empty($enmse_speaker) ) {echo stripslashes($enmse_speaker->first_name) . " " . stripslashes($enmse_speaker->last_name); } else { echo stripslashes($enmse_singlemessage->speaker); }; ?> - <?php echo date($enmse_dateformat, strtotime($enmse_singlemessage->date)); ?></h3>
+<h3 class="enmse-message-meta"><?php if ( !empty($enmse_speaker) ) {echo stripslashes($enmse_speaker->first_name) . " " . stripslashes($enmse_speaker->last_name); } else { echo stripslashes($enmse_singlemessage->speaker); }; ?> - <?php echo date_i18n($enmse_dateformat, strtotime($enmse_singlemessage->date)); ?></h3>
 <h2 class="enmse-message-title"><?php echo stripslashes($enmse_singlemessage->title); ?></h2>
 <!-- Display Audio or Video -->
 <div class="enmse-player">

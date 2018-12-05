@@ -106,13 +106,21 @@ class Be_Gdpr_Public {
 		);
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/be-gdpr-public.js', array( 'jquery' ), $this->version, false );
 
+		wp_localize_script(
+            'be-gdpr',
+            'beGdprConcerns',
+            Be_Gdpr_Options::getInstance()->get_options()
+        );
 	}
 
 	public function print_privacy_elements() {
-		ob_start();
 
+		$popup_classes = "mfp-hide";
+		$popup_classes = apply_filters('be_gdpr_popup_classes', $popup_classes);
+
+		ob_start();
 		?>
-			<div id="gdpr-popup" class=" white-popup mfp-hide" >
+			<div id="gdpr-popup" class="be-gdpr-popup <?php echo $popup_classes; ?> " data-rel="gdpr-popup-gallery" >
 				<div  class="be-gdpr-modal" >
 				<div class="be-modal-content-wrapper" >
 					<div class="be-gdpr-modal-heading" ><?php echo get_option( 'be_gdpr_popup_title_text', 'Privacy Settings' ); ?></div>
@@ -127,18 +135,18 @@ class Be_Gdpr_Public {
 							echo '<div class="be-gdpr-modal-item" >
 								<div class="be-gdpr-modal-item-head" >'. $value['label'] .'</div>
 								<div class="be-gdpr-modal-item-desc" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api='.$value['label'].' ]', get_option( 'be_gdpr_consent_desc', 'Consent to display content from [be_gdpr_api_name]' ))).' </div>
-								<div class="be-gdpr-modal-item-switch">'.($value['required'] === true ? "Required" : 
-									'<label class="switch be-modal-switch">
+								<div class="be-gdpr-modal-item-switch">
+									<label class="switch be-modal-switch">
 										<input class="be-gdpr-switch-input" value="'.$option.'" type="checkbox">
 										<span class="slider round"></span>
-					  				</label>' ).'</div>
+					  				</label></div>
 								</div>';
 						}
 					?>
 					</div>
 					</div>
 					<div class="be-gdpr-modal-footer" >
-						<div class="be-gdpr-modal-save-btn" ><?php echo get_option( 'be_gdpr_popup_save_btn_text', 'Save' ); ?></div>
+						<div class="be-gdpr-modal-save-btn" onClick="gdprSaveBtnClick(event);" ><?php echo get_option( 'be_gdpr_popup_save_btn_text', 'Save' ); ?></div>
 					</div>
 				</div>
 			</div>
@@ -153,7 +161,6 @@ class Be_Gdpr_Public {
 							</div>
 						</div>
 					 </div>';
-			
 			}
 			?> 
 		<?php 

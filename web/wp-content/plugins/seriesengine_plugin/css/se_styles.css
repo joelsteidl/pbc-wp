@@ -609,7 +609,7 @@
 	font-size: 12px !important;
 	margin: 10px 0 10px 0;
 	padding: 8px 10px 8px 10px;
-	background-color: #e6e6e6;
+	background-color: #f0f0f0;
 }
 
 #seriesengine .enmse-player .enmse-player-extras p.enmse-downloads {
@@ -617,7 +617,7 @@
 	font-size: 12px !important;
 	margin: 10px 14px 4px 14px;
 	padding: 8px 10px 8px 10px;
-	background-color: #e6e6e6;
+	background-color: #f0f0f0;
 }
 
 #seriesengine .enmse-player .enmse-modern-player-details p.enmse-related-topics a#enmse-modern-download-audio:before  {
@@ -631,7 +631,7 @@
 	font-size: 15px !important;
 	margin: 10px 0 10px 0;
 	padding: 8px 10px 8px 10px;
-	background-color: #e6e6e6;
+	background-color: #f0f0f0;
 }
 
 #seriesengine .enmse-player .enmse-modern-player-details p.enmse-downloads a {
@@ -768,7 +768,7 @@
 	line-height: 26px;
 	padding: 0 8px 0 26px;	border-radius: 13px;
 	-moz-border-radius: 13px;
-	color: #959494;
+	color: #ffffff;
 }
 
 #seriesengine .enmse-share-details.modern ul li a {
@@ -785,7 +785,7 @@
 	border-radius: 19px;
 	font-size: 18px;
 	-moz-border-radius: 19px;
-	color: #959494;
+	color: #ffffff;
 }
 
 #seriesengine .enmse-share-details.modern ul li a span {
@@ -793,13 +793,13 @@
 }
 
 #seriesengine .enmse-share-details ul li.enmse-facebook a {
-		background: url('../images/interface/se_facebook_dark.png') no-repeat;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background: url('../images/interface/se_facebook_light.png') no-repeat;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-facebook a {
 		background-image: none;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-facebook a:before {
@@ -815,13 +815,13 @@
 }
 
 #seriesengine .enmse-share-details ul li.enmse-twitter a {
-		background: url('../images/interface/se_twitter_dark.png') no-repeat;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background: url('../images/interface/se_twitter_light.png') no-repeat;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-twitter a {
 		background-image: none;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-twitter a:before {
@@ -837,13 +837,13 @@
 }
 
 #seriesengine .enmse-share-details ul li.enmse-share-link a {
-		background: url('../images/interface/se_link_dark.png') no-repeat;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background: url('../images/interface/se_link_light.png') no-repeat;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-share-link a {
 		background-image: none;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-share-link a:before {
@@ -859,13 +859,13 @@
 }
 
 #seriesengine .enmse-share-details ul li.enmse-email a {
-		background: url('../images/interface/se_env_dark.png') no-repeat;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background: url('../images/interface/se_env_light.png') no-repeat;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-email a {
 		background-image: none;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details.modern ul li.enmse-email a:before {
@@ -1248,7 +1248,7 @@
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
-	background-color: #f7f7f7;
+	background-color: #f1f1f1;
 	text-decoration: none;
 	color: #D4D4D4;
 	border-radius: 15px;
@@ -1346,7 +1346,7 @@
 		background: url('../images/interface/dark_load.png') no-repeat;
 		background-position: center 30px;
 	background-color: #d4d4d4;
-	color: #444444;
+	color: #000000;
 	margin: 100px 0 0 -85px;
 	left: 50%;
 	line-height: 0;
@@ -1386,7 +1386,7 @@
 }
 
 #seriesengine .enmse-copy-link-box h4 {
-	color: #000000;
+	color: #444444;
 	font-size: 15px !important;
 	font-weight: 700;
 	text-align: center;
@@ -1394,7 +1394,7 @@
 }
 
 #seriesengine .enmse-copy-link-box p {
-	color: #000000;
+	color: #444444;
 	font-size: 14px !important;
 	text-align: center;
 	margin: 0 0 20px 0;
@@ -1529,29 +1529,28 @@
 /* ----- Powered By ----- */
 
 #seriesengine h3.enmse-poweredby {
-		margin: 20px auto 0 auto !important;
+	display: none;	margin: 20px auto 0 auto !important;
 	text-indent: -9000px;
 	width: 148px;
 	height: 40px;
-		background: url('../images/interface/se_light_poweredby.png') no-repeat;	
 		float: right;
 }
 
 #seriesengine h3.enmse-poweredby a {
 	display: block;
-		width: 148px;
+	display: none;	width: 148px;
 	height: 40px;
 }
 
 #seriesengine p.enmse-poweredbytext {
 	margin: 20px 0 20px 0;
-		text-align: right;
+	display: none;	text-align: right;
 	font-size: 12px !important;
 	color: #d2d2d2;
 }
 
 #seriesengine p.enmse-poweredbytext a {
-	color: #d2d2d2;
+display: none;	color: #d2d2d2;
 }
 
 @media 
@@ -1586,32 +1585,30 @@
 	}
 
 #seriesengine .enmse-share-details ul li.enmse-email a {
-		background: url('../images/interface/se_env_dark2x.png') no-repeat;
+		background: url('../images/interface/se_env_light2x.png') no-repeat;
 	background-size: 13px 13px;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details ul li.enmse-share-link a {
-		background: url('../images/interface/se_link_dark2x.png') no-repeat;
+		background: url('../images/interface/se_link_light2x.png') no-repeat;
 	background-size: 13px 13px;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details ul li.enmse-twitter a {
-		background: url('../images/interface/se_twitter_dark2x.png') no-repeat;
+		background: url('../images/interface/se_twitter_light2x.png') no-repeat;
 	background-size: 13px 13px;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine .enmse-share-details ul li.enmse-facebook a {
-		background: url('../images/interface/se_facebook_dark2x.png') no-repeat;
+		background: url('../images/interface/se_facebook_light2x.png') no-repeat;
 	background-size: 13px 13px;
-		background-position: 8px 6px;	background-color: #DCDBDB;
+		background-position: 8px 6px;	background-color: #b6b5b5;
 }
 
 #seriesengine h3.enmse-poweredby {
-		background: url('../images/interface/se_light_poweredby2x.png') no-repeat;
-	background-size: 148px 40px;	
 	}
 
 #seriesengine .enmse-loading-icon {
@@ -2189,7 +2186,7 @@
 		padding: 0;
 		border-radius: 13px;
 		-moz-border-radius: 13px;
-		color: #959494;
+		color: #ffffff;
 	}
 
 	#seriesengine .enmse-share-details ul li a span {
@@ -2197,23 +2194,23 @@
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-facebook a {
-				background: url('../images/interface/se_facebook_dark.png') no-repeat;
-				background-position: 8px 6px;		background-color: #DCDBDB;
+				background: url('../images/interface/se_facebook_light.png') no-repeat;
+				background-position: 8px 6px;		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-twitter a {
-				background: url('../images/interface/se_twitter_dark.png') no-repeat;
-				background-position: 8px 6px;		background-color: #DCDBDB;
+				background: url('../images/interface/se_twitter_light.png') no-repeat;
+				background-position: 8px 6px;		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-share-link a {
-				background: url('../images/interface/se_link_dark.png') no-repeat;
-				background-position: 8px 6px;		background-color: #DCDBDB;
+				background: url('../images/interface/se_link_light.png') no-repeat;
+				background-position: 8px 6px;		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-email a {
-				background: url('../images/interface/se_env_dark.png') no-repeat;
-				background-position: 8px 6px;		background-color: #DCDBDB;
+				background: url('../images/interface/se_env_light.png') no-repeat;
+				background-position: 8px 6px;		background-color: #b6b5b5;
 	}
 	
 	#seriesengine .enmse-media-container {
@@ -2489,36 +2486,34 @@
 			}
 
 	#seriesengine .enmse-share-details ul li.enmse-email a {
-				background: url('../images/interface/se_env_dark2x.png') no-repeat;
+				background: url('../images/interface/se_env_light2x.png') no-repeat;
 		background-size: 13px 13px;
 				background-position: center center;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-share-link a {
-				background: url('../images/interface/se_link_dark2x.png') no-repeat;
+				background: url('../images/interface/se_link_light2x.png') no-repeat;
 		background-size: 13px 13px;
 				background-position: center center;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-twitter a {
-				background: url('../images/interface/se_twitter_dark2x.png') no-repeat;
+				background: url('../images/interface/se_twitter_light2x.png') no-repeat;
 		background-size: 13px 13px;
 				background-position: center center;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 	}
 
 	#seriesengine .enmse-share-details ul li.enmse-facebook a {
-				background: url('../images/interface/se_facebook_dark2x.png') no-repeat;
+				background: url('../images/interface/se_facebook_light2x.png') no-repeat;
 		background-size: 13px 13px;
 				background-position: center center;
-		background-color: #DCDBDB;
+		background-color: #b6b5b5;
 	}
 
 	#seriesengine h3.enmse-poweredby {
-				background: url('../images/interface/se_light_poweredby2x.png') no-repeat;
-		background-size: 148px 40px;	
 			}
 
 	#seriesengine .enmse-loading-icon {

@@ -4,17 +4,18 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Podca
 		var startvalue = jQuery(this).val();
 		var stvalue = jQuery("#podcast_st").val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (startvalue == "series") {
-			jQuery('#podcast_series_topic').load(pluginurl+"podcast_series.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+			jQuery('#podcast_series_topic').load(pluginurl+"podcast_series.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery('#podcast_series_topic').show();
 			});
 		} else if (startvalue == "topic") {
-			jQuery('#podcast_series_topic').load(pluginurl+"podcast_topic.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+			jQuery('#podcast_series_topic').load(pluginurl+"podcast_topic.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery('#podcast_series_topic').show();
 			});
 		} else if (startvalue == "speaker") {
-		 	jQuery('#podcast_series_topic').load(pluginurl+"podcast_speaker.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+		 	jQuery('#podcast_series_topic').load(pluginurl+"podcast_speaker.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 		 		jQuery('#podcast_series_topic').show();
 		 	});
 		 } else {
@@ -26,13 +27,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Podca
 		var startvalue = jQuery('#podcast_option').val();
 		var stvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (startvalue == "series") {
-			jQuery('#podcast_series_topic').load(pluginurl+"podcast_series.php?enmse_stid="+stvalue+"&enmse_random="+serandom);
+			jQuery('#podcast_series_topic').load(pluginurl+"podcast_series.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom);
 		} else if (startvalue == "topic") {
-			jQuery('#podcast_series_topic').load(pluginurl+"podcast_topic.php?enmse_stid="+stvalue+"&enmse_random="+serandom);
+			jQuery('#podcast_series_topic').load(pluginurl+"podcast_topic.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom);
 		} else if (startvalue == "speaker") {
-			jQuery('#podcast_series_topic').load(pluginurl+"podcast_speaker.php?enmse_stid="+stvalue+"&enmse_random="+serandom);
+			jQuery('#podcast_series_topic').load(pluginurl+"podcast_speaker.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom);
 		};
 	});
 	

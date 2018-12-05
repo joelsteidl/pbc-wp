@@ -112,7 +112,7 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 
 		$sedivi_messages = array();
 		foreach ($enmse_messages as $m) {
-		    $sedivi_messages[$m->message_id] = stripslashes($m->title) . ' (' . date($enmse_dateformat, strtotime($m->date)) . ')';
+		    $sedivi_messages[$m->message_id] = stripslashes($m->title) . ' (' . date_i18n($enmse_dateformat, strtotime($m->date)) . ')';
 		}
 		$sedivi_messages['0'] = '- Select a ' . $enmsemessaget . ' -';
 

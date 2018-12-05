@@ -70,7 +70,7 @@ class Colorhub {
 		if ( defined( 'COLORHUB_VERSION' ) ) {
 			$this->version = COLORHUB_VERSION;
 		} else {
-			$this->version = '1.0.2';
+			$this->version = '1.0.4';
 		}
 		$this->plugin_name = 'colorhub';
 

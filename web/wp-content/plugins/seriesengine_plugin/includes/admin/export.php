@@ -80,7 +80,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 4 ) { 
+		if ( $enmse_language == 6 ) { 
+			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
+		} elseif ( $enmse_language == 5 ) { 
+			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
+		} elseif ( $enmse_language == 4 ) { 
 			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
 		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
@@ -1593,7 +1597,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<p><a href="http://seriesengine.com/importexport.php" target="_blank">Click here to read our extensive guide</a> for migrating Series Engine content between sites.</p>
 	<p><em>Exporting data <strong>will not</strong> change or delete any plugin content.</em></p>
 
-	<form action="<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/export/allcontent.php'; ?>" method="post" id="reportform" target="_blank">
+	<form action="<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/export/allcontent.php?xxse=' . base64_encode(ABSPATH); ?>" method="post" id="reportform" target="_blank">
 		<table class="form-table" style="margin-bottom: -10px">
 			<tr valign="top">
 				<th scope="row"><strong>Offset IDs by:</strong>
@@ -1603,7 +1607,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		</table>
 		<input name="Submit" type="submit" class="button" value="Export All Content" tabindex="35" />
 	</form><br />
-	<form action="<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/export/sesettings.php'; ?>" method="post" id="reportform" target="_blank">
+	<form action="<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/export/sesettings.php?xxse=' . base64_encode(ABSPATH); ?>" method="post" id="reportform" target="_blank">
 		<input name="Submit" type="submit" class="button" value="Export Styles and Settings" tabindex="35" />
 	</form>
 	<p>&nbsp;</p>

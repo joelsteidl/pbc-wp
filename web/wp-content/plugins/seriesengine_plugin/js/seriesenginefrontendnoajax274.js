@@ -210,6 +210,7 @@ jQuery(document).ready(function() { /* ----- Series Engine - JavaScript without 
 
 		jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = jQuery(".xxse").val();
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -218,13 +219,14 @@ jQuery(document).ready(function() { /* ----- Series Engine - JavaScript without 
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "audio";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = jQuery(".xxse").val();
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -233,13 +235,14 @@ jQuery(document).ready(function() { /* ----- Series Engine - JavaScript without 
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "video";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});
 
 	jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
 		var loadurl = jQuery(".enmse-plugin-url").val();
+		var xxse = jQuery(".xxse").val();
 		var begcurrent = jQuery(this).attr("rel");
 		if ( begcurrent == "" ) {
 			begcurrent = 0;
@@ -248,7 +251,7 @@ jQuery(document).ready(function() { /* ----- Series Engine - JavaScript without 
 		var m = jQuery(this).attr("name");
 		var newcount = current+1;
 		var mtype = "alternate";
-		var posturl = loadurl+"/includes/viewcount.php";
+		var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 		jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 		jQuery(this).unbind();
 	});

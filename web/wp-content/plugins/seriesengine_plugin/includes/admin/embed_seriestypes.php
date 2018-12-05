@@ -1,6 +1,7 @@
 <?php /* ----- Series Engine - Choose relevant Series Type to embed ----- */
 	
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
+
 	header('HTTP/1.1 200 OK');
 	
 	if ( current_user_can( 'edit_pages' ) ) { 
@@ -33,7 +34,7 @@
 ?>
 
 
-<h2>...Choose a <?php echo $enmseseriest; ?> Type...</h2>
+<h2>...Choose a <?php echo $enmseseriest; ?> Type Test...</h2>
 <p>You can load content from all <?php echo $enmseseriest; ?> Types, or limit all content and searches to a specific <?php echo $enmseseriest; ?> Type for this shortcode.</p>
 <table class="form-table">
 	<tr valign="top">

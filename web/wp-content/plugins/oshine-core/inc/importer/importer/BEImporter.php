@@ -130,7 +130,8 @@ class BEThemeImporter {
           'v41' => 'v41 Model Agency',  
           'v42' => 'V42 Salon / Barber Shop',
           'v43' => 'V43 Modern Landing Page', 
-          'v44' => 'V44 Modern Creative Agency',                                 
+          'v44' => 'V44 Modern Creative Agency',
+          'v45' => 'V45 Film Studio / Videographer ',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }

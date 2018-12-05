@@ -1,6 +1,6 @@
 <?php /* ----- Series Engine - Edit a scripture straight from the Messages admin page ----- */
 
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 
 	if ( current_user_can( 'edit_pages' ) ) { 
@@ -34,7 +34,11 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 4 ) { 
+		if ( $enmse_language == 6 ) { 
+			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
+		} elseif ( $enmse_language == 5 ) { 
+			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
+		} elseif ( $enmse_language == 4 ) { 
 			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
 		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
@@ -289,6 +293,9 @@
 						<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 						<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 						<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+						<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
+						<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
 						<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 						<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -486,6 +493,9 @@
 						<option value="111"<?php if ( $enmse_scripture->trans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 						<option value="114"<?php if ( $enmse_scripture->trans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 						<option value="116"<?php if ( $enmse_scripture->trans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ CHINESE ------</option>
+						<option value="48"<?php if ( $enmse_scripture->trans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value="414"<?php if ( $enmse_scripture->trans == 414 ) { echo " selected=\"selected\""; }  ?>>CUNP-上帝 - 新標點和合本, 神版</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ GERMAN ------</option>
 						<option value="157"<?php if ( $enmse_scripture->trans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="57"<?php if ( $enmse_scripture->trans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -493,7 +503,7 @@
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $enmse_scripture->trans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $enmse_scripture->trans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
-						<option value="<?php echo $deftrans; ?>">------ TURKISH ------</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ TURKISH ------</option>
 						<option value="170"<?php if ( $enmse_scripture->trans == 170 ) { echo " selected=\"selected\""; } ?>>TCL02 - Kutsal Kitap Yeni Ceviri</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ OTHER ------</option>
 						<option value="6"<?php if ( $enmse_scripture->trans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>

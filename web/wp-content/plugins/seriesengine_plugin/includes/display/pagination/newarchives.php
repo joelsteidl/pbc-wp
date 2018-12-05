@@ -1,5 +1,5 @@
 <?php /* ----- Series Engine - Pull in media browser links with AJAX ----- */
-	require '../../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 	
 	global $wpdb;
@@ -138,7 +138,7 @@
 				<div class="enmse-archive-thumb<?php if ( $enmse_middlecount == 2 ) { echo " middle"; } ?><?php if ( $enmse_oddcount == 1 ) { echo " odd"; } ?>">
 					<?php if ( $enmse_s->graphic_thumb != null ) { ?><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-imgarchive-ajax"><img src="<?php echo $enmse_s->graphic_thumb; ?>" alt="<?php echo stripslashes($enmse_s->s_title); ?>" border="0" /></a><?php } else { ?><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-imgarchive-ajax"><img src="<?php echo $enmse_placeholderimage; ?>" alt="<?php echo stripslashes($enmse_s->s_title); ?>" border="0" /></a><?php } ?>
 					<h4><?php echo stripslashes($enmse_s->s_title); ?></h4>
-					<h5><?php echo date($enmse_dateformat, strtotime($enmse_s->start_date)); ?></h5>
+					<h5><?php echo date_i18n($enmse_dateformat, strtotime($enmse_s->start_date)); ?></h5>
 					<p><?php $enmse_smm_count = 0; foreach ( $enmse_smm as $smm ) { ?><?php if ( $smm->series_id == $enmse_s->series_id ) { $enmse_smm_count = $enmse_smm_count+1; } ?><?php } ?><?php if ( $enmse_smm_count == 1 ) { echo "1 " . $enmsemessaget; } elseif ( $enmse_smm_count > 1 ) { echo $enmse_smm_count . " " . $enmsemessagetp; } ?></p>
 					<p class="enmse-archive-link"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-imgarchivetext-ajax">Explore This <?php echo $enmseseriest; ?></a></p>
 				</div>
@@ -157,7 +157,7 @@
 				} ?>
 				<tr class="enmse-archive-<?php echo $rowcycle; ?>">
 					<td class="enmse-archive-title-cell"><?php echo stripslashes($enmse_s->s_title); ?></td>
-					<td class="enmse-archive-date-cell"><?php echo date($enmse_dateformat, strtotime($enmse_s->start_date)); ?></td>
+					<td class="enmse-archive-date-cell"><?php echo date_i18n($enmse_dateformat, strtotime($enmse_s->start_date)); ?></td>
 					<td class="enmse-archive-count-cell"><?php $enmse_smm_count = 0; foreach ( $enmse_smm as $smm ) { ?><?php if ( $smm->series_id == $enmse_s->series_id ) { $enmse_smm_count = $enmse_smm_count+1; } ?><?php } ?><?php if ( $enmse_smm_count == 1 ) { echo "1 " . $enmsemessaget; } elseif ( $enmse_smm_count > 1 ) { echo $enmse_smm_count . " " . $enmsemessagetp; } ?></td>
 					<td class="enmse-explore-cell"><a href="<?php echo $enmse_thispage . '&amp;enmse_sid=' .  $enmse_s->series_id; ?>" title="&amp;enmse_sid=<?php echo $enmse_s->series_id; ?>" class="enmse-archive-ajax">Explore This <?php echo $enmseseriest; ?></a></td>
 				</tr>

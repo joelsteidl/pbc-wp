@@ -127,7 +127,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 4 ) { 
+		if ( $enmse_language == 6 ) { 
+			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
+		} elseif ( $enmse_language == 5 ) { 
+			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
+		} elseif ( $enmse_language == 4 ) { 
 			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
 		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
@@ -1343,7 +1347,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 			});
 		</script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
 		<h2 class="enmse">Add a New <?php echo $enmsemessaget; ?></h2>
 		<?php include ('errorbox.php'); ?>
 		<p>Fill out the form fields below to enter a new <?php echo $enmsemessaget; ?> into the Series Engine. Remember that a <?php echo $enmsemessaget; ?> will not be publicly available unless you supply a video embed, audio file or alternate video embed. <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide#se-messages"; ?>" class="enmse-learn-more">Learn more about <?php echo $enmsemessagetp; ?>...</a></p>
@@ -1571,7 +1575,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php'; ?>", order, function(){}); 
+								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 							}});
 						});
 						</script>
@@ -1775,6 +1779,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 									<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 									<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+									<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
+									<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
+									<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
 									<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 									<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 									<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -1870,7 +1877,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 							}});
 						});
 						</script>
@@ -1952,6 +1959,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<input type="hidden" name="enmsefiledelete" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/filedelete.php" id="enmsefiledelete" />
 		<input type="hidden" name="enmsefileedit" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/fileedit.php" id="enmsefileedit" />
 		<input type="hidden" name="enmsescriptureurl" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/newscripture.php" id="enmsescriptureurl" />
+		<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 		<input type="hidden" name="enmsescripturedelete" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/scripturedelete.php" id="enmsescripturedelete" />
 		<input type="hidden" name="enmsescriptureedit" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/scriptureedit.php" id="enmsescriptureedit" />
 		<input type="hidden" name="enmsethumb" value="<?php echo $enmse_embedwidth; ?>" id="enmsethumb" />
@@ -1969,7 +1977,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
 
 	<h2 class="enmse">Edit <?php echo $enmsemessaget; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
@@ -2220,7 +2228,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						};
 						jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 							var order = jQuery(this).sortable("serialize"); 
-							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php'; ?>", order, function(){}); 
+							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 						}});
 					});
 					</script>
@@ -2424,6 +2432,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 								<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 								<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+								<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
+								<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
+								<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
 								<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 								<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 								<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -2521,7 +2532,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						};
 						jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 							var order = jQuery(this).sortable("serialize"); 
-							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 						}});
 					});
 					</script>
@@ -2603,6 +2614,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<input type="hidden" name="enmsefiledelete" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/filedelete.php" id="enmsefiledelete" />
 	<input type="hidden" name="enmsefileedit" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/fileedit.php" id="enmsefileedit" />
 	<input type="hidden" name="enmsescriptureurl" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/newscripture.php" id="enmsescriptureurl" />
+	<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 	<input type="hidden" name="enmsescripturedelete" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/scripturedelete.php" id="enmsescripturedelete" />
 	<input type="hidden" name="enmsescriptureedit" value="<?php echo plugins_url(); ?>/seriesengine_plugin/includes/admin/scriptureedit.php" id="enmsescriptureedit" />
 	<input type="hidden" name="enmsethumb" value="<?php echo $enmse_embedwidth; ?>" id="enmsethumb" />
@@ -2613,7 +2625,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<?php include ('secredits.php'); ?>
 <?php }} else { // Display the main listing of Messages ?>
 	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/deletemessage.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
 	<h2 class="enmse">Create and Edit <?php echo $enmsemessagetp; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('messagebox.php'); ?>
 
@@ -2672,7 +2684,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			<tr>
 				<td><a href="<?php if ( isset($_GET['enmse_p']) ) { if ( isset($_GET['enmse_sid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_sid=' . $enmse_sid . '&amp;enmse_p=' . $_GET['enmse_p'] . '&amp;enmse_c=' . $_GET['enmse_c'], __FILE__ ); } elseif ( isset($_GET['enmse_tid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_tid=' . $enmse_tid . '&amp;enmse_p=' . $_GET['enmse_p'] . '&amp;enmse_c=' . $_GET['enmse_c'], __FILE__ ); } elseif ( isset($_GET['enmse_bid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_bid=' . $enmse_bid . '&amp;enmse_p=' . $_GET['enmse_p'] . '&amp;enmse_c=' . $_GET['enmse_c'], __FILE__ ); } elseif ( isset($_GET['enmse_spid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_spid=' . $enmse_spid . '&amp;enmse_p=' . $_GET['enmse_p'] . '&amp;enmse_c=' . $_GET['enmse_c'], __FILE__ ); } else { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_p=' . $_GET['enmse_p'] . '&amp;enmse_c=' . $_GET['enmse_c'], __FILE__ );} } else { if ( isset($_GET['enmse_sid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_sid=' . $enmse_sid, __FILE__ ); } elseif ( isset($_GET['enmse_tid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_tid=' . $enmse_tid, __FILE__ ); } elseif ( isset($_GET['enmse_bid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_bid=' . $enmse_bid, __FILE__ ); } elseif ( isset($_GET['enmse_spid']) ) { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id . '&amp;enmse_spid=' . $enmse_spid, __FILE__ ); } else { echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_action=edit&amp;enmse_mid=' . $enmse_single->message_id, __FILE__ ); }} ?>"><?php echo stripslashes($enmse_single->title) ?></a> <?php foreach ($enmse_allpermalinks as $pl) { if ( $pl->ID == $enmse_single->wp_post_id ) { echo "<a href=\"" . site_url() . "/" . $permalinkslug . "/" . $pl->post_name . "\" target=\"_blank\" class=\"enmse-permalink-link\"></a>"; }; } ?></td>
 				<td><?php $enmse_sp_comma = 1; foreach ( $enmse_sp as $sp) { ?><?php foreach ( $enmse_mspm as $mspm) { ?><?php if ( ($mspm->message_id == $enmse_single->message_id) && ($mspm->speaker_id == $sp->speaker_id) ) { if ( $enmse_sp_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_spid=' . $sp->speaker_id, __FILE__ ) . "\">" . stripslashes($sp->first_name) . " " . stripslashes($sp->last_name) . "</a>"; $enmse_sp_comma = $enmse_sp_comma+1; }} ?><?php } ?><?php } ?><?php if ( $enmse_sp_comma == 1 ) { echo $enmse_single->speaker; } ?></td>
-				<td><?php echo date($enmse_dateformat, strtotime($enmse_single->date)) ?></td>
+				<td><?php echo date_i18n($enmse_dateformat, strtotime($enmse_single->date)) ?></td>
 				<td><?php $enmse_s_comma = 1; foreach ( $enmse_ss as $s) { ?><?php foreach ( $enmse_smm as $smm) { ?><?php if ( ($smm->message_id == $enmse_single->message_id) && ($smm->series_id == $s->series_id) ) { if ( $enmse_s_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_sid=' . $s->series_id, __FILE__ ) . "\">" . stripslashes($s->s_title) . "</a>"; $enmse_s_comma = $enmse_s_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_sid=' . $s->series_id, __FILE__ ) . "\">" . stripslashes($s->s_title) . "</a>"; $enmse_s_comma = $enmse_s_comma+1; } } ?><?php } ?><?php } ?></td>
 				<td><?php $enmse_t_comma = 1; foreach ( $enmse_t as $t) { ?><?php foreach ( $enmse_mtm as $mtm) { ?><?php if ( ($mtm->message_id == $enmse_single->message_id) && ($mtm->topic_id == $t->topic_id) ) { if ( $enmse_t_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->name) . "</a>"; $enmse_t_comma = $enmse_t_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->name) . "</a>"; $enmse_t_comma = $enmse_t_comma+1; } } ?><?php } ?><?php } ?></td>
 				<td><?php $enmse_b_comma = 1; foreach ( $enmse_b as $b) { ?><?php foreach ( $enmse_mbm as $mbm) { ?><?php if ( ($mbm->message_id == $enmse_single->message_id) && ($mbm->book_id == $b->book_id) ) { if ( $enmse_b_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . $enmse_booknames[$b->book_id] . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&amp;enmse_bid=' . $b->book_id, __FILE__ ) . "\">" . $enmse_booknames[$b->book_id] . "</a>"; $enmse_b_comma = $enmse_b_comma+1; } } ?><?php } ?><?php } ?></td>
@@ -2682,6 +2694,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<?php } ?>
 		</tbody>
 	</table>
+	<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 	<?php include ('secredits.php'); ?>	
 	<input type="hidden" name="enmsepluginurl" value="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php', __FILE__ ); ?>" id="enmsepluginurl" />
 </div>

@@ -231,72 +231,74 @@ if( !function_exists( 'be_compute_css' ) ) {
 
 if( !function_exists( 'be_generate_css_from_atts' ) ) {
 	function be_generate_css_from_atts( $atts, $module, $uuid ){
-		$tatsu_registered_modules = Tatsu_Module_Options::getInstance()->get_modules();
-		$atts = apply_filters( $module.'_before_css_generation', $atts );
-		$css_props = array();
-		$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
-		foreach( $atts as $att => $value ){
-			if( !empty( $config[$att]['css'] )  ){
-				if( !empty( $config[$att]['responsive'] ) ) {
-					$temp_value = json_decode( $value, true );
-					if( $temp_value ) {
-						$value = $temp_value;
+		if( class_exists( 'Tatsu_Module_Options' ) ) {
+			$tatsu_registered_modules = Tatsu_Module_Options::getInstance()->get_modules();
+			$atts = apply_filters( $module.'_before_css_generation', $atts );
+			$css_props = array();
+			$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
+			foreach( $atts as $att => $value ){
+				if( !empty( $config[$att]['css'] )  ){
+					if( !empty( $config[$att]['responsive'] ) ) {
+						$temp_value = json_decode( $value, true );
+						if( $temp_value ) {
+							$value = $temp_value;
+						}
 					}
-				}
-				$selectors = $config[$att]['selectors'];
-				foreach( $selectors as $selector => $condition ){
-					$index = str_replace('{UUID}', $uuid, $selector);
-					// if( ( 'color' === $config[$att]['type'] || 'gradient_color' === $config[$att]['type'] ) && empty( $value ) ) {
-					// 	$value = 'transparent';
-					// }
-					if( !empty( $value ) ) {
-						if( is_array( $value ) ) {	
-							foreach( $value as $device => $val ) {
-								be_should_compute_css( $atts, $condition ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+					$selectors = $config[$att]['selectors'];
+					foreach( $selectors as $selector => $condition ){
+						$index = str_replace('{UUID}', $uuid, $selector);
+						// if( ( 'color' === $config[$att]['type'] || 'gradient_color' === $config[$att]['type'] ) && empty( $value ) ) {
+						// 	$value = 'transparent';
+						// }
+						if( !empty( $value ) ) {
+							if( is_array( $value ) ) {	
+								foreach( $value as $device => $val ) {
+									be_should_compute_css( $atts, $condition ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+								}
+							} else {
+								be_should_compute_css( $atts, $condition ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 							}
-						} else {
-							be_should_compute_css( $atts, $condition ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 						}
 					}
 				}
 			}
-		}
-		
-		$css = array();
-		foreach($css_props as $device => $selectors){
-			$css[$device] = '';
-			foreach ( $selectors as $selector => $css_atts ) {
-				if( !empty ( $css_atts ) ){
-					$css[$device] .= $selector. '{'.implode('' ,$css_atts). '}';
+			
+			$css = array();
+			foreach($css_props as $device => $selectors){
+				$css[$device] = '';
+				foreach ( $selectors as $selector => $css_atts ) {
+					if( !empty ( $css_atts ) ){
+						$css[$device] .= $selector. '{'.implode('' ,$css_atts). '}';
+					}
 				}
 			}
-		}
 
-		$output = '';
-		$output .= '<style>';
-		if( !empty( $css['d'] ) ) {
-			$output .= $css['d'];
-		}
-		//$output .= array_key_exists('d', $css) ? $css['d'] : '' ;
-		if( !empty( $css['l'] ) ) {
-			$output .= '@media only screen and (max-width:1377px) {';
-			$output .= $css['l'];
-			$output .= '}';
-		}
-		if( !empty( $css['t'] ) ) {
-			$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
-			$output .= $css['t'];
-			$output .= '}';
-		}
-		if( !empty( $css['m'] ) ) {
-			$output .= '@media only screen and (max-width: 767px) {';
-			$output .= $css['m'];
-			$output .= '}';
-		}
-		$output .= '</style>';
+			$output = '';
+			$output .= '<style>';
+			if( !empty( $css['d'] ) ) {
+				$output .= $css['d'];
+			}
+			//$output .= array_key_exists('d', $css) ? $css['d'] : '' ;
+			if( !empty( $css['l'] ) ) {
+				$output .= '@media only screen and (max-width:1377px) {';
+				$output .= $css['l'];
+				$output .= '}';
+			}
+			if( !empty( $css['t'] ) ) {
+				$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
+				$output .= $css['t'];
+				$output .= '}';
+			}
+			if( !empty( $css['m'] ) ) {
+				$output .= '@media only screen and (max-width: 767px) {';
+				$output .= $css['m'];
+				$output .= '}';
+			}
+			$output .= '</style>';
 
-		//return be_minify_css( $output );
-		return $output;
+			//return be_minify_css( $output );
+			return $output;
+		}
 	}
 }
 
@@ -355,53 +357,52 @@ if( !function_exists( 'be_uniqid_base36' ) ) {
  *  Video details
  *************************************/
 if( !function_exists( 'be_get_video_details' ) ){
-	function be_get_video_details($url){
-		$pattern = 
-		'%^# Match any youtube URL
-		(?:https?://)?  # Optional scheme. Either http or https
-		(?:www\.)?      # Optional www subdomain
-		(?:             # Group host alternatives
-		  youtu\.be/    # Either youtu.be,
-		| youtube\.com  # or youtube.com
-		  (?:           # Group path alternatives
-			/embed/     # Either /embed/
-		  | /v/         # or /v/
-		  | /watch\?v=  # or /watch\?v=
-		  )             # End path alternatives.
-		)               # End host alternatives.
-		([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
-		$%x'
-		;
+	function be_get_video_details($url,$size = 'large'){
+		$pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 		$details = array();
 
 		if( $result = preg_match($pattern, $url, $matches) ){
-
+			
+			if( $size  === 'small'){
+				$size = 'mqdefault';
+			}elseif( $size === 'large' ){
+				$size = 'maxresdefault';
+			}
+	
 			$video_id = $matches[1];
-			$youtube_url = "https://img.youtube.com/vi/".$video_id."/maxresdefault.jpg";
+			$youtube_url = "https://img.youtube.com/vi/".$video_id."/".$size.".jpg";
 
 			return array(
 				'source' => 'youtube',
 				'thumb_url' => $youtube_url,
+				'video_id' => $video_id
 			);
 
 		}else if( strpos( $url,'vimeo' ) !== false ) {
 
 			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-
 			$response = wp_remote_get( "http://vimeo.com/api/v2/video/$vimeo_id.php" );
+
+			if( $size  === 'small'){
+				$size = '_320x180';
+			}elseif( $size === 'large' ){
+				$size = '_1280x720';
+			}
 
 			if( !is_wp_error( $response ) ){
 				$hash = unserialize( $response['body']);
 				$vimeo_url = $hash[0]['thumbnail_large'];
-				$vimeo_url = str_replace( '_640','_1280x720',$vimeo_url );
+				$vimeo_url = str_replace( '_640',$size,$vimeo_url );
 				return array(
 					'source' => 'vimeo',
 					'thumb_url' => $vimeo_url,
+					'video_id' => $vimeo_id
 				);
 			}else{
 				return array(
 					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720'
+					'thumb_url' => 'https://placehold.it/1280x720',
+					'video_id' => ''
 				);
 			}
 		}

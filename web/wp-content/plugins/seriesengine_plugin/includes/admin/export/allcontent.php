@@ -1,5 +1,5 @@
 <?php /* Series Engine - Export Series Engine Content */
-	require '../../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../../loadwpfiles.php' );
 
 	// output headers so that the file is downloaded rather than displayed
 	header('Content-Type: text/csv; charset=utf-8', true, 200);

@@ -1,5 +1,9 @@
 <?php /* ----- Series Engine - Pull in media browser links with AJAX ----- */
-	require '../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+
+
+	require_once( 'loadwpfiles.php' );
+
+
 	header('HTTP/1.1 200 OK');
 	
 	global $wpdb;
@@ -124,7 +128,11 @@
 		$enmse_language = 1;
 	}
 
-	if ( $enmse_language == 4 ) { // Turkish
+	if ( $enmse_language == 6 ) { // Traditional Chinese
+		include('lang/chint_bible_books.php');
+	} elseif ( $enmse_language == 5 ) { // Simplified Chinese
+		include('lang/chins_bible_books.php');
+	} elseif ( $enmse_language == 4 ) { // Turkish
 		include('lang/turk_bible_books.php');
 	} elseif ( $enmse_language == 3 ) { // German
 		include('lang/ger_bible_books.php');
@@ -284,6 +292,7 @@
 						jQuery('#seriesengine video').mediaelementplayer({stretching: 'responsive'});
 						jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -292,13 +301,14 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "audio";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -307,13 +317,14 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "video";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -322,7 +333,7 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "alternate";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});
@@ -347,6 +358,7 @@
 						jQuery('#seriesengine video').mediaelementplayer({stretching: 'responsive'});
 						jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -355,13 +367,14 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "audio";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -370,13 +383,14 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "video";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
 							var loadurl = jQuery(".enmse-plugin-url").val();
+							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -385,7 +399,7 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "alternate";
-							var posturl = loadurl+"/includes/viewcount.php";
+							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
 							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
 							jQuery(this).unbind();
 						});

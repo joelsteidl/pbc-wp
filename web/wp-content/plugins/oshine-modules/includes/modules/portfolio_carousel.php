@@ -176,21 +176,43 @@ if (!function_exists('be_portfolio_carousel')) {
 					$thumb_bg_style = '';
 				}
 
+				//GDPR Privacy preference popup logic
+				$gdpr_atts = '{}';
+				$gdpr_concern_selector = '';
 				$tempModalContents = '';
 				if( $mfp_class === 'mfp-iframe' ){
-					$video_details =  be_get_video_details($attachment_full_url);
-					if(  function_exists( 'be_gdpr_privacy_ok' ) ? !be_gdpr_privacy_ok($video_details['source']) : false ){
-						$mfp_class = 'mfp-popup';
-						$thumb_class = '';
+					if( function_exists( 'be_gdpr_privacy_ok' ) ){
+						$video_details =  be_get_video_details($video_url);
 						$key = be_uniqid_base36(true);
-						$attachment_full_url = '#gdpr-alt-lightbox-'.$key;
-						$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+						if( !empty( $_COOKIE ) ){
+							if( !be_gdpr_privacy_ok($video_details['source'] ) ){
+								$mfp_class = 'mfp-popup';
+								$thumb_class = '';
+								$attachment_full_url = '#gdpr-alt-lightbox-'.$key;
+								$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+							}
+						} else {
+							$gdpr_atts = array(
+								'concern' => $video_details[ 'source' ],
+								'add' => array( 
+									'class' => array( 'mfp-popup' ),
+									'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+								),
+								'remove' => array( 
+									'class' => array( $mfp_class,
+													  $thumb_class )
+								)
+							);
+							$gdpr_concern_selector = 'be-gdpr-consent-required';
+							$gdpr_atts = json_encode( $gdpr_atts );
+							$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+						}
 					}
 				}
 
 				$trigger_animation = ($hover_style == 'style9-hover' || $hover_style == 'style10-hover') ? '' : 'animation-trigger';
 				$output .='<li class="carousel-item element be-hoverlay '.$hover_style.' '.$img_grayscale.' '.$title_style.'-title"><div class="element-inner">';
-				$output .= '<a href="'.$attachment_full_url.'" class="thumb-wrap '.$thumb_class.' '.$mfp_class.'" title="'.$attachment_info['title'].'">';
+				$output .= '<a href="'.$attachment_full_url.'" class="thumb-wrap '.$thumb_class.' '.$mfp_class.' '.$gdpr_concern_selector.'" data-gdpr-atts='.$gdpr_atts.' title="'.$attachment_info['title'].'">';
 				$output .= '<div class="flip-wrap"><div class="flip-img-wrap '.$image_effect.'-effect"><img src="'.$attachment_thumb_url.'" alt="'.$attachment_info['alt'].'" /></div></div>';
 				$output .= '<div class="thumb-overlay"><div class="thumb-bg" '.$thumb_bg_style.'>';
 				$output .= '<div class="thumb-title-wrap ">';

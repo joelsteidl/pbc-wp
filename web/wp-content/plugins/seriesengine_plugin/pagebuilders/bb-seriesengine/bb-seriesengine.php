@@ -107,7 +107,7 @@ $enmse_messages = $wpdb->get_results( $enmse_preparredsql );
 
 $sebb_messages = array();
 foreach ($enmse_messages as $m) {
-    $sebb_messages[$m->message_id] = __(stripslashes($m->title) . " (" . date($enmse_dateformat, strtotime($m->date)) . ")", 'fl-builder');
+    $sebb_messages[$m->message_id] = __(stripslashes($m->title) . " (" . date_i18n($enmse_dateformat, strtotime($m->date)) . ")", 'fl-builder');
 }
 $sebb_messages['0'] = __('- Select a ' . $enmsemessaget . ' -', 'fl-builder');
 

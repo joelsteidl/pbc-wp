@@ -1,5 +1,5 @@
 <?php 
-	require '../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( 'loadwpfiles.php' );
 
 if ( isset($_GET['enmsepath']) ) {
 

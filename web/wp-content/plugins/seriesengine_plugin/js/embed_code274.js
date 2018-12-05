@@ -3,9 +3,10 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-start').change(function() { // Choose a starting point
 		var startvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (startvalue > 0) {
-			jQuery('#enmse-embed-one').load(pluginurl+"embed_seriestypes.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-one').load(pluginurl+"embed_seriestypes.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-one").show();
 				jQuery("#enmse-embed-two").hide();
 				jQuery("#enmse-embed-three").hide();
@@ -25,11 +26,12 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 		var startvalue = jQuery('#enmse-embed-start').val();
 		var stvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (startvalue == 0) {
 			alert("Please choose an option in Step 1!");
 		} else if (startvalue == 1) { // Most Recent Message
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});
@@ -40,7 +42,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
 			} else {
-				jQuery('#enmse-embed-two').load(pluginurl+"embed_series.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+				jQuery('#enmse-embed-two').load(pluginurl+"embed_series.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 					jQuery("#enmse-embed-two").show();
 					jQuery("#enmse-embed-three").hide();
 					jQuery("#enmse-embed-four").hide();
@@ -54,7 +56,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
 			} else {
-				jQuery('#enmse-embed-two').load(pluginurl+"embed_topic.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+				jQuery('#enmse-embed-two').load(pluginurl+"embed_topic.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 					jQuery("#enmse-embed-two").show();
 					jQuery("#enmse-embed-three").hide();
 					jQuery("#enmse-embed-four").hide();
@@ -68,7 +70,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
 			} else {
-				jQuery('#enmse-embed-two').load(pluginurl+"embed_speaker.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+				jQuery('#enmse-embed-two').load(pluginurl+"embed_speaker.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 					jQuery("#enmse-embed-two").show();
 					jQuery("#enmse-embed-three").hide();
 					jQuery("#enmse-embed-four").hide();
@@ -82,7 +84,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
 			} else {
-				jQuery('#enmse-embed-two').load(pluginurl+"embed_book.php?enmse_stid="+stvalue+"&enmse_random="+serandom, function() {
+				jQuery('#enmse-embed-two').load(pluginurl+"embed_book.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 					jQuery("#enmse-embed-two").show();
 					jQuery("#enmse-embed-three").hide();
 					jQuery("#enmse-embed-four").hide();
@@ -96,7 +98,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
 			} else {
-				jQuery('#enmse-embed-two').load(pluginurl+"embed_series.php?enmse_stid="+stvalue+"&enmse_message=1"+"&enmse_random="+serandom, function() {
+				jQuery('#enmse-embed-two').load(pluginurl+"embed_series.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_message=1"+"&enmse_random="+serandom, function() {
 					jQuery("#enmse-embed-two").show();
 					jQuery("#enmse-embed-three").hide();
 					jQuery("#enmse-embed-four").hide();
@@ -104,11 +106,11 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 				});
 			}
 		} else if (startvalue == 5) { // Display Series Archives
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 			});
 		} else if (startvalue == 7) { // Display All Messages
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 			});
 		};
@@ -117,13 +119,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-s').live("change", function() { // Specific Series
 		var svalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (svalue == 0) {
 			jQuery("#enmse-embed-three").hide();
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});
@@ -134,13 +137,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-t').live("change", function() { // Specific Topic
 		var tvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (tvalue == 0) {
 			jQuery("#enmse-embed-three").hide();
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});
@@ -150,13 +154,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 		jQuery('#enmse-embed-b').live("change", function() { // Specific Book
 		var bvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (bvalue == 0) {
 			jQuery("#enmse-embed-three").hide();
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});
@@ -166,13 +171,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-sp').live("change", function() { // Specific Speaker
 		var spvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (spvalue == 0) {
 			jQuery("#enmse-embed-three").hide();
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});
@@ -182,13 +188,14 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-ms').live("change", function() { // Specific Message, Choose Series First
 		var msvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (msvalue == 0) {
 			jQuery("#enmse-embed-three").hide();
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-three').load(pluginurl+"embed_message.php?enmse_sid="+msvalue+"&enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-three').load(pluginurl+"embed_message.php?enmse_sid="+msvalue+"&xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-three").show();
 				jQuery("#enmse-embed-four").hide();
 				jQuery("#enmse-embed-code").hide();
@@ -199,12 +206,13 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery('#enmse-embed-m').live("change", function() { // Specific Message
 		var mvalue = jQuery(this).val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		if (mvalue == 0) {
 			jQuery("#enmse-embed-four").hide();
 			jQuery("#enmse-embed-code").hide();
 		} else {
-			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php"+"?enmse_random="+serandom, function() {
+			jQuery('#enmse-embed-four').load(pluginurl+"embed_options.php?xxse="+xxse+"&enmse_random="+serandom, function() {
 				jQuery("#enmse-embed-four").show();
 				jQuery("#enmse-embed-code").hide();
 			});			
@@ -283,6 +291,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 	jQuery("#enmse-generate-embed-code").live("click", function() {
 		var startvalue = jQuery('#enmse-embed-start').val();
 		var pluginurl = jQuery('#enmse-get-plugin-link').attr("title");
+		var xxse = encodeURIComponent(jQuery('#xxse').val());
 		var serandom = Math.floor(Math.random()*1001);
 		var stvalue = jQuery("#enmse-embed-st").val();
 		
@@ -383,7 +392,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - Generate Custom Embe
 		var seriesinfo = jQuery("#enmse-embed-seriesinfo").val();
 		var download = jQuery("#enmse-embed-download").val();
 		jQuery(this).html("Generate New Code");
-		jQuery('#enmse-embed-code').load(pluginurl+"embed_generate_code.php?enmse_stid="+stvalue+"&enmse_download="+download+"&enmse_sharinglinks="+sharinglinks+"&enmse_seriesinfo="+seriesinfo+"&enmse_sid="+svalue+"&enmse_tid="+tvalue+"&enmse_spid="+spvalue+"&enmse_mid="+mvalue+"&enmse_bid="+bvalue+"&enmse_explorer="+explorervalue+"&enmse_cardview="+cardviewvalue+"&enmse_details="+detailsvalue+"&enmse_related="+relatedvalue+"&enmse_sort="+sortvalue+"&enmse_sim="+initialvalue+"&enmse_a="+avalue+"&enmse_am="+amvalue+"&enmse_pag="+pagvalue+"&enmse_apag="+apagvalue+"&enmse_seriesmenu="+seriesmenu+"&enmse_speakermenu="+speakermenu+"&enmse_topicmenu="+topicmenu+"&enmse_bookmenu="+bookmenu+"&enmse_random="+serandom, function() {
+		jQuery('#enmse-embed-code').load(pluginurl+"embed_generate_code.php?enmse_stid="+stvalue+"&xxse="+xxse+"&enmse_download="+download+"&enmse_sharinglinks="+sharinglinks+"&enmse_seriesinfo="+seriesinfo+"&enmse_sid="+svalue+"&enmse_tid="+tvalue+"&enmse_spid="+spvalue+"&enmse_mid="+mvalue+"&enmse_bid="+bvalue+"&enmse_explorer="+explorervalue+"&enmse_cardview="+cardviewvalue+"&enmse_details="+detailsvalue+"&enmse_related="+relatedvalue+"&enmse_sort="+sortvalue+"&enmse_sim="+initialvalue+"&enmse_a="+avalue+"&enmse_am="+amvalue+"&enmse_pag="+pagvalue+"&enmse_apag="+apagvalue+"&enmse_seriesmenu="+seriesmenu+"&enmse_speakermenu="+speakermenu+"&enmse_topicmenu="+topicmenu+"&enmse_bookmenu="+bookmenu+"&enmse_random="+serandom, function() {
 			jQuery("#enmse-embed-code").show();
 		});
 		

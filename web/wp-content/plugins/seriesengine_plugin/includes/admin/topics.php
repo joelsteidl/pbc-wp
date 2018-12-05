@@ -181,7 +181,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		};
 		jQuery("#enmse-topics tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 			var order = jQuery(this).sortable("serialize"); 
-			jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sorttopics.php'; ?>", order, function(){}); 
+			jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sorttopics.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 		}});
 	});
 	</script><?php } ?>
@@ -210,6 +210,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<?php } ?>
 		</tbody>
 	</table>
+	<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 	<?php include ('secredits.php'); ?>	
 </div>
 <?php }  // Deny access to sneaky people!

@@ -375,24 +375,43 @@ if (!function_exists('be_portfolio')) {
 					}
 					if( !empty( $cat_style ) ) {
 						$cat_style = 'style="'.$cat_style.'"'; 
-					}					
-					//mymark
-					//GDPR Privacy preference popup logic
+					}
 
+					//GDPR Privacy preference popup logic
+					$gdpr_atts = '{}';
+					$gdpr_concern_selector = '';
 					$tempModalContents = '';
-					$video_details =  be_get_video_details($video_url);
 					if( $mfp_class === 'mfp-iframe' ){
-						if(  function_exists( 'be_gdpr_privacy_ok' ) ? !be_gdpr_privacy_ok($video_details['source']) : false ){
-							$mfp_class = 'mfp-popup';
+						if( function_exists( 'be_gdpr_privacy_ok' ) ){
+							$video_details =  be_get_video_details($video_url);
 							$key = be_uniqid_base36(true);
-							$attachment_full_url = '#gdpr-alt-lightbox-'.$key;
-							$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+							if( !empty( $_COOKIE ) ){
+								if( !be_gdpr_privacy_ok($video_details['source'] ) ){
+									$mfp_class = 'mfp-popup';
+									$attachment_full_url = '#gdpr-alt-lightbox-'.$key;
+									$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+								}
+							} else {
+								$gdpr_atts = array(
+									'concern' => $video_details[ 'source' ],
+									'add' => array( 
+										'class' => array( 'mfp-popup' ),
+										'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+									),
+									'remove' => array( 
+										'class' => array( $mfp_class )
+									)
+								);
+								$gdpr_concern_selector = 'be-gdpr-consent-required';
+								$gdpr_atts = json_encode( $gdpr_atts );
+								$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+							}
 						}
 					}
 					
 					$output .= '<div class="element be-hoverlay '.$image_atts['class'].' '.$image_atts['alt_class'].' '.$hover_style.' '.$img_grayscale . ( ( '' != $title_style ) ? ( ' '.$title_style.'-title"' ) : '"' ) . 'style="margin-bottom: '.$gutter_width.'px;" data-category-names = "'.$filter_classes.'">';
 					$output .= '<div class="element-inner" style="margin-left: '.$gutter_width.'px;">';
-					$output .= '<a href="'.$attachment_full_url.'" class=" thumb-wrap '.$thumb_class.' '.$mfp_class.'" title="'.$attachment_info['title'].'" '.$target.'>';
+					$output .= '<a href="'.$attachment_full_url.'" class=" thumb-wrap '.$thumb_class.' '.$mfp_class.' '.$gdpr_concern_selector.'" data-gdpr-atts='.$gdpr_atts.' title="'.$attachment_info['title'].'" '.$target.'>';
 					
 					$output .= '<div class="flip-wrap" ><div ' . ( "masonry_enable" == $masonry_enable ? ( 'data-aspect-ratio="'.$masonry_aspect_ratio.'"' )  : '' ) . '  style = "padding-bottom : '. $placeholder_padding .'%;'.( !empty( $placeholder_color ) ? 'background-color:'. $placeholder_color : '' ).';" class="flip-img-wrap' . ( ( 'none' != $image_effect ) ? ( ' '.$image_effect.'-effect"' ) : '"' ) .'><img '. ( $enable_data_src ? 'data-src="'.$attachment_thumb_url : 'src="'.$attachment_thumb_url ) .'" ' . ( $isdwdh ? ( 'data-aspect-ratio="'.$current_dwdh_aspect_ratio.'"' ) : '' ) . 'alt="'.$attachment_info['alt'].'"/></div></div>';
 					$output .= '<div class="thumb-overlay "><div class="thumb-bg " '.$thumb_bg_style.'>';
@@ -442,17 +461,37 @@ if (!function_exists('be_portfolio')) {
 								}
 
 								//GDPR Privacy preference popup logic
-								$video_details =  be_get_video_details($video_url);
+								$gdpr_atts = '{}';
+								$gdpr_concern_selector = '';
 								if( $mfp_class === 'mfp-iframe' ){
-									if(  function_exists( 'be_gdpr_privacy_ok' ) ? !be_gdpr_privacy_ok($video_details['source']) : false ){
-										$mfp_class = 'mfp-popup';
+									if( function_exists( 'be_gdpr_privacy_ok' ) ){
+										$video_details =  be_get_video_details($video_url);
 										$key = be_uniqid_base36(true);
-										$url = '#gdpr-alt-lightbox-'.$key;
-										$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+										if( !empty( $_COOKIE ) ){
+											if( !be_gdpr_privacy_ok($video_details['source'] ) ){
+												$mfp_class = 'mfp-popup';
+												$url = '#gdpr-alt-lightbox-'.$key;
+												$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+											}
+										} else {
+											$gdpr_atts = array(
+												'concern' => $video_details[ 'source' ],
+												'add' => array( 
+													'class' => array( 'mfp-popup' ),
+													'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+												),
+												'remove' => array( 
+													'class' => array( $mfp_class )
+												)
+											);
+											$gdpr_concern_selector = 'be-gdpr-consent-required';
+											$gdpr_atts = json_encode( $gdpr_atts );
+											$tempModalContents .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+										}
 									}
 								}
 
-								$output .='<a href="'.$url.'" class="'.$mfp_class.'" title="'.$attachment_info['title'].'"></a>';
+								$output .='<a href="'.$url.'" class="'.$mfp_class.' '.$gdpr_concern_selector.'" data-gdpr-atts='.$gdpr_atts.' title="'.$attachment_info['title'].'"></a>';
 							}
 						}
 						$output .= '</div>'; //End Gallery
