@@ -1,0 +1,20 @@
+<?php /* ----- Groups Engine - Sort Files in admin ----- */
+
+require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+header('HTTP/1.1 200 OK');
+
+global $wpdb;
+
+if ($_POST) {
+	$ufiles = $_POST['row'];
+
+	$ccount = 1;
+	foreach ($ufiles as $file) {
+		$enmge_new_values = array( 'sort_id' => $ccount ); 
+		$enmge_where = array( 'file_id' => $file ); 			
+		$wpdb->update( $wpdb->prefix . "ge_files", $enmge_new_values, $enmge_where );
+		$ccount = $ccount + 1; 
+	}
+}
+
+?>

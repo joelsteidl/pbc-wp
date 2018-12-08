@@ -1,0 +1,6 @@
+/* ----- Groups Engine - Fixes for IE 8 ----- */
+
+
+#groupsengine .enmge-content-container.enmge-opaque {
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
+}

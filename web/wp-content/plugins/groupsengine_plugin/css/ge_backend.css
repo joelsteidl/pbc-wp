@@ -1,0 +1,486 @@
+/* ----- Groups Engine - Backend Styles ----- */
+
+/* ---------- ADMIN LOGO ----------- */
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small.png') no-repeat scroll 1px -66px;
+}
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin:hover div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small.png') no-repeat scroll 1px -34px;
+}
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin.wp-has-current-submenu div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small.png') no-repeat scroll 1px -2px;
+}
+
+/* ---------- VARIOUS PRAYER ENGINE ADMIN STYLES ----------- */
+
+a.groupsengine_delete:link, a.groupsengine_filedelete:link, a.groupsengine_delete:visited, a.groupsengine_filedelete:visited {
+	color: #892516;
+}
+
+a.groupsengine_delete:hover, a.groupsengine_filedelete:hover, a.groupsengine_delete:active, a.groupsengine_filedelete:active {
+	color: #ca1b0a;
+}
+
+#groupsengine_icon {
+	background: url('../images/se_icon_large.png') no-repeat;
+}
+
+p#ge-copyright {
+	clear: right;
+	text-align: right;
+	font-size: 0.8em;
+	color: #cacaca;
+	margin: 0;
+	padding: 15px 0 0 0;
+}
+
+p#ge-copyright a:link, p#ge-copyright a:visited {
+	color: #cacaca;
+	text-decoration: none;
+}
+
+p#ge-copyright a:hover, p#ge-copyright a:active {
+	color: #a7a7a7;
+	text-decoration: none;
+}
+
+.ge-colorpicker {
+	width: 18px; 
+	height: 18px; 
+	background-color: #fff; 
+	float: left; 
+	margin: 1px 0 0 0; 
+	border: 1px solid #000;
+	margin: 0 6px 0 0;
+}
+
+td.enmge-sort {
+	width: 30px;
+	background: url('../images/draggable.gif') no-repeat;
+	background-position: -6px -4px;
+}
+
+td.enmge-sort:hover {
+	cursor: move;
+}
+
+td.enmge-delete {
+	width: 80px;
+}
+
+a.ge-upload-link {
+	text-decoration: none;
+	color: #333333;
+}
+
+.ge-form-instructions {
+	color: #cccccc;
+}
+
+.ge-form-instructions a {
+	color: #a8a8a8;
+}
+
+#enmge-group-options {
+	margin: 28px 0 20px 0;
+	height: 39px;
+	border-bottom: 1px solid #dfdfdf;
+	z-index: 1;
+	font-size: 1.25em;
+}
+
+#enmge-group-options li {
+	list-style-type: none;
+	float: left;
+	margin: 0 35px 0 0;
+	z-index: 2;
+}
+
+#enmge-group-options li a:link, #enmge-group-options li a:visited {
+	text-decoration: none;
+	color: #8b8b8b;
+	font-weight: 300;
+}
+
+#enmge-group-options li a:hover, #enmge-group-options li a:active {
+	text-decoration: none;
+	color: #000;
+	font-weight: 300;
+}
+
+#enmge-group-options li.selected {
+	height: 40px;
+	background: url('../images/message_option_arrow3.jpg') no-repeat;
+	background-position: bottom center;
+}
+
+#enmge-group-options li.selected a {
+	text-decoration: none;
+	color: #000;
+	font-weight: 700;
+}
+
+.embed-error {
+	color: #af5c5c;
+}
+
+ul#enmge-topiclist {
+	margin: 20px 0 0 0;
+}
+
+ul.enmge-series-topic {
+	width: 450px;
+}
+
+ul.enmge-series-topic li {
+	width: 140px;
+	margin: 0 10px 10px 0;
+	float: left;
+	line-height: 100%;
+}
+
+ul.enmge-series-topic li input {
+	float: left;
+	margin: 0 6px 5px 0;
+}
+
+input#speaker_first_name {
+	margin: 10px 0 0 0;
+}
+
+/* ----- User Guide ----- */
+
+#enmge-user-guide h1 {
+	margin: 50px 0 20px 0;
+}
+
+#enmge-user-guide h2 {
+	margin: 40px 0 20px 0;
+}
+
+#enmge-user-guide h3 {
+	margin: 25px 0 10px 0;
+}
+
+#enmge-user-guide p {
+	margin-left: 30px;
+	font-size: 1.1em;
+}
+
+#enmge-user-guide h4 {
+	margin-left: 30px;
+}
+
+#enmge-user-guide ul {
+	margin: 15px 0 15px 0;
+}
+
+#enmge-user-guide ul li {
+	list-style-type: disc;
+	margin: 0 0 15px 70px;
+	font-size: 1.1em;
+}
+
+#enmge-user-guide ul.legal li {
+	list-style-type: none;
+	margin: 0 0 0 30px;
+	font-size: 1.1em;
+}
+
+a.enmge-learn-more {
+	color: #c6c6c6;
+}
+
+.ge-form-instructions {
+	color: #cccccc;
+}
+
+.ge-form-instructions a {
+	color: #a8a8a8;
+}
+
+#enmge-ge-logo {
+	width: 100%;
+	height: 120px;
+	background: url('../images/ge_logo.jpg') no-repeat;
+	background-position: top center;
+	background-color: #323232;
+}
+
+#enmge-se-logo img {
+	width: 318px;
+	margin: 0 auto;
+}
+
+select.enmge-disabled {
+	opacity: 0.5;
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+
+.tablenav.groupsengine .page-numbers.current {
+	font-size: 1.35em;
+	margin: 0;
+	padding: 0 10px 3px 10px;
+	border: none;
+}
+
+
+
+/* Reports */
+
+body#ge-report {
+	margin: 0;
+	padding: 0;
+	font-size: 62.5%; /* enables you to easily size text with ems */
+	font-family: Georgia, serif;
+	margin: 20px;
+}
+
+body#ge-report h1 {
+	font-size: 3em;
+	font-weight: 700;
+	padding: 10px 0 0 0;
+	margin: 20px 0 0 0;
+}
+
+body#ge-report h3 {
+	font-weight: 300;
+	font-size: 2.2em;
+	font-weight: 700;
+	padding: 10px 0 0 0;
+	margin: 20px 0 0 0;
+}
+
+body#ge-report h3 span {
+	font-weight: 300;
+	font-size: 0.8em;
+}
+
+body#ge-report h5 {
+	font-weight: 300;
+	font-size: 1.5em;
+	padding: 0 0 0 0;
+	margin: 0 0 10px 0;
+}
+
+body#ge-report h4 {
+	font-weight: 700;
+	font-size: 1.5em;
+	padding: 0 0 0 0;
+	margin: 10px 0 10px 0;
+}
+
+body#ge-report h5.footer {
+	font-weight: 300;
+	font-size: 1.5em;
+	padding: 10px 0 0 0;
+	border-top: 1px solid #000;
+	margin: 20px 0 10px 0;
+}
+
+body#ge-report p {
+	font-weight: 300;
+	font-size: 1.5em;
+	padding: 0 0 10px 0;
+	margin: 0 0 0 0;
+}
+
+body#ge-report p.reportcount {
+	float: right; 
+	padding: 24px 0 0 0;
+}
+
+.ge-note-box {
+	padding: 2px 15px 2px 15px;
+	background-color: #e9e9e9;
+	margin: 0 0 5px 0;
+}
+
+.contactmessage {
+	font-style: italic;
+}
+
+table#groupreporttable {
+	font-size: 1.4em;
+	width: 100%;
+	margin: 20px 0 0 0;
+}
+
+table#groupreporttable th {
+	text-align: left;
+	padding: 5px;
+	font-size: 1.1em;
+}
+
+table#groupreporttable td {
+	padding: 12px 5px 12px 5px;
+}
+
+table#groupreporttable tr.odd {
+	background-color: #f1f1f1;
+}
+
+table#groupreporttable td.center {
+	text-align: center;
+}
+
+table#contactreporttable {
+	font-size: 1.4em;
+	width: 100%;
+	margin: 15px 0 0 0;
+}
+
+table#contactreporttable th {
+	text-align: left;
+	padding: 5px;
+	font-size: 1.1em;
+	border-bottom: 1px solid #000;
+}
+
+table#contactreporttable td {
+	padding: 12px 5px 12px 5px;
+}
+
+table#contactreporttable tr.odd {
+	background-color: #f1f1f1;
+}
+
+table#contactreporttable td.center {
+	text-align: center;
+}
+
+body#ge-report .notesarea {
+	padding: 15px 15px 5px 15px;
+	background-color: #f1f1f1;
+}
+
+body#ge-report .contact {
+	padding: 0 0 25px 0;
+}
+
+body#ge-report .notesarea h5 {
+	font-weight: 300;
+	font-size: 1.5em;
+	padding: 0 0 0 0;
+	margin: 0 0 10px 0;
+}
+
+body#ge-report .notesarea p {
+	margin: 0;
+	padding: 0 0 15px 0;
+}
+
+#enmge-generate-embed-code {
+	margin: 30px 0 0 0;
+}
+
+h5#groupsenginelogo {
+	float: right;
+	width: 126px;
+	height: 35px;
+	margin: 15px 0 5px 0;
+	padding: 0;
+}
+
+h5#groupsenginelogo a {
+	display: block;
+	width: 126px;
+	height: 35px;
+	text-indent: -9000px;
+	background: url('../images/groupsengine_backend_logo.png') no-repeat;
+	margin: 0;
+	padding: 0;
+}
+
+h2.enmge {
+	padding: 20px 0 8px 45px;
+	background: url('../images/header_icon.png') no-repeat;
+	background-position: 0 16px;
+	margin-bottom: 14px;
+	height: 30px;
+}
+
+.nothing {
+	height: 34px;
+	width: 100%;
+}
+
+#contactfilter {
+	position: absolute;
+}
+
+strong .new {
+	color: #a3ca9d;
+}
+
+h4.leadertitle {
+	padding: 5px 0 10px 0;
+	margin: 0;
+}
+
+table.leadertable {
+	margin: 0 0 15px 0;
+}
+
+table.leadertable td {
+	padding: 0 15px 5px 0;
+	text-align: left;
+	font-size: 1.2em;
+}
+
+a.groupsengine_leaderdelete {
+	color: #892516;
+}
+
+#group_noend, label.endcheck {
+	display: inline-block;
+	margin: 0 0 10px 0;
+}
+@media 
+(-webkit-min-device-pixel-ratio: 2) { 
+    /* ---------- ADMIN LOGO ----------- */
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small2x.png') no-repeat scroll 1px -66px;
+	background-size: 27px 96px;
+}
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin:hover div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small2x.png') no-repeat scroll 1px -34px;
+	background-size: 27px 96px;
+}
+
+#adminmenu #toplevel_page_groupsengine_plugin-groupsengine_plugin.wp-has-current-submenu div.wp-menu-image {
+	background:transparent url('../images/ge_icon_small2x.png') no-repeat scroll 1px -2px;
+	background-size: 27px 96px;
+}
+
+#enmge-group-options li.selected {
+	height: 40px;
+	background: url('../images/message_option_arrow32x.jpg') no-repeat;
+	background-size: 18px 18px;
+	background-position: bottom center;
+}
+
+h5#groupsenginelogo a {
+	background: url('../images/groupsengine_backend_logo2x.png') no-repeat;
+	background-size: 126px 35px;
+}
+
+h2.enmge {
+	padding: 20px 0 5px 45px;
+	background: url('../images/header_icon2x.png') no-repeat;
+	background-position: 0 17px;
+	background-size: 35px 35px;
+}
+
+#enmge-ge-logo {
+	background: url('../images/ge_logo2x.jpg') no-repeat;
+	background-size: 318px 120px;
+	background-position: top center;
+	background-color: #323232;
+}
+}
