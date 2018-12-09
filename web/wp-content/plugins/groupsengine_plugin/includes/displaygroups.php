@@ -1074,9 +1074,7 @@ $enmge_scl = 0;
 		<?php if ( $enmge_fo == 0 ) { ?>
 		<div class="ge-explore-options" style="display: none;">
 		<form action="<?php echo $enmge_thispage; ?>" method="post" class="enmge-ajax-form">
-    <input type="hidden" class="enmge_location" name="enmge_grouptype" value="0" />
-      <?php /*
-			<div class="ge-option-container">
+			<div class="ge-option-container" style="display: none">
 				<span class="ge-filter-label"><?php echo stripslashes($enmge_grouptypetitle); ?>:</span>
 				<select class="enmge_grouptype" name="enmge_grouptype" tabindex="1">
 					<?php if ( $enmge_xgt == 1 ) { ?>
@@ -1094,8 +1092,7 @@ $enmge_scl = 0;
 						<?php } ?>
 					<?php } ?>
 				</select>
-      </div>
-      */?>
+			</div>
 			<div class="ge-option-container">
 				<span class="ge-filter-label"><?php echo stripslashes($enmge_topictitle); ?>:</span>
 				<select class="enmge_topic" name="enmge_topic" tabindex="2">
@@ -1115,9 +1112,7 @@ $enmge_scl = 0;
 					<?php } ?>
 				</select>
 			</div>
-      <input type="hidden" class="enmge_location" name="enmge_location" value="0" />
-      <?php /*
-			<div class="ge-option-container">
+			<div class="ge-option-container" style="display: none">
 				<span class="ge-filter-label"><?php echo stripslashes($enmge_locationtitle); ?>:</span>
 				<select class="enmge_location" name="enmge_location" tabindex="3">
 					<?php if ( $enmge_xl == 1 ) { ?>
@@ -1135,11 +1130,8 @@ $enmge_scl = 0;
 						<?php } ?>
 					<?php } ?>
 				</select>
-      </div>
-      */?>
-      <input type="hidden" class="enmge_meeting" name="enmge_meeting" value="2" />
-      <?php /*
-			<div class="ge-option-container">
+			</div>
+			<div class="ge-option-container" style="display: none">
 				<span class="ge-filter-label">Meeting:</span>
 				<select class="enmge_meeting" name="enmge_meeting" tabindex="4">
 					<?php if ( $enmge_xm == 1 ) { ?>
@@ -1152,8 +1144,7 @@ $enmge_scl = 0;
 						<option value="0" <?php if ( $enmge_m == 0 ) { echo 'selected="selected"'; }; ?>>Offsite Only</option>
 					<?php } ?>
 				</select>
-      </div>
-      */?>
+			</div>
 			<div class="ge-option-container">
 				<span class="ge-filter-label">Day:</span>
 				<select class="enmge_day" name="enmge_day" tabindex="5">
@@ -1305,10 +1296,7 @@ $enmge_scl = 0;
 				</select>
 				<?php } ?>
 			</div>
-      <input type="hidden" class="enmge_sa" name="enmge_sa" value="101" />
-      <input type="hidden" class="enmge_ea" name="enmge_ea" value="101" />
-      <?php /*
-			<div class="ge-option-container">
+			<div class="ge-option-container" style="display: none">
 				<span class="ge-filter-label">Age Range:</span>
 				<?php if ( $enmge_xsa == 1 ) { ?>
 					<?php if ( $enmge_sa != 101 ) { ?>
@@ -1537,8 +1525,7 @@ $enmge_scl = 0;
 					<option value="99" <?php if ($enmge_ea == 99) { echo 'selected="selected"';} ?>>99</option>
 				</select>
 				<?php } ?>
-      </div>
-      */ ?>
+			</div>
 			<div class="ge-option-container">
 				<?php if ( $enmge_xz == 1 ) { ?>
 				<span class="ge-filter-label">Postal Code:</span> <input type="text" name="enmge_zip" value="<?php if ($enmge_z != 0) { echo $enmge_z;} ?>" class="enmge_zip ge-zip" disabled="disabled" tabindex="10" />
