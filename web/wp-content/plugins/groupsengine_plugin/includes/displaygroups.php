@@ -5,7 +5,8 @@ global $wp_version;
 
 if ( $wp_version != null ) {
 
-$enmge_options = get_option( 'enm_groupsengine_options' );
+$enmge_options = get_option( 'enm_groupsengine_options' ); 
+$enmge_dateformat = get_option( 'date_format' ); 
 $enmge_spamprotection = $enmge_options['spamprotection'];
 $enmge_apikey = $enmge_options['apikey'];
 $enmge_mapcenter = $enmge_options['mapcenter'];
@@ -15,7 +16,7 @@ $enmge_credits = $enmge_options['credits'];
 $enmge_pointer = $enmge_options['pointer'];
 $enmge_dpag = $enmge_options['pag'];
 $enmge_grouptitle = $enmge_options['grouptitle'];
-$enmge_groupptitle = $enmge_options['groupptitle'];
+$enmge_groupptitle = $enmge_options['groupptitle']; 
 $enmge_grouptypetitle = $enmge_options['grouptypetitle'];
 $enmge_grouptypeptitle = $enmge_options['grouptypeptitle'];
 $enmge_locationtitle = $enmge_options['locationtitle'];
@@ -258,7 +259,7 @@ if ( isset($_GET['enmge_ea']) || ($_POST && isset($_POST['enmge_sf']) && $_POST[
 	$enmge_ea = 101;
 }
 
-if ( isset($_GET['enmge_zip']) || ($_POST && isset($_POST['enmge_sf']) && isset($_POST['enmge_zip'])) ) { // ZIP through parameter or form (even blank)
+if ( isset($_GET['enmge_zip']) || ($_POST && isset($_POST['enmge_sf']) && isset($_POST['enmge_zip'])) ) { // ZIP through parameter or form (even blank)	
 	if ( $_POST && isset($_POST['enmge_sf']) ) {
 		$enmge_z = strip_tags($_POST['enmge_zip']);
 	} else {
@@ -269,7 +270,7 @@ if ( isset($_GET['enmge_zip']) || ($_POST && isset($_POST['enmge_sf']) && isset(
 		$enmge_sortoptions .= "&enmge_zip=" . $enmge_z;
 		$enmge_mapoptions .= "&enmge_zip=" . $enmge_z;
 
-		$enmge_g_addr_str = $enmge_z;
+		$enmge_g_addr_str = $enmge_z;       
 		$enmge_g_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
 
 		$enmgech = curl_init();
@@ -297,13 +298,13 @@ if ( isset($_GET['enmge_zip']) || ($_POST && isset($_POST['enmge_sf']) && isset(
 		$enmge_maplat = $enmge_options['maplat'];
 		$enmge_maplong = $enmge_options['maplong'];
 	}
-
+	
 } elseif ( $enmge_lo == 1 && $enmge_fz != 0 ) { // ZIP through options
 	$enmge_z = $enmge_fz;
 	$enmge_sortoptions .= "&enmge_zip=" . $enmge_z;
 	$enmge_mapoptions .= "&enmge_zip=" . $enmge_z;
 
-	$enmge_g_addr_str = $enmge_z;
+	$enmge_g_addr_str = $enmge_z;       
 	$enmge_g_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
 
 	$enmgech = curl_init();
@@ -329,14 +330,14 @@ if ( isset($_GET['enmge_zip']) || ($_POST && isset($_POST['enmge_sf']) && isset(
 } elseif ( isset($_GET['enmge_cz']) || ($enmge_lo == 1 && $enmge_fcz != 0) ) { // Centered zoom through options
 	$enmge_z = 0;
 	if ( isset($_GET['enmge_cz']) ) {
-		$enmge_g_addr_str = strip_tags($_GET['enmge_cz']);
+		$enmge_g_addr_str = strip_tags($_GET['enmge_cz']);  
 	} else {
 		$enmge_g_addr_str = $enmge_fcz;
 	}
 
 	$enmge_sortoptions .= "&enmge_cz=" . $enmge_g_addr_str;
 	$enmge_mapoptions .= "&enmge_cz=" . $enmge_g_addr_str;
-
+	       
 	$enmge_g_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
 
 	$enmgech = curl_init();
@@ -374,7 +375,7 @@ if ( isset($_GET['enmge_lid']) || ($_POST && isset($_POST['enmge_sf']) && $_POST
 	$enmge_sortoptions .= "&enmge_lid=" . $enmge_l;
 	$enmge_mapoptions .= "&enmge_lid=" . $enmge_l;
 	if ( $enmge_z == 0 ) {
-		$enmge_findthelatlocationsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d";
+		$enmge_findthelatlocationsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d"; 
 		$enmge_findthelatlocation = $wpdb->prepare( $enmge_findthelatlocationsql, $enmge_l );
 		$enmge_latloc = $wpdb->get_row( $enmge_findthelatlocation, OBJECT );
 		$enmge_maplat = $enmge_latloc->location_lat;
@@ -385,7 +386,7 @@ if ( isset($_GET['enmge_lid']) || ($_POST && isset($_POST['enmge_sf']) && $_POST
 	$enmge_sortoptions .= "&enmge_lid=" . $enmge_l;
 	$enmge_mapoptions .= "&enmge_lid=" . $enmge_l;
 	if ( $enmge_z == 0 ) {
-		$enmge_findthelatlocationsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d";
+		$enmge_findthelatlocationsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d"; 
 		$enmge_findthelatlocation = $wpdb->prepare( $enmge_findthelatlocationsql, $enmge_l );
 		$enmge_latloc = $wpdb->get_row( $enmge_findthelatlocation, OBJECT );
 		$enmge_maplat = $enmge_latloc->location_lat;
@@ -617,25 +618,25 @@ if ( isset($_GET['enmge_v']) || ($_POST && isset($_POST['enmge_sf']) && $_POST['
 
 
 $enmge_scl = 0;
-
+ 
 	if ( isset($_GET['enmge_cl']) && isset($_GET['enmge_gid']) ) { /* Contact Group Leader */
 		if ( $_POST ) {
 			if ( isset($_GET['enmge_gid']) && is_numeric($_GET['enmge_gid']) ) {
 				$enmge_gid = strip_tags($_GET['enmge_gid']);
 			}
-
-			$enmge_findthemessagesql = "SELECT * FROM " . $wpdb->prefix . "ge_groups" . " WHERE group_id = %d";
+								
+			$enmge_findthemessagesql = "SELECT * FROM " . $wpdb->prefix . "ge_groups" . " WHERE group_id = %d"; 
 			$enmge_findthemessage = $wpdb->prepare( $enmge_findthemessagesql, $enmge_gid );
 			$enmge_single = $wpdb->get_row( $enmge_findthemessage, OBJECT );
 			$enmge_singlecount = $wpdb->num_rows;
 
 			$enmge_errors = array();
 
-			if ( phpversion() >= '5.3' ) {
+			if ( phpversion() >= '5.3' ) { 
 				include 'nospam/spamprocessing.php';
 			}
 
-
+			
 			if (empty($_POST['contact_name'])) { //validate presence of name
 				$enmge_errors[] = 'A name is required to contact a ' . stripslashes($enmge_grouptitle) . ' leader.';
 			} else {
@@ -645,7 +646,7 @@ $enmge_scl = 0;
 			if (empty($_POST['contact_email'])) { //validate presence and format of email
 				$enmge_errors[] = 'An email address is required to contact a ' . stripslashes($enmge_grouptitle) . ' leader.';
 			} else {
-				if (preg_match('^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$^', $_POST['contact_email'])) {
+				if (preg_match('^[a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.([a-zA-Z]{2,4})$^', $_POST['contact_email'])) { 
 					$enmge_email = $_POST['contact_email'];
 				} else {
 					$enmge_errors[] = 'You must provide a valid email address.';
@@ -653,7 +654,7 @@ $enmge_scl = 0;
 			};
 
 			$enmge_phone = strip_tags($_POST['contact_phone']);
-
+			
 			if (empty($_POST['contact_message']) || strlen($_POST['contact_message']) < 10) { //validate presence and length of message
 				$enmge_errors[] = 'Please enter a message for the ' . stripslashes($enmge_grouptitle) . ' leader.';
 			} else {
@@ -673,10 +674,10 @@ $enmge_scl = 0;
 
 			if (empty($enmge_errors)) {
 				$enmge_newcontact = array(
-					'contact_name' => $enmge_name,
-					'contact_email' => $enmge_email,
-					'contact_phone' => $enmge_phone,
-					'contact_message' => $enmge_message,
+					'contact_name' => $enmge_name, 
+					'contact_email' => $enmge_email, 
+					'contact_phone' => $enmge_phone, 
+					'contact_message' => $enmge_message, 
 					'contact_modcode' => $enmge_mc,
 					'contact_date' => $enmge_date,
 					'contact_status' => $enmge_status,
@@ -684,7 +685,7 @@ $enmge_scl = 0;
 					'contact_group_title' => $enmge_group_title,
 					'contact_group_leader' => $enmge_group_leader,
 					'contact_group_leader_email' => $enmge_group_leader_email
-				);
+				); 
 				$wpdb->insert( $wpdb->prefix . "ge_contacts", $enmge_newcontact );
 				$enmge_scl = 1;
 
@@ -692,19 +693,19 @@ $enmge_scl = 0;
 
 				if ( !empty($enmge_single) ) {
 					// Get All Files
-					$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d GROUP BY file_id ORDER BY sort_id ASC";
+					$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d GROUP BY file_id ORDER BY sort_id ASC"; 
 					$enmge_fsql = $wpdb->prepare( $enmge_preparredfsql, $enmge_single->group_id );
 					$enmge_files = $wpdb->get_results( $enmge_fsql );
 
 					// Get All Leaders
-					$enmge_preparredlesql = "SELECT * FROM " . $wpdb->prefix . "ge_leaders" . " LEFT JOIN " . $wpdb->prefix . "ge_group_leader_matches" . " USING (leader_id) WHERE group_id = %d GROUP BY leader_id";
+					$enmge_preparredlesql = "SELECT * FROM " . $wpdb->prefix . "ge_leaders" . " LEFT JOIN " . $wpdb->prefix . "ge_group_leader_matches" . " USING (leader_id) WHERE group_id = %d GROUP BY leader_id"; 
 					$enmge_lesql = $wpdb->prepare( $enmge_preparredlesql, $enmge_single->group_id );
 					$enmge_groupleaders = $wpdb->get_results( $enmge_lesql );
 				}
 
 				if ( (!empty($enmge_single)) && ($enmge_single->group_onsite > 0) ) { // Find info for map link
 					// Get Campus Info
-					$enmge_preparredlsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d";
+					$enmge_preparredlsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d"; 
 					$enmge_lsql = $wpdb->prepare( $enmge_preparredlsql, $enmge_single->group_onsite );
 					$enmge_location = $wpdb->get_row( $enmge_lsql, OBJECT );
 					$enmge_locationcount = $wpdb->num_rows;
@@ -716,11 +717,11 @@ $enmge_scl = 0;
 					    $enmge_g_state   = '+'.str_replace(' ', '+', trim($enmge_location->location_state));
 					    $enmge_g_zip     = isset($enmge_location->location_zip)? '+'.str_replace(' ', '', trim($enmge_location->location_zip)) : '';
 
-						$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip;
+						$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip; 
 					} else {
 						$enmge_searchaddress = null;
 					}
-
+					
 				} elseif ( (!empty($enmge_single)) && ($enmge_single->group_onsite == 0) ) {
 					$enmge_g_address1 = str_replace(' ', '+', trim($enmge_single->group_address1)).",";
 					$enmge_g_address2 = str_replace(' ', '+', trim($enmge_single->group_address2)).",";
@@ -728,22 +729,22 @@ $enmge_scl = 0;
 				    $enmge_g_state   = '+'.str_replace(' ', '+', trim($enmge_single->group_state));
 				    $enmge_g_zip     = isset($enmge_single->group_zip)? '+'.str_replace(' ', '', trim($enmge_single->group_zip)) : '';
 
-					$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip;
+					$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip; 
 				}
 
 				// Get All Group Topic Matches
-				$enmge_gtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) WHERE group_id = %d GROUP BY topic_id ORDER BY topic_name ASC";
+				$enmge_gtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) WHERE group_id = %d GROUP BY topic_id ORDER BY topic_name ASC"; 	
 				$enmge_gtsql = $wpdb->prepare( $enmge_gtpreparredsql, $enmge_single->group_id );
 				$enmge_grouptopics = $wpdb->get_results( $enmge_gtsql );
 
 				// Get All Group Group Type Matches
-				$enmge_ggtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) WHERE group_id = %d GROUP BY group_type_id ORDER BY group_type_title ASC";
+				$enmge_ggtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) WHERE group_id = %d GROUP BY group_type_id ORDER BY group_type_title ASC"; 	
 				$enmge_ggtsql = $wpdb->prepare( $enmge_ggtpreparredsql, $enmge_single->group_id );
 				$enmge_groupgrouptypes = $wpdb->get_results( $enmge_ggtsql );
 				$enmge_gtcount = $wpdb->num_rows;
 
 				// Get All Group Location Matches
-				$enmge_preparredgglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches" . " WHERE group_id = %d";
+				$enmge_preparredgglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches" . " WHERE group_id = %d"; 
 				$enmge_gglmsql = $wpdb->prepare( $enmge_preparredgglmsql, $enmge_single->group_id );
 				$enmge_gglm = $wpdb->get_results( $enmge_gglmsql );
 
@@ -758,27 +759,27 @@ $enmge_scl = 0;
 		} else {
 			$enmge_gid = $enmge_fgid;
 		}
-
-		$enmge_findthemessagesql = "SELECT * FROM " . $wpdb->prefix . "ge_groups" . " WHERE group_id = %d";
+						
+		$enmge_findthemessagesql = "SELECT * FROM " . $wpdb->prefix . "ge_groups" . " WHERE group_id = %d"; 
 		$enmge_findthemessage = $wpdb->prepare( $enmge_findthemessagesql, $enmge_gid );
 		$enmge_single = $wpdb->get_row( $enmge_findthemessage, OBJECT );
 		$enmge_singlecount = $wpdb->num_rows;
 
 		if ( !empty($enmge_single) ) {
 			// Get All Files
-			$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d GROUP BY file_id ORDER BY sort_id ASC";
+			$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d GROUP BY file_id ORDER BY sort_id ASC"; 
 			$enmge_fsql = $wpdb->prepare( $enmge_preparredfsql, $enmge_single->group_id );
 			$enmge_files = $wpdb->get_results( $enmge_fsql );
 
 			// Get All Leaders
-			$enmge_preparredlesql = "SELECT * FROM " . $wpdb->prefix . "ge_leaders" . " LEFT JOIN " . $wpdb->prefix . "ge_group_leader_matches" . " USING (leader_id) WHERE group_id = %d GROUP BY leader_id";
+			$enmge_preparredlesql = "SELECT * FROM " . $wpdb->prefix . "ge_leaders" . " LEFT JOIN " . $wpdb->prefix . "ge_group_leader_matches" . " USING (leader_id) WHERE group_id = %d GROUP BY leader_id"; 
 			$enmge_lesql = $wpdb->prepare( $enmge_preparredlesql, $enmge_single->group_id );
 			$enmge_groupleaders = $wpdb->get_results( $enmge_lesql );
 		}
 
 		if ( (!empty($enmge_single)) && ($enmge_single->group_onsite > 0) ) { // Find info for map link
 			// Get Campus Info
-			$enmge_preparredlsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d";
+			$enmge_preparredlsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " WHERE location_id = %d"; 
 			$enmge_lsql = $wpdb->prepare( $enmge_preparredlsql, $enmge_single->group_onsite );
 			$enmge_location = $wpdb->get_row( $enmge_lsql, OBJECT );
 			$enmge_locationcount = $wpdb->num_rows;
@@ -790,11 +791,11 @@ $enmge_scl = 0;
 			    $enmge_g_state   = '+'.str_replace(' ', '+', trim($enmge_location->location_state));
 			    $enmge_g_zip     = isset($enmge_location->location_zip)? '+'.str_replace(' ', '', trim($enmge_location->location_zip)) : '';
 
-				$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip;
+				$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip; 
 			} else {
 				$enmge_searchaddress = null;
 			}
-
+			
 		} elseif ( (!empty($enmge_single)) && ($enmge_single->group_onsite == 0) ) {
 			$enmge_g_address1 = str_replace(' ', '+', trim($enmge_single->group_address1)).",";
 			$enmge_g_address2 = str_replace(' ', '+', trim($enmge_single->group_address2)).",";
@@ -802,32 +803,32 @@ $enmge_scl = 0;
 		    $enmge_g_state   = '+'.str_replace(' ', '+', trim($enmge_single->group_state));
 		    $enmge_g_zip     = isset($enmge_single->group_zip)? '+'.str_replace(' ', '', trim($enmge_single->group_zip)) : '';
 
-			$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip;
+			$enmge_searchaddress = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip; 
 		}
 
 		// Get All Group Topic Matches
-		$enmge_gtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) WHERE group_id = %d GROUP BY topic_id ORDER BY topic_name ASC";
+		$enmge_gtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) WHERE group_id = %d GROUP BY topic_id ORDER BY topic_name ASC"; 	
 		$enmge_gtsql = $wpdb->prepare( $enmge_gtpreparredsql, $enmge_single->group_id );
 		$enmge_grouptopics = $wpdb->get_results( $enmge_gtsql );
 
 		// Get All Group Group Type Matches
-		$enmge_ggtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) WHERE group_id = %d GROUP BY group_type_id ORDER BY group_type_title ASC";
+		$enmge_ggtpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) WHERE group_id = %d GROUP BY group_type_id ORDER BY group_type_title ASC"; 	
 		$enmge_ggtsql = $wpdb->prepare( $enmge_ggtpreparredsql, $enmge_single->group_id );
 		$enmge_groupgrouptypes = $wpdb->get_results( $enmge_ggtsql );
 		$enmge_gtcount = $wpdb->num_rows;
 
 		// Get All Group Location Matches
-		$enmge_preparredgglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches" . " WHERE group_id = %d";
+		$enmge_preparredgglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches" . " WHERE group_id = %d"; 
 		$enmge_gglmsql = $wpdb->prepare( $enmge_preparredgglmsql, $enmge_single->group_id );
 		$enmge_gglm = $wpdb->get_results( $enmge_gglmsql );
 
-	} else { /* SORTABLE LIST OF GROUPS */
+	} else { /* SORTABLE LIST OF GROUPS */	
 
 		include ('paginated_groups.php'); // Get all groups
 
 		// Get All Topics
-		//$enmge_preparredtsql = "SELECT topic_id, topic_name FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC";
-		$enmge_preparredtsql = "SELECT topic_id, topic_name FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)";
+		//$enmge_preparredtsql = "SELECT topic_id, topic_name FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC"; 
+		$enmge_preparredtsql = "SELECT topic_id, topic_name FROM " . $wpdb->prefix . "ge_topics" . " LEFT JOIN " . $wpdb->prefix . "ge_group_topic_matches" . " USING (topic_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)"; 
 		if ( $enmge_xl == 1 && $enmge_l > 0 ) {
 			$enmge_preparredtsql .= " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (group_id)";
 		}
@@ -842,19 +843,19 @@ $enmge_scl = 0;
 			$enmge_preparredtsql .=  " AND group_type_id = " . $enmge_gt;
 		}
 		if ( $enmge_lo == 0 || ($enmge_gstart == 1 && $enmge_lo == 1) ) {
-			$enmge_preparredtsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC";
+			$enmge_preparredtsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC"; 
 		} else {
-			$enmge_preparredtsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC";
+			$enmge_preparredtsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY topic_id ORDER BY topic_name ASC"; 
 		}
 		$enmge_ts = $wpdb->get_results( $enmge_preparredtsql );
 
 		// Get All Group Topic Matches
-		$enmge_preparredgtmsql = "SELECT topic_id, group_id FROM " . $wpdb->prefix . "ge_group_topic_matches";
+		$enmge_preparredgtmsql = "SELECT topic_id, group_id FROM " . $wpdb->prefix . "ge_group_topic_matches"; 
 		$enmge_gtm = $wpdb->get_results( $enmge_preparredgtmsql );
 
 		// Get All Locations
-		//$enmge_lpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (location_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_id DESC";
-		$enmge_lpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (location_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)";
+		//$enmge_lpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (location_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_id DESC"; 	
+		$enmge_lpreparredsql = "SELECT * FROM " . $wpdb->prefix . "ge_locations" . " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (location_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)"; 
 		if ( $enmge_xgt == 1 && $enmge_gt > 0 ) {
 			$enmge_lpreparredsql .= " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_id)";
 		}
@@ -869,20 +870,20 @@ $enmge_scl = 0;
 			$enmge_lpreparredsql .= " AND topic_id = " . $enmge_t;
 		}
 		if ( $enmge_lo == 0 || ($enmge_gstart == 1 && $enmge_lo == 1) ) {
-		$enmge_lpreparredsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_name ASC";
+		$enmge_lpreparredsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_name ASC"; 
 		} else {
-		$enmge_lpreparredsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_name ASC";
+		$enmge_lpreparredsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY location_id ORDER BY location_name ASC"; 
 		}
 		$enmge_locations = $wpdb->get_results( $enmge_lpreparredsql );
 
 		// Get All Group Location Matches
-		$enmge_preparredglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches";
+		$enmge_preparredglmsql = "SELECT location_id, group_id FROM " . $wpdb->prefix . "ge_group_location_matches"; 
 		$enmge_glm = $wpdb->get_results( $enmge_preparredglmsql );
 
 
 		// Get All Group Types
-		//$enmge_preparredgtsql = "SELECT group_type_id, group_type_title FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC";
-		$enmge_preparredgtsql = "SELECT group_type_id, group_type_title FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)";
+		//$enmge_preparredgtsql = "SELECT group_type_id, group_type_title FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id) WHERE group_privacy = 1 AND group_begins <= CURDATE() AND group_ends >= CURDATE() AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC"; 
+		$enmge_preparredgtsql = "SELECT group_type_id, group_type_title FROM " . $wpdb->prefix . "ge_group_types" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_type_id) LEFT JOIN " . $wpdb->prefix . "ge_groups" . " USING (group_id)"; 
 		if ( $enmge_xl == 1 && $enmge_l > 0 ) {
 			$enmge_preparredgtsql .= " LEFT JOIN " . $wpdb->prefix . "ge_group_location_matches" . " USING (group_id)";
 		}
@@ -897,16 +898,16 @@ $enmge_scl = 0;
 			$enmge_preparredgtsql .= " AND topic_id = " . $enmge_t;
 		}
 		if ( $enmge_lo == 0 || ($enmge_gstart == 1 && $enmge_lo == 1) ) {
-		$enmge_preparredgtsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC";
+		$enmge_preparredgtsql .= " AND (group_ends >= CURDATE() OR group_noend = 1) AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC"; 
 		} else {
-		$enmge_preparredgtsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC";
+		$enmge_preparredgtsql .= " AND ((group_begins <= CURDATE() AND group_ends >= CURDATE()) OR (group_begins <= CURDATE() AND group_noend = 1)) AND group_id IS NOT NULL GROUP BY group_type_id ORDER BY group_type_title ASC"; 
 		}
 		$enmge_gts = $wpdb->get_results( $enmge_preparredgtsql );
 
 
 	} /* END SINGLE GROUP */
 	$enmge_randomval = rand();
-
+	
 
 ?>
 <div id="groupsengine">
@@ -994,7 +995,7 @@ $enmge_scl = 0;
 				<?php } ?>
 
 	      		var myLatlng = new google.maps.LatLng(<?php echo $enmge_single->group_lat; ?>, <?php echo $enmge_single->group_long; ?>);
-
+	        	
 	        	var mapOptions = { // centered location and zoom
 	          		center: myLatlng,
 	          		zoom: 15
@@ -1007,7 +1008,7 @@ $enmge_scl = 0;
 			    	map: map,
 			    	title:"<?php echo $enmge_single->group_title; ?>"<?php if ( $enmge_pointer != null ) { ?>,icon: gepointer<?php } ?>
 				});
-
+	        	
 	        	var contentString = '<div class="enmge-individual-marker">'+// popup window above marker
 					      '<p class="title"><?php if ( $enmge_single->group_onsite > 0 ) { echo $enmge_single->group_location_label . " - " . $enmge_single->group_campus_name; } else { echo $enmge_single->group_location_label; } ?></p>'+
 					      '<p class="address"><?php if ( isset($enmge_location) && $enmge_location->location_address1 != null ) { echo $enmge_location->location_address1; } if ( isset($enmge_location) && $enmge_location->location_address1 != null && $enmge_location->location_address2 != null ) { echo "<br />"; } if ( isset($enmge_location) && $enmge_location->location_address2 != null ) { echo $enmge_location->location_address2; } if ( isset($enmge_location) && $enmge_location->location_address1 != null || isset($enmge_location) && $enmge_location->location_address2 != null ) { echo "<br />"; } if ( isset($enmge_location) && $enmge_location->location_city != null ) { echo $enmge_location->location_city; } if ( isset($enmge_location) && $enmge_location->location_city != null && $enmge_location->location_state != null ) { echo ", "; } if ( isset($enmge_location) && $enmge_location->location_state != null ) { echo $enmge_location->location_state; } ?><?php if ( $enmge_single->group_location_privacy == 1 ) { ?><?php if ( $enmge_single->group_address1 != null ) { echo $enmge_single->group_address1; } if ( $enmge_single->group_address1 != null && $enmge_single->group_address2 != null ) { echo "<br />"; } if ( $enmge_single->group_address2 != null ) { echo $enmge_single->group_address2; } if ( $enmge_single->group_address1 != null || $enmge_single->group_address2 != null ) { echo "<br />"; } if ( $enmge_single->group_city != null ) { echo $enmge_single->group_city; } if ( $enmge_single->group_city != null && $enmge_single->group_state != null ) { echo ", "; } if ( $enmge_single->group_state != null ) { echo $enmge_single->group_state; } ?><?php } ?></p>'+
@@ -1018,7 +1019,7 @@ $enmge_scl = 0;
 		     	    content: contentString,
 				    maxWidth: 200
 				});
-
+	        	
 				google.maps.event.addListener(marker, 'click', function() {
     				infowindow.open(map,marker);
   				});
@@ -1048,7 +1049,7 @@ $enmge_scl = 0;
 		    	<tr class="ge-top">
 		    		<td class="ge-group-details leader left"><span class="ge-label">Led by:</span> <?php if ( $enmge_cgl == 1 ) { ?><a href="<?php echo $enmge_thispage . '&amp;enmge_cl=1&amp;enmge_gid=' . $enmge_single->group_id . $enmge_sortoptions . $enmge_pageoptions; ?>" class="enmge-ajax-details-contact" name="<?php echo '&amp;enmge_cl=1&amp;enmge_gid=' . $enmge_single->group_id; ?>"><?php $enmge_le_comma = 1; foreach ( $enmge_groupleaders as $enmge_l) { if ( $enmge_le_comma == 1 ) { echo stripslashes($enmge_l->leader_name); $enmge_le_comma = $enmge_le_comma+1; } else { echo ', ' . stripslashes($enmge_l->leader_name); $enmge_le_comma = $enmge_le_comma+1; } } ?></a><?php } else { ?><?php $enmge_le_comma = 1; foreach ( $enmge_groupleaders as $enmge_l) { if ( $enmge_le_comma == 1 ) { echo stripslashes($enmge_l->leader_name); $enmge_le_comma = $enmge_le_comma+1; } else { echo ', ' . stripslashes($enmge_l->leader_name); $enmge_le_comma = $enmge_le_comma+1; } } } ?></td>
 		    		<td class="ge-group-details ages"><span class="ge-label">For Ages:</span> <?php echo $enmge_single->group_startage; ?><?php if ( $enmge_single->group_endage == 100 ) { echo "+"; } else { echo "-" . $enmge_single->group_endage; } ?></td>
-		    		<td class="ge-group-details meets right"><span class="ge-label">Meets:</span> <?php echo $enmge_single->group_frequency; ?> <?php if ( $enmge_single->group_day == 1 ) { echo "Sunday";  } ?><?php if ( $enmge_single->group_day == 2 ) { echo "Monday";  } ?><?php if ( $enmge_single->group_day == 3 ) { echo "Tuesday";  } ?><?php if ( $enmge_single->group_day == 4 ) { echo "Wednesday";  } ?><?php if ( $enmge_single->group_day == 5 ) { echo "Thursday";  } ?><?php if ( $enmge_single->group_day == 6 ) { echo "Friday";  } ?><?php if ( $enmge_single->group_day == 7 ) { echo "Saturday";  } ?> from <?php echo date('g:ia', strtotime($enmge_single->group_starttime)); ?>-<?php echo date('g:ia', strtotime($enmge_single->group_endtime)); ?></td>
+		    		<td class="ge-group-details meets right"><span class="ge-label">Meets:</span> <?php echo $enmge_single->group_frequency; ?> <?php if ( $enmge_single->group_day == 1 ) { echo "Sunday";  } ?><?php if ( $enmge_single->group_day == 2 ) { echo "Monday";  } ?><?php if ( $enmge_single->group_day == 3 ) { echo "Tuesday";  } ?><?php if ( $enmge_single->group_day == 4 ) { echo "Wednesday";  } ?><?php if ( $enmge_single->group_day == 5 ) { echo "Thursday";  } ?><?php if ( $enmge_single->group_day == 6 ) { echo "Friday";  } ?><?php if ( $enmge_single->group_day == 7 ) { echo "Saturday";  } ?><?php if ( $enmge_single->group_day == 8 ) { echo "Various Days";  } ?> from <?php echo date('g:ia', strtotime($enmge_single->group_starttime)); ?>-<?php echo date('g:ia', strtotime($enmge_single->group_endtime)); ?></td>
 		    	</tr>
 		    	<tr>
 		    		<td class="ge-group-details childcare left"><span class="ge-label"><?php echo $enmge_childcare; ?></span> <?php if ( $enmge_single->group_childcare == 0 ) { echo "No"; } else { echo "Yes"; } ?> <?php if ( $enmge_single->group_childcare_details != null ) { echo "- " . stripslashes($enmge_single->group_childcare_details); } ?></td>
@@ -1057,7 +1058,7 @@ $enmge_scl = 0;
 		    	</tr>
 		    	<tr class="ge-bottom">
 		    		<td class="ge-group-details location left"><span class="ge-label">Location:</span> <?php if ( $enmge_single->group_onsite > 0 ) { echo stripslashes($enmge_single->group_location_label) . " - " . "<a href=\"https://www.google.com/maps/place/" . $enmge_searchaddress . "\" target=\"_blank\">" . stripslashes($enmge_single->group_campus_name) . "</a>"; } else { if ( $enmge_single->group_location_privacy == 1 ) { echo "<a href=\"https://www.google.com/maps/place/" . $enmge_searchaddress . "\" target=\"_blank\">" . stripslashes($enmge_single->group_location_label) . "</a>"; } else { echo stripslashes($enmge_single->group_location_label); } } ?></td>
-		    		<?php if ($enmge_showstart == 1) { ?><td class="ge-group-details begins"><span class="ge-label">Begins:</span> <?php echo date('F j, Y', strtotime($enmge_single->group_begins)); ?></td><?php } ?>
+		    		<?php if ($enmge_showstart == 1) { ?><td class="ge-group-details begins"><span class="ge-label">Begins:</span> <?php echo date_i18n($enmge_dateformat, strtotime($enmge_single->group_begins)); ?></td><?php } ?>
 		    		<td class="ge-group-details status right"><span class="ge-label">Status:</span> <?php if ( $enmge_single->group_status == 1 ) { echo "Open"; } elseif ( $enmge_single->group_status == 0 ) { echo "Closed"; } else { echo "Full"; } ?></td>
 		    	</tr>
 	    	</table>
@@ -1074,7 +1075,7 @@ $enmge_scl = 0;
 		<?php if ( $enmge_fo == 0 ) { ?>
 		<div class="ge-explore-options" style="display: none;">
 		<form action="<?php echo $enmge_thispage; ?>" method="post" class="enmge-ajax-form">
-			<div class="ge-option-container" style="display: none">
+			<div class="ge-option-container">
 				<span class="ge-filter-label"><?php echo stripslashes($enmge_grouptypetitle); ?>:</span>
 				<select class="enmge_grouptype" name="enmge_grouptype" tabindex="1">
 					<?php if ( $enmge_xgt == 1 ) { ?>
@@ -1112,7 +1113,7 @@ $enmge_scl = 0;
 					<?php } ?>
 				</select>
 			</div>
-			<div class="ge-option-container" style="display: none">
+			<div class="ge-option-container">
 				<span class="ge-filter-label"><?php echo stripslashes($enmge_locationtitle); ?>:</span>
 				<select class="enmge_location" name="enmge_location" tabindex="3">
 					<?php if ( $enmge_xl == 1 ) { ?>
@@ -1131,7 +1132,7 @@ $enmge_scl = 0;
 					<?php } ?>
 				</select>
 			</div>
-			<div class="ge-option-container" style="display: none">
+			<div class="ge-option-container">
 				<span class="ge-filter-label">Meeting:</span>
 				<select class="enmge_meeting" name="enmge_meeting" tabindex="4">
 					<?php if ( $enmge_xm == 1 ) { ?>
@@ -1201,7 +1202,7 @@ $enmge_scl = 0;
 							<?php if ( $enmge_st == 21 ) { ?><option value="21">9:00pm</option><?php } ?>
 							<?php if ( $enmge_st == 22 ) { ?><option value="22">10:00pm</option><?php } ?>
 							<?php if ( $enmge_st == 23 ) { ?><option value="23">11:00pm</option><?php } ?>
-						</select> -
+						</select> - 
 					<?php } else { ?>
 					<select name="enmge_st" class="enmge_st time" tabindex="6">
 						<option value="24">Any</option>
@@ -1266,7 +1267,7 @@ $enmge_scl = 0;
 					<option value="21" <?php if ( $enmge_st == 21 ) { echo 'selected="selected"'; }; ?>>9:00pm</option>
 					<option value="22" <?php if ( $enmge_st == 22 ) { echo 'selected="selected"'; }; ?>>10:00pm</option>
 					<option value="23" <?php if ( $enmge_st == 23 ) { echo 'selected="selected"'; }; ?>>11:00pm</option>
-				</select> -
+				</select> - 
 				<select name="enmge_et" class="enmge_et time" tabindex="7">
 					<option value="24" <?php if ( $enmge_et == 24 ) { echo 'selected="selected"'; }; ?>>Any</option>
 					<option value="00" <?php if ( $enmge_et == 0 ) { echo 'selected="selected"'; }; ?>>12:00am</option>
@@ -1296,7 +1297,7 @@ $enmge_scl = 0;
 				</select>
 				<?php } ?>
 			</div>
-			<div class="ge-option-container" style="display: none">
+			<div class="ge-option-container">
 				<span class="ge-filter-label">Age Range:</span>
 				<?php if ( $enmge_xsa == 1 ) { ?>
 					<?php if ( $enmge_sa != 101 ) { ?>
@@ -1420,7 +1421,7 @@ $enmge_scl = 0;
 					<option value="97" <?php if ($enmge_sa == 97) { echo 'selected="selected"';} ?>>97</option>
 					<option value="98" <?php if ($enmge_sa == 98) { echo 'selected="selected"';} ?>>98</option>
 					<option value="99" <?php if ($enmge_sa == 99) { echo 'selected="selected"';} ?>>99</option>
-				</select> -
+				</select> - 
 				<select name="enmge_ea" class="enmge_ea time" tabindex="9">
 					<option value="101" <?php if ($enmge_ea == 101) { echo 'selected="selected"';} ?>>Any</option>
 					<option value="0" <?php if ($enmge_ea == 0) { echo 'selected="selected"';} ?>>0</option>
@@ -1579,7 +1580,7 @@ $enmge_scl = 0;
 					iw.close();
 				});
 
-				<?php foreach ( $enmge_groups as $enmge_g ) {
+				<?php foreach ( $enmge_groups as $enmge_g ) { 
 					$groupurl = $enmge_thispage . '&amp;enmge_gid=' . $enmge_g->group_id . $enmge_sortoptions . $enmge_pageoptions; ?>
 					var loc = new google.maps.LatLng(<?php echo $enmge_g->group_lat; ?>, <?php echo $enmge_g->group_long; ?>);
 					var marker = new google.maps.Marker({
@@ -1587,10 +1588,10 @@ $enmge_scl = 0;
 				    	title: "<?php echo $enmge_g->group_title; ?>",
 				    	map: map<?php if ( $enmge_pointer != null ) { ?>,icon: gepointer<?php } ?>
 				  	});
-				  	marker.desc = '<div class="enmge-marker"><p class="enmge-marker-title"><a href="<?php echo $groupurl; ?>" class="enmge-ajax-pointer" name="<?php if ($enmge_v != 0) {echo "&amp;enmge_gid=" . $enmge_g->group_id . "&amp;enmge_v=1";} else {echo "&amp;enmge_gid=" . $enmge_g->group_id;} ?>"><?php echo $enmge_g->group_title; ?></a></p><p class="enmge-marker-ages"><strong>Ages:</strong> <?php echo $enmge_g->group_startage; ?><?php if ( $enmge_g->group_endage == 100 ) { echo "+"; } else { echo "-" . $enmge_g->group_endage; } ?></p><p class="enmge-marker-location"><strong>Location:</strong> <?php if ( $enmge_g->group_onsite > 0 ) { echo $enmge_g->group_campus_name . " - " . $enmge_g->group_location_label; } else { if ($enmge_offsitelabel == 1) {echo "(" . $enmge_offsite . ") " . $enmge_g->group_location_label;} else {echo $enmge_g->group_location_label;} } ?></p><p class="enmge-marker-topics"><strong><?php echo $enmge_topictitle; ?>:</strong> <?php $enmge_t_comma = 1; foreach ( $enmge_ts as $t) { ?><?php foreach ( $enmge_gtm as $gtm) { ?><?php if ( ($gtm->group_id == $enmge_g->group_id) && ($gtm->topic_id == $t->topic_id) ) { if ( $enmge_t_comma == 1 ) { echo $t->topic_name; $enmge_t_comma = $enmge_t_comma+1; } else { echo ", " . $t->topic_name; $enmge_t_comma = $enmge_t_comma+1; } } ?><?php } ?><?php } ?></p><p class="enmge-marker-status"><strong>Status:</strong> <?php if ( $enmge_g->group_status == 1 ) { echo "Open"; } elseif ( $enmge_g->group_status == 0 ) { echo "Closed"; } else { echo "Full"; } ?></p><p class="enmge-marker-meets">Meets <?php echo strtolower($enmge_g->group_frequency); ?> <?php if ( $enmge_g->group_day == 1 ) { echo "Sunday";  } ?><?php if ( $enmge_g->group_day == 2 ) { echo "Monday";  } ?><?php if ( $enmge_g->group_day == 3 ) { echo "Tuesday";  } ?><?php if ( $enmge_g->group_day == 4 ) { echo "Wednesday";  } ?><?php if ( $enmge_g->group_day == 5 ) { echo "Thursday";  } ?><?php if ( $enmge_g->group_day == 6 ) { echo "Friday";  } ?><?php if ( $enmge_g->group_day == 7 ) { echo "Saturday";  } ?> from <?php if ( date("a", strtotime($enmge_g->group_starttime)) == date("a", strtotime($enmge_g->group_endtime)) ) { echo date("g:i", strtotime($enmge_g->group_starttime)); } else { echo date("g:ia", strtotime($enmge_g->group_starttime)); }; ?>-<?php echo date("g:ia", strtotime($enmge_g->group_endtime)); ?></p></div>';
+				  	marker.desc = '<div class="enmge-marker"><p class="enmge-marker-title"><a href="<?php echo $groupurl; ?>" class="enmge-ajax-pointer" name="<?php if ($enmge_v != 0) {echo "&amp;enmge_gid=" . $enmge_g->group_id . "&amp;enmge_v=1";} else {echo "&amp;enmge_gid=" . $enmge_g->group_id;} ?>"><?php echo $enmge_g->group_title; ?></a></p><p class="enmge-marker-ages"><strong>Ages:</strong> <?php echo $enmge_g->group_startage; ?><?php if ( $enmge_g->group_endage == 100 ) { echo "+"; } else { echo "-" . $enmge_g->group_endage; } ?></p><p class="enmge-marker-location"><strong>Location:</strong> <?php if ( $enmge_g->group_onsite > 0 ) { echo $enmge_g->group_campus_name . " - " . $enmge_g->group_location_label; } else { if ($enmge_offsitelabel == 1) {echo "(" . $enmge_offsite . ") " . $enmge_g->group_location_label;} else {echo $enmge_g->group_location_label;} } ?></p><p class="enmge-marker-topics"><strong><?php echo $enmge_topictitle; ?>:</strong> <?php $enmge_t_comma = 1; foreach ( $enmge_ts as $t) { ?><?php foreach ( $enmge_gtm as $gtm) { ?><?php if ( ($gtm->group_id == $enmge_g->group_id) && ($gtm->topic_id == $t->topic_id) ) { if ( $enmge_t_comma == 1 ) { echo $t->topic_name; $enmge_t_comma = $enmge_t_comma+1; } else { echo ", " . $t->topic_name; $enmge_t_comma = $enmge_t_comma+1; } } ?><?php } ?><?php } ?></p><p class="enmge-marker-status"><strong>Status:</strong> <?php if ( $enmge_g->group_status == 1 ) { echo "Open"; } elseif ( $enmge_g->group_status == 0 ) { echo "Closed"; } else { echo "Full"; } ?></p><p class="enmge-marker-meets">Meets <?php echo strtolower($enmge_g->group_frequency); ?> <?php if ( $enmge_g->group_day == 1 ) { echo "Sunday";  } ?><?php if ( $enmge_g->group_day == 2 ) { echo "Monday";  } ?><?php if ( $enmge_g->group_day == 3 ) { echo "Tuesday";  } ?><?php if ( $enmge_g->group_day == 4 ) { echo "Wednesday";  } ?><?php if ( $enmge_g->group_day == 5 ) { echo "Thursday";  } ?><?php if ( $enmge_g->group_day == 6 ) { echo "Friday";  } ?><?php if ( $enmge_g->group_day == 7 ) { echo "Saturday";  } ?><?php if ( $enmge_g->group_day == 8 ) { echo "various days";  } ?> from <?php if ( date("a", strtotime($enmge_g->group_starttime)) == date("a", strtotime($enmge_g->group_endtime)) ) { echo date("g:i", strtotime($enmge_g->group_starttime)); } else { echo date("g:ia", strtotime($enmge_g->group_starttime)); }; ?>-<?php echo date("g:ia", strtotime($enmge_g->group_endtime)); ?></p></div>';
 				  	oms.addMarker(marker);  // <-- here
 				<?php } ?>
-
+	      		
 	      	}
 
 	      	google.maps.event.addDomListener(window, 'load', initialize); // Load map
@@ -1610,16 +1611,16 @@ $enmge_scl = 0;
 				<th class="ge-group-childcare">Childcare?</th>
 				<th class="ge-group-status">Status</th>
 			</tr>
-		<?php $tableodd = 0; foreach ( $enmge_groups as $enmge_g ) {
+		<?php $tableodd = 0; foreach ( $enmge_groups as $enmge_g ) { 
 			$groupurl = $enmge_thispage . '&amp;enmge_gid=' . $enmge_g->group_id . $enmge_sortoptions . $enmge_pageoptions ;?>
 			<tr<?php if ( $tableodd == 1 ) { echo " class=\"ge-odd\""; }?>>
 				<td class="ge-group-title"><?php echo '<a href="' . $enmge_thispage . '&amp;enmge_gid=' . $enmge_g->group_id . $enmge_sortoptions . $enmge_pageoptions . '" class="enmge-ajax-link">' . stripslashes($enmge_g->group_title) . '</a>'; ?><input type="hidden" name="enmge-ajax-values" value="<?php echo '&amp;enmge_gid=' . $enmge_g->group_id; ?>" class="enmge-ajax-values"></td>
-				<td class="ge-group-day"><?php if ( $enmge_g->group_day == 1 ) { echo "Sun<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 2 ) { echo "Mon<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 3 ) { echo "Tue<span class=\"deskhide\">sday</span>";  } ?><?php if ( $enmge_g->group_day == 4 ) { echo "Wed<span class=\"deskhide\">nesday</span>";  } ?><?php if ( $enmge_g->group_day == 5 ) { echo "Thu<span class=\"deskhide\">rsday</span>";  } ?><?php if ( $enmge_g->group_day == 6 ) { echo "Fri<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 7 ) { echo "Sat<span class=\"deskhide\">urday</span>";  } ?></td>
+				<td class="ge-group-day"><?php if ( $enmge_g->group_day == 1 ) { echo "Sun<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 2 ) { echo "Mon<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 3 ) { echo "Tue<span class=\"deskhide\">sday</span>";  } ?><?php if ( $enmge_g->group_day == 4 ) { echo "Wed<span class=\"deskhide\">nesday</span>";  } ?><?php if ( $enmge_g->group_day == 5 ) { echo "Thu<span class=\"deskhide\">rsday</span>";  } ?><?php if ( $enmge_g->group_day == 6 ) { echo "Fri<span class=\"deskhide\">day</span>";  } ?><?php if ( $enmge_g->group_day == 7 ) { echo "Sat<span class=\"deskhide\">urday</span>";  } ?><?php if ( $enmge_g->group_day == 8 ) { echo "Var<span class=\"deskhide\">ious</span>";  } ?></td>
 				<td class="ge-group-time"><?php if ( date('a', strtotime($enmge_g->group_starttime)) == date('a', strtotime($enmge_g->group_endtime)) ) { echo date('g:i', strtotime($enmge_g->group_starttime)); } else { echo date('g:ia', strtotime($enmge_g->group_starttime)); }; ?>-<?php echo date('g:ia', strtotime($enmge_g->group_endtime)); ?></td>
 				<td class="ge-group-ages"><?php echo $enmge_g->group_startage; ?><?php if ( $enmge_g->group_endage == 100 ) { echo "+"; } else { echo "-" . $enmge_g->group_endage; } ?></td>
 				<td class="ge-group-locations"><?php $enmge_l_comma = 1; foreach ( $enmge_locations as $l) { ?><?php foreach ( $enmge_glm as $glm) { ?><?php if ( ($glm->group_id == $enmge_g->group_id) && ($glm->location_id == $l->location_id) ) { if ( $enmge_l_comma == 1 ) { echo stripslashes($l->location_name); $enmge_l_comma = $enmge_l_comma+1; } else { echo ", " . stripslashes($l->location_name); $enmge_l_comma = $enmge_l_comma+1; } } ?><?php } ?><?php } ?></td>
 				<td class="ge-group-location"><?php if ( $enmge_g->group_onsite > 0 ) { echo stripslashes($enmge_g->group_campus_name) . " - " . stripslashes($enmge_g->group_location_label); } else { if ($enmge_offsitelabel == 1) {echo "(" . $enmge_offsite . ") " . stripslashes($enmge_g->group_location_label); } else {echo stripslashes($enmge_g->group_location_label);} } ?></td>
-				<td class="ge-group-topic"><?php $enmge_t_comma = 1; foreach ( $enmge_ts as $t) { ?><?php foreach ( $enmge_gtm as $gtm) { ?><?php if ( ($gtm->group_id == $enmge_g->group_id) && ($gtm->topic_id == $t->topic_id) ) { if ( $enmge_t_comma == 1 ) { echo stripslashes($t->topic_name); $enmge_t_comma = $enmge_t_comma+1; } else { echo ", " . stripslashes($t->topic_name); $enmge_t_comma = $enmge_t_comma+1; } } ?><?php } ?><?php } ?></td>
+				<td class="ge-group-topic"><?php $enmge_t_comma = 1; foreach ( $enmge_ts as $t) { ?><?php foreach ( $enmge_gtm as $gtm) { ?><?php if ( ($gtm->group_id == $enmge_g->group_id) && ($gtm->topic_id == $t->topic_id) ) { if ( $enmge_t_comma == 1 ) { echo stripslashes($t->topic_name); $enmge_t_comma = $enmge_t_comma+1; } else { echo ", " . stripslashes($t->topic_name); $enmge_t_comma = $enmge_t_comma+1; } } ?><?php } ?><?php } ?></td>				
 				<td class="ge-group-childcare"><?php if ( $enmge_g->group_childcare == 0 ) { echo 'No';} else { echo 'Yes';} ?></td>
 				<td class="ge-group-status"><?php if ( $enmge_g->group_status == 1 ) { echo "Open"; } elseif ( $enmge_g->group_status == 0 ) { echo "Closed"; } else { echo "Full"; } ?></td>
 			</tr>
@@ -1635,13 +1636,14 @@ $enmge_scl = 0;
 	<input type="hidden" name="enmge-plugin-url" value="<?php echo plugins_url() . "/groupsengine_plugin"; ?>" class="enmge-plugin-url">
 	<input type="hidden" name="enmge-permalink" value="<?php echo rawurlencode($enmge_thispage); ?>" class="enmge-permalink">
 	<input type="hidden" name="enmge-permalinknoajax" value="<?php echo $enmge_thispage; ?>" class="enmge-permalinknoajax">
+	<input type="hidden" name="xxge" value="<?php echo base64_encode(ABSPATH); ?>" class="xxge" />
 	<?php if ( $enmge_credits != "text" ) { ?>
-	<h3 class="enmge-poweredby"><a href="http://groupsengine.com" target="_blank">Powered by Groups Engine</a></h3>
+	<h3 class="enmge-poweredby"><a href="http://groupsengine.com" target="_blank">Powered by Groups Engine</a></h3>	
 	<?php } else { ?>
 	<p class="enmge-poweredbytext">Powered by <a href="http://groupsengine.com" target="_blank">Groups Engine</a></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v1.2 031118 -->
+	<!-- v1.2.7 112818 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

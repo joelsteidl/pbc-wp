@@ -64,11 +64,12 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var randval = jQuery(this).parent().parent().siblings(".enmge-random").val();
 		var searchform = jQuery(this).serialize();
 		var loadurl = jQuery(this).parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().siblings(".xxge").val();
 		var ajaxoptions = jQuery(this).parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().siblings(".enmge-embed-options").val();
 		var permalinkurl = jQuery(this).parent().siblings(".enmge-permalink").val();
 		var gerandom = Math.floor(Math.random()*1001);
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		
 		var posting = jQuery.post( loadthis, searchform );
 		jQuery(this).parent().parent().addClass("enmge-opaque");
@@ -89,6 +90,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var randval = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmge-random").val();
 		var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().siblings(".enmge-embed-options").val();
@@ -96,10 +98,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};	
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxvalues+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxvalues+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -122,16 +125,18 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().siblings(".enmge-sort-options").val();
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmge-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmge-permalink").val();
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+					var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 				};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -153,6 +158,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmge-embed-options").val();
@@ -160,10 +166,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+					var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 				};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -185,6 +192,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("name");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().siblings(".enmge-sort-options").val();
 		var embedoptions = jQuery(this).parent().siblings(".enmge-embed-options").val();
 		var ajaxoptions = jQuery(this).parent().siblings(".enmge-ajax-options").val();
@@ -192,10 +200,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+embedoptions+ajaxoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+embedoptions+ajaxoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -217,15 +226,17 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("name");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().siblings(".xxge").val();
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmge-embed-options").val();
 		var permalinkurl = jQuery(this).parent().parent().siblings(".enmge-permalink").val();
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 					var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+					var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 					var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 					var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 				};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -247,6 +258,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmge-embed-options").val();
@@ -254,10 +266,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -279,6 +292,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().parent().parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().siblings(".enmge-embed-options").val();
@@ -286,10 +300,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -311,6 +326,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-embed-options").val();
@@ -318,10 +334,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -343,6 +360,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var getthisurl = jQuery(this).attr("href");
 		//var ajaxvalues = jQuery(this).siblings(".enmge-ajax-values").val();
 		var loadurl = jQuery(this).parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().siblings(".enmge-embed-options").val();
@@ -350,10 +368,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+getthisurl+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);
@@ -374,10 +393,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var contactform = jQuery(this).serialize();
 		var randval = jQuery(this).parent().parent().siblings(".enmge-random").val();
 		var loadurl = jQuery(this).parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().siblings(".xxge").val();
 		var permalinkurl = jQuery(this).parent().siblings(".enmge-permalink").val();
 		var groupid = jQuery(this).parent().siblings(".enmge-group-id").val();
 		var gerandom = Math.floor(Math.random()*1001);
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1&enmge_gid="+groupid+"&enmge_cl=1&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1&enmge_gid="+groupid+"&enmge_cl=1&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		var posting = jQuery.post( loadthis, contactform );
 		jQuery(this).parent().parent().addClass("enmge-opaque");
 		gescroll(randval);
@@ -397,6 +417,7 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var randval = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-random").val();
 		var ajaxvalues = jQuery(this).attr("name");
 		var loadurl = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-plugin-url").val();
+		var xxge = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".xxge").val();
 		var sortoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-sort-options").val();
 		var ajaxoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-ajax-options").val();
 		var embedoptions = jQuery(this).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().siblings(".enmge-embed-options").val();
@@ -404,10 +425,11 @@ jQuery(document).ready(function() { /* ----- Groups Engine - Frontend JavaScript
 		var gerandom = Math.floor(Math.random()*1001);
 		if (loadurl==null) {
 			var loadurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-plugin-url").val();
+			var xxge = jQuery(this).parent().parent().parent().parent().siblings().children(".xxge").val();
 			var embedoptions = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-embed-options").val();
 			var permalinkurl = jQuery(this).parent().parent().parent().parent().siblings().children(".enmge-permalink").val();
 		};		
-		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxvalues+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&enmge_random="+gerandom;
+		var loadthis = loadurl+"/includes/displaygroupsajax.php?enmge=1"+ajaxvalues+sortoptions+ajaxoptions+embedoptions+"&enmge_permalink="+permalinkurl+"&xxge="+xxge+"&enmge_random="+gerandom;
 		jQuery(document).ajaxSend(function(){
 			jQuery(getthis).parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().parent().addClass("enmge-opaque");
 			gescroll(randval);

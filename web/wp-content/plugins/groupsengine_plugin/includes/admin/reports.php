@@ -41,21 +41,21 @@ if ( current_user_can( 'edit_posts' ) ) {
 				var exportval = jQuery("#enmge_exportformat").val();
 				if ( findvalue == "groups" ) {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groups.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groups.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groupscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groupscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};
 				} else if( findvalue == "leaders" ) {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaders.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaders.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaderscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaderscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};
 				} else {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contacts.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contacts.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contactscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contactscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};	
 				};
 				if ( findvalue != "empty" && exportval != "empty" ) {
@@ -91,21 +91,21 @@ if ( current_user_can( 'edit_posts' ) ) {
 				var exportval = jQuery(this).val();
 				if ( findvalue == "groups" ) {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groups.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groups.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groupscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/groupscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};
 				} else if( findvalue == "leaders" ) {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaders.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaders.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaderscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/leaderscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};
 				} else {
 					if (exportval == "browser") {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contacts.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contacts.php?xxge=' . base64_encode(ABSPATH); ?>");
 					} else {
-						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contactscsv.php'; ?>");
+						jQuery('#reportform').attr("action","<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/reports/contactscsv.php?xxge=' . base64_encode(ABSPATH); ?>");
 					};	
 				};
 				if ( findvalue != "empty" && exportval != "empty" ) {
@@ -605,6 +605,7 @@ if ( current_user_can( 'edit_posts' ) ) {
 					<option value="5">Thursday</option>
 					<option value="6">Friday</option>
 					<option value="7">Saturday</option>
+					<option value="8">Various</option>
 					</select></td>
 			</tr>
 			<tr valign="top">

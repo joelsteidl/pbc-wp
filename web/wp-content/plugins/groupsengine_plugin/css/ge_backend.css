@@ -158,10 +158,14 @@ input#speaker_first_name {
 }
 
 #enmge-user-guide h2 {
+	font-size: 21px !important;
+	font-weight: 400;
 	margin: 40px 0 20px 0;
 }
 
 #enmge-user-guide h3 {
+	font-size: 18px !important;
+	font-weight: 300;
 	margin: 25px 0 10px 0;
 }
 
@@ -172,6 +176,8 @@ input#speaker_first_name {
 
 #enmge-user-guide h4 {
 	margin-left: 30px;
+	font-size: 15px !important;
+	font-weight: 700;
 }
 
 #enmge-user-guide ul {
@@ -401,6 +407,9 @@ h2.enmge {
 	background-position: 0 16px;
 	margin-bottom: 14px;
 	height: 30px;
+	line-height: 30px;
+	font-size: 23px !important;
+	font-weight: 400;
 }
 
 .nothing {

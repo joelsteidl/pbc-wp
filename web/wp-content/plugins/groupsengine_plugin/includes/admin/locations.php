@@ -359,7 +359,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			});
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options127.js'; ?>"></script>
 	<h2 class="enmge">Edit <?php echo stripslashes($enmge_locationtitle); ?> <a href="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php_locations&enmge_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
 	<?php include ('messagebox.php'); ?>

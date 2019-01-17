@@ -43,7 +43,7 @@
 				$enmge_admin_message .= "Their Name: " . stripslashes($enmge_name) . "\n";
 				$enmge_admin_message .= "Their Email: " . $enmge_email . "\n";
 				$enmge_admin_message .= "Their Phone Number: " . $enmge_phone . "\n\n";
-				$enmge_admin_message .= "Received on " . date('F j, Y', strtotime($enmge_date)) . " at " . date('g:i A', strtotime($enmge_date)) . "\n\n";
+				$enmge_admin_message .= "Received on " . date_i18n($enmge_dateformat, strtotime($enmge_date)) . " at " . date('g:i A', strtotime($enmge_date)) . "\n\n";
 				$enmge_admin_message .= stripslashes($enmge_message) . "\n\n\n";
 				$enmge_admin_message .= "Use this link to update the contact and view notes from others:\n\n";
 				$enmge_admin_message .= $enmge_moderate_url . "\n\n";

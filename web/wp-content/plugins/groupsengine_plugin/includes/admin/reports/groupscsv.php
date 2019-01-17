@@ -2,7 +2,7 @@
 	require_once 'report_header.php';
 
 	// output headers so that the file is downloaded rather than displayed
-	header('Content-Type: text/csv; charset=utf-8');
+	header('Content-Type: text/csv; charset=utf-8', true, 200);
 	header('Content-Disposition: attachment; filename=groups.csv');
 
 	// create a file pointer connected to the output stream
@@ -196,7 +196,7 @@ foreach ($enmge_groups as $g) {
 	unset($locations);
 	unset($grouptypes);
 	$grouprow[] = stripslashes($g->group_title);
-	if ( $g->group_day == 1 ) { $grouprow[] = "Sun";  }  if ( $g->group_day == 2 ) { $grouprow[] = "Mon";  }  if ( $g->group_day == 3 ) { $grouprow[] = "Tue";  }  if ( $g->group_day == 4 ) { $grouprow[] = "Wed";  }  if ( $g->group_day == 5 ) { $grouprow[] = "Thu";  }  if ( $g->group_day == 6 ) { $grouprow[] = "Fri";  }  if ( $g->group_day == 7 ) { $grouprow[] = "Sat";  }
+	if ( $g->group_day == 8 ) { $grouprow[] = "Var";  } if ( $g->group_day == 1 ) { $grouprow[] = "Sun";  }  if ( $g->group_day == 2 ) { $grouprow[] = "Mon";  }  if ( $g->group_day == 3 ) { $grouprow[] = "Tue";  }  if ( $g->group_day == 4 ) { $grouprow[] = "Wed";  }  if ( $g->group_day == 5 ) { $grouprow[] = "Thu";  }  if ( $g->group_day == 6 ) { $grouprow[] = "Fri";  }  if ( $g->group_day == 7 ) { $grouprow[] = "Sat";  }
 	if ( date('a', strtotime($g->group_starttime)) == date('a', strtotime($g->group_endtime)) ) { $grouprow[] = date('g:i', strtotime($g->group_starttime)) . '-' . date('g:ia', strtotime($g->group_endtime)); } else { $grouprow[] = date('g:ia', strtotime($g->group_starttime)) . '-' . date('g:ia', strtotime($g->group_endtime)); };
 	if ( $g->group_endage == 100 ) { $grouprow[] = $g->group_startage . "+"; } else { $grouprow[] = $g->group_startage . "-" . $g->group_endage; }; 
 	$le_comma = 1; foreach ( $enmge_les as $le) {  foreach ( $enmge_glem as $glem) {  if ( ($glem->group_id == $g->group_id) && ($glem->leader_id == $le->leader_id) ) { if ( $le_comma == 1 ) { $leaders = stripslashes($le->leader_name) . " (" . stripslashes($le->leader_email) . ")"; $le_comma = $le_comma+1; } else { $leaders .= ", " . stripslashes($le->leader_name) . " (" . stripslashes($le->leader_email) . ")"; $le_comma = $le_comma+1; }}}} if ( !empty($leaders) ) { $grouprow[] = $leaders; } else { $grouprow[] = ''; };

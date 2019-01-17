@@ -2,7 +2,7 @@
 /* Plugin Name: Groups Engine 
 Plugin URI: http://groupsengine.com
 Description: Groups Engine is powerful group search that actually works. To get started, activate the plugin and open the new "Groups Engine" menu. Follow the instructions on the <a href="admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide">User Guide page</a> to embed a groups page, change the color scheme and more.
-Version: 1.2
+Version: 1.2.7
 Author: Eric Murrell (Volacious) 
 Author URI: http://groupsengine.com */ 
 
@@ -18,7 +18,7 @@ $ENMGEUpdateChecker = PucFactory::buildUpdateChecker(
 );
 
 /* ----- Install the Plugin ----- */
-define ( 'ENMGE_CURRENT_VERSION', '1.2' );
+define ( 'ENMGE_CURRENT_VERSION', '1.2.7' );
 
 $enmge_options = get_option( 'enm_groupsengine_options' );
 
@@ -78,7 +78,7 @@ function enm_groupsengine_install() {
 
 	// Define DB version
 	global $enmge_db_version;
-	$enmge_db_version = "1.15";
+	$enmge_db_version = "1.19";
 	if( !defined(get_option( 'enmge_db_version' )) ) {
 		add_option("enmge_db_version", $enmge_db_version);
 	} else {
@@ -632,7 +632,7 @@ function enm_groupsengine_create_menu() {
 	add_submenu_page( __FILE__, 'Add and Edit ' . $topicptitle, 'Edit ' . $topicptitle, 'edit_posts', __FILE__ . '_topics', 'enm_groupsengine_topics_page'); 
 	add_submenu_page( __FILE__, 'Add and Edit ' . $grouptypeptitle, 'Edit ' . $grouptypeptitle, 'edit_posts', __FILE__ . '_grouptypes', 'enm_groupsengine_grouptypes_page'); 
 	add_submenu_page( __FILE__, 'View and Update Contacts', 'View Contacts', 'edit_posts', __FILE__ . '_contacts', 'enm_groupsengine_contacts_page'); 
-	add_submenu_page( __FILE__, 'Embed Groups Engine on a Page', 'Get Embed Code', 'edit_pages', __FILE__ . '_embed', 'enm_groupsengine_embedcode_page'); 
+	add_submenu_page( __FILE__, 'Embed Groups Engine on a Page', 'Get Shortcodes', 'edit_pages', __FILE__ . '_embed', 'enm_groupsengine_embedcode_page'); 
 	add_submenu_page( __FILE__, 'Report Library', 'Report Library', 'edit_posts', __FILE__ . '_reports', 'enm_groupsengine_reportlibrary_page'); 
 	add_submenu_page( __FILE__, 'User Guide', 'User Guide', 'edit_posts', __FILE__ . '_userguide', 'enm_groupsengine_userguide_page'); 
 	//add_submenu_page( __FILE__, 'Check for Updates to the Groups Engine Plugin', 'Check for Updates', 'edit_pages', __FILE__ . '_updates', 'enm_groupsengine_update_page'); 
@@ -755,7 +755,7 @@ function enm_groupsengine_frontend_styles() {
 		wp_register_script( 'GroupsEngineFrontendJavascript', plugins_url('/js/groupsenginefrontendnoajax.js', __FILE__) );
 		wp_enqueue_script( 'GroupsEngineFrontendJavascript' );
 	} else {
-		wp_register_script( 'GroupsEngineFrontendJavascript', plugins_url('/js/groupsenginefrontend.js', __FILE__) );
+		wp_register_script( 'GroupsEngineFrontendJavascript', plugins_url('/js/groupsenginefrontend127.js', __FILE__) );
 		wp_enqueue_script( 'GroupsEngineFrontendJavascript' );
 	}
 
@@ -3712,7 +3712,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -3747,7 +3747,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3779,7 +3779,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -3812,7 +3812,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3843,7 +3843,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -3876,7 +3876,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3907,7 +3907,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -3940,7 +3940,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3971,7 +3971,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4004,7 +4004,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4035,7 +4035,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4068,7 +4068,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4099,7 +4099,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4132,7 +4132,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4163,7 +4163,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4196,7 +4196,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4227,7 +4227,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4260,7 +4260,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4291,7 +4291,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4324,7 +4324,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4355,7 +4355,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4388,7 +4388,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4419,7 +4419,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4452,7 +4452,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4468,7 +4468,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4486,14 +4486,14 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
 	} else {
 		 enmge_oneone();
 	}
-} elseif ( get_option('enmge_db_version') == "1.13" || get_option('enmge_db_version') == "1.14" ) { // 1.2
+} elseif ( get_option('enmge_db_version') == "1.13" || get_option('enmge_db_version') == "1.14" || get_option('enmge_db_version') == "1.15" || get_option('enmge_db_version') == "1.16" || get_option('enmge_db_version') == "1.17" || get_option('enmge_db_version') == "1.18" ) { // 1.2.1
 	function enmge_oneonetwo() {
 		global $wpdb;
 
@@ -4502,7 +4502,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 		// Define DB version
 		global $enmge_db_version;
-		$enmge_db_version = "1.15";
+		$enmge_db_version = "1.19";
 		update_option("enmge_db_version", $enmge_db_version);
 	}
 
@@ -4520,7 +4520,7 @@ if ( get_option('enmge_db_version') == "1.0" ) { // First Update for beta users
 
 			// Define DB version
 			global $enmge_db_version;
-			$enmge_db_version = "1.15";
+			$enmge_db_version = "1.19";
 			update_option("enmge_db_version", $enmge_db_version);
 		}
 		switch_to_blog($wpdb->blogid);

@@ -6,6 +6,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		global $wpdb;
 		
 		$enmge_options = get_option( 'enm_groupsengine_options' ); 
+		$enmge_dateformat = get_option( 'date_format' ); 
 		$enmge_grouptitle = $enmge_options['grouptitle'];
 		$enmge_grouptypetitle = $enmge_options['grouptypetitle'];
 		$enmge_grouptypeptitle = $enmge_options['grouptypeptitle']; 
@@ -241,8 +242,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					var pluginurl = jQuery('#enmge-get-plugin-link').attr("title");
 					var gerandom = Math.floor(Math.random()*1001);
 					var gtvalue = jQuery(this).val();
+					var xxge = "<?php echo base64_encode(ABSPATH); ?>";
 					if ( gtvalue != "n" ) {
-						jQuery('#groupsfield').load(pluginurl+"contactfindgroup.php?enmge_gtid="+gtvalue+"&enmge_random="+gerandom, function() {
+						jQuery('#groupsfield').load(pluginurl+"contactfindgroup.php?enmge_gtid="+gtvalue+"&xxge="+xxge+"&enmge_random="+gerandom, function() {
 							jQuery("#groupsfield").show();
 						});
 					} else {
@@ -359,7 +361,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				<td><?php echo stripslashes($enmge_single->contact_group_title); ?></td>
 				<td><a href="mailto:<?php echo $enmge_single->contact_email; ?>"><?php echo $enmge_single->contact_email ?></a></td>
 				<td><?php echo stripslashes($enmge_single->contact_phone); ?></td>
-				<td><?php echo date('F j, Y', strtotime($enmge_single->contact_date)) ?> at <?php echo date('g:i A', strtotime($enmge_single->contact_date)) ?></td>
+				<td><?php echo date_i18n($enmge_dateformat, strtotime($enmge_single->contact_date)) ?> at <?php echo date('g:i A', strtotime($enmge_single->contact_date)) ?></td>
 				<td><?php echo stripslashes($enmge_single->contact_last_update); ?></td>
 				<td><strong><?php echo $enmge_single->contact_status; ?></strong></td>
 			</tr>
@@ -461,7 +463,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			<tr>
 				<td><a href="<?php if ( isset($_GET['enmge_p']) ) { if ( isset($_GET['enmge_cs']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php_contacts&amp;enmge_action=edit&amp;enmge_cid=' . $enmge_single->contact_id . '&amp;enmge_cs=' . $_GET['enmge_cs'] . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ ); } else { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php_contacts&amp;enmge_action=edit&amp;enmge_cid=' . $enmge_single->contact_id . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ );} } else { if ( isset($_GET['enmge_cs']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php_contacts&amp;enmge_action=edit&amp;enmge_cid=' . $enmge_single->contact_id . '&amp;enmge_cs=' . $_GET['enmge_cs'], __FILE__ ); } else { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php_contacts&amp;enmge_action=edit&amp;enmge_cid=' . $enmge_single->contact_id, __FILE__ ); }} ?>"><?php echo stripslashes($enmge_single->contact_name); ?></a></td>
 				<td><?php echo stripslashes($enmge_single->contact_group_title) ?></td>
-				<td><?php echo date('F j, Y', strtotime($enmge_single->contact_date)); ?></td>	
+				<td><?php echo date_i18n($enmge_dateformat, strtotime($enmge_single->contact_date)); ?></td>	
 				<td><?php if ( $enmge_single->contact_status == "Additional Followup Needed" ) { ?><strong><?php echo $enmge_single->contact_status; ?></strong><?php } elseif ( $enmge_single->contact_status == "Initial Followup Needed" ) { ?><strong><span class="new"><?php echo $enmge_single->contact_status; ?></span></strong><?php } else { ?><?php echo $enmge_single->contact_status; ?><?php } ?></td>			
 				<td class="enmge-delete"><form action="<?php echo $_SERVER['REQUEST_URI']; ?>&amp;enmge_did=1" method="post" id="groupsengine-deleteform<?php echo $enmge_single->contact_id ?>"><input type="hidden" name="contact_delete" value="<?php echo $enmge_single->contact_id ?>"></form><a href="#" class="groupsengine_delete" name="<?php echo $enmge_single->contact_id ?>">Delete</a></td>
 			</tr>

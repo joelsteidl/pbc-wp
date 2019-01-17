@@ -1,6 +1,6 @@
 <?php /* ----- Groups Engine - Add a new group type straight from the Groups admin page ----- */
 	
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 	
 	if ( current_user_can( 'edit_posts' ) ) { 

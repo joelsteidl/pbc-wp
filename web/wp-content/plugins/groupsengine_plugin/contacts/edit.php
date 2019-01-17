@@ -1,8 +1,9 @@
 <?php /* Groups Engine - Update Contact From Group Leaders */
-	require '../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../includes/loadwpfiles.php' );
 
 	$enmge_redirecturl = home_url();
 	$enmge_options = get_option( 'enm_groupsengine_options' ); 
+	$enmge_dateformat = get_option( 'date_format' ); 
 	$ministryname = $enmge_options['ministryname'];
 
 	$updatebg = $enmge_options['updatebg'];
@@ -474,7 +475,7 @@
 	</tr>
 	<tr>
 		<td class="labelcell"><label>Received:</label></td>
-		<td><?php echo date('F j, Y', strtotime($enmge_single->contact_date)) ?> at <?php echo date('g:i A', strtotime($enmge_single->contact_date)) ?></td>
+		<td><?php echo date_i18n($enmge_dateformat, strtotime($enmge_single->contact_date)) ?> at <?php echo date('g:i A', strtotime($enmge_single->contact_date)) ?></td>
 	</tr>
 	<tr>
 		<td class="labelcell"><label><?php echo stripslashes($grouptitle); ?>:</label></td>
@@ -500,7 +501,7 @@
 	</div>
 	<div <?php if ( $enmge_qc == 0  ) { ?>style="display: none"<?php } ?>>
 		<h1>Thanks for letting us know!</h1>
-		<p class="qc">We've saved your update. You can view the full history for <a href="<?php echo plugins_url() . "/groupsengine_plugin/contacts/edit.php?enmge_mc=" . $enmge_mc; ?>">this contact here</a>. If you have more notes, please enter them below.</p>
+		<p class="qc">We've saved your update. You can view the full history for <a href="<?php echo plugins_url() . "/groupsengine_plugin/contacts/edit.php?enmge_mc=" . $enmge_mc . "&xxge=" . base64_encode(ABSPATH); ?>">this contact here</a>. If you have more notes, please enter them below.</p>
 	</div>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>" method="post" id="enmgeform">
 	<table class="update">

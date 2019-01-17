@@ -30,7 +30,7 @@ if ( $enmge_f == 1 ) {
 		$enmge_countsql .= " AND group_status = " . $enmge_status;
 	}
 	if ( $enmge_d != NULL ) { // day
-		$enmge_countsql .= " AND group_day = " . $enmge_d;
+		$enmge_countsql .= " AND (group_day = " . $enmge_d . " OR group_day = 8)";
 	}
 	if ( $enmge_m == 1 ) { // onsite/offsite
 		$enmge_countsql .= " AND group_onsite > 0";
@@ -123,7 +123,7 @@ if ( $enmge_f == 1 ) {
 		$enmge_preparredsql .= " AND group_status = " . $enmge_status;
 	}
 	if ( $enmge_d != NULL ) { // day
-		$enmge_preparredsql .= " AND group_day = " . $enmge_d;
+		$enmge_preparredsql .= " AND (group_day = " . $enmge_d . " OR group_day = 8)";
 	}
 	if ( $enmge_m == 1 ) { // onsite/offsite
 		$enmge_preparredsql .= " AND group_onsite > 0";

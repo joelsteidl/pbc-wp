@@ -1082,7 +1082,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				});
 			});
 		</script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options127.js'; ?>"></script>
 
 		<h2 class="enmge">Add a New <?php echo stripslashes($enmge_grouptitle); ?></h2>
 		<?php include ('errorbox.php'); ?>
@@ -1366,6 +1366,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<option value="Every" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every") { echo 'selected="selected"';}} ?>>Every</option>
 							<option value="Every other" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every other") { echo 'selected="selected"';}} ?>>Every other</option>
 							<option value="Regularly on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Regularly on") { echo 'selected="selected"';}} ?>>Regularly on</option>
+							<option value="Every 1st Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 1st Week on") { echo 'selected="selected"';}} ?>>Every 1st Week on</option>
+							<option value="Every 2nd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 2nd Week on") { echo 'selected="selected"';}} ?>>Every 2nd Week on</option>
+							<option value="Every 3rd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 3rd Week on") { echo 'selected="selected"';}} ?>>Every 3rd Week on</option>
+							<option value="Every 4th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 4th Week on") { echo 'selected="selected"';}} ?>>Every 4th Week on</option>
+							<option value="Every 5th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 5th Week on") { echo 'selected="selected"';}} ?>>Every 5th Week on</option>							
+							<option value="Every 1st and 3rd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 1st and 3rd Week on") { echo 'selected="selected"';}} ?>>Every 1st and 3rd Week on</option>
+							<option value="Every 2nd and 4th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 2nd and 4th Week on") { echo 'selected="selected"';}} ?>>Every 2nd and 4th Week on</option>
 						</select>
 						<select name="group_day" id="group_day" tabindex="10">
 							<option value="1" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 1) { echo 'selected="selected"';}} ?>>Sunday</option>
@@ -1375,6 +1382,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<option value="5" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 5) { echo 'selected="selected"';}} ?>>Thursday</option>
 							<option value="6" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 6) { echo 'selected="selected"';}} ?>>Friday</option>
 							<option value="7" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 7) { echo 'selected="selected"';}} ?>>Saturday</option>
+							<option value="8" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 8) { echo 'selected="selected"';}} ?>>Various Days</option>
 						</select>
 					</td>
 				</tr>
@@ -1673,7 +1681,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php?xxge=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 							}});
 						});
 						</script>
@@ -1715,6 +1723,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<input type="hidden" name="enmgefiledelete" value="<?php echo plugins_url(); ?>/groupsengine_plugin/includes/admin/filedelete.php" id="enmgefiledelete" />
 		<input type="hidden" name="enmgefileedit" value="<?php echo plugins_url(); ?>/groupsengine_plugin/includes/admin/fileedit.php" id="enmgefileedit" />
 		<input type="hidden" name="enmgeimage" value="<?php echo $enmge_imagewidth; ?>" id="enmgeimage" />
+		<input type="hidden" name="xxge" value="<?php echo base64_encode(ABSPATH); ?>" id="xxge" />
 		</form>		
 		
 
@@ -1769,7 +1778,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			});
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options127.js'; ?>"></script>
 	<h2 class="enmge">Edit <?php echo stripslashes($enmge_grouptitle); ?> <a href="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&enmge_duplicate=1&amp;enmge_gid=' . $_GET['enmge_gid'], __FILE__ ) ?>" class="add-new-h2">Duplicate</a> <a href="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&enmge_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
 	<?php include ('messagebox.php'); ?>
@@ -2053,6 +2062,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<option value="Every" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every") {echo 'selected="selected"';}} ?>>Every</option>
 							<option value="Every other" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every other") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every other") {echo 'selected="selected"';}} ?>>Every other</option>
 							<option value="Regularly on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Regularly on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Regularly on") {echo 'selected="selected"';}} ?>>Regularly on</option>
+							<option value="Every 1st Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 1st Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 1st Week on") {echo 'selected="selected"';}} ?>>Every 1st Week on</option>
+							<option value="Every 2nd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 2nd Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 2nd Week on") {echo 'selected="selected"';}} ?>>Every 2nd Week on</option>
+							<option value="Every 3rd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 3rd Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 3rd Week on") {echo 'selected="selected"';}} ?>>Every 3rd Week on</option>
+							<option value="Every 4th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 4th Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 4th Week on") {echo 'selected="selected"';}} ?>>Every 4th Week on</option>
+							<option value="Every 5th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 5th Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 5th Week on") {echo 'selected="selected"';}} ?>>Every 5th Week on</option>
+							<option value="Every 1st and 3rd Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 1st and 3rd Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 1st and 3rd Week on") {echo 'selected="selected"';}} ?>>Every 1st and 3rd Week on</option>
+							<option value="Every 2nd and 4th Week on" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_frequency'] == "Every 2nd and 4th Week on") { echo 'selected="selected"';}} else {if ($enmge_single->group_frequency == "Every 2nd and 4th Week on") {echo 'selected="selected"';}} ?>>Every 2nd and 4th Week on</option>
 						</select>
 						<select name="group_day" id="group_day" tabindex="10">
 							<option value="1" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 1) { echo 'selected="selected"';}} else {if ($enmge_single->group_day == 1) {echo 'selected="selected"';}} ?>>Sunday</option>
@@ -2062,6 +2078,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<option value="5" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 5) { echo 'selected="selected"';}} else {if ($enmge_single->group_day == 5) {echo 'selected="selected"';}} ?>>Thursday</option>
 							<option value="6" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 6) { echo 'selected="selected"';}} else {if ($enmge_single->group_day == 6) {echo 'selected="selected"';}} ?>>Friday</option>
 							<option value="7" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 7) { echo 'selected="selected"';}} else {if ($enmge_single->group_day == 7) {echo 'selected="selected"';}} ?>>Saturday</option>
+							<option value="8" <?php if ($_POST && !empty($enmge_errors)) {if ($_POST['group_day'] == 8) { echo 'selected="selected"';}} else {if ($enmge_single->group_day == 8) {echo 'selected="selected"';}} ?>>Various Days</option>
 						</select>
 					</td>
 				</tr>
@@ -2360,7 +2377,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php?xxge=' . base64_encode(ABSPATH); ?>", order, function(){}); 
 							}});
 						});
 						</script>
@@ -2409,6 +2426,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<input type="hidden" name="enmgeimage" value="<?php echo $enmge_imagewidth; ?>" id="enmgeimage" />
 		<input type="hidden" name="enmgeleaderurl" value="<?php echo plugins_url(); ?>/groupsengine_plugin/includes/admin/newleader.php" id="enmgeleaderurl" />
 		<input type="hidden" name="enmgeleaderdelete" value="<?php echo plugins_url(); ?>/groupsengine_plugin/includes/admin/leaderdelete.php" id="enmgeleaderdelete" />
+		<input type="hidden" name="xxge" value="<?php echo base64_encode(ABSPATH); ?>" id="xxge" />
 	</form>
 	
 
@@ -2458,6 +2476,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			<option value="5" <?php if ( isset($_GET['enmge_day']) && $_GET['enmge_day'] == 5 ) { ?>selected="selected"<?php } ?>>Thursday</option>
 			<option value="6" <?php if ( isset($_GET['enmge_day']) && $_GET['enmge_day'] == 6 ) { ?>selected="selected"<?php } ?>>Friday</option>
 			<option value="7" <?php if ( isset($_GET['enmge_day']) && $_GET['enmge_day'] == 7 ) { ?>selected="selected"<?php } ?>>Saturday</option>
+			<option value="8" <?php if ( isset($_GET['enmge_day']) && $_GET['enmge_day'] == 8 ) { ?>selected="selected"<?php } ?>>Various</option>
 		</select>
 	</div>
 	<?php include ('grouppagination.php'); ?>
@@ -2476,7 +2495,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<?php foreach ( $enmge_groups as $enmge_single ) { ?>
 			<tr>
 				<td><a href="<?php if ( isset($_GET['enmge_p']) ) { if ( isset($_GET['enmge_gtid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_gtid=' . $enmge_gtid . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ ); } elseif ( isset($_GET['enmge_tid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_tid=' . $enmge_tid . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ ); } elseif ( isset($_GET['enmge_day']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_day=' . $enmge_day . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ ); } elseif ( isset($_GET['enmge_lid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_lid=' . $enmge_lid . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ ); } else { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_p=' . $_GET['enmge_p'] . '&amp;enmge_c=' . $_GET['enmge_c'], __FILE__ );} } else { if ( isset($_GET['enmge_gtid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_gtid=' . $enmge_gtid, __FILE__ ); } elseif ( isset($_GET['enmge_tid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_tid=' . $enmge_tid, __FILE__ ); } elseif ( isset($_GET['enmge_day']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_day=' . $enmge_day, __FILE__ ); } elseif ( isset($_GET['enmge_lid']) ) { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id . '&amp;enmge_lid=' . $enmge_lid, __FILE__ ); } else { echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_action=edit&amp;enmge_gid=' . $enmge_single->group_id, __FILE__ ); }} ?>"><?php echo stripslashes($enmge_single->group_title) ?></a></td>
-				<td><?php if ( $enmge_single->group_day == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Sunday</a>";  } ?><?php if ( $enmge_single->group_day == 2 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Monday</a>";  } ?><?php if ( $enmge_single->group_day == 3 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Tuesday</a>";  } ?><?php if ( $enmge_single->group_day == 4 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Wednesday</a>";  } ?><?php if ( $enmge_single->group_day == 5 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Thursday</a>";  } ?><?php if ( $enmge_single->group_day == 6 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Friday</a>";  } ?><?php if ( $enmge_single->group_day == 7 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Saturday</a>";  } ?></td>
+				<td><?php if ( $enmge_single->group_day == 8 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Various</a>";  } ?><?php if ( $enmge_single->group_day == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Sunday</a>";  } ?><?php if ( $enmge_single->group_day == 2 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Monday</a>";  } ?><?php if ( $enmge_single->group_day == 3 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Tuesday</a>";  } ?><?php if ( $enmge_single->group_day == 4 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Wednesday</a>";  } ?><?php if ( $enmge_single->group_day == 5 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Thursday</a>";  } ?><?php if ( $enmge_single->group_day == 6 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Friday</a>";  } ?><?php if ( $enmge_single->group_day == 7 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_day=' . $enmge_single->group_day, __FILE__ ) . "\">Saturday</a>";  } ?></td>
 				<td><?php $enmge_l_comma = 1; foreach ( $enmge_locations as $l) { ?><?php foreach ( $enmge_glm as $glm) { ?><?php if ( ($glm->group_id == $enmge_single->group_id) && ($glm->location_id == $l->location_id) ) { if ( $enmge_l_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_lid=' . $l->location_id, __FILE__ ) . "\">" . stripslashes($l->location_name) . "</a>"; $enmge_l_comma = $enmge_l_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_lid=' . $l->location_id, __FILE__ ) . "\">" . stripslashes($l->location_name) . "</a>"; $enmge_l_comma = $enmge_l_comma+1; } } ?><?php } ?><?php } ?></td>				
 				<td><?php $enmge_gt_comma = 1; foreach ( $enmge_gt as $gt) { ?><?php foreach ( $enmge_gggtm as $ggtm) { ?><?php if ( ($ggtm->group_id == $enmge_single->group_id) && ($ggtm->group_type_id == $gt->group_type_id) ) { if ( $enmge_gt_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_gtid=' . $gt->group_type_id, __FILE__ ) . "\">" . stripslashes($gt->group_type_title) . "</a>"; $enmge_gt_comma = $enmge_gt_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_gtid=' . $gt->group_type_id, __FILE__ ) . "\">" . stripslashes($gt->group_type_title) . "</a>"; $enmge_gt_comma = $enmge_gt_comma+1; } } ?><?php } ?><?php } ?></td>				
 				<td><?php $enmge_t_comma = 1; foreach ( $enmge_t as $t) { ?><?php foreach ( $enmge_gtm as $gtm) { ?><?php if ( ($gtm->group_id == $enmge_single->group_id) && ($gtm->topic_id == $t->topic_id) ) { if ( $enmge_t_comma == 1 ) { echo "<a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->topic_name) . "</a>"; $enmge_t_comma = $enmge_t_comma+1; } else { echo ", <a href=\"" . admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&amp;enmge_tid=' . $t->topic_id, __FILE__ ) . "\">" . stripslashes($t->topic_name) . "</a>"; $enmge_t_comma = $enmge_t_comma+1; } } ?><?php } ?><?php } ?></td>				
@@ -2486,6 +2505,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		</tbody>
 	</table>
 	<input type="hidden" name="enmgepluginurl" value="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php', __FILE__ ); ?>" id="enmgepluginurl" />
+	<input type="hidden" name="xxge" value="<?php echo base64_encode(ABSPATH); ?>" id="xxge" />
 	<?php include ('gecredits.php'); ?>	
 </div>
 <?php }  // Deny access to sneaky people!

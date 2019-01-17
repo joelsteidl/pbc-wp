@@ -55,10 +55,11 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 		if (newfilenamelength >= 1 && newfileurllength >= 1 ) {
 				var formdata = jQuery("#enmgeform").serialize();
 				var findurl = jQuery('#enmgefileurl').val();
+				var xxge = jQuery('#xxge').val();
 				var serandom = Math.floor(Math.random()*1001);
 				var encodedvalthree = groupid;
 				var encodedvalfour = encodeURIComponent(fileusername);
-				var urltoload = findurl+"?file_username="+encodedvalfour+"&group_id="+encodedvalthree+"&enmge_random="+serandom;
+				var urltoload = findurl+"?file_username="+encodedvalfour+"&group_id="+encodedvalthree+"&xxge="+xxge+"&enmge_random="+serandom;
 				
 				function loadrefreshedfilelist() {
 					jQuery("#file_name").val('');
@@ -81,14 +82,15 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 		if (newfilenamelength >= 1 && newfileurllength >= 1 ) {
 				var formdata = jQuery("#enmgeform").serialize();
 				var findurl = jQuery('#enmgefileedit').val();
+				var xxge = jQuery('#xxge').val();
 				var serandom = Math.floor(Math.random()*1001);
 				var anotherfindurl = jQuery('#enmgefileurl').val();
 				var encodedvalone = encodeURIComponent(newfilename);
 				var encodedvaltwo = encodeURIComponent(newfileurl);
 				var encodedvalthree = fileid;
 				var encodedvalfour = encodeURIComponent(fileusername);
-				var urltoload = findurl+"?file_name="+encodedvalone+"&file_url="+encodedvaltwo+"&file_username="+encodedvalfour+"&fid="+encodedvalthree+"&gid="+groupid+"&enmge_random="+serandom;
-				var anotherurltoload = anotherfindurl+"?message_id="+groupid+"&file_username="+encodedvalfour+"&gid="+groupid+"&enmge_random="+serandom;
+				var urltoload = findurl+"?file_name="+encodedvalone+"&xxge="+xxge+"&file_url="+encodedvaltwo+"&file_username="+encodedvalfour+"&fid="+encodedvalthree+"&gid="+groupid+"&enmge_random="+serandom;
+				var anotherurltoload = anotherfindurl+"?message_id="+groupid+"&xxge="+xxge+"&file_username="+encodedvalfour+"&gid="+groupid+"&enmge_random="+serandom;
 
 				function loadrefreshedfilelist() {
 					jQuery('#enmgefileform').load(urltoload+"&done=1");
@@ -105,8 +107,9 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 			var id = jQuery(this).attr("name");
 			var formdata = jQuery("#enmgeform").serialize();
 			var findurl = jQuery('#enmgefiledelete').val();
+			var xxge = jQuery('#xxge').val();
 			var serandom = Math.floor(Math.random()*1001);
-			var urltoload = findurl+"?did="+id+"&enmge_random="+serandom;
+			var urltoload = findurl+"?did="+id+"&xxge="+xxge+"&enmge_random="+serandom;
 			
 			function loadrefreshedfilelist() {
 				jQuery("#row_"+id).fadeOut();
@@ -119,8 +122,9 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 	jQuery('.groupsengine_editfile').live("click", function() {
 		var id = jQuery(this).attr("name");
 		var findurl = jQuery('#enmgefileedit').val();
+		var xxge = jQuery('#xxge').val();
 		var serandom = Math.floor(Math.random()*1001);
-		var urltoload = findurl+"?fid="+id+"&enmge_random="+serandom;
+		var urltoload = findurl+"?fid="+id+"&xxge="+xxge+"&enmge_random="+serandom;
 		jQuery('#enmgefileform').load(urltoload);
 		return false;
 	});
@@ -205,9 +209,10 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 		if (newtopiclength >= 1) {
 			var formdata = jQuery("#enmgeform").serialize();
 			var findurl = jQuery('#enmgepluginurl').val();
+			var xxge = jQuery('#xxge').val();
 			var serandom = Math.floor(Math.random()*1001);
 			var encodedval = encodeURIComponent(newtopicname);
-			var urltoload = findurl+"?topicname="+encodedval+"&enmge_random="+serandom;
+			var urltoload = findurl+"?topicname="+encodedval+"&xxge="+xxge+"&enmge_random="+serandom;
 
 			function loadrefreshedtopiclist() {
 				jQuery("#topic_name").val('');
@@ -225,9 +230,10 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 		if (newgrouptypelength >= 1) {
 			var formdata = jQuery("#enmgeform").serialize();
 			var findurl = jQuery('#enmgepluginurl2').val();
+			var xxge = jQuery('#xxge').val();
 			var serandom = Math.floor(Math.random()*1001);
 			var encodedval = encodeURIComponent(newgrouptypename);
-			var urltoload = findurl+"?grouptypetitle="+encodedval+"&enmge_random="+serandom;
+			var urltoload = findurl+"?grouptypetitle="+encodedval+"&xxge="+xxge+"&enmge_random="+serandom;
 
 			function loadrefreshedgrouptypelist() {
 				jQuery("#group_type_name").val('');
@@ -292,9 +298,10 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 			} else {
 				var formdata = jQuery("#enmgeform").serialize();
 				var findurl = jQuery('#enmgeleaderurl').val();
+				var xxge = jQuery('#xxge').val();
 				var serandom = Math.floor(Math.random()*1001);
 				var encodedvalthree = encodeURIComponent(newleaderusername);
-				var urltoload = findurl+"?leader_username="+encodedvalthree+"&group_id="+groupid+"&enmse_random="+serandom;
+				var urltoload = findurl+"?leader_username="+encodedvalthree+"&xxge="+xxge+"&group_id="+groupid+"&enmse_random="+serandom;
 				
 				function loadrefreshedleaderlist() {
 					jQuery("#leader_name").val('Name');
@@ -315,8 +322,9 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - JavaScript for Group
 			var id = jQuery(this).attr("name");
 			var formdata = jQuery("#enmgeform").serialize();
 			var findurl = jQuery('#enmgeleaderdelete').val();
+			var xxge = jQuery('#xxge').val();
 			var serandom = Math.floor(Math.random()*1001);
-			var urltoload = findurl+"?did="+id+"&enmge_random="+serandom;
+			var urltoload = findurl+"?did="+id+"&xxge="+xxge+"&enmge_random="+serandom;
 			
 			function loadrefreshedfilelist() {
 				jQuery("#lrow_"+id).fadeOut();

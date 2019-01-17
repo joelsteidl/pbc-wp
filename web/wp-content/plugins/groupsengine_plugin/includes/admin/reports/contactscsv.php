@@ -2,7 +2,7 @@
 	require_once 'report_header.php';
 
 	// output headers so that the file is downloaded rather than displayed
-	header('Content-Type: text/csv; charset=utf-8');
+	header('Content-Type: text/csv; charset=utf-8', true, 200);
 	header('Content-Disposition: attachment; filename=contacts.csv');
 
 	// create a file pointer connected to the output stream

@@ -16,7 +16,7 @@ foreach ($enmge_leaders as $l) {
 	$enmge_leader_message .= "<p>Their Name: " . stripslashes($enmge_name) . "<br />";
 	$enmge_leader_message .= "Their Email: " . $enmge_email . "<br />";
 	$enmge_leader_message .= "Their Phone Number: " . $enmge_phone . "<br />";
-	$enmge_leader_message .= "Received on " . date('F j, Y', strtotime($enmge_date)) . " at " . date('g:i A', strtotime($enmge_date)) . "</p>";
+	$enmge_leader_message .= "Received on " . date_i18n($enmge_dateformat, strtotime($enmge_date)) . " at " . date('g:i A', strtotime($enmge_date)) . "</p>";
 	$enmge_leader_message .= stripslashes($enmge_message) . "<br /><br />";
 	if ( !empty($enmge_notes) ) { $enmge_leader_message .= "<strong>Notes:</strong><br /><br />"; }
 	foreach ( $enmge_notes as $note ) { 

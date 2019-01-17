@@ -35,25 +35,26 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 	<h2 class="enmge" style="padding-bottom: 5px">Embed Into a Page or Post</h2>
 	<p id="enmge-get-plugin-link" title="<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/'; ?>"></p>
+	<p id="xxge" title="<?php echo base64_encode(ABSPATH); ?>"></p>
 	
 	<ul id="enmge-group-options">
-		<li class="selected"><a href="#" id="enmge-simple-embed">Simple Embed Code</a></li>
-		<li><a href="#" id="enmge-custom-embed">Generate Custom Embed</a></li>
+		<li class="selected"><a href="#" id="enmge-simple-embed">Simple Shortcode</a></li>
+		<li><a href="#" id="enmge-custom-embed">Generate Custom Shortcode</a></li>
 	</ul>
 
 	<div id="enmge-simple">
-		<h3>Using the Simple Embed Code</h3>
+		<h3>Using the Simple Shortcode</h3>
 		
-		<p>Groups Engine includes <a href="<?php echo admin_url() . "admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide#se-customizing"; ?>">a simple shortcode</a> that allows you to add a <?php echo $enmge_grouptitle; ?> search page to your site in a matter of seconds. The Groups Engine browser can be easily embedded within any page or post on your WordPress site by entering the following shortcode into the visual editor:</p>
+		<p>Groups Engine includes <a href="<?php echo admin_url() . "admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide#se-customizing"; ?>">a simple shortcode</a> that allows you to add a <?php echo $enmge_grouptitle; ?> search page to your site in a matter of seconds. The Groups Engine browser can be easily embedded within any page or post on your WordPress site by entering the following shortcode into the visual editor (or into the Shortcode block if you're using Gutenberg):</p>
 		<blockquote><strong>[groupsengine]</strong></blockquote>
-		<p>You can place content above and below the shortcode to flesh out the page however you wish (just make sure the shortcode is on its own line). See the example below:</p>
+		<p>In the visual editor, you can place content above and below the shortcode to flesh out the page however you wish (just make sure the shortcode is on its own line). See the example below:</p>
 		<p style="text-align: center"><img src="<?php echo plugins_url() .'/groupsengine_plugin/images/embed_example.jpg'; ?>" width="633" height="482" alt="Example of using the Groups Engine shortcode" style="border: 5px solid #ECECEC" /></p>
 		
 	</div>
 
 	<div id="enmge-custom" style="display: none">
 
-		<p>Use the tool below to create a short code that will embed exactly what you want on any given page. Use Groups Engine to embed different subsets of your content all throughout your site. Only one shortcode per page is recommended.</p>
+		<p>Use the tool below to create a shortcode that will embed exactly what you want on any given page. Use Groups Engine to embed different subsets of your content all throughout your site. Only one shortcode per page is recommended.</p>
 		
 		<h2><strong>Start Here:</strong> Choose What to Display...</h2>
 		<table class="form-table">

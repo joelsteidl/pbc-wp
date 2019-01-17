@@ -47,7 +47,7 @@
 				$enmge_admin_message .= "Their Name: " . stripslashes($enmge_single->contact_name) . "\n";
 				$enmge_admin_message .= "Their Email: " . $enmge_single->contact_email . "\n";
 				$enmge_admin_message .= "Their Phone Number: " . $enmge_single->contact_phone . "\n\n";
-				$enmge_admin_message .= "Received on " . date('F j, Y', strtotime($enmge_single->contact_date)) . " at " . date('g:i A', strtotime($enmge_single->contact_date)) . "\n\n";
+				$enmge_admin_message .= "Received on " . date_i18n($enmge_dateformat, strtotime($enmge_single->contact_date)) . " at " . date('g:i A', strtotime($enmge_single->contact_date)) . "\n\n";
 				$enmge_admin_message .= stripslashes($enmge_single->contact_message) . "\n\n\n";
 				if ( !empty($enmge_notes) ) { $enmge_admin_message .= "Notes:\n\n"; }
 				foreach ( $enmge_notes as $note ) { 

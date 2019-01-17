@@ -2,6 +2,7 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - Generate Custom Embe
 
 	jQuery("#enmge-generate-embed-code").live("click", function() {
 		var pluginurl = jQuery('#enmge-get-plugin-link').attr("title");
+		var xxge = jQuery('#xxge').attr("title");
 		var gerandom = Math.floor(Math.random()*1001);
 		
 		var em = jQuery("#enmge_embedtype").val();
@@ -96,7 +97,7 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - Generate Custom Embe
 		};
 
 		jQuery(this).html("Generate New Code");
-		jQuery('#enmge-embed-code').load(pluginurl+"embed_generate_code.php?enmge_gtid="+gt+"&enmge_status="+status+"&enmge_start="+start+"&enmge_em="+em+"&enmge_sort="+sort+"&enmge_gid="+gid+"&enmge_tid="+t+"&enmge_lid="+l+"&enmge_m="+m+"&enmge_d="+d+"&enmge_st="+st+"&enmge_et="+et+"&enmge_sa="+sa+"&enmge_ea="+ea+"&enmge_zip="+z+"&enmge_cz="+cz+"&enmge_zl="+zl+"&enmge_v="+v+"&enmge_vo="+vo+"&enmge_cl="+cl+"&enmge_glsm="+glsm+"&enmge_sm="+sm+"&enmge_pag="+pag+"&enmge_glcl="+glcl+"&enmge_gl="+gl+"&enmge_fo="+fo+"&enmge_xgt="+xgt+"&enmge_xt="+xt+"&enmge_xl="+xl+"&enmge_xm="+xm+"&enmge_xd="+xd+"&enmge_xst="+xst+"&enmge_xsa="+xsa+"&enmge_xz="+xz+"&enmge_random="+gerandom, function() {
+		jQuery('#enmge-embed-code').load(pluginurl+"embed_generate_code.php?enmge_gtid="+gt+"&xxge="+xxge+"&enmge_status="+status+"&enmge_start="+start+"&enmge_em="+em+"&enmge_sort="+sort+"&enmge_gid="+gid+"&enmge_tid="+t+"&enmge_lid="+l+"&enmge_m="+m+"&enmge_d="+d+"&enmge_st="+st+"&enmge_et="+et+"&enmge_sa="+sa+"&enmge_ea="+ea+"&enmge_zip="+z+"&enmge_cz="+cz+"&enmge_zl="+zl+"&enmge_v="+v+"&enmge_vo="+vo+"&enmge_cl="+cl+"&enmge_glsm="+glsm+"&enmge_sm="+sm+"&enmge_pag="+pag+"&enmge_glcl="+glcl+"&enmge_gl="+gl+"&enmge_fo="+fo+"&enmge_xgt="+xgt+"&enmge_xt="+xt+"&enmge_xl="+xl+"&enmge_xm="+xm+"&enmge_xd="+xd+"&enmge_xst="+xst+"&enmge_xsa="+xsa+"&enmge_xz="+xz+"&enmge_random="+gerandom, function() {
 			jQuery("#enmge-embed-code").show();
 		});
 		
@@ -105,10 +106,11 @@ jQuery(document).ready(function(){ /* ----- Groups Engine - Generate Custom Embe
 
 	jQuery('#enmge_findgrouptype').live("change", function() {
 		var pluginurl = jQuery('#enmge-get-plugin-link').attr("title");
+		var xxge = jQuery('#xxge').attr("title");
 		var gerandom = Math.floor(Math.random()*1001);
 		var gtvalue = jQuery(this).val();
 		if ( gtvalue != "n" ) {
-			jQuery('#choosegroup').load(pluginurl+"embed_find_group.php?enmge_gtid="+gtvalue+"&enmge_random="+gerandom, function() {
+			jQuery('#choosegroup').load(pluginurl+"embed_find_group.php?enmge_gtid="+gtvalue+"&xxge="+xxge+"&enmge_random="+gerandom, function() {
 				jQuery("#choosegroup").show();
 			});
 		};

@@ -1,6 +1,6 @@
 <?php /* ----- Groups Engine - Add a new file straight from the Groups admin page ----- */
 
-	require '../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+	require_once( '../loadwpfiles.php' );
 	header('HTTP/1.1 200 OK');
 
 	if ( current_user_can( 'edit_posts' ) ) { 
@@ -31,7 +31,7 @@
 			); 
 			$wpdb->insert( $wpdb->prefix . "ge_group_file_matches", $enmge_newmfm );
 		} else {
-			$enmge_group_id = $_GET['gid'];
+			$enmge_group_id = $_GET['group_id'];
 			$enmge_file_username = $_GET['file_username'];
 			
 			if ( $enmge_group_id > 0 ) {

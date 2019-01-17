@@ -1,10 +1,11 @@
 <?php
 
-require '../../../../../../wp-blog-header.php'; // ADJUST THIS PATH if using a non-standard WordPress install
+require_once( '../../loadwpfiles.php' );
 
 if ( current_user_can( 'edit_posts' ) ) { 
 
 	$enmge_options = get_option( 'enm_groupsengine_options' ); 
+	$enmge_dateformat = get_option( 'date_format' ); 
 	$enmge_grouptitle = $enmge_options['grouptitle'];
 	$enmge_groupptitle = $enmge_options['groupptitle']; 
 	$enmge_grouptypetitle = $enmge_options['grouptypetitle'];
