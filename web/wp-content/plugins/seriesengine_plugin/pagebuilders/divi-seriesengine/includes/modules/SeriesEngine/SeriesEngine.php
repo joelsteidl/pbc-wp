@@ -651,8 +651,12 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_audiodownloade = "";
 		}
 
-		if ( $enmse_cardview > 0 ) { 
-			$enmse_cardviewe = " enmse_cv=" . $enmse_cardview; 
+		if ( $enmse_cardview != "Classic List View" ) { 
+			if ( $enmse_cardview != "Grid View" ) {
+				$enmse_cardviewe = " enmse_cv=2"; 
+			} else {
+				$enmse_cardviewe = " enmse_cv=1"; 
+			}
 		} else {
 			$enmse_cardviewe = "";
 		}
@@ -718,7 +722,7 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_relatede = ""; 
 		} 
 
-		if ( $enmse_related_sort == 1 ) { 
+		if ( $enmse_related_sort == "Newest First" ) { 
 			$enmse_related_sorte = " enmse_sort=1"; 
 		} else {
 			$enmse_related_sorte = ""; 

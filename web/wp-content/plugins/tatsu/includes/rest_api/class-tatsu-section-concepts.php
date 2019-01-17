@@ -40,7 +40,7 @@ class Tatsu_Section_Concepts {
 		}		
 
 		$concepts = array();
-
+		
 		foreach ( $this->concepts as $concept => $options ) {
 			$new_concept = array();
 			$new_concept['name'] = $concept;

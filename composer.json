@@ -24,7 +24,7 @@
     "composer/installers": "^1.2",
     "drupal-composer/preserve-paths": "0.1.*",
     "johnpbloch/wordpress-core-installer": "^1.0",
-    "johnpbloch/wordpress-core": "~4.9"
+    "johnpbloch/wordpress-core": "~5.0"
   },
   "extra": {
     "installer-paths": {
@@ -33,7 +33,7 @@
     },
     "preserve-paths": [
       "web/wp-config.php",
-      "web/wp-content/uploads"      
+      "web/wp-content/uploads"
     ],
     "wordpress-install-dir": "web"
   }

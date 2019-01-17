@@ -57,7 +57,7 @@ class Tatsu_Config {
 	}
 
 	private function __construct() {
-
+		$this->google_maps_api_key = get_option( 'tatsu_google_map_id' );
 	}
 
 	public function get_css_animations() {
@@ -66,6 +66,10 @@ class Tatsu_Config {
 
 	public function get_google_maps_api_key() {
 		return apply_filters( 'tatsu_gmaps_api_key', $this->google_maps_api_key );
+	}
+
+	public function get_core_modules() {
+		return apply_filters( 'tatsu_core_modules', array( 'tatsu_section', 'tatsu_row', 'tatsu_column', 'tatsu_inner_row', 'tatsu_inner_column', 'tatsu_header_row', 'tatsu_header_column' , 'tatsu_slide_menu_column' ) );
 	}
 
 }

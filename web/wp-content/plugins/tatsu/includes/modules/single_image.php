@@ -14,6 +14,7 @@ if (!function_exists('tatsu_image')) {
             'id'                => '',
             'size'              => '',
             'adaptive_image'    => 0,
+            'max_width'         => '100',
             'rebel'             => 0,
             'lazy_load'         => '',
             'placeholder_bg'    => '',
@@ -29,13 +30,16 @@ if (!function_exists('tatsu_image')) {
             'border_radius'     => '',
             'image_offset'      => '',
             'offset'            => '',
+            'builder_mode'      => '',
+            'hide_in' => '',
 			'key'               => be_uniqid_base36(true),
         ), $atts );
 
         
         extract( $atts );
-        $custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_image', $atts['key'] );
+        $custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_image', $atts['key'], $builder_mode );
         $custom_class_name = ' tatsu-'.$atts['key'];
+		$visibility_classes = '';
         
 
         $id = ( isset( $id ) ) ? $id : '';
@@ -81,6 +85,7 @@ if (!function_exists('tatsu_image')) {
         $id = (int)$id;
         $img_srcset = '';
         $image_src = '';
+        $image_full_src = '';
         $is_external_image = true;
         $image_width = 0;
         $image_height = 0;
@@ -118,9 +123,14 @@ if (!function_exists('tatsu_image')) {
                     }
                     $is_external_image = false;  
                 }               
-            }           
+            }         
+            $image_full_size_details = wp_get_attachment_image_src( $id, 'full' );
+            if( !empty( $image_full_size_details ) && is_array( $image_full_size_details ) ) {
+                $image_full_src = $image_full_size_details[0];
+            }
         } else {
             $image_src = $image;
+            $image_full_src = $image;
         }
 
         if( $is_external_image ) {
@@ -174,7 +184,7 @@ if (!function_exists('tatsu_image')) {
         $new_tab = isset( $new_tab ) && !empty( $new_tab ) ? 1 : 0;
         $new_tab_attribute = '';
         if( 1 == $lightbox ) {
-            $link = ' href = "' . $image_src . '"';
+            $link = ' href = "' . $image_full_src . '"';
             $new_tab_attribute = '';
         }else {
             if( isset( $link ) && !empty( $link ) ) {
@@ -196,8 +206,16 @@ if (!function_exists('tatsu_image')) {
 
 
         $output = '';
+        //Handle Resposive Visibility controls
+		if( !empty( $hide_in ) ) {
+			$hide_in = explode(',', $hide_in);
+			foreach ( $hide_in as $device ) {
+				$visibility_classes .= ' tatsu-hide-'.$device;
+			}
+        }
+        
         if( !empty( $image_src ) ) {
-            $output .= '<div class="tatsu-single-image tatsu-module'. $alignment_class . $box_shadow_class . $animate_class . $lazy_load_class . $overflow_image_class . $external_image_class . $custom_class_name . '" '. $data_animations . '>'; 
+            $output .= '<div class="tatsu-single-image tatsu-module'. $alignment_class . $box_shadow_class . $animate_class . $lazy_load_class . $overflow_image_class . $external_image_class . $custom_class_name . ' '.$visibility_classes.'" '. $data_animations . '>'; 
             $output .= '<div class="tatsu-single-image-inner " style="' . $placeholder_bg . $maxWidth . '" >';
             $output .= '<div class = "tatsu-single-image-padding-wrap" style = "' . $padding . '" ></div>';
             if( '' != $link ) {
@@ -221,6 +239,67 @@ if (!function_exists('tatsu_image')) {
 	add_shortcode( 'tatsu_image', 'tatsu_image' );
 }
 
+if( !function_exists( 'tatsu_image_header_atts' ) ) {
+	function tatsu_image_header_atts( $atts, $tag ) {
+		if( 'tatsu_image' === $tag ) {
+			// New Atts
+			$atts['builder_mode'] = array (
+				'type' => '',
+				'default' => 'Header',
+			);
+			$atts['hide_in'] = array (
+				'type' => 'screen_visibility',
+				'label' => __( 'Hide in', 'tatsu' ),
+				'default' => '',
+				'tooltip' => '',
+			);
+            // Modify Atts
+            $atts['image'] = array (
+				'type' => 'single_image_picker',
+				'post_frame' => true,
+                'label' => __( 'Image', 'tatsu' ),
+                'default' => TATSU_PLUGIN_URL.'/img/exponent-dark-logo.svg',
+				'tooltip' => ''
+			);
+            $atts['size'] = array(
+                'type' => 'select',
+                'target_attribute' => 'image_varying_size_src',
+                'label' => __( 'Image Size', 'tatsu' ),
+                'options' => array(
+                    'thumbnail' => 'Thumbnail',
+                    'medium' => 'Medium',
+                    'large' => 'Large'
+                ),
+                'default' => 'thumbnail',
+                'tooltip' => '',
+				// 'visible'	=> array ( 'image', '!=', '' ),
+            );
+			$atts['margin'] = 	array (
+				'type' => 'input_group',
+				'label' => __( 'Margin', 'tatsu' ),
+				'default' => '0px 30px 0px 0px',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-single-image' => array(
+						'property' => 'margin',
+					),
+				),
+			);
+			// Remove Atts
+            unset( $atts['alignment'] );
+            unset( $atts['adaptive_image'] );
+            unset( $atts['lazy_load'] );
+            unset( $atts['rebel'] );
+            unset( $atts['image_offset'] );
+            unset( $atts['enable_margin'] );
+
+		}
+		return $atts;
+	}
+    add_filter( 'tatsu_header_modify_atts', 'tatsu_image_header_atts', 10, 2 );
+}
 function single_image_overflow_callback( $width ) {
 
     $width = floatval( $width );

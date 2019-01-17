@@ -15,7 +15,6 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 			'key' => be_uniqid_base36(true),
 		), $atts  );
 
-
 		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_gmaps', $atts['key'] );
 		$custom_class_name = 'tatsu-'.$atts['key'];
 
@@ -31,7 +30,7 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 			} 
 			else if( ! empty( $address ) ) { //&& !empty($api_key) ) {
 				$map_error = false;
-				$transient_var = generateSlug($address, 10);
+				$transient_var = be_generate_slug($address, 10);
 				$transient_result = get_transient( $transient_var );
 				if(!$transient_result ) {
 					//$coordinates = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
@@ -70,27 +69,27 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 			if(  true === $map_error ) {
 				$output .= '<div class="tatsu-module tatsu-notification error">'.__('Your Server is Unable to connect to the Google Geocoding API, kindly visit <a href="http://www.latlong.net/convert-address-to-lat-long.html" target="_blank">THIS LINK </a>, find out the latitude and longitude of your address and enter it manually in the Google Maps Module of the Page Builder ', 'tatsu').'</div>';
 			} else {
-				if( (function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('gmaps') : true) || (defined( 'REST_REQUEST' ) && REST_REQUEST) || (function_exists('wp_doing_ajax') && wp_doing_ajax() ) ){
-					
-					$output .= '<div class="tatsu-module tatsu-gmap-wrapper '.$custom_class_name.' '.$animate.'" data-animation="'.$animation_type.'"><div class="tatsu-gmap map_960" data-address="'.$address.'" data-zoom="'.$zoom.'" data-latitude="'.$latitude.'" data-longitude="'.$longitude.'" data-marker="'.$marker.'" data-style="'.$style.'"></div>'.$custom_style_tag.'</div>';
-				
+				if( !function_exists( 'be_gdpr_privacy_ok' ) ){
+					$output .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-required '.$custom_class_name.' '.$animate.'" data-gdpr-concern="gmaps" data-animation="'.$animation_type.'"><div class="tatsu-gmap map_960" data-address="'.$address.'" data-zoom="'.$zoom.'" data-latitude="'.$latitude.'" data-longitude="'.$longitude.'" data-marker="'.$marker.'" data-style="'.$style.'"></div>'.$custom_style_tag.'</div>';
+
 				}else{
+					$static_map_api_url = 'https://maps.googleapis.com/maps/api/staticmap?markers=size:mid%7C'.$latitude.','.$longitude.'&zoom=13&size=600x300&apikey='.$maps_api_key;
 
-					$api_url = 'https://maps.googleapis.com/maps/api/staticmap?markers=size:mid%7C'.$latitude.','.$longitude.'&zoom=13&size=600x300&apikey='.$maps_api_key;
+					if( !empty($_COOKIE) ){
 
-					$response = wp_remote_get( $api_url ,
-						array( 'timeout' => 10,
-						'headers' => array( 'Content-Type' => 'image/png') 
-						));
-					if( !is_wp_error( $response ) ){
-							$output .= '<div class="tatsu-module tatsu-gmap-wrapper '.$custom_class_name.' '.$animate.'" data-animation="'.$animation_type.'" style="background-size:cover;background-image:url(data:image/png;base64,'.base64_encode( $response['body']).');" >  
-							'.$custom_style_tag.'
-							<div class="static-map-overlay">
-							<div class="static-map-content">' . do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="google maps"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup] ' ))) .'</div>
-							</div>
-							</div>';
-					} else {
-						$output .= do_shortcode( str_replace( '[be_gdpr_api_name]','[be_gdpr_api_name api="google maps"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup] ' ) ) );
+						if( !be_gdpr_privacy_ok('gmaps')  ){
+							$classes = array( $animate, $custom_class_name );
+							$output .= be_gdpr_maps_alt_content( $static_map_api_url, $classes,$animation_type, $custom_style_tag );
+
+						} else {
+							$output .= '<div class="tatsu-module tatsu-gmap-wrapper '.$custom_class_name.' '.$animate.'" data-animation="'.$animation_type.'"><div class="tatsu-gmap map_960" data-address="'.$address.'"  data-zoom="'.$zoom.'" data-latitude="'.$latitude.'" data-longitude="'.$longitude.'" data-marker="'.$marker.'" data-style="'.$style.'"></div>'.$custom_style_tag.'</div>';
+						}
+					}else{
+						$output .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-replace '.$custom_class_name.' '.$animate.'" data-gdpr-concern="gmaps" data-animation="'.$animation_type.'"><div class="tatsu-gmap map_960" data-address="'.$address.'"  data-zoom="'.$zoom.'" data-latitude="'.$latitude.'" data-longitude="'.$longitude.'" data-marker="'.$marker.'" data-style="'.$style.'"></div>'.$custom_style_tag.'</div>';
+
+						$classes = array( $animate, $custom_class_name );
+						$output .= be_gdpr_maps_alt_content( $static_map_api_url, $classes,$animation_type, $custom_style_tag );
+
 					}
 				}
 			}
@@ -100,6 +99,28 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 		return $output;
 	}
 	add_shortcode( 'tatsu_gmaps', 'tatsu_gmaps' );
+}
+
+if( !function_exists( 'be_gdpr_maps_alt_content' ) ){
+	function be_gdpr_maps_alt_content( $static_map_api_url, $classes, $animation_type, $custom_style_tag ){
+		$result = '';
+		$response = wp_remote_get( $static_map_api_url ,
+						array( 'timeout' => 10,
+						'headers' => array( 'Content-Type' => 'image/png') 
+						));
+
+		if( !is_wp_error( $response ) ){
+			$result .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-message '. join( $classes, ' ' ) .' " data-animation="'.$animation_type.'" style="background-position:center;background-size:cover;background-image:url(data:image/png;base64,'.base64_encode( $response['body']).');" >  
+			'.$custom_style_tag.'
+			<div class="static-map-overlay">
+			<div class="static-map-content">' . do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="google maps"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup] ' ))) .'</div>
+			</div>
+			</div>';
+		} else {
+			$result .= do_shortcode( str_replace( '[be_gdpr_api_name]','[be_gdpr_api_name api="google maps"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup] ' ) ) );
+		}
+		return $result;
+	}
 }
 
 ?>

@@ -58,20 +58,39 @@ if (!function_exists('tatsu_gradient_icon')) {
             $transparent_bg = 'transparent-bg';
 		}
 		
-
 		//GDPR Privacy preference popup logic
-		$video_details =  be_get_video_details($video_url);
-		if( $mfp_class === 'mfp-iframe' ){
-			if( function_exists( 'be_gdpr_privacy_ok' ) ? !be_gdpr_privacy_ok($video_details['source']) : false ){
-				$mfp_class = 'mfp-popup';
-				$href = '#gdpr-alt-lightbox-'.$key;
-				$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+		$gdpr_atts = '{}';
+		$gdpr_concern_selector = '';
+		if( 1 == $lightbox && !empty( $video_url ) ){
+			if( function_exists( 'be_gdpr_privacy_ok' ) ){
+				$video_details =  be_get_video_details($video_url);
+				if( !empty( $_COOKIE ) ){
+					if( !be_gdpr_privacy_ok($video_details['source'] ) ){
+						$mfp_class = 'mfp-popup';
+						$href = '#gdpr-alt-lightbox-'.$key;
+						$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+					}
+				} else {
+					$gdpr_atts = array(
+						'concern' => $video_details[ 'source' ],
+						'add' => array( 
+							'class' => array( 'mfp-popup' ),
+							'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+						),
+						'remove' => array( 
+							'class' => array( $mfp_class )
+						)
+					);
+					$gdpr_concern_selector = 'be-gdpr-consent-required';
+					$gdpr_atts = json_encode( $gdpr_atts );
+					$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+				}
 			}
 		}
         
 		$output .= 
 		'<div class="tatsu-module tatsu-gradient-icon tatsu-icon-shortcode align-'.$alignment.' '.$custom_class_name.' '. $transparent_bg.' '.$hover_effect_parent.'">
-				<a href="'.$href.'" class="tatsu-icon-bg tatsu-custom-icon-bg '.$size.' '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" '.$new_tab.'>
+				<a href="'.$href.'" class="tatsu-icon-bg tatsu-custom-icon-bg '.$size.' '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>
 					<i class="tatsu-icon '.$name.' default"></i>
 					<i class="tatsu-icon '.$name.' hover"></i>
 				</a>

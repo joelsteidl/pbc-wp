@@ -506,6 +506,7 @@
 		'noajax' => '0',
 		'forcedownload' => '0',
 		'timely' => '0',
+		'nofonta' => '0',
 		'id3' => '1',
 		'topicsort' => '0',
 		'font' => 'arial',

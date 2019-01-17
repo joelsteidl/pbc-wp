@@ -175,7 +175,14 @@
                 position: "fixed",
                 top: offset
               };
-              css.width = elm.css("box-sizing") === "border-box" ? elm.outerWidth() + "px" : elm.width() + "px";
+
+              if( typeof elm[0].getBoundingClientRect === 'function' ){
+                css.width = elm[0].getBoundingClientRect().width;
+              } else {
+                css.width = elm.css("box-sizing") === "border-box" ? elm.outerWidth() + "px" : elm.width() + "px";
+
+              }
+              
               elm.css(css).addClass(sticky_class);
               if (manual_spacer == null) {
                 elm.after(spacer);

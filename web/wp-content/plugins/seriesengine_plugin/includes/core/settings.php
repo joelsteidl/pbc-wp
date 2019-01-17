@@ -1713,6 +1713,26 @@
 	};
 
 	add_settings_field(
+		'enm_seriesengine_nofonta', 
+		'Disable Font Awesome?: <p class="se-form-instructions">Developers: Turn off Series Engine\'s instance of Font Awesome if you want to use your own.</p>', 
+		'enm_seriesengine_nofonta', 
+		'seriesengine_plugin', 
+		'enm_seriesengine_settings' 
+	);
+	
+	function enm_seriesengine_nofonta() {
+		$se_options = get_option( 'enm_seriesengine_options' );
+		$se_nofonta = $se_options['nofonta'];
+		if ($se_nofonta == "1") {
+			echo "<select id='nofonta' name='enm_seriesengine_options[nofonta]'><option value='1' selected='selected'>Yes</option><option value='0'>No</option></select><br /><br />";
+		} elseif ($se_nofonta == "0" ) {
+			echo "<select id='nofonta' name='enm_seriesengine_options[nofonta]'><option value='1'>Yes</option><option value='0' selected='selected'>No</option></select><br /><br />";
+		} else {
+			echo "<select id='nofonta' name='enm_seriesengine_options[nofonta]'><option value='1'>Yes</option><option value='0' selected='selected'>No</option></select><br /><br />";
+		}
+	};
+
+	add_settings_field(
 		'enm_seriesengine_id3_style', 
 		'Try to Get File Size/Duration from Files?: <p class="se-form-instructions">If enabled, Series Engine will try to automatically populate the lenth and file size fields for your podcast files. Some servers have trouble with this.</p>', 
 		'enm_seriesengine_id3_input', 
@@ -3567,6 +3587,7 @@
 		$valid['deftrans'] = $input['deftrans'];
 		$valid['forcedownload'] = $input['forcedownload'];
 		$valid['timely'] = $input['timely'];
+		$valid['nofonta'] = $input['nofonta'];
 		$valid['font'] = strip_tags( $input['font'] );
 		$valid['customfont'] = strip_tags( $input['customfont'] );
 		$valid['explorerbackground'] = strip_tags( $input['explorerbackground'] );

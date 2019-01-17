@@ -1,13 +1,44 @@
 <?php
 
-function tatsu_register_module( $tag, $options ) {
-	// if( 'tatsu_gsection_title' == $tag ) {
-	// }
+function tatsu_register_module( $tag, $options, $output_function = '' ) {
+	if( !is_array( $options ) ) {
+		trigger_error( "Options passed to $tag is not an array", E_USER_NOTICE );
+		return;
+	}
+	if( $output_function ) {
+		if( !function_exists( $output_function ) ) {
+			trigger_error( "$output_function - passed as shortcode handler for $tag is not a function", E_USER_NOTICE );
+			return;
+		}
+	}else if( !shortcode_exists( $tag ) ) {
+		trigger_error( "The Tag $tag is not a registered shortcode", E_USER_NOTICE );
+		return;
+	}
+	if( tatsu_validate_module_options( $options ) ) {
+		Tatsu_Module_Options::getInstance()->register_module( $tag, $options, $output_function );
+	}
+}
+
+function tatsu_remap_modules( $tags, $options, $output_function = false ) {
+	if( !is_array($tags) || empty($tags[0]) ) {
+		trigger_error( "tatsu_remap_modules expects arg 1 to be an array. If you are trying to register a single module, try tatsu_register_module instead." );
+		return;
+	}
+	if( ( !function_exists( $output_function ) ) || !is_array( $options ) ) {
+		trigger_error( "Either $output_function is not a function or options is not an array", E_USER_NOTICE );
+		return;
+	}
+	if( tatsu_validate_module_options( $options ) ) {
+		Tatsu_Module_Options::getInstance()->remap_modules( $tags, $options, $output_function );
+	}
+}
+
+function tatsu_register_global_module( $tag, $options ) {
 	if( !shortcode_exists( $tag ) || !is_array( $options ) ) {
 		trigger_error( "Either the Tag $tag is not a registered shortcode or options is not an array", E_USER_NOTICE );
 	}
 	if( tatsu_validate_module_options( $options ) ) {
-		Tatsu_Module_Options::getInstance()->register_module( $tag, $options );
+		Tatsu_Global_Module_Options::getInstance()->register_module( $tag, $options );
 	}
 }
 
@@ -124,6 +155,15 @@ function is_edited_with_tatsu( $post_id ) {
 	}
 }
 
+function edited_once_with_tatsu( $post_id ) {
+	$edited_with = get_post_meta( $post_id, '_edited_with', true );
+	$edited_once_with_tatsu = get_post_meta( $post_id, '_edited_once_with_tatsu', true );
+	if( 'tatsu' === $edited_with || !empty( $edited_once_with_tatsu ) || isset( $_GET['tatsu-frame'] ) ) {
+		return true;
+	}
+	return false;
+}
+
 
 function tatsu_validate_module_options( $options ) {
 	return true;
@@ -148,6 +188,43 @@ function tatsu_register_svg( $kit, $title, $icons, $abspath ) {
 
 function tatsu_deregister_svg( $kit ) {
 	Tatsu_Svgs::getInstance()->deregister_svgs( $kit );
+}
+
+function tatsu_get_svg_icon( $svg_name = '' ) {
+	if( !empty( $svg_name ) && 'string' === gettype( $svg_name ) ) {
+		$svg_family_name_array = explode( ':', $svg_name );
+		if( !empty( $svg_family_name_array[1] ) ) {
+			$svg_name = $svg_family_name_array[1] . '.svg' ;
+			$svg_icon_html = file_get_contents( TATSU_PLUGIN_DIR . '/includes/icons/svgs/' . $svg_name );
+			return $svg_icon_html;
+		}
+	}
+	return '';
+}
+
+function tatsu_register_header_module( $tag, $options, $output_function, $register_shortcode = false ) {
+	if( empty( $tag ) ||  !is_array( $options ) ) {
+		trigger_error( "Either the Tag $tag is empty or options is not an array or the output function doesn't exist", E_USER_NOTICE );
+	}
+	Tatsu_Header_Module_Options::getInstance()->register_module( $tag, $options, $output_function, $register_shortcode );
+}
+
+function tatsu_deregister_header_module( $tag ) {
+	if( 'core' === Tatsu_Module_Options::getInstance()->get_module_type( $tag ) ) {
+		trigger_error( __( 'You cannot deregister core modules such as Rows and Columns', 'tatsu' ), E_USER_NOTICE );
+	}
+	Tatsu_Module_Options::getInstance()->deregister_module( $tag );
+}
+
+function tatsu_register_header_concept( $name, $options ) {
+	if( !is_array( $options ) || !array_key_exists( 'shortcode', $options ) ) {
+		trigger_error( __( 'You cannot register a Header Concept without entering its shortcode content', 'tatsu' ), E_USER_NOTICE );
+	}
+	Tatsu_Header_Concepts::getInstance()->register_concept( $name, $options );
+}
+
+function tatsu_deregister_header_concept( $name ) {
+	Tatsu_Header_Concepts::getInstance()->deregister_concept( $name );
 }
 
 ?>

@@ -14,7 +14,12 @@ class Tatsu_Store {
 
 	public function get_store( WP_REST_Request $request ) {
 		$this->post_id = $request->get_param('post_id');
-		$this->store = array_merge( $this->get_module_options() , $this->get_page_content(), $this->get_page_templates() );
+		$this->store = array_merge( $this->get_module_options(), $this->get_page_content(), $this->get_page_templates() );
+		if( tatsu_check_if_global() && array_key_exists( 'tatsu_module_options', $this->store ) ) {
+			$this->store[ 'tatsu_module_options' ] = array_merge( $this->store[ 'tatsu_module_options' ], $this->get_gsection_modules() );
+		}
+	//	$header_store = new Tatsu_Header_Store();
+	//	$this->store = $header_store->get_store();
 		$response = new WP_REST_Response( $this->store );
 		if( ob_get_length() ) {
 			ob_clean();
@@ -24,6 +29,9 @@ class Tatsu_Store {
 		return $response;
 	}	
 
+	private function get_gsection_modules() {
+		return Tatsu_Global_Module_Options::getInstance()->get_modules();
+	}
 
 	private function get_module_options() {
 		return Tatsu_Module_Options::getInstance()->get_module_options(); 

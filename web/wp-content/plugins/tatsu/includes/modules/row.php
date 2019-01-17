@@ -21,6 +21,8 @@ if (!function_exists('tatsu_row')) {
 			'custom_margin' => '',
 			'margin' => '',
 			'bg_color' => '',
+			'border' => '',
+			'border_color' => '',
 			'key' => be_uniqid_base36(true),
 		),$atts );
 		extract( $atts );

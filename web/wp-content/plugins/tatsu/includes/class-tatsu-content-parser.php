@@ -7,13 +7,16 @@ if( !class_exists('Tatsu_Parser')) {
 		private $content;
 		private $tatsu_page_content;
 		private $post_id; 
+		private $type;
 		
 
-		public function __construct( $content = '', $post_id = false ) {
+		public function __construct( $content = '', $post_id = false, $type = 'content' ) {
 			$this->content = $content;
 			$this->tatsu_page_content = array();
 			$this->tatsu_registered_modules = Tatsu_Module_Options::getInstance()->get_registered_modules();
+			$this->tatsu_remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();
 			$this->post_id = $post_id;
+			$this->type = $type;
 		}
 
 		public function get_tatsu_page_content() { 
@@ -39,6 +42,9 @@ if( !class_exists('Tatsu_Parser')) {
 
 
 		private function wrap_content( $content ) {
+			if( 'header' === $this->type ) {
+				return $content;
+			}
 			$pattern = get_shortcode_regex();
 
 			$content_array = preg_split("/$pattern/s", $content, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_OFFSET_CAPTURE );
@@ -108,6 +114,9 @@ if( !class_exists('Tatsu_Parser')) {
 			$count = count($matches[0]);
 			for($counter = 0;$counter < $count; $counter++ ){
 				$tag = $matches[2][$counter];
+				if( array_key_exists( $tag, $this->tatsu_remapped_modules ) ) {
+					$tag = $this->tatsu_remapped_modules[$tag];
+				}
 				$atts = $this->parse_atts( $matches[3][$counter] , $tag, $counter, $count );  // do some processing like combining color & opacity atts. 
 				$type = $this->get_module_type( $tag );
 				$builder_layout = $this->get_builder_layout( $tag );
@@ -156,7 +165,12 @@ if( !class_exists('Tatsu_Parser')) {
 		}
 
 		private function get_module_type( $tag ) {
-			return Tatsu_Module_Options::getInstance()->get_module_type( $tag );
+			$type = Tatsu_Module_Options::getInstance()->get_module_type( $tag );
+			if( $type ) {
+				return $type;
+			} else {
+				return Tatsu_Header_Module_Options::getInstance()->get_module_type( $tag );
+			}
 		}
 
 		private function get_builder_layout( $tag ) {
@@ -187,7 +201,7 @@ if( !class_exists('Tatsu_Parser')) {
 					unset( $atts['added_by_parser'] );
 				}
 				
-				if( 'tatsu_column' === $tag || 'tatsu_inner_column' === $tag ){
+				if( 'tatsu_header_column' === $tag || 'tatsu_column' === $tag || 'tatsu_inner_column' === $tag ){
 					if( !isset( $atts[ 'column_width' ] ) ){
 						if( $atts['layout'] == '1/1' )
 							$atts['column_width'] = '100';
@@ -261,10 +275,12 @@ if( !class_exists('Tatsu_Parser')) {
 
 				// Parse Responsive Attributes which are in json format
 				foreach ( $atts as $att => $value ) {
-					$value = json_decode( $value, true );
-					if( json_last_error() === JSON_ERROR_NONE && is_array( $value ) ) {
-						$atts[$att] = $value;
-					}
+					if( is_string($value) ){
+                        $value = json_decode( $value, true );
+                        if( json_last_error() === JSON_ERROR_NONE && is_array( $value ) ) {
+                            $atts[$att] = $value;
+                        }
+                    }
 				}
 
 				return $atts;

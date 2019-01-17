@@ -27,7 +27,12 @@ function tatsu_shortcodes_from_content( $inner ) {
 		return $new_content;
 	}
 	foreach ( $inner as $module ) {
-		$new_content .= '['.$module['name'];
+		$module_name = $module['name'];
+		$remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();
+		if( is_array( $remapped_modules ) && array_key_exists( $module_name, $remapped_modules ) ) {
+			$module_name = $remapped_modules[$module_name];
+		}
+		$new_content .= '['. $module_name;
 		if( is_array( $module['atts'] ) ) {
 			if( !array_key_exists( 'key', $module['atts'] ) || empty( $module['atts']['key'] )  ) {
 				$module['atts']['key'] = be_uniqid_base36(true);
@@ -50,7 +55,7 @@ function tatsu_shortcodes_from_content( $inner ) {
 				$new_content .=	shortcode_unautop( stripslashes_deep( $module['atts']['content'] ) );
 			}
 		}
-		$new_content .= '[/'.$module["name"].']';
+		$new_content .= '[/'.$module_name.']';
 	}
 	return $new_content;		
 }
@@ -81,17 +86,36 @@ function tatsu_edit_url( $post_id ) {
 		$tatsu_edit_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_edit_url );
 	}
 	$post_type = get_post_type( $post_id );
-	if( $post_type === 'global_sections' ){
+	if( $post_type === 'tatsu_gsections' ){
 		$tatsu_edit_url = add_query_arg( array( 'tatsu-global' => '1', ), $tatsu_edit_url );
 	}
 	$tatsu_edit_url = tatsu_protocol_based_urls( $tatsu_edit_url );
-	return esc_url( $tatsu_edit_url );
+	return esc_url_raw( $tatsu_edit_url );
+}
+
+
+function tatsu_create_new_post_url( $post_type = 'page' ) {
+	$new_post_url = add_query_arg( [
+		'action' => 'tatsu_new_post',
+		'post_type' => $post_type,
+	], admin_url( 'edit.php' ) );
+	//$new_post_url = wp_nonce_url( $new_post_url, 'tatsu_action_new_post' );
+	return $new_post_url;
+}
+
+function tatsu_header_builder_url() {
+	$tatsu_header_builder_url = add_query_arg( array( 'tatsu-header' => '1' ), get_home_url() );
+	if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
+		$tatsu_header_builder_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_header_builder_url );
+	}
+	$tatsu_header_builder_url = tatsu_protocol_based_urls( $tatsu_header_builder_url );
+	return esc_url( $tatsu_header_builder_url );	
 }
 
 function tatsu_check_if_global() {
 	if( array_key_exists( 'post_id', $_POST ) ) {
 		$post_type = get_post_type( $_POST[ 'post_id' ] );
-		if( 'global_sections' === $post_type ) {
+		if( 'tatsu_gsections' === $post_type ) {
 			return true;
 		}
 	}
@@ -147,6 +171,60 @@ function tatsu_get_image_id_from_url( $attachment_url = '', $size = 'full' ) {
 function tatsu_protocol_based_urls( $url ) {
 	$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https:" : "http:";
 	return $protocol. str_replace( array( 'http:', 'https:' ), '', $url );
+}
+
+if( !function_exists( 'tatsu_global_section_add_penultimate_class' ) ) {
+	function tatsu_global_section_add_penultimate_class( $classes = '' ) {
+		return $classes .= ' tatsu-global-section tatsu-global-section-penultimate';
+	}
+}
+
+if( !function_exists( 'tatsu_global_section_add_bottom_class' ) ) {
+	function tatsu_global_section_add_bottom_class( $classes = '' ) {
+		return $classes .= ' tatsu-global-section tatsu-global-section-bottom';
+	}
+}
+
+if( !function_exists( 'tatsu_global_section_add_top_class' ) ) {
+	function tatsu_global_section_add_top_class( $classes = '' ) {
+		return $classes .= ' tatsu-global-section tatsu-global-section-top';
+	}
+}
+
+function tatsu_header_print( $inner ) {
+	$output = '';
+	foreach( $inner as $module ) {
+		if( !empty( $module['name'] ) && !empty( $module['id'] ) ) {
+			$module_options = Tatsu_Header_Module_Options::getInstance()->get_module( $module['name'] );
+			if( $module_options && function_exists( $module_options['output'] ) ) {
+				$id = $module['id'];
+				$atts = !empty( $module['atts'] ) ? $module['atts'] : array();
+				$inner = !empty( $module['inner'] ) ? $module['inner'] : array();
+				$output .= call_user_func( $module_options['output'], $id, $atts, $inner );
+			}
+		}	
+	}
+	return $output;
+}
+
+function tatsu_header_css_print( $inner ) {
+	$output = '';
+	$atts = array();
+	foreach( $inner as $module ) {
+		if( !empty( $module['atts'] ) && !empty( $module['name'] ) && !empty( $module['id'] ) ) {
+			foreach( $module['atts'] as $att => $value ) {
+				if( is_array( $value ) ) {
+					$value = json_encode( $value );
+				}
+				$atts[$att] = $value;
+			}
+			$output .= be_generate_css_from_atts( $atts, $module['name'], $module['id'], 'header' );
+		}
+		if( !empty( $module['inner'] ) ) {
+			$output .= tatsu_header_css_print( $module['inner'] );
+		}
+	}
+	return $output;
 }
 
 if( !function_exists( 'be_uniqid_base36' ) ) {
@@ -215,7 +293,7 @@ if( !function_exists( 'tatsu_get_global_sections' ) ) {
 	function tatsu_get_global_sections() {
 		$global_section_array = array();
 
-		$global_sections_posts = get_posts(array( 'post_type' => 'global_sections') );
+		$global_sections_posts = get_posts(array( 'post_type' => 'tatsu_gsections') );
 		if( $global_sections_posts ) {
 			foreach( $global_sections_posts as $section ) {
 				$global_section_array[ (string) $section->ID ] =  $section->post_title;
@@ -245,6 +323,29 @@ if( !function_exists( 'tatsu_get_global_sections_localize_data' ) ) {
 		$global_section_array = tatsu_get_global_sections();
 
 		$post_types = tatsu_get_custom_post_types();
+		foreach( $post_types as $post_type_slug => $post_type_label ){
+			$post_type_object = get_post_type_object( $post_type_slug );
+			$items = array( 'single-'.$post_type_slug => 'Single ' . $post_type_label );
+			if( $post_type_object->has_archive !== false || $post_type_slug === 'post' ){
+				$items = array_merge( 
+								$items, 
+								array( 
+									'archive-'.$post_type_slug => 'Archive ' . $post_type_label 
+								) 
+							);
+			}
+			$post_types[ $post_type_slug ] = array(
+												'label' => $post_type_label,
+												'items' => $items
+											);
+		}
+		$post_types[ 'others' ] = array(
+									'label' => 'Others',
+									'items' => array(
+										'404' => '404 Page',
+										'search' => 'Search',
+									)
+								);
 
 		$post_type_options = apply_filters( 'tatsu_global_section_post_types', $post_types );
 		
@@ -256,6 +357,23 @@ if( !function_exists( 'tatsu_get_global_sections_localize_data' ) ) {
 					);
 	}
 }
+
+if( !function_exists( 'tatsu_admin_get_post_type' ) ) {
+	function tatsu_admin_get_post_type() {
+        global $post, $typenow, $current_screen;
+        if ($post && $post->post_type) {
+            return $post->post_type;
+		}elseif ($typenow) {
+            return $typenow;
+		} elseif ($current_screen && $current_screen->post_type) {
+            return $current_screen->post_type;
+		} elseif (isset($_REQUEST['post_type'])) {
+            return sanitize_key($_REQUEST['post_type']);
+		}
+        return null;
+    }
+}
+
 
 if( !function_exists( 'tatsu_get_custom_post_types' ) ) {
 	function tatsu_get_custom_post_types() {
@@ -270,12 +388,37 @@ if( !function_exists( 'tatsu_get_custom_post_types' ) ) {
 			'post'		=> 'post'
 		);
 		$custom_post_types = get_post_types( $args, 'names', 'and' );
-		unset( $custom_post_types[ 'global_sections' ] );
+		unset( $custom_post_types[ 'tatsu_gsections' ] );
 		$post_types = array_merge( $default_post_types, $custom_post_types );
 		foreach( $post_types as $type => $value ){
 			$post_types[ $type ] = tatsu_capitalize_post_name( $value );
 		}
-		return $post_types;
+		return apply_filters( 'tatsu_supported_post_types', $post_types );
+	}
+}
+
+if( !function_exists( 'tatsu_is_others_page_type' ) ){
+	function tatsu_is_others_page_type(){
+		$others_type_array = array(
+			'search',
+			'404'
+		);
+		$is_others_type = false;
+		$page_type = '';
+		foreach( $others_type_array as $type ){
+			if( function_exists( 'is_'.$type ) ){
+				if( call_user_func( 'is_'.$type ) ){
+					$is_others_type = true;
+					$page_type = $type;
+				}
+			}	
+		}
+
+		return array(
+			$is_others_type,
+			$page_type
+		);
+
 	}
 }
 
@@ -286,8 +429,6 @@ if ( !function_exists( 'tatsu_global_section_meta_values' ) ) {
 
 		
 		$metas_from_all_types = Tatsu_Global_Section_Meta::getInstance()-> get_metas();
-	
-
 		foreach ( $metas_from_all_types as $type => $value ) {
 			$temp_options_array = array();
 			foreach( $value as $meta_key => $meta_value ) {
@@ -308,7 +449,13 @@ if ( !function_exists( 'tatsu_global_section_meta_values' ) ) {
 					'att_name' => $type.'date',
 					'type' => 'text',
 					'label' => __( 'Date Format', 'tatsu' ),
-					'visible' => array( $type,'=','date' ),
+					'visible' => array(
+						'condition' => array(
+							array( $type, '=','date' ),
+							array( 'post_type','=',$type )
+						),
+						'relation'	=> 'and',
+					),
 					'default' => 'F j, Y',
 					'tooltip' => '',
 				),
@@ -325,9 +472,7 @@ if( !function_exists( 'tatsu_register_global_section_meta' ) ){
         if( empty( $id ) || empty( $args ) || !is_array( $args ) ) {
             trigger_error( __( 'Incorrect Arguments to register a consent condition', 'be-gdpr' ), E_USER_NOTICE );
 		}
-		if( get_theme_support('tatsu_global_sections') ){
-			Tatsu_Global_Section_Meta::getInstance()->register_meta($id,$args);
-		}
+		Tatsu_Global_Section_Meta::getInstance()->register_meta($id,$args);
     }
 }
 
@@ -342,6 +487,317 @@ if ( !function_exists( 'tatsu_get_sidebar_list' ) ) {
 		}
 		return $temp_sidebar_list;
 
+	}
+}
+
+if( !function_exists( 'tatsu_gsection_get_archive_title' ) ){
+	function tatsu_gsection_get_archive_title( $title ) {
+		if ( is_category() ) {
+			$title = single_cat_title( '', false );
+		} elseif ( is_tag() ) {
+			$title = single_tag_title( '', false );
+		} elseif ( is_author() ) {
+			$title = '<span class="vcard">' . get_the_author() . '</span>';
+		} elseif ( is_post_type_archive() ) {
+			$title = post_type_archive_title( '', false );
+		} elseif ( is_tax() ) {
+			$title = single_term_title( '', false );
+		} elseif ( is_year() ) {
+			/* translators: Yearly archive title. 1: Year */
+			$title = get_the_date( _x( 'Y', 'yearly archives date format' ) ) ;
+		} elseif ( is_month() ) {
+			/* translators: Monthly archive title. 1: Month name and year */
+			$title = get_the_date( _x( 'F Y', 'monthly archives date format' ) );
+		} elseif ( is_day() ) {
+			/* translators: Daily archive title. 1: Date */
+			$title =  get_the_date( _x( 'F j, Y', 'daily archives date format' ) );
+		}
+		return $title;
+	}
+	add_filter( 'get_the_archive_title', 'tatsu_gsection_get_archive_title' );
+}
+
+if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
+	function tatsu_get_gallery_image_from_source($source, $images = false) {
+		$media = $return = array();
+		global $be_themes_data; 
+		switch ($source['source']) {
+			case 'instagram':
+				$transient_var = 'transient_instagram_user_data_'.$source['account_name'].'_'.$source['count'];
+				delete_transient( $transient_var );
+				$transient_media = get_transient( $transient_var );
+				if($transient_media && isset($transient_media) && !empty($transient_media)) {
+					$media = unserialize($transient_media);
+				} else {
+					if ( get_theme_mod('instagram_token', false) ){
+						$instagram_access_token = get_theme_mod('instagram_token', '');
+						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+						if(isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
+							delete_transient( $transient_var );
+							$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
+							return $return;
+						}
+						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
+							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
+							$media = $instagram_media;
+						}
+					}else{
+						delete_transient( $transient_var );
+						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under Cutomizer > GLOBAL SITE SETTINGS. Access Token for your account can be generated from http://instagram.pixelunion.net/', 'exponent-modules').'</div>';
+						return $return;
+					}					
+				}
+
+				if($media && isset($media) && !empty($media)) {
+					$images = json_decode($media["body"]);
+					$images = $images->data;
+					foreach ($images as $key => $value) {
+						$temp_image_array = array();
+						$temp_image_array = array (
+							'thumbnail' => $value->images->standard_resolution->url,
+							'full_image_url' => $value->images->standard_resolution->url,
+							'caption' => !empty($value->caption->text) ? $value->caption->text : '',
+							'description' => !empty($value->caption->text) ? $value->caption->text : '',
+							'width' => $value->images->standard_resolution->width,
+							'height' => $value->images->standard_resolution->height,
+							'id' => '',
+							'has_video' => false,
+							
+						);
+						array_push($return, $temp_image_array);
+					}
+				}
+				return $return;
+				break;
+			case 'flickr':
+				delete_transient( 'transient_flickr_user_data_'.$source['account_name'].'_'.$source['count'] );
+				delete_transient( 'transient_flickr_user_data_'.$source['account_name'].'_'.$source['count'] );
+				$transient_media = get_transient( 'transient_flickr_user_data_'.$source['account_name'].'_'.$source['count'] );
+				if($transient_media && isset($transient_media) && !empty($transient_media)) {
+					$media = unserialize($transient_media);
+				} else {
+					$user_data = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&username='.$source['account_name'].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033' );
+					$user_data = unserialize($user_data["body"]);
+					if(isset($user_data['stat']) && $user_data['stat'] == 'ok') {
+						if(isset($user_data["user"]["nsid"]) && !empty($user_data["user"]["nsid"]) && $user_data["user"]["nsid"]) {
+							$flickr_media = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.photos.search&user_id='.$user_data["user"]["nsid"].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033&per_page='.$source['count'].'&page=1&extras=url_z,url_o' );
+							$flickr_media = unserialize($flickr_media["body"]);
+							if(isset($flickr_media['stat']) && $flickr_media['stat'] == 'ok') {
+								set_transient( 'transient_flickr_user_data_'.$source['account_name'].'_'.$source['count'], serialize($flickr_media), 60 * 60 * 1 );
+								$media = $flickr_media;
+							} else {
+								$return['error'] = '<b>'.__('Flickr Error : ', 'oshine-modules').'</b>'.__("Unknown Error", "be-themes");
+								return $return;
+							}
+						}
+					} else {
+						$return['error'] = '<b>'.__('Flickr Error : ', 'oshine-modules').'</b>'.$user_data["message"];
+						return $return;
+					}
+				}
+				if($media && isset($media) && !empty($media)) {
+					$images = $media['photos']['photo'];
+					foreach ($images as $key => $value) {
+						$temp_image_array = array();
+						$temp_image_array = array (
+							'thumbnail' => (isset($value["url_z"]) && !empty($value["url_z"])) ? $value["url_z"] : $value["url_o"],
+							'full_image_url' => (isset($value["url_z"]) && !empty($value["url_z"])) ? $value["url_z"] : $value["url_o"],
+							'caption' => !empty($value["title"]) ? $value["title"] : '',
+							'description' => !empty($value["title"]) ? $value["title"] : '',
+							'width' => (isset($value["width_z"]) && !empty($value["width_z"])) ? $value["width_z"] : $value["width_o"],
+							'height' => (isset($value["height_z"]) && !empty($value["height_z"])) ? $value["height_z"] : $value["height_o"],
+							'id' => '',
+							'has_video' => false
+						);
+						array_push($return, $temp_image_array);
+					}
+				}
+				return $return;
+			default:
+				if($images) {
+					$images = explode(",", $images);
+					foreach ($images as $image) {
+						$temp_image_array = array();
+						$image_atts = be_get_gallery_image($image, $source['col'], $source['masonry']);
+						$attachment_thumb = wp_get_attachment_image_src( $image, $image_atts['size']);
+						$attachment_full = wp_get_attachment_image_src( $image, 'full');
+						$attachment_thumb_url = $attachment_thumb[0];
+						$attachment_full_url = $attachment_full[0];
+						$video_url = get_post_meta( $image, 'be_themes_featured_video_url', true );
+						//var_dump( $video_url );
+						$attachment_info = be_wp_get_attachment($image);
+						$has_video = false;
+						if( (! empty( $video_url ))  ) {
+							$attachment_full_url = $video_url;
+							$has_video = true;
+						}
+						$temp_image_array = array (
+							'thumbnail' => $attachment_thumb_url,
+							'full_image_url' => $attachment_full_url,
+							'caption' => $attachment_info['title'],
+							'description' => $attachment_info['description'],
+							'width' => $attachment_info['width'],
+							'height' => $attachment_info['height'],
+							'id' => $image,
+							'thumb_width' => $attachment_thumb[ 1 ],
+							'thumb_height' => $attachment_thumb[ 2 ],
+							'has_video' => $has_video,
+						);
+						array_push($return, $temp_image_array);
+					}
+					return $return;
+				}
+				break;
+		}
+    }
+}
+if (!function_exists('be_get_gallery_image')) {
+	function be_get_gallery_image($id, $column, $masonry) {
+		$image = array();
+		$width_wide = get_post_meta( $id, 'be_themes_width_wide', true );
+		$height_wide = get_post_meta( $id, 'be_themes_height_wide', true );
+		if($column == 'three' || $column == 'four' || $column == 'five') {
+			if($masonry) {
+				$image['size'] = 'gallery-masonry';
+			} else {
+				if($width_wide && $height_wide) {
+					$image['size'] = '3col-gallery-wide-width-height';
+				} else if($width_wide) {
+					$image['size'] = '3col-gallery-wide-width';
+				} else if($height_wide) {
+					$image['size'] = '3col-gallery-wide-height';
+				} else {
+					$image['size'] = 'gallery';
+				}
+			}
+		} elseif($column == 'two') {
+			if($masonry) {
+				$image['size'] = '2col-gallery-masonry';
+			} else {
+				$image['size'] = '2col-gallery';
+			}
+		} elseif($column == 'one') { 
+			$image['size'] = 'full';
+		} else {
+			$image['size'] = 'gallery';
+		}
+		if($column != 'one'){
+			if($width_wide) {
+				$image['class'] = 'wide';
+			} else {
+				$image['class'] = 'not-wide';
+			}
+			if($width_wide && $height_wide) {
+				$image['alt_class'] = 'wide-width-height';
+			} else if($width_wide) {
+				$image['alt_class'] = 'wide-width';
+			} else if($height_wide) {
+				$image['alt_class'] = 'wide-height';
+			} else {
+				$image['alt_class'] = 'no-wide-width-height';
+			}
+		}else{
+			$image['class'] = 'not-wide';
+			$image['alt_class'] = 'no-wide-width-height';
+		}
+		return $image;
+	}
+}
+
+add_action('after_setup_theme', 'tatsu_crop_gallery_images');
+
+if ( !function_exists( 'tatsu_crop_gallery_images' ) ) {
+	function tatsu_crop_gallery_images(){
+		if( function_exists( 'add_image_size' ) ){
+		$aspect_ratio = false;
+		$aspect_ratio = apply_filters('gallery_aspect_ratio', $aspect_ratio);
+		
+		$gallery_image_height = $aspect_ratio ? round(650 / floatval($aspect_ratio)) : 385;
+		$gallery_2_col = $aspect_ratio ? round(1000 / floatval($aspect_ratio)) : 592;
+		$gallery_3_col_wide_width_height_image_height = $aspect_ratio ? round(1250 / floatval($aspect_ratio)) : 766;
+		$gallery_3_col_wide_width_image_height = $aspect_ratio ? round(1250 / floatval($aspect_ratio)) : 350;
+		$gallery_3_col_wide_height_image_height = $aspect_ratio ? 2*round(650 / floatval($aspect_ratio)) : 770;
+		// Gallery
+		add_image_size( 'gallery', 650, $gallery_image_height, true );
+		add_image_size( 'gallery-masonry', 650 );
+		add_image_size( '2col-gallery', 1000, $gallery_2_col, true );
+		add_image_size( '2col-gallery-masonry', 1000 );
+		add_image_size( '3col-gallery-wide-width-height', 1250, $gallery_3_col_wide_width_height_image_height, true );
+		add_image_size( '3col-gallery-wide-width', 1250, $gallery_3_col_wide_width_image_height, true );
+		add_image_size( '3col-gallery-wide-height', 650, $gallery_3_col_wide_height_image_height, true );
+		}
+	}
+}
+
+if( !function_exists( 'get_colorhub_palette_color' ) ){
+	function get_colorhub_palette_color( $palette_id ){
+		if( function_exists( 'colorhub_get_palette' ) ){
+			// return array(
+			// 		"id" => "palette:".$palette_id,
+			// 		"color" => colorhub_get_palette( $palette_id )
+			// );
+			return colorhub_get_palette( $palette_id );
+		}
+		return '#338ffa';
+	}
+}
+
+if ( !function_exists( 'tatsu_header_get_menu_list' ) ){
+	function tatsu_header_get_menu_list(){
+		$menus = wp_get_nav_menus();
+		$menu_details = array();
+		$menu_index = 0;
+		$default_menu = '';
+		if(!empty($menus)){
+			foreach($menus as $menu){
+				$menu_details[ $menu->term_id ] = $menu->name ;
+				if($menu_index == 0){
+					$default_menu = $menu->term_id;
+				}
+				$menu_index++; 
+			}
+		}
+		return array( $menu_details, $default_menu );
+	}
+}
+
+if( !function_exists( 'tatsu_get_image_path_from_id' ) ) {
+	function tatsu_get_image_path_from_id( $id = '', $size = 'full' ) {
+		if( !empty( $id ) ) {
+			$full_size_path = get_attached_file( $id, true );
+			if( 'full' === $size ) {
+				return $full_size_path;
+			}
+			$full_size_filename = wp_basename($full_size_path);
+			$size_info = image_get_intermediate_size($id, $size);
+			if(is_array($size_info) && !empty($size_info['file'])) {
+				$required_size_filename = $size_info['file'];
+				return str_replace($full_size_filename, $required_size_filename, $full_size_path);
+			}
+		}
+		return false;
+	} 
+}
+
+if( !function_exists( 'tatsu_get_image_datauri' ) ) {
+	function tatsu_get_image_datauri( $src = '', $size = 'full' ) {
+		if( !empty($src) ) {
+			$image_id = tatsu_get_image_id_from_url( $src );
+			if( !empty( $image_id ) ) {
+				$image_path = tatsu_get_image_path_from_id($image_id, $size);
+				if( $image_path ) {
+					$image_data = file_get_contents($image_path);
+					if( !empty($image_data) ) {
+						$encoded_image_data = base64_encode($image_data);
+						$mime_type = mime_content_type($image_path);
+						if(!empty($mime_type)) {
+							return 'data:'. $mime_type .';base64,'.$encoded_image_data;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 }
 

@@ -34,7 +34,9 @@ class Tatsu_Global_Section_Meta {
 	}
 
 	public function setup_hooks() {
-		do_action( 'tatsu_register_global_section_metas' );
+		if( current_theme_supports('tatsu-global-sections') ){
+			do_action( 'tatsu_register_global_section_metas' );
+		}
 	}
 
 	public function get_registered_metas() {

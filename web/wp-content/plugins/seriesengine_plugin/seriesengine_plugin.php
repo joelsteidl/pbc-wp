@@ -2,7 +2,7 @@
 /* Plugin Name: Series Engine 
 Plugin URI: http://seriesengine.com
 Description: Series Engine is the best way to share audio and video with WordPress. To get started, activate the plugin and open the new "Series Engine" menu. Follow the instructions on the <a href="admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide">User Guide page</a> to embed a media browser, change the color scheme and more.
-Version: 2.7.6
+Version: 2.7.7
 Author: Eric Murrell (Volacious) 
 Author URI: http://seriesengine.com */ 
 
@@ -18,7 +18,7 @@ $ENMSEUpdateChecker = PucFactory::buildUpdateChecker(
 
 /* ----- Install the Plugin ----- */
 
-define ( 'ENMSE_CURRENT_VERSION', '2.7.6' );
+define ( 'ENMSE_CURRENT_VERSION', '2.7.7' );
 
 $enmse_options = get_option( 'enm_seriesengine_options' ); 
 
@@ -323,6 +323,14 @@ add_action('admin_enqueue_scripts', 'enm_seriesengine_admin_enqueue');
 
 function enm_seriesengine_admin_enqueue() {
 	wp_enqueue_media();
+
+	$se_options = get_option( 'enm_seriesengine_options' );
+	if ( isset($se_options['nofonta']) ) {
+		$se_nofonta = $se_options['nofonta'];
+	} else {
+		$se_nofonta = 0;
+	}
+
 	// Add stylesheet
 	global $wp_version;
 	if( version_compare( $wp_version, '3.8', '>=') ) {
@@ -341,8 +349,11 @@ function enm_seriesengine_admin_enqueue() {
 	wp_register_script( 'seriesengineAdminWidget', plugins_url('/js/se_widget.js', __FILE__) );
 	wp_enqueue_script( 'seriesengineAdminWidget' );
 
-	wp_register_style( 'seriesenginefontawesome', plugins_url('/css/font-awesome/css/font-awesome.min.css', __FILE__) );
-	wp_enqueue_style( 'seriesenginefontawesome' );
+	if ( $se_nofonta == 0 ) {
+		wp_register_style( 'seriesenginefontawesome', plugins_url('/css/font-awesome/css/font-awesome.min.css', __FILE__) );
+		wp_enqueue_style( 'seriesenginefontawesome' );
+	}
+	
 }
 
 add_action('admin_init', 'enm_seriesengine_admin_init'); 
@@ -362,6 +373,11 @@ function enm_seriesengine_frontend_styles() {
 	} else {
 		$se_noajax = 0;
 	}
+	if ( isset($se_options['nofonta']) ) {
+		$se_nofonta = $se_options['nofonta'];
+	} else {
+		$se_nofonta = 0;
+	}
 	if ( $se_noajax == 1 ) {
 		wp_register_script( 'SeriesEngineFrontendJavascript', plugins_url('/js/seriesenginefrontendnoajax274.js', __FILE__) );
 		wp_enqueue_script( 'SeriesEngineFrontendJavascript' );
@@ -379,8 +395,11 @@ function enm_seriesengine_frontend_styles() {
 	}
 	wp_enqueue_style( 'wp-mediaelement' );
 	wp_enqueue_script( 'wp-mediaelement' );
-	wp_register_style( 'seriesenginefontawesome', plugins_url('/css/font-awesome/css/font-awesome.min.css', __FILE__) );
-	wp_enqueue_style( 'seriesenginefontawesome' );
+
+	if ( $se_nofonta == 0 ) {
+		wp_register_style( 'seriesenginefontawesome', plugins_url('/css/font-awesome/css/font-awesome.min.css', __FILE__) );
+		wp_enqueue_style( 'seriesenginefontawesome' );
+	}
 }
 
 /* ----- Modify User Theme to Add jQuery ----- */
@@ -1039,7 +1058,7 @@ endif;
 
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7.6" ) {
+if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7.7" ) {
 	include('includes/core/updates.php');
 }
 

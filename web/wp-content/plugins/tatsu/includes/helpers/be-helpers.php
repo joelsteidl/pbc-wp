@@ -1,5 +1,19 @@
 <?php
 
+/* ---------------------------------------------  */
+// Filter to generate slug for custom sidebars
+/* ---------------------------------------------  */
+if ( ! function_exists( 'be_generate_slug' ) ) {
+	function be_generate_slug( $phrase, $maxLength ) {
+		$result = strtolower($phrase);
+		$result = preg_replace( "/[^a-z0-9\s-]/", "", $result );
+		$result = trim( preg_replace( "/[\s-]+/", " ", $result ) );
+		$result = trim( substr( $result, 0, $maxLength ) );
+		$result = preg_replace( "/\s/", "-", $result );
+		return $result;
+	}
+}
+
 if( !function_exists( 'be_is_json' ) ) {
 	function be_is_json( $string ) {
 		json_decode($string);
@@ -81,17 +95,30 @@ if( !function_exists( 'be_reformat_module_options' ) ) {
 	}
 }
 
+if( !function_exists( 'be_reverse_reformat_atts' ) ) {
+	function be_reverse_reformat_atts( $arr ){
+		$new_arr = array();
+		foreach($arr as $key => $value){
+			$value['att_name'] = $key;
+			$new_arr[] = $value;
+		}
+		return $new_arr;
+	}
+}
+
 if( !function_exists( 'be_should_compute_css' ) ) {
 	function be_should_compute_css( $atts, $condition , $device, $val ){
+		//var_dump($val);
 		extract($atts);
 		$check_flag = array();
 		$relation = !empty($condition['relation'])? $condition['relation'] : '';
 		$condition_array = !empty( $condition['when'] ) ? $condition['when'] : array() ;
+
 		if( empty( $condition_array ) ) {
 			return true;
 		}
 		//$iterator = is_array( $condition_array[0] ) && is_string( $condition_array[0][0] ) ? $condition_array[0]: $condition_array;
-
+		
 		foreach( $condition_array as $each_key => $each_value ){// when array of array
 			//$condition_count = count( $condition_array );
 			$checking = is_array($each_value) && array_key_exists( 0, $each_value ) && is_string( $each_value[0] ) ? $each_value : $condition_array ;
@@ -169,6 +196,24 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 
 if( !function_exists( 'be_compute_css' ) ) {
 	function be_compute_css( $config_att, $condition, $val, $property ){
+		$css_output = '';
+		if( is_array( $val ) && $property === 'typography' ){
+			foreach( $val as $prop => $value ){
+				if( $prop === 'font-variant' ){
+					$style = preg_replace("/[^a-zA-Z]+/", "", $value);
+					$css_output .= 'font-weight : '. intval($value).';';
+					if( $style !== '' ){
+						$css_output .= 'font-style : '. $style .';';
+					}
+				} else if( $prop === 'font-family' ) {
+					$family = function_exists( 'be_get_font_family' ) ? be_get_font_family( $value ) : "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif";
+					$css_output .= $prop.' : '.$family.';';
+				}else{
+					$css_output .= $prop.' : '.$value.';';
+				}
+			}
+			return $css_output;
+		}
 
 		if( !empty( $condition['callback'] ) && function_exists( $condition['callback']) && !empty($val)){
 			$val = call_user_func($condition['callback'],$val);
@@ -182,7 +227,7 @@ if( !function_exists( 'be_compute_css' ) ) {
 			return $css;
 		}
 
-
+	
 		if( $config_att['type'] == 'color'){
 			$value = be_compute_color($val);
 			$val = $value[0];
@@ -196,7 +241,9 @@ if( !function_exists( 'be_compute_css' ) ) {
 					$output .= 'background: '.$value[0].'; -webkit-background-clip:text; -webkit-text-fill-color:transparent;';
 					
 				} else {
-					$output .= 'color: '.$value[0].';';
+					$output .= 'color: '.$value[0].' ';
+					$output .= !empty( $condition['append'] ) ? $condition['append'] : '';
+					$output .= ';';
 				}
 				return $output;
 			} else if( 'border-color' === $property){
@@ -206,7 +253,7 @@ if( !function_exists( 'be_compute_css' ) ) {
 
 		$prepend = !empty( $condition['prepend'] ) ? $condition['prepend'] : '';
 		$append = !empty( $condition['append'] ) ? $condition['append'] : '';
-
+		
 		$unit_of_val = preg_replace('/[0-9]|\./','',$val);
 
 		if( ( $config_att['type'] === 'slider' || $config_att['type'] === 'number' ) && $unit_of_val !== '' ){
@@ -261,42 +308,45 @@ if( !function_exists( 'be_compute_css' ) ) {
 }
 
 if( !function_exists( 'be_generate_css_from_atts' ) ) {
-	function be_generate_css_from_atts( $atts, $module, $uuid ){
-		$tatsu_registered_modules = Tatsu_Module_Options::getInstance()->get_modules();
+	function be_generate_css_from_atts( $atts, $module, $uuid, $module_options = '' ){
+		$module_options_class = empty( $module_options ) ? 'Tatsu_Module_Options' : 'Tatsu_'.$module_options.'_Module_Options';
+		$tatsu_registered_modules = $module_options_class::getInstance()->get_modules();
 		$atts = apply_filters( $module.'_before_css_generation', $atts );
 		$css_props = array();
 		if( !empty( $tatsu_registered_modules[$module] ) ){
 			$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
 		}
 		
-		foreach( $atts as $att => $value ){
-			if( !empty( $config[$att]['css'] )  ){
-				$responsive = !empty( $config[$att]['responsive'] ) ? $config[$att]['responsive'] : null ;
-				if( !empty( $responsive ) ) {
-					$temp_value = json_decode( $value, true );
-					if( $temp_value ) {
-						$value = $temp_value;
+		if( is_array( $atts ) ) {
+			foreach( $atts as $att => $value ){
+				if( !empty( $config[$att]['css'] )  ){
+					$responsive = !empty( $config[$att]['responsive'] ) ? $config[$att]['responsive'] : null ;
+					if( !empty( $responsive ) ) {
+						$temp_value = is_array( $value ) ? $value : json_decode( $value, true );
+						if( $temp_value ) {
+							$value = $temp_value;
+						}
 					}
-				}
-				$selectors = $config[$att]['selectors'];
-				foreach( $selectors as $selector => $condition ){
-					$index = str_replace('{UUID}', $uuid, $selector);
-					// if( ( 'color' === $config[$att]['type'] || 'gradient_color' === $config[$att]['type'] ) && empty( $value ) ) {
-					// 	$value = 'transparent';
-					// }
-					if( !empty( $value ) ) {
-						if( is_array( $value ) ) {	
-							foreach( $value as $device => $val ) {
-								be_should_compute_css( $atts, $condition, $device, $val ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+					
+					$selectors = $config[$att]['selectors'];
+					
+					foreach( $selectors as $selector => $condition ){
+						$index = str_replace('{UUID}', $uuid, $selector);
+
+						if( !empty( $value ) ) {
+							if( is_array( $value ) ) {	
+								foreach( $value as $device => $val ) {
+									be_should_compute_css( $atts, $condition, $device, $val ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+								}
+							} else {
+								be_should_compute_css( $atts, $condition, false, false, $module ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 							}
-						} else {
-							be_should_compute_css( $atts, $condition, false, false ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 						}
 					}
 				}
 			}
 		}
-		
+
 		$css = array();
 		foreach($css_props as $device => $selectors){
 			$css[$device] = '';
@@ -305,10 +355,12 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 					$css[$device] .= $selector. '{'.implode('' ,$css_atts). '}';
 				}
 			}
+			$css[$device] = trim( $css[$device] );
 		}
 
 		$output = '';
-		$output .= '<style>';
+
+	//	$output .= '<style>';
 		if( !empty( $css['d'] ) ) {
 			$output .= $css['d'];
 		}
@@ -328,7 +380,11 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 			$output .= $css['m'];
 			$output .= '}';
 		}
-		$output .= '</style>';
+	//	$output .= '</style>';
+		
+		if( !empty( $output ) ) {
+			$output = '<style>'.$output.'</style>';
+		}
 
 		//return be_minify_css( $output );
 		return $output;
@@ -375,58 +431,91 @@ if( !function_exists( 'be_minify_css' ) ) {
 }
 
 if( !function_exists( 'be_get_video_details' ) ){
-	function be_get_video_details($url){
-		$pattern = 
-		'%^# Match any youtube URL
-		(?:https?://)?  # Optional scheme. Either http or https
-		(?:www\.)?      # Optional www subdomain
-		(?:             # Group host alternatives
-		  youtu\.be/    # Either youtu.be,
-		| youtube\.com  # or youtube.com
-		  (?:           # Group path alternatives
-			/embed/     # Either /embed/
-		  | /v/         # or /v/
-		  | /watch\?v=  # or /watch\?v=
-		  )             # End path alternatives.
-		)               # End host alternatives.
-		([\w-]{10,12})  # Allow 10-12 for 11 char youtube id.
-		$%x'
-		;
+	function be_get_video_details($url,$size = 'large'){
+		$pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 		$details = array();
 
-		if( $result = preg_match($pattern, $url, $matches) ) {
-
+		if( $result = preg_match($pattern, $url, $matches) ){
+			
+			if( $size  === 'small'){
+				$size = 'mqdefault';
+			}elseif( $size === 'large' ){
+				$size = 'maxresdefault';
+			}
+	
 			$video_id = $matches[1];
-			$youtube_url = "https://img.youtube.com/vi/".$video_id."/maxresdefault.jpg";
+			$youtube_url = "https://img.youtube.com/vi/".$video_id."/".$size.".jpg";
 
 			return array(
 				'source' => 'youtube',
 				'thumb_url' => $youtube_url,
+				'video_id' => $video_id
 			);
 
-		} else if( strpos( $url,'vimeo' ) !== false ) {
+		}else if( strpos( $url,'vimeo' ) !== false ) {
 
 			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-
 			$response = wp_remote_get( "http://vimeo.com/api/v2/video/$vimeo_id.php" );
 
-			if( !is_wp_error( $response ) ) {
-				$hash = unserialize( $response['body']);
-				$vimeo_url = $hash[0]['thumbnail_large'];
-				$vimeo_url = str_replace( '_640','_1280x720',$vimeo_url );
+			if( $size  === 'small'){
+				$size = '_320x180';
+			}elseif( $size === 'large' ){
+				$size = '_1280x720';
+			}
+
+			if( !is_wp_error( $response ) ){
+				if( $response['response']['code'] === 200){
+					$hash = unserialize( $response['body']);
+					$vimeo_url = $hash[0]['thumbnail_large'];
+					$vimeo_url = str_replace( '_640',$size,$vimeo_url );
+					return array(
+						'source' => 'vimeo',
+						'thumb_url' => $vimeo_url,
+						'video_id' => $vimeo_id
+					);
+				} else {
+					return array(
+						'source' => 'vimeo',
+						'thumb_url' => 'https://placehold.it/1280x720',
+						'video_id' => $vimeo_id
+					);
+				}
+				
+			}else{
 				return array(
 					'source' => 'vimeo',
-					'thumb_url' => $vimeo_url,
-				);
-			} else {
-				return array(
-					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720'
+					'thumb_url' => 'https://placehold.it/1280x720',
+					'video_id' => ''
 				);
 			}
 		}
 	}
 }
+
+/* ---------------------------------------------  */
+// Function to get attachment image from ID 
+/* ---------------------------------------------  */
+
+if ( ! function_exists( 'be_wp_get_attachment' ) ) :
+	function be_wp_get_attachment( $attachment_id ) {
+		$attachment = get_post( $attachment_id );
+		if(isset($attachment) && !empty($attachment)) {
+			$image_attributes = wp_get_attachment_image_src( $attachment->ID, 'full' );
+			return array (
+				'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
+				'caption' => $attachment->post_excerpt,
+				'description' => $attachment->post_content,
+				'href' => get_permalink( $attachment->ID ),
+				'src' => $attachment->guid,
+				'title' => $attachment->post_title,
+				//Changed for Photo Swipe Gallery
+				'width' => $image_attributes[1],
+				'height' => $image_attributes[2] 
+				//End
+			);
+		}
+	}
+	endif;
 
 if( !function_exists( 'be_gdpr_lightbox_for_video' ) ){
 	function be_gdpr_lightbox_for_video( $key,$url,$src ){
@@ -462,4 +551,15 @@ if ( ! function_exists( 'be_gdpr_options' ) ) {
 }
 add_action('be_gdpr_register_options','be_gdpr_options');
 
+if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
+	function be_gdpr_get_video_alt_content( $img_src, $concern, $hidden_by_default ){
+
+		$hide_class = '';
+		if( $hidden_by_default ){
+			$hide_class = ' be-gdpr-message-hide ';
+		}
+
+		return '<div class="gdpr-alt-image '.$hide_class.' be-gdpr-consent-message"><img style="opacity:1;" src="'.$img_src.'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="'.$concern.'" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>';
+	}
+}
 ?>

@@ -20,17 +20,19 @@ class Tatsu_Module {
 
 	public function do_shortcode() { 
  
-		$shortcode = $this->get_shortcode();
+			$shortcode = $this->get_shortcode();
 
-		$shortcode = apply_filters('tatsu_before_do_shortcode', $shortcode );
-		
-		$output = apply_filters( 'tatsu_'.$this->tag.'_shortcode_output_filter', do_shortcode( $shortcode ) , $this->tag, $this->atts, $this->content );
+			$shortcode = apply_filters('tatsu_before_do_shortcode', $shortcode );
+			
+			$output = apply_filters( 'tatsu_'.$this->tag.'_shortcode_output_filter', do_shortcode( $shortcode ) , $this->tag, $this->atts, $this->content );
 
-		// Lazy Fix. TODO - provide a way to exclude shortcodes from this filter
-		if( 'contact_form' !== $this->tag && 'oshine_newsletter' !== $this->tag ) {
-			$output = apply_filters('the_content', $output );
-		}
-	
+			// Lazy Fix. Change oshine modules to use this filter.
+			$content_filter = ( 'contact_form' !== $this->tag && 'oshine_newsletter' !== $this->tag ) ? true : false;
+			$content_filter = apply_filters( 'tatsu_shortcode_output_content_filter', $content_filter, $this->tag );
+			if( $content_filter ) {
+				$output = apply_filters('the_content', $output );
+			}
+
 		return $output;
 	}
 

@@ -1017,7 +1017,7 @@ if( !function_exists( 'be_yoast_sitemap_integration' ) ) {
         }
         return $images;
     }        
-    add_filter('wpseo_sitemap_urlimages', 'be_yoast_integration', 10, 2);
+    add_filter('wpseo_sitemap_urlimages', 'be_yoast_sitemap_integration', 10, 2);
 }
 
 if( !function_exists( 'be_themes_tatsu_lazyload_blur_size' ) ) {
@@ -1025,6 +1025,21 @@ if( !function_exists( 'be_themes_tatsu_lazyload_blur_size' ) ) {
 		return 'carousel-thumb';
 	}
 	add_filter( 'tatsu_bg_lazyload_blur_size', 'be_themes_tatsu_lazyload_blur_size' );
+}
+
+// wp_upload_dir doesn’t return https for SSL websites.
+if( !function_exists( 'be_themes_fix_ssl_upload_url' ) ) {
+	function be_themes_fix_ssl_upload_url( $upload_dir_details ) {
+		if( is_array( $upload_dir_details ) && is_ssl() ) {
+			foreach( $upload_dir_details as $key => $val ) {
+				if( false !== strpos( $key, 'url' ) ) {
+					$upload_dir_details[ $key ] = str_replace( 'http://', 'https://', $val ); 
+				}
+			}
+		}
+		return $upload_dir_details;
+	}
+	//add_filter( 'upload_dir', 'be_themes_fix_ssl_upload_url' );
 }
 
 ?>

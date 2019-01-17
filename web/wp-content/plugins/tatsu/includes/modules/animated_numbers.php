@@ -3,6 +3,12 @@ if (!function_exists('tatsu_animated_numbers')) {
 	function tatsu_animated_numbers( $atts, $content ) {
 		$atts = shortcode_atts( array(
 			'number' => '',
+			'prefix' => '',
+			'suffix' => '',
+			'prefix_size' => '30',
+			'suffix_size'  => '30',
+			'prefix_color'	=> '#141414',
+			'suffix_color'	=> '#141414',	
 			'caption' => '',
 	        'number_size' => '45',
 	        'number_color' => '#141414',
@@ -19,8 +25,22 @@ if (!function_exists('tatsu_animated_numbers')) {
 		$output = '';
 		$output = '<div class="tatsu-module tatsu-an-wrap align-'.$alignment.' '.$unique_class_name.'">';
 		$output .= $custom_style_tag;
+		$output .= '<div class = "tatsu-an-prefix-suffix-wrap">';
+		if( '' !== $prefix ) {
+			$output .= '<div class = "tatsu-an-prefix">';
+			$output .= $prefix;
+			$output .= '</div>';
+		}
 		$output .= '<div class="tatsu-an animate" data-number="'.$number.'" style="line-height:1.3"></div>';
-		$output .= '<h6><span class="tatsu-an-caption" >'.$caption.'</span></h6>';
+		if( '' !== $suffix ) {
+			$output .= '<div class = "tatsu-an-suffix">';
+			$output .= $suffix;
+			$output .= '</div>';
+		}
+		$output .= '</div>';
+		if( '' !== $caption ) {
+			$output .= '<h6><span class="tatsu-an-caption" >'.$caption.'</span></h6>';
+		}
 		$output .= '</div>';
 		
 		return $output;

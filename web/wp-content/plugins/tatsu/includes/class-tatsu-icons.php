@@ -36,6 +36,24 @@ class Tatsu_Icons {
 		}
 	}	
 
+	public function valid_icon( $icon ) {
+		foreach( $this->icons as $kit => $options ) {
+			if( is_array($options) && is_array( $options['icons'] ) && in_array( $icon, $options['icons'] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public function get_random_icon() {
+		foreach( $this->icons as $kit => $options ) {
+			if( is_array($options) && is_array( $options['icons'] ) && !empty( $options['icons'][0] ) ) {
+				return apply_filters( 'tatsu_module_options_fallback_icon', $options['icons'][0], $this->icons );
+			}
+		}
+		return '';
+	}
+
 	public function register_icons( $kit, $title, $icons, $stylesheet_url ) {
 		$title = !empty( $title )? $title : $kit;
 		$new_icon_kit = array( 
@@ -55,7 +73,7 @@ class Tatsu_Icons {
 
 	public function setup_hooks() {
 		do_action( 'tatsu_register_icons' );
-		do_action( 'tatsu_deregister_icons' );		
+		do_action( 'tatsu_deregister_icons' );	
 	}
  
 }

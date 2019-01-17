@@ -135,7 +135,7 @@ body.edited_with_editor #tatsu_edit_post_wrap {
 
 /* global section settings CSS */
 .tatsu_myselectclass{
-	width:200px !important;
+	width:250px !important;
 }
 
 .tatsu_global-section-panel {
@@ -178,8 +178,8 @@ body.edited_with_editor #tatsu_edit_post_wrap {
   	top: 7px;
   }
 
-  #tatsu_global_section_settings_submit{
-  	margin-left:20px;
+  .tatsu_global-section-settings .global-section-btn-wrap{
+	  margin: 20px;
   }
 
 .tatsu_global-section-empty-warn {
@@ -188,4 +188,35 @@ body.edited_with_editor #tatsu_edit_post_wrap {
     font-size: 10px;
     top: 64px;
     color: red;
+}
+.global-section-btn-wrap{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.tatsu-global-section-export{
+	cursor: pointer;
+	color: inherit;	
+}
+.global-section-exclude-box {
+	transition: height 300ms ease,padding 300ms ease, opacity 50ms ease;
+}
+.global-section-hide-exclusion{
+	height: 0;
+	opacity: 0;
+	padding: 0;
+}
+
+body:not(.edited_with_tatsu) .tatsu-switch-builder-gutenburg {
+    display: none;
+}
+.edited_with_tatsu .tatsu-switch-builder-tatsu {
+	display: none;
+}
+.edited_with_tatsu .editor-block-list__layout {
+	display: none;
+}
+
+#tatsu-switch-to-gutenberg-modal .notification-dialog {
+	padding : 25px;
 }

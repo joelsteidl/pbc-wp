@@ -225,6 +225,7 @@ body {
   
   
   #be-pb-leftPanel-tab-links{
+    display: flex;
     overflow: auto;
     padding: 0px;
     margin: 0px;
@@ -562,6 +563,9 @@ body {
       width : 229px;
       border-right : 1px solid #1b1d20;
   }
+  .be-pb-number-field-wrapper{
+      position: relative;
+  }
   /******* tatsu editor ********/
   
   #tatsu-parent-tinymce-helper {
@@ -678,9 +682,9 @@ body {
     background: #32373e;
     min-width: 30px;
     position: absolute;
-    top: 78%;
+    right: 0;
+    top: 100%;
     min-height: 30px;
-    right: 20px;
     z-index: 4;
   }
 
@@ -793,9 +797,9 @@ body {
   }
   
   button.be-pb-input-control-button {
-      height: 48px;
+      height: 47px;
       padding: 0px;
-      margin-top: 22px;
+      margin-top: 21px;
       width: 100%;
       background-color: #f5f5f5;
       border: 0px;
@@ -1035,7 +1039,8 @@ body {
     background-color: #32373d !important;
   }
   
-  .be-pb-editor li.be-editor-field-set::after {
+  .be-pb-editor li.be-editor-field-set::after,
+  .tatsu-global-setting-panel li.be-editor-field-set::after {
     content: '';
     border-top : 1px #272a2d solid;
     width: 300px;
@@ -1118,8 +1123,9 @@ body {
       top: 50%;
       left: 50%;
       font-size: 35px;
-      margin-top: -17px;
-      margin-left: -17px;
+      /* margin-top: -17px;
+      margin-left: -17px; */
+      transform: translate(-50%,-50%);
       fill: #20cbd4;
   }
   
@@ -1263,6 +1269,10 @@ body {
   
   /********* Bread Crumbs ************/
   
+  .be-pb-breadcrumb-link{
+    cursor: pointer;
+  }
+
   .be-pb-breadcrumb-link:hover {
      color : #20cbd4;
   }
@@ -1737,12 +1747,17 @@ body {
     padding-left: 30%;
   }
   
-  .tatsu-top-icons-wrapper {
+  .tatsu-top-icons-wrapper,
+  .tatsu-top-left-icons-wrapper {
       float: right;
       display: -webkit-flex;
       display: -ms-flexbox;
       display: flex;
       height: 100%;
+  }
+
+  .tatsu-top-left-icons-wrapper {
+      float: left;
   }
   
   .tatsu-top-toolbar-tool {
@@ -1829,6 +1844,90 @@ body {
        color: #fdb6b6;
    }
   
+  /******** Typography Component CSS **********/
+  .be-pb-ff-drop-down-top input{
+    width: 100%;
+    background: #32363b;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 50px;
+    color: #b2b1b1;
+    outline: none;
+    margin-bottom: 20px;
+  }
+
+  .be-pb-font-family-input{
+    padding: 7px;
+    background: #32373c;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+  }
+  span.tatsu-editor-component-label{
+    font-size: 14px;
+    padding: 15px 0;
+    display: inline-block;
+  }
+  .be-pb-typography-field.select span.tatsu-editor-component-label{
+    padding: 15px 0 0 0;
+  }
+  .be-pb-font-family-dd .ReactVirtualized__List{
+    outline: none;
+  }
+  .font-list-item:hover {
+    color: #c7c7c7;
+}
+.be-pb-font-family{
+    padding-top: 15px;
+}
+.font-list-item{
+    padding:10px 10px;
+    cursor:pointer;
+    color: #797979;
+}
+.font-list-item.selected{
+    color: #ffffff;
+}
+
+.be-pb-font-family-dd {
+    font-family: Roboto;
+    width:380px;
+    height: 300px;
+    background:#32373c;
+    color: #b2b1b1;
+    position:absolute;
+    left:0;
+    z-index: 101;
+    box-shadow: 0px 16px 18px 0px rgba(0, 0, 0, 0.3) ;
+    padding: 10px;
+    border-radius:5px;
+}
+/* .be-pb-font-family-dd .be-editor-field.button_group ul{
+    color: #1f1f1f;
+} */
+.be-pb-font-family-dd .be-editor-field.button_group li{
+    border-right-color: rgba(255,255,255,0.11);
+    color: #b2b1b1;
+    border-radius: 2px;
+}
+/* 
+.be-pb-font-family-dd .be-editor-field.button_group li:hover{
+    background: #dedede;
+} */
+.be-pb-font-family-dd .be-editor-field.button_group li.active{
+    color: #fff;
+} 
+
+.be-pb-typography-overlay{
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 300px;
+    position: fixed;
+    z-index: 3;
+}
   /*******************
   /******** Save Drawer ************/
   
@@ -1851,6 +1950,10 @@ body {
       fill : #20cbd4;
   }
   
+  .be-editor-field-set:last-child .be-editor-field.typography {
+      padding-bottom: 20px;
+  }
+
   /************* Number component css ********/
   
   .be-editor-field-label.number{

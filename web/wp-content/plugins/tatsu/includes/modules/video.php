@@ -23,20 +23,21 @@ if ( !function_exists('tatsu_video') ) {
 
 	    switch ( $source ) {
 			case 'youtube':
-	    		$output .= ( isset( $animate ) && 1 == $animate ) ? '<div class="tatsu-animate" data-animation="'.$animation_type.'">' : '' ;
-				$output .= '<div class="tatsu-module tatsu-video tatsu-youtube-wrap '.$unique_class_name.'">'.$custom_style_tag.
-				( ( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('youtube') : true ) ? tatsu_youtube( $url ) : '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="youtube" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>' ).'</div>';
+	    
+				$output .= '<div class="tatsu-module tatsu-video tatsu-youtube-wrap '.$unique_class_name.'">'.$custom_style_tag;
+				$output .= tatsu_youtube( $url );
+				$output .= '</div>';
 				$output .= ( isset( $animate ) && 1 == $animate ) ? '</div>' : '' ;
 				return $output;
 				break;
-			case 'vimeo':	
-				$output .= ( isset( $animate ) && 1 == $animate ) ? '<div class="tatsu-animate" data-animation="'.$animation_type.'">' : '' ; 
-				$output .= '<div class="tatsu-module tatsu-video tatsu-vimeo-wrap '.$unique_class_name.'">'.$custom_style_tag.
-				( ( function_exists( 'be_gdpr_privacy_ok' ) ? be_gdpr_privacy_ok('vimeo') : true ) ? tatsu_vimeo( $url ) : '<div class="gdpr-alt-image"><img style="opacity:1;width:100%;" src="'.$video_details['thumb_url'].'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="vimeo"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' )) ).'</div></div>' ).'</div>';
+			case 'vimeo':
+			
+				$output .= '<div class="tatsu-module tatsu-video tatsu-vimeo-wrap '.$unique_class_name.'">'.$custom_style_tag;
+				$output .= tatsu_vimeo( $url );
+				$output .= '</div>';
 				$output .= ( isset( $animate ) && 1 == $animate ) ? '</div>' : '' ;
-				
 				return $output;
-	    		break;
+				break;
 			default:
 				$output .= ( isset( $animate ) && 1 == $animate ) ? '<div class="tatsu-animate" data-animation="'.$animation_type.'">' : '' ; 
 				$output .= '<div class="tatsu-module tatsu-video tatsu-hosted-wrap '.$unique_class_name.'">'.$custom_style_tag.'<video width = "100%" controls controlsList="nodownload" poster = "'.$placeholder.'"><source src="'.$url.'" type="video/mp4"></video></div>';
@@ -44,20 +45,36 @@ if ( !function_exists('tatsu_video') ) {
 				
 				return $output;
 				break;
-	    }
+		}
 	}
 	add_shortcode( 'tatsu_video', 'tatsu_video' );
 }
 if ( !function_exists('tatsu_youtube') ) {
 	function tatsu_youtube( $url ) {
+		$video_details = be_get_video_details($url);
 		$video_id = '';
+		$result = '';
 		if( ! empty( $url ) ) {
-			$video_id = ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) ? $match[1] : '' ;		
-			return '<iframe class="youtube" id="tatsu-youtube-'.$video_id.'" src="https://youtube.com/embed/'.$video_id.'?rel=0&wmode=transparent" allowfullscreen></iframe>';		
+			$video_id = ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) ? $match[1] : '' ;
+			if( !function_exists( 'be_gdpr_privacy_ok' ) ){
+				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-youtube-embed" data-video-id = "' . $video_id . '"></div></div>';
+			} else {
+				if ( !empty( $_COOKIE ) ) {
+					if( !( be_gdpr_privacy_ok( 'youtube' ) )  ){
+						$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'youtube', false );
+					} else {
+						$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-youtube-embed" data-video-id = "' . $video_id . '"></div></div>';
+					}
+				} else {
+					$result .= '<div class = "be-video-embed be-embed-placeholder be-gdpr-consent-replace"><div class = "be-youtube-embed" data-gdpr-concern="youtube" data-video-id = "' . $video_id . '"></div></div>';
+
+					$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'youtube', true );
+				}
+			}
 		} else {
 			return '';
 		}
-
+		return $result;
 	}
 }
 
@@ -66,13 +83,30 @@ if ( !function_exists('tatsu_youtube') ) {
 **************************************/
 if ( !function_exists( 'tatsu_vimeo' ) ) {
 	function tatsu_vimeo( $url ) {
+		$video_details = be_get_video_details($url);
 		$video_id = '';
+		$result = '';
 		if( ! empty( $url ) ) {
 			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
-			return '<iframe src="https://player.vimeo.com/video/'.$video_id.'?api=1" id="tatsu-vimeo-'.$video_id.'" class="tatsu-vimeo-video" allowfullscreen></iframe>';
+			if( !function_exists( 'be_gdpr_privacy_ok' ) ){
+				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-id = "' . $video_id . '"></div></div>';
+			} else {
+				if( !empty( $_COOKIE ) ){
+					if( !( be_gdpr_privacy_ok( 'vimeo' ) )  ){
+						$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'vimeo', false );
+					} else {
+						$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-id = "' . $video_id . '"></div></div>';
+					}
+				} else {
+					$result .= '<div class = "be-video-embed be-embed-placeholder  be-gdpr-consent-replace"><div class = "be-vimeo-embed" data-gdpr-concern="vimeo" data-video-id = "' . $video_id . '"></div></div>';
+					
+					$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'vimeo', true );
+				}
+			}
 		} else {
-			return '';
+			$result = '';
 		}
+		return $result;
 	}
 }
 

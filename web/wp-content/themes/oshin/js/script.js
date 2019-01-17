@@ -868,6 +868,9 @@
 											var section = jQuery( '#' + $element ),
 												secIndex = stickySections.getStickyIndex( section[0] );
 											if( -1 < secIndex && secIndex < jQuery( '.sticky-section' ).length ) {
+												if( body.scrollTop() === 0 ) {
+													body.scrollTop(1);
+												}
 												stickySections.moveTo( secIndex );
 											}
 										}else if (jQuery(window).width() < 960 && mobile_menu.length > 0 ) {

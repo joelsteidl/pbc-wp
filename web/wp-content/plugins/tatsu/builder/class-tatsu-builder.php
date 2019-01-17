@@ -9,14 +9,16 @@ class Tatsu_Builder {
 
 	private $post_id;
 
+	private $builder_mode;
+
 	public function __construct( $plugin_name, $version ) {
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 
-	}	
+	}
 
-
+	
 	public function init() {
 		if ( is_admin() || ! $this->is_edit_mode() ) {
 			return;
@@ -52,6 +54,8 @@ class Tatsu_Builder {
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ), 999999 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_styles' ), 999999 );
 
+		add_filter( 'body_class', array( $this, 'body_class' ) );
+
 
 
 		// Set the headers to prevent caching for the different browsers
@@ -70,6 +74,13 @@ class Tatsu_Builder {
 	private function is_edit_mode() {
 
 		if ( ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) && isset( $_GET['tatsu'] ) ) {
+			$this->builder_mode = 'tatsu-page-builder';
+			return true;
+		}
+
+		// Header Builder
+		if( current_user_can( 'manage_options' ) && isset( $_GET['tatsu-header'] ) && current_theme_supports('tatsu-header-builder') ) {
+			$this->builder_mode = 'tatsu-header-builder';
 			return true;
 		}
 
@@ -126,6 +137,7 @@ class Tatsu_Builder {
 			true
 		);
 		wp_enqueue_script( 'tatsu' );	
+		wp_enqueue_script( 'webfont-loader', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js',array(),$this->version );
 		wp_localize_script(
 			'tatsu',
 			'tatsuConfig',
@@ -212,6 +224,11 @@ class Tatsu_Builder {
 
 	public function wp_footer() {
 		do_action( 'tatsu_builder_footer' );
+	}
+
+	public function body_class( $classes ) {
+		$classes[] = $this->builder_mode;
+		return $classes;
 	}
 
 }

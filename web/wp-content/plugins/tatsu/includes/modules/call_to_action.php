@@ -70,23 +70,42 @@ if ( ! function_exists( 'tatsu_call_to_action' ) ) {
 				$button_link = $image;
 			}
 		}
-
+		
 
 		//GDPR Privacy preference popup logic
-		$video_details =  be_get_video_details($video_url);
+		$gdpr_atts = '{}';
+		$gdpr_concern_selector = '';
 		if( $mfp_class === 'mfp-iframe' ){
-			if(  function_exists( 'be_gdpr_privacy_ok' ) ? !be_gdpr_privacy_ok($video_details['source']) : false ){
-				$mfp_class = 'mfp-popup';
-				$button_link = '#gdpr-alt-lightbox-'.$key;
-				$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+			if( function_exists( 'be_gdpr_privacy_ok' ) ){
+				$video_details =  be_get_video_details($video_url);
+				if( !empty( $_COOKIE ) ){
+					if( !be_gdpr_privacy_ok($video_details['source'] ) ){
+						$mfp_class = 'mfp-popup';
+						$button_link = '#gdpr-alt-lightbox-'.$key;
+						$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+					}
+				} else {
+					$gdpr_atts = array(
+						'concern' => $video_details[ 'source' ],
+						'add' => array( 
+							'class' => array( 'mfp-popup' ),
+							'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+						),
+						'remove' => array( 
+							'class' => array( $mfp_class )
+						)
+					);
+					$gdpr_concern_selector = 'be-gdpr-consent-required';
+					$gdpr_atts = json_encode( $gdpr_atts );
+					$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+				}
 			}
 		}
-		
 
 		$animate = ( isset( $animate ) && 1 == $animate ) ? ' tatsu-animate' : '' ; 
 		$output .= '<div class="tatsu-module tatsu-call-to-action tatsu-clearfix '.$animate.' '.$unique_class_name.'" data-animation="'.$animation_type.'">';
 		$output .= '<'.$h_tag.' class="tatsu-action-content" >'.$title.'</'.$h_tag.'>';
-		$output .= ( !empty( $button_link )  ) ? '<a class="mediumbtn tatsu-button rounded tatsu-action-button '.$mfp_class.'" href="'.$button_link.'" '.$new_tab.'><span>'.$button_text.'</span></a>' : '' ;
+		$output .= ( !empty( $button_link )  ) ? '<a class="mediumbtn tatsu-button rounded tatsu-action-button '.$mfp_class.' '. $gdpr_concern_selector .' " href="'.$button_link.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'><span>'.$button_text.'</span></a>' : '' ;
 		$output .= $custom_style_tag;
 		$output .= '</div>';
 		return $output;	

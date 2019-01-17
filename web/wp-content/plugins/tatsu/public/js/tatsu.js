@@ -36,60 +36,6 @@
     
 })(jQuery);
 
-;(function($) {
-    /**
-   * Copyright 2012, Digital Fusion
-   * Licensed under the MIT license.
-   * http://teamdf.com/jquery-plugins/license/
-   *
-   * @author Sam Sehnert
-   * @desc A small plugin that checks whether elements are within
-   *     the user visible viewport of a web browser.
-   *     only accounts for vertical position, not horizontal.
-   */
-    $.fn.visible = function(partial) {
-    
-      var $t            = $(this),
-          $w            = $(window),
-          viewTop       = $w.scrollTop(),
-          viewBottom    = viewTop + $w.height(),
-          _top          = $t.offset().top,
-          _bottom       = _top + $t.height(),
-          compareTop    = partial === true ? _bottom : _top,
-          compareBottom = partial === true ? _top : _bottom;
-    return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
-
-  };
-    
-})(jQuery);
-
-;(function($) {
-    /**
-   * Copyright 2012, Digital Fusion
-   * Licensed under the MIT license.
-   * http://teamdf.com/jquery-plugins/license/
-   *
-   * @author Sam Sehnert
-   * @desc A small plugin that checks whether elements are within
-   *     the user visible viewport of a web browser.
-   *     only accounts for vertical position, not horizontal.
-   */
-    $.fn.visible = function(partial) {
-    
-      var $t            = $(this),
-          $w            = $(window),
-          viewTop       = $w.scrollTop(),
-          viewBottom    = viewTop + $w.height(),
-          _top          = $t.offset().top,
-          _bottom       = _top + $t.height(),
-          compareTop    = partial === true ? _bottom : _top,
-          compareBottom = partial === true ? _top : _bottom;
-    
-    return ((compareBottom <= viewBottom) && (compareTop >= viewTop));
-
-  };
-    
-})(jQuery);
 (function( $ ) {
     'use strict';
 
@@ -106,17 +52,18 @@
 		}
     }
     asyncloader.register( 'https://maps.googleapis.com/maps/api/js?key='+maps_api_key, 'google_maps_api' );
-    
+    asyncloader.register( "https://player.vimeo.com/api/player.js", 'vimeonew' );
 
     var tatsu = (function() {
 
-        var $window = jQuery(window),
+        var $win = jQuery(window),
             $body = jQuery('body'),
             $html = jQuery('html'),
             $pluginUrl = tatsuFrontendConfig.pluginUrl,
             tatsuCallbacks = {},
             didScroll = false,
             animate_wrapper = jQuery('.tatsu-animate, .be-animate'),
+            skillsWrap = jQuery( '.be-skill' ),
             scrollInterval,
             animateWrapperCount = animate_wrapper.length,
             alreadyVisibleIndex = 0,
@@ -160,7 +107,7 @@
             });
 
         },
-
+       
         closeNotification = function() {
             jQuery(document).on('click.tatsu', '.tatsu-notification .close', function (e) {
                 e.preventDefault();
@@ -174,7 +121,7 @@
                     animatedNumberWrap.each(function (i, el) {
                         var el = jQuery(el);
                         if( el.hasClass('animate') ) {
-                            if ( el.visible(true) ) {
+                            if ( el.isVisible(true) ) {
                                 el.removeClass('animate');
                                 var $endval = Number( el.attr( 'data-number' ) );
                                 el.countTo({
@@ -212,7 +159,7 @@
                             function(e) {
                                 element.addClass("end-animation");
                             });
-                        if ( element.visible( true ) && ( $window.innerHeight() - element[0].getBoundingClientRect().top > 100 ) ) {
+                        if ( element.isVisible( true ) && ( $win.innerHeight() - element[0].getBoundingClientRect().top > 100 ) ) {
                             element.addClass("already-visible");
                             element.addClass(element.attr('data-animation'));
                             // element.addClass('animated');
@@ -240,7 +187,7 @@
                             // if( null != context ) {
 
                             // }else {
-                                if( el.visible(true) && ( $window.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                            
+                                if( el.isVisible(true) && ( $win.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                            
                                     el.addClass("already-visible");
                                     el.addClass(el.attr('data-animation'));
                                     // el.addClass('animated');
@@ -361,6 +308,73 @@
             }       
         },
 
+
+        video = function() {
+            var vimeoVideos = $( '.be-vimeo-embed' ),
+                youtubeVideos = $( '.be-youtube-embed' ),
+                loadYoutubeVideos,
+                videoReadyCallback;
+            videoReadyCallback = function( iframeEle ) {
+                asyncloader.require( ['fitvids'], function(){
+                    if( null != iframeEle && 0 < iframeEle.length ) {
+                        iframeEle.closest( '.be-video-embed' ).removeClass( 'be-embed-placeholder' );
+                        iframeEle.parent().fitVids();
+                        $(document).trigger( 'be_video_loaded', [ iframeEle ] );
+                    }  
+                });        
+            };
+            loadYoutubeVideos = function() {
+                youtubeVideos.each(function() {
+                    var curVideo = $(this),
+                        curPlayer = null,
+                        id = null != curVideo.attr( 'data-video-id' ) ? curVideo.attr( 'data-video-id' ) : null;
+                    if( null != id ) {
+                        curPlayer = new YT.Player( this, {
+                            videoId : id,
+                            width : curVideo.width(),
+                            height : curVideo.width()/1.7777,
+                        });
+                        videoReadyCallback( $( curPlayer.getIframe() ) );
+                    }
+                });
+            }
+            //vimeo videos
+            if( 0 < vimeoVideos.length ) {
+                asyncloader.require( [ 'vimeonew' ], function() {
+                    vimeoVideos.each( function() {
+                        var curVideo = $(this),
+                            curPlayer = null,
+                            id = !isNaN( Number( curVideo.attr( 'data-video-id' ) ) ) ? Number( curVideo.attr( 'data-video-id' ) ) : null;
+                        if( null != id ) {
+                            var curPlayer = new Vimeo.Player( this, {
+                                id : id,
+                                width : curVideo.width(),
+                                height : Math.ceil(curVideo.width()/1.7777),    
+                            });
+                            curPlayer.ready().then( function() {
+                                videoReadyCallback( curVideo.children( 'iframe' ) );
+                            });
+                        }
+                    } );
+                } );
+            }
+
+            if( 0 < youtubeVideos.length ) {
+                if( 'undefined' != typeof YT && 'function' == typeof YT.Player ) {
+                    loadYoutubeVideos();
+                }else {
+                    $(document).on( 'YTAPIReady', loadYoutubeVideos );
+                }
+            }
+        },
+        tatsu_fitvids = function(){
+            asyncloader.require( 'fitvids',function(){
+                if( $('iframe').length ){
+                    $('body').fitVids();
+                }
+            } );
+       
+        },
         gmaps = function() {
             if(jQuery('.tatsu-gmap').length > 0) {
                  asyncloader.require( 'google_maps_api' , function() {
@@ -369,7 +383,354 @@
                         greyscale: [{"featureType" : "landscape", "stylers" : [{"saturation" : -100}, {"lightness" : 65}, {"visibility" : "on"}]}, {"featureType" : "poi", "stylers" : [{"saturation" : -100}, {"lightness" : 51}, {"visibility" : "simplified"}]}, {"featureType" : "road.highway", "stylers" : [{"saturation" : -100}, {"visibility" : "simplified"}]}, {"featureType" : "road.arterial", "stylers" : [{"saturation" : -100}, {"lightness" : 30}, {"visibility" : "on"}]}, {"featureType" : "road.local", "stylers" : [{"saturation" : -100}, {"lightness" : 40}, {"visibility" : "on"}]}, {"featureType" : "transit", "stylers" : [{"saturation" : -100}, {"visibility" : "simplified"}]}, {"featureType" : "administrative.province", "stylers" : [{"visibility" : "off"}]}, {"featureType" : "water", "elementType" : "labels", "stylers" : [{"visibility" : "on"}, {"lightness" : -25}, {"saturation" : -100}]}, {"featureType" : "water", "elementType" : "geometry", "stylers" : [{"hue" : "#ffff00"}, {"lightness" : -25}, {"saturation" : -97}]}],
                         midnight: [{"featureType" : "water", "stylers" : [{"color" : "#021019"}]}, {"featureType" : "landscape", "stylers" : [{"color" : "#08304b"}]}, {"featureType" : "poi", "elementType" : "geometry", "stylers" : [{"color" : "#0c4152"}, {"lightness" : 5}]}, {"featureType" : "road.highway", "elementType" : "geometry.fill", "stylers" : [{"color" : "#000000"}]}, {"featureType" : "road.highway", "elementType" : "geometry.stroke", "stylers" : [{"color" : "#0b434f"}, {"lightness" : 25}]}, {"featureType" : "road.arterial", "elementType" : "geometry.fill", "stylers" : [{"color" : "#000000"}]}, {"featureType" : "road.arterial", "elementType" : "geometry.stroke", "stylers" : [{"color" : "#0b3d51"}, {"lightness" : 16}]}, {"featureType" : "road.local", "elementType" : "geometry", "stylers" : [{"color" : "#000000"}]}, {"elementType" : "labels.text.fill", "stylers" : [{"color" : "#ffffff"}]}, {"elementType" : "labels.text.stroke", "stylers" : [{"color" : "#000000"}, {"lightness" : 13}]}, {"featureType" : "transit", "stylers" : [{"color" : "#146474"}]}, {"featureType" : "administrative", "elementType" : "geometry.fill", "stylers" : [{"color" : "#000000"}]}, {"featureType" : "administrative", "elementType" : "geometry.stroke", "stylers" : [{"color" : "#144b53"}, {"lightness" : 14}, {"weight" : 1.4}]}],
                         standard: [],
-                        bluewater: [{"featureType" : "water", "stylers" : [{"color" : "#46bcec"}, {"visibility" : "on"}]}, {"featureType" : "landscape", "stylers" : [{"color" : "#f2f2f2"}]}, {"featureType" : "road", "stylers" : [{"saturation" : -100}, {"lightness" : 45}]}, {"featureType" : "road.highway", "stylers" : [{"visibility" : "simplified"}]}, {"featureType" : "road.arterial", "elementType" : "labels.icon", "stylers" : [{"visibility" : "off"}]}, {"featureType" : "administrative", "elementType" : "labels.text.fill", "stylers" : [{"color" : "#444444"}]}, {"featureType" : "transit", "stylers" : [{"visibility" : "off"}]}, {"featureType" : "poi", "stylers" : [{"visibility" : "off"}]}]
+                        bluewater: [{"featureType" : "water", "stylers" : [{"color" : "#46bcec"}, {"visibility" : "on"}]}, {"featureType" : "landscape", "stylers" : [{"color" : "#f2f2f2"}]}, {"featureType" : "road", "stylers" : [{"saturation" : -100}, {"lightness" : 45}]}, {"featureType" : "road.highway", "stylers" : [{"visibility" : "simplified"}]}, {"featureType" : "road.arterial", "elementType" : "labels.icon", "stylers" : [{"visibility" : "off"}]}, {"featureType" : "administrative", "elementType" : "labels.text.fill", "stylers" : [{"color" : "#444444"}]}, {"featureType" : "transit", "stylers" : [{"visibility" : "off"}]}, {"featureType" : "poi", "stylers" : [{"visibility" : "off"}]}],
+                        lightdream: [
+                            {
+                                "featureType": "landscape",
+                                "stylers": [
+                                    {
+                                        "hue": "#FFBB00"
+                                    },
+                                    {
+                                        "saturation": 43.400000000000006
+                                    },
+                                    {
+                                        "lightness": 37.599999999999994
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway",
+                                "stylers": [
+                                    {
+                                        "hue": "#FFC200"
+                                    },
+                                    {
+                                        "saturation": -61.8
+                                    },
+                                    {
+                                        "lightness": 45.599999999999994
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.arterial",
+                                "stylers": [
+                                    {
+                                        "hue": "#FF0300"
+                                    },
+                                    {
+                                        "saturation": -100
+                                    },
+                                    {
+                                        "lightness": 51.19999999999999
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.local",
+                                "stylers": [
+                                    {
+                                        "hue": "#FF0300"
+                                    },
+                                    {
+                                        "saturation": -100
+                                    },
+                                    {
+                                        "lightness": 52
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "stylers": [
+                                    {
+                                        "hue": "#0078FF"
+                                    },
+                                    {
+                                        "saturation": -13.200000000000003
+                                    },
+                                    {
+                                        "lightness": 2.4000000000000057
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi",
+                                "stylers": [
+                                    {
+                                        "hue": "#00FF6A"
+                                    },
+                                    {
+                                        "saturation": -1.0989010989011234
+                                    },
+                                    {
+                                        "lightness": 11.200000000000017
+                                    },
+                                    {
+                                        "gamma": 1
+                                    }
+                                ]
+                            }
+                        ],
+                        wy: [
+                            {
+                                "featureType": "all",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "weight": "2.00"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "geometry.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#9c9c9c"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "all",
+                                "elementType": "labels.text",
+                                "stylers": [
+                                    {
+                                        "visibility": "on"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "landscape",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "color": "#f2f2f2"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "landscape",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#ffffff"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "landscape.man_made",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#ffffff"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "visibility": "off"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "saturation": -100
+                                    },
+                                    {
+                                        "lightness": 45
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#eeeeee"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#7b7b7b"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#ffffff"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.highway",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "visibility": "simplified"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road.arterial",
+                                "elementType": "labels.icon",
+                                "stylers": [
+                                    {
+                                        "visibility": "off"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "visibility": "off"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "color": "#46bcec"
+                                    },
+                                    {
+                                        "visibility": "on"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#c8d7d4"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "labels.text.fill",
+                                "stylers": [
+                                    {
+                                        "color": "#070707"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "labels.text.stroke",
+                                "stylers": [
+                                    {
+                                        "color": "#ffffff"
+                                    }
+                                ]
+                            }
+                        ],
+                        blueessence: [
+                            {
+                                "featureType": "landscape.natural",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "visibility": "on"
+                                    },
+                                    {
+                                        "color": "#e0efef"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "poi",
+                                "elementType": "geometry.fill",
+                                "stylers": [
+                                    {
+                                        "visibility": "on"
+                                    },
+                                    {
+                                        "hue": "#1900ff"
+                                    },
+                                    {
+                                        "color": "#c0e8e8"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "lightness": 100
+                                    },
+                                    {
+                                        "visibility": "simplified"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "road",
+                                "elementType": "labels",
+                                "stylers": [
+                                    {
+                                        "visibility": "off"
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "transit.line",
+                                "elementType": "geometry",
+                                "stylers": [
+                                    {
+                                        "visibility": "on"
+                                    },
+                                    {
+                                        "lightness": 700
+                                    }
+                                ]
+                            },
+                            {
+                                "featureType": "water",
+                                "elementType": "all",
+                                "stylers": [
+                                    {
+                                        "color": "#7dcdcd"
+                                    }
+                                ]
+                            }
+                        ]
+
+
                     };
                     jQuery('.tatsu-gmap').each(function () {
                         var $address = jQuery(this).attr('data-address'), 
@@ -399,44 +760,239 @@
             }
         },
 
-        backgroundVideo = function() {
-          asyncloader.require( 'resizetoparent', function () {
-            var bgVideoWrap = jQuery( '.tatsu-bg-video, .be-bg-video' );
-            if ( bgVideoWrap.length > 0 ) {
-              bgVideoWrap.each( function() {
-                jQuery(this).load();
-                jQuery(this).on("loadedmetadata", function () { 
-                    jQuery(this).css({
-                        width: this.videoWidth,
-                        height: this.videoHeight
-                    });
-                    jQuery(this).tatsuResizeMedia();
-                    jQuery(this).css('display', 'block');
+        progressBar = function() {
+            var skillsContainer = skillsWrap.closest('.skill_container');
+            if( skillsContainer.length > 0 ) {
+                skillsContainer.each(function () {
+                    if( jQuery(this).hasClass('skill-vertical') ) {
+                        var $width = (100 / jQuery(this).find('.skill-wrap').length) + '%';
+                        jQuery(this).find('.skill-wrap').css('width', $width).css('display', 'block');
+                    } else {
+                        jQuery(this).find('.skill-wrap').css( 'width', '100%' );
+                    }
                 });
-                //jQuery(this).tatsuResizeMedia();
-              });
             }
-          });            
-        },
-
-        video = function() {
-            asyncloader.require( 'fitvids', function() {
-                jQuery('body').fitVids({  
+            
+            if( skillsWrap.length > 0) {
+                skillsWrap.each(function (i) {
+                    var $this = jQuery(this),
+                        $animate_property = 'width';
+                    if ( $this.isVisible(true) ) {
+                        if ( $this.closest('.skill_container').hasClass('skill-vertical') ) {
+                            $animate_property = 'height';
+                        }
+                        $this.css( $animate_property, $this.attr( 'data-skill-value' ) );
+                    }
                 });
-            });
+            }
         },
 
+        // backgroundVideo = function() {
+        //   asyncloader.require( 'resizetoparent', function () {
+        //     var bgVideoWrap = jQuery( '.tatsu-bg-video, .be-bg-video' );
+        //     if ( bgVideoWrap.length > 0 ) {
+        //       bgVideoWrap.each( function() {
+        //         jQuery(this).load();
+        //         jQuery(this).on("loadedmetadata", function () { 
+        //             jQuery(this).css({
+        //                 width: this.videoWidth,
+        //                 height: this.videoHeight
+        //             });
+        //             jQuery(this).tatsuResizeMedia();
+        //             jQuery(this).css('display', 'block');
+        //         });
+        //         //jQuery(this).tatsuResizeMedia();
+        //       });
+        //     }
+        //   });            
+        // },
         tatsuSection = function() {
            parallax();
         },
+        lineAnimate = function() {
+            var svgIcons = $( '.tatsu-line-animate' );
+            if( 0 < svgIcons.length ) {
+                asyncloader.require( 'vivus', function(){
+                    svgIcons.each(function(){
+                        var curIcon = $(this),
+                            svgOptions = {},
+                            animDuration = curIcon.attr( 'data-animation-duration' ),
+                            animTimingFunc = curIcon.attr( 'data-svg-animation' ),
+                            pathTimingFunc = curIcon.attr( 'data-path-animation' ),
+                            svgIconEle = curIcon.find( 'svg' );
+                        if( 0 < svgIconEle.length ) {
+                            svgIconEle = svgIconEle[0];
+                            svgOptions.onReady = function(e) {
+                                curIcon.addClass('tatsu-line-animate-ready');
+                            };
+                            svgOptions.duration = Number( animDuration ) || 100;
+                            if( null != animTimingFunc ) {
+                               svgOptions.animTimingFunction = Vivus[ animTimingFunc ];
+                            }
+                            if( null != pathTimingFunc ) {
+                                svgOptions.pathTimingFunction = Vivus[ pathTimingFunc ]; 
+                            }
+                            new Vivus( svgIconEle, 
+                                svgOptions,
+                                function( vivusObj ) {
+                                    curIcon.addClass('tatsu-line-animated');
+                                }
+                            );
+                        }
+                    });
+                });
+            }
+        },
+        lazyLoadBgImages = function() {
+            var bgToLazyLoad = $( '.tatsu-bg-lazyload' );
+            if( 0 < bgToLazyLoad.length ) {
+                bgToLazyLoad.each(function() {
+                    var curEle = $(this),
+                        curSrc = curEle.attr( 'data-src' ),
+                        dummyImg;
+                    if( null != curSrc ) {
+                        dummyImg = $(new Image());
+                        dummyImg.one('load', function() {
+                            curEle.addClass( 'tatsu-bg-lazyloaded' );
+                            setTimeout(function() {
+                                curEle.parent().find('.tatsu-bg-blur').remove();
+                            }, 1000);
+                        });
+                        dummyImg.attr( 'src', curSrc );
+                        if(dummyImg[0].complete) {
+                            dummyImg.load();
+                        }
+                    }
+                });
+            }
+        },
+        carousel = function() {
+            var carousels = $( '.tatsu-carousel' );
+            if( 0 < carousels.length ) {
+                asyncloader.require( [ 'flickity', 'tatsuCarousel' ], function() {
+                    carousels.each(function() {
+                        new TatsuCarousel($(this));
+                    });
+                });
+            }
+        },
+        slider = function() {
+            var sliders = $( '.be-slider' ),    
+                initOuterArrows = function( slider ) {
+                    if( slider instanceof $ && 0 < slider.length && 1200 > slider.parent().width() ) {
+                        var gutter = !isNaN( slider.attr('data-gutter') ) ? Number( slider.attr('data-gutter') )/2 : 0;
+                        slider.css({
+                            padding : '0 50px',
+                            margin : '0 -' + ( gutter + 50 ) + 'px'
+                        });
+                    }
+                },
+                getLazyLoadCount = function(slider){
+                    var count = 1;
+                    if( slider instanceof $ && 0 < slider.length ) {
+                    var cols = !isNaN(Number(slider.attr('data-cols'))) ? Number(slider.attr('data-cols')) : 1;
+                        if( 1 < cols ) {
+                            count = cols-1;
+                        }
+                    }
+                    return count;
+                },
+                hideUnneccessaryNav = function( curSlider ) {
+                    var navPossible = function( slider ) {
+                        var cols,
+                            slidesClount;
+                        if( slider instanceof $ && 0 < slider.length ) {
+                            cols = !isNaN(Number(slider.attr('data-cols'))) ? Number(slider.attr('data-cols')) : 1;
+                            slidesClount = slider.find('.be-slide').length;
+                            if( 1024 < $win.width() ) {
+                                return cols < slidesClount;
+                            }else if( 767 < $win.width() ) {
+                                return 2 < slidesClount;
+                            }else {
+                                return 1 < slidesClount;
+                            }
+                        }
+                    };
+                    if( !navPossible( curSlider ) ) {
+                        curSlider.addClass('be-slider-hide-nav');
+                    }
+                    $win.on( 'debouncedresize', function() {
+                        if( !navPossible(curSlider) ) {
+                            curSlider.addClass('be-slider-hide-nav');
+                        }else {
+                            curSlider.removeClass('be-slider-hide-nav');
+                        }
+                    });
+                },
+                equalHeightSlider = function( slider ) {
+                    if( slider instanceof $ && 0 < slider.length ) {
+                        var maxHeight = 0,
+                            slides = slider.find( '.be-slide' );
+                        slides.each(function(){
+                            var curSlide = $(this);
+                            if( maxHeight < curSlide.height() ) {
+                                maxHeight = curSlide.height();
+                            }
+                        });
+                        slides.height( maxHeight );
+                        slider.addClass( 'be-equal-height-slider' );
+                    }
+                };
+            if( 0 < sliders.length ) {
+                asyncloader.require( 'flickity', function() {
+                    sliders.each(function() {
+                        var curSlider = jQuery(this);
+                        if( !curSlider.hasClass( 'flickity-enabled' ) ) {
+                            if( '1' == curSlider.attr( 'data-arrows' ) || '1' == curSlider.attr( 'data-dots' ) ) {
+                                hideUnneccessaryNav(curSlider);
+                            }
+                            if( '1' == curSlider.attr('data-arrows') && '1' == curSlider.attr('data-outer-arrows')) {
+                                initOuterArrows(curSlider);
+                            }
+                            if( '1' == curSlider.attr( 'data-equal-height' ) ) {
+                                equalHeightSlider(curSlider);
+                            }
+                            curSlider.flickity({
+                                cellAlign : null != curSlider.attr( 'data-cell-align' ) ? curSlider.attr( 'data-cell-align' ) : 'left',
+                                contain : true,
+                                lazyLoad : '1' == curSlider.attr( 'data-lazy-load' ) ? getLazyLoadCount(curSlider) : false,
+                                adaptiveHeight : '1' == curSlider.attr( 'data-adaptive-height' ) ? true : false,
+                                pageDots : '1' == curSlider.attr('data-dots') ? true : false,
+                                prevNextButtons : '1' == curSlider.attr('data-arrows') ? true : false,
+                                asNavFor : null != curSlider.attr('data-as-nav-for') ? curSlider.attr('data-as-nav-for') : false,
+                                autoPlay : !isNaN(Number(curSlider.attr('data-auto-play'))) ? Number(curSlider.attr('data-auto-play')) : false,
+                                wrapAround : '1' == curSlider.attr('data-infinite') ? true : false,
+                            });
+                        }
+                    });
+                });
+            }
+        },
+        grid = function() {
+            asyncloader.require( [ 'isotope', 'begrid' ], function() {
+                var grids = $( '.be-grid' );
+                grids.each( function() {
+                    new BeGrid(this);
+                });
+            });
+        },
+        tatsuGallery = function(){
+            grid();
+        },
 
         registerCallbacks = function() {
-            tatsuCallbacks['tatsu_video'] = video;
+            tatsuCallbacks['tatsu_video'] = tatsu_fitvids;
             tatsuCallbacks['tatsu_gmaps'] = gmaps;
             tatsuCallbacks['tatsu_animated_numbers'] = animatedNumbers;
             tatsuCallbacks[ 'tatsu_section' ] = tatsuSection;
             tatsuCallbacks[ 'tatsu_column' ] = tatsuColumn;
             tatsuCallbacks[ 'tatsu_image' ] = lightbox;
+            tatsuCallbacks[ 'tatsu_skills' ] = progressBar;
+            tatsuCallbacks[ 'tatsu_row' ] = tatsuRow;
+            tatsuCallbacks[ 'tatsu_gallery' ] = tatsuGallery;
+            tatsuCallbacks[ 'tatsu_tabs' ] = tatsu_tabs;
+            tatsuCallbacks[ 'tatsu_accordion' ] = tatsu_accordion;
+
         },
 
         parallax = function() {
@@ -449,7 +1005,9 @@
             });
           }
         },
-
+        tatsuRow = function(){
+            stickyColumn();
+        },
         columnParallax = function() {
             var columnParallaxContainer = jQuery( '.tatsu-column-parallax' );
             if( columnParallaxContainer.length > 0 ) {
@@ -495,31 +1053,23 @@
                     if(jQuery('#wpadminbar').length){
                         stickyTopOffset = 32;
                     }
+
                     jQuery.each(tatsuStickyColumn,function(key,element){
                         var jQueryObj = jQuery(element);
-                        if(jQuery(window).width() > 767){
-                        jQueryObj.stick_in_parent({offset_top : stickyTopOffset})
-                        .on("sticky_kit:stick",function(e){
-                            jQueryObj.css({left:jQueryObj.next().offset().left});
-                        })
-                        .on("sticky_kit:unstick", function(e) {
-                            jQueryObj.css({left:0});
-                           })
-                        .on("sticky_kit:bottom", function(e) {
-                            jQueryObj.css({left: jQueryObj.next().offset().left - jQueryObj.parent().offset().left});
-                        })
-                        .on("sticky_kit:unbottom", function(e) {
-                            jQueryObj.css({left: jQueryObj.next().offset().left});
+                        if(jQuery(window).width() > 767 && !jQueryObj.closest('.tatsu-eq-cols').length ){
+                            jQueryObj.stick_in_parent({parent:'.tatsu-row', offset_top : stickyTopOffset})
+                            .on("sticky_kit:stick",function(e){
+                                jQuery(e.target).css( 'transition','none' );
                             });
-                        }else{
-                            jQueryObj.trigger("sticky_kit:detach");
-                            jQueryObj.css({left:0});
+                            jQueryObj.parent().css('position','static');
+                        } else {
+                            jQueryObj.trigger( "sticky_kit:detach" );
                         }
-                        });
+                    });
                 });
             }
-            var currentColumn = jQuery('.be-pb-observer-'+moduleId);
-                if(!currentColumn.hasClass('tatsu-column-sticky')  ){
+            var currentColumn = jQuery('.be-pb-observer-'+moduleId + ' .tatsu-column-inner ' );
+                if(!currentColumn.hasClass('tatsu-column-sticky')){
                     currentColumn.trigger("sticky_kit:detach");
                 }
 
@@ -530,6 +1080,7 @@
             stickyColumn(shouldUpdate,moduleId);
             columnTilt(shouldUpdate,moduleId);
         },
+
         lazyLoadImages = function(){
             var tatsuLazyLoadImages = jQuery( '.tatsu-image-lazyload' );
             if( tatsuLazyLoadImages.length > 0 ){
@@ -561,28 +1112,120 @@
                 }, 100); 
             }        
         },
+        tatsu_tabs = function( shouldUpdate,moduleId ) {
+            var tabsInner = jQuery( '.be-pb-observer-'+moduleId+' .tatsu-tabs-inner' );
+            
+            if( !moduleId && !tabsInner.length ){
+                tabsInner = jQuery( '.tatsu-tabs-inner' );
+            }
+     
+            if( !shouldUpdate ) {
+                if(tabsInner.length > 0) {
+                    tabsInner.tabs({
+                        fx : {
+                            opacity : 'toggle',
+                            duration : 200
+                        },
+                        create:function(e,ui){
+                            var activeColors = tabsInner.attr('data-active-colors');
+                            if( activeColors ){
+                                ui.tab.css( JSON.parse(activeColors) );
+                            }
+                        },
+                        activate:function(e,ui){
+                            var activeColors = tabsInner.attr('data-active-colors');
+                            var normalColors = tabsInner.attr('data-normal-colors');
+                                if( activeColors ){
+                                    ui.newTab.css( JSON.parse(activeColors) );
+                                }
+                                if( normalColors ){
+                                    normalColors = JSON.parse( normalColors );
+                                } else {
+                                    normalColors = {};
+                                }
+                                ui.oldTab.css( {color:normalColors.color || '' ,background:normalColors.background || ''} );
+                            
+                        }
+                    }).css('opacity', 1);
+                }
+            }else{
+                if( 0 < tabsInner.length ) {
+                    tabsInner.tabs( "refresh" );
+                }
+            }
+            var activeColors = tabsInner.attr('data-active-colors');
+            var normalColors = tabsInner.attr('data-normal-colors');
+
+            if( normalColors ){
+                normalColors = JSON.parse( normalColors );
+                tabsInner.find( '.ui-state-default' ).css( {color:normalColors.color || '', background:normalColors.background || ''} );
+            }
+            if( activeColors ){
+                tabsInner.find( '.ui-state-active' ).css( JSON.parse(activeColors) );
+            }
+
+        },
+        tatsu_accordion = function( shouldUpdate ) {
+            var accordionWrap = jQuery( '.tatsu-accordion-inner' );	
+            if( !shouldUpdate ) {
+                if( accordionWrap.length > 0 ) {
+                    accordionWrap.each(function () {
+                        var $accordion = jQuery(this), 
+                        $collapse = Number( $accordion.attr('data-collapsed') );
+                        $accordion.accordion({
+                            collapsible: $collapse,
+                            heightStyle: "content",
+                            active: false
+                        }).css('opacity', 1);			        
+
+                    });
+                }						
+            }else {
+                if( 0 < accordionWrap.length ) {
+                    accordionWrap.each( function() {
+                        var accordion = jQuery( this ),
+                            collapse = Number( accordion.attr( 'data-collapsed' ) );
+                        if( collapse ) {
+                            accordion.accordion( "option", "collapsible", true );
+                        }else{
+                            accordion.accordion( "option", "collapsible", false );
+                        }
+                        accordion.accordion( "refresh" );
+                    } );
+                }
+            }
+        },
 
         ready = function(){
 
+            lazyLoadBgImages();
             animatedAnchor();
+            progressBar();
             video();
             parallax();
             columnParallax();
             columnTilt();
             tatsuColumn();
             lazyLoadImages();
+            tatsuGallery();
             closeNotification();
             animatedNumbers();
+            carousel();
+            slider();
+            lineAnimate();
             if( !jQuery( 'body' ).hasClass( 'be-sticky-sections' ) ) {
                 cssAnimate();
             }
             lightbox();
             gmaps();
-            backgroundVideo();
+            tatsu_tabs();
+            tatsu_accordion();
+            // backgroundVideo();
             registerCallbacks();
 
             jQuery(window).on( 'tatsu_update.tatsu', function( e, data )  {
                 animate_wrapper = jQuery('.tatsu-animate, .be-animate');
+                skillsWrap = jQuery( '.be-skill' );
                 animateWrapperCount = animate_wrapper.length,
                 animatedNumberWrap = jQuery('.tatsu-an');
                 totalAnimCount = animate_wrapper.length + animatedNumberWrap.length;
@@ -591,10 +1234,13 @@
                     parallax();
                     gmaps();
                     video();
-                    backgroundVideo();
+                 //   backgroundVideo();
                     lightbox();
                     tatsuColumn();
+                    tatsuGallery();
                     columnParallax();
+                    tatsuRow();
+                    jQuery(window).trigger('resize');
                 } else if( data.moduleName in tatsuCallbacks ) {
                     tatsuCallbacks[data.moduleName]( data.shouldUpdate,data.moduleId );                                         
                 } 
@@ -605,6 +1251,7 @@
 
             jQuery(window).on('scroll', function(){
                 didScroll = true;
+                progressBar();
             });
 
             cssAnimateScrollCallback();

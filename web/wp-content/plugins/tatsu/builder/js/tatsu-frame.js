@@ -1,5 +1,9 @@
     /***  post message listener ***/
     ;(function($) { 
+        $.fn.push = function(selector) {
+            Array.prototype.push.apply(this, $.makeArray($(selector)));
+            return this;
+        };        
         var curAddToolsPosition = '',
             currentPath = '',
             isSafari = ( ( -1 <  navigator.userAgent.toLowerCase().indexOf( 'safari' ) ) && ( -1 == navigator.userAgent.toLowerCase().indexOf( 'chrome' ) ) ) ,
@@ -21,7 +25,10 @@
                 
                 var x = jQuery( '.tatsu-add-tools-helper' );
                 if( !jQuery( this ).hasClass( 'disable-add-tools' ) &&  -1 == parent.document.body.className.indexOf( "preview" ) ) {
-                        var moduleCollection = jQuery( '.tatsu-module-preview:not(.be-prevent-add-tools)' ),
+                        var moduleCollection =  [ '.tatsu-module-add-tool', '.tatsu-section-add-tool' ].reduce( function( acc, selector ) {
+                            acc = acc.push( jQuery( selector + ':not(.tatsu-prevent-add-tool)' ) );
+                            return acc;
+                        }, jQuery() ),
                             res = isNear( moduleCollection, 30, event ),
                             resPathArrayLength,
                             eleHeightRatio,
@@ -33,6 +40,7 @@
                             resPathArrayLength = resPath.split( '-' ).length;
                             eleHeightRatio = res.outerHeight(true)/2;
                             clientY = event.pageY - res.offset().top;
+                            //modules inside inner col
                             if( 6 == resPathArrayLength ) {
                                 resSiblingsCount = res.parent().children().length - 1;
                                 if( 0 == res.index() && ( 0 == resSiblingsCount || clientY < eleHeightRatio ) ) {
@@ -48,6 +56,14 @@
                             if( resPath != currentPath ) {
                                 curAddToolsPosition = '';
                             }
+
+                            //section add
+                            if( 1 == resPathArrayLength ) {
+                                x.addClass( 'tatsu-add-tools-helper-add-section' );
+                            }else if( x.hasClass( 'tatsu-add-tools-helper-add-section' ) ) {
+                                x.removeClass( 'tatsu-add-tools-helper-add-section' );
+                            }
+
                             if( 0 == res.index() ) {
                                 if( clientY < eleHeightRatio && 'top' != curAddToolsPosition ) {
                                     x.css({
@@ -80,7 +96,10 @@
                         }else {
                             if( x.hasClass( 'tatsu-pill' ) ) {
                                 x.removeClass( 'tatsu-pill' );
-                            }                            
+                            }         
+                            if( x.hasClass( 'tatsu-add-tools-helper-add-section' ) ) {
+                                x.removeClass( 'tatsu-add-tools-helper-add-section' );
+                            }                   
                             if( 'none' != x.css( 'display' ) ) {
                                 x.css( 'display', 'none' );
                                 curAddToolsPosition = '';
@@ -134,10 +153,11 @@
         jQuery( document ).ready( function() {
 
             document.getElementsByClassName( 'tatsu-add-tools-icon-wrapper' )[0].addEventListener('click', function( event ) {
-
                 event.stopPropagation();
                 event.preventDefault();
-                var message = 'addModule ' + currentPath + ' ' + curAddToolsPosition;
+                var message = $(this).closest( '.tatsu-add-tools-helper' ).hasClass( 'tatsu-add-tools-helper-add-section' ) ? 
+                                                                                         'addSection ' + currentPath + ' '  + curAddToolsPosition : 
+                                                                                         'addModule ' + currentPath + ' ' + curAddToolsPosition;
                 parent.postMessage( message, '*' );
 
             } );
@@ -164,7 +184,6 @@
         } )
     window.addEventListener("message",tatsu_scripts_trigger,false);
     function tatsu_scripts_trigger(event) {
-     
           var jsonTest = function isJson( str ) {
                                 try {
                                     JSON.parse(str);
@@ -174,7 +193,6 @@
                                 return true;
                            },
                 data = event.data;
-            
             if( jsonTest( data ) ) {
 
                     var parsedData = JSON.parse( data );
@@ -190,7 +208,7 @@
                     addToolsHelper.css( { display : 'block', top : ( element.offset().top + element.innerHeight() ), width : element.innerWidth(), left : element.offset().left } );
                 }
             }else if( 'hide_add_tools' == data.split( ',' )[0] ) {
-                jQuery( '#tatsu-add-tools-helper' ).css( 'display', 'none' );
+                jQuery( '.tatsu-add-tools-helper' ).css( 'display', 'none' );
             }else if( 'trigger_inline_editor' == data.split( ',' )[0] ) {
                      tinymce.init({
                          selector :  data.split( ',' )[1],
@@ -290,12 +308,14 @@
             }     
             else if( event.data.split(',')[0] === 'hover_set') {
                  var id = event.data.split(',')[1],
+                     title = event.data.split( ',' )[2],
                      selector = '.be-pb-observer-'+id,
                      element  = jQuery( selector );
+                     
                  if( !element.hasClass( 'active' ) ) {
                      jQuery('#tatsu-observer').css({'display' : 'inline-block','top' : element.offset().top, 'left' : element.offset().left, 'height' : element.innerHeight(), 'width' : element.outerWidth() });
                      jQuery('#tatsu-observer-tooltip').text( event.data.split(',')[2] );     
-                     if( 'undefined' != typeof event.data.split(',')[2] && 'Section' != event.data.split( ',' )[2] ){
+                     if( 'undefined' != typeof event.data.split(',')[2] && ( 'Section' != title && 'Header Row' != title ) ){
                         jQuery( '#tatsu-observer-tooltip' ).addClass('out');
                      }else{
                         jQuery( '#tatsu-observer-tooltip' ).removeClass('out')
@@ -339,7 +359,11 @@
     }
 
     jQuery(document).ready( function() {
-        jQuery(document).on( 'click', '.tatsu-frame a',  function(e) {
+        jQuery(document).on( 'click', '#tatsu-fixed-overlay', function(e) {
+            jQuery(document).find('.tatsu-slide-menu').removeClass('open');
+            jQuery(document).find('#tatsu-fixed-overlay').removeClass('open');
+        } );
+        jQuery(document).on( 'click', '.tatsu-frame a, input[type = "submit"]',  function(e) {
             e.preventDefault();
         });
         jQuery('form').on( 'submit', function(e) {

@@ -74,7 +74,8 @@ if (!function_exists('tatsu_column')) {
 		$column_shadow_value = '';
 		$custom_gutter = '';
 		$column_id = '';
-	    $classes = '';
+		$classes = '';
+		$inner_classes = '';
 	    $output = '';
 
 		// Handle Custom Gutter
@@ -95,7 +96,7 @@ if (!function_exists('tatsu_column')) {
 	    // Handle BG Video
 		if( isset( $bg_video ) && 1 == $bg_video ) {
 			$classes .= ' tatsu-video-section';
-			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto">';
+			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto"  playsinline webkit-playsinline>';
 			$bg_video_markup .=  ( !empty( $bg_video_mp4_src ) ) ? '<source src="'.$bg_video_mp4_src.'" type="video/mp4">' : '' ;
 			$bg_video_markup .=  ( !empty( $bg_video_ogg_src ) ) ? '<source src="'.$bg_video_ogg_src.'" type="video/ogg">' : '' ;
 			$bg_video_markup .=  ( !empty( $bg_video_webm_src ) ) ? '<source src="'.$bg_video_webm_src.'" type="video/webm">' : '' ;
@@ -171,9 +172,9 @@ if (!function_exists('tatsu_column')) {
 		}
 
 		//sticky column
-		// if(isset($sticky) && 0 != $sticky){
-		// 	$classes .= ' tatsu-column-sticky';
-		// }
+		if(isset($sticky) && 0 != $sticky){
+			$inner_classes .= ' tatsu-column-sticky';
+		}
 
 		//Append to custom classes 
 		$column_class = !empty( $column_class ) ? str_replace(',', ' ', $column_class ) : '' ;
@@ -184,15 +185,32 @@ if (!function_exists('tatsu_column')) {
 			$column_id = 'id="'.$col_id.'"';
 		}
 
+		//background markup
+		$bg_markup = '';
+		$lazy_load_bg = get_option( 'tatsu_lazyload_bg', false );
+		$bg_attr = '';
+		$bg_class = 'tatsu-column-bg-image';
+		$bg_markup .= '<div class = "tatsu-column-bg-image-wrap">';
+		if(!empty($lazy_load_bg)) {
+			$bg_class .= ' tatsu-bg-lazyload';
+			$bg_attr = 'data-src = "' . $bg_image . '"';
+			$image_data_uri = tatsu_get_image_datauri( $bg_image, apply_filters( 'tatsu_bg_lazyload_blur_size', 'tatsu_lazyload_thumb' ) );
+			if( !empty( $image_data_uri ) ) {
+				$bg_blur_style = 'style = "background-image : url(' . $image_data_uri . ');"';
+				$bg_markup .= '<div class = "tatsu-bg-blur" ' . $bg_blur_style . '"></div>';
+			}
+		}
+		$bg_markup .= '<div class = "' . $bg_class . '" ' . $bg_attr . '></div>';
+		$bg_markup .= '</div>'; //end tatsu-column-bg-image-wrap
 
 		$output .= '<div '.$column_id.' class="tatsu-column '.$column_class.' '.$unique_class_name.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" data-parallax-speed="'.$column_parallax.'" style="'.$custom_gutter.'">';
-		$output .= '<div class="tatsu-column-inner" >';
+		$output .= '<div class="tatsu-column-inner '. $inner_classes .'" >';
 		$output .= '<div class="tatsu-column-pad-wrap">';
 		$output .= '<div class="tatsu-column-pad" >';
 		$output .= do_shortcode( $content );
 		$output .= '</div>';
 		$output .= '</div>';
-		$output .= '<div class="tatsu-column-bg-image"></div>'; 
+		$output .= $bg_markup; 
 		$output .= $bg_video_markup.$bg_overlay_markup;			
 		$output .= '</div>';
 		$output .= $custom_style_tag;
@@ -222,5 +240,19 @@ if (!function_exists('tatsu_column')) {
 // 	$atts['column_spacing'] =  !empty( $atts['column_spacing'] ) ? intval( $atts['column_spacing'] ) / 2 : 0;
 // 	return $atts;
 // }
+
+if( !function_exists( 'tatsu_column_modify_bg_color' ) ) {
+	function tatsu_column_modify_bg_color($atts) {
+		$lazy_load_bg_color = get_option( 'tatsu_lazyload_bg_color', false );
+		$lazy_load_bg = get_option( 'tatsu_lazyload_bg', false );
+		$bg_color = $atts['bg_color'];
+		$bg_image =  $atts['bg_image'];
+		if(is_array($atts) && !empty($bg_image) && empty($bg_color) && !empty($lazy_load_bg) && !empty($lazy_load_bg_color)) {
+			$atts['bg_color'] = $lazy_load_bg_color;
+		}
+		return $atts;
+	}
+	add_filter( 'tatsu_column_before_css_generation', 'tatsu_column_modify_bg_color' );
+}
 
 ?>

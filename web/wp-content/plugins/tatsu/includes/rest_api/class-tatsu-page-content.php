@@ -35,6 +35,9 @@ class Tatsu_Page_Content {
 		$this->set_tatsu_content();
 		if( $this->set_the_content() ) {
 			update_post_meta( $this->post_id, '_edited_with', 'tatsu' );
+			if( !metadata_exists( 'post', $this->post_id, '_edited_once_with_tatsu' ) ) {
+				add_post_meta( $this->post_id, '_edited_once_with_tatsu', true );
+			}
 			return true;
 		} 
 		return false;
@@ -49,7 +52,8 @@ class Tatsu_Page_Content {
 	private function set_the_content() {
 		$my_post = array(
 	    	'ID' => $this->post_id,
-	    	'post_content' => $this->content,
+			'post_content' => $this->content,
+			'post_status' => 'publish'
 		);
 		// Update the post into the database
 		return wp_update_post( $my_post );

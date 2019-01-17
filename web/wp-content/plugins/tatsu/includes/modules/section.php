@@ -8,7 +8,7 @@ if (!function_exists('tatsu_section')) {
 	        'bg_attachment' => 'scroll',
 	        'bg_position' => 'left top',
 	        'bg_size' => 'initial',
-	        'bg_animation' => 'none',
+			'bg_animation' => 'none',
 	        'border' => '0px 0px 0px 0px',
 	        'border_color' => '',
 	        'padding' => '0px 0px 0px 0px',
@@ -38,6 +38,8 @@ if (!function_exists('tatsu_section')) {
 			'section_class' => '',
 			'section_title' => '',
 			'full_screen' => 0,
+			'enable_custom_height' => 0,
+			'custom_height'		=> '',
 			'full_screen_header_scheme' => 'background--dark',
 			'hide_in' => '',
 			'key' => be_uniqid_base36(true),
@@ -48,13 +50,15 @@ if (!function_exists('tatsu_section')) {
 		$custom_style_tag = be_generate_css_from_atts($atts, 'tatsu_section', $key);
 		$custom_class_name = 'tatsu-'.$key;
 
-	//    $background = '';
+		$bg_markup = '';
 	    $bg_video_markup = '';
 	    $bg_video_class = '';
 	    $bg_overlay_class = '';
 	    $bg_overlay_markup = '';
 	    $fullscreen_wrap_start = '';
-	    $fullscreen_wrap_end = '';
+		$fullscreen_wrap_end = '';
+		$custom_height_wrap_start = '';
+		$custom_height_wrap_end = '';
 	    $fullscreen_class = '';
 		$offset_section_class = '';
 	    $offset_wrapper_start = '';
@@ -71,10 +75,10 @@ if (!function_exists('tatsu_section')) {
 
 	    if( !isset($bg_animation) || empty($bg_animation) || $bg_animation == 'none' ) {
 	    	$bg_animation = '';
-	    } else {
+	    } else if( 'tatsu-parallax' === $bg_animation ) {
 	    	$classes .= ' '.$bg_animation;
-	    }
-
+		}
+		
 		if( 'tatsu-parallax' == $bg_animation ) {
 			$bg_repeat = 'no-repeat';
 			$bg_size = 'cover';
@@ -91,18 +95,48 @@ if (!function_exists('tatsu_section')) {
 			$padding_top = $padding[0];
 		} 
 
-		//Handle Parallax
-	    if( 'tatsu-parallax' == $bg_animation ) {
-	    	//$classes .= ' tatsu-parallax';
-	    	$parallax_markup = '<div class="tatsu-parallax-element-wrap"><div class="tatsu-parallax-element" ></div></div>';
-	    	$background = '';
+		//background markup
+		$bg_markup = '';
+		$lazy_load_bg = get_option( 'tatsu_lazyload_bg', false );
+		$bg_classes = 'tatsu-section-background';
+		$bg_wrapper_classes = 'tatsu-section-background-wrap';
+		$bg_attr = '';
+		if( !empty($bg_image) && 'tatsu-parallax' === $bg_animation ) {
+			$bg_classes .= ' tatsu-parallax-element';
+			$bg_wrapper_classes .= ' tatsu-parallax-element-wrap';
 		}
+		$bg_markup .= '<div class="' . $bg_wrapper_classes . '">';
+		if(!empty($lazy_load_bg)) {
+			$bg_blur_class = 'tatsu-bg-blur';
+			if( !empty($bg_animation) && 'tatsu-parallax' !== $bg_animation ) {
+				$bg_blur_class .= ' ' . $bg_animation;
+			}
+			$bg_classes .= ' tatsu-bg-lazyload';
+			$bg_attr = 'data-src = "' . $bg_image . '"';
+			$image_data_uri = tatsu_get_image_datauri( $bg_image, apply_filters( 'tatsu_bg_lazyload_blur_size', 'tatsu_lazyload_thumb' ) );
+			if( !empty( $image_data_uri ) ) {
+				$bg_blur_style = 'style = "background-image : url(' . $image_data_uri . ');"';
+				$bg_markup .= '<div class = "' . $bg_blur_class . '" ' . $bg_blur_style . '"></div>';
+			}
+		}
+		if( !empty($bg_animation) && 'tatsu-parallax' !== $bg_animation ) {
+			$bg_classes .= ' ' . $bg_animation;
+		}
+		$bg_markup .= '<div class = "' . $bg_classes . '" ' . $bg_attr . '></div>';
+		$bg_markup .= '</div>'; //end tatsu-section-background-wrap
 		
 		//Handle Full Screen Section
 		if( ( isset( $full_screen ) && 1 == $full_screen ) ) {
 			$classes .= ' tatsu-fullscreen';
 			$fullscreen_wrap_start = '<div class="tatsu-fullscreen-wrap">';
 			$fullscreen_wrap_end = '</div>';
+		}
+
+		//custom height
+		if( empty( $full_screen ) && !empty( $enable_custom_height ) ) {
+			$classes .= ' tatsu-section-custom-height';
+			$custom_height_wrap_start = '<div class = "tatsu-custom-height-wrap">';
+			$custom_height_wrap_end = '</div>';
 		}
 
 	    // Handle Section Offset
@@ -116,7 +150,7 @@ if (!function_exists('tatsu_section')) {
 	    // Handle BG Video
 		if( isset( $bg_video ) && 1 == $bg_video ) {
 			$classes .= ' tatsu-video-section';
-			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto">';
+			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto" playsinline webkit-playsinline>';
 			$bg_video_markup .=  ($bg_video_mp4_src) ? '<source src="'.$bg_video_mp4_src.'" type="video/mp4">' : '' ;
 			$bg_video_markup .=  ($bg_video_ogg_src) ? '<source src="'.$bg_video_ogg_src.'" type="video/ogg">' : '' ;
 			$bg_video_markup .=  ($bg_video_webm_src) ? '<source src="'.$bg_video_webm_src.'" type="video/webm">' : '' ;
@@ -190,6 +224,7 @@ if (!function_exists('tatsu_section')) {
 		// getModuleStyles($atts);
 		//Append to custom classes 
 		$section_class = !empty($section_class) ? str_replace(',', ' ', $section_class) : '' ;
+		$section_class = apply_filters( 'tatsu_section_classes', $section_class );
 		$section_class = $classes.' '.$section_class;
 
 		if( !empty( $section_id ) ) {
@@ -201,14 +236,16 @@ if (!function_exists('tatsu_section')) {
 	    $output .= '<div '.$section_id.' class="'.$custom_class_name.' tatsu-section '.$section_class.' tatsu-clearfix" data-title="'.$section_title.'" data-headerscheme="'.$full_screen_header_scheme.'">';
 		$output .= $top_divider_html;
 		$output .= $fullscreen_wrap_start; 
+		$output .= $custom_height_wrap_start;
 		$output .= '<div class="tatsu-section-pad clearfix" data-padding-top="'.$padding_top.'">';  
 	    $output .= $offset_wrapper_start;	
 	    $output .= do_shortcode( $content );
 		$output .= $offset_wrapper_end;
 		$output .= '</div>';
-		$output .= $parallax_markup;
+		$output .= $bg_markup;
 		$output .= $bg_video_markup;				
 		$output .= $bg_overlay_markup;		
+		$output .= $custom_height_wrap_end;
 		$output .= $fullscreen_wrap_end;
 		$output .= $bottom_divider_html;
 
@@ -216,10 +253,25 @@ if (!function_exists('tatsu_section')) {
 
 	    $output .= '</div>';
 	//	$output .= $hover_3d_wrap_end;
-		
+	
 		return $output;
 	}
 	add_shortcode( 'tatsu_section', 'tatsu_section' );
 	add_shortcode( 'section', 'tatsu_section' );
 }
+
+if(!function_exists( 'tatsu_section_modify_bg_color' )) {
+	function tatsu_section_modify_bg_color( $atts ) {
+		$lazy_load_bg_color = get_option( 'tatsu_lazyload_bg_color', false );
+		$lazy_load_bg = get_option( 'tatsu_lazyload_bg', false );
+		$bg_color = $atts['bg_color'];
+		$bg_image =  $atts['bg_image'];
+		if(is_array($atts) && !empty($bg_image) && empty($bg_color) && !empty($lazy_load_bg) && !empty($lazy_load_bg_color)) {
+			$atts['bg_color'] = $lazy_load_bg_color;
+		}
+		return $atts;
+	}
+	add_filter( 'tatsu_section_before_css_generation', 'tatsu_section_modify_bg_color' );
+}
+
 ?>

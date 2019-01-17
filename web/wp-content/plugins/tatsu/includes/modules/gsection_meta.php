@@ -15,9 +15,10 @@ if ( ! function_exists( 'tatsu_gsection_meta' ) ) {
 			'title_font' => '',
 			'post_type' => 'post',
 			'meta_prefix' => '',
+			'margin'	=> '0 0 15px 0',
 			'key' => be_uniqid_base36( true ),
 		), $dynamic_atts ),$atts );
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_gsection_meta', $atts['key'] );
+		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_gsection_meta', $atts['key'], 'Global' );
 		$custom_class_name = 'tatsu-'.$atts['key'];
 
 
@@ -60,16 +61,21 @@ if ( ! function_exists( 'tatsu_gsection_meta' ) ) {
 			}
 		}
 
-		if( empty( $meta_content ) ) {
-			$meta_prefix = '';
+		if( is_home() || is_archive() ){
+			$meta_content = '';
 		}
 
 
-		$output .= '<div class="tatsu-module tatsu-gsection_meta ' . $custom_class_name . ' align-'.$alignment.'">';
+		$output .= '<div class="tatsu-module tatsu-gsection-meta ' . $custom_class_name . ' align-'.$alignment.'">';
 		$output .= '<div class="'. $title_font .'" >'. $meta_prefix. $meta_content . '</div>';
 		$output .= $custom_style_tag;
 		$output .= '</div>';
-		return $output;
+		if( !empty( $meta_content ) ){
+			return $output;
+		} else {
+			return '';
+		}
+		
 	}
 	add_shortcode( 'tatsu_gsection_meta', 'tatsu_gsection_meta' );
 }

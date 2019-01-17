@@ -20,6 +20,7 @@ class Tatsu_Rest_Api {
 	public function register_rest_routes() {
 		$plugin_store = new Tatsu_Store();
 		$plugin_module = new Tatsu_Module();
+		$header_store = new Tatsu_Header_Store();
 
 	    register_rest_route( 
 	    	$this->namespace.'/v1', 
@@ -27,6 +28,23 @@ class Tatsu_Rest_Api {
 	    	array(
 		        'methods'  => 'POST',
 		        'callback' => array( $plugin_store, 'get_store'),
+		        //'permission_callback' => array( $this, 'verify_nonce' ) ,
+		        'permission_callback' => function( $request ) {
+			    	$nonce = $request->get_header( 'x-wp-nonce' );
+			    	if( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {
+			    		return true;
+			    	}
+			    	return false;
+		        }
+	  		) 
+		);
+		
+	    register_rest_route( 
+	    	$this->namespace.'/v1', 
+	    	'/header_store/', 
+	    	array(
+		        'methods'  => 'POST',
+		        'callback' => array( $header_store, 'rest_get_store'),
 		        //'permission_callback' => array( $this, 'verify_nonce' ) ,
 		        'permission_callback' => function( $request ) {
 			    	$nonce = $request->get_header( 'x-wp-nonce' );
