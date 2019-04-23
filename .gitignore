@@ -6,3 +6,4 @@ web/wp-content/*
 !web/wp-content/themes/
 web/wp-config.php
 .vscode
+dbs/*
