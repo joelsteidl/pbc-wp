@@ -790,7 +790,7 @@ function tatsu_register_font_awesome() {
 		'fa fa-meetup',
 	);
 
-	tatsu_register_icon_kit( 'font_awesome', __( 'Font Awesome Icons', 'tatsu' ) , $font_awesome_icons , TATSU_PLUGIN_URL.'/includes/icons/font_awesome/font-awesome.css' );
+	tatsu_register_icon_kit( 'font_awesome', esc_html__( 'Font Awesome Icons', 'tatsu' ) , $font_awesome_icons , TATSU_PLUGIN_URL.'/includes/icons/font_awesome/font-awesome.css' );
 } 
 
 ?>

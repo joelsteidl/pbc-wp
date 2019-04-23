@@ -19,14 +19,44 @@ function tatsuToggle(speed, easing, callback) {
     }    
 
     var adjustTopSectionPadding = function() {
-        if( jQuery('#tatsu-header-wrap').hasClass('transparent') ){
-            var currentPadding = jQuery('#be-content .tatsu-section:first-child .tatsu-section-pad').css('padding') || 0,
-            adjustedPadding = parseInt( currentPadding ) + jQuery('#tatsu-header-wrap').height() ;
-            jQuery('#be-content .tatsu-section:first-child .tatsu-section-pad').css('padding-top', adjustedPadding);
+        if( jQuery('#tatsu-header-wrap').hasClass('header-auto-pad') ){
+            var firstSection = jQuery('#be-content .tatsu-section:first-child .tatsu-section-pad'),
+                adjustedPadding = 0,
+                responsivePadding,
+                desktopPadding,
+                laptopPadding,
+                tabletPadding,
+                mobilePadding,
+                headerHeight = parseInt( jQuery('#tatsu-header-wrap').height() ),
+                lastHeaderBottomPadding = parseInt( jQuery( '.tatsu-header.default .tatsu-header-row' ).last().css( 'padding-bottom' ) );
+            if( firstSection.length > 0 ) {
+                try {
+                    responsivePadding = JSON.parse( firstSection.attr('data-padding') );
+                    } catch(e) {
+                    responsivePadding = { 
+                        d: firstSection.attr('data-padding') || 0
+                    }
+                }
+                
+                desktopPadding = parseInt( responsivePadding.d.split(' ')[0] );
+                laptopPadding = responsivePadding.hasOwnProperty('l') ? parseInt( responsivePadding.l.split(' ')[0] ) : desktopPadding;
+                tabletPadding = responsivePadding.hasOwnProperty('t') ? parseInt(responsivePadding.t.split(' ')[0] ) : desktopPadding;
+                mobilePadding = responsivePadding.hasOwnProperty('m') ? parseInt( responsivePadding.m.split(' ')[0] ) : desktopPadding;
+                if( jQuery(window).width() > 1377 ) {
+                    adjustedPadding = desktopPadding + headerHeight - lastHeaderBottomPadding;
+                } else if( jQuery(window).width() > 1024 && jQuery(window).width() <= 1377 ) {
+                    adjustedPadding = laptopPadding + headerHeight - lastHeaderBottomPadding;
+                } else if( jQuery(window).width() >= 768 && jQuery(window).width() <= 1024 ) {
+                    adjustedPadding = tabletPadding + headerHeight - lastHeaderBottomPadding;
+                } else {
+                    adjustedPadding = mobilePadding + headerHeight - lastHeaderBottomPadding;
+                }
+                firstSection.css('padding-top', adjustedPadding);
+            }
             $(document.body).addClass( 'tatsu-transparent-header-pad' );
-            $(document).trigger( 'tatsu_transparent_header_padding_calc' );
-        }
+            $(document).trigger( 'tatsu_transparent_header_padding_calc' );            
 
+        }
     },
 
     addHoverClass = function() {
@@ -41,7 +71,6 @@ function tatsuToggle(speed, easing, callback) {
                 jQuery(this).closest('li.current-menu-parent').removeClass('tatsu-hovered');
             });  
         } 
-
     };
 
     var tatsuHeader = (function() {
@@ -54,6 +83,8 @@ function tatsuToggle(speed, easing, callback) {
             header = $('.tatsu-header'),
             triggerStickyPostion = headerWrap.height(),
             placeholder = $( '#tatsu-header-placeholder' ),
+            placeholderHeight = headerWrap.height(),
+            isTransparent = headerWrap.hasClass('transparent'),
             pluginUrl = tatsuFrontendConfig.pluginUrl,
             smartSticky = headerWrap.hasClass('smart'),
             sticky = headerWrap.hasClass('sticky'),
@@ -70,25 +101,35 @@ function tatsuToggle(speed, easing, callback) {
             
             if( $win.scrollTop() > headerWrap.height() && $win.scrollTop() < smartOffset ) {
                 headerWrap.addClass('pre-stuck');
+                
             } else if( $win.scrollTop() >= smartOffset ){
                 if( smartSticky ) {
+                    if( !headerWrap.hasClass('pre-stuck') ) {
+                        headerWrap.addClass( 'pre-stuck' );
+                    }
                     if( body[0].getBoundingClientRect().top <= scrollPos ) {
                         headerWrap.addClass('hide');//
                     } else {
                         headerWrap.removeClass('hide').addClass('stuck');
                     }
                 }else{
-                    headerWrap.addClass('stuck');
+                        headerWrap.addClass('stuck');
+                    if( !isTransparent ) {
+                        placeholder.css( 'height', placeholderHeight );
+                    }
                 }
             } else if($win.scrollTop() <= headerWrap.height() ){
                 if( body[0].getBoundingClientRect().top > scrollPos ){
+                    if( !isTransparent ) {
+                        placeholder.css( 'height', '0' );
+                    }
                     headerWrap.removeClass('stuck').removeClass('pre-stuck');
                 }
             }
             scrollPos = body[0].getBoundingClientRect().top;
         },
 
-        headerHeight = function() {
+        getHeaderHeight = function() {
             var height = 0;
             header.each( function() {
                 if( $(this).hasClass('default') && $(this).is(':visible') ) {
@@ -103,7 +144,7 @@ function tatsuToggle(speed, easing, callback) {
             return smartOffset;
         },
 
-        stickyHeaderHeight = function() {
+        getStickyHeaderHeight = function() {
             var height = 0;
             if( $htmlBody.scrollTop() < smartOffset ) {
                 var clonedHeader = headerWrap.clone();
@@ -200,16 +241,25 @@ function tatsuToggle(speed, easing, callback) {
                         if( this.parent('li').hasClass('mega-menu') ){
                             this.css('visibility','hidden');
                             this.fadeIn();
+                            this.css( 'left', '' ); 
                             
                             var subMenu = this,
-                                subMenuWidth = subMenu.width() ,
-                                subMenuPosition = subMenu.offset().left ,
+                                windowWidth = jQuery(window).width(),
+                                subMenuWidth = subMenu.outerWidth() ,
+                                parentMenu = subMenu.parent('li'),
+                                parentMenuWidth = parentMenu.width(),
+                                subMenuPosition = subMenu.offset().left,
+                                subMenuArrow = subMenu.find('.tatsu-header-pointer'),
+                                centeredSubmenuPosition = subMenuPosition + (parentMenuWidth/2) - (subMenuWidth/2),
                                 parentPosition = this.parent('li').offset().left;
-                                if( ( jQuery(window).width() - subMenuPosition ) < subMenuWidth ){
-                                    var correctedPosition = subMenuWidth - ( jQuery(window).width() - 30 - subMenuPosition )
-                                    subMenu.css( 'left', - correctedPosition );
-                                    subMenu.find('.tatsu-header-pointer').css( 'left', correctedPosition + 20 );
-                                }
+                            if( 0 > centeredSubmenuPosition || ( centeredSubmenuPosition + subMenuWidth ) > windowWidth ) {
+                                var correctedPosition = subMenuWidth - ( windowWidth - 30 - subMenuPosition )
+                                subMenu.css( 'left', - correctedPosition );
+                                subMenuArrow.css( 'left', correctedPosition + 20 );
+                            }else {
+                                subMenuArrow.css( 'left', (subMenuWidth/2) - (subMenuArrow.width()/2) );
+                                subMenu.css( 'left', (parentMenuWidth/2) - (subMenuWidth/2));
+                            }
                             this.css('visibility','visible');
                             this.fadeOut();
                         }
@@ -223,9 +273,9 @@ function tatsuToggle(speed, easing, callback) {
 
                             if ( subMenuDepth > 1 ){                                
                                 if( ( jQuery(window).width() - this.closest('li.menu-item-has-children').offset().left ) < subMenuPositionCheck ){
-                                    currentMenuItem.find('ul.tatsu-sub-menu').css( 'right', subMenuPosition ).css('top', 0);
+                                    currentMenuItem.find('ul.tatsu-sub-menu').css( 'right', subMenuPosition ).css( 'left', 'auto' ).css('top', 0);
                                 }else{
-                                    currentMenuItem.find('ul.tatsu-sub-menu').css( 'left', subMenuPosition ).css('top', 0);
+                                    currentMenuItem.find('ul.tatsu-sub-menu').css( 'left', subMenuPosition ).css( 'right', 'auto' ).css('top', 0);
                                 }
                             }
                         }
@@ -249,6 +299,8 @@ function tatsuToggle(speed, easing, callback) {
         },
 
         tatsu_mobile_menu = function() {
+            
+
             jQuery(document).on('click', '.tatsu-mobile-navigation .tatsu-mobile-menu-icon', function () {
                 jQuery(this).find('.line-wrapper').toggleClass('open');
                 jQuery(this).siblings('.tatsu-mobile-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
@@ -259,60 +311,140 @@ function tatsuToggle(speed, easing, callback) {
             });
             jQuery(document).on('click','.tatsu-mobile-menu li.menu-item-has-children a , .tatsu-slide-menu-col li.menu-item-has-children a' , function() {
                 if(jQuery(this).attr('href') == '#'){
-                    jQuery(this).toggleClass('menu-open');
+                    jQuery(this).toggleClass('menu-open');     
                     jQuery(this).siblings('.tatsu-sub-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
                 }
             });
+
+            
+        },
+
+        megaMenu = function () {
+            if( jQuery( '.tatsu-header-navigation-mega-menu' ).length ) {
+                jQuery( '.tatsu-header-navigation-mega-menu > .tatsu-menu > ul > .menu-item-has-children' ).addClass( 'mega-menu' );
+            }
+        },
+
+        mobile_menu_maxheight = function() {
+            var $mobile_menu = jQuery('.tatsu-mobile-menu'),
+                $max_height = window.innerHeight - jQuery('#wpadminbar').height() - jQuery('#tatsu-header-wrap').height() ;
+            jQuery('.tatsu-mobile-menu').css( 'max-height', $max_height );
         },
 
         tatsu_search = function() {
             jQuery(document).on( 'click', '.tatsu-search svg', function() {
                 var iconPostion = jQuery(this).offset().left,
-                    windowMedian = jQuery(window).width() / 2;
+                    windowMedian = jQuery(window).width() / 2,
+                    searchBar = jQuery(this).siblings( '.search-bar' ),
+                    searchBox =  jQuery(this).closest( '.tatsu-search' );
                 if( iconPostion <  windowMedian ){
-                    jQuery(this).siblings( '.search-bar' ).css( 'left' , -20 );
-                    jQuery(this).siblings( '.search-bar' ).find( '.tatsu-header-pointer' ).css( 'left' , 20 );
+                    searchBar.css( 'left' , -20 );
+                    searchBar.find( '.tatsu-header-pointer' ).css( 'left' , 20 );
                 }else{
-                    jQuery(this).siblings( '.search-bar' ).css( 'right' , -20 );
-                    jQuery(this).siblings( '.search-bar' ).find( '.tatsu-header-pointer' ).css( 'right' , 20 );
+                    searchBar.css( 'right' , -20 );
+                    searchBar.find( '.tatsu-header-pointer' ).css( 'right' , 20 );
                 }
-                jQuery(this).siblings( '.search-bar' ).toggleClass('search-open');
+                searchBox.toggleClass('search-open');
+                if( searchBox.hasClass( 'search-open' ) ) {
+                    setTimeout(function(){
+                        searchBar.find( 'input' ).focus();
+                    }, 100 );
+                }
                 
             });
         },
 
         tatsu_close_popups = function() {
-            jQuery(document).on('mouseup', function () {
-                // Close Search
-                // if( jQuery('.search-bar').hasClass('search-open') ){
-                //     jQuery('.search-bar').removeClass('search-open')
-                // };
+            var searchBar = jQuery('.tatsu-search'),
+                languageSelector = jQuery( '.tatsu-wpml-lang-switcher' );
+            jQuery(document).on('click', function (e) {
+                var target = jQuery(e.target);
+                if( !target.closest( '.tatsu-search' ).length && searchBar.hasClass('search-open') ){
+                    searchBar.removeClass('search-open');
+                }else if( !target.closest( '.tatsu-wpml-lang-switcher' ).length && languageSelector.hasClass( 'language-switcher-open' ) ) {
+                    languageSelector.removeClass( 'language-switcher-open' );
+                }
             })
         },
 
         tatsu_language_switcher = function() {
-            jQuery(document).on( 'click', '.tatsu-wpml-lang-switcher', function() {
+            jQuery(document).on( 'click', '.tatsu-wpml-lang-switcher', function(e) {
+                e.stopPropagation();
                 jQuery(this).toggleClass('language-switcher-open');
             });
         },    
 
+        tatsuHorizontalMenuCb = function() {
+            superfish();
+            megaMenu();
+        },
+
         registerCallbacks = function() {
             tatsuCallbacks[ 'tatsu_sidebar_navigation_menu' ] = tatsuSideBarMenu;
-            tatsuCallbacks[ 'tatsu_navigation_menu' ] = superfish;
+            tatsuCallbacks[ 'tatsu_navigation_menu' ] = tatsuHorizontalMenuCb;
             tatsuCallbacks[ 'tatsu_wpml_language_switcher' ] = tatsu_language_switcher;
         },
+
+        singlePageSiteMenuUpdate = (function() {
+            var mainMenuItems = jQuery('li.menu-item'),
+                $header = $('#tatsu-header-wrap'),
+                tatsuSection = $('.tatsu-section'),
+                normalHeaderHeight = getHeaderHeight(), 
+                stickyHeaderHeight = getStickyHeaderHeight(),  
+                headerSmartOffset = getSmartOffset(),  
+                sectionCount = tatsuSection.length,
+                prevScrollTop = 0;
+            return function() {
+                    var scrollOffset = 0,
+                        curScrollTop =  Math.max(window.pageYOffset, document.documentElement.scrollTop, document.body.scrollTop), //jQuery('body,html').scrollTop(),
+                        curScrollTopWithOffset,
+                        curSection,
+                        curSectionStart,
+                        curSectionEnd,
+                        curSectionId;
+                    mainMenuItems.removeClass( 'current-menu-item' );
+                    if( body.hasClass( 'admin-bar' ) ) {
+                        scrollOffset += 32;
+                    }
+                    if( $header.length > 0 ) {
+                        if( $header.hasClass( 'solid' ) && curScrollTop < headerSmartOffset ) {
+                            scrollOffset += normalHeaderHeight;
+                        }
+                        if( $header.hasClass( 'sticky' ) && curScrollTop > headerSmartOffset ) {
+                            if( ( !$header.hasClass( 'smart' ) || curScrollTop < prevScrollTop ) ) {
+                                scrollOffset += stickyHeaderHeight;
+                            }
+                        }
+                    }
+                    curScrollTopWithOffset = curScrollTop + scrollOffset;
+                    for( var index = 0; index < sectionCount; index++ ) {
+                        curSection = tatsuSection.eq(index);
+                        curSectionStart = curSection.offset().top;
+                        curSectionEnd = curSectionStart + curSection.outerHeight();
+                        curSectionId = curSection.attr('id');
+                        if( curSection.is(':visible' ) && ( curScrollTopWithOffset >= curSectionStart && curScrollTopWithOffset < curSectionEnd ) && null != curSectionId ) {
+                            console.log( 'inside section' );
+                            mainMenuItems.find('a[href$="#'+ curSectionId +'"]').closest('li.menu-item').addClass('current-menu-item');
+                        }
+                    }
+                    prevScrollTop = curScrollTop;
+            }
+        })(),
 
         ready = function(){
 
             adjustTopSectionPadding();
             addHoverClass();
-            headerWrapHeight =  headerHeight(); //headerWrap.height(),
-            //setPlaceholderHeight();
+            if( body.hasClass( 'tatsu-header-single-page-site' ) ) {
+                singlePageSiteMenuUpdate();
+            }
+            megaMenu();
             slide();
             closeSlide();    
             superfish();   
             tatsuSideBarMenu();
             tatsu_mobile_menu();
+            mobile_menu_maxheight();
             tatsu_search();
             tatsu_language_switcher();
             tatsu_close_popups();
@@ -324,18 +456,27 @@ function tatsuToggle(speed, easing, callback) {
                 } 
             });
 
+            jQuery(window).resize(function(){
+                adjustTopSectionPadding();
+                mobile_menu_maxheight();
+            });
+
             if( sticky ) {
                 $(window).on( 'scroll.tatsuStickyHeader', function() {
-                    cancelAnimationFrame(raf);
-                    raf = requestAnimationFrame( stickyHeader );
+                    stickyHeader();
+                });
+            }
+            if( body.hasClass( 'tatsu-header-single-page-site' ) ) {
+                $(window).on( 'scroll', function(){
+                    singlePageSiteMenuUpdate();
                 });
             }
         }        
         
         return {
             ready: ready,
-            getStickyHeaderHeight : stickyHeaderHeight,
-            getHeaderHeight : headerHeight,
+            getStickyHeaderHeight : getStickyHeaderHeight,
+            getHeaderHeight : getHeaderHeight,
             getSmartOffset : getSmartOffset,
             closeSlide : closeSlideCallback,
             closeMobileMenu : closeMobileMenu

@@ -83,7 +83,6 @@ class Typehub_Admin {
 			wp_enqueue_script( 'webfont-loader', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js' );
 
 			$store = new Typehub_Store();
-			$typekit_fonts = '';
 			$google_fonts = include TYPEHUB_PLUGIN_DIR.'includes/fonts/google-fonts.php';
 			$standard_fonts = be_standard_fonts();
 			$custom_fonts = Typehub_Custom_Fonts::getInstance()->get_fonts();
@@ -158,4 +157,12 @@ class Typehub_Admin {
 		);	
 	}
 
+	public function get_font_options(){
+
+		wp_localize_script (
+			'tatsu',
+			'typehub_font_options',
+			typehub_get_font_options()
+		);	
+	}
 }

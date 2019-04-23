@@ -20348,6 +20348,7 @@ exports.default = {
             if (window.WebFont) {
                 window.WebFont.load({ typekit: { id: newData.typekitId } });
                 var url = window.ajaxurl;
+                console.log(newData);
                 jQuery.ajax({
                     url: url,
                     data: {
@@ -20357,6 +20358,7 @@ exports.default = {
                     },
                     type: 'POST'
                 }).done(function (data) {
+                    console.log(data);
                     window.typehub_fonts.typekit = JSON.parse(data);
                 }).fail(function (data) {
                     return console.log(data);
@@ -24413,15 +24415,46 @@ var Settings = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, (Settings.__proto__ || Object.getPrototypeOf(Settings)).call(this, props));
 
-        _this.state = { deletionModalVisibility: false, localFontsSwitch: false, kitIdState: { icon: 'check-circle-o', color: 'blue' }, kitIdValue: _helpers2.default.deepGet(_this.props.store, ['settings', 'typekitId']) && props.store.settings.typekitId || '' };
-        _this.changeTimer = false;
+        _this.state = {
+            deletionModalVisibility: false,
+            localFontsSwitch: false,
+            kitIdState: { icon: 'check-circle-o', color: 'blue' },
+            kitIdValue: _helpers2.default.deepGet(_this.props.store, ['settings', 'typekitId']) && props.store.settings.typekitId || '',
+            typekitSyncing: false
+        };
         return _this;
     }
 
     _createClass(Settings, [{
+        key: 'syncTypekitFonts',
+        value: function syncTypekitFonts() {
+            var _this2 = this;
+
+            this.setState({ typekitSyncing: true });
+            if (_helpers2.default.deepGet(this.props.store, ['settings', 'typekitId'])) {
+                jQuery.ajax({
+                    url: window.ajaxurl,
+                    data: {
+                        action: 'sync_typekit',
+                        security: window.typehubAjax.nonce,
+                        typekitId: this.props.store.settings.typekitId
+                    },
+                    type: 'POST'
+                }).done(function (data) {
+                    if (data) {
+                        _this2.props.dispatch(_acSettings2.default.saveSettings({ typekitId: _this2.props.store.settings.typekitId }));
+                    }
+                    _this2.setState({ typekitSyncing: false });
+                }).fail(function (data) {
+                    console.log('failed to sync Typekit Fonts', data);
+                    _this2.syncing = false;
+                });
+            } else {}
+        }
+    }, {
         key: 'saveKitId',
         value: function saveKitId() {
-            var _this2 = this;
+            var _this3 = this;
 
             var value = this.state.kitIdValue;
             this.setState({
@@ -24430,20 +24463,24 @@ var Settings = function (_React$Component) {
             });
             if (value !== '') {
                 jQuery.ajax({
-                    url: 'https://typekit.com/api/v1/json/kits/' + value + '/published',
-                    type: 'POST',
-                    dataType: 'jsonp'
+                    url: window.ajaxurl,
+                    data: {
+                        action: 'load_typekit_fonts',
+                        security: window.typehubAjax.nonce,
+                        typekitId: value
+                    },
+                    type: 'POST'
                 }).done(function (data) {
-                    if (data.request.status === 200) {
-                        _this2.setState({ kitIdState: { icon: 'check-circle-o', color: 'blue' } });
-                        _this2.props.dispatch(_acSettings2.default.saveSettings({ typekitId: value }));
+                    if (data !== 'false') {
+                        _this3.setState({ kitIdState: { icon: 'check-circle-o', color: 'blue' } });
+                        _this3.props.dispatch(_acSettings2.default.saveSettings({ typekitId: value }));
                         _notification3.default.success({
                             message: 'Success',
                             description: "Fonts from your Typekit Kit are now available for selection.",
                             placement: 'bottomRight'
                         });
                     } else {
-                        _this2.setState({ kitIdState: { icon: 'close-circle-o', color: 'red' } });
+                        _this3.setState({ kitIdState: { icon: 'close-circle-o', color: 'red' } });
                         _notification3.default.error({
                             message: 'Incorrect Typekit ID',
                             description: "You have entered an invalid Typekit Id",
@@ -24469,7 +24506,7 @@ var Settings = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
-            var _this3 = this;
+            var _this4 = this;
 
             var googleFontsUsed = _helpers2.default.getUsedGoogleFonts(this.props.store.initConfig.savedValues, this.props.store.fontSchemes),
                 downloadedFonts = this.props.store.tempWorks.localFonts,
@@ -24502,15 +24539,20 @@ var Settings = function (_React$Component) {
                                     'div',
                                     { style: { marginLeft: 20 } },
                                     !_helpers2.default.deepGet(this.props.store, ['settings', 'typekitId']) ? _react2.default.createElement(_input2.default, { onChange: function onChange(e) {
-                                            return _this3.setState({ kitIdValue: e.target.value, kitIdState: { icon: 'check-circle-o', color: 'blue' } });
+                                            return _this4.setState({ kitIdValue: e.target.value, kitIdState: { icon: 'check-circle-o', color: 'blue' } });
                                         }, value: this.state.kitIdValue, style: { marginLeft: 5, width: 180 } }) : _react2.default.createElement(
                                         'span',
                                         null,
                                         this.props.store.settings.typekitId
                                     ),
-                                    !_helpers2.default.deepGet(this.props.store, ['settings', 'typekitId']) ? _react2.default.createElement(_icon2.default, { onClick: this.saveKitId.bind(this), style: { marginLeft: 10, color: this.state.kitIdState.color, cursor: 'pointer' }, type: this.state.kitIdState.icon }) : _react2.default.createElement(_icon2.default, { onClick: function onClick() {
-                                            return _this3.setState({ deletionModalVisibility: true });
-                                        }, style: { marginLeft: 10, color: 'red', cursor: 'pointer' }, type: 'delete' })
+                                    !_helpers2.default.deepGet(this.props.store, ['settings', 'typekitId']) ? _react2.default.createElement(_icon2.default, { onClick: this.saveKitId.bind(this), style: { marginLeft: 10, color: this.state.kitIdState.color, cursor: 'pointer' }, type: this.state.kitIdState.icon }) : _react2.default.createElement(
+                                        'span',
+                                        null,
+                                        _react2.default.createElement(_icon2.default, { onClick: this.syncTypekitFonts.bind(this), className: this.state.typekitSyncing ? 'rotating' : '', style: { marginLeft: 10, color: 'grey', cursor: 'pointer' }, type: 'sync' }),
+                                        _react2.default.createElement(_icon2.default, { onClick: function onClick() {
+                                                return _this4.setState({ deletionModalVisibility: true });
+                                            }, style: { marginLeft: 10, color: 'red', cursor: 'pointer' }, type: 'delete' })
+                                    )
                                 )
                             ),
                             _react2.default.createElement(
@@ -24571,7 +24613,7 @@ var Settings = function (_React$Component) {
                                                 return _notification3.default.destroy();
                                             },
                                             onClick: !stateChange ? function () {
-                                                return _this3.props.dispatch(_acTempWorks2.default.downloadFont(fontsToBeDownloaded));
+                                                return _this4.props.dispatch(_acTempWorks2.default.downloadFont(fontsToBeDownloaded));
                                             } : function () {
                                                 return '';
                                             } },
@@ -24643,7 +24685,7 @@ var Settings = function (_React$Component) {
                         visible: this.state.deletionModalVisibility,
                         onOk: this.deleteKitId.bind(this),
                         onCancel: function onCancel() {
-                            return _this3.setState({ deletionModalVisibility: false });
+                            return _this4.setState({ deletionModalVisibility: false });
                         }
                     },
                     _react2.default.createElement(

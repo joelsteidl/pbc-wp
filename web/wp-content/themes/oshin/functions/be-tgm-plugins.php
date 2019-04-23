@@ -46,7 +46,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Tatsu', // The plugin name
 			'slug'     				=> 'tatsu', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/tatsu.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/tatsu.zip',
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '2.6.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -54,9 +54,13 @@ function my_theme_register_required_plugins() {
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
 		),
 		array(
+			'name' 		=> 'Meta Box Framework',
+			'slug' 		=> 'meta-box',				
+		),
+		array(
 			'name'     				=> 'Oshine Core', // The plugin name
 			'slug'     				=> 'oshine-core', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/oshine-core.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/oshine-core.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.3.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -66,17 +70,17 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Oshine Modules', // The plugin name
 			'slug'     				=> 'oshine-modules', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/oshine-modules.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/oshine-modules.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '2.2.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
-			'force_activation' 		=> true, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
-			'force_deactivation' 	=> true, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
+			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
+			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
 		),
 		array(
 			'name'     				=> 'Typehub', // The plugin name
 			'slug'     				=> 'typehub', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/typehub.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/typehub.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.0.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -86,7 +90,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Colorhub', // The plugin name
 			'slug'     				=> 'colorhub', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/colorhub.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/colorhub.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.0.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -96,7 +100,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Master Slider', // The plugin name
 			'slug'     				=> 'masterslider', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory() . '/lib/plugins/masterslider.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/masterslider.zip', // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '3.2.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -107,7 +111,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Slider Revolution', // The plugin name
 			'slug'     				=> 'revslider', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory() . '/lib/plugins/revslider.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/revslider.zip', // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '5.4.7.3', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -119,7 +123,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'BE Portfolio Post Type', // The plugin name
 			'slug'     				=> 'be-portfolio-post', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/be-portfolio-post.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/be-portfolio-post.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -130,7 +134,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'BE GDPR', // The plugin name
 			'slug'     				=> 'be-gdpr', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/be-gdpr.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/be-gdpr.zip', // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.0.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -141,7 +145,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Conditional Logic', // The plugin name
 			'slug'     				=> 'meta-box-conditional-logic', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/meta-box-conditional-logic.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-conditional-logic.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.6.4', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -152,7 +156,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Show Hide', // The plugin name
 			'slug'     				=> 'meta-box-show-hide', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/meta-box-show-hide.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-show-hide.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.1.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
@@ -163,7 +167,7 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Tabs', // The plugin name
 			'slug'     				=> 'meta-box-tabs', // The plugin slug (typically the folder name)
-			'source'   				=> get_template_directory_uri() . '/lib/plugins/meta-box-tabs.zip', // The plugin source
+			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-tabs.zip', // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
 			'version' 				=> '1.1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch

@@ -3,7 +3,8 @@ if (!function_exists('tatsu_animated_link')) {
     function tatsu_animated_link( $atts, $content ) {
         $atts = shortcode_atts( array (
             'link_text' => '',
-            'url' => '',
+			'url' => '',
+			'new_tab' => '',
             'custom_font_size'  => '0',
             'font_size' => '13',
             'link_style' => 'style1',
@@ -27,9 +28,10 @@ if (!function_exists('tatsu_animated_link')) {
         $link_text_font = !empty( $link_text_font ) ? ( ' ' . $link_text_font ) : '';
 
 		$output = '';
-        $animate = ( isset( $animate ) && 1 == $animate ) ? ' tatsu-animate' : '';
+		$animate = ( isset( $animate ) && 1 == $animate ) ? ' tatsu-animate' : '';
+		$new_tab = !empty( $new_tab ) ? 'target = "_blank"' : '';
 		
-		$output .= '<div class="tatsu-animated-link tatsu-animated-link-'. $link_style . ' ' .$custom_class_name. ' tatsu-module tatsu-animated-link-align-'. $alignment .'"><a class = "tatsu-animated-link-inner '. $animate . $link_text_font . '" href = "'. $url .'" data-animation="'. $animation_type .'" data-animation-delay="'.$animation_delay.'" >';
+		$output .= '<div class="tatsu-animated-link tatsu-animated-link-'. $link_style . ' ' .$custom_class_name. ' tatsu-module tatsu-animated-link-align-'. $alignment .'"><a class = "tatsu-animated-link-inner '. $animate . $link_text_font . '" href = "'. $url .'" ' . $new_tab . ' data-animation="'. $animation_type .'" data-animation-delay="'.$animation_delay.'" >';
 		$output .= '<span class = "tatsu-animated-link-text"  >'.$link_text.'</span>';
         if( $link_style == 'style4' ){
             //$output .= '<div class = "next-arrow"><span class="arrow-line-one" ></span><span class="arrow-line-two" ></span><span class="arrow-line-three"></span></div>';

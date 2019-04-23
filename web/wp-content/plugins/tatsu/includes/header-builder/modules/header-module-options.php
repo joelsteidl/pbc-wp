@@ -4,7 +4,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_row' );
 function tatsu_register_header_row() {
 		$controls = array (
 	        'icon' => '',
-	        'title' => __( 'Header Row', 'tatsu' ),
+	        'title' => __( 'Row', 'tatsu' ),
 	        'is_js_dependant' => false,
 	        'child_module' => 'tatsu_header_column',
 	        'type' => 'core',
@@ -22,6 +22,7 @@ function tatsu_register_header_row() {
 				'border',
 				'border_color',
 				'overflow_content',
+				'box_shadow',
 				array (
 					'type' => 'accordion' ,
 					'active' => 'none',
@@ -37,9 +38,10 @@ function tatsu_register_header_row() {
 						),
 						array (
 							'type' => 'panel',
-							'title' => __( 'Advanced', 'tatsu' ),
+							'title' => __( 'Transparency Settings', 'tatsu' ),
 							'group' => array (
 								'transparent_row_bg',
+								'transparent_row_border',
 								'disable_color_scheme'
 							)
 						),
@@ -108,6 +110,19 @@ function tatsu_register_header_row() {
 					),
 				), 
 				array (
+					'att_name'			=> 'box_shadow',
+					'label'				=> __( 'Box Shadow', 'tatsu' ),
+					'type'				=> 'input_box_shadow',
+					'default'			=> '0px 0px 0px 0px rgba(0,0,0,0)',
+					'css'				=> true,
+					'selectors'			=> array (
+						'.tatsu-{UUID}.tatsu-header' => array (
+							'property'	=> 'box-shadow',
+						)
+					)
+	
+				),
+				array (
 					'att_name' => 'sticky_padding',
 					'type' => 'input_group',
 					'label' => __( 'Sticky Padding', 'tatsu' ),
@@ -167,6 +182,21 @@ function tatsu_register_header_row() {
 					  )
 				  ),
 				  array (
+					'att_name' => 'transparent_row_border',
+					'type' => 'color',
+					'label' => __( 'Border Color when Header is Transparent', 'tatsu' ),
+					'default' => 'rgba(0,0,0,0)',
+					'tooltip' => '',
+					'css' => true,
+					'visible' => array( 'border', '!=', '0px 0px 0px 0px' ),
+					'selectors' => array(
+						  '#tatsu-header-wrap.transparent:not(.stuck) .tatsu-header.tatsu-{UUID}' => array(
+							  'property' => 'border-color',
+							//   'when' => array( 'border', '!=', '0px 0px 0px 0px' ),
+						  )
+					  )
+				  ),	
+				  array (
                     'att_name' => 'disable_color_scheme',
                     'type' => 'switch',
                     'label' => __( 'Do Not Apply Color Scheme', 'tatsu' ),
@@ -210,7 +240,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_column' );
 function tatsu_register_header_column() {
     $controls = array (
         'icon' => '',
-        'title' => __( 'Header Column', 'tatsu' ),
+        'title' => __( 'Column', 'tatsu' ),
         'is_js_dependant' => false,
         'type' => 'core',
 		'builder_layout'=> 'list',
@@ -287,6 +317,7 @@ function tatsu_register_header_column() {
               'default' => '0px 0px 0px 0px',
               'tooltip' => '',
 			  'css' => true,
+			  'responsive' => true,
 			  'hide_in_sidebar_col' => true,
               'selectors' => array(
 					'.tatsu-{UUID}.tatsu-header-col' => array(
@@ -613,7 +644,8 @@ function tatsu_register_hamburger_menu() {
 					'max' => '600',
 					'step' => '20',
 					'unit' => 'px',
-				),		        		
+				),		  
+				'responsive'	=> true,      		
 				'default' => '300',
 				'css' => true,
 				'selectors' => array(
@@ -666,7 +698,7 @@ function tatsu_register_navigation_menu() {
 		'builder_layout' => 'column',
 		'group_atts' => array(
 			'menu_name',
-			'disable_in_mobile',
+			// 'disable_in_mobile',
 			array (
 				'type' => 'accordion' ,
 				'active' => 'none',
@@ -700,7 +732,8 @@ function tatsu_register_navigation_menu() {
 							'sub_menu_hover_color',
 							'sub_menu_hover_bg_color',
 							'sub_menu_border',
-							'sub_menu_shadow'
+							'sub_menu_shadow',
+							'mega_menu'
 						)
 					),
 					array (
@@ -724,13 +757,13 @@ function tatsu_register_navigation_menu() {
 				'tooltip' => '',
 				'default' => tatsu_header_get_menu_list()[1]
 			),
-			array (
-				'att_name' => 'disable_in_mobile',
-				'type' => 'switch',
-				'label' => __( 'Disable in Mobile', 'tatsu' ),
-				'default' => false,
-				'tooltip' => '',
-			),
+			// array (
+			// 	'att_name' => 'disable_in_mobile',
+			// 	'type' => 'switch',
+			// 	'label' => __( 'Disable in Mobile', 'tatsu' ),
+			// 	'default' => false,
+			// 	'tooltip' => '',
+			// ),
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
@@ -742,6 +775,9 @@ function tatsu_register_navigation_menu() {
 				'selectors' => array(
 					  '.tatsu-{UUID}.tatsu-menu' => array(
 						  'property' => 'margin',
+					  ),
+					  '.tatsu-{UUID}.tatsu-mobile-menu + .tatsu-mobile-menu-icon' => array(
+						'property' => 'margin',
 					  ),
 				  ),
 			  ), 
@@ -780,7 +816,7 @@ function tatsu_register_navigation_menu() {
 				'att_name' => 'menu_hover_color',
 				'type' => 'color',
 				'label' => __( 'Menu Hover Color', 'tatsu' ),
-				'default' => get_colorhub_palette_color(0),
+				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
@@ -823,7 +859,7 @@ function tatsu_register_navigation_menu() {
 					'att_name' => 'transparent_menu_hover_color',
 					'type' => 'color',
 					'label' => __( 'Menu Hover Color on Light Scheme', 'tatsu' ),
-					'default' => get_colorhub_palette_color(0),
+					'default' => 'rgba(34,147,215,1)',
 					'tooltip' => '',
 					'css' => true,
 					'selectors' => array(
@@ -886,6 +922,9 @@ function tatsu_register_navigation_menu() {
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-menu > ul > li > a' => array(
 						'property' => 'typography',
+					),
+					'.tatsu-{UUID}.tatsu-mobile-menu > ul > li > a' => array(
+						'property' => 'typography',
 					)
 				),
 			),	
@@ -935,7 +974,7 @@ function tatsu_register_navigation_menu() {
 						'gradient' => true
 					),
 					'label' => __( 'Link Hover Color', 'tatsu' ),
-					'default' => get_colorhub_palette_color(0),
+					'default' => 'rgba(34,147,215,1)',
 					'tooltip' => '',
 					'css' => true,
 					'selectors' => array(
@@ -970,9 +1009,12 @@ function tatsu_register_navigation_menu() {
 					'tooltip' => '',
 					'css' => true,
 					'selectors' => array(
-							'.tatsu-{UUID}.tatsu-menu ul.tatsu-sub-menu > li:hover > a' => array(
+							'.tatsu-{UUID}.tatsu-menu ul.tatsu-sub-menu li > a:hover' => array(
 								'property' => 'background',
 							),
+							'.tatsu-{UUID}.tatsu-menu ul.tatsu-sub-menu > li.current-menu-item > a' => array(
+								'property' => 'background'
+							)
 						)
 					),
 				array (
@@ -1069,9 +1111,19 @@ function tatsu_register_navigation_menu() {
 					'selectors' => array(
 						'.tatsu-{UUID}.tatsu-menu .tatsu-sub-menu li a' => array(
 							'property' => 'typography',
+						),
+						'.tatsu-{UUID}.tatsu-mobile-menu .tatsu-sub-menu li a' => array(
+							'property' => 'typography',
 						)
 					),
 				), 
+				array (
+					'att_name'		=> 'mega_menu',
+					'type'			=> 'switch',
+					'label'			=> __( 'Mega Menu', 'tatsu' ),
+					'default'		=> '0',
+					'tooltip'		=> '',
+				),
 				array (
 					'att_name' => 'hide_in',
 					'type' => 'screen_visibility',
@@ -1097,7 +1149,7 @@ function tatsu_register_sidebar_navigation_menu() {
 		'builder_layout' => 'column',
 		'group_atts' => array(
 			'menu_name',
-			'disable_in_mobile',
+			// 'disable_in_mobile',
 			array (
 				'type' => 'accordion' ,
 				'active' => 'none',
@@ -1205,6 +1257,9 @@ function tatsu_register_sidebar_navigation_menu() {
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-sidebar-menu > ul > li > a' => array(
 						'property' => 'typography',
+					),
+					'.tatsu-{UUID}.tatsu-sidebar-menu > ul > li > span' => array(
+						'property' => 'typography',
 					)
 				),
 			),		
@@ -1212,7 +1267,7 @@ function tatsu_register_sidebar_navigation_menu() {
 				'att_name' => 'menu_hover_color',
 				'type' => 'color',
 				'label' => __( 'Menu Hover Color', 'tatsu' ),
-				'default' => get_colorhub_palette_color(0),
+				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
@@ -1263,7 +1318,7 @@ function tatsu_register_sidebar_navigation_menu() {
 						'gradient' => true
 					),
 					'label' => __( 'Link Hover Color', 'tatsu' ),
-					'default' => get_colorhub_palette_color(0),
+					'default' => 'rgba(34,147,215,1)',
 					'tooltip' => '',
 					'css' => true,
 					'selectors' => array(
@@ -1583,59 +1638,6 @@ function tatsu_register_search() {
 	tatsu_register_header_module( 'tatsu_search', $controls, 'tatsu_search' );
 }
 
-if ( in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-	add_action( 'tatsu_register_header_modules', 'tatsu_register_cart' );
-}
-function tatsu_register_cart() {
-	$controls = array (
-		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#shopping_cart',
-		'title' => __( 'Shopping Cart', 'tatsu' ),
-		'is_js_dependant' => false,
-		'child_module' => '',
-		'type' => 'single',
-		'inline' => true,
-		'is_built_in' => true,
-		'atts' => array (
-			array (
-				'att_name' => 'icon_color',
-				'type' => 'color',
-				'label' => __( 'Icon Color', 'tatsu' ),
-				'default' => '#212121', 
-				'tooltip' => '',
-				'css' => true,
-				'selectors' => array(
-					'.tatsu-{UUID}.tatsu-cart svg g' => array(
-						'property' => 'stroke',
-					),
-				),
-			),
-			array (
-				'att_name' => 'margin',
-				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
-				'default' => '0px 30px 0px 0px',
-				'tooltip' => '',
-				'responsive' => true,
-				'css' => true,
-				'selectors' => array(
-					'.tatsu-{UUID}.tatsu-cart' => array(
-						'property' => 'margin',
-					),
-				),
-			),
-			array (
-				'att_name' => 'hide_in',
-				'type' => 'screen_visibility',
-				'label' => __( 'Hide in', 'tatsu' ),
-				'default' => '',
-				'tooltip' => '',
-			),
-		),	        
-	);
-	tatsu_register_header_module( 'tatsu_cart', $controls, 'tatsu_cart' );
-}
-
-
 if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
 	add_action( 'tatsu_register_header_modules', 'tatsu_register_wpml_language_switcher' );
 }
@@ -1686,6 +1688,23 @@ function tatsu_register_wpml_language_switcher() {
 				'label' => __( 'Language name in current language', 'tatsu' ),
 				'default' => false,
 				'tooltip' => '',
+			),
+			array(
+				'att_name' => 'lang_typography',
+				'type' => 'typography',
+				'label' => __( 'Typography', 'tatsu' ),
+				'responsive' => true,
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-wpml-lang-switcher .current-language' => array(
+						'property' => 'typography',
+					),
+					'.tatsu-{UUID}.tatsu-wpml-lang-switcher .language-list li' => array(
+						'property' => 'typography',
+					)
+				),
 			),
 			array (
 				'att_name' => 'margin',

@@ -17,6 +17,7 @@ if (!function_exists('tatsu_text')) {
 			'box_shadow' => '',
 			'padding' =>'',
 			'builder_mode' => '',
+			'color' => '',
 			'light_color' => '',
 			'dark_color' => '',
 			'hide_in' => '',
@@ -108,6 +109,18 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 					)
 				),
 			);
+			$atts['color'] = array (
+				'type' => 'color',
+				'label' => __( 'Color', 'tatsu' ),
+				'default' => '', 
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-text-inner *' => array(
+						'property' => 'color'
+					),
+				),
+			);
 			// Light Scheme Colors
 			$atts['light_color'] = array (
 				'type' => 'color',
@@ -116,7 +129,7 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
-					'#tatsu-header-wrap.transparent.light:not(.stuck) .tatsu-header.apply-color-scheme .tatsu-{UUID} .tatsu-text-inner *' => array(
+					'#tatsu-header-wrap.transparent.light:not(.stuck) .tatsu-header.apply-color-scheme .tatsu-{UUID} .tatsu-text-inner' => array(
 						'property' => 'color',
 						'append' => ' !important'
 					),
@@ -130,7 +143,7 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
-					'#tatsu-header-wrap.transparent.dark:not(.stuck) .tatsu-header.apply-color-scheme .tatsu-{UUID} .tatsu-text-inner *' => array(
+					'#tatsu-header-wrap.transparent.dark:not(.stuck) .tatsu-header.apply-color-scheme .tatsu-{UUID} .tatsu-text-inner' => array(
 						'property' => 'color',
 						'append' => ' !important'
 					),

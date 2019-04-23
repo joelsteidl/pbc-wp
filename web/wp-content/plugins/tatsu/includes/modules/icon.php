@@ -32,6 +32,8 @@ if (!function_exists('tatsu_icon')) {
 			'light_bg_color' => 'rgba(255,255,255,0.2)',
 			'light_border_color' => '#f5f5f5',
 			'light_hover_color' => '',
+			'ripple_effect'	=> '0',
+			'ripple_color'	=> '',
 			'light_hover_bg_color' => '',
 			'light_hover_border_color' => '',
 			'dark_color' => '#232425',
@@ -108,9 +110,15 @@ if (!function_exists('tatsu_icon')) {
 			}
 		}
 
+		//ripple effect
+		$ripple_class = '';
+		if( 'circle' === $style && !empty( $ripple_effect ) ) {
+			$ripple_class = 'tatsu-icon-ripple';
+		} 
+
 		$output .= '<div class="tatsu-module tatsu-normal-icon tatsu-icon-shortcode align-'.$alignment.' '.$custom_class_name.' '.$hover_effect_parent.' '.$visibility_classes.'">';
 		$output .= $custom_style_tag; 
-		$output .= '<a href="'.$href.'" class="tatsu-icon-wrap '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>';
+		$output .= '<a href="'.$href.'" class="tatsu-icon-wrap '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector. ' ' . $ripple_class . '" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>';
 		$output .= ( $style == 'plain' ) ? '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"></i></a>' : '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"  data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'"></i></a>' ;
 		$output .= '</div>';
 		

@@ -139,9 +139,6 @@ class PluginUpdateChecker_3_1 {
 		//Rename the update directory to be the same as the existing directory.
 		add_filter('upgrader_source_selection', array($this, 'fixDirectoryName'), 10, 3);
 
-		//Enable language support (i18n).
-		load_plugin_textdomain('tatsu', false, TATSU_PLUGIN_URL . '/languages');
-
 		//Allow HTTP requests to the metadata URL even if it's on a local host.
 		$this->metadataHost = @parse_url($this->metadataUrl, PHP_URL_HOST);
 		add_filter('http_request_host_is_external', array($this, 'allowMetadataHost'), 10, 2);

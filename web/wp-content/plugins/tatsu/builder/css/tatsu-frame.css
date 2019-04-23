@@ -68,6 +68,7 @@
       align-items: center;
       padding: 7px 15px;
       min-width: 100px;
+      z-index: 10;
       border-radius: 100px;
       justify-content: center;
       color : #fff;
@@ -77,6 +78,12 @@
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+  }
+  .tatsu-header-col .tatsu-column-width-placeholder {
+      top : 0;
+  }
+  .tatsu-header-col .tatsu-column-width-placeholder {
+      padding: 3px 10px;
   }
   .tatsu-column-width-placeholder-right {
       right : 20px;
@@ -153,6 +160,29 @@
 .be-preview:last-child > .tatsu-gradient-icon.align-none .tatsu-icon-bg {
    margin-right: 0px;
 }
+.tatsu-icon-ripple::before,
+.tatsu-icon-ripple::after {
+    display: none;
+}
+.tatsu-icon-ripple-before,
+.tatsu-icon-ripple-after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    content: '';
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: scale(.35);
+    opacity: 0;
+    animation: tatsu-ripple 2.6s cubic-bezier(.25,.9,.2,1) 0.4s infinite;
+}
+.tatsu-icon-ripple-after {
+    animation-delay : 0s;
+}
+
 /****/
 
 /**
@@ -194,6 +224,25 @@
         margin-bottom: 25px !important;
     }
 }
+
+/**
+ * Lists
+ */
+
+.tatsu-lists-number .tatsu-list-item-numbered-before {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex : 0 0 auto;
+}
+
+.tatsu-lists-number.tatsu-list .tatsu-list-content::before {
+    display: none;
+}
+
 
 /**
  * Interactive Box
@@ -347,6 +396,12 @@
   width : 100%; 
 }
 
+/**
+ * Exponent Cart
+ */
+ .tatsu-module-preview .exponent-cart {
+     display: flex;
+ }
 
   /*************************************************
 inline Editor 
@@ -782,7 +837,7 @@ Color Picker
 
 .tatsu-add-tools-helper {
     position: absolute;
-    z-index: 1000;
+    z-index: 10000;
     display : none;
     width : 22px;
     transform: translate(-50%,-50%);
@@ -803,13 +858,13 @@ Color Picker
 }
 
 .tatsu-add-tools-helper svg {
-    width: 10px;
-    height: 10px;
+    width: 8px;
+    height: 8px;
     fill: white;
 }
 .tatsu-add-tools-icon-wrapper {
-    height: 22px;
-    width: 22px;
+    height: 16px;
+    width: 16px;
     display : flex;
     border-radius: 100%;
     background: #20cbd4;
@@ -818,8 +873,8 @@ Color Picker
     cursor: pointer;
 }
 .tatsu-pill .tatsu-add-tools-icon-wrapper {
-    width : 35px;
-    height: 30px;
+    width : 25px;
+    height: 20px;
     transition: none;
     border-radius: 0;
 }
@@ -837,12 +892,12 @@ Color Picker
     width : 35px;
     height : 35px;
 }
-.tatsu-add-tools-helper:not(.tatsu-pill):hover,
+/* .tatsu-add-tools-helper:not(.tatsu-pill):hover,
 .tatsu-add-tools-helper:not(.tatsu-pill):hover .tatsu-add-tools-icon-wrapper {
     width : 32px;
     height : 32px;
     transition : height 250ms linear, width 250ms linear;    
-}
+} */
 .tatsu-add-tools-helper-add-section.tatsu-add-tools-helper:hover,
 .tatsu-add-tools-helper-add-section.tatsu-add-tools-helper:hover .tatsu-add-tools-icon-wrapper {
     width : 40px;
@@ -873,6 +928,7 @@ tatsu hover observer
   text-transform : capitalize;
   z-index: 50;
   font-family: Roboto;
+  font-size: 12px;
 }
 #tatsu-observer-tooltip.out, #tatsu-selection-tooltip.out{
    left : -1px;
@@ -1125,10 +1181,36 @@ tatsu hover observer
 .be-gdpr-cookie-notice-bar{
     display: none;
 }
-/* Changes for header Builder in TATSU Frame */
+/* Changes for Header and Footer Builder in TATSU Frame */
 
 #tatsu-header-container{
     display: none;
+}
+#tatsu-footer-container {
+    display: none;
+}
+
+.single-tatsu_header,
+.single-tatsu_footer {
+    background: #dddddd;
+}
+.single-tatsu_header #tatsu-content-wrap,
+.single-tatsu_footer #tatsu-content-wrap {
+    margin-top: 100px;
+    background: #ffffff;
+}
+.single-tatsu_header #bottom-widgets,
+.single-tatsu_header #footer,
+.single-tatsu_header #tatsu-footer-container,
+.single-tatsu_footer #tatsu-header-container,
+.single-tatsu_footer #bottom-widgets,
+.single-tatsu_footer #footer{
+    display: none;
+}
+@media only screen and (max-width : 767px) {
+    .single-tatsu_header #tatsu-selection-tooltip{
+        display: none;
+    }
 }
 .tatsu-header-col{
     position: relative;
@@ -1167,7 +1249,12 @@ tatsu hover observer
 .tatsu-header-col .be-preview:last-child > .tatsu-module{
     margin-right : 0 !important;
 }
-
+@media only screen and (max-width: 1366px) {
+    .tatsu-header-col .be-preview:nth-last-child(2) > .tatsu-header-module,
+    .tatsu-header-col .be-preview:nth-last-child(2) > .tatsu-module{
+        /* margin-right : 0 !important; */
+    }
+}
 .tatsu-icon-group .tatsu-icon-shortcode:last-child{
     margin-right: 0px !important;
 }
@@ -1181,6 +1268,9 @@ tatsu hover observer
     display : none; 
 }
 
+.tatsu-mobile-menu-icon{
+    pointer-events: none;
+}
 .tatsu-inline-typehub-selector {
     padding: 5px;
     line-height: 1;
@@ -1196,11 +1286,16 @@ tatsu hover observer
     color: #32ccd5 !important;
 }
 
+.tatsu-mobile-navigation .tatsu-mobile-menu{
+	width: 327px;
+	top: 15%;
+}
+
 /* Modify Media Query to Toggle Tablet and Laptop Visiblity in Header Builder Frame */
 
 @media only screen and (min-width: 961px) and (max-width: 1366px) {
     .tatsu-header .tatsu-hide-tablet:not(.tatsu-mobile-navigation) {
-        display: block !important;
+        display: flex !important;
     }    
     .tatsu-header .tatsu-hide-laptop {
         display: none !important;
@@ -1404,6 +1499,13 @@ input{
     cursor: not-allowed;
 }
 
+/** Rev Slider */
+.tatsu-rev-slider-placeholder {
+    min-height : 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /** Slick */
 .slick-dots,.slick-next,.slick-prev{position:absolute;display:block;padding:0}.slick-dots li button:before,.slick-next:before,.slick-prev:before{font-family:slick;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.slick-loading .slick-list{background:url(ajax-loader.gif) center center no-repeat #fff}@font-face{font-family:slick;font-weight:400;font-style:normal;src:url(fonts/slick.eot);src:url(fonts/slick.eot?#iefix) format('embedded-opentype'),url(fonts/slick.woff) format('woff'),url(fonts/slick.ttf) format('truetype'),url(fonts/slick.svg#slick) format('svg')}.slick-next,.slick-prev{font-size:0;line-height:0;top:50%;width:20px;height:20px;-webkit-transform:translate(0,-50%);-ms-transform:translate(0,-50%);transform:translate(0,-50%);cursor:pointer;color:transparent;border:none;outline:0;background:0 0}.slick-next:focus,.slick-next:hover,.slick-prev:focus,.slick-prev:hover{color:transparent;outline:0;background:0 0}.slick-next:focus:before,.slick-next:hover:before,.slick-prev:focus:before,.slick-prev:hover:before{opacity:1}.slick-next.slick-disabled:before,.slick-prev.slick-disabled:before{opacity:.25}.slick-next:before,.slick-prev:before{font-size:20px;line-height:1;opacity:.75;color:#fff}.slick-prev{left:-25px}[dir=rtl] .slick-prev{right:-25px;left:auto}.slick-prev:before{content:'â†'}.slick-next:before,[dir=rtl] .slick-prev:before{content:'â†’'}.slick-next{right:-25px}[dir=rtl] .slick-next{right:auto;left:-25px}[dir=rtl] .slick-next:before{content:'â†'}.slick-dotted.slick-slider{margin-bottom:30px}.slick-dots{bottom:-25px;width:100%;margin:0;list-style:none;text-align:center}.slick-dots li{position:relative;display:inline-block;width:20px;height:20px;margin:0 5px;padding:0;cursor:pointer}.slick-dots li button{font-size:0;line-height:0;display:block;width:20px;height:20px;padding:5px;cursor:pointer;color:transparent;border:0;outline:0;background:0 0}.slick-dots li button:focus,.slick-dots li button:hover{outline:0}.slick-dots li button:focus:before,.slick-dots li button:hover:before{opacity:1}.slick-dots li button:before{font-size:6px;line-height:20px;position:absolute;top:0;left:0;width:20px;height:20px;content:'â€¢';text-align:center;opacity:.25;color:#000}.slick-dots li.slick-active button:before{opacity:.75;color:#000}/*# sourceMappingURL=slick-theme.min.css.map */
@@ -1459,4 +1561,12 @@ input{
 .slick-slider:hover .tatsu-next {
     right:  20px;
     opacity:  1;
+}
+.tatsu_header-template-default.tatsu-frame {
+    min-height: 100vh;
+}
+
+/** Remove default exponent header inside tatsu frame */
+.single-tatsu_header #exponent-header-container {
+    display: none;
 }

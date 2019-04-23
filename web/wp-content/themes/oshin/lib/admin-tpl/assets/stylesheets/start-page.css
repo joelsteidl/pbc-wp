@@ -763,3 +763,44 @@ ul.radio-list .radio-option {
   white-space: pre-line;
   padding: 10px;
 }
+
+.be-newsletter {
+  margin-top: 50px;
+}
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+.be-newsletter-submit-wrap {
+  position: relative;
+  background: #04a4cc;
+    border-color: #037c9a #036881 #036881;
+    color: #fff;
+    box-shadow: 0 1px 0 #036881;
+    text-shadow: 0 -1px 1px #036881, 1px 0 1px #036881, 0 1px 1px #036881, -1px 0 1px #036881;
+    border-radius: 3px;
+    float: left;
+}
+.be-newsletter-spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #fff;
+  animation: spinner .6s linear infinite;
+}
+
+.be-newsletter-submit-wrap .submit {
+  z-index: 1;
+  position: relative;
+}
+.be-newsletter-submit-wrap.loading .submit{
+  opacity: 0;
+}

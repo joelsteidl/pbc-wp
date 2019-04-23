@@ -12,7 +12,7 @@ function tatsu_register_linea() {
         }
         closedir($handle);
     }
-	tatsu_register_svg( $kit_id, __( 'Linea SVG Icons', 'tatsu' ) , $linea_icons, TATSU_PLUGIN_URL.'/includes/icons/svgs/' );
+	tatsu_register_svg( $kit_id, esc_html__( 'Linea SVG Icons', 'tatsu' ) , $linea_icons, TATSU_PLUGIN_URL.'/includes/icons/svgs/' );
 } 
 
 ?>

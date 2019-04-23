@@ -11,6 +11,8 @@ function tatsu_wp_menu_links( $atts, $content ) {
         'menu_hover_color' => '',
         'show_arrow' => '',
         'link_font' => '',
+        'margin'    => '0 0 30px 0',
+        'hide_in' => '',
         'key' => be_uniqid_base36(true)
     ), $atts );
     
@@ -19,22 +21,40 @@ function tatsu_wp_menu_links( $atts, $content ) {
     $custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_wp_menu_links', $key, '' );
 
     $output = '';
+    $visibility_classes = '';
+
+    //Handle Resposive Visibility controls
+    if( !empty( $hide_in ) ) {
+        $hide_in = explode(',', $hide_in);
+        foreach ( $hide_in as $device ) {
+            $visibility_classes .= ' tatsu-hide-'.$device;
+        }
+    }
+
+    //check if menu_name actually exists in db, if not add fallback menu
+    $menu_obj = wp_get_nav_menu_object( $menu_name );
+    if( false === $menu_obj ) {
+        $menu_name = '';
+    }
+
     $arrow_class = isset( $show_arrow ) && ( $show_arrow ) ? 'show-arrow' : '' ;
     $menu_style = isset( $menu_style ) && ( $menu_style === 'horizontal' ) ? 'horizontal-menu' : '' ;
-    $defaults = array (
-        'menu'=> $menu_name,
-        'depth'=> 3,
-        'container_class'=>'tatsu-menu-widget '.$unique_class,
-        'menu_id' => 'menu-'.$key, 
-        'menu_class' => 'clearfix ',
-        'echo' => false,
-        'walker' => new Tatsu_Walker_Menu_Widget()
-    );
     
     if($menu_name != ''){
-        $output = '<nav class="tatsu-menu-widget-wrap clearfix '.$link_font.' '.$arrow_class.' '.$menu_style.'">'.wp_nav_menu( $defaults ).$custom_style_tag.'</nav>';
+        $defaults = array (
+            'menu'=> $menu_name,
+            'depth'=> 3,
+            'container_class'=>'tatsu-menu-widget ',
+            'menu_id' => 'menu-'.$key, 
+            'menu_class' => 'clearfix ',
+            'echo' => false,
+            'walker' => new Tatsu_Walker_Menu_Widget()
+        );
+        $output = '<nav class="tatsu-menu-widget-wrap tatsu-module clearfix '.$visibility_classes.' '.$unique_class.' '.$link_font.' '.$arrow_class.' '.$menu_style.'">'.wp_nav_menu( $defaults ).$custom_style_tag.'</nav>';
     }else{
-        $output = 'CHOOSE THE MENU';
+        if( current_user_can( 'edit_theme_options' ) ) {
+            $output = '<a href="' . esc_url(admin_url('nav-menus.php')).'">'.esc_html__('CREATE OR SET A MENU', 'tatsu').'</a>';
+        }
     }
     return $output;
 

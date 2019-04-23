@@ -19,6 +19,8 @@ if (!function_exists('tatsu_image')) {
             'lazy_load'         => '',
             'placeholder_bg'    => '',
             'shadow'            => 'none',
+            'custom_shadow'     => '',
+            'drop_shadow'       => '',
             'width'             => '100%',
             'lightbox'          => 0,
             'link'              => '',
@@ -85,6 +87,7 @@ if (!function_exists('tatsu_image')) {
         $id = (int)$id;
         $img_srcset = '';
         $image_src = '';
+        $image_atts = array();
         $image_full_src = '';
         $is_external_image = true;
         $image_width = 0;
@@ -101,6 +104,7 @@ if (!function_exists('tatsu_image')) {
             if( $image_details ) {
                 if( 0 == $image_details[2] || 0 ==  $image_details[1] ) {
                     $image_src = $image_details[0];
+                    $image_atts[] = sprintf( 'src = "%s"', $image_src );
                     $lazy_load_class = '';
                     $lazy_load = 0;
                     $maxWidth = 'width : 100%;';
@@ -108,28 +112,31 @@ if (!function_exists('tatsu_image')) {
                     $image_src = $image_details[0];
                     $image_width = $image_details[1];
                     $image_height = $image_details[2];
-                    $alt_text = get_post_meta( $id, '_wp_attachment_image_alt', true);
+                    $image_atts[] = sprintf( 'alt = "%s"', get_post_meta( $id, '_wp_attachment_image_alt', true) );
                     $padding = 'padding-bottom : '.( ( $image_height / $image_width ) * 100 ).'%;';
                     if( isset( $adaptive_image ) && $adaptive_image == 1 ) {
                         $img_srcset = wp_get_attachment_image_srcset( $id, $size );
                         $sizes = wp_calculate_image_sizes( $size, null, null, $id );
-                        if( isset( $img_srcset ) && !empty( $img_srcset ) ) {
-                            // if( 1 == $lazy_load ){
-                            //     $img_srcset = ' data-srcset = "'.$img_srcset.'" sizes = "'. $sizes .'"';
-                            // } else {
-                                $img_srcset = ' srcset = "'.$img_srcset.'" sizes = "'. $sizes .'"';
-                            //}
+                        if( !empty( $img_srcset ) ) {
+                             $image_atts[] = !empty( $lazy_load ) ? sprintf( 'data-srcset = "%s"', $img_srcset ) : sprintf( 'srcset = "%s"', $img_srcset );
                         }
+                        if( !empty( $sizes ) ) {
+                            $image_atts[] = sprintf( 'sizes = "%s"', $sizes );
+                        }
+                    }else {
+                        $image_atts[] = !empty( $lazy_load ) ? sprintf( 'data-src = "%s"', $image_src ) : sprintf( 'src = "%s"', $image_src );
                     }
-                    $is_external_image = false;  
-                }               
+                    $is_external_image = false;
+                }       
+            }else {
+                $image_atts[] = !empty( $lazy_load ) ? sprintf( 'data-src = "%s"', $image ) : sprintf( 'src = "%s"', $image );
             }         
             $image_full_size_details = wp_get_attachment_image_src( $id, 'full' );
             if( !empty( $image_full_size_details ) && is_array( $image_full_size_details ) ) {
                 $image_full_src = $image_full_size_details[0];
             }
         } else {
-            $image_src = $image;
+            $image_atts[] = !empty( $lazy_load ) ? sprintf( 'data-src = "%s"', $image ) : sprintf( 'src = "%s"', $image );
             $image_full_src = $image;
         }
 
@@ -172,8 +179,10 @@ if (!function_exists('tatsu_image')) {
                 $box_shadow_class = ' be-shadow-light';
             }else if( 'regular' == $shadow ) {
                 $box_shadow_class = ' be-shadow-medium';
-            }else{
+            }else if( 'strong' == $shadow ) {
                 $box_shadow_class = ' be-shadow-dark';
+            }else {
+                $box_shadow_class = ' be-shadow-custom';
             }
         }else{
             $box_shadow_class = '';
@@ -214,18 +223,14 @@ if (!function_exists('tatsu_image')) {
 			}
         }
         
-        if( !empty( $image_src ) ) {
+        if( !empty( $image_atts ) ) {
             $output .= '<div class="tatsu-single-image tatsu-module'. $alignment_class . $box_shadow_class . $animate_class . $lazy_load_class . $overflow_image_class . $external_image_class . $custom_class_name . ' '.$visibility_classes.'" '. $data_animations . '>'; 
             $output .= '<div class="tatsu-single-image-inner " style="' . $placeholder_bg . $maxWidth . '" >';
             $output .= '<div class = "tatsu-single-image-padding-wrap" style = "' . $padding . '" ></div>';
             if( '' != $link ) {
                 $output .= '<a' . ( 1 == $lightbox ? ' class = "mfp-image"' : '' )  . $link . $new_tab_attribute . ' >';
             }
-            if( empty( $lazy_load ) || 0 == $lazy_load ){
-                $output .= '<img class = "tatsu-gradient-border" src = "'. $image_src .'"' . $img_srcset. ' alt="'.$alt_text.'" />';
-            } else if( 1 == $lazy_load ) {
-                $output .= '<img class = "tatsu-gradient-border" data-src = "'. $image_src .'"' . $img_srcset . ' alt="'.$alt_text.'" />';
-            }
+            $output .= '<img class = "tatsu-gradient-border" ' . implode(  ' ', $image_atts ) . ' />';
             if( '' != $link ) {
                 $output .= '</a>';
             }

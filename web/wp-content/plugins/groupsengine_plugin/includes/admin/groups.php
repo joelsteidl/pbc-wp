@@ -214,9 +214,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 									$enmge_g_addr_str = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip; 
 									if ( $enmge_serverapikey != null ) {
-									    $enmge_g_url = "https://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false&key=" . $enmge_serverapikey;
+									    $enmge_g_url = "https://maps.googleapis.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false&key=" . $enmge_serverapikey;
 									} else {
-									    $enmge_g_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
+									    $enmge_g_url = "http://maps.googleapis.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
 									}     
 									
 
@@ -230,7 +230,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									$enmge_g_data = json_decode($enmge_g_jsonData);
 
 									if ( empty($enmge_g_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'}) ) {
-										$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you may need to specify a Server API key for address lookups. Refer to the troubleshooting section of the User Guide.)';
+										$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you probably need to provide a Geocoding API key for address lookups in Settings > Groups Engine. Refer to the troubleshooting section of the User Guide.)';
 									} else {
 										$enmge_group_lat = $enmge_g_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
 									}
@@ -584,9 +584,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 								$enmge_g_addr_str = $enmge_g_address1.$enmge_g_address2.$enmge_g_city.$enmge_g_state.$enmge_g_zip;       
 								if ( $enmge_serverapikey != null ) {
-								    $enmge_g_url = "https://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false&key=" . $enmge_serverapikey;
+								    $enmge_g_url = "https://maps.googleapis.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false&key=" . $enmge_serverapikey;
 								} else {
-								    $enmge_g_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
+								    $enmge_g_url = "http://maps.googleapis.com/maps/api/geocode/json?address=$enmge_g_addr_str&sensor=false";
 								} 
 
 								$enmgech = curl_init();
@@ -599,7 +599,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								$enmge_g_data = json_decode($enmge_g_jsonData);
 
 								if ( empty($enmge_g_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'}) ) {
-									$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you may need to specify a Server API key for address lookups. Refer to the troubleshooting section of the User Guide.)';
+									$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you probably need to provide a Geocoding API key for address lookups in Settings > Groups Engine. Refer to the troubleshooting section of the User Guide.)';
 								} else {									
 									$enmge_group_lat = $enmge_g_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
 								}
@@ -1087,7 +1087,10 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<h2 class="enmge">Add a New <?php echo stripslashes($enmge_grouptitle); ?></h2>
 		<?php include ('errorbox.php'); ?>
 		<p>Complete the form below to add a new <?php echo stripslashes($enmge_grouptitle); ?> to Groups Engine. Be sure to specify the appropriate Group Type and Location in "<?php echo stripslashes($enmge_grouptitle); ?> Details" section. Learn more in the <a href="<?php echo admin_url() . "admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide#ge-groups"; ?>">User Guide</a>.</p>
-		
+		<?php /*if ( $_POST ) { 
+			echo $enmge_g_url;
+			 var_dump($enmge_g_data);
+		}*/ ?>
 		<ul id="enmge-group-options">
 			<li class="selected"><a href="#" id="enmge-group-general">General Information</a></li>
 			<li><a href="#" id="enmge-group-details"><?php echo stripslashes($enmge_grouptitle); ?> Details</a></li>

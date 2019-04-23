@@ -139,9 +139,6 @@ class PluginUpdateChecker_3_1 {
 		//Rename the update directory to be the same as the existing directory.
 		add_filter('upgrader_source_selection', array($this, 'fixDirectoryName'), 10, 3);
 
-		//Enable language support (i18n).
-		load_plugin_textdomain('tatsu', false, TATSU_PLUGIN_URL . '/languages');
-
 		//Allow HTTP requests to the metadata URL even if it's on a local host.
 		$this->metadataHost = @parse_url($this->metadataUrl, PHP_URL_HOST);
 		add_filter('http_request_host_is_external', array($this, 'allowMetadataHost'), 10, 2);
@@ -773,7 +770,7 @@ class PluginUpdateChecker_3_1 {
 				'puc_check_for_updates'
 			);
 
-			$linkText = apply_filters('puc_manual_check_link-' . $this->slug, __('Check for updates', 'tatsu'));
+			$linkText = apply_filters('puc_manual_check_link-' . $this->slug, esc_html__('Check for updates', 'tatsu'));
 			if ( !empty($linkText) ) {
 				$pluginMeta[] = sprintf('<a href="%s">%s</a>', esc_attr($linkUrl), $linkText);
 			}
@@ -817,11 +814,11 @@ class PluginUpdateChecker_3_1 {
 		if ( isset($_GET['puc_update_check_result'], $_GET['puc_slug']) && ($_GET['puc_slug'] == $this->slug) ) {
 			$status = strval($_GET['puc_update_check_result']);
 			if ( $status == 'no_update' ) {
-				$message = __('This plugin is up to date.', 'tatsu');
+				$message = esc_html__('This plugin is up to date.', 'tatsu');
 			} else if ( $status == 'update_available' ) {
-				$message = __('A new version of this plugin is available.', 'tatsu');
+				$message = esc_html__('A new version of this plugin is available.', 'tatsu');
 			} else {
-				$message = sprintf(__('Unknown update checker status "%s"', 'tatsu'), htmlentities($status));
+				$message = sprintf(esc_html__('Unknown update checker status "%s"', 'tatsu'), htmlentities($status));
 			}
 			printf(
 				'<div class="updated notice is-dismissible"><p>%s</p></div>',

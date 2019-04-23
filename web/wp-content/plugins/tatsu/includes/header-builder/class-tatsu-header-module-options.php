@@ -46,6 +46,7 @@ class Tatsu_Header_Module_Options {
 		}else {
 			$options[ 'shortcode_registered' ] = false;
 		}
+		$options = tatsu_parse_module_options($options);
 		$new_module = array( $tag => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}

@@ -10,6 +10,7 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
             'icon'              => '',
             'svg_icon'          => '',
             'image'             => '',
+            'bg_size'           => 'cover',
             'icon_style'        => '',
             'icon_bg'           => '',
             'icon_color'        => '',

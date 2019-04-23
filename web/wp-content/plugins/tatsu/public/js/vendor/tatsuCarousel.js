@@ -358,12 +358,17 @@
             }
             return doppelgangers;
         };
-        TatsuCarousel.prototype.loadImages = function( images ) {    
+        TatsuCarousel.prototype.loadImages = function( images ) {   
+            var isAdaptive = this.ele.hasClass( 'tatsu-carousel-adaptive-image' ); 
             images.one( 'load', function() {
                 $(this).addClass( 'tatsu-carousel-img-lazy-loaded' );
             }).each(function(){
                 var curImage = $(this);
-                curImage.attr( 'src', curImage.attr( 'data-src' ) )
+                if( isAdaptive ) {
+                    curImage.attr( 'srcset', curImage.attr( 'data-srcset' ) );
+                }else {
+                    curImage.attr( 'src', curImage.attr( 'data-src' ) );
+                }
             });
             this.imagesToLazyLoad = this.imagesToLazyLoad.not( images );
             if( 0 == this.imagesToLazyLoad.length ) {

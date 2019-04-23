@@ -20,6 +20,7 @@
 			<div class="clearfix">							
 				<?php
 					$attachments = get_post_meta(get_the_ID(),'be_themes_single_portfolio_slider_images');
+					$image_animation = get_post_meta(get_the_ID(),'be_themes_single_portfolio_floting_images_style', true);
 					if(!empty($attachments)) {
 						foreach ( $attachments as $attachment_id ) {
 							$attach_img = wp_get_attachment_image_src($attachment_id, 'full');
@@ -30,7 +31,7 @@
 							} else {
 								$data_source = $attach_img[0];
 							}
-							echo '<p>';
+							echo '<p class="be-animate" data-animation="'.$image_animation.'">';
 							if($video_url) {
 								echo be_carousel_video($video_url);
 							} else {

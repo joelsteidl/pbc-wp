@@ -62,9 +62,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 							$enmge_l_addr_str = $enmge_l_address1.$enmge_l_address2.$enmge_l_city.$enmge_l_state.$enmge_l_zip;
 							if ( $enmge_serverapikey != null ) {
-								$enmge_l_url = "https://maps.google.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false&key=" . $enmge_serverapikey;
+								$enmge_l_url = "https://maps.googleapis.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false&key=" . $enmge_serverapikey;
 							} else {
-								$enmge_l_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false";
+								$enmge_l_url = "http://maps.googleapis.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false";
 							}         
 							
 
@@ -79,7 +79,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 
 							if ( empty($enmge_l_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'}) ) {
-								$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you may need to specify a Server API key for address lookups. Refer to the troubleshooting section of the User Guide.)';
+								$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you probably need to provide a Geocoding API key for address lookups in Settings > Groups Engine. Refer to the troubleshooting section of the User Guide.)';
 							} else {
 								$enmge_location_lat = $enmge_l_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
 							}
@@ -195,9 +195,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 							$enmge_l_addr_str = $enmge_l_address1.$enmge_l_address2.$enmge_l_city.$enmge_l_state.$enmge_l_zip;       
 							if ( $enmge_serverapikey != null ) {
-								$enmge_l_url = "https://maps.google.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false&key=" . $enmge_serverapikey;
+								$enmge_l_url = "https://maps.googleapis.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false&key=" . $enmge_serverapikey;
 							} else {
-								$enmge_l_url = "http://maps.google.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false";
+								$enmge_l_url = "http://maps.googleapis.com/maps/api/geocode/json?address=$enmge_l_addr_str&sensor=false";
 							}  
 
 							$enmgech = curl_init();
@@ -211,7 +211,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 
 							if ( empty($enmge_l_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'}) ) {
-								$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you may need to specify a Server API key for address lookups. Refer to the troubleshooting section of the User Guide.)';
+								$enmge_errors[] = '- Please double-check your location information. (If you\'re seeing this error repeatedly, you probably need to provide a Geocoding API key for address lookups in Settings > Groups Engine. Refer to the troubleshooting section of the User Guide.)';
 							} else {
 								$enmge_location_lat = $enmge_l_data->{'results'}[0]->{'geometry'}->{'location'}->{'lat'};
 							}

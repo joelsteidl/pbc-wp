@@ -10,7 +10,9 @@ class Colorhub_Palette {
         $this->data = get_option( 'colorhub_data', array(
             'palettes' => array(
                 'currentPalette' => 'default',
-                'allPalettes' => array()
+                'allPalettes' => array(
+                    'default' => array( '#2293D7', '#ffffff', '#313233', '#848991', '#f8f8f8' ),
+                ),
             )
         ));
         $this->palettes = $this->data['palettes'];

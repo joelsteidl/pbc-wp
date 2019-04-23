@@ -20,6 +20,8 @@
 		 */
 		protected $plugin_path = '';
 
+		private $plugins_order = array();
+
 		/**
 		 * Relative plugin url for this plugin folder, used when enquing scripts
 		 *
@@ -64,7 +66,8 @@
  	function __construct($core)
  	{
  		$this->core = $core;
- 		$this->theme_name = $core['themeName'];
+		 $this->theme_name = $core['themeName'];
+		 $this->plugins_order = array( 'oshine-core', 'tatsu', 'oshine-modules', 'typehub', 'colorhub', 'be-portfolio-post', 'be-gdpr', 'contact-form-7', 'meta-box', 'meta-box-conditional-logic', 'meta-box-show-hide', 'meta-box-tabs', 'masterslider', 'revslider' );
  	}
 
  	public function run() {
@@ -76,7 +79,20 @@
  		add_action( 'wp_ajax_be_handle_plugins', array($this, 'ajax_plugins'));
  		add_action( 'admin_enqueue_scripts', array($this, 'plugin_sctipts'));
 
- 	}
+	}
+	
+	public function update_plugins_order() {
+		$plugins = $this->_get_plugins();
+		$needed_plugins_count = count( $plugins[ 'all' ] );
+		$plugins_config_count = count( $this->plugins_order );
+		if( $needed_plugins_count > $plugins_config_count ) {
+			foreach( $plugins[ 'all' ] as $slug => $plugin ) {
+				if( !in_array( $slug, $this->plugins_order ) ) {
+					$this->plugins_order[] = $slug;
+				}
+			}
+		}
+	}
 
  	public function _get_plugins() {
  		
@@ -217,40 +233,44 @@
 			}
 
 			/* If we arrive here, we have the filesystem */
-
+			$this->update_plugins_order();
 			?>
 			<h2><?php esc_html_e( 'Default Plugins', 'oshin' ); ?></h2>
 			<form method="post">
-
 				<?php
-				$plugins = $this->_get_plugins();
-				
+				$plugins = $this->_get_plugins();				
 				if ( count( $plugins['all'] ) ) {
 					?>
 					<p><?php esc_html_e( 'Your website needs a few essential plugins. The following plugins will be installed or updated:', 'oshin' ); ?></p>
 					<ul class="envato-wizard-plugins">
-						<?php foreach ( $plugins['all'] as $slug => $plugin ) { ?>
-							<li data-slug="<?php echo esc_attr( $slug ); ?>"><?php echo esc_html( $plugin['name'] ); ?>
+						<?php foreach( $this->plugins_order as $slug ) {
+							if( array_key_exists( $slug, $plugins[ 'all' ] ) ) {
+								$plugin = $plugins[ 'all' ][ $slug ];
+						?>
+							<li data-slug="<?php echo esc_attr( $slug ); ?>">
+								<?php echo esc_html( $plugin['name'] ); ?>
 								<span>
-    								<?php
-								    $keys = array();
-								    if ( isset( $plugins['install'][ $slug ] ) ) {
-									    $keys[] = 'Installation';
-								    }
-								   
-								    if ( isset( $plugins['activate'][ $slug ] ) ) {
-									    $keys[] = 'Activation';
-								    }
-								    echo implode( ' and ', $keys ) . ' required';
-								    ?>
-    							</span>
+									<?php
+									$keys = array();
+									if ( isset( $plugins['install'][ $slug ] ) ) {
+										$keys[] = 'Installation';
+									}
+									
+									if ( isset( $plugins['activate'][ $slug ] ) ) {
+										$keys[] = 'Activation';
+									}
+									echo implode( ' and ', $keys ) . ' required';
+									?>
+								</span>
 								<div class="loader"><span class="circle"></span></div>
 								<span class="checkmark">
-    <div class="checkmark_stem"></div>
-    <div class="checkmark_kick"></div>
-</span>
+									<div class="checkmark_stem"></div>
+									<div class="checkmark_kick"></div>
+								</span>
 							</li>
-						<?php } ?>
+						<?php }
+							}
+						?>
 					</ul>
 					<?php
 				} else {

@@ -44,7 +44,7 @@ if (!function_exists('tatsu_gallery')) {
 		$masonry_enable = ((!isset($masonry)) || empty($masonry)) ? 'masonry_disable' : 'masonry_enable';
 		$columns = ((!isset($columns)) || empty($columns)) ? 0 : $columns;
 		$link = ((!isset($link)) || empty($link)) ? '' : $link;
-		$items_per_load = ((!isset($items_per_load)) || empty($items_per_load)) ? '' : $items_per_load;
+		$items_per_load = ((!isset($items_per_load)) || empty($items_per_load)) ? 0 : $items_per_load;
 
 		$images = ((!isset($images)) || empty($images)) ? '' : $images;
 
@@ -245,7 +245,7 @@ if (!function_exists('tatsu_gallery')) {
 			if(is_array($images) && !empty($images['error'])) {
 				$output .= '<p class="element-empty-message">'.$images['error'].'</p>';
 			} else {
-				$output .= '<p class="element-empty-message"><b>'.__('Gallery Notice : ', 'tatsu').'</b>'.__('Images have either not been selected or couldn\'t be found', 'tatsu').'</p>';
+				$output .= '<p class="element-empty-message"><b>'.esc_html__('Gallery Notice : ', 'tatsu').'</b>'.esc_html__('Images have either not been selected or couldn\'t be found', 'tatsu').'</p>';
 			}
 		}
 		return $output;

@@ -29,6 +29,8 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 			'overlay_color' 			=> array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' )),
 			'animate'					=> '0',
 			'animation_type'			=> 'none',
+			'lazy_load'					=> '0',
+			'lazy_load_bg'				=> '',
 			'animation_delay'			=> '',
 			'margin'					=> '0 0 20px 0',
 			'key' 						=> be_uniqid_base36(true),
@@ -44,6 +46,9 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 		$horizontal_alignment = $title_alignment_static;
 		
 		$classes = array( 'tatsu-team', 'tatsu-module', $unique_class_name );
+		$image_classes = array();
+		$image_atts = array();
+		$padding = 100;
 		$classes[] = !empty( $style ) ? 'tatsu-team-' . $style : 'tatsu-team-style1';
 		$classes[] = !empty( $animate ) && !empty( $animation_type ) && 'none' != $animation_type ? 'be-animate' : '';
 		$classes[] = !empty( $horizontal_alignment ) ? 'tatsu-team-align-' . $horizontal_alignment : 'tatsu-team-align-center';
@@ -62,14 +67,29 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 
 		$has_social_icons = !empty( $facebook ) || !empty( $twitter ) || !empty( $google_plus ) || !empty( $instagram ) || !empty( $linkedin ) || !empty( $email );
 
+		if( !empty( $lazy_load ) ) {
+			$image_classes[] = 'be-lazy-load';
+			$image_atts[] = 'data-src = "' . $image . '"';
+			$image_id = tatsu_get_image_id_from_url( $image );
+			$padding = be_get_placeholder_padding( $image_id );	
+		}else {
+			$image_atts[] = 'src = "' . $image . '"';
+		}
+
 		$classes = implode( ' ', $classes );
+		$image_classes = implode( ' ', $image_classes );
+		$image_atts = implode( ' ', $image_atts );
 		ob_start();
 		?>
 			<div class = "<?php echo $classes; ?>" <?php echo implode( ' ', $data_attrs ); ?>>
 				<?php echo $custom_style_tag; ?>
 				<?php if( !empty( $image ) ) : ?>
 					<div class = "tatsu-team-image">
-						<img src = "<?php echo $image; ?>" />
+						<?php if( !empty( $lazy_load ) ) : ?>
+							<div class = "tatsu-lazy-load-placeholder" style = "padding-bottom : <?php echo $padding; ?>%">
+							</div>
+						<?php endif; ?>
+						<img class = "<?php echo $image_classes; ?>" <?php echo $image_atts; ?> />
 					</div>
 				<?php endif; ?>
 				<?php if( !empty( $name ) || !empty( $designation ) || $has_social_icons ) : ?>

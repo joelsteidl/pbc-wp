@@ -1,5 +1,7 @@
 /* Version 2.1  */
-
+body {
+    overflow-x:hidden;
+}
 .clearfix:before,
 .clearfix:after {
     content: " "; /* 1 */
@@ -29,6 +31,10 @@
     background-size: cover;
     filter: blur(20px);
     transform: scale(1.1); /** to prevent blurry edges at the corners */
+}
+
+.tatsu-prevent-overflow {
+    overflow: hidden;
 }
 
 /**
@@ -139,20 +145,20 @@
     position: relative;
 }
 
-
 .tatsu-bg-video {
   object-fit: cover;
 }
 
 /**
- * Section Shape Dividers
+    Shape Dividers
  */
 
 .tatsu-shape-divider {
     position: relative;
     overflow: hidden;
     line-height: 0;
-    z-index: 1;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .tatsu-shape-divider svg {
@@ -176,13 +182,28 @@
     position : absolute;
     width : 100%;
     left : 0;
-    z-index: 9999;
 }
+
 .tatsu-top-divider {
     top : 0;
 }
+
 .tatsu-bottom-divider {
     bottom : 0;
+}
+
+.tatsu-left-divider{
+    position: absolute;
+    height: 100% ;
+    left: 0;
+    top: 0;
+}
+
+.tatsu-right-divider{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    right: 0;
 }
 
 .tatsu-fullscreen .tatsu-shape-divider,
@@ -190,11 +211,24 @@
     position: absolute;
     width : 100%;
     left: 0;
-    z-index: 9999;
+}
+.tatsu-shape-divider.tatsu-right-divider {
+    left: auto;
 }
 
+.tatsu-row-wrap:not(.tatsu-wrap) .tatsu-shape-over:not(.tatsu-shape-over) .tatsu-column:first-child .tatsu-left-divider {
+    width : 0 !important;
+}
+
+.tatsu-row-wrap:not(.tatsu-wrap) .tatsu-shape-over:not(.tatsu-shape-over) .tatsu-column:last-child .tatsu-right-divider {
+    width : 0 !important;
+}
 
 /* Row */
+
+.tatsu-row-wrap {
+    border-style: solid;
+}
 
 .tatsu-wrap {
     width: 100%;
@@ -207,7 +241,6 @@
     display: -ms-flexbox;
     display: flex;
     margin: 0 -25px;
-    border-style: solid;
     -webkit-box-align: start;
     -ms-flex-align: start;
     align-items: flex-start;
@@ -249,8 +282,6 @@
 .tatsu-row-one-col > .tatsu-row {
     margin: 0;
 }
-
-
 
 /* Columns */
 
@@ -301,6 +332,10 @@
     transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
+.tatsu-column-inner.is_stuck {
+    z-index: 9999;
+}
+
 .tatsu-column-pad-wrap {
     width: 100%;
 }
@@ -309,7 +344,6 @@
     display: -webkit-box;
     display: -ms-flexbox;    
     display: flex;
-    overflow: hidden;
 }
 
 .tatsu-eq-cols > .tatsu-row > .tatsu-column-align-middle > .tatsu-column-inner {
@@ -522,6 +556,7 @@
     text-align: left;
 }
 
+
 /* =========================================================================
                                     LARGE LAPTOPS AND DESKTOPS
    ========================================================================= */
@@ -549,20 +584,12 @@
     .tatsu-row-wrap.tatsu-row-full-width > .tatsu-row > .tatsu-column:not(.tatsu-one-half):not(.tatsu-one-col) .tatsu-row,
     .tatsu-row-wrap.tatsu-row-full-width  > .tatsu-row > .tatsu-column.tatsu-one-half .tatsu-row-wrap:not(.tatsu-row-has-one-half) .tatsu-row,
     .tatsu-row-wrap.tatsu-row-full-width  > .tatsu-row > .tatsu-column.tatsu-one-half .tatsu-row-wrap.tatsu-row-has-one-half:not(.tatsu-row-has-two-cols) .tatsu-row  {
-        margin:0;
-        /* flex-direction: column; */
         flex-direction: row;
     }
 }
 
 @media only screen and (max-width:1024px) {
-    /* .tatsu-column:not(.tatsu-one-col) .tatsu-column {
-        width: 100%;
-        padding: 0;
-    } */
     .tatsu-column:not(.tatsu-one-col) .tatsu-row {
-        margin:0;
-        /* flex-direction: column; */
         flex-direction: row;
     }
 }
@@ -579,7 +606,15 @@
 /* =========================================================================
                                     Small Desktops & Tablet Landscape
    ========================================================================= */ 
-@media only screen and (min-width: 960px) and (max-width: 1279px) {
+
+@media only screen and (min-width : 1025px) and (max-width : 1220px) {
+    .tatsu-wrap {
+        max-width : calc(100% - 60px);
+        margin : 0 auto;
+    }
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1024px) {
     .tatsu-wrap {
         max-width: 900px;
         margin: 0 auto;

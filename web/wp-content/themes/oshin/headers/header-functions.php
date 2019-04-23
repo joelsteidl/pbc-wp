@@ -299,9 +299,10 @@ if ( !function_exists( 'be_left_sidemenu' ) ) {
 ***************************************/
 if ( !function_exists( 'be_themes_header_details' ) ) {
 	function be_themes_header_details() {
-		global $be_themes_data, $post;
+		global $be_themes_data;
 		$result = array(); 
 		$post_id = be_get_page_id();
+		$post = get_post( $post_id );
 		if( is_singular( 'post' ) && is_single($post_id) && isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) {
 			if( !empty( $be_themes_data[ 'single_wide_header_transparent' ] ) && isset( $be_themes_data[ 'single_wide_header_transparent' ] ) && 'none' != $be_themes_data[ 'single_wide_header_transparent' ] ) {
 				$header_transparent = $be_themes_data['single_wide_header_transparent'];

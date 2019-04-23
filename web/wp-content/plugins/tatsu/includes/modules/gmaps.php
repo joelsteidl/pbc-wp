@@ -67,7 +67,7 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 			}
 
 			if(  true === $map_error ) {
-				$output .= '<div class="tatsu-module tatsu-notification error">'.__('Your Server is Unable to connect to the Google Geocoding API, kindly visit <a href="http://www.latlong.net/convert-address-to-lat-long.html" target="_blank">THIS LINK </a>, find out the latitude and longitude of your address and enter it manually in the Google Maps Module of the Page Builder ', 'tatsu').'</div>';
+				$output .= '<div class="tatsu-module tatsu-notification error">'.esc_html__('Your Server is Unable to connect to the Google Geocoding API, kindly visit <a href="http://www.latlong.net/convert-address-to-lat-long.html" target="_blank">THIS LINK </a>, find out the latitude and longitude of your address and enter it manually in the Google Maps Module of the Page Builder ', 'tatsu').'</div>';
 			} else {
 				if( !function_exists( 'be_gdpr_privacy_ok' ) ){
 					$output .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-required '.$custom_class_name.' '.$animate.'" data-gdpr-concern="gmaps" data-animation="'.$animation_type.'"><div class="tatsu-gmap map_960" data-address="'.$address.'" data-zoom="'.$zoom.'" data-latitude="'.$latitude.'" data-longitude="'.$longitude.'" data-marker="'.$marker.'" data-style="'.$style.'"></div>'.$custom_style_tag.'</div>';
@@ -94,7 +94,7 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 				}
 			}
 		} else {
-			$output = '<div class="tatsu-module tatsu-notification tatsu-error">'.__( 'Google Maps API KEY is missing', 'tatsu' ).'</div>';
+			$output = '<div class="tatsu-module tatsu-notification tatsu-error">'.esc_html__( 'Google Maps API KEY is missing', 'tatsu' ).'</div>';
 		}
 		return $output;
 	}

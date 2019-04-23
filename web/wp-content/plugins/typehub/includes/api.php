@@ -280,3 +280,30 @@ function typehub_get_exposed_selectors() {
     }
     return $exposed_selectors;
 }
+
+function typehub_get_font_options(){
+    $plugin_store = new Typehub_Store();
+    $store = $plugin_store->get_store();
+    
+    $font_schemes = $store['fontSchemes'];
+    $typekit_fonts = '';
+    $google_fonts = include TYPEHUB_PLUGIN_DIR.'includes/fonts/google-fonts.php';
+    $standard_fonts = be_standard_fonts();
+    $custom_fonts = Typehub_Custom_Fonts::getInstance()->get_fonts();
+    $typekit_fonts = array();
+    if( !empty( $store['settings']['typekitId'] ) ) {
+        $typekit_fonts = get_typekit_data($store['settings']['typekitId']);
+    }
+
+    $font_options = array(
+        'typekit' => $typekit_fonts,
+        'google' => $google_fonts,
+        'custom' => $custom_fonts,
+        'standard' => $standard_fonts,
+        'schemes' => $font_schemes,
+        'typekit_id' => !empty($store['settings']['typekitId']) ? $store['settings']['typekitId'] : ''
+    );
+
+    return $font_options;
+    
+}

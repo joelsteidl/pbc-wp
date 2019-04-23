@@ -27,6 +27,7 @@ class Tatsu_Global_Module_Options {
 	}
 
 	public function register_module( $tag, $options ) {
+		$options = tatsu_parse_module_options($options);
 		$new_module = array( $tag => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}

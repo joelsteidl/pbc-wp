@@ -1446,6 +1446,23 @@ body {
   .be-pb-multi-wrapper .tatsu-svg-icon path{
       fill : #20cbd4;
   }
+
+  .be-pb-multi-reverse-images {
+    padding: 10px;
+    margin-top: 10px;
+    background: #32373d;
+    border-radius: 2px;
+    font-size: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.be-pb-multi-reverse-images:hover {
+    background: #20cbd4;
+    color: #fff;
+}
+
 .tatsu-loader {
     position: absolute;
     top : 50%;
@@ -1682,7 +1699,6 @@ body {
   }
 
   .be-pb-bottom-toolbar-wrapper .tatsu-bottom-icons-wrapper .be-pb-save {
-      
       width: 80px;
       text-align: center;
       text-transform: uppercase;
@@ -1691,8 +1707,11 @@ body {
       font-size: 12px;
       font-family: "Roboto";
       line-height: 21px;
-  
+      /* transition: background 0.3s; */
   }
+  /* .be-pb-bottom-toolbar-wrapper .tatsu-bottom-icons-wrapper .be-pb-save.enabled {
+    background: #20cbd4;
+  } */
   
   .tatsu-bottom-icons-wrapper {
   
@@ -1808,7 +1827,56 @@ body {
     text-decoration: none;
     color : #fff;
   }
-  
+
+
+  /* Header Builder Navigation Styling */
+
+
+  #tatsu-header-navigation{
+    width: 100%;
+    background: #20cbd4;
+    color: #fff;
+    right: 0px;
+    text-align: left;
+    font-family: Roboto;
+    font-size: 15px;
+    padding: 7px;
+    display: flex;    
+    align-items: center;
+    line-height: 23px;
+  }
+
+  .tatsu-header-breadcrumb{
+    flex-basis: 80%;
+    text-align: left;
+    line-height: 23px;
+  }
+  .tatsu-header-tools{
+    flex-basis: 20%;
+    text-align: right;
+  }
+  .tatsu-header-tool{
+      display: inline-block;
+      cursor: pointer;
+      margin-right: 5px;
+  }
+  .tatsu-header-breadcrumb-item{
+      display: inline-block;
+      cursor: pointer;
+      opacity: 0.7;
+      transition : opacity 0.3s;
+  }
+  .tatsu-header-breadcrumb-item:last-child {
+      opacity: 1;
+  }
+  .tatsu-header-breadcrumb-item:hover {
+      opacity: 1;
+  }
+
+    .tatsu-header-breadcrumb-item:not(:last-child):after{
+        content: '/';
+        margin:3px;
+    }  
   .tatsu-post-officer {
       position: fixed;
       top: -35px;
@@ -2055,8 +2123,7 @@ body {
   }
   
   .iframe-wrapper.mobile .iframe-responsive-wrap{
-  
-      width: 360px;
+      width: 395px;
       height: 640px;
       padding: 40px 10px 70px;
   

@@ -446,22 +446,22 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<p>It's because they don't have any Groups associated with them, or at least any that match the criteria set up for your embed code.</p>
 
 	<h3 id="ge-google">I'm Having Trouble with Maps in Groups Engine (or the rest of the site)</h3>
-	<p>Groups Engine uses the Google Maps v3 API to display maps throughout the plugin. If these aren't being displayed, or you're seeing errors with other maps loading on your page outside of the Groups Engine browser, it could be that you have conflicting code installed. Have your web developer look at the JavaScript console in your browser for troubleshooting diagnostics.</p>
+	<p>Groups Engine uses the Google Maps JavaScript API to display maps throughout the plugin. If these aren't being displayed, or you're seeing errors with other maps loading on your page outside of the Groups Engine browser, it could be that you have conflicting code installed. Have your web developer look at the JavaScript console in your browser for troubleshooting diagnostics.</p>
 
-	<p><em>Note: It's also in your best interest to sign up for a Google Maps API key. You'll find the link and the place to enter it in <a href="<?php echo admin_url() . "options-general.php?page=enm_groupsengine"; ?>">Settings > Groups Engine</a>.</em></p>
+	<p><em>Note: It's also in your best interest to sign up for a Google Maps API key (and it may actually be required depending on your server). You'll find the link and the place to enter it in <a href="<?php echo admin_url() . "options-general.php?page=enm_groupsengine"; ?>">Settings > Groups Engine</a>.</em></p>
 
 	<h3 id="ge-server">I'm Unable to Save Address Information with Groups Engine</h3>
 
-	<p>Groups Engine uses the Google Maps API to look up latitude and longitude information for your Groups and Locations. If you frequently see errors when you're updating a Group or Location related to the location itself, your hosting server has probably reached its API limit for address lookups.</p>
-	<p>Thankfully, there's a fix for this that just involves generating a seperate API key for your install of Groups Engine. Simply visit <a href="https://console.developers.google.com" target="_blank">https://console.developers.google.com</a> and choose or create a new API project. Then...</p>
+	<p>Groups Engine uses the Google Maps Geocoding API to look up latitude and longitude information for your Groups and Locations. If you frequently see errors when you're updating a Group or Location related to the location itself, your hosting server has probably reached its API limit for address lookups.</p>
+	<p>Thankfully, there's a fix for this that just involves generating an API key with Geocoding enabled for your install of Groups Engine. Simply visit <a href="https://developers.google.com/maps/documentation/geocoding/start#get-a-key" target="_blank">https://console.developers.google.com</a> and create or choose to edit your existing API key. Then...</p>
 	<ol style="padding: 0 0 0 30px">
-		<li>Under "APIs and Auth," click "APIs" and make sure the Geocoding API is ON.</li>
-		<li>Under "APIs and Auth," click "Credentials." Click "Create New Key," then "Server Key," then "Create." You don't need to provide an IP for your machine.</li>
-		<li>Copy the new API Key that was generated for server applications.</li>
-		<li>Visit <a href="<?php echo admin_url() . "options-general.php?page=enm_groupsengine"; ?>">Settings > Groups Engine</a> and paste the key under "Google Maps Server API Key."</li>
+		<li>Under "APIs," look at the ENABLED APIs section for your API key and make sure the Geocoding API is ON.</li>
+		<li>If you don't see the Geocoding API in the ENABLED APIs list, click that option in the ADDITIONAL APIs list below, and click ENABLE on the next screen.</li>
+		<li>Visit <a href="<?php echo admin_url() . "options-general.php?page=enm_groupsengine"; ?>">Settings > Groups Engine</a> and paste the key under "Google Geocoding API Key."</li>
 	</ol>
 	<p>Your location information should begin saving correctly <strong>within 24 hours</strong> of making these changes.</p>
-	
+	<p><em>Note: It's fine to use the same key for "Google Maps API Key" and "Google Geocoding API Key" in the Groups Engine settings panel.</em></p>
+
 	<h1 id="ge-usage">Acceptable Usage</h1>
 	<ul class="legal">
 		<li>You <strong>MAY</strong> use one licensed copy of the Groups Engine an all sites that are directly affiliated with you, or your organization.</li>

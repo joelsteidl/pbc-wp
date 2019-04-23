@@ -151,7 +151,7 @@ class Tatsu_Admin {
 			$post_actions['edit_with_tatsu'] = sprintf(
 				'<a href="%1$s">%2$s</a>',
 				tatsu_edit_url( $post->ID ),
-				__( 'Edit with Tatsu', 'tatsu' )
+				esc_html__( 'Edit with Tatsu', 'tatsu' )
 			);
 		}
 		return $post_actions;
@@ -160,6 +160,17 @@ class Tatsu_Admin {
 	public function add_tatsu_post_state( $post_states, $post ) {
 		if( is_edited_with_tatsu($post->ID) ) {
 			$post_states['tatsu'] = 'Tatsu';
+		}
+		if( TATSU_HEADER_CPT_NAME === $post->post_type ) {
+			$active_header_id = tatsu_get_active_header_id();
+			if( !empty( $active_header_id ) && $active_header_id === $post->ID ) {
+				$post_states['tatsu_active_header'] = 'Tatsu Header';
+			}
+		}else if( TATSU_FOOTER_CPT_NAME === $post->post_type ) {
+			$active_footer_id = tatsu_get_active_footer_id();
+			if( !empty( $active_footer_id ) && $active_footer_id === $post->ID ) {
+				$post_states['tatsu_active_footer'] = 'Tatsu Footer';
+			}
 		}
 		return $post_states;
 	}
@@ -172,15 +183,20 @@ class Tatsu_Admin {
 		}
 		if( post_type_exists( $post_type ) ) {
 			$post_data = array(
-				'post_type'	=> $post_type
+				'post_type'		=> $post_type,
+				'post_status'	=> 'publish',
 			);
-			if( 'post' !== $post_type ) {
+			if( TATSU_HEADER_CPT_NAME === $post_type ) {
+				$post_data['post_title'] = 'Tatsu Header';
+			}else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
+				$post_data['post_title'] = 'Tatsu Footer';
+			}else  if( 'post' === $post_type ) {
+				$post_data['post_title'] = 'Tatsu';
+			}else{
 				$post_type_obj = get_post_type_object($post_type);
 				$post_data['post_title'] = sprintf(
 					'Tatsu %s', $post_type_obj->labels->singular_name
 				);
-			}else {
-				$post_data['post_title'] = 'Tatsu';
 			}
 
 			$post_id = wp_insert_post($post_data);
@@ -199,19 +215,18 @@ class Tatsu_Admin {
 	public function tatsu_global_section_post_type(){
 		if( current_theme_supports('tatsu-global-sections') ){
 			$labels = array( 
-				'name' => 'Tatsu Global Sections',
-				'singular_name' => 'Tatsu Global Section',
-				'add_new' => 'Add Section',
-				'all_items' => 'All Section',
-				'add_new_item' => 'Add New Section',
-				'edit_item' => 'Edit Section',
-				'new_item' => 'New Section',
-				'view_item' => 'View Section',
-				'search_item' => 'Search Section',
-				'not_found' => 'No Sections Found',
-				'no_item_found_in_trash' => 'No Section Found In Trash',
-				'parent_item_colon' => 'Parent Section Colon',
-		
+				'name' => esc_html__( 'Tatsu Global Sections', 'tatsu' ),
+				'singular_name' => esc_html__( 'Tatsu Global Section', 'tatsu' ),
+				'add_new' => _x( 'Add Section', 'Tatsu Global Section', 'tatsu' ),
+				'all_items' => esc_html__( 'All Section', 'tatsu' ),
+				'add_new_item' => esc_html__( 'Add New Section', 'tatsu' ),
+				'edit_item' => esc_html__( 'Edit Section', 'tatsu' ),
+				'new_item' => esc_html__( 'New Section', 'tatsu' ),
+				'view_item' => esc_html__( 'View Section', 'tatsu' ),
+				'search_item' => esc_html__( 'Search Section', 'tatsu' ),
+				'not_found' => esc_html__( 'No Sections Found', 'tatsu' ),
+				'no_item_found_in_trash' => esc_html__( 'No Section Found In Trash', 'tatsu' ),
+				'parent_item_colon' => esc_html__( 'Parent Section:', 'tatsu' ),
 			);
 			$args = array( 
 				'labels' => $labels,
@@ -226,6 +241,7 @@ class Tatsu_Admin {
 					'title',
 					'editor',
 					'thumbnail',
+					'revisions'
 				),
 				'taxonomies' => array( 'category', 'post_tag' ),
 				'menu_position' => 5,
@@ -235,6 +251,89 @@ class Tatsu_Admin {
 		}
 	}
 
+	public function tatsu_header_register_post_type() {
+		if( current_theme_supports( 'tatsu-header-builder' ) ) {
+			$labels = array( 
+				'name' => esc_html__( 'Tatsu Headers', 'tatsu' ),
+				'singular_name' => esc_html__( 'Tatsu Header', 'tatsu' ),
+				'add_new' => _x( 'Add Header', 'Tatsu Header', 'tatsu' ),
+				'all_items' => esc_html__( 'All Headers', 'tatsu' ),
+				'add_new_item' => esc_html__( 'Add New Header', 'tatsu' ),
+				'edit_item' => esc_html__( 'Edit Header', 'tatsu' ),
+				'new_item' => esc_html__( 'New Header', 'tatsu' ),
+				'view_item' => esc_html__( 'View Header', 'tatsu' ),
+				'search_item' => esc_html__( 'Search Header', 'tatsu' ),
+				'no_item_found_in_trash' => esc_html__( 'No Headers Found In Trash','tatsu' ),
+			);
+			$args = array( 
+				'labels' => $labels,
+				'public' => true,
+				'has_achive' => false,
+				'publicly_queryable' => true,
+				'query_var' => TATSU_HEADER_CPT_NAME,
+				'capability_type' => 'post',
+				'hierarchical' => false,
+				'supports' => array( 
+					'title',
+					'editor',
+					'thumbnail',
+					'revisions'
+				),
+				'taxonomies' => array( 'category', 'post_tag' ),
+				'menu_position' => 4,
+				'exclude_from_search' =>  true,
+			);
+			register_post_type( TATSU_HEADER_CPT_NAME, $args );
+		}
+	}
+
+	public function tatsu_footer_register_post_type() {
+		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
+			$labels = array( 
+				'name' => esc_html__( 'Tatsu Footers', 'tatsu' ),
+				'singular_name' => esc_html__( 'Tatsu Footer', 'tatsu' ),
+				'add_new' => _x( 'Add Footer', 'Tatsu Footer', 'tatsu' ),
+				'all_items' => esc_html__( 'All Footers', 'tatsu' ),
+				'add_new_item' => esc_html__( 'Add New Footer', 'tatsu' ),
+				'edit_item' => esc_html__( 'Edit Footer', 'tatsu' ),
+				'new_item' => esc_html__( 'New Footer', 'tatsu' ),
+				'view_item' => esc_html__( 'View Footer', 'tatsu' ),
+				'search_item' => esc_html__( 'Search Footer', 'tatsu' ),
+				'no_item_found_in_trash' => esc_html__( 'No Footers Found In Trash','tatsu' ),
+			);
+			$args = array( 
+				'labels' => $labels,
+				'public' => true,
+				'has_achive' => false,
+				'publicly_queryable' => true,
+				'query_var' => TATSU_FOOTER_CPT_NAME,
+				'capability_type' => 'post',
+				'hierarchical' => false,
+				'supports' => array( 
+					'title',
+					'editor',
+					'thumbnail',
+					'revisions'
+				),
+				'taxonomies' => array( 'category', 'post_tag' ),
+				'menu_position' => 5,
+				'exclude_from_search' =>  true,
+			);
+			register_post_type( TATSU_FOOTER_CPT_NAME, $args );
+		}
+	}
+
+	public function redirect_tatsu_header_footer_builder() {
+		$screen = get_current_screen();
+		if ( TATSU_HEADER_CPT_NAME == $screen->id || TATSU_FOOTER_CPT_NAME == $screen->id ) {
+			global $post;
+			$post_id = $_GET[ 'post' ];
+			if( !empty( $post_id ) ) {
+				wp_redirect( tatsu_edit_url( $post_id ) );
+			}
+		}
+	}
+	
 	public function add_media_edit_options($form_fields, $post) {
 		$height_checked = ("1" == get_post_meta( $post->ID, 'be_themes_height_wide', true )) ? 'checked="checked"' : '';
 		$width_checked = ("1" == get_post_meta( $post->ID, 'be_themes_width_wide', true )) ? 'checked="checked"' : '';
@@ -281,7 +380,7 @@ class Tatsu_Admin {
 		if( empty( $section ) ) {
 			$section_name = 'tatsu_global_options';
 			$wp_customize->add_section( $section_name, array(
-				'title' => __( 'Global Tatsu Settings', 'tatsu' ),
+				'title' => esc_html__( 'Global Tatsu Settings', 'tatsu' ),
 			) );
 		}
 		do_action( 'tatsu_register_customizer_controls', $wp_customize );
@@ -294,8 +393,8 @@ class Tatsu_Admin {
 		$wp_customize->add_control( 'tatsu_google_map_id', array (
 			'type'				=> 'text',
 			'section'			=> $section_name,
-			'label'				=> __( 'Google Map API Key', 'tatsu' ),
-			'description'		=> __( 'Please enter your Google Maps API Key', 'tatsu' ),
+			'label'				=> esc_html__( 'Google Map API Key', 'tatsu' ),
+			'description'		=> esc_html__( 'Please enter your Google Maps API Key', 'tatsu' ),
 		) );
 		$wp_customize->add_setting( 'tatsu_lazyload_bg', array (
 			'type'				=> 'option',
@@ -305,7 +404,7 @@ class Tatsu_Admin {
 		$wp_customize->add_control( 'tatsu_lazyload_bg', array (
 			'type'				=> 'checkbox',
 			'section'			=> $section_name,
-			'label'				=> __( 'Lazy Load Section and Column Background Images', 'tatsu' ),
+			'label'				=> esc_html__( 'Lazy Load Section and Column Background Images', 'tatsu' ),
 		) );
 		
 		$wp_customize->add_setting( 'tatsu_lazyload_bg_color', array (
@@ -316,11 +415,55 @@ class Tatsu_Admin {
 		$wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 
 			'tatsu_lazyload_bg_color', 
 			array(
-				'label'      => __( 'Lazy Load Section/Column Placeholder Color', 'tatsu' ),
+				'label'      => esc_html__( 'Lazy Load Section/Column Placeholder Color', 'tatsu' ),
 				'section'    => $section_name,
 				'settings'   => 'tatsu_lazyload_bg_color',
 			) ) 
 		);
+		if( current_theme_supports('tatsu-header-builder') ) {
+			$headers = get_posts(array (
+				'post_type' => TATSU_HEADER_CPT_NAME,
+				'post_status' => 'publish',
+				'numberposts' => -1
+			));
+			$headers_list[ 'none' ] = esc_html__( 'None', 'tatsu' );
+			foreach($headers as $header) {
+				$headers_list[$header->post_name] = $header->post_title;
+			}
+			$wp_customize->add_setting( 'tatsu_active_header', array (
+				'type'				=> 'option',
+				'capability'		=> 'manage_options',
+				'default' 			=> '',
+			) );
+			$wp_customize->add_control( 'tatsu_active_header', array(
+				'label'    => esc_html__( 'Active Header', 'tatsu' ),
+				'type'     => 'select',
+				'section'  => $section_name,
+				'choices'  => $headers_list,
+			));
+		}
+		if( current_theme_supports('tatsu-footer-builder') ) {
+			$footers = get_posts(array (
+				'post_type' => TATSU_FOOTER_CPT_NAME,
+				'post_status' => 'publish',
+				'numberposts' => -1
+			));
+			$footers_list[ 'none' ] = esc_html__( 'None', 'tatsu' );
+			foreach($footers as $footer) {
+				$footers_list[$footer->post_name] = $footer->post_title;
+			}
+			$wp_customize->add_setting( 'tatsu_active_footer', array (
+				'type'				=> 'option',
+				'capability'		=> 'manage_options',
+				'default' 			=> '',
+			) );
+			$wp_customize->add_control( 'tatsu_active_footer', array(
+				'label'    => esc_html__( 'Active Footer', 'tatsu' ),
+				'type'     => 'select',
+				'section'  => $section_name,
+				'choices'  => $footers_list,
+			));
+		}
 	}
 
 	public function tatsu_global_section_settings(){
@@ -421,13 +564,15 @@ class Tatsu_Admin {
 					$header_scheme = ( $meta && array_key_exists( 'tatsu_page_header_scheme' , $meta ) ) ? $meta['tatsu_page_header_scheme'] : '';
 					$header_sticky = ( $meta && array_key_exists( 'tatsu_page_header_sticky' , $meta ) ) ? $meta['tatsu_page_header_sticky'] : '';
 					$header_smart_sticky = ( $meta && array_key_exists( 'tatsu_page_header_smart' , $meta ) ) ? $meta['tatsu_page_header_smart'] : '';
+					$header_auto_pad = ( $meta && array_key_exists( 'tatsu_header_auto_pad' , $meta ) ) ? $meta['tatsu_header_auto_pad'] : '';
+					$header_single_page_site = ( $meta && array_key_exists( 'tatsu_header_single_page_site' , $meta ) ) ? $meta['tatsu_header_single_page_site'] : 0;
 					
 					?>
 
 						<input type="hidden" name="tatsu_header_options" value="<?php echo wp_create_nonce( basename(__FILE__) ); ?>">
 						
 						<p class = "tatsu-header-metabox" >
-							<label for="tatsu_page_header_style">Select Header Style</label>
+							<label for="tatsu_page_header_style"><strong>Select Header Style:</strong></label>
 							
 							<select name="tatsu_page_header_style" id="tatsu_page_header_style">
 									<option value="inherit" <?php selected( $header_style, 'inherit' ); ?>>Inherit Global Setting</option>
@@ -436,7 +581,7 @@ class Tatsu_Admin {
 							</select>
 						</p>
 						<p>
-							<label for="tatsu_page_header_scheme">Select Scheme</label>
+							<label for="tatsu_page_header_scheme"><strong>Select Scheme:</strong></label>
 							
 							<select name="tatsu_page_header_scheme" id="tatsu_page_header_scheme">
 									<option value="inherit" <?php selected( $header_scheme, 'inherit' ); ?>>Inherit Global Setting</option>
@@ -444,6 +589,18 @@ class Tatsu_Admin {
 									<option value="dark" <?php selected( $header_scheme, 'dark' ); ?>>Dark</option>
 							</select>
 						</p>
+						<p>
+							<label for="tatsu_header_auto_pad"><strong>Transparent Padding:</strong></label>
+							<select name="tatsu_header_auto_pad" id="tatsu_header_auto_pad">
+									<option value="yes" <?php selected( $header_auto_pad, 'yes' ); ?>>Yes</option>
+									<option value="no" <?php selected( $header_auto_pad, 'no' ); ?>>No</option>
+							</select>
+							<div class = "description"> This setting works only when transparent header is used</div>
+						</p>
+						<p>
+							<label for="tatsu_header_single_page_site"><strong>Single Page Site:</strong>  <input type="checkbox" name="tatsu_header_single_page_site" id="tatsu_header_single_page_site" value="1" <?php checked( $header_single_page_site, 1 ); ?> /></label>
+							<div class = "description"> Turn this on if the menu has links that all point to different sections of the same page.</div>
+						</p>						
 				<?php
 				}
 			}
@@ -472,6 +629,8 @@ class Tatsu_Admin {
 		$my_data = array();
 		$my_data['tatsu_page_header_style'] = $_POST['tatsu_page_header_style'];
 		$my_data['tatsu_page_header_scheme'] = $_POST['tatsu_page_header_scheme'];
+		$my_data[ 'tatsu_header_auto_pad' ] = $_POST['tatsu_header_auto_pad'];
+		$my_data[ 'tatsu_header_single_page_site' ] = $_POST['tatsu_header_single_page_site'];
 
 		update_post_meta( $post_id, '_tatsu_header_options', $my_data );
 	}

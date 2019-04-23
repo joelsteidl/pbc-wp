@@ -6,7 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
   <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title><?php _e( 'Tatsu Page Builder', 'tatsu' ); ?></title>
+	<title><?php esc_html_e( 'Tatsu Page Builder', 'tatsu' ); ?></title>
  <style>
       #be-leftpanel-wrapper {
         position: fixed;

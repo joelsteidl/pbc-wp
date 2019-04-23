@@ -54,6 +54,26 @@ class Tatsu_Public {
 	}
 
 
+	public function load_header_template($template) {
+		if( current_theme_supports( 'tatsu-header-builder' ) ) {
+			global $post;
+			if ( TATSU_HEADER_CPT_NAME === $post->post_type && $template !== locate_template(array("single-tatsu_header.php"))){
+				return TATSU_PLUGIN_DIR . "includes/header-builder/single-tatsu_header.php";
+			}
+		}
+		return $template;
+	}
+
+	public function load_footer_template($template) {
+		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
+			global $post;
+			if ( TATSU_FOOTER_CPT_NAME === $post->post_type && $template !== locate_template(array("single-tatsu_footer.php"))){
+				return TATSU_PLUGIN_DIR . "includes/footer-builder/single-tatsu_footer.php";
+			}
+		}
+		return $template;
+	}
+
 	/**
 	 * Register the stylesheets for the public-facing side of the site.
 	 *
@@ -62,15 +82,23 @@ class Tatsu_Public {
 	public function enqueue_styles() {
 
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		$assets_base_url = plugin_dir_url( __FILE__ );
+		$cdn_address = apply_filters( 'tatsu_cdn_address', false );
+		if( !empty( $cdn_address ) ) {
+			$site_url = get_site_url();
+			if( false !== strpos( $assets_base_url, $site_url ) ) {
+				$assets_base_url = str_replace( $site_url, $cdn_address, $assets_base_url );
+			}
+		}
 		if( !empty( $suffix ) ) {
-			wp_enqueue_style( 'tatsu-main-css', plugin_dir_url( __FILE__ ) . 'css/tatsu.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-main-css', $assets_base_url . 'css/tatsu.min.css', array(), $this->version, 'all' );
 		}else{
-			wp_enqueue_style( 'tatsu-vendor-css', plugin_dir_url( __FILE__ ) . 'css/vendor.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'tatsu-main-css', plugin_dir_url( __FILE__ ) . 'css/tatsu.css', array('tatsu-vendor-css'), $this->version, 'all' );
-			wp_enqueue_style( 'tatsu-shortcodes', plugin_dir_url( __FILE__ ) . 'css/tatsu-shortcodes.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'tatsu-css-animations', plugin_dir_url( __FILE__ ) . 'css/tatsu-css-animations.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-vendor-css', $assets_base_url . 'css/vendor.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-main-css', $assets_base_url . 'css/tatsu.css', array('tatsu-vendor-css'), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-shortcodes', $assets_base_url . 'css/tatsu-shortcodes.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-css-animations', $assets_base_url . 'css/tatsu-css-animations.css', array(), $this->version, 'all' );
 			if( current_theme_supports('tatsu-header-builder') ) {
-				wp_enqueue_style( 'tatsu-header-css', plugin_dir_url( __FILE__ ) . 'css/tatsu-header.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'tatsu-header-css', $assets_base_url . 'css/tatsu-header.css', array(), $this->version, 'all' );
 			}
 		}
 		Tatsu_Icons::getInstance()->enqueue_styles();
@@ -85,16 +113,29 @@ class Tatsu_Public {
 	public function enqueue_scripts() {
 
 		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
-		wp_enqueue_script( 'es6-promises-polyfill', plugin_dir_url( __FILE__ ) . 'js/vendor/es6-promise.auto' . $suffix . '.js', array(), false , true );
-		wp_enqueue_script( 'asyncloader', plugin_dir_url( __FILE__ ) . 'js/vendor/asyncloader' . $suffix . '.js', array( 'jquery', 'es6-promises-polyfill' ), false , true );
-		wp_enqueue_script( 'be-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins' . $suffix . '.js', array( 'jquery' ), $this->version, true );
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tatsu' . $suffix . '.js', array( 'jquery','be-plugins', 'asyncloader','jquery-ui-core','jquery-ui-accordion','jquery-ui-tabs' ), $this->version, true );
+		$assets_base_url = plugin_dir_url( __FILE__ );
+		$vendor_scripts_url 	= $assets_base_url . 'js/vendor/';
+		$cdn_address = apply_filters( 'tatsu_cdn_address', false );
+		$version = defined( 'TATSU_VERSION' ) ? TATSU_VERSION : '1.0';
+		if( !empty( $cdn_address ) ) {
+			$site_url = get_site_url();
+			if( false !== strpos( $assets_base_url, $site_url ) ) {
+				$assets_base_url = str_replace( $site_url, $cdn_address, $assets_base_url );
+				$vendor_scripts_url 	= $assets_base_url . 'js/vendor/';
+			}
+		}
+		wp_enqueue_script( 'es6-promises-polyfill', $assets_base_url . 'js/vendor/es6-promise.auto' . $suffix . '.js', array(), false , true );
+		wp_enqueue_script( 'asyncloader', $assets_base_url . 'js/vendor/asyncloader' . $suffix . '.js', array( 'jquery', 'es6-promises-polyfill' ), false , true );
+		wp_enqueue_script( 'be-script-helpers', $assets_base_url . 'js/helpers' . $suffix . '.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( 'debouncedresize', $assets_base_url . 'js/vendor/debouncedresize' . $suffix . '.js', array( 'jquery' ), $this->version, true );
+		wp_enqueue_script( $this->plugin_name, $assets_base_url . 'js/tatsu' . $suffix . '.js', array( 'jquery','be-script-helpers', 'asyncloader','jquery-ui-core','jquery-ui-accordion','jquery-ui-tabs', 'debouncedresize' ), $this->version, true );
 
 		$needed_scripts = array();
 		foreach( glob( TATSU_PLUGIN_DIR.'public/js/vendor/*'. $suffix .'.js') as $dependency ) {
 			if( '.min' === $suffix || false === strpos( $dependency, '.min.js' ) ) { 
 				$current_index = basename( $dependency, $suffix . '.js' );
-				$needed_scripts[ $current_index ] = esc_url( TATSU_PLUGIN_URL.'/public/js/vendor/' . basename( $dependency ) );
+				$cur_dep = add_query_arg( 'ver',  $version, $vendor_scripts_url . basename( $dependency ) );
+				$needed_scripts[ $current_index ] = esc_url( $cur_dep );
 			}
 		}
 		wp_localize_script(
@@ -102,10 +143,11 @@ class Tatsu_Public {
 			'tatsuFrontendConfig', 
 			array(
 				'pluginUrl' => esc_url( TATSU_PLUGIN_URL ), 
-				'vendorScriptsUrl' => esc_url( TATSU_PLUGIN_URL.'/public/js/vendor/' ),
+				'vendorScriptsUrl' => esc_url( $vendor_scripts_url ),
 				'mapsApiKey' => Tatsu_Config::getInstance()->get_google_maps_api_key(),
 				'dependencies' => $needed_scripts,
-				'slider_icons' 	=> tatsu_get_slider_icons()
+				'slider_icons' 	=> tatsu_get_slider_icons(),
+				'version'	=> $version
 			) 
 		);
 		if( current_theme_supports('tatsu-header-builder') ) {
@@ -116,22 +158,42 @@ class Tatsu_Public {
 
 	public function header_print() {
 		if( current_theme_supports('tatsu-header-builder') ) {
-			$post_id = get_the_ID();
+			global $post;
+			$post_type = get_post_type();
+			$active_header_id = tatsu_get_active_header_id();
+			if( TATSU_HEADER_CPT_NAME === $post_type ) {
+				if( property_exists( $post, 'post_content' ) ) {
+					echo apply_filters('the_content',$post->post_content);
+				}
+				return;
+			}
+			if( empty( $active_header_id ) ) {
+				return;
+			}
+			$header = get_post( $active_header_id, 'ARRAY_A' );
+			$header_content = $header[ 'post_content' ];
+			$header_settings = get_post_meta( $active_header_id, 'tatsu_header_settings', true );
+			$header_fonts = get_post_meta( $active_header_id, 'tatsu_header_fonts', true );
+			$header_settings = !empty( $header_settings ) ? $header_settings : array();
+			$header_fonts = !empty( $header_fonts ) ? $header_fonts : array();
+		
+			$header_global_style =  !empty( $header_settings['transparent'] ) ? 'transparent' : 'solid';
+			$header_global_scheme = !empty( $header_settings['scheme'] ) ? $header_settings['scheme']  : '';
+			$header_global_sticky = !empty( $header_settings['sticky'] ) ? 'sticky' : '';
+			$header_global_smart = ( $header_global_sticky === 'sticky' && !empty( $header_settings['smart'] ) ) ? 'smart' : '';
 
-			$header_content = get_option( 'tatsu_header_store', '' );
-
-			// Global Header Settings
-			$header_settings = json_decode( get_option( 'settings', '' ), true );
-			$header_global_style = $header_settings['transparent'] ? 'transparent' : 'solid';
-			$header_global_scheme = $header_settings['transparent'] ? $header_settings['scheme']  : '';
-			$header_global_sticky = $header_settings['sticky'] ? 'sticky' : '';
-			$header_global_smart = ( $header_global_sticky === 'sticky' && $header_settings['smart'] ) ? 'smart' : '';
-
+			
+			$header_options = array();
+			if( !empty( $post ) ) {
+				$post_id = tatsu_get_page_id();
+				$header_options = get_post_meta( $post_id, '_tatsu_header_options' , true ); 		
+			}
 			// Page Header Settings
-			$header_options = get_post_meta( $post_id, '_tatsu_header_options' , true ); 		
+			
 			$header_scheme = '';
 			$header_style = '';
-
+			$header_auto_pad = '';
+			
 			// Set Transparency Conditionally
 			$allow_transparent = false; 
 			$dynamic_func = [];
@@ -140,7 +202,6 @@ class Tatsu_Public {
 			$taxonomy_list = !empty( $header_settings[ 'taxonomy' ] ) ? $header_settings[ 'taxonomy' ] : array();
 			$other_list = !empty( $header_settings[ 'other' ] ) ? $header_settings[ 'other' ] : array();
 			
-
 			if (($key = array_search( 'post' , $archive_list)) !== false) {
 				unset( $archive_list[$key] );
 				array_push( $dynamic_func , 'home' );
@@ -165,7 +226,7 @@ class Tatsu_Public {
 					$allow_transparent = true;
 				}else if ( is_tax( $taxonomy_list ) ){
 					$allow_transparent = true;
-				}else if( is_post_type_archive( $archive_list ) ){
+				}else if( is_post_type_archive( $archive_list ) && sizeof( $archive_list ) > 0 ){
 					$allow_transparent = true;
 				}else{
 					for($i = 0; $i < sizeof( $dynamic_func ); $i++ ){
@@ -183,8 +244,12 @@ class Tatsu_Public {
 				$header_scheme = ( $header_options && array_key_exists( 'tatsu_page_header_scheme' , $header_options ) && $header_options['tatsu_page_header_scheme'] !== 'inherit' ) ? $header_options['tatsu_page_header_scheme'] : $header_global_scheme;
 			}
 
+			if( 'transparent' === $header_style ) {
+				$header_auto_pad = ( empty( $header_options ) || !array_key_exists( 'tatsu_header_auto_pad', $header_options ) || 'no' !== $header_options[ 'tatsu_header_auto_pad' ] ) ? 'header-auto-pad' : '';
+			}
+
 			echo '<div id="tatsu-header-container">';
-			echo '<div id="tatsu-header-wrap" class="'.$header_global_smart.' '.$header_global_sticky.' '.$header_style.' '.$header_scheme.'">';
+			echo '<div id="tatsu-header-wrap" class="'.$header_global_smart.' '.$header_global_sticky.' '.$header_style.' '.$header_scheme.' ' . $header_auto_pad . '">';
 
 			echo do_shortcode( $header_content );
 			echo '</div>';
@@ -193,50 +258,96 @@ class Tatsu_Public {
 		}
 	}
 
-	public function header_css_print() {
-		if( current_theme_supports('tatsu-header-builder') ) {
-			$header_store = new Tatsu_Header_Store();
-			$header_content = $header_store->get_header_store();
-			// echo tatsu_header_css_print( $header_content['tatsu_page_content']['inner'] ); 
+	public function print_footer() {
+		if( current_theme_supports('tatsu-footer-builder') ) {
+			global $post;
+			$post_type = get_post_type();
+			$active_footer_id = tatsu_get_active_footer_id();
+			if( TATSU_FOOTER_CPT_NAME === $post_type ) {
+				if( property_exists( $post, 'post_content' ) ) {
+					echo apply_filters('the_content',$post->post_content);
+				}
+				return;
+			}
+			if( empty( $active_footer_id ) ) {
+				return;
+			}
+			$footer = get_post( $active_footer_id, 'ARRAY_A' );
+			$footer_content = $footer[ 'post_content' ];
+			do_action( 'tatsu_before_footer_builder_content' );
+			?>
+				<div id = "tatsu-footer-container">
+					<?php echo do_shortcode( $footer_content ); ?>
+				</div>
+			<?php
+			do_action( 'tatsu_after_footer_builder_content' );
 		}
 	}
 
+	public function header_css_print() {
+		if( current_theme_supports('tatsu-header-builder') ) {
+			$active_header_id = tatsu_get_active_header_id();
+			if( !empty( $active_header_id ) ) {
+				$header_store = new Tatsu_Header_Store( $active_header_id );
+				$header_content = $header_store->get_header_store();
+				// echo tatsu_header_css_print( $header_content['tatsu_page_content']['inner'] ); 
+			}
+		}
+	}
+
+	/**
+	 * Single Page Site
+	*/
+	public function single_page_site( $classes ) {
+		global $post;
+		if( !empty( $post ) ) {
+			$header_meta_options = get_post_meta( $post->ID, '_tatsu_header_options' , true ); 	
+			$single_page_site = ( $header_meta_options && array_key_exists( 'tatsu_header_single_page_site' , $header_meta_options ) ) ? $header_meta_options['tatsu_header_single_page_site'] : 0;
+			if( $single_page_site ) {
+				$classes[] = 'tatsu-header-single-page-site';
+			}
+		}
+		return $classes;
+	}
+
+
 	public function sliding_menu() {
 		if( current_theme_supports('tatsu-header-builder') ) {
-			$header_store = new Tatsu_Header_Store();
-			$header_content = $header_store->get_header_store();
-			$header_content	= $header_content['tatsu_page_content']['inner'];
-			$output = '';
-
-			foreach( $header_content as $rows ) {
-				//$columns = $rows['inner'];
-				if( empty( $rows['inner'] ) || !is_array( $rows['inner'] ) ) {
-					continue;
-				}
-				foreach( $rows['inner'] as $column ) {
-					//$modules = $column['inner'];
-					if( empty( $column['inner'] ) || !is_array( $column['inner'] ) ) {
+			$active_header_id = tatsu_get_active_header_id();
+			if( !empty( $active_header_id ) ) {
+				$header_store = new Tatsu_Header_Store( $active_header_id );
+				$header_content = $header_store->get_header_store();
+				$header_content	= $header_content['tatsu_page_content']['inner'];
+				$output = '';
+				foreach( $header_content as $rows ) {
+					//$columns = $rows['inner'];
+					if( empty( $rows['inner'] ) || !is_array( $rows['inner'] ) ) {
 						continue;
 					}
-					foreach( $column['inner'] as $module ) {
-						//$slide_menu_cols = $module['inner'];
-						if( empty( $module['inner'] ) || !is_array( $module['inner'] ) ) {
+					foreach( $rows['inner'] as $column ) {
+						//$modules = $column['inner'];
+						if( empty( $column['inner'] ) || !is_array( $column['inner'] ) ) {
 							continue;
 						}
-						if( 'tatsu_hamburger_menu' === $module['name'] ) {
-							$output .= '<div id="tatsu-'.$module['id'].'" class="tatsu-'.$module['id'].' tatsu-slide-menu">
-											<div class="tatsu-slide-menu-inner">';
-												$output .= do_shortcode( tatsu_shortcodes_from_content( $module['inner'] ) );
-									
-							$output .= 		'</div>'; // Menu Inner
-							$output .= '</div>'; // Menu 
+						foreach( $column['inner'] as $module ) {
+							//$slide_menu_cols = $module['inner'];
+							if( empty( $module['inner'] ) || !is_array( $module['inner'] ) ) {
+								continue;
+							}
+							if( 'tatsu_hamburger_menu' === $module['name'] ) {
+								$output .= '<div id="tatsu-'.$module['id'].'" class="tatsu-'.$module['id'].' tatsu-slide-menu">
+												<div class="tatsu-slide-menu-inner">';
+													$output .= do_shortcode( tatsu_shortcodes_from_content( $module['inner'] ) );
+										
+								$output .= 		'</div>'; // Menu Inner
+								$output .= '</div>'; // Menu 
+							}
 						}
 					}
 				}
+				echo $output;
+				echo '<div id="tatsu-fixed-overlay"></div>';
 			}
-
-			echo $output;
-			echo '<div id="tatsu-fixed-overlay"></div>';
 		}
 	}
 
@@ -256,9 +367,18 @@ class Tatsu_Public {
 			if( empty( $post_type ) ){
 				$post_type = '';
 			} else {
-				if( is_archive() || is_home()  ){
+				global $wp_query;
+				if( is_home() ){
 					$post_type = 'archive-'.$post_type;
-				} else {
+				} else if( is_archive() ){	
+					if( array_key_exists( 'post_type', $wp_query->query ) ){
+						$post_type = $wp_query->query['post_type'];
+					}
+					$post_type = 'archive-'.$post_type;
+				}else {
+					if( array_key_exists( 'post_type', $wp_query->query ) ){
+						$post_type = $wp_query->query['post_type'];
+					}
 					$post_type = 'single-'.$post_type;
 				}
 			}

@@ -18,8 +18,9 @@
 					$win.off('beforeunload.edit-post');
 					location.href = $('#edit_with_tatsu_button').attr('href');
 				});
-				
-				if (wp.autosave) {
+				if($body.hasClass('post-type-tatsu_header') || $body.hasClass('post-type-tatsu_footer')) {
+					$('#publish').trigger('click');
+				}else if (wp.autosave) {
 					wp.autosave.server.triggerSave();
 				}
 			}

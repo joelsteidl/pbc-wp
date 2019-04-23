@@ -21,7 +21,7 @@ if ( !function_exists( 'tatsu_icon_group' ) ) {
 			}
 		}
 		// $output = '<div class="tatsu-module tatsu-icon-group align-'.$alignment.' '.$custom_class_name.' '.$visibility_classes.'" >'.do_shortcode( $content ).'</div>'.$custom_style_tag;		
-		$output = '<div class="tatsu-module tatsu-icon-group '.$custom_class_name.' '.$visibility_classes.'" >'.do_shortcode( $content ).'</div>'.$custom_style_tag;		
+		$output = '<div class="tatsu-module tatsu-icon-group '.$custom_class_name.' '.$visibility_classes.'" >' . $custom_style_tag .do_shortcode( $content ).'</div>';		
 		return $output;	
 	}	
 	add_shortcode( 'tatsu_icon_group', 'tatsu_icon_group' );

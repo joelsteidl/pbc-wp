@@ -79,7 +79,7 @@
     BeGrid.prototype.setCols = function () {
         var cols = parseInt(this.ele.attr('data-cols')) || 3,
             windowWidth = $window.width();
-        if (1366 < windowWidth) {
+        if (1024 < windowWidth) {
             //laptops and desktops
             this.cols = cols;
         } else {

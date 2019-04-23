@@ -143,7 +143,6 @@ if( !function_exists( 'be_get_font_family' ) ) {
 		}
 		$standard_fonts = be_standard_fonts();
 		$font = explode( ':', $font );
-		//var_dump($font);
 		if( !empty( $font[1] ) ){
 			switch($font[0]){
 				case 'schemes':
@@ -151,32 +150,53 @@ if( !function_exists( 'be_get_font_family' ) ) {
 					if( !empty( $font_schemes[$font[1]] ) ){
 						$family = be_get_font_family( $font_schemes[$font[1]]['fontFamily']);
 					}else{
-						$family = $standard_fonts[ "System Font Stack" ];
+						$family = array(
+							'source' => 'standard',
+							'value' => $standard_fonts[ "System Font Stack" ],
+						);
 					}
 					break;
 				case 'typekit':
 					if(!empty($store['settings']['typekitId'])){
 						$typekit_data = get_typekit_data($store['settings']['typekitId']);
 						if(!empty($typekit_data[$font[1]])){
-							$family = $typekit_data[$font[1]]['cssname'];
+							$family = array(
+								'source' => 'typekit',
+								'value' => $typekit_data[$font[1]]['cssname'],
+							);
 						}else{
-							$family = $standard_fonts[ "System Font Stack" ];
+							$family = array(
+								'source' => 'standard',
+								'value' => $standard_fonts[ "System Font Stack" ],
+							);
 						}
 					}else{
-						$family = $font[1];	
+						$family = array(
+							'source' => false,
+							'value' => $font[1],
+						);	
 					}
 					break;
 				case 'standard':
 					if( array_key_exists( $font[1], $standard_fonts ) ) {
-						$family = $standard_fonts[$font[1]];
+						$family = array(
+							'source' => 'standard',
+							'value' => $standard_fonts[$font[1]],
+						);
 					}
 					break;
 				default :
-					$family = $font[1];
+					$family = array(
+						'source' => 'google-custom',
+						'value' => $font[1],
+					);
 					break;
 			}
 		}else{
-			$family = $font[0];
+			$family = array(
+				'source' => false,
+				'value' => $font[0],
+			);
 		}
 		return $family;  
 	}
@@ -201,41 +221,45 @@ if( !function_exists( 'get_typekit_data' ) ) {
 			$typekit_response = json_decode(file_get_contents('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
 			set_transient( 'typehub_typekit_'.$typekitId, $typekit_response, 60*60*24*365 );
 		}
-		$font_array = $typekit_response->kit->families;
-		$typekit_fonts = array();
-		$typekit_variant_helper = array(
-			100 => "Ultra-Light",
-			200 => "Light",
-			300 => 'Book',
-			400 => "Normal",
-			500 => "Medium",
-			600 => "Semi-Bold",
-			700 => "Bold",
-			800 => "Extra-Bold",
-			900 => "Ultra-Bold",
-		);
-		if(isset($font_array)){
-			foreach($font_array as $fam ){
-				$temp_array = array();
-				foreach($fam->variations as $vars){
-					$temp_id = ((int) filter_var($vars, FILTER_SANITIZE_NUMBER_INT))*100;
-					$temp_name = $typekit_variant_helper[$temp_id]." ". $temp_id;
-					if( $vars[0] == 'i' ){
-						$temp_id = $temp_id.'italic';
-						$temp_name = $temp_name.' Italic';
+		if( !empty( $typekit_response->kit ) ){
+			$font_array = $typekit_response->kit->families;
+			$typekit_fonts = array();
+			$typekit_variant_helper = array(
+				100 => "Ultra-Light",
+				200 => "Light",
+				300 => 'Book',
+				400 => "Normal",
+				500 => "Medium",
+				600 => "Semi-Bold",
+				700 => "Bold",
+				800 => "Extra-Bold",
+				900 => "Ultra-Bold",
+			);
+			if(isset($font_array)){
+				foreach($font_array as $fam ){
+					$temp_array = array();
+					foreach($fam->variations as $vars){
+						$temp_id = ((int) filter_var($vars, FILTER_SANITIZE_NUMBER_INT))*100;
+						$temp_name = $typekit_variant_helper[$temp_id]." ". $temp_id;
+						if( $vars[0] == 'i' ){
+							$temp_id = $temp_id.'italic';
+							$temp_name = $temp_name.' Italic';
+						}
+						array_push($temp_array,array(
+							'id' => $temp_id,
+							'name' => $temp_name,
+						));
 					}
-					array_push($temp_array,array(
-						'id' => $temp_id,
-						'name' => $temp_name,
-					));
+					$typekit_fonts[$fam->name]["variants"] = $temp_array;
+					$typekit_fonts[$fam->name]["subsets"] = [];
+					$typekit_fonts[$fam->name]["cssname"] = $fam->css_names[0];
 				}
-				$typekit_fonts[$fam->name]["variants"] = $temp_array;
-				$typekit_fonts[$fam->name]["subsets"] = [];
-				$typekit_fonts[$fam->name]["cssname"] = $fam->css_names[0];
 			}
+			return $typekit_fonts;
+		} else {
+			return false;
 		}
 		
-		return $typekit_fonts;
 	}
 }
 

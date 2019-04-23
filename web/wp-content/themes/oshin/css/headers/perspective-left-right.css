@@ -9,6 +9,7 @@ html, body, .perspective-left, .perspective-right {
 .perspective-left,
 .perspective-right {
 	position: relative;
+	overflow-x: visible;
 }
 
 .perspective-left #main-wrapper,

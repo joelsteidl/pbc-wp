@@ -5,6 +5,7 @@ function tatsu_wpml_language_switcher( $atts, $content ) {
         'flag_visibility' => '' ,
         // 'native_language_visibility' => '',
         'language_name' => '',
+        'lang_typography' => '',
         'margin' => '',
         'hide_in' => '',
         'key' => be_uniqid_base36(true),

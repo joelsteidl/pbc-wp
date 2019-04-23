@@ -148,7 +148,7 @@ class Tatsu_Frame {
 	public function enqueue_scripts() {
 
 		wp_enqueue_script( 'tiny-mce-js', includes_url( 'js/tinymce/tinymce.min.js' ) );
-		wp_enqueue_style( 'tatsu-frame-css', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ) );
+		wp_enqueue_style( 'tatsu-frame-css', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ), array(), $this->version );
 		wp_enqueue_script( 'tatsu-frame-js', plugins_url( 'builder/js/tatsu-frame.js', dirname(__FILE__) ), array(), $this->version , true );
 		wp_enqueue_style( 'tatsu-roboto-font', '//fonts.googleapis.com/css?family=Roboto:400,700', array(), null );
 		do_action('tatsu_frame_enqueue');

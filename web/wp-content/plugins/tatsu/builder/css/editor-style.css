@@ -169,6 +169,9 @@ div#wp-tatsu_editor-editor-container .ed_button:hover{
     border: 0;
 }
 
+.wp-link-input {
+	color : #dddede;
+}
 
 
 /*****************************************************************/

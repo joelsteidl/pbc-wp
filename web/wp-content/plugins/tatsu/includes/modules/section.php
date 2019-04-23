@@ -27,6 +27,8 @@ if (!function_exists('tatsu_section')) {
 			'flip_bottom_divider'		=> '0',
 			'top_divider_position'		=> 'over',
 			'bottom_divider_position'	=> 'over',
+			'bottom_divider_zindex'	=> '9999',
+			'top_divider_zindex' => '9999',
 	        'bg_video' => 0,
 	        'bg_video_mp4_src' => '',
 	        'bg_video_ogg_src' => '',
@@ -39,7 +41,10 @@ if (!function_exists('tatsu_section')) {
 			'section_title' => '',
 			'full_screen' => 0,
 			'enable_custom_height' => 0,
+			'vertical_align' => 'center',
 			'custom_height'		=> '',
+			'overflow'			=> '0',
+			'z_index'			=> '',
 			'full_screen_header_scheme' => 'background--dark',
 			'hide_in' => '',
 			'key' => be_uniqid_base36(true),
@@ -47,6 +52,7 @@ if (!function_exists('tatsu_section')) {
 		
 		extract( $atts );
 
+		$atts['z_index'] = !empty( $atts['z_index'] ) ? ( (int)$atts['z_index'] + 2 ) : false;
 		$custom_style_tag = be_generate_css_from_atts($atts, 'tatsu_section', $key);
 		$custom_class_name = 'tatsu-'.$key;
 
@@ -85,6 +91,7 @@ if (!function_exists('tatsu_section')) {
 			$bg_attachment = 'scroll';
 			$bg_position = 'center center';
 		}  
+		$original_padding = $padding;
 		$padding_values = json_decode( $padding, true );
 		if( is_array( $padding_values ) ) {
 			$padding = !empty( $padding_values['m'] ) ? explode(' ', $padding_values['m'] ) : explode(' ', $padding_values['d'] );
@@ -113,7 +120,7 @@ if (!function_exists('tatsu_section')) {
 			}
 			$bg_classes .= ' tatsu-bg-lazyload';
 			$bg_attr = 'data-src = "' . $bg_image . '"';
-			$image_data_uri = tatsu_get_image_datauri( $bg_image, apply_filters( 'tatsu_bg_lazyload_blur_size', 'tatsu_lazyload_thumb' ) );
+			$image_data_uri = be_get_image_datauri( $bg_image, apply_filters( 'tatsu_bg_lazyload_blur_size', 'tatsu_lazyload_thumb' ), true );
 			if( !empty( $image_data_uri ) ) {
 				$bg_blur_style = 'style = "background-image : url(' . $image_data_uri . ');"';
 				$bg_markup .= '<div class = "' . $bg_blur_class . '" ' . $bg_blur_style . '"></div>';
@@ -171,10 +178,14 @@ if (!function_exists('tatsu_section')) {
 			}
 		}
 
+		//section overflow
+		if( !empty( $overflow ) ) {
+			$classes .= ' tatsu-prevent-overflow';
+		}
+
 		//top shape divider
 		$top_divider_html = '';
 		if( !empty( $top_divider ) && 'none' !== $top_divider ) {
-			//$classes .= ' tatsu-divider-section';
 			$top_divider_location = TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/top/' . $top_divider .'.svg';
 			$top_divider_svg = @file_get_contents( $top_divider_location );
 			if( !empty( $top_divider_svg ) ) {
@@ -198,9 +209,6 @@ if (!function_exists('tatsu_section')) {
 		//bottom shape divider
 		$bottom_divider_html = '';
 		if( !empty( $bottom_divider ) && 'none' !== $bottom_divider ) {
-			// if( false === strpos( $classes, 'tatsu-divider-section' ) ) {
-			// 	$classes .= ' tatsu-divider-section';
-			// }
 			$bottom_divider_location = TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/bottom/' . $bottom_divider .'.svg';
 			$bottom_divider_svg = file_get_contents( $bottom_divider_location );
 			if( !empty( $bottom_divider_svg ) ) {
@@ -237,7 +245,7 @@ if (!function_exists('tatsu_section')) {
 		$output .= $top_divider_html;
 		$output .= $fullscreen_wrap_start; 
 		$output .= $custom_height_wrap_start;
-		$output .= '<div class="tatsu-section-pad clearfix" data-padding-top="'.$padding_top.'">';  
+		$output .= "<div class='tatsu-section-pad clearfix' data-padding='".$original_padding."' data-padding-top='".$padding_top."'>";
 	    $output .= $offset_wrapper_start;	
 	    $output .= do_shortcode( $content );
 		$output .= $offset_wrapper_end;

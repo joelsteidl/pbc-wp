@@ -474,7 +474,10 @@ if ( ! function_exists( 'be_themes_add_styles' ) ) {
 			//this file is already minified
 			$upload_dir = wp_upload_dir();
 			$dynamic_css_path = $upload_dir[ 'baseurl' ] . '/oshine_dynamic_css/be_dynamic.css' ;
-			wp_register_style( 'be-dynamic', $dynamic_css_path );
+			if( is_ssl() ) {
+				$dynamic_css_path = str_replace( 'http://', 'https://', $dynamic_css_path );
+			}
+			wp_register_style( 'be-dynamic', $dynamic_css_path, array(), $theme_version );
 			wp_enqueue_style( 'be-dynamic' );
 		}
 

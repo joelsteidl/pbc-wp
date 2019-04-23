@@ -34,46 +34,11 @@ class Tatsu_Module_Options {
 		}
 	}
 
-	public function parse_options( $options ) {
-		//Replace invalid icons
-		//check atts
-		if( array_key_exists( 'atts', $options ) && is_array( $options['atts'] ) ) {
-			foreach( $options['atts'] as $index => $att ) {
-				if( !empty($att) && is_array( $att ) && 'icon_picker' === $att['type'] ) {
-					if( !empty( $att['default'] ) && !Tatsu_Icons::getInstance()->valid_icon( $att['default'] ) ) {
-						$options['atts'][$index]['default'] = Tatsu_Icons::getInstance()->get_random_icon();
-					}
-				}
-			}
-		}
-		//check presets
-		if( array_key_exists( 'presets', $options ) && is_array( $options['presets'] ) ) {
-			foreach( $options['presets'] as $preset_name => $preset_options ) {
-				if( is_array( $preset_options ) && is_array( $preset_options['preset'] ) ) {
-					foreach( $preset_options['preset'] as $att_name => $att_value ) {
-						$att_type = '';
-						if( array_key_exists( 'atts', $options ) && is_array( $options['atts'] ) ) {
-							foreach( $options['atts'] as $index => $att ) {
-								if( !empty($att) && is_array( $att ) && $att['att_name'] === $att_name ) {
-									$att_type = $att['type'];
-								}
-							}
-						}
-						if( !empty( $att_type ) && 'icon_picker' === $att_type && !Tatsu_Icons::getInstance()->valid_icon( $att_value ) ) {
-							$options['presets'][$preset_name]['preset'][$att_name] = Tatsu_Icons::getInstance()->get_random_icon();
-						}
-					}
-				}
-			}
-		}
-		return $options;
-	}
-
 	public function register_module( $tag, $options, $output_function = '' ) {
 		if( function_exists( $output_function ) ) {
 			add_shortcode( $tag, $output_function );
 		}
-		$options = $this->parse_options($options);
+		$options = tatsu_parse_module_options($options);
 		$new_module = array( $tag => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}
@@ -91,7 +56,7 @@ class Tatsu_Module_Options {
 			}
 		}
 		add_shortcode( $module_name, $output_function );
-		$options = $this->parse_options($options);
+		$options = tatsu_parse_module_options($options);
 		$new_module = array( $module_name => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}

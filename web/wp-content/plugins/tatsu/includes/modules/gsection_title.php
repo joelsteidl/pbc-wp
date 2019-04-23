@@ -19,14 +19,14 @@ if ( ! function_exists( 'tatsu_gsection_title' ) ) {
 		$is_others_page = tatsu_is_others_page_type();
 		if( is_archive() || $is_others_page[0] ){
 			if( is_search() ){
-				$post_title = __( 'Search', 'tatsu' );
+				$post_title = esc_html__( 'Search', 'tatsu' );
 			} else if( is_404() ){
-				$post_title = __( '404', 'tatsu' );
+				$post_title = esc_html__( '404', 'tatsu' );
 			} else {
 				$post_title = get_the_archive_title();
 			}
 		} elseif( is_home() ) {
-			$post_title = __('BLOG','tatsu');
+			$post_title = esc_html__('BLOG','tatsu');
 		} else {
 			$post_title = $post->post_title;
 		}

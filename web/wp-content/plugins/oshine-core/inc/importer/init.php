@@ -42,6 +42,8 @@ class BEThemeDemoImporter extends BEThemeImporter {
 
 	public $demo_settings_name = 'demo_settings.json';
 
+	public $tatsu_global_sections_file_name = 'tatsu-global-sections.json';
+
 	/**
 	 * Store the selected options from the dashboard
 	 *
@@ -82,6 +84,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
     	add_action('wp_ajax_be_set_demo_content', array($this, 'ajax_set_demo_content'));
 		add_action('wp_ajax_be_require_plugins', array($this, 'ajax_get_require_plugins'));
 		add_action( 'wp_ajax_be_import_typehub_options', array($this, 'ajax_import_typehub_options'), 10, 1 );
+		add_action( 'wp_ajax_be_import_tatsu_global_sections', array($this, 'ajax_import_tatsu_global_sections'), 10 );
     }
 
     public function ajax_import_theme_options(){
@@ -96,6 +99,13 @@ class BEThemeDemoImporter extends BEThemeImporter {
     	$this->selected_demo_folder = $demo;
     	$this->set_typehub_options();
     	wp_die();
+	}
+
+	public function ajax_import_tatsu_global_sections() {
+		$demo = $_POST['demo'];
+		$this->selected_demo_folder = $demo;
+		$this->set_global_section_options();
+		wp_die();
 	}
 
     public function import_master_slider($data = '') {
@@ -236,6 +246,11 @@ class BEThemeDemoImporter extends BEThemeImporter {
 			$available['typehub_option'] = 1;
 		} else {
 			$available['typehub_option'] = 0;
+		}
+		if(file_exists($path.$this->tatsu_global_sections_file_name) && function_exists('tatsu_register_global_module') ) {
+			$available['tatsu_global_section_option'] = 1;
+		} else {
+			$available['tatsu_global_section_option'] = 0;
 		}
 		if(file_exists($path.$this->content_demo_file_name)) {
 			$available['content'] = 1;

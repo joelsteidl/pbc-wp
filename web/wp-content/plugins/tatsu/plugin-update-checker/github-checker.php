@@ -116,7 +116,7 @@ class PucGitHubChecker_3_1 extends PluginUpdateChecker_3_1 {
 		if ( empty($info->sections['changelog']) ) {
 			$info->sections['changelog'] = $this->getRemoteChangelog($ref);
 			if ( empty($info->sections['changelog']) ) {
-				$info->sections['changelog'] = __('There is no changelog available.', 'tatsu');
+				$info->sections['changelog'] = esc_html__('There is no changelog available.', 'tatsu');
 			}
 		}
 

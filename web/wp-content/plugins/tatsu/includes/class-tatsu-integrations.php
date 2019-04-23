@@ -64,7 +64,7 @@ class Tatsu_Integrations {
 							<use xlink:href="<?php echo esc_url( TATSU_PLUGIN_URL.'/builder/svg/tatsu.svg#icon-dragon' ); ?>"></use>
 						</svg>
 						<span>
-							<?php echo __(  'Edit With Tatsu' , 'tatsu' ); ?>
+							<?php echo esc_html__(  'Edit With Tatsu' , 'tatsu' ); ?>
 						</span>
 					</span>
 				</a>			
@@ -76,14 +76,14 @@ class Tatsu_Integrations {
 				</div>
 				<div class = "notification-dialog">
 					<p class = "message">
-						<?php echo __( 'This post was previously edited in Tatsu. You can continue in Gutenberg, but you may lose data and formatting.', 'tatsu' ); ?>
+						<?php echo esc_html__( 'This post was previously edited in Tatsu. You can continue in Gutenberg, but you may lose data and formatting.', 'tatsu' ); ?>
 					</p>
 					<div class = "buttons">
 						<a href = "<?php echo tatsu_edit_url( $post_id ); ?>" class = "button button-primary close-modal">
-							<?php echo __( 'Continue with Tatsu', 'tatsu' ); ?>
+							<?php echo esc_html__( 'Continue with Tatsu', 'tatsu' ); ?>
 						</a>
 						<a href = "<?php echo $gutenberg_builder_url; ?>" class = "button">
-							<?php echo __( 'Edit in Gutenberg', 'tatsu' ); ?>
+							<?php echo esc_html__( 'Edit in Gutenberg', 'tatsu' ); ?>
 						</a>
 					</div>
 				</div>

@@ -78,10 +78,8 @@ class Typehub_Public {
 	 * @since    1.0.0
 	 */
 	public function enqueue_scripts() {
-
-		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/typehub-public.js', array( 'jquery' ), $this->version, false );
-		wp_enqueue_script( 'webfontloader', TYPEHUB_PLUGIN_URL.'/public/js/webfont.js' );
-
+		$suffix = ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) ? '' : '.min';
+		wp_enqueue_script( 'webfontloader', TYPEHUB_PLUGIN_URL.'/public/js/webfont' .$suffix . '.js' );
 	}
 
 	/**
@@ -181,9 +179,14 @@ class Typehub_Public {
 				$css .= 'font-weight: '.be_extract_font_weight( $value ).';';
 				$css .= 'font-style: '.be_extract_font_style( $value ).';';
 			} else if( 'font-family' === $property ) {
-				$value = be_get_font_family( $value );
-				if( !empty( $value ) ) {
-					$css .= 'font-family: '.$value.',"Open Sans","Arial",sans-serif;';
+				$family = be_get_font_family( $value );
+				if( !empty( $family['value'] ) ) {
+					if( 'standard' === $family['source'] ) {
+						$font_stack = ';';
+					} else {
+						$font_stack = ",-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;";
+					}
+					$css .= 'font-family: '.$family['value'].$font_stack;
 				}
 			} else {
 				if( !empty( $value ) ) {
@@ -236,7 +239,9 @@ class Typehub_Public {
 				}
 			}
 		}
-		
+		$unique_fonts = apply_filters('tatsu_typography_fonts_to_load', $unique_fonts);
+
+
 		foreach ( $unique_fonts as $source => $fonts ) {
 			foreach( $fonts as $font => $weights ) {
 				if( 'standard' !== $source ) {
@@ -245,6 +250,12 @@ class Typehub_Public {
 						if( !empty( $scheme_family[1] ) ) {
 							$family = $scheme_family[1];
 							$source = $scheme_family[0];
+							if( 'custom' === $source ) {
+								$url = typehub_get_custom_font_source( $family );
+								if( $url ) {
+									$urls[] = $url;
+								}	
+							}
 						}
 					} else {
 						$family = $font;
@@ -264,6 +275,7 @@ class Typehub_Public {
 		$urls = array_map( function( $url ) {
 			return "'".$url."'";
 		}, $urls );
+		
 		
 		foreach( $webfonts as $source => $data ) {	
 			if( 'google' === $source ) {

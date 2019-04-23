@@ -710,5 +710,5 @@ function tatsu_register_tatsu_icons() {
 		"tatsu-icon-add-user",
 		"tatsu-icon-add-to-list",
 	);
-	tatsu_register_icon_kit( 'tatsu_icons', __( 'Tatsu Icons', 'tatsu' ), $tatsu_icons, TATSU_PLUGIN_URL.'/includes/icons/tatsu_icons/tatsu-icons.css' );
+	tatsu_register_icon_kit( 'tatsu_icons', esc_html__( 'Tatsu Icons', 'tatsu' ), $tatsu_icons, TATSU_PLUGIN_URL.'/includes/icons/tatsu_icons/tatsu-icons.css' );
 }  ?>

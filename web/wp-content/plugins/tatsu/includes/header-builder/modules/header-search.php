@@ -31,8 +31,10 @@ function tatsu_search( $atts, $content ) {
                     <div class = "search-bar">
                         <span class="tatsu-header-pointer"></span>
                         <form role="search" method="get" class="tatsu-search-form" action="' . home_url( '/' ) . '" >
-                            <input type="text" placeholder="'.__( 'Search ...' , 'tatsu-header' ).'" value="' . get_search_query() . '" name="s" />
+                            <input type="text" placeholder="'.esc_attr__( 'Search ...' , 'tatsu-header' ).'" value="' . get_search_query() . '" name="s" />
                         </form>
+                    </div>
+                    <div class = "tatsu-search-bar-overlay">
                     </div>
                 </div>';
 

@@ -13,6 +13,7 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
             'border_radius'     => '',
             'destroy_slider'    => '',
             'lazy_load'         => '0',
+            'adaptive_images'   => '0',
             'slides_to_show'    => '1',
             'vertical_alignment'=> 'center',
             'slide_bg_color'    => '#e5e5e5',
@@ -62,6 +63,9 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
             if( !empty( $slides_to_show ) ) {
                 $classes[] = 'tatsu-carousel-cols-' . $slides_to_show;
             }
+        }
+        if( !empty( $adaptive_images ) ) {
+            $classes[] = 'tatsu-carousel-adaptive-image';
         }
         
         //data-atts
@@ -124,6 +128,9 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                                 }
                                 $img_attr = array();
                                 $img_class = array( 'tatsu-carousel-img' );
+                                if( !empty( $lazy_load ) ) {
+                                    $img_class[] = 'tatsu-carousel-img-lazy-load';
+                                }
                                 if( !empty( $id ) ) {
                                     $attachment_details = be_wp_get_attachment( $id );
                                     if( !empty( $attachment_details ) ) {
@@ -136,11 +143,21 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                                         }
                                     }
                                 }
-                                if( !empty( $lazy_load ) ) {
-                                    $img_attr[] = sprintf( 'data-src = "%s"', $url );
-                                    $img_class[] = 'tatsu-carousel-img-lazy-load';
-                                } else {
-                                    $img_attr[] = sprintf( 'src = "%s"', $url );
+                                if( !empty( $adaptive_images ) ) {
+                                    $img_srcset = wp_get_attachment_image_srcset( $id, 'full' );
+                                    $sizes = wp_calculate_image_sizes( 'full', null, null, $id );
+                                    if( !empty( $lazy_load ) ) {
+                                        $img_attr[] = sprintf( 'data-srcset = "%s"', $img_srcset );
+                                    }else {
+                                        $img_attr[] = sprintf( 'srcset = "%s"', $img_srcset );
+                                    }
+                                    $img_attr[] = sprintf( 'sizes = "%s"', $sizes );
+                                }else {
+                                    if( !empty( $lazy_load ) ) {
+                                        $img_attr[] = sprintf( 'data-src = "%s"', $url );
+                                    }else {
+                                        $img_attr[] = sprintf( 'src = "%s"', $url );
+                                    }
                                 }
                             ?>
                                 <div class = "tatsu-media-slide tatsu-carousel-col">

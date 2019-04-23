@@ -23,6 +23,12 @@ function tatsu_sidebar_navigation_menu( $atts, $content ) {
     $output = '';
     $visibility_classes = '';
 
+    //check if menu_name actually exists in db, if not add fallback menu
+    $menu_obj = wp_get_nav_menu_object( $menu_name );
+    if( false === $menu_obj ) {
+        $menu_name = '';
+    }
+
     //Handle Resposive Visibility controls
     if( !empty( $hide_in ) ) {
         $hide_in = explode(',', $hide_in);
@@ -30,21 +36,22 @@ function tatsu_sidebar_navigation_menu( $atts, $content ) {
             $visibility_classes .= ' tatsu-hide-'.$device;
         }
     }
-
-    $defaults = array (
-        'menu'=> $menu_name,
-        'depth'=> 3,
-        'container_class'=>'tatsu-sidebar-menu '.$unique_class,
-        'menu_id' => 'menu-'.$key, 
-        'menu_class' => 'clearfix ',
-        'echo' => false,
-        'walker' => new Tatsu_Walker_Nav_Menu()
-    );
     
     if($menu_name != ''){
+        $defaults = array (
+            'menu'=> $menu_name,
+            'depth'=> 3,
+            'container_class'=>'tatsu-sidebar-menu '.$unique_class,
+            'menu_id' => 'menu-'.$key, 
+            'menu_class' => 'clearfix ',
+            'echo' => false,
+            'walker' => new Tatsu_Walker_Nav_Menu()
+        );
         $output = '<nav class="tatsu-header-module tatsu-sidebar-navigation clearfix '.$visibility_classes.'">'.wp_nav_menu( $defaults ).$custom_style_tag.'</nav>';
     }else{
-        $output = 'CHOOSE THE MENU';
+        if( current_user_can( 'edit_theme_options' ) ) {
+            $output = '<a href="'.esc_url(admin_url('nav-menus.php')).'">'.esc_html__('CREATE OR SET A MENU', 'tatsu').'</a>';
+        }
     }
     return $output;
 

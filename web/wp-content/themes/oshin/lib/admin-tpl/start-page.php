@@ -84,7 +84,27 @@ global $BECore;
 		<p>To locate your purchase code you need to log into the ThemeForest account from which you purchase the theme and go to your “Downloads” page.
 
 		Click on the Download button next to the theme and then on the “License Certificate & Purchase code” link. You can find the purchase code inside the downloaded license certificate.</p>
-
+		<div class = "be-newsletter">
+			<h2>Subscribe</h2>
+			<p>We constantly update our products with new features and bug fixes. We need a way to reach out to you regarding these updates. Get update notifications with details on what was changed or added. Know how to use the new features and learn about special instructions for certain updates. A smoother experience for you and less support for us. Occasionally we send mailers about our product promotions that helps you save money on new licenses or support renewals.  We hate spam as much as you do and your details are never shared with any 3rd party.
+			</p>
+			<form id="be-newsletter-form" method="post" action="options.php">
+				<div class = "clearfix">
+				<?php 
+					$be_newsletter_email = get_option('oshine_newsletter_email', '');	
+				?>
+				<input type="text" id="be-newsletter-email" size="30" name="be-newsletter-email" value="<?php echo esc_attr($be_newsletter_email); ?>" class="widefat" />
+				<?php wp_nonce_field( 'subscribe_checker', 'be-newsletter-email-nonce', true ); ?>
+				<div class = "be-newsletter-submit-wrap">
+					<div class = "be-newsletter-spinner">
+					</div>
+					<?php
+					submit_button( esc_html__( 'Submit', 'oshin' ), 'primary', 'submit', true, null );
+					?>
+				</div>
+				</div>
+			</form>
+		</div>
 		<?php do_action( 'be_license_tpl' ); ?>
 	</div>
 <?php endif; ?>	

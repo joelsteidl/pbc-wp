@@ -15,6 +15,7 @@ if( !function_exists( 'tatsu_interactive_box' ) ) {
             'icon'                  => 'none',
             'svg_icon'              => '',
             'icon_size'             => '',
+            'new_tab'               => '',
             'icon_color'            => '',
             'icon_hover_color'      => '',
             'border_color'          => '',
@@ -47,6 +48,7 @@ if( !function_exists( 'tatsu_interactive_box' ) ) {
 
         $icon = !empty( $icon ) ? $icon : '';
         $classes = array( 'tatsu-interactive-box', 'tatsu-module', $custom_class_name );
+        $new_tab = !empty( $new_tab ) ? true : false;
         $data_attrs = array();
 
         //classes
@@ -96,7 +98,7 @@ if( !function_exists( 'tatsu_interactive_box' ) ) {
             <div class = "<?php echo $classes; ?>" <?php echo $data_attrs; ?>>
                 <?php echo $custom_style_tag; ?>
                 <?php if( !empty( $url ) ) : ?>
-                    <a class = "tatsu-interactive-box-link" href = "<?php echo $url; ?>">
+                    <a class = "tatsu-interactive-box-link" <?php echo $new_tab ? 'target="_blank"' : '' ?> href = "<?php echo $url; ?>">
                     </a>
                 <?php endif; ?>
                 <?php if( 'flip' === $style ) : ?>

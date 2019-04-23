@@ -67,10 +67,10 @@ class Typehub {
 	 * @since    1.0.0
 	 */
 	public function __construct() {
-		if ( defined( 'PLUGIN_NAME_VERSION' ) ) {
-			$this->version = PLUGIN_NAME_VERSION;
+		if ( defined( 'TYPEHUB_VERSION' ) ) {
+			$this->version = TYPEHUB_VERSION;
 		} else {
-			$this->version = '1.3';
+			$this->version = '1.4.1';
 		}
 		$this->plugin_name = 'typehub';
 
@@ -117,8 +117,13 @@ class Typehub {
 		 * of the plugin.
 		 */
 		require_once TYPEHUB_PLUGIN_DIR . 'includes/class-typehub-i18n.php';
-
 		
+		/**
+		 * The class responsible for defining internationalization functionality
+		 * of the plugin.
+		 */
+		require_once TYPEHUB_PLUGIN_DIR . 'includes/integrations/merlin/class-merlin-typehub-importer.php';
+	
 		/**
 		 * The class responsible for registering custom fonts.
 		 */
@@ -202,6 +207,7 @@ class Typehub {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'addAdminMenu' );
 		$this->loader->add_action( 'load_typehub_exposed_selectors', $plugin_admin ,'get_exposed_selectors' );
+		$this->loader->add_action( 'load_typehub_exposed_selectors', $plugin_admin ,'get_font_options' );
 
 	}
 
@@ -230,7 +236,7 @@ class Typehub {
 	 */	
 
 	private function define_custom_hooks() {
-		$this->loader->add_action( 'wp_loaded', Typehub_Options::getInstance() , 'setup_hooks' );
+		$this->loader->add_action( 'wp_loaded', Typehub_Options::getInstance() , 'setup_hooks',9 );
 		$this->loader->add_action( 'wp_loaded', Typehub_Font_Schemes::getInstance() , 'setup_hooks' );
 		$this->loader->add_action( 'wp_loaded', Typehub_Custom_Fonts::getInstance() , 'setup_hooks' );
 	}
@@ -249,6 +255,7 @@ class Typehub {
 		$this->loader->add_action( 'wp_ajax_local_font_details', $plugin_store, 'ajax_get_local_font_details' );
 		$this->loader->add_action( 'wp_ajax_download_font', $plugin_store, 'ajax_download_font' );
 		$this->loader->add_action( 'wp_ajax_refresh_changes', $plugin_store, 'ajax_refresh_changes' );
+		$this->loader->add_action( 'wp_ajax_sync_typekit', $plugin_store, 'ajax_sync_typekit' );
 	}
 
 	/**

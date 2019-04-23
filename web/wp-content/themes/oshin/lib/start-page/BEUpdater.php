@@ -39,6 +39,7 @@ class BEUpdater {
 		add_action('wp_ajax_be_save_purchase_code',array($this, 'save_purchase_code'));
 
 		add_action( 'wp_ajax_BS_set_memory', array($this, 'ajax_set_memory_limit'), 10, 1 );
+		add_action('wp_ajax_be_newsletter_subscribe',array($this, 'be_newsletter_subscribe'));
 	}
 
 	public function settings_field() {
@@ -107,6 +108,34 @@ class BEUpdater {
 		}
 		wp_die();
 	}	
+
+	public function be_newsletter_subscribe() {
+		if ( ! check_ajax_referer( 'subscribe_checker', 'security' ) ) {
+			echo '<div class="notic notic-warning ">Invalid Nonce</div>';
+			wp_die();
+		}
+		$email = $_POST['email'];
+		$list_name = $_POST['list_name'];
+		if( empty( $email ) ) {
+			echo '<div class="notic notic-error ">Email cannot be empty</div>';
+			wp_die();
+		}		
+		if( !is_email( $email ) ) {
+			echo '<div class="notic notic-error ">Not a valid email</div>';
+			wp_die();
+		}
+		$response = wp_remote_get( "https://www.brandexponents.com/subscribe/be-subscribe.php?email=$email&list_name=$list_name" );
+		if( $response ) {
+			if( update_option('oshine_newsletter_email', $email ) ) {
+				echo '<div class="notic notic-success ">Email Saved Successfully</div>';
+			} else {
+				echo '<div class="notic notic-warning ">Unable to Save Email</div>';
+			}
+		}else {
+			echo '<div class="notic notic-warning ">Unable to Save Email or Email Already in use</div>';
+		}
+		wp_die();
+	}
 
 	/*public function render_token_field() {
 		?>

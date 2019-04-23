@@ -107,12 +107,12 @@
             });
 
         },
-       
+
         closeNotification = function() {
             jQuery(document).on('click.tatsu', '.tatsu-notification .close', function (e) {
                 e.preventDefault();
                 jQuery(this).closest('.tatsu-notification').slideUp(500);
-            });                     
+            });
         },
 
         animatedNumbers = function() {
@@ -138,7 +138,7 @@
                         }
                     });
                 });
-            }           
+            }
         }, 
 
         cssAnimate = function( shouldUpdate, moduleId, context ) {
@@ -163,9 +163,9 @@
                             element.addClass("already-visible");
                             element.addClass(element.attr('data-animation'));
                             // element.addClass('animated');
-                        }                    
+                        }
                     } );
-                }            
+                }
             } else {
                  if(animateWrapperCount > 0) {
                     if( null != context ) {
@@ -194,24 +194,22 @@
                                     alreadyVisibleIndex ++;
                                     if( alreadyVisibleIndex >= totalAnimCount && !$body.hasClass('tatsu-frame') ) {
                                         clearInterval(scrollInterval);
-                                    }                                
+                                    }
                                 }
                            // }
                         }
                     });
-                }                 
+                }
             }
-                   
+            
         },
 
         lightbox = function() {
             if (jQuery('.mfp-image').length > 0) {
-
                 asyncloader.require( 'magnificpopup', function() {
 
                     var mfpImages = jQuery( '.mfp-image' ),
                         galleryEnabledMfpImages = mfpImages.filter( function() {
-        
                             return 0 == jQuery( this ).closest( '.tatsu-single-image' ).length;
                         
                         } ),
@@ -308,7 +306,6 @@
             }       
         },
 
-
         video = function() {
             var vimeoVideos = $( '.be-vimeo-embed' ),
                 youtubeVideos = $( '.be-youtube-embed' ),
@@ -327,12 +324,27 @@
                 youtubeVideos.each(function() {
                     var curVideo = $(this),
                         curPlayer = null,
-                        id = null != curVideo.attr( 'data-video-id' ) ? curVideo.attr( 'data-video-id' ) : null;
+                        id = null != curVideo.attr( 'data-video-id' ) ? curVideo.attr( 'data-video-id' ) : null,
+                        autoplay = null != curVideo.attr( 'data-autoplay' ) ? parseInt(curVideo.attr( 'data-autoplay' )) : null,
+                        loopVideo = null != curVideo.attr( 'data-loop' ) ? parseInt(curVideo.attr( 'data-loop' )) : null;
+
                     if( null != id ) {
                         curPlayer = new YT.Player( this, {
                             videoId : id,
+                            playerVars: { 
+                                'autoplay': autoplay,
+                                'loop' : loopVideo,
+                                'playlist' : loopVideo ? id : ''
+                            },
                             width : curVideo.width(),
                             height : curVideo.width()/1.7777,
+                            events: {
+                                'onReady': function (e) {
+                                    if( autoplay ){
+                                        e.target.mute();   
+                                    }
+                                }
+                            }
                         });
                         videoReadyCallback( $( curPlayer.getIframe() ) );
                     }
@@ -344,10 +356,15 @@
                     vimeoVideos.each( function() {
                         var curVideo = $(this),
                             curPlayer = null,
-                            id = !isNaN( Number( curVideo.attr( 'data-video-id' ) ) ) ? Number( curVideo.attr( 'data-video-id' ) ) : null;
+                            id = !isNaN( Number( curVideo.attr( 'data-video-id' ) ) ) ? Number( curVideo.attr( 'data-video-id' ) ) : null,
+                            autoplay = null != curVideo.attr( 'data-autoplay' ) ? parseInt(curVideo.attr( 'data-autoplay' )) : false,
+                            loopVideo = null != curVideo.attr( 'data-loop' ) ? parseInt(curVideo.attr( 'data-loop' )) : false;
                         if( null != id ) {
                             var curPlayer = new Vimeo.Player( this, {
                                 id : id,
+                                autoplay : autoplay ? true : false,
+                                loop : loopVideo ? true : false,
+                                muted : autoplay ? true : false,
                                 width : curVideo.width(),
                                 height : Math.ceil(curVideo.width()/1.7777),    
                             });
@@ -817,15 +834,15 @@
                         var curIcon = $(this),
                             svgOptions = {},
                             animDuration = curIcon.attr( 'data-animation-duration' ),
-                            animTimingFunc = curIcon.attr( 'data-svg-animation' ),
-                            pathTimingFunc = curIcon.attr( 'data-path-animation' ),
+                            animTimingFunc = curIcon.attr( 'data-svg-animation' ) || 'EASE',
+                            pathTimingFunc = curIcon.attr( 'data-path-animation' ) || 'EASE',
                             svgIconEle = curIcon.find( 'svg' );
                         if( 0 < svgIconEle.length ) {
                             svgIconEle = svgIconEle[0];
                             svgOptions.onReady = function(e) {
                                 curIcon.addClass('tatsu-line-animate-ready');
                             };
-                            svgOptions.duration = Number( animDuration ) || 100;
+                            svgOptions.duration = Number( animDuration ) || 80;
                             if( null != animTimingFunc ) {
                                svgOptions.animTimingFunction = Vivus[ animTimingFunc ];
                             }
@@ -879,7 +896,7 @@
         slider = function() {
             var sliders = $( '.be-slider' ),    
                 initOuterArrows = function( slider ) {
-                    if( slider instanceof $ && 0 < slider.length && 1200 > slider.parent().width() ) {
+                    if( slider instanceof $ && 0 < slider.length && !slider.hasClass( 'be-slider-with-margin' ) && ( 100 < ( $win.width() - slider.outerWidth() ) ) ) {
                         var gutter = !isNaN( slider.attr('data-gutter') ) ? Number( slider.attr('data-gutter') )/2 : 0;
                         slider.css({
                             padding : '0 50px',
@@ -970,7 +987,7 @@
         },
         grid = function() {
             asyncloader.require( [ 'isotope', 'begrid' ], function() {
-                var grids = $( '.be-grid' );
+                var grids = $( '.be-grid[data-layout = "metro"], .be-grid[data-layout = "masonry"]' );
                 grids.each( function() {
                     new BeGrid(this);
                 });
@@ -992,7 +1009,8 @@
             tatsuCallbacks[ 'tatsu_gallery' ] = tatsuGallery;
             tatsuCallbacks[ 'tatsu_tabs' ] = tatsu_tabs;
             tatsuCallbacks[ 'tatsu_accordion' ] = tatsu_accordion;
-
+            tatsuCallbacks[ 'tatsu_lists' ] = listsTimeline;
+            tatsuCallbacks[ 'tatsu_typed_text' ] = typedText;
         },
 
         parallax = function() {
@@ -1043,37 +1061,43 @@
             });
         },
 
-        stickyColumn = function(shouldUpdate,moduleId){
-           
+        stickyColumn = function() {
             var tatsuStickyColumn = jQuery('.tatsu-column-sticky');
-
-            if(tatsuStickyColumn.length){
-                asyncloader.require('stickykit',function(){
-                    var stickyTopOffset = 0;
-                    if(jQuery('#wpadminbar').length){
-                        stickyTopOffset = 32;
-                    }
-
-                    jQuery.each(tatsuStickyColumn,function(key,element){
-                        var jQueryObj = jQuery(element);
-                        if(jQuery(window).width() > 767 && !jQueryObj.closest('.tatsu-eq-cols').length ){
-                            jQueryObj.stick_in_parent({parent:'.tatsu-row', offset_top : stickyTopOffset})
-                            .on("sticky_kit:stick",function(e){
-                                jQuery(e.target).css( 'transition','none' );
-                            });
-                            jQueryObj.parent().css('position','static');
-                        } else {
-                            jQueryObj.trigger( "sticky_kit:detach" );
-                        }
+            if( 0 < tatsuStickyColumn.length ) {
+                jQuery(window).on( 'load', function(e) {
+                    asyncloader.require('stickykit',function(){
+                        jQuery('body').trigger("sticky_kit:recalc");
                     });
                 });
             }
-            var currentColumn = jQuery('.be-pb-observer-'+moduleId + ' .tatsu-column-inner ' );
+            return function(shouldUpdate,moduleId){
+                tatsuStickyColumn = jQuery('.tatsu-column-sticky');
+                if(tatsuStickyColumn.length){
+                    asyncloader.require('stickykit',function(){
+                        var stickyTopOffset = 0;
+                        if(jQuery('#wpadminbar').length){
+                            stickyTopOffset = 32;
+                        }
+                        jQuery.each(tatsuStickyColumn,function(key,element){
+                            var jQueryObj = jQuery(element);
+                            if(jQuery(window).width() > 767 && !jQueryObj.closest('.tatsu-eq-cols').length ){
+                                jQueryObj.stick_in_parent({parent:'.tatsu-row', offset_top : stickyTopOffset})
+                                .on("sticky_kit:stick",function(e){
+                                    jQuery(e.target).css( 'transition','none' );
+                                });
+                                jQueryObj.parent().css('position','static');
+                            } else {
+                                jQueryObj.trigger( "sticky_kit:detach" );
+                            }
+                        });
+                    });
+                }
+                var currentColumn = jQuery('.be-pb-observer-'+moduleId + ' .tatsu-column-inner ' );
                 if(!currentColumn.hasClass('tatsu-column-sticky')){
                     currentColumn.trigger("sticky_kit:detach");
                 }
-
-        },
+            }
+        }(),
        
         tatsuColumn = function(shouldUpdate,moduleId) {
             columnParallax();
@@ -1081,24 +1105,37 @@
             columnTilt(shouldUpdate,moduleId);
         },
 
-        lazyLoadImages = function(){
-            var tatsuLazyLoadImages = jQuery( '.tatsu-image-lazyload' );
-            if( tatsuLazyLoadImages.length > 0 ){
-                asyncloader.require( 'unveil', function(){
-                    // Lazy load images 300px before they appear on the screen
-                    tatsuLazyLoadImages.find( 'img' ).unveil(400, function(){
-                        //Callback to be executed once image is loaded
+        lazyLoadImages = function() {
+            var tatsuLazyLoadImages = jQuery( '.tatsu-image-lazyload img' ),
+                revealImages = function() {
+                    var inview = tatsuLazyLoadImages.filter(function() {
+                        var $e = $(this);
+                        if ($e.is(":hidden")) return;
+                        var wt = $win.scrollTop(),
+                            wb = wt + $win.height(),
+                            et = $e.offset().top,
+                            eb = et + $e.height();
+                        return eb >= wt - 400 && et <= wb + 400;
+                    });
+                    inview.each(function() {
                         var currentImage = jQuery( this );
                         currentImage.one( 'load', function() {
-                            this.style.opacity = 1;
+                            currentImage.css( 'opacity', '1' );
                             currentImage.closest( '.tatsu-single-image-inner' ).css( 'background-color', '' );
                         });
+                        if( null != currentImage.attr( 'data-srcset' ) ) {
+                            currentImage.attr( 'srcset', currentImage.attr( 'data-srcset' ) );
+                        }else if( null != currentImage.attr( 'data-src' ) ) {
+                            currentImage.attr( 'src', currentImage.attr( 'data-src' ) );
+                        }
                         if( this.complete ) {
                            currentImage.load();
                         }
                     });
-                });
-            }
+                    tatsuLazyLoadImages = tatsuLazyLoadImages.not(inview);
+                };
+            $win.on( 'scroll', revealImages ); 
+            revealImages();
         },
 
         cssAnimateScrollCallback = function() {
@@ -1144,7 +1181,7 @@
                                     normalColors = {};
                                 }
                                 ui.oldTab.css( {color:normalColors.color || '' ,background:normalColors.background || ''} );
-                            
+
                         }
                     }).css('opacity', 1);
                 }
@@ -1165,6 +1202,42 @@
             }
 
         },
+        listsTimeline = function() {
+            var adjustTimeline = function() {
+                    var listsTimelines = $( '.tatsu-lists-timeline' );
+                    listsTimelines.each(function(){
+                        var curListsItem = $(this),
+                            curTimeline = $(this).find('.tatsu-lists-timeline-element'),
+                            timelineTop = (curListsItem.find('.tatsu-list-content').first().outerHeight())/2,
+                            top,
+                            bottom,
+                            height;
+                        if( curListsItem.hasClass( 'tatsu-list-vertical-align-top' ) ) {
+                            top = curListsItem.find('.tatsu-list-content').first().offset().top + 15;
+                            bottom = curListsItem.find('.tatsu-list-content').last().offset().top + 15;
+                            timelineTop = 15;
+                        }else if( curListsItem.hasClass( 'tatsu-list-vertical-align-center' ) ) {
+                            timelineTop = (curListsItem.find('.tatsu-list-content').first().outerHeight())/2;
+                            top = curListsItem.find('.tatsu-list-content').first().offset().top + (curListsItem.find('.tatsu-list-content').first().outerHeight())/2;
+                            bottom = curListsItem.find('.tatsu-list-content').last().offset().top + (curListsItem.find('.tatsu-list-content').last().outerHeight())/2;
+                        }else if( curListsItem.hasClass( 'tatsu-list-vertical-align-bottom' ) ) {
+                            timelineTop = curListsItem.find('.tatsu-list-content').first().outerHeight() - 15;
+                            top = curListsItem.find('.tatsu-list-content').first().offset().top + curListsItem.find('.tatsu-list-content').first().outerHeight() - 15;
+                            bottom = curListsItem.find('.tatsu-list-content').last().offset().top + curListsItem.find('.tatsu-list-content').last().outerHeight() - 15;
+                        }else {
+                            top = curListsItem.find('.tatsu-list-content').first().offset().top + 15;
+                            bottom = curListsItem.find('.tatsu-list-content').last().offset().top + 15;
+                            timelineTop = 15;
+                        }
+                        height = bottom - top; 
+                        if( height ) {
+                            curTimeline.css({'height' : height, 'top' : timelineTop});
+                        }
+                    });
+                };
+            $(window).on( 'resize', adjustTimeline );
+            return adjustTimeline;
+        }(), 
         tatsu_accordion = function( shouldUpdate ) {
             var accordionWrap = jQuery( '.tatsu-accordion-inner' );	
             if( !shouldUpdate ) {
@@ -1176,10 +1249,10 @@
                             collapsible: $collapse,
                             heightStyle: "content",
                             active: false
-                        }).css('opacity', 1);			        
+                        }).css('opacity', 1);
 
                     });
-                }						
+                }
             }else {
                 if( 0 < accordionWrap.length ) {
                     accordionWrap.each( function() {
@@ -1196,11 +1269,35 @@
             }
         },
 
+        typedText = function( moduleId ){
+            var typedText = jQuery( '.tatsu-typed-text-wrap');
+            if( typedText.length > 0 ){
+                asyncloader.require( 'typed' ,function() {
+                    typedText.each( function(){
+                        var rotatedText = jQuery(this).attr('data-rotate-text').split(',');
+                        var typedTextId = jQuery(this).find('span').attr('id');
+                        new Typed (
+                            '#'+typedTextId,
+                            { 
+                                strings : rotatedText,
+                                typeSpeed: 100,
+                                backSpeed: 75,
+                                backDelay: 500,
+                                startDelay: 1000,
+                                loop: true, 
+                            }
+                        );
+                    });
+                });
+            } 
+        },
+
         ready = function(){
 
             lazyLoadBgImages();
             animatedAnchor();
             progressBar();
+            listsTimeline();
             video();
             parallax();
             columnParallax();
@@ -1219,6 +1316,7 @@
             lightbox();
             gmaps();
             tatsu_tabs();
+            typedText();
             tatsu_accordion();
             // backgroundVideo();
             registerCallbacks();
@@ -1231,6 +1329,7 @@
                 totalAnimCount = animate_wrapper.length + animatedNumberWrap.length;
                 if( 'trigger_ready' == data.moduleName ) {
                     animatedNumbers();
+                    // typedText();
                     parallax();
                     gmaps();
                     video();
@@ -1256,8 +1355,6 @@
 
             cssAnimateScrollCallback();
 
-           // jQuery(window).on( 'scroll.tatsu', cssAnimate.bind(null, false, '') );
-           // jQuery(window).on( 'scroll.tatsu', animatedNumbers ); 
             jQuery(window).on( 'resize.tatsu', function() {
                jQuery( '.tatsu-bg-video, .be-bg-video' ).tatsuResizeMedia(); 
                if( $body.hasClass( 'be-sticky-sections' ) ) {

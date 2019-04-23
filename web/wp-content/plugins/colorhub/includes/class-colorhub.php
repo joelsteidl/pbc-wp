@@ -149,12 +149,6 @@ class Colorhub {
 		require_once COLORHUB_PLUGIN_DIR . 'includes/api.php';
 		
 		/**
-		 * File Includes helper functions
-		 */
-		require_once COLORHUB_PLUGIN_DIR . 'includes/helpers.php';
-
-
-		/**
 		 * File Includes functions that register in built swatches.
 		 */
 		require_once COLORHUB_PLUGIN_DIR . 'includes/predefined/swatches.php';
@@ -228,7 +222,13 @@ class Colorhub {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		$this->loader->add_action( 'tatsu_builder_head', $plugin_public, 'load_inside_tatsu' );	
 		$this->loader->add_action( 'wp_head', $plugin_public, 'generate_css',12 );	
+		$this->loader->add_action( 'wp_loaded', $this, 'load_be_helper' );
 
+	}
+
+	public function load_be_helper() {
+		// Load after Tatsu Loads
+		require_once COLORHUB_PLUGIN_DIR . 'includes/be-helpers.php';
 	}
 
 	/**

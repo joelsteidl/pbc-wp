@@ -31,10 +31,6 @@
         }
     }
 
-    function notify_text(text, type, pos) {
-
-    }
-
     function copy_system_status() {
         var stat_text = $('.be-system-status').text();
         var clipboard = new Clipboard(document.querySelectorAll('#be-copy-status'), {
@@ -105,7 +101,28 @@
                 }
             })
             e.preventDefault();
-        })       
+        });
+        
+        $('#be-newsletter-form').submit(function (e) {
+            e.preventDefault();
+            var newsletterEmail = $('#be-newsletter-email').val(),
+                security = $('#be-newsletter-email-nonce').val();
+            $('.be-newsletter-submit-wrap').addClass('loading');
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'be_newsletter_subscribe',
+                    email: newsletterEmail,
+                    security: security,
+                    list_name: 'Oshine Subscribers',
+                },
+                success: function (response) {
+                    $('.be-newsletter-submit-wrap').removeClass('loading');
+                    $('.token_check').html(response);
+                }
+            })
+        });
 
     }
 
@@ -413,6 +430,13 @@
             } else {
                 $('.home_page').addClass('disable');
                 $('.home_page').removeClass('click');
+            }
+
+            if (settings.tatsu_global_section_option) {
+                $('.tatsu_global_sections').removeClass('disable');
+            } else {
+                $('.tatsu_global_sections').addClass('disable');
+                $('.tatsu_global_sections').removeClass('click');
             }
 
             if (settings.slider_data) {

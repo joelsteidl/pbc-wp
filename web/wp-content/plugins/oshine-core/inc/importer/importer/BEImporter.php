@@ -82,6 +82,7 @@ class BEThemeImporter {
         $this->theme_options_file = $this->demo_files_path . $this->theme_options_file_name;
         $this->colorhub_options_file = $this->demo_files_path . $this->colorhub_options_file_name;
         $this->typehub_options_file = $this->demo_files_path . $this->typehub_options_file_name;
+        $this->tatsu_global_sections_file = $this->demo_files_path . $this->tatsu_global_sections_file_name;
         $this->widgets = $this->demo_files_path . $this->widgets_file_name;
         $this->content_demo = $this->demo_files_path . $this->content_demo_file_name;
         $this->customizer_data = $this->demo_files_path . $this->customizer_data_name;
@@ -131,7 +132,8 @@ class BEThemeImporter {
           'v42' => 'V42 Salon / Barber Shop',
           'v43' => 'V43 Modern Landing Page', 
           'v44' => 'V44 Modern Creative Agency',
-          'v45' => 'V45 Film Studio / Videographer ',                                 
+          'v45' => 'V45 Film Studio / Videographer ', 
+          'v46' => 'V46 Luxury Spa',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }
@@ -177,7 +179,13 @@ class BEThemeImporter {
     <div class="checkmark_kick"></div>
 </span></div><?php esc_html_e( 'Typography', 'be-functions' ); ?>
               </li>
-              
+              <li class="tatsu_global_sections" data-value="import_tatsu_global_sections" class="click">
+              <div class="loader"><span class="circle"></span></div>
+                <div class="radio-option"><span class="checkmark">
+    <div class="checkmark_stem"></div>
+    <div class="checkmark_kick"></div>
+</span></div><?php esc_html_e( 'Tatsu Global Sections', 'be-functions' ); ?>
+              </li>
               <li class="widgets" data-value="import_theme_widgets" class="click">
               <div class="loader"><span class="circle"></span></div>
                 <div class="radio-option"><span class="checkmark">
@@ -423,6 +431,39 @@ class BEThemeImporter {
         echo 'Failed to import Typehub data';
       }
     }
+
+    /**
+     * Import Global Section settings
+     */
+    public function set_global_section_options( $file = '' ) {
+      if(empty($file)) {
+        $file = $this->tatsu_global_sections_file;
+      }
+    	// File exists?
+  		if ( ! file_exists( $file ) ) {
+  			wp_die(
+  				'',
+  				array( 'back_link' => true )
+  			);
+  		}
+
+  		$data = file_get_contents( $file );
+
+  		if ( empty( $data ) || !function_exists('tatsu_register_global_module') ) {
+  			wp_die(
+  				__( 'Tatsu Global Sections import data could not be read. Please try a different file.', 'radium' ),
+  				'',
+  				array( 'back_link' => true )
+  			);
+      }
+
+      if( update_option( 'tatsu_global_section_data', $data ) ) {
+        echo 'Tatsu Global Section Data Imported Successfully';
+      } else {
+        echo 'Failed to import Tatsu Global Section data';
+      }
+    }    
+  
 
     /**
      * Available widgets

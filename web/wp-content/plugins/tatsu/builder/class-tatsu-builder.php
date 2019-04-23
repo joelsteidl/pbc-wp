@@ -24,11 +24,14 @@ class Tatsu_Builder {
 			return;
 		}
 
+
 		if ( isset( $_GET['id'] ) ) {
 			$this->post_id = $_GET['id'];
 		} else {
-	 		$queried_object = get_queried_object();
-			$this->post_id = $queried_object->ID;
+			$queried_object = get_queried_object();
+			if( is_object( $queried_object ) ) {
+				$this->post_id = $queried_object->ID;
+			}
 		}		
 
 		add_filter( 'show_admin_bar', '__return_false' );
@@ -73,6 +76,7 @@ class Tatsu_Builder {
 
 	private function is_edit_mode() {
 
+		//Page Builder
 		if ( ( current_user_can( 'administrator' ) || current_user_can( 'editor' ) ) && isset( $_GET['tatsu'] ) ) {
 			$this->builder_mode = 'tatsu-page-builder';
 			return true;
@@ -81,6 +85,18 @@ class Tatsu_Builder {
 		// Header Builder
 		if( current_user_can( 'manage_options' ) && isset( $_GET['tatsu-header'] ) && current_theme_supports('tatsu-header-builder') ) {
 			$this->builder_mode = 'tatsu-header-builder';
+			return true;
+		}
+
+		// Footer Builder
+		if( current_user_can( 'manage_options' ) && isset( $_GET['tatsu-footer'] ) && current_theme_supports('tatsu-footer-builder') ) {
+			$this->builder_mode = 'tatsu-footer-builder';
+			return true;
+		}
+
+		// Global Section Builder
+		if( current_user_can( 'manage_options' ) && isset( $_GET['tatsu-global'] ) && current_theme_supports('tatsu-global-sections') ) {
+			$this->builder_mode = 'tatsu-global-section';
 			return true;
 		}
 
@@ -95,6 +111,8 @@ class Tatsu_Builder {
 	private function get_shape_dividers() {
 		$top_shape_dividers = glob( TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/top/*.svg' );
 		$bottom_shape_dividers = glob( TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/bottom/*.svg' );
+		$left_shape_dividers = glob( TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/left/*.svg' );
+		$right_shape_dividers = glob( TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/right/*.svg' );
 		$named_dividers = array();
 		if( !empty( $top_shape_dividers ) ) {
 			$named_dividers[ 'top' ] = array();
@@ -116,6 +134,26 @@ class Tatsu_Builder {
 				}
 			}
 		}
+		if( !empty( $left_shape_dividers ) ) {
+			$named_dividers[ 'left' ] = array();
+			foreach( $left_shape_dividers as $left_shape_divider ) {
+				$svg_html = file_get_contents( $left_shape_divider );
+				if( false !== $svg_html ) {
+					$svg_name = basename( $left_shape_divider, '.svg' );
+					$named_dividers[ 'left' ][ $svg_name ] = $svg_html;
+				}
+			}
+		}
+		if( !empty( $right_shape_dividers ) ) {
+			$named_dividers[ 'right' ] = array();
+			foreach( $right_shape_dividers as $right_shape_divider ) {
+				$svg_html = file_get_contents( $right_shape_divider );
+				if( false !== $svg_html ) {
+					$svg_name = basename( $right_shape_divider, '.svg' );
+					$named_dividers[ 'right' ][ $svg_name ] = $svg_html;
+				}
+			}
+		}
 		return !empty( $named_dividers ) ? $named_dividers : false;
 	}
 
@@ -126,9 +164,15 @@ class Tatsu_Builder {
 
 		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
 
+		$dashboard_url = '';
+		if( 'tatsu-header-builder' === $this->builder_mode || 'tatsu-footer-builder' === $this->builder_mode ) {
+			$dashboard_url = esc_url( add_query_arg( 'post_type', get_post_type(), admin_url( 'edit.php' ) ) );
+		}else {
+			$dashboard_url = esc_url( get_edit_post_link( $this->post_id ) );
+		}
 
 		//$post_id = get_the_ID();
-
+		$rest_api_url = remove_query_arg( 'lang', get_rest_url(null, '/tatsu/v1/') );
 		wp_register_script(
 			'tatsu',
 			plugins_url( 'builder/js/bundle'.$suffix.'.js', dirname(__FILE__) ),
@@ -145,16 +189,17 @@ class Tatsu_Builder {
 				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
 				'shape_dividers' => $this->get_shape_dividers(), 
 				'slider_icons'	=> tatsu_get_slider_icons(),
-				'restapiurl' => esc_url( get_rest_url(null, '/tatsu/v1/') ),
+				'restapiurl' => esc_url( $rest_api_url ),
 				'wp_editor' => $this->get_wp_editor_config(),
 				'post_id' => $this->post_id,
 				'post_permalink' => esc_url( get_the_permalink( $this->post_id ) ),
-				'post_dashboard_link' => esc_url( get_edit_post_link( $this->post_id ) ),
-				'documentation_link' => esc_url( 'http://brandexponents.com/oshine-knowledgebase' ),
+				'home_url' => get_bloginfo( 'url' ),
+				'post_dashboard_link' => $dashboard_url,
 				'nonce' => wp_create_nonce( 'wp_rest' ),
 				'svgs' => esc_url( TATSU_PLUGIN_URL.'/builder/svg/tatsu.svg' ),
 				'global_colors' => Tatsu_Colors::getInstance()->get_colors(),
 				'plugin_url' => esc_url( TATSU_PLUGIN_URL ),
+				'transparent_header_list' => tatsu_get_transparent_header_list()
 			)
 		);
 

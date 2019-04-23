@@ -199,17 +199,28 @@ if( !function_exists( 'be_compute_css' ) ) {
 		$css_output = '';
 		if( is_array( $val ) && $property === 'typography' ){
 			foreach( $val as $prop => $value ){
-				if( $prop === 'font-variant' ){
-					$style = preg_replace("/[^a-zA-Z]+/", "", $value);
-					$css_output .= 'font-weight : '. intval($value).';';
-					if( $style !== '' ){
-						$css_output .= 'font-style : '. $style .';';
+				if( !empty( $value ) ){
+					if( $prop === 'font-variant' ){
+						$style = preg_replace("/[^a-zA-Z]+/", "", $value);
+						$css_output .= 'font-weight : '. intval($value).';';
+						if( $style !== '' ){
+							$css_output .= 'font-style : '. $style .';';
+						}
+					} else if( $prop === 'font-family' ) {
+						$family = function_exists( 'be_get_font_family' ) ? be_get_font_family( $value ) : "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif";
+						if( is_array( $family ) ) {
+							if( 'standard' === $family['source'] ) {
+								$font_stack = ';';
+							} else {
+								$font_stack = ",-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;";
+							}
+							$css_output .= $prop.' : '.$family['value'].$font_stack;
+						}else {
+							$css_output .= $prop.' : '.$value.';';
+						}
+					}else{
+						$css_output .= $prop.' : '.$value.';';
 					}
-				} else if( $prop === 'font-family' ) {
-					$family = function_exists( 'be_get_font_family' ) ? be_get_font_family( $value ) : "-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif";
-					$css_output .= $prop.' : '.$family.';';
-				}else{
-					$css_output .= $prop.' : '.$value.';';
 				}
 			}
 			return $css_output;
@@ -307,87 +318,107 @@ if( !function_exists( 'be_compute_css' ) ) {
 	}
 }
 
+/**
+ * Get Placeholder padding 
+ */
+if( !function_exists( 'be_get_placeholder_padding' ) ) {
+    function be_get_placeholder_padding( $id = '', $post_thumb_size = 'full' ) {
+        if( !empty( $id ) ) {
+            $img_details = wp_get_attachment_image_src( $id, $post_thumb_size );
+            if( !empty( $img_details ) ) {
+                $width = !empty( $img_details[ 1 ] ) && is_numeric( $img_details[ 1 ] ) && 0 !== $img_details[ 1 ] ? $img_details[ 1 ] : 100;
+                $height = !empty( $img_details[ 2 ] ) && is_numeric( $img_details[ 2 ] ) && 0 !== $img_details[ 2 ] ? $img_details[ 2 ] : 100;
+                $aspect_ratio = $width/$height;
+                $padding = round( ( 1/ $aspect_ratio ), 5 );
+                $padding = $padding * 100;
+                return $padding;
+            }
+        }
+        return 100;
+    }
+}
+
 if( !function_exists( 'be_generate_css_from_atts' ) ) {
 	function be_generate_css_from_atts( $atts, $module, $uuid, $module_options = '' ){
 		$module_options_class = empty( $module_options ) ? 'Tatsu_Module_Options' : 'Tatsu_'.$module_options.'_Module_Options';
-		$tatsu_registered_modules = $module_options_class::getInstance()->get_modules();
-		$atts = apply_filters( $module.'_before_css_generation', $atts );
-		$css_props = array();
-		if( !empty( $tatsu_registered_modules[$module] ) ){
-			$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
-		}
-		
-		if( is_array( $atts ) ) {
-			foreach( $atts as $att => $value ){
-				if( !empty( $config[$att]['css'] )  ){
-					$responsive = !empty( $config[$att]['responsive'] ) ? $config[$att]['responsive'] : null ;
-					if( !empty( $responsive ) ) {
-						$temp_value = is_array( $value ) ? $value : json_decode( $value, true );
-						if( $temp_value ) {
-							$value = $temp_value;
+		if( class_exists( $module_options_class ) ) {
+			$tatsu_registered_modules = $module_options_class::getInstance()->get_modules();
+			$atts = apply_filters( $module.'_before_css_generation', $atts );
+			$css_props = array();
+			if( !empty( $tatsu_registered_modules[$module] ) ){
+				$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
+			}
+			
+			if( is_array( $atts ) ) {
+				foreach( $atts as $att => $value ){
+					if( !empty( $config[$att]['css'] )  ){
+						$responsive = !empty( $config[$att]['responsive'] ) ? $config[$att]['responsive'] : null ;
+						if( !empty( $responsive ) ) {
+							$temp_value = is_array( $value ) ? $value : json_decode( $value, true );
+							if( $temp_value ) {
+								$value = $temp_value;
+							}
 						}
-					}
-					
-					$selectors = $config[$att]['selectors'];
-					
-					foreach( $selectors as $selector => $condition ){
-						$index = str_replace('{UUID}', $uuid, $selector);
+						
+						$selectors = $config[$att]['selectors'];
+						
+						foreach( $selectors as $selector => $condition ){
+							$index = str_replace('{UUID}', $uuid, $selector);
 
-						if( !empty( $value ) ) {
-							if( is_array( $value ) ) {	
-								foreach( $value as $device => $val ) {
-									be_should_compute_css( $atts, $condition, $device, $val ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+							if( !empty( $value ) ) {
+								if( is_array( $value ) ) {	
+									foreach( $value as $device => $val ) {
+										be_should_compute_css( $atts, $condition, $device, $val ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+									}
+								} else {
+									be_should_compute_css( $atts, $condition, false, false, $module ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 								}
-							} else {
-								be_should_compute_css( $atts, $condition, false, false, $module ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 							}
 						}
 					}
 				}
 			}
-		}
 
-		$css = array();
-		foreach($css_props as $device => $selectors){
-			$css[$device] = '';
-			foreach ( $selectors as $selector => $css_atts ) {
-				if( !empty ( $css_atts ) ){
-					$css[$device] .= $selector. '{'.implode('' ,$css_atts). '}';
+			$css = array();
+			foreach($css_props as $device => $selectors){
+				$css[$device] = '';
+				foreach ( $selectors as $selector => $css_atts ) {
+					if( !empty ( $css_atts ) ){
+						$css[$device] .= $selector. '{'.implode('' ,$css_atts). '}';
+					}
 				}
+				$css[$device] = trim( $css[$device] );
 			}
-			$css[$device] = trim( $css[$device] );
-		}
 
-		$output = '';
+			$output = '';
 
-	//	$output .= '<style>';
-		if( !empty( $css['d'] ) ) {
-			$output .= $css['d'];
-		}
-		//$output .= array_key_exists('d', $css) ? $css['d'] : '' ;
-		if( !empty( $css['l'] ) ) {
-			$output .= '@media only screen and (max-width:1377px) {';
-			$output .= $css['l'];
-			$output .= '}';
-		}
-		if( !empty( $css['t'] ) ) {
-			$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
-			$output .= $css['t'];
-			$output .= '}';
-		}
-		if( !empty( $css['m'] ) ) {
-			$output .= '@media only screen and (max-width: 767px) {';
-			$output .= $css['m'];
-			$output .= '}';
-		}
-	//	$output .= '</style>';
 		
-		if( !empty( $output ) ) {
-			$output = '<style>'.$output.'</style>';
-		}
+			if( !empty( $css['d'] ) ) {
+				$output .= $css['d'];
+			}
 
-		//return be_minify_css( $output );
-		return $output;
+			if( !empty( $css['l'] ) ) {
+				$output .= '@media only screen and (max-width:1377px) {';
+				$output .= $css['l'];
+				$output .= '}';
+			}
+			if( !empty( $css['t'] ) ) {
+				$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
+				$output .= $css['t'];
+				$output .= '}';
+			}
+			if( !empty( $css['m'] ) ) {
+				$output .= '@media only screen and (max-width: 767px) {';
+				$output .= $css['m'];
+				$output .= '}';
+			}
+			
+			if( !empty( $output ) ) {
+				$output = '<style>'.$output.'</style>';
+			}
+
+			return $output;
+		}
 	}
 }
 
@@ -525,32 +556,6 @@ if( !function_exists( 'be_gdpr_lightbox_for_video' ) ){
 	}
 }
 
-if ( ! function_exists( 'be_gdpr_options' ) ) {
-    function be_gdpr_options(){
-        $options = array(
-            'youtube' => array(
-                'label' => "Youtube",
-                'description' => __( "Consent to display content from YouTube.", 'oshin' ),
-                'required' => false
-            ),
-            'vimeo' => array(
-                'label' => "Vimeo",
-                'description' => __( "Consent to display content from Vimeo.", 'oshin' ),
-                'required' => false
-            ), 
-            'gmaps' => array(
-                'label' => "Google Maps",
-                'description' => __( "Consent to display content from Google Maps.", 'oshin' ),
-                'required' => false
-            ),
-        );
-        foreach( $options as $option => $value ){
-            be_gdpr_register_option($option,$value);
-        }
-    }
-}
-add_action('be_gdpr_register_options','be_gdpr_options');
-
 if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
 	function be_gdpr_get_video_alt_content( $img_src, $concern, $hidden_by_default ){
 
@@ -562,4 +567,261 @@ if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
 		return '<div class="gdpr-alt-image '.$hide_class.' be-gdpr-consent-message"><img style="opacity:1;" src="'.$img_src.'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="'.$concern.'" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>';
 	}
 }
+
+/**
+ * Get image data uri from image src or id
+ */
+if( !function_exists( 'be_get_image_path_from_id' ) ) {
+	function be_get_image_path_from_id( $id = '', $size = 'full' ) {
+		if( !empty( $id ) ) {
+			$full_size_path = get_attached_file( $id, true );
+			if( 'full' === $size ) {
+				return $full_size_path;
+			}
+			$full_size_filename = wp_basename($full_size_path);
+			$size_info = image_get_intermediate_size($id, $size);
+			if(is_array($size_info) && !empty($size_info['file'])) {
+				$required_size_filename = $size_info['file'];
+				return str_replace($full_size_filename, $required_size_filename, $full_size_path);
+			}
+		}
+		return false;
+	} 
+}
+if( !function_exists( 'be_get_image_datauri' ) ) {
+	function be_get_image_datauri( $id_or_src = '', $size = 'full', $is_src = false ) {
+		if( !empty($id_or_src) ) {
+			if( true === $is_src ) {
+				$image_id = tatsu_get_image_id_from_url( $id_or_src );
+			}else {
+				$image_id = $id_or_src;
+			}
+			if( !empty( $image_id ) ) {
+				$image_path = be_get_image_path_from_id($image_id, $size);
+				if( $image_path ) {
+					$image_data = file_get_contents($image_path);
+					if( !empty($image_data) ) {
+						$encoded_image_data = base64_encode($image_data);
+						$mime_type = mime_content_type($image_path);
+						if(!empty($mime_type)) {
+							return 'data:'. $mime_type .';base64,'.$encoded_image_data;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+}
+
+if( !function_exists( 'be_uniqid_base36' ) ) {
+	function be_uniqid_base36($more_entropy=false) {
+		$s = uniqid('', $more_entropy);
+		if (!$more_entropy)
+			return base_convert($s, 16, 36);
+			
+		$hex = substr($s, 0, 13);
+		$dec = $s[13] . substr($s, 15); // skip the dot
+		return base_convert($hex, 16, 36) . base_convert($dec, 10, 36);
+	}
+}
+
+/**
+ * Parse color value from palettes.
+ */
+if( !function_exists( 'be_parse_color' ) ) {
+	function be_parse_color( $color ) {
+		$parsed_color = $color;
+		if( is_array( $color ) ) {
+			$gradient_data = be_gradient_color( $color );
+			$parsed_color = apply_filters( 'be_mod_color_scheme', $gradient_data[1], $color );
+		}
+		return $parsed_color;
+	}
+}
+
+/**
+ * Get color scheme from colorhub
+ */
+if( !function_exists( 'be_get_color_hub' ) ) {
+	function be_get_color_hub() {
+		$colors = array (
+			'color_scheme' => 'rgba(34, 147, 215, 1)',//'#2293D7',
+			'alt_bg_text_color' => 'rgba(255, 255, 255, 1)',//'#FFFFFF',
+			'secondary_bg_color' => 'rgba(49, 50, 51, 1)',//'#313233',
+			'secondary_bg_text_color' => 'rgba(136, 136, 136, 1)',//'#888888',
+			'secondary_color_scheme' => 'rgba(245, 246, 250, 1)'//'#F5F6FA'
+		);
+		if( function_exists( 'colorhub_get_palette' ) ) {
+			$primary_color = colorhub_get_palette( 0 );
+			$secondary_color = colorhub_get_palette( 1 );
+			$secondary_bg_color = colorhub_get_palette( 2 );
+			$secondary_bg_text_color = colorhub_get_palette( 3 );
+			$secondary_color_scheme = colorhub_get_palette( 4 );
+			$colors[ 'color_scheme' ] = be_parse_color( $primary_color );
+			$colors[ 'alt_bg_text_color' ] = be_parse_color( $secondary_color );
+			$colors[ 'secondary_bg_color' ] = be_parse_color( $secondary_bg_color );
+			$colors[ 'secondary_bg_text_color' ] = be_parse_color( $secondary_bg_text_color );
+			$colors[ 'secondary_color_scheme' ] = be_parse_color( $secondary_color_scheme );
+		}else if( get_option( 'colorhub_data' ) ) {
+			$colorhub_data = get_option( 'colorhub_data' );
+			$palettes = $colorhub_data[ 'palettes' ];
+			$currentPalette = $palettes[ 'allPalettes' ][ $palettes[ 'currentPalette' ] ];
+			$primary_color = $currentPalette[0];
+			$secondary_color = $currentPalette[1];
+			$secondary_bg_color = $currentPalette[2];
+			$secondary_bg_text_color = $currentPalette[3];
+			$secondary_color_scheme = $currentPalette[4];
+			$colors[ 'color_scheme' ] = be_parse_color( $primary_color );
+			$colors[ 'alt_bg_text_color' ] = be_parse_color( $secondary_color );
+			$colors[ 'secondary_bg_color' ] = be_parse_color( $secondary_bg_color );
+			$colors[ 'secondary_bg_text_color' ] = be_parse_color( $secondary_bg_text_color );
+			$colors[ 'secondary_color_scheme' ] = be_parse_color( $secondary_color_scheme );
+		}
+		return $colors;
+	}
+}
+
+
+if( !function_exists( 'be_modify_color_opacity' ) ) {
+	function be_modify_color_opacity( $color, $opacity ) {
+
+		$color = str_replace( 'rgba', '', $color );
+		$color = str_replace( '(', '', $color );
+		$color = str_replace( ')', '', $color );
+		$color_arr = explode( ",",$color );
+		
+		$color_new = 'rgba('.$color_arr[0].','.$color_arr[1].','.$color_arr[2].','.$opacity.')';
+
+		return $color_new;
+
+	}
+}
+
+/**
+ * Get home page url
+ */
+if ( ! function_exists( 'be_get_posts_page_url' ) ) {
+	function be_get_posts_page_url() {
+  		if( 'page' == get_option( 'show_on_front' ) ) {
+    		$posts_page_id = get_option( 'page_for_posts' );
+    		$posts_page = get_page( $posts_page_id );
+    		$posts_page_url = site_url( get_page_uri( $posts_page_id ) );
+  		} else {
+    		$posts_page_url = site_url();
+  		}
+  		return $posts_page_url;
+	}
+}
+
+/** 
+ * Pagination.
+ */
+if( !function_exists( 'be_get_pagination' ) ) {
+	function be_get_pagination( $args = array() ) {
+		if( function_exists( 'be_themes_get_class' ) ) {
+			$args = is_array( $args ) ? $args : array();
+			global $wp_query;
+			$big = 999999999;
+			$max_num_pages = $wp_query->max_num_pages;
+			$pagination_class = array();
+			$pagination_style = '';
+			if( array_key_exists( 'class', $args ) ) {
+				$pagination_class[] = $args[ 'class' ];
+				unset( $args[ 'class' ] );
+			}
+			$pagination_class[] = be_themes_get_class( 'pagination' );
+			if( array_key_exists( 'padding', $args ) ) {
+				$pagination_style = sprintf( 'style = "padding : 0 %spx;"', $args[ 'padding' ] );
+				unset( $args[ 'padding' ] );
+			}
+			$defaults = array (
+				'base'              => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+				'format'            => '?paged=%#%', 
+				'current'           => 'page' ===  get_option('show_on_front') && is_front_page() ? max( 1, get_query_var( 'page' ) ) : max( 1, get_query_var( 'paged' ) ), //https://codex.wordpress.org/Creating_a_Static_Front_Page#Pagination
+				'mid_size'          => 2,
+				'end_size'			=> 2,
+				'prev_next'         => true,
+				'prev_text'			=> '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" viewBox="0 0 16 13">
+				<g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-width="2" transform="matrix(-1 0 0 1 15 1)">
+				  <polyline points="7.526 0 12.945 5.216 7.526 10.432"/>
+				  <path d="M12.6578947,5.13157895 L0.342105263,5.13157895"/>
+				</g>
+			  </svg>',
+				'next_text'			=> '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" viewBox="0 0 16 13">
+				<g fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-width="2" transform="translate(1 1)">
+				  <polyline points="7.526 0 12.945 5.216 7.526 10.432"/>
+				  <path d="M12.6578947,5.13157895 L0.342105263,5.13157895"/>
+				</g>
+			  </svg>',	
+				'total'             => $max_num_pages,
+				'type'              => 'plain',
+			);
+			$args = wp_parse_args( $args, $defaults );
+			$defaults[ 'before_page_number' ] = sprintf( '<span class = "%s">', be_themes_get_class( 'page-number' ) );
+			$defaults[ 'after_page_number' ] =  '</span>';
+			return sprintf( '<div class = "%s" %s>%s</div>', implode( ' ', $pagination_class ), $pagination_style, paginate_links( $args ) );
+		}
+		return '';
+    }
+}
+
+if( !function_exists( 'be_split_number_text' ) ) {
+	function be_split_number_text( $string ) {
+		$length = strlen( $string );
+		if( $length <= 0 ) {
+			return array('', '');
+		} 
+		$i = $length-1;
+		$text = '';
+		$number = '';
+		while( $i >= 0 ) {
+			if( !is_numeric( $string[$i] ) ) {
+				$text = $string[$i].$text;
+			} else {
+				$number = substr( $string, 0, $i+1 );
+				break;
+			}
+			$i--;
+		} 
+		return array(
+			$text,
+			$number
+		);
+	}
+}
+
+if( !function_exists( 'be_split_unit_value' ) ) {
+	function be_split_unit_value( $string ) {
+		$value = be_split_number_text( $string );
+		return array(
+			'unit' => $value[0],
+			'value' => $value[1]
+		);
+	}
+}
+
+if( !function_exists( 'be_extract_font_weight' ) ) {
+	function be_extract_font_weight( $variant ) {
+		$variant = (string) $variant;
+		$weight = be_split_number_text( $variant );
+		if( !empty( $weight[1] ) ) {
+			return $weight[1];
+		} else {
+			return '400';
+		}
+	}
+}
+
+if( !function_exists( 'be_extract_font_style' ) ) {
+	function be_extract_font_style( $variant ) {
+		$style = be_split_number_text( $variant );
+		if( !empty( $style[0] ) ) {
+			return $style[0];
+		} else {
+			return 'normal';
+		}
+	}
+}
+
 ?>

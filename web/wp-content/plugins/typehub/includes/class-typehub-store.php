@@ -69,7 +69,14 @@ class Typehub_Store {
             echo 'failure';
             wp_die();
         }
-        echo json_encode(get_typekit_data($_POST['typekitId']));
+        $typekit_data = get_typekit_data($_POST['typekitId']);
+        if( empty( $typekit_data ) ){
+            echo false;
+        } else {
+            echo json_encode( $typekit_data );
+        }
+        
+
         wp_die();
     }
 
@@ -105,6 +112,19 @@ class Typehub_Store {
         echo 'success';
         wp_die();
 
+    }
+
+    public function ajax_sync_typekit( ){
+        check_ajax_referer( 'typehub-security', 'security' );
+        
+        if( !array_key_exists( 'typekitId', $_POST ) ) {
+            echo 'failure';
+            wp_die();
+        }
+        $typekitId = $_POST['typekitId'];
+        delete_transient( 'typehub_typekit_'.$typekitId );
+        echo 1;
+        wp_die();
     }
 
     public function save_store( $data ) {

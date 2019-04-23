@@ -31,7 +31,7 @@ if (!function_exists('tatsu_animated_numbers')) {
 			$output .= $prefix;
 			$output .= '</div>';
 		}
-		$output .= '<div class="tatsu-an animate" data-number="'.$number.'" style="line-height:1.3"></div>';
+		$output .= '<div class="tatsu-an animate" data-number="'.$number.'"></div>';
 		if( '' !== $suffix ) {
 			$output .= '<div class = "tatsu-an-suffix">';
 			$output .= $suffix;

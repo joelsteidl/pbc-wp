@@ -4,6 +4,7 @@ function tatsu_header_row( $atts, $content ) {
         'full_width' => 0,
         'bg_color' => '',
         'transparent_row_bg' => 0,
+        'transparent_row_border' => '',
         'padding' => '',
         'sticky_padding' => '',
         'border' => '',
@@ -14,6 +15,7 @@ function tatsu_header_row( $atts, $content ) {
         'hide_in' => '',
         'id' => '',
         'class' => '',
+        'box_shadow' => '',
         'disable_color_scheme' => '',
         'key' => be_uniqid_base36(true),
     ), $atts );
