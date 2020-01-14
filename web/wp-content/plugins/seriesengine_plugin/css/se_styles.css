@@ -50,7 +50,7 @@
 #seriesengine .enmse-watch .enmse-vid-container, #seriesengine .enmse-alternate .enmse-vid-container {
 	position: relative;
 	padding-bottom: 56.25%;
-	padding-top: 30px; 
+	/*padding-top: 30px;*/
 	height: 0; 
 	overflow: hidden;
 }
@@ -1529,29 +1529,28 @@
 /* ----- Powered By ----- */
 
 #seriesengine h3.enmse-poweredby {
-		margin: 20px auto 0 auto !important;
+	display: none;	margin: 20px auto 0 auto !important;
 	text-indent: -9000px;
 	width: 148px;
 	height: 40px;
-		background: url('../images/interface/se_light_poweredby.png') no-repeat;	
 		float: right;
 }
 
 #seriesengine h3.enmse-poweredby a {
 	display: block;
-		width: 148px;
+	display: none;	width: 148px;
 	height: 40px;
 }
 
 #seriesengine p.enmse-poweredbytext {
 	margin: 20px 0 20px 0;
-		text-align: right;
+	display: none;	text-align: right;
 	font-size: 12px !important;
 	color: #d2d2d2;
 }
 
 #seriesengine p.enmse-poweredbytext a {
-	color: #d2d2d2;
+display: none;	color: #d2d2d2;
 }
 
 @media 
@@ -1610,8 +1609,6 @@
 }
 
 #seriesengine h3.enmse-poweredby {
-		background: url('../images/interface/se_light_poweredby2x.png') no-repeat;
-	background-size: 148px 40px;	
 	}
 
 #seriesengine .enmse-loading-icon {
@@ -2517,8 +2514,6 @@
 	}
 
 	#seriesengine h3.enmse-poweredby {
-				background: url('../images/interface/se_light_poweredby2x.png') no-repeat;
-		background-size: 148px 40px;	
 			}
 
 	#seriesengine .enmse-loading-icon {

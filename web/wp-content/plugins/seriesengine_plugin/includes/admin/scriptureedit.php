@@ -34,7 +34,9 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 6 ) { 
+		if ( $enmse_language == 7 ) { 
+			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
+		} elseif ( $enmse_language == 6 ) { 
 			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
 		} elseif ( $enmse_language == 5 ) { 
 			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
@@ -283,6 +285,7 @@
 						<option value="1588"<?php if ( $deftrans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 						<option value="12"<?php if ( $deftrans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 						<option value="1713"<?php if ( $deftrans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
+						<option value="37"<?php if ( $deftrans == 37 ) { echo " selected=\"selected\""; } ?>>CEB - Common English Bible</option>
 						<option value="59"<?php if ( $deftrans == 59 ) { echo " selected=\"selected\""; } ?>>ESV - English Standard Version</option>
 						<option value="72"<?php if ( $deftrans == 72 ) { echo " selected=\"selected\""; } ?>>HCSB - Holman Christian Standard Bible</option>
 						<option value="1359"<?php if ( $deftrans == 1359 ) { echo " selected=\"selected\""; } ?>>ICB - International Childrens Bible</option>
@@ -293,13 +296,19 @@
 						<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 						<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 						<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+						<option value="2016"<?php if ( $deftrans == 2016 ) { echo " selected=\"selected\""; } ?>>NRSV - New Revised Standard Version</option>
 						<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 						<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
+						<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
-						<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+						<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
+						<option value="73"<?php if ( $deftrans == 73 ) { echo " selected=\"selected\""; } ?>>HFA - Hoffnung für alle</option>
+						<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 						<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -483,6 +492,7 @@
 						<option value="1588"<?php if ( $enmse_scripture->trans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 						<option value="12"<?php if ( $enmse_scripture->trans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 						<option value="1713"<?php if ( $enmse_scripture->trans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
+						<option value="37"<?php if ( $enmse_scripture->trans == 37 ) { echo " selected=\"selected\""; } ?>>CEB - Common English Bible</option>
 						<option value="59"<?php if ( $enmse_scripture->trans == 59 ) { echo " selected=\"selected\""; } ?>>ESV - English Standard Version</option>
 						<option value="72"<?php if ( $enmse_scripture->trans == 72 ) { echo " selected=\"selected\""; } ?>>HCSB - Holman Christian Standard Bible</option>
 						<option value="1359"<?php if ( $enmse_scripture->trans == 1359 ) { echo " selected=\"selected\""; } ?>>ICB - International Childrens Bible</option>
@@ -493,13 +503,19 @@
 						<option value="111"<?php if ( $enmse_scripture->trans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 						<option value="114"<?php if ( $enmse_scripture->trans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 						<option value="116"<?php if ( $enmse_scripture->trans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+						<option value="2016"<?php if ( $enmse_scripture->trans == 2016 ) { echo " selected=\"selected\""; } ?>>NRSV - New Revised Standard Version</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ CHINESE ------</option>
 						<option value="48"<?php if ( $enmse_scripture->trans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value="414"<?php if ( $enmse_scripture->trans == 414 ) { echo " selected=\"selected\""; }  ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ DUTCH ------</option>
+						<option value="165"<?php if ( $enmse_scripture->trans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ GERMAN ------</option>
-						<option value="157"<?php if ( $enmse_scripture->trans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="57"<?php if ( $enmse_scripture->trans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+						<option value="51"<?php if ( $enmse_scripture->trans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
+						<option value="73"<?php if ( $enmse_scripture->trans == 73 ) { echo " selected=\"selected\""; } ?>>HFA - Hoffnung für alle</option>
+						<option value="877"<?php if ( $enmse_scripture->trans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 						<option value="108"<?php if ( $enmse_scripture->trans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value="157"<?php if ( $enmse_scripture->trans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $enmse_scripture->trans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $enmse_scripture->trans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>

@@ -107,8 +107,7 @@ if( !function_exists( 'be_reverse_reformat_atts' ) ) {
 }
 
 if( !function_exists( 'be_should_compute_css' ) ) {
-	function be_should_compute_css( $atts, $condition , $device, $val ){
-		//var_dump($val);
+	function be_should_compute_css( $atts, $condition , $device, $val, $att, $module ){
 		extract($atts);
 		$check_flag = array();
 		$relation = !empty($condition['relation'])? $condition['relation'] : '';
@@ -120,21 +119,43 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 		//$iterator = is_array( $condition_array[0] ) && is_string( $condition_array[0][0] ) ? $condition_array[0]: $condition_array;
 		
 		foreach( $condition_array as $each_key => $each_value ){// when array of array
-			//$condition_count = count( $condition_array );
+
+			//NOTE: $checking[0] is the att to check , $checking[1] is the condition and $checking[2] is the value to check against
+
 			$checking = is_array($each_value) && array_key_exists( 0, $each_value ) && is_string( $each_value[0] ) ? $each_value : $condition_array ;
-			//$temp = !empty( $isResponsive ) && json_decode( ${$checking[0]}, true ) != null ? json_decode( ${$checking[0]}, true ) : null ;
-			//$checking_0 = !empty( $isResponsive ) ? $temp['d'] : ${$checking[0]} ;
 
-			// Instead of two checking one if is enough
-			//$checking_0 = !empty( $device ) && !empty( $val ) ? $val : ${$checking[0]} ;
-			//$checking_2 = !empty( $device ) && !empty( $val ) ? $checking[2][$device] : $checking[2];
-
-			//if data format changes like key changes in checking_0 vil lead to undefined index error
 			if( !empty( $device ) && !empty( $val ) && !empty($checking[2]) && is_array($checking[2]) && array_key_exists( $device, $checking[2] ) ){
-				$checking_0 = $val;
+				if( $checking[0] === $att ) {
+					$checking_0 = $val;
+				} else {
+					if( !isset( ${$checking[0]} ) ) {
+						$checking_0 = null;
+					} else if( be_is_json( ${$checking[0]} ) ) {
+						$val_att_to_check = json_decode( ${$checking[0]}, true );
+						if( !is_array( $val_att_to_check ) ) {
+							$checking_0 = $val_att_to_check;
+						} else {
+							$checking_0 = array_key_exists( $device, $val_att_to_check ) ? $val_att_to_check[$device] : null;
+						}
+					} else {
+						$checking_0 = ${$checking[0]};
+					}
+				}				
 				$checking_2 = $checking[2][$device];
 			} else {
-				$checking_0 = ${$checking[0]};
+				if( !isset( ${$checking[0]} ) ){
+					continue 1;
+				} 
+				if( !empty( $device ) && be_is_json( ${$checking[0]} ) ) {
+					$val_att_to_check = json_decode( ${$checking[0]}, true );
+					if( !is_array( $val_att_to_check ) ) {
+						$checking_0 = $val_att_to_check;
+					} else {
+						$checking_0 = array_key_exists( $device, $val_att_to_check ) ? $val_att_to_check[$device] : null;
+					}
+				} else {
+					$checking_0 = ${$checking[0]};
+				}
 				$checking_2 = !empty($checking[2]) ? $checking[2] : null ;
 			}
 			$checking_0 = trim( $checking_0 );   // trim coz responsive values vil have space in last
@@ -211,10 +232,11 @@ if( !function_exists( 'be_compute_css' ) ) {
 						if( is_array( $family ) ) {
 							if( 'standard' === $family['source'] ) {
 								$font_stack = ';';
+								$css_output .= $prop.' : '.$family['value'].$font_stack;
 							} else {
 								$font_stack = ",-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;";
+								$css_output .= $prop.' : "'.$family['value'].'"'.$font_stack;
 							}
-							$css_output .= $prop.' : '.$family['value'].$font_stack;
 						}else {
 							$css_output .= $prop.' : '.$value.';';
 						}
@@ -342,12 +364,17 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 	function be_generate_css_from_atts( $atts, $module, $uuid, $module_options = '' ){
 		$module_options_class = empty( $module_options ) ? 'Tatsu_Module_Options' : 'Tatsu_'.$module_options.'_Module_Options';
 		if( class_exists( $module_options_class ) ) {
-			$tatsu_registered_modules = $module_options_class::getInstance()->get_modules();
+            $tatsu_registered_modules = $module_options_class::getInstance()->get_modules();
 			$atts = apply_filters( $module.'_before_css_generation', $atts );
 			$css_props = array();
 			if( !empty( $tatsu_registered_modules[$module] ) ){
 				$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
-			}
+			}else if( 'Tatsu_Module_Options' === $module_options_class ) {
+                $tatsu_remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();
+                if( array_key_exists( $module, $tatsu_remapped_modules ) ) {
+                    $config = be_reformat_module_options($tatsu_registered_modules[$tatsu_remapped_modules[$module]]['atts']);
+                }
+            }
 			
 			if( is_array( $atts ) ) {
 				foreach( $atts as $att => $value ){
@@ -368,10 +395,12 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 							if( !empty( $value ) ) {
 								if( is_array( $value ) ) {	
 									foreach( $value as $device => $val ) {
-										be_should_compute_css( $atts, $condition, $device, $val ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+										if( !empty( $val ) ) {
+											be_should_compute_css( $atts, $condition, $device, $val, $att, $module ) ? $css_props[$device][$index][] = be_compute_css( $config[$att], $condition, $val, $condition['property'] ) : null ;
+										}
 									}
 								} else {
-									be_should_compute_css( $atts, $condition, false, false, $module ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
+									be_should_compute_css( $atts, $condition, false, false, $att, $module ) ? $css_props['d'][$index][] = be_compute_css( $config[$att], $condition, $value, $condition['property'] ) : null ;
 								}
 							}
 						}
@@ -601,8 +630,8 @@ if( !function_exists( 'be_get_image_datauri' ) ) {
 				if( $image_path ) {
 					$image_data = file_get_contents($image_path);
 					if( !empty($image_data) ) {
-						$encoded_image_data = base64_encode($image_data);
-						$mime_type = mime_content_type($image_path);
+                        $encoded_image_data = base64_encode($image_data);
+                        $mime_type = get_post_mime_type($image_id);
 						if(!empty($mime_type)) {
 							return 'data:'. $mime_type .';base64,'.$encoded_image_data;
 						}
@@ -821,6 +850,43 @@ if( !function_exists( 'be_extract_font_style' ) ) {
 		} else {
 			return 'normal';
 		}
+	}
+}
+
+if( !function_exists( 'be_get_id_from_atts' ) ) {
+	function be_get_id_from_atts( $atts ) {
+			$id_attr = '';
+			if( !empty( $atts['css_id'] ) ) {
+					$id_attr = sprintf( 'id = "%s"', $atts['css_id'] );
+			}
+			return $id_attr;
+	}
+}
+
+if( !function_exists( 'be_get_visibility_classes_from_atts' ) ) {
+	function be_get_visibility_classes_from_atts( $atts ) {
+		$visibility_classes = '';
+		if( !empty( $atts['hide_in'] ) ) {
+			$hide_in = explode(',', $atts['hide_in']);
+			foreach ( $hide_in as $device ) {
+				if( !empty( $device ) ) {
+					$visibility_classes .= ' tatsu-hide-'.$device;
+				}
+			}
+		}
+		return $visibility_classes;
+	}
+}
+
+if( !function_exists( 'be_get_animation_data_atts' ) ) {
+	function be_get_animation_data_atts( $atts ) {
+		$data_atts = array();
+		if( !empty( $atts['animation_type'] ) && 'none' !== $atts['animation_type'] ) {
+			$data_atts[] = 'data-animation="'.$atts['animation_type'].'"';
+			$data_atts[] = !empty( $atts['animation_delay'] ) ? 'data-animation-delay="'.$atts['animation_delay'].'"' : '' ;
+			$data_atts[] = !empty( $atts['animation_duration'] ) && '300' != $atts['animation_duration'] ? 'data-animation-duration="'.$atts['animation_duration'].'"' : '' ;
+		}
+		return implode( ' ', $data_atts );
 	}
 }
 

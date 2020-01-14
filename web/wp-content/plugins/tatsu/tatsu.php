@@ -3,7 +3,7 @@
  * Plugin Name:       Tatsu
  * Plugin URI:        http://www.brandexponents.com
  * Description:       A Powerful and Elegant Live Front End Page Builder for Wordpress.
- * Version:           2.9.3.1.1
+ * Version:           3.1.9
  * Author:            Brand Exponents
  * Author URI:        http://www.brandexponents.com
  * License:           GPL-2.0+
@@ -25,7 +25,7 @@ if( !defined( 'TATSU_PLUGIN_DIR' ) ) {
 }
 
 if( !defined( 'TATSU_VERSION' ) ) {
-	define( 'TATSU_VERSION', '2.9.3.1.1' );
+	define( 'TATSU_VERSION', '3.1.9' );
 }
 
 function activate_tatsu() {
@@ -45,7 +45,7 @@ register_deactivation_hook( __FILE__, 'deactivate_tatsu' );
 
 require TATSU_PLUGIN_DIR. 'plugin-update-checker/plugin-update-checker.php';
 $tatsu_update_checker = new PluginUpdateChecker_3_1 (
-    'https://brandexponents.com/oshin-plugins/tatsu.json',
+    'https://brandexponents.com/be-plugins/tatsu.json',
     __FILE__,
     'tatsu'
 );

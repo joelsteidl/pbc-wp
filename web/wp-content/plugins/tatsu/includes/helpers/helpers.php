@@ -81,27 +81,60 @@ function tatsu_validate_color( $color ) {
 // }
 
 function tatsu_edit_url( $post_id ) {
-	$post_type = get_post_type( $post_id );
-	if( $post_type === 'tatsu_gsections' ){
-		$tatsu_edit_url = add_query_arg( array( 'tatsu-global' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
-	}else if( TATSU_HEADER_CPT_NAME === $post_type ) {
-		$tatsu_edit_url = add_query_arg( array( 'tatsu-header' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
-	}else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
-		$tatsu_edit_url = add_query_arg( array( 'tatsu-footer' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
-	}else {
-		$tatsu_edit_url = add_query_arg( array( 'tatsu' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
-	}
-	if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
-		$tatsu_edit_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_edit_url );
-	}
-	$tatsu_edit_url = tatsu_protocol_based_urls( $tatsu_edit_url );
-	return esc_url_raw( $tatsu_edit_url );
+    $admin_load = get_option( 'tatsu_admin_load', false );
+    $post_type = get_post_type( $post_id );
+    if( !empty( $admin_load ) ) {
+        if( $post_type === 'tatsu_gsections' ){
+            $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-global', 'post' => $post_id ), admin_url( 'post.php' ) );
+        }else if( TATSU_HEADER_CPT_NAME === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-header', 'post' => $post_id  ), admin_url( 'post.php' ) );
+        }else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-footer', 'post' => $post_id  ), admin_url( 'post.php' ) );
+        }else {
+            $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu', 'post' => $post_id  ), admin_url( 'post.php' ) );
+        }
+    }else {
+        if( $post_type === 'tatsu_gsections' ){
+            $tatsu_edit_url = add_query_arg( array( 'tatsu-global' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
+        }else if( TATSU_HEADER_CPT_NAME === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'tatsu-header' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
+        }else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'tatsu-footer' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
+        }else {
+            $tatsu_edit_url = add_query_arg( array( 'tatsu' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
+        }
+    }
+    if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
+        $tatsu_edit_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_edit_url );
+    }
+    $tatsu_edit_url = tatsu_protocol_based_urls( $tatsu_edit_url );
+    return esc_url_raw( $tatsu_edit_url );
 }
 
 
+if( !function_exists( 'tatsu_get_headers_list' ) ) {
+    function tatsu_get_headers_list() {
+        $headers = get_posts(array (
+            'post_type' => TATSU_HEADER_CPT_NAME,
+            'post_status' => 'publish',
+            'numberposts' => -1
+        ));
+        $headers_list = array();
+        foreach($headers as $header) {
+            $headers_list[$header->post_name] = $header->post_title;
+        }
+        return $headers_list;
+    }
+}
+
 if( !function_exists( 'tatsu_get_active_header_id' ) ) {
 	function tatsu_get_active_header_id() {
-		$active_header_name = get_option( 'tatsu_active_header', '' );
+        $active_header_name = get_option( 'tatsu_active_header', '' );
+        $post_id = tatsu_get_page_id();
+        $header_meta = get_post_meta( $post_id, '_tatsu_header_options' , true );
+        if( !empty( $header_meta ) && !empty( $header_meta['tatsu_active_header_override'] ) && 'inherit' !== $header_meta['tatsu_active_header_override'] ) {
+            $active_header_name = $header_meta['tatsu_active_header_override'];
+        }
 		if( empty( $active_header_name ) || 'none' === $active_header_name ) {
 			return false;
 		} 
@@ -117,6 +150,29 @@ if( !function_exists( 'tatsu_get_active_header_id' ) ) {
 			return $id;
 		}
 	}
+}
+
+if( !function_exists( 'tatsu_get_id_from_atts' ) ) {
+    function tatsu_get_id_from_atts( $atts ) {
+        $id_attr = '';
+        if( !empty( $atts['custom_id'] ) ) {
+            $id_attr = sprintf( 'id = "%s"', $atts['custom_id'] );
+        }
+        return $id_attr;
+    }
+}
+
+if( !function_exists( 'tatsu_get_visibility_classes_from_atts' ) ) {
+    function tatsu_get_visibility_classes_from_atts( $atts ) {
+        $visibility_classes = '';
+        if( !empty( $atts['hide_in'] ) ) {
+			$hide_in = explode(',', $atts['hide_in']);
+			foreach ( $hide_in as $device ) {
+				$visibility_classes .= ' tatsu-hide-'.$device;
+            }
+        }
+        return $visibility_classes;
+    }
 }
 
 if( !function_exists( 'tatsu_get_active_footer_id' ) ) {
@@ -149,22 +205,32 @@ function tatsu_create_new_post_url( $post_type = 'page' ) {
 }
 
 function tatsu_header_builder_url() {
-	$active_header_id = tatsu_get_active_header_id();
+    $active_header_id = tatsu_get_active_header_id();
+    $admin_load = get_option( 'tatsu_admin_load', false );
 	if( !empty( $active_header_id ) ) {
-		$tatsu_header_builder_url = add_query_arg( array( 'tatsu-header' => '1' ), get_permalink($active_header_id) );
-		if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
-			$tatsu_header_builder_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_header_builder_url );
-		}
-		$tatsu_header_builder_url = tatsu_protocol_based_urls( $tatsu_header_builder_url );
-		return esc_url( $tatsu_header_builder_url );	
+        if( !empty( $admin_load ) ) {
+            $tatsu_header_builder_url = add_query_arg( array( 'action' => 'tatsu-header', 'post' => $active_header_id ), admin_url( 'post.php' ) );
+        }else {
+            $tatsu_header_builder_url = add_query_arg( array( 'tatsu-header' => '1' ), get_permalink($active_header_id) );
+        }
+        if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
+            $tatsu_header_builder_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_header_builder_url );
+        }
+        $tatsu_header_builder_url = tatsu_protocol_based_urls( $tatsu_header_builder_url );
+        return esc_url( $tatsu_header_builder_url );	
 	}
 	return tatsu_create_new_post_url( TATSU_HEADER_CPT_NAME );
 }
 
 function tatsu_footer_builder_url() {
-	$active_footer_id = tatsu_get_active_footer_id();
+    $active_footer_id = tatsu_get_active_footer_id();
+    $admin_load = get_option( 'tatsu_admin_load', false );
 	if( !empty( $active_footer_id ) ) {
-		$tatsu_footer_builder_url = add_query_arg( array( 'tatsu-footer' => '1' ), get_permalink($active_footer_id) );
+        if( !empty( $admin_load ) ) {
+            $tatsu_footer_builder_url = add_query_arg( array( 'action' => 'tatsu-footer', 'post' => $active_footer_id ), admin_url( 'post.php' ) );
+        }else {
+            $tatsu_footer_builder_url = add_query_arg( array( 'tatsu-footer' => '1' ), get_permalink($active_footer_id) );
+        }
 		if ( defined( 'NGG_PLUGIN_VERSION' ) ) {
 			$tatsu_footer_builder_url = add_query_arg( 'display_gallery_iframe', '', $tatsu_footer_builder_url );
 		}
@@ -175,8 +241,9 @@ function tatsu_footer_builder_url() {
 }
 
 function tatsu_check_if_global() {
-	if( array_key_exists( 'post_id', $_POST ) ) {
-		$post_type = get_post_type( $_POST[ 'post_id' ] );
+	global $post;
+	if( is_object( $post ) ) {
+		$post_type = $post->post_type;
 		if( 'tatsu_gsections' === $post_type ) {
 			return true;
 		}
@@ -591,16 +658,22 @@ if( !function_exists( 'tatsu_parse_module_options' ) ) {
 		}
 
 		//escape translatable string
-		if( array_key_exists( 'group_atts', $options ) && is_array( $options['group_atts'] ) ) {
-			$options[ 'group_atts' ] = tatsu_escape_group_atts( $options[ 'group_atts' ] );
-		}
-		if( array_key_exists( 'atts', $options ) && is_array( $options['atts'] ) ) {
-			foreach( $options[ 'atts' ] as $index => $att ) {
-				if( !empty( $att ) && is_array( $att ) && array_key_exists( 'label', $att ) ) {
-					$options['atts'][$index]['label'] = esc_html( $options['atts'][$index]['label'] );
-				}
-			}
-		}
+		// if( array_key_exists( 'group_atts', $options ) && is_array( $options['group_atts'] ) ) {
+		// 	$options[ 'group_atts' ] = tatsu_escape_group_atts( $options[ 'group_atts' ] );
+		// }
+		// if( array_key_exists( 'atts', $options ) && is_array( $options['atts'] ) ) {
+		// 	foreach( $options[ 'atts' ] as $index => $att ) {
+		// 		if( !empty( $att ) && is_array( $att ) && array_key_exists( 'label', $att ) ) {
+		// 			$options['atts'][$index]['label'] = esc_html( $options['atts'][$index]['label'] );
+		// 		}
+		// 	}
+        // }
+        
+        //parse group atts
+        if( array_key_exists( 'group_atts', $options ) && is_array( $options['group_atts'] ) ) {
+            tatsu_remove_empty_group_att_structures( $options['group_atts'] );
+        }
+
 		return $options;
 		
 	}
@@ -973,6 +1046,373 @@ if ( ! function_exists( 'tatsu_gdpr_options' ) ) {
         }
 	}
 	add_action('be_gdpr_register_options','tatsu_gdpr_options');
+}
+
+if( !function_exists( 'tatsu_revision_data' ) ){
+	function tatsu_revision_data( $post_id, $offset = 0 ) {
+
+		if( !wp_revisions_enabled( get_post( $post_id ) ) ){
+			return false;
+		}
+
+		$revisions = wp_get_post_revisions( $post_id, array('numberposts' => 21, 'offset' => $offset));
+
+		if( empty( $revisions ) ){
+			return false;
+		}
+
+		$revision_data = array();
+		$author_data = array();
+		$more_items = false;
+		if( count( $revisions ) === 21 ){
+			$more_items = true;
+			array_pop( $revisions );
+		}
+
+		foreach ($revisions as $key => $value) {
+			$modified = strtotime( $value->post_modified );
+			$revision_data[] = array(
+				'key' => $value->ID,
+				'post_date' => human_time_diff(  strtotime(  $value->post_date_gmt ), current_time( 'timestamp', 1 ) ) . ' ago',
+				'short_date' =>  date_i18n( _x( 'j M @ H:i', 'revision date short format' ), $modified ),
+				'author' => $value->post_author
+			);
+			if( !array_key_exists( $value->post_author, $author_data ) ){
+				$author_name = get_the_author_meta('display_name',  $value->post_author);
+				$author_avatar = get_avatar_url( $value->post_author);
+				$author_data[ $value->post_author] = array(
+					$author_name,
+					$author_avatar
+				);
+			}
+		}
+		return array(
+			'revisions' => $revision_data,
+			'authors' => $author_data,
+			'more_items' => $more_items
+		);
+	}
+}
+
+if( !function_exists ('tatsu_get_blend_modes') ){
+	function tatsu_get_blend_modes(){
+		return array (
+			'none' => 'None',
+			'normal' => 'Normal',
+			'multiply' => 'Multiply',
+			'screen' => 'Screen',
+			'overlay' => 'Overlay',
+			'darken' => 'Darken',
+			'lighten' => 'Lighten',
+			'color_dodge' => 'Color Dodge',
+			'color_burn' => 'Color Burn',
+			'difference' => 'Difference',
+			'exclusion' => 'Exclusion',
+			'hue' => 'Hue',
+			'saturation' => 'Saturation',
+			'color' => 'Color',
+			'luminosity' => 'Luminosity',
+		);
+	}
+}
+
+if( !function_exists( 'tatsu_check_if_att_present' ) ) {
+	function tatsu_check_if_att_present( $att_name, $atts ) {
+        if( !is_array( $atts ) ) {
+            return false;
+        }
+        foreach( $atts as $att ) {
+            if( $att['att_name'] === $att_name ) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+//merge module's existing atts grouping with common atts grouping
+if( !function_exists( 'tatsu_smart_merge_group_atts_recursive' ) ) {
+    function tatsu_smart_merge_group_atts_recursive( &$merge_into, &$merge_from, $invert = false, $tag ) {
+        foreach( $merge_from as &$att_or_att_group_in_merge_from ) {
+            if( is_array( $att_or_att_group_in_merge_from ) ) {
+                foreach( $att_or_att_group_in_merge_from['group'] as $merge_from_index => &$att_group_in_merge_from ) {
+                    foreach( $merge_into as &$att_or_att_group_in_merge_into ) {
+                        if( is_array( $att_or_att_group_in_merge_into ) && $att_or_att_group_in_merge_from['type'] === $att_or_att_group_in_merge_into['type'] ) {
+                            foreach( $att_or_att_group_in_merge_into['group'] as $merge_into_index => &$att_group_in_merge_into ) {
+                                if( is_array( $att_group_in_merge_into ) && $att_group_in_merge_into['title'] === $att_group_in_merge_from['title'] ) {
+                                    if( $invert ) {
+                                        tatsu_smart_merge_group_atts_recursive( $att_group_in_merge_from['group'], $att_group_in_merge_into['group'], false, $tag );
+                                        unset( $att_or_att_group_in_merge_into['group'][$merge_into_index] );
+                                        $att_or_att_group_in_merge_into['group'] = array_values( $att_or_att_group_in_merge_into['group'] );
+                                    }else {
+                                        tatsu_smart_merge_group_atts_recursive( $att_group_in_merge_into['group'], $att_group_in_merge_from['group'], false, $tag );
+                                        unset( $att_or_att_group_in_merge_from['group'][$merge_from_index] );
+                                        $att_or_att_group_in_merge_from['group'] = array_values( $att_or_att_group_in_merge_from['group'] );
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if( $invert ) {
+            $merge_into = array_merge( $merge_into, $merge_from );
+        }else {
+            $merge_into = array_merge( $merge_from, $merge_into );
+        }
+    }
+}
+if( !function_exists( 'tatsu_smart_merge_group_atts' ) ) {
+    function tatsu_smart_merge_group_atts( &$group_atts_from_module_options, $group_atts_from_common_atts, $tag ) {
+        if( !is_array( $group_atts_from_common_atts ) || !is_array( $group_atts_from_module_options ) ) {
+            return;
+        }
+        if( is_array( $group_atts_from_common_atts ) && is_array( $group_atts_from_common_atts[0] ) && 'tabs' === $group_atts_from_common_atts[0]['type'] ) {
+            $tabs_from_common_atts = $group_atts_from_common_atts[0];
+            if( is_array( $group_atts_from_module_options ) && is_array( $group_atts_from_module_options[0] ) && 'tabs' === $group_atts_from_module_options[0]['type'] ) {
+                $tabs_from_module_options = &$group_atts_from_module_options[0];
+                foreach( $tabs_from_module_options['group'] as &$tab_from_module_options ) {
+                    foreach( $tabs_from_common_atts['group'] as $tab_from_common_atts ) {
+                        if( strtolower( $tab_from_module_options['title'] ) === strtolower( $tab_from_common_atts['title'] ) ) {
+                            tatsu_smart_merge_group_atts_recursive( $tab_from_module_options['group'], $tab_from_common_atts['group'], true, $tag );
+                            break;
+                        }
+                    }
+                }
+            }else {
+                $atts_collection_from_common_atts_tabs = array();
+                foreach( $tabs_from_common_atts['group'] as $tab_from_common_atts ) {
+                    if( is_array( $tab_from_common_atts ) && !empty( $tab_from_common_atts['group'] ) ) {
+                        $atts_collection_from_common_atts_tabs = array_merge( $atts_collection_from_common_atts_tabs, $tab_from_common_atts['group'] );
+                    }
+                }
+                tatsu_smart_merge_group_atts_recursive( $group_atts_from_module_options, $atts_collection_from_common_atts_tabs, true, $tag );
+            }
+        }
+        return $group_atts_from_module_options;
+    }
+}
+
+//remove duplicate atts from atts grouping in common atts
+if( !function_exists( 'tatsu_remove_duplicate_atts_from_group_atts' ) ) {
+    function tatsu_remove_duplicate_atts_from_group_atts( &$group_atts_from_common_atts, $atts_from_module_options ) {
+        if( is_array( $group_atts_from_common_atts ) ) {
+            foreach( $group_atts_from_common_atts as $index => &$att_or_att_group ) {
+                if( is_array( $att_or_att_group ) ) {
+                    tatsu_remove_duplicate_atts_from_group_atts( $att_or_att_group[ 'group' ], $atts_from_module_options );
+                }else if( tatsu_check_if_att_present( $att_or_att_group, $atts_from_module_options ) ) {
+                    unset( $group_atts_from_common_atts[ $index ] );
+                }
+            }
+            $group_atts_from_common_atts = array_values($group_atts_from_common_atts);
+        }
+    }
+}
+
+//remove excludes from atts grouping in common atts
+if( !function_exists( 'tatsu_check_if_att_is_excluded' ) ) {
+    function tatsu_check_if_att_is_excluded( $att, $common_att_config, $tag ) {
+        $excludes_array = array();
+        foreach( $common_att_config['atts'] as $cur_common_att ) {
+            if( $cur_common_att['att_name'] === $att && array_key_exists( 'exclude', $cur_common_att ) && is_array( $cur_common_att['exclude'] ) ) {
+                $excludes_array = $cur_common_att['exclude'];
+                break;
+            }
+        }
+        $global_excludes_array = !empty( $common_att_config['exclude'] ) && is_array( $common_att_config['exclude'] ) ? $common_att_config['exclude'] : array();
+        if( in_array( $tag, $excludes_array ) || in_array( $tag, $global_excludes_array ) ) {
+            return true;
+        }else {
+            return false;
+        }
+    }
+}
+
+//remove empty accordion/tabs from group atts
+if( !function_exists( 'tatsu_remove_empty_group_att_structures' ) ) {
+    function tatsu_remove_empty_group_att_structures( &$group_atts ) {
+        if(is_array($group_atts)) {
+            foreach( $group_atts as $index => &$att_or_att_group ) {
+                if( is_array($att_or_att_group) ) {
+                    tatsu_remove_empty_group_att_structures( $att_or_att_group['group'] );
+                    if( empty( $att_or_att_group['group'] ) ) {
+                        unset( $group_atts[$index] );
+                    }
+                }
+            }
+            $group_atts = array_values( $group_atts );    
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_remove_excluded_atts_from_group_atts' ) ) {
+    function tatsu_remove_excluded_atts_from_group_atts( &$group_atts_from_common_atts, $common_att_config, $tag ) {
+        if( is_array( $group_atts_from_common_atts ) ) {
+            foreach( $group_atts_from_common_atts as $index => &$att_or_att_group ) {
+                if( is_array( $att_or_att_group ) ) {
+                    tatsu_remove_excluded_atts_from_group_atts( $att_or_att_group['group'], $common_att_config, $tag );
+                }else if( tatsu_check_if_att_is_excluded( $att_or_att_group, $common_att_config, $tag ) ) {
+                    unset( $group_atts_from_common_atts[$index] );
+                }
+            }
+            $group_atts_from_common_atts = array_values( $group_atts_from_common_atts );
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_is_valid_edit_action' ) ) {
+    function tatsu_is_valid_edit_action( $action = 'tatsu' ) {
+        $admin_load = get_option( 'tatsu_admin_load', false );
+        if( !empty( $admin_load ) ) {
+            switch( $action ) {
+                case 'tatsu' :
+                    return isset( $_REQUEST['action'] ) && 'tatsu' === $_REQUEST['action'];
+                case 'tatsu-header' : 
+                    return isset( $_REQUEST['action'] ) && 'tatsu-header' === $_REQUEST['action'];
+                case 'tatsu-footer' :
+                    return isset( $_REQUEST['action'] ) && 'tatsu-footer' === $_REQUEST['action'];
+                case 'tatsu-global' : 
+                    return isset( $_REQUEST['action'] ) && 'tatsu-global' === $_REQUEST['action'];
+                default : 
+                    return false;
+            }
+        }else {
+            if( is_admin() ) {
+                return false;
+            }
+            switch( $action ) {
+                case 'tatsu' :
+                    return isset( $_GET['tatsu'] );
+                case 'tatsu-header' : 
+                    return isset( $_GET['tatsu-header'] );
+                case 'tatsu-footer' :
+                    return isset( $_GET['tatsu-footer'] );
+                case 'tatsu-global' : 
+                    return isset( $_GET['tatsu-global'] );
+                default : 
+                    return false;
+            }
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_is_user_blacklisted' ) ) {
+    function tatsu_is_user_blacklisted() {
+        if( !is_user_logged_in() ) {
+            return true;
+        }
+        $user = wp_get_current_user();
+        $included_roles = get_option( 'tatsu_provide_access', '' );
+        $included_roles = explode( ',', $included_roles );
+        $included_roles[] = 'administrator';
+		$result = array_intersect( $user->roles, $included_roles );
+		if ( empty( $result ) ) {
+			return true;
+		}
+		return false;
+    }
+}
+
+if( !function_exists( 'tatsu_is_post_editable_by_current_user' ) ) {
+    function tatsu_is_post_editable_by_current_user( $post_id ) {
+        if( empty( $post_id ) ) {
+            return false;
+        }
+        $post = get_post( $post_id );
+        if ( ! $post ) {
+			return false;
+		}
+
+		if ( 'trash' === get_post_status( $post_id ) ) {
+			return false;
+        }
+        
+        $post_type_object = get_post_type_object( $post->post_type );
+
+		if ( ! isset( $post_type_object->cap->edit_post ) ) {
+			return false;
+		}
+		$edit_cap = $post_type_object->cap->edit_post;
+		if ( ! current_user_can( $edit_cap, $post_id ) ) {
+			return false;
+        }
+        
+        if( tatsu_is_user_blacklisted() ) {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+if( !function_exists( 'tatsu_is_post_type_editable_by_current_user' ) ) {
+    function tatsu_is_post_type_editable_by_current_user( $post_type ) {
+        if( empty( $post_type ) ) {
+            return false;
+        }
+        
+        $post_type_object = get_post_type_object( $post_type );
+		if ( ! isset( $post_type_object->cap->edit_posts ) ) {
+			return false;
+		}
+		if ( ! current_user_can( $post_type_object->cap->edit_posts ) ) {
+			return false;
+        }
+        
+        if( tatsu_is_user_blacklisted() ) {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+if( !function_exists( 'tatsu_parse_group_atts' ) ) {
+    function tatsu_parse_group_atts( &$group_atts, $atts ) {
+        if( is_array( $group_atts ) ) {
+            foreach( $group_atts as $index => &$att_or_att_group ) {
+                if( is_array( $att_or_att_group ) ) {
+                    tatsu_parse_group_atts( $att_or_att_group[ 'group' ], $atts );
+                }else if( !tatsu_check_if_att_present( $att_or_att_group, $atts ) ) {
+                    unset( $group_atts[ $index ] );
+                }
+            }
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_update_custom_css_js' ) ) {
+    function tatsu_update_custom_css_js( $post_id, $css, $js ) {
+        if( !empty( $post_id ) ) {
+            update_post_meta( $post_id, 'tatsu_custom_css', $css );
+            update_post_meta( $post_id, 'tatsu_custom_js', $js );
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_print_custom_css' ) ) {
+    function tatsu_print_custom_css( $css_array ) {
+        foreach( $css_array as $id => $css ) {
+            if( !empty( $css ) ) : ?>
+                <style id = "<?php echo $id; ?>">
+                    <?php echo $css; ?>
+                </style>
+            <?php endif;
+        }
+    }
+}
+
+if( !function_exists( 'tatsu_print_custom_js' ) ) {
+    function tatsu_print_custom_js( $js_array ) {
+        foreach( $js_array as $id => $js ) {
+            if( !empty( $js ) ) : ?>
+                <script id = "<?php echo $id; ?>">
+                    <?php echo $js; ?>
+                </script>
+            <?php endif;
+        }
+    }
 }
 
 ?>

@@ -40,4 +40,61 @@ if ( ! function_exists( 'tatsu_gsection_title' ) ) {
 	add_shortcode( 'tatsu_gsection_title', 'tatsu_gsection_title' );
 }
 
+add_action('tatsu_register_global_section', 'tatsu_register_gsection_title');
+function tatsu_register_gsection_title()
+{
+	$controls = array(
+		'icon' => '',
+		'title' => __('Global Section Title', 'tatsu'),
+		'is_js_dependant' => false,
+		'child_module' => '',
+		'type' => 'single',
+		'is_built_in' => true,
+		'atts' => array_values(array_filter(array(
+			array(
+				'att_name' => 'alignment',
+				'type' => 'button_group',
+				'label' => __('Alignment', 'tatsu'),
+				'options' => array(
+					'left' => 'Left',
+					'center' => 'Center',
+					'right' => 'Right',
+				),
+				'default' => 'center',
+				'tooltip' => ''
+			),
+			(function_exists('typehub_get_exposed_selectors') ? array(
+				'att_name' => 'title_font',
+				'type' => 'select',
+				'label' => __('Font for Title', 'tatsu'),
+				'options' => typehub_get_exposed_selectors(),
+				'default' => '',
+				'tooltip' => ''
+			) : false),
+			array(
+				'att_name' => 'margin',
+				'type' => 'input_group',
+				'label' => __('Margin', 'tatsu'),
+				'default' => '0px 0px 30px 0px',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-module' => array(
+						'property' => 'margin',
+					),
+				),
+			),
+		))),
+		'presets' => array(
+			'default' => array(
+				'preset' => array(
+					'height' => '1',
+				),
+			)
+		),
+	);
+	tatsu_register_global_module('tatsu_gsection_title', $controls);
+}
+
 ?>

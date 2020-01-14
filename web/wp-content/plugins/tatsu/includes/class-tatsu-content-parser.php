@@ -144,7 +144,7 @@ if( !class_exists('Tatsu_Parser')) {
 					}				
 				}				
 
-				if( $type !== "core" ) {
+				if( $type !== "core" && !$this->is_built_in( $tag ) ) {
 					$tatsu_module = new Tatsu_Module( $tag, $atts, $content );
 					$sample[$counter]['shortcode_output'] = $tatsu_module->do_shortcode();					
 				}
@@ -162,6 +162,10 @@ if( !class_exists('Tatsu_Parser')) {
 				}				
 			}
 			return $sample;
+		}
+
+		private function is_built_in( $tag ) {
+			return Tatsu_Module_Options::getInstance()->is_built_in( $tag );
 		}
 
 		private function get_module_type( $tag ) {
@@ -183,7 +187,7 @@ if( !class_exists('Tatsu_Parser')) {
 
 		private function parse_atts( $atts, $tag, $counter, $count ) {
 			if( empty($atts) ) {
-				return array();
+				$atts = array();
 			} else {
 				$atts = shortcode_parse_atts( $atts );
 				if( !is_array( $atts ) ) {
@@ -236,8 +240,8 @@ if( !class_exists('Tatsu_Parser')) {
 								}
 							}
 						} else {
-							$atts['id'] = '';
-							$atts['image'] = '';
+						//	$atts['id'] = '';
+						//	$atts['image'] = '';
 							$atts['image_varying_size_src'] = '';
 							$atts['size'] = 'full';
 						}
@@ -273,6 +277,114 @@ if( !class_exists('Tatsu_Parser')) {
 					unset( $atts['col'] );
 				}
 
+				if( 'tatsu_section' === $tag ){
+					if( array_key_exists('full_screen', $atts) && $atts['full_screen'] == '1' ){
+						$atts['section_height_type'] = 'full_screen';
+						$atts['custom_height'] = '';
+					} else if( array_key_exists( 'enable_custom_height',$atts) && $atts['enable_custom_height'] == '1' ){
+						$atts['section_height_type'] = 'custom_height';
+					}
+
+					if( array_key_exists('offset_section', $atts) && empty( $atts['offset_section'] ) ){
+						$atts['offset_value'] = '';
+					}
+
+					if( array_key_exists('bg_overlay', $atts) && empty( $atts['bg_overlay'] ) ){
+						$atts['overlay_color'] = '';
+						$atts['overlay_blend_mode'] = 'none';
+					}
+
+					if( array_key_exists( 'bg_video',$atts) && empty( $atts['bg_video'] ) ){
+						$atts['bg_video_mp4_src'] = '';
+						$atts['bg_video_ogg_src'] = '';
+						$atts['bg_video_webm_src'] = '';
+					}
+
+					unset( $atts['bg_video'] );
+					unset( $atts['full_screen'] );
+					unset( $atts['enable_custom_height'] );
+					unset( $atts['offset_section'] );
+					unset( $atts['bg_overlay'] );
+				}
+
+				if( 'tatsu_column' === $tag || 'tatsu_inner_column' === $tag ){
+					if( array_key_exists('custom_margin', $atts) && empty( $atts['custom_margin'] ) ){
+						$atts['margin'] = '{"d":""}';
+					}
+					
+					if( array_key_exists( 'enable_box_shadow',$atts) && empty( $atts['enable_box_shadow'] ) ){
+						$atts['box_shadow_custom'] = '0px 0px 0px 0px rgba(0,0,0,0)';
+					}
+
+					if( array_key_exists( 'column_offset',$atts) && empty( $atts['column_offset'] ) ){
+						$atts['offset'] = '0px 0px';
+					}
+
+					if( array_key_exists('bg_overlay', $atts) && empty( $atts['bg_overlay'] ) ){
+						//$atts['overlay_color'] = '';
+						$atts['overlay_blend_mode'] = 'none';
+					}
+
+					if( array_key_exists( 'bg_video',$atts) && empty( $atts['bg_video'] ) ){
+						$atts['bg_video_mp4_src'] = '';
+						$atts['bg_video_ogg_src'] = '';
+						$atts['bg_video_webm_src'] = '';
+					}
+
+					unset( $atts['bg_video'] );
+					unset( $atts['custom_margin'] );
+					unset( $atts['enable_box_shadow'] );
+					unset( $atts['bg_overlay'] );
+					unset( $atts['column_offset'] );
+				}
+
+				if( 'tatsu_interactive_box' === $tag ){
+					if( array_key_exists( 'overlay',$atts) && empty( $atts['overlay'] ) ){
+						$atts['overlay_blend_mode'] = 'none';
+					}
+
+					if( array_key_exists( 'custom_height',$atts) && empty( $atts['custom_height'] ) ){
+						$atts['height'] = '';
+					}
+
+					unset( $atts['overlay'] );
+					unset( $atts['custom_height'] );
+				}
+
+				if( 'tatsu_image' === $tag ){
+					if( array_key_exists( 'enable_margin',$atts) && empty( $atts['enable_margin'] ) ){
+						$atts['margin'] = '';
+					}
+					if( array_key_exists( 'image_offset',$atts) && empty( $atts['image_offset'] ) ){
+						$atts['offset'] = '{"d":"0px 0px"}';
+					}
+
+					unset( $atts['enable_margin'] );
+					unset( $atts['image_offset'] );
+				}
+
+				if( array_key_exists( 'animate',$atts) ){
+                    if( empty( $atts['animate'] ) ){
+                        $atts['animation_type'] = 'none';
+                    }
+                    $atts['animate'] = '1';
+                }
+
+				if( 'tatsu_button' === $tag || 'tatsu_gradient_button' === $tag){
+					if( array_key_exists( 'enable_margin',$atts) && empty( $atts['enable_margin'] ) ){
+
+						// if( $atts['alignment'] === 'none' ){
+						// 	$atts['margin'] = '{"d":"0px 0px 10px 0px"}';
+						// } else {
+						// 	$atts['margin'] = '{"d":"0px 0px 40px 0px"}';
+						// }
+						$atts['margin'] = '';
+					}
+
+					unset( $atts['enable_margin'] );
+				}
+
+				
 				// Parse Responsive Attributes which are in json format
 				foreach ( $atts as $att => $value ) {
 					if( is_string($value) ){
@@ -282,9 +394,10 @@ if( !class_exists('Tatsu_Parser')) {
                         }
                     }
 				}
-
-				return $atts;
-			}
+            }
+            
+            $atts = apply_filters( "tatsu_parse_atts_{$tag}", $atts, $counter, $count );
+            return $atts;
 		}
 	}
 }

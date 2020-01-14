@@ -483,7 +483,7 @@
 				    countdownWrap.each( function() {
 				        var $this = jQuery(this);
 				        var $date = parseDate( $this.attr( 'data-time' ) );   //moment( $this.data().time, 'YYYY-MM-DD HH:mm:ss').toDate();
-				        $this.countdown( 'option','until', $date );
+				        $this.countdown( {until: $date} );
 				    });					
 				}        	
 	        },
@@ -619,7 +619,7 @@
 					    });
 					});
 				}
-					
+
 			},
 
 			progressBar = function() {
@@ -636,7 +636,7 @@
                     });
                 }
 
-				
+
 				if( skillsWrap.length > 0) {
 				    skillsWrap.each(function (i) {
 				        var $this = jQuery(this),
@@ -653,56 +653,78 @@
 			},
 
 			justifiedGallery = function() {
-				var justifiedGalleryWrap = jQuery( '.justified-gallery' );
+                var justifiedGalleryWrap = jQuery( '.justified-gallery' ),
+                    itemsToLazyLoad = jQuery();
 				if( justifiedGalleryWrap.length > 0 ){
-
+                    var sequentialReveal = function(elements) {
+                            if( null != elements && elements.length ) {
+                                if( elements.closest('.justified-gallery').hasClass( 'none' ) ) {
+                                    elements.find('.flip-img-wrap').addClass('img-loaded');
+                                    return;
+                                }
+                                elements.each(function(index, element) {
+                                    setTimeout(function() {
+                                        jQuery(element).find('.flip-img-wrap').addClass('img-loaded');
+                                    }, index * 200);
+                                });
+                            }
+                        },
+                        updateLazyLoadItems = function( elements ) {
+                            itemsToLazyLoad = itemsToLazyLoad.add(elements);
+                        },
+                        lazyLoad = function() {
+                            if( 0 < itemsToLazyLoad.length ) {
+                                var visibleImages = itemsToLazyLoad.filter(function() {
+                                    var $e = jQuery(this),
+                                        wt = $window.scrollTop(),
+                                        wb = wt + $window.height(),
+                                        et = $e.offset().top,
+                                        eb = et + $e.height();
+                                    return eb >= wt - 200 && et <= wb + 200;
+                                });
+                                if( 0 < visibleImages.length ) {
+                                    visibleImages.one( 'load', function() {
+                                        $(this).closest( '.element' ).addClass('jg-entry-visible');
+                                    }).each( function( el ) {
+                                        var curEl = $(this);
+                                        curEl.attr( 'src', curEl.attr( 'data-src' ) );
+                                    });
+                                    itemsToLazyLoad = itemsToLazyLoad.not( visibleImages );
+                                }
+                            }
+                        };
 					asyncloader.require( [ 'justifiedgallery', 'waypoints', 'imagesloaded', 'photoswipe' ], function() {
 					    justifiedGalleryWrap.each(function () {
-					        var $this = jQuery(this),
-					        	$options = {};
-					        $options.imageHeight = $this.attr( 'data-image-height' );
-					        $options.gutterWidth = $this.attr( 'data-gutter-width' );	        	
+                            var $this = jQuery(this),
+                                $elements = $this.find('.element'),
+							    $options = {};
+							    $options.imageHeight = $this.attr( 'data-image-height' );
+							    $options.gutterWidth = $this.attr( 'data-gutter-width' );
 
-					        $this.imagesLoaded(function () {
-					            $this.justifiedGallery({
-					                rowHeight : $options.imageHeight,
-					                margins : $options.gutterWidth,
-					            }).on( 'jg.complete', function( event ) {
+                            $this.on( 'jg.complete jg.resize', function( event ) {
+                                lazyLoad();
+                                $(this).closest( '.justified-gallery-outer-wrap' ).css( 'visibility', 'visible' );
+                            } );
+							$this.justifiedGallery({
+								rowHeight : $options.imageHeight, 
+								margins : $options.gutterWidth,
+								lastRow : 'nojustify', 
+                                waitThumbnailsLoad : false,
+                                imgSelector : '.thumb-img'
+							});
+					        //$this.imagesLoaded(function () {
 
-                                    $this.closest( '.justified-gallery-outer-wrap' ).css( 'visibility', 'visible' );
+                            photoswipe( $this );
 
-                                } );
+                            directionalHover( $elements );
+                            sequentialReveal( $elements );
+                            if( $this.attr('data-lazy-load') ) {
+                                updateLazyLoadItems( $this.find( '.thumb-img' ) );
+                            }
+						});
 
-                                photoswipe( $this );
 
-					            directionalHover( $this.find( '.element' ) );
-
-					            var delay = 200;
-
-					            $this.find('.element').each(function() {
-
-					               jQuery(this).find('img').one("load", function () {
-                                        var closestElementNode = jQuery( this ).closest( '.element' ), 
-                                            index = Array.prototype.indexOf.call( closestElementNode.parent()[0].children, closestElementNode[0] );
-					                    setTimeout( 
-                                            function(){ 
-                                                jQuery( this ).parent().addClass('img-loaded') 
-                                            }.bind( this ), index * delay
-                                         );
-    					           }).each(function() {
-										if (this.complete) {
-											jQuery(this).load();
-										}
-					                });
-					          
-                                });
-					        });
-					    });
-
-						
-					
-
-				        if(jQuery(".trigger_infinite_scroll.justified_gallery_infinite_scroll").length > 0) {
+						if(jQuery(".trigger_infinite_scroll.justified_gallery_infinite_scroll").length > 0 && !$body.hasClass('tatsu-frame')) {
 				            jQuery(".trigger_infinite_scroll.justified_gallery_infinite_scroll").each(function () {
 				                var $this = jQuery(this),
 				                $justified_gallery_wrap = $this.closest('.justified-gallery-inner-wrap'),
@@ -713,14 +735,15 @@
                                             //"&source=" + $justified_gallery_wrap.attr('data-source') + 
                                             "&images_arr=" + $justified_gallery_wrap.attr('data-images-array') + 
                                             "&items_per_load=" + $justified_gallery_wrap.attr('data-items-per-load') + 
+                                            "&lazy_load=" + ( $justified_gallery_wrap.attr('data-lazy-load') || '0' ) + 
                                             "&hover_style=" + $justified_gallery_wrap.attr('data-hover-style') + 
                                             "&img_grayscale=" + $justified_gallery_wrap.attr('data-image-grayscale') + 
                                             "&image_effect=" + $justified_gallery_wrap.attr('data-image-effect') + 
                                             "&thumb_overlay_color=" + $justified_gallery_wrap.attr('data-thumb-overlay-color') + 
                                             "&gradient_style_color=" + $justified_gallery_wrap.attr('data-grad-style-color') + 
                                             "&like_button=" + $justified_gallery_wrap.attr('data-like-button') + 
-                                            "&disable_overlay=" + $justified_gallery_wrap.attr('data-disable-overlay') ;
-				                
+                                            "&disable_overlay=" + $justified_gallery_wrap.attr('data-disable-overlay');
+
 				                var be_waypoint = new Waypoint({
 				                    element: $this,
 				                    handler: function (direction) {
@@ -732,33 +755,24 @@
 				                            jQuery.ajax({
 				                                type: "POST",
 				                                url: ajax_url,
-				                                data: $ajaxData + "&paged=" + $paged 
+				                                data: $ajaxData + "&paged=" + $paged                                                ,
 				                            }).done(function (data) {
-				                                if (data != 'Array0' ) {
+				                                if ( '0' != data ) {
 				                                    var $newItems = jQuery(data);
-				                                    $newItems.imagesLoaded(function () {
-				                                        $justified_gallery.append($newItems).justifiedGallery('norewind').on('jg.complete', function () {
-				                                            Waypoint.refreshAll();    
-				                                            $this_waypoint.enable(); //Enable Waypoint 
-				                                        });
-				                                        
-				                                        var delay = 200;
-                                                        $newItems.each( function() {
-                                                            var index = arguments[0];
-                                                            jQuery( this ).find( 'img' ).one( "load", function() {
-                                                              setTimeout( function() {
-                                                                jQuery(this).parent().addClass('img-loaded',300);
-                                                              }.bind( this ), delay * index );
-                                                          }).each( function() {
-                                                            if( this.complete ) {
-                                                              jQuery( this ).load();
-                                                            }
-                                                          });
-                                                        });
-				                                        $paged = Number($paged) + 1;
+                                                        $justified_gallery.on('jg.complete jg.resize', function () {
+                                                            Waypoint.refreshAll();    
+                                                            $this_waypoint.enable(); //Enable Waypoint 
+                                                        } );
+		
+				                                        $justified_gallery.append($newItems).justifiedGallery('norewind');
+                                                        sequentialReveal($newItems);
+                                                        if( $justified_gallery.attr('data-lazy-load') ) {
+                                                            updateLazyLoadItems($newItems.find('.thumb-img'));
+                                                        }
+                                                        $paged = Number($paged) + 1;
+                                                        $justified_gallery_wrap.attr('data-paged', $paged);
 				                                        $page_loader.fadeOut();
 
-				                                    });
 				                                } else {
 				                                    $this_waypoint.destroy();
 				                                    $this.fadeOut();
@@ -771,25 +785,35 @@
 				                })
 
 				            });
-				        }
+                        }
+                        $window.on('scroll', function() {
+                            lazyLoad();
+                        })
 				    });
 			    }	
 			},
 
 			like = function() {
-				jQuery(document).on('click', '.custom-like-button', function (e) {
+				jQuery(document).on('click', '.gallery-like .custom-like-button', function (e) {
 					var $this = jQuery(this), $post_id = $this.attr('data-post-id');
-					$this.addClass('disable');
+					// $this.addClass('disable');
 					jQuery.ajax({
+						
 						type: "POST",
 						url: ajax_url,
 						dataType: 'json',
 						data: "action=post_like&post_id=" + $post_id,
 						success : function (msg) {
 							if (msg.status === "success") {
-								$this.addClass('liked');
-								$this.removeClass('no-liked');
-								$this.find('span').text(msg.count);
+								if( msg.type === "like" ){
+									$this.addClass('liked');
+									$this.removeClass('no-liked');
+									$this.find('span').text(msg.count);
+								}else{
+									$this.removeClass('liked');
+									$this.addClass('no-liked');
+									$this.find('span').text(msg.count);
+								}
 							}
 						},
 						error: function (msg) {
@@ -1825,7 +1849,11 @@
                                     return 2;
                             }
                         }else if ( windowTotalWidth <= 481 ){
-                            return 1;
+                            if( this.closest_portfolio.hasClass( 'portfolio-two-col-mobile' ) ) {
+                                return 2;
+                            }else {
+                                return 1;
+                            }
                         }else{
                             switch(this.closest_portfolio.attr('data-col')){
                                 case 'five':
@@ -2118,7 +2146,6 @@
 	            },
 
 	            infiniteScroll = function( triggerParam, portfolioParam, pagedParam, elementTypeParam ) {
-
 	                var $this = triggerParam,
 	                $portfolio = portfolioParam,
 	                $paged = pagedParam;
@@ -2416,7 +2443,6 @@
 
 
 	            triggerInfiniteScroll = function(){
-
 	                if( trigger.length > 0 ) {
 	                    trigger.each( function() {
 	                        var $portfolio = jQuery(this).closest('.portfolio');
@@ -2505,9 +2531,12 @@
                     var delayCall = '';
 	                jQuery(document).on('click', '.sort', function () {
 						var currentTrigger = jQuery( this ),                           
-							filterClass = currentTrigger.data().id,
+							filterClass = currentTrigger.data().id.toString(),
 							closestPortfolio = currentTrigger.closest( '.portfolio' ),
 							filterElements;
+						if( filterClass && filterClass.toString ) {
+							filterClass = filterClass.toString();
+						}
 						currentTrigger.closest( '.filters' ).find( '.sort' ).removeClass( 'current_choice' );
                         
 						currentTrigger.addClass( 'current_choice' );
@@ -2534,7 +2563,6 @@
 								filterElements.removeClass( classQuotient );	
 								closestPortfolio.data( 'oshinePortfolio' ).portfolioContainer.isotope({
 									filter : function() {
-
 										var curCategories = jQuery( this ).attr( 'data-category-names' ),
                                             curCategoriesArray,
 											result = false;
@@ -2568,7 +2596,6 @@
 						}else{
 							closestPortfolio.data( 'oshinePortfolio' ).portfolioContainer.isotope({
 								filter : function() {
-
                                             var curCategories = jQuery( this ).attr( 'data-category-names' ),
                                                 curCategoriesArray,
                                                 result = false;
@@ -2608,24 +2635,30 @@
 	                });
 	            },
 
-	            like = function() {
-	                jQuery(document).on('click', '.custom-like-button', function (e) {
+	            portfolioLike = function() {
+	                jQuery(document).on('click', '.portfolio-like .custom-like-button', function (e) {
 	                    var $this = jQuery(this), $post_id = $this.attr('data-post-id');
-	                    $this.addClass('disable');
+	                    // $this.addClass('disable');
 	                    jQuery.ajax({
 	                        type: "POST",
 	                        url: ajax_url,
 	                        dataType: 'json',
 	                        data: "action=post_like&post_id=" + $post_id,
 	                        success : function (msg) {
-	                            if (msg.status === "success") {
-	                                $this.addClass('liked');
-	                                $this.removeClass('no-liked');
-	                                $this.find('span').text(msg.count);
-	                            }
-	                        },
+								if (msg.status === "success") {
+									if( msg.type === "like" ){
+										$this.addClass('liked');
+										$this.removeClass('no-liked');
+										$this.find('span').text(msg.count);
+									}else{
+										$this.removeClass('liked');
+										$this.addClass('no-liked');
+										$this.find('span').text(msg.count);
+									}
+								}
+							},
 	                        error: function (msg) {
-	                            alert(msg);
+								alert(msg);
 	                        }
 	                    });
 	                    return false;
@@ -2685,7 +2718,7 @@
                             triggerInfiniteScroll();
                             triggerLoadMore();
                             lightboxGallery();
-                            like();
+                            portfolioLike();
                             filter();
 							forcePortfolioTitles();
                             tiltHoverEffect();

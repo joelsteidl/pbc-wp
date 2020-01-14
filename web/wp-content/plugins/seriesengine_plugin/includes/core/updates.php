@@ -78,7 +78,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -188,7 +189,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 		
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			add_option("enmse_db_version", $enmse_db_version);
 		
 // Upgrade 1.1 users to 1.7	
@@ -229,7 +230,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -339,7 +341,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 // Upgrade 1.2 users to 1.7		
 } elseif ( get_option('enmse_db_version') == "1.2" ) {
@@ -353,7 +355,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -463,7 +466,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.7.7";
+	$enmse_db_version = "2.7.9.4";
 	update_option("enmse_db_version", $enmse_db_version);
 // Upgrade 1.3 users to 1.7	
 } elseif ( get_option('enmse_db_version') == "1.3" ) {
@@ -479,7 +482,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -589,7 +593,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -606,7 +610,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -720,7 +725,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -740,7 +745,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -854,7 +860,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -870,7 +876,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -984,7 +991,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1003,7 +1010,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1111,7 +1119,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1128,7 +1136,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1240,7 +1249,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1260,7 +1269,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1368,7 +1378,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1385,7 +1395,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1497,7 +1508,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1517,7 +1528,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1625,7 +1637,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1641,7 +1653,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1753,7 +1766,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1773,7 +1786,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -1881,7 +1895,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1898,7 +1912,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2010,7 +2025,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2030,7 +2045,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2138,7 +2154,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2155,7 +2171,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2267,7 +2284,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2286,7 +2303,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2394,7 +2412,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2411,7 +2429,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2523,7 +2542,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2543,7 +2562,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2651,7 +2671,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2669,7 +2689,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					"  ADD explicit int(11) DEFAULT NULL,
 					ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2781,7 +2802,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2799,7 +2820,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -2907,7 +2929,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2922,7 +2944,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3034,7 +3057,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3052,7 +3075,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3160,7 +3184,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3176,7 +3200,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3288,7 +3313,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3307,7 +3332,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3414,7 +3440,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3430,7 +3456,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3541,7 +3568,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3559,7 +3586,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3666,7 +3694,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3682,7 +3710,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3793,7 +3822,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3811,7 +3840,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -3916,7 +3946,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3932,7 +3962,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				$sql = "ALTER TABLE " . $newpodtest .
 					" ADD book_id int(11) DEFAULT NULL,
 					ADD redirect_podcast int(2) DEFAULT NULL,
-					ADD redirect_url varchar(255) DEFAULT NULL";
+					ADD redirect_url varchar(255) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -4041,7 +4072,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4057,7 +4088,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 		$newpodtest = $wpdb->prefix . "se_podcasts";
 		if( $wpdb->get_var("SHOW TABLES LIKE '$newpodtest'") == $newpodtest ) {
 			$sql = "ALTER TABLE " . $newpodtest .
-				" ADD book_id int(11) DEFAULT NULL";
+				" ADD book_id int(11) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 			$wpdb->query($sql);
 		}
 
@@ -4162,7 +4194,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4176,7 +4208,8 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$newpodtest = $wpdb->prefix . "se_podcasts";
 			if( $wpdb->get_var("SHOW TABLES LIKE '$newpodtest'") == $newpodtest ) {
 				$sql = "ALTER TABLE " . $newpodtest .
-					" ADD book_id int(11) DEFAULT NULL";
+					" ADD book_id int(11) DEFAULT NULL,
+					 ADD custom_lang varchar(10) DEFAULT NULL";
 				$wpdb->query($sql);
 			}
 
@@ -4285,7 +4318,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4310,12 +4343,19 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$wpdb->query($sql);
 		}
 
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
 		$se_options = get_option( 'enm_seriesengine_options' );
 		generate_se_options_css($se_options);
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4337,6 +4377,13 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				ADD podcast_series int(2) NULL";
 				$wpdb->query($sql);
 			}
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
 			
 			$data = get_option( 'enm_seriesengine_options' ); ;	
 			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
@@ -4347,7 +4394,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4372,12 +4419,19 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$wpdb->query($sql);
 		}
 
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
 		$se_options = get_option( 'enm_seriesengine_options' );
 		generate_se_options_css($se_options);
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4399,6 +4453,13 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				ADD podcast_series int(2) NULL";
 				$wpdb->query($sql);
 			}
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
 			
 			$data = get_option( 'enm_seriesengine_options' ); ;	
 			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
@@ -4409,7 +4470,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4432,12 +4493,19 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$wpdb->query($sql);
 		}
 
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
 		$se_options = get_option( 'enm_seriesengine_options' );
 		generate_se_options_css($se_options);
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4457,6 +4525,13 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				ADD podcast_series int(2) NULL";
 				$wpdb->query($sql);
 			}
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
 			
 			$data = get_option( 'enm_seriesengine_options' ); ;	
 			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
@@ -4467,7 +4542,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4490,12 +4565,19 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$wpdb->query($sql);
 		}
 
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
 		$se_options = get_option( 'enm_seriesengine_options' );
 		generate_se_options_css($se_options);
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4515,6 +4597,13 @@ if ( !get_option( 'enmse_db_version' ) ) {
 				 	ADD podcast_series int(2) NULL";
 				$wpdb->query($sql);
 			}
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
 			
 			$data = get_option( 'enm_seriesengine_options' ); ;	
 			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
@@ -4525,7 +4614,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4547,12 +4636,19 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			$wpdb->query($sql);
 		}
 
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
 		$se_options = get_option( 'enm_seriesengine_options' );
 		generate_se_options_css($se_options);
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4571,6 +4667,13 @@ if ( !get_option( 'enmse_db_version' ) ) {
 					 ADD podcast_series int(2) NULL";
 				$wpdb->query($sql);
 			}
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
 			
 			$data = get_option( 'enm_seriesengine_options' ); ;	
 			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
@@ -4581,7 +4684,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4589,9 +4692,61 @@ if ( !get_option( 'enmse_db_version' ) ) {
 		 enmse_twofive();
 	}
 	
-}  elseif ( get_option('enmse_db_version') == "2.5" || get_option('enmse_db_version') == "2.5.1" || get_option('enmse_db_version') == "2.5.2" || get_option('enmse_db_version') == "2.5.5" || get_option('enmse_db_version') == "2.5.6" || get_option('enmse_db_version') == "2.5.7" || get_option('enmse_db_version') == "2.6" || get_option('enmse_db_version') == "2.6.1" || get_option('enmse_db_version') == "2.6.2" || get_option('enmse_db_version') == "2.7" || get_option('enmse_db_version') == "2.7.1" || get_option('enmse_db_version') == "2.7.2" || get_option('enmse_db_version') == "2.7.3" || get_option('enmse_db_version') == "2.7.4" || get_option('enmse_db_version') == "2.7.5" || get_option('enmse_db_version') == "2.7.6" ) { //Upgrade 2.5 to 2.7
+}  elseif ( get_option('enmse_db_version') == "2.5" || get_option('enmse_db_version') == "2.5.1" || get_option('enmse_db_version') == "2.5.2" || get_option('enmse_db_version') == "2.5.5" || get_option('enmse_db_version') == "2.5.6" || get_option('enmse_db_version') == "2.5.7" || get_option('enmse_db_version') == "2.6" || get_option('enmse_db_version') == "2.6.1" || get_option('enmse_db_version') == "2.6.2" || get_option('enmse_db_version') == "2.7" || get_option('enmse_db_version') == "2.7.1" || get_option('enmse_db_version') == "2.7.2" || get_option('enmse_db_version') == "2.7.3" || get_option('enmse_db_version') == "2.7.4" || get_option('enmse_db_version') == "2.7.5" || get_option('enmse_db_version') == "2.7.6" || get_option('enmse_db_version') == "2.7.7" || get_option('enmse_db_version') == "2.7.8" || get_option('enmse_db_version') == "2.7.9" || get_option('enmse_db_version') == "2.7.9.1" || get_option('enmse_db_version') == "2.7.9.2"  ) { //Upgrade 2.5 to 2.7
 
 	function enmse_twofiveone() {
+		global $wpdb;
+
+		$customlangtest = $wpdb->prefix . "se_podcasts";
+		if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+			$sql = "ALTER TABLE " . $customlangtest .
+				" ADD custom_lang varchar(10) DEFAULT NULL";
+			$wpdb->query($sql);
+		}
+
+		$se_options = get_option( 'enm_seriesengine_options' );
+		generate_se_options_css($se_options);
+
+		// Define DB version
+		global $enmse_db_version;
+		$enmse_db_version = "2.7.9.4";
+		update_option("enmse_db_version", $enmse_db_version);
+	}
+
+	if (function_exists('is_multisite') && is_multisite()) { // Check for Multisite
+		global $wpdb;
+		$blog_list = $wpdb->get_col("SELECT blog_id FROM " . $wpdb->prefix . "blogs");
+		foreach ($blog_list as $blog) {
+			switch_to_blog($blog);
+			global $wpdb;
+
+			$customlangtest = $wpdb->prefix . "se_podcasts";
+			if( $wpdb->get_var("SHOW TABLES LIKE '$customlangtest'") == $customlangtest ) {
+				$sql = "ALTER TABLE " . $customlangtest .
+					" ADD custom_lang varchar(10) DEFAULT NULL";
+				$wpdb->query($sql);
+			}
+			
+			$data = get_option( 'enm_seriesengine_options' ); ;	
+			$css_dir = WP_PLUGIN_DIR . '/seriesengine_plugin/css/'; // Shorten code, save 1 call
+			ob_start(); // Capture all output (output buffering)
+			include($css_dir . 'se_styles_generate.php'); // Generate CSS
+			$css = ob_get_clean(); // Get generated CSS (output buffering)
+			file_put_contents($css_dir . 'se_' . $blog . '_styles.css', $css, LOCK_EX); // Save it
+
+			// Define DB version
+			global $enmse_db_version;
+			$enmse_db_version = "2.7.9.4";
+			update_option("enmse_db_version", $enmse_db_version);
+		}
+		switch_to_blog($wpdb->blogid);
+	} else {
+		 enmse_twofiveone();
+	}
+	
+}  elseif ( get_option('enmse_db_version') == "2.7.9.3"  ) { //Upgrade 2.5 to 2.7
+
+	function enmse_twosevennine() {
 		global $wpdb;
 
 		$se_options = get_option( 'enm_seriesengine_options' );
@@ -4599,7 +4754,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.7.7";
+		$enmse_db_version = "2.7.9.4";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4619,12 +4774,12 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.7.7";
+			$enmse_db_version = "2.7.9.4";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
 	} else {
-		 enmse_twofiveone();
+		 enmse_twosevennine();
 	}
 	
 }

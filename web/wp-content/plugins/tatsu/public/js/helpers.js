@@ -132,7 +132,7 @@
     var imagesToLoad = $( '.be-lazy-load' ),
         add = function( images ) {
             if( null != images && 0 < images.length ) {
-                imagesToLoad.add( images );
+                imagesToLoad = imagesToLoad.add( images );
             }
         },
         lazyLoad = function() {

@@ -1786,7 +1786,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<?php include ('errorbox.php'); ?>
 	<?php include ('messagebox.php'); ?>
 	<p>Modify the information below to change how this <?php echo stripslashes($enmge_grouptitle); ?> appears in the Groups Engine browser. Be sure to select the appropriate <?php echo stripslashes($enmge_grouptypetitle); ?> and <?php echo $enmge_locationtitle; ?> under the "<?php echo stripslashes($enmge_grouptitle); ?> Details" section.  Learn more in the <a href="<?php echo admin_url() . "admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide#ge-groups"; ?>">User Guide</a>.</p>
-	
+	<?php //print_r($enmge_g_data); ?>
 	<ul id="enmge-group-options">
 		<li class="selected"><a href="#" id="enmge-group-general">General Information</a></li>
 		<li><a href="#" id="enmge-group-details"><?php echo stripslashes($enmge_grouptitle); ?> Details</a></li>

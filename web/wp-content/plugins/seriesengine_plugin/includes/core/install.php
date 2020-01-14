@@ -10,7 +10,7 @@
 	
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.7.5";
+	$enmse_db_version = "2.7.9.4";
 	if( !defined(get_option( 'enmse_db_version' )) ) {
 		add_option("enmse_db_version", $enmse_db_version);
 	} else {
@@ -454,7 +454,8 @@
 			explicit int(11) DEFAULT NULL,
 			redirect_podcast int(2) DEFAULT NULL,
 			redirect_url varchar(255) DEFAULT NULL,
-			book_id int(11) NOT NULL) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+			book_id int(11) NOT NULL,
+			custom_lang varchar(10) DEFAULT NULL) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 		);"; 
 		
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php'); 
@@ -477,7 +478,8 @@
 			'podcast_display' => '10',
 			'explicit' => '0',
 			'redirect_podcast' => '0',
-			'redirect_url' => ''
+			'redirect_url' => '',
+			'custom_lang' => ''
 		); 
 		$wpdb->insert( $se_podcasts, $firstpodcast );
 	}

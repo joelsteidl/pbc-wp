@@ -127,7 +127,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 6 ) { 
+		if ( $enmse_language == 7 ) { 
+			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
+		} elseif ( $enmse_language == 6 ) { 
 			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
 		} elseif ( $enmse_language == 5 ) { 
 			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
@@ -139,6 +141,67 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');
 		} else {
 			include(dirname(__FILE__) . '/../lang/eng_bible_books.php');
+		}
+
+		function enmse_vimeo($link){
+			
+			$regexstr = '~
+				(?:<iframe [^>]*src=")?		
+				(?:							
+					https?:\/\/				
+					(?:[\w]+\.)*			
+					vimeo\.com				
+					(?:[\/\w]*\/videos?)?	
+					\/						
+					([0-9]+)				
+					[^\s]*					
+				)							
+				"?							
+				(?:[^>]*></iframe>)?		
+				(?:<p>.*</p>)?		        
+				~ix';
+			
+			preg_match($regexstr, $link, $matches);
+			
+			return $matches[1];
+			
+		}
+
+		function enmse_youtube($link){
+			
+			$regexstr = '~
+				(?:				 				
+					(?:<iframe [^>]*src=")?	 	
+					|(?:				 		
+						(?:<object .*>)?		
+						(?:<param .*</param>)*  
+						(?:<embed [^>]*src=")?  
+					)?				 			
+				)?				 				
+				(?:				 				
+					https?:\/\/		         	
+					(?:[\w]+\.)*		        
+					(?:               	        
+					youtu\.be/      	        
+					| youtube\.com		 		
+					| youtube-nocookie\.com	 	
+					)				 			
+					(?:\S*[^\w\-\s])?       	
+					([\w\-]{11})		        
+					[^\s]*			 			
+				)				 				
+				"?				 				
+				(?:[^>]*>)?			 			
+				(?:				 				
+					</iframe>		         	
+					|</embed></object>	        
+				)?				 				
+				~ix';
+			
+			preg_match($regexstr, $link, $matches);
+			
+			return $matches[1];
+			
 		}
 
 		// Message from
@@ -381,10 +444,22 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						$enmse_video_url = $_POST['message_video_url'];
 					}
 					
-					if ( strlen($_POST['message_embed_code']) < 1 ) {
+					if ( strlen($_POST['message_embed_code']) < 1 ) { //here
 						$enmse_embed_code = 0;
 					} else {
-						$enmse_embed_code = $_POST['message_embed_code'];
+						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code'])) {
+							$enmse_embed_code = $_POST['message_embed_code'];
+						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
+							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
+						} elseif (preg_match('/(youtube\.co|youtu\.b)\w+/', $_POST['message_embed_code'])) { // YouTube 
+							$videoid = enmse_youtube($_POST['message_embed_code']);
+							$enmse_embed_code = '<iframe src="https://www.youtube.com/embed/' . $videoid . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+						} elseif (preg_match('/(vimeo\.co)\w+/', $_POST['message_embed_code'])) { // Vimeo 
+							$videoid = enmse_vimeo($_POST['message_embed_code']);
+							$enmse_embed_code = '<iframe src="https://player.vimeo.com/video/' . $videoid . '?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+						} else {
+							$enmse_embed_code = $_POST['message_embed_code'];
+						}
 					}
 
 					if ( strlen($_POST['message_video_embed_url']) < 1 ) {
@@ -404,7 +479,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed'])) {
+							$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
+							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
+						} elseif (preg_match('/(youtube\.co|youtu\.b)\w+/', $_POST['message_alternate_embed'])) { // YouTube 
+							$videoid = enmse_youtube($_POST['message_alternate_embed']);
+							$enmse_alternate_embed = '<iframe src="https://www.youtube.com/embed/' . $videoid . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+						} elseif (preg_match('/(vimeo\.co)\w+/', $_POST['message_alternate_embed'])) { // Vimeo 
+							$videoid = enmse_vimeo($_POST['message_alternate_embed']);
+							$enmse_alternate_embed = '<iframe src="https://player.vimeo.com/video/' . $videoid . '?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+						} else {
+							$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						}
 					}
 					
 					$enmse_alternate_label = $_POST['message_alternate_label'];
@@ -613,6 +700,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								'post_title' => $cpttitle,
 								'post_excerpt' => $finalexcerpt,
 								'post_status' => 'publish',
+								'post_content' => '<span style="display: none"></span>',
 								'comment_status' => $enmse_comments,
 								'ping_status' => 'closed',
 								'post_name' => $permatitle,
@@ -902,7 +990,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_embed_code']) < 1 ) {
 						$enmse_embed_code = 0;
 					} else {
-						$enmse_embed_code = $_POST['message_embed_code'];
+						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code'])) {
+							$enmse_embed_code = $_POST['message_embed_code'];
+						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
+							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
+						} elseif (preg_match('/(youtube\.co|youtu\.b)\w+/', $_POST['message_embed_code'])) { // YouTube 
+							$videoid = enmse_youtube($_POST['message_embed_code']);
+							$enmse_embed_code = '<iframe src="https://www.youtube.com/embed/' . $videoid . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+						} elseif (preg_match('/(vimeo\.co)\w+/', $_POST['message_embed_code'])) { // Vimeo 
+							$videoid = enmse_vimeo($_POST['message_embed_code']);
+							$enmse_embed_code = '<iframe src="https://player.vimeo.com/video/' . $videoid . '?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+						} else {
+							$enmse_embed_code = $_POST['message_embed_code'];
+						}
 					}
 
 					if ( strlen($_POST['message_video_embed_url']) < 1 ) {
@@ -922,7 +1022,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed'])) {
+							$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
+							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
+						} elseif (preg_match('/(youtube\.co|youtu\.b)\w+/', $_POST['message_alternate_embed'])) { // YouTube 
+							$videoid = enmse_youtube($_POST['message_alternate_embed']);
+							$enmse_alternate_embed = '<iframe src="https://www.youtube.com/embed/' . $videoid . '" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+						} elseif (preg_match('/(vimeo\.co)\w+/', $_POST['message_alternate_embed'])) { // Vimeo 
+							$videoid = enmse_vimeo($_POST['message_alternate_embed']);
+							$enmse_alternate_embed = '<iframe src="https://player.vimeo.com/video/' . $videoid . '?title=0&byline=0&portrait=0" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+						} else {
+							$enmse_alternate_embed = $_POST['message_alternate_embed'];
+						}
 					}
 					
 					$enmse_alternate_label = $_POST['message_alternate_label'];
@@ -1166,6 +1278,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							'post_title' => $cpttitle,
 							'post_excerpt' => $finalexcerpt,
 							'post_status' => 'publish',
+							'post_content' => '&nbsp;',
 							'comment_status' => $enmse_comments,
 							'ping_status' => 'closed',
 							'post_name' => $permatitle,
@@ -1406,9 +1519,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					<tr valign="top">
 						<th scope="row">
 							Video Embed Code:
-							<p class="se-form-instructions">Paste the video embed code from Vimeo, YouTube or another video hosting service here.<br /><br />
+							<p class="se-form-instructions">Paste an iframe embed code, or just the URL if you're using Vimeo, YouTube, or Facebook.<br /><br />
 							<em>This will override the Video URL below and display this embed instead.</em><br /><br />
-							<em>Choose a large width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
+							<em>Choose a large or responsive width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
 						</th>
 						<td>
 							<textarea name="message_embed_code" id="message_embed_code" rows="6" cols="40" tabindex="6"><?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_embed_code']);} ?></textarea>
@@ -1505,7 +1618,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					<tr valign="top">
 						<th scope="row">
 							Additional Embed Code:
-							<p class="se-form-instructions">Paste the video embed code from Vimeo, YouTube or another video hosting service here.<br /><br />
+							<p class="se-form-instructions">Paste an iframe embed code, or just the URL if you're using Vimeo, YouTube, or Facebook.<br /><br />
 							<em>Choose a large width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
 						</th>
 						<td>
@@ -1769,6 +1882,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="1588"<?php if ( $deftrans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 									<option value="12"<?php if ( $deftrans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 									<option value="1713"<?php if ( $deftrans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
+									<option value="37"<?php if ( $deftrans == 37 ) { echo " selected=\"selected\""; } ?>>CEB - Common English Bible</option>
 									<option value="59"<?php if ( $deftrans == 59 ) { echo " selected=\"selected\""; } ?>>ESV - English Standard Version</option>
 									<option value="72"<?php if ( $deftrans == 72 ) { echo " selected=\"selected\""; } ?>>HCSB - Holman Christian Standard Bible</option>
 									<option value="1359"<?php if ( $deftrans == 1359 ) { echo " selected=\"selected\""; } ?>>ICB - International Childrens Bible</option>
@@ -1779,13 +1893,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 									<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 									<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+									<option value="2016"<?php if ( $deftrans == 2016 ) { echo " selected=\"selected\""; } ?>>NRSV - New Revised Standard Version</option>
 									<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 									<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 									<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+									<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
+									<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 									<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
-									<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 									<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+									<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
+									<option value="73"<?php if ( $deftrans == 73 ) { echo " selected=\"selected\""; } ?>>HFA - Hoffnung für alle</option>
+									<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 									<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+									<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 									<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 									<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 									<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -2038,9 +2158,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				<tr valign="top">
 					<th scope="row">
 						Video Embed Code:
-						<p class="se-form-instructions">Paste the video embed code from Vimeo, YouTube or another video hosting service here.<br /><br />
+						<p class="se-form-instructions">Paste an iframe embed code, or just the URL if you're using Vimeo, YouTube, or Facebook.<br /><br />
 						<em>This will override the Video URL below and display this embed instead.</em><br /><br />
-						<em>Choose a large width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
+						<em>Choose a large or responsive width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
 					</th>
 					<td>
 						<textarea name="message_embed_code" id="message_embed_code" rows="6" cols="40" tabindex="6"><?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_embed_code']);} else {if ($enmse_single->embed_code != "0") {echo stripslashes($enmse_single->embed_code);}} ?></textarea>
@@ -2150,7 +2270,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				<tr valign="top">
 					<th scope="row">
 						Additional Embed Code:
-						<p class="se-form-instructions">Paste the video embed code from Vimeo, YouTube or another video hosting service here.<br /><br />
+						<p class="se-form-instructions">Paste an iframe embed code, or just the URL if you're using Vimeo, YouTube, or Facebook.<br /><br />
 						<em>Choose a large width for your embed code; Series Engine will automatically size it down for mobile devices.</em></p>
 					</th>
 					<td>
@@ -2422,6 +2542,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="1588"<?php if ( $deftrans == 1588 ) { echo " selected=\"selected\""; } ?>>AMP - Amplified Bible</option>
 								<option value="12"<?php if ( $deftrans == 12 ) { echo " selected=\"selected\""; } ?>>ASV - American Standard Version</option>
 								<option value="1713"<?php if ( $deftrans == 1713 ) { echo " selected=\"selected\""; } ?>>CSB - Christian Standard Bible</option>
+								<option value="37"<?php if ( $deftrans == 37 ) { echo " selected=\"selected\""; } ?>>CEB - Common English Bible</option>
 								<option value="59"<?php if ( $deftrans == 59 ) { echo " selected=\"selected\""; } ?>>ESV - English Standard Version</option>
 								<option value="72"<?php if ( $deftrans == 72 ) { echo " selected=\"selected\""; } ?>>HCSB - Holman Christian Standard Bible</option>
 								<option value="1359"<?php if ( $deftrans == 1359 ) { echo " selected=\"selected\""; } ?>>ICB - International Childrens Bible</option>
@@ -2432,13 +2553,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="111"<?php if ( $deftrans == 111 ) { echo " selected=\"selected\""; } ?>>NIV - New International Version</option>
 								<option value="114"<?php if ( $deftrans == 114 ) { echo " selected=\"selected\""; } ?>>NKJV - New King James Version</option>
 								<option value="116"<?php if ( $deftrans == 116 ) { echo " selected=\"selected\""; } ?>>NLT - New Living Translation</option>
+								<option value="2016"<?php if ( $deftrans == 2016 ) { echo " selected=\"selected\""; } ?>>NRSV - New Revised Standard Version</option>
 								<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 								<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 								<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+								<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
+								<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 								<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
-								<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 								<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
+								<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
+								<option value="73"<?php if ( $deftrans == 73 ) { echo " selected=\"selected\""; } ?>>HFA - Hoffnung für alle</option>
+								<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 								<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
+								<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
 								<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 								<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 								<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>

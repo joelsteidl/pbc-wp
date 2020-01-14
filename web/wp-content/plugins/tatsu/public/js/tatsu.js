@@ -64,6 +64,7 @@
             didScroll = false,
             animate_wrapper = jQuery('.tatsu-animate, .be-animate'),
             skillsWrap = jQuery( '.be-skill' ),
+            animatedHeadings = jQuery('.tatsu-animated-heading-wrap'),
             scrollInterval,
             animateWrapperCount = animate_wrapper.length,
             alreadyVisibleIndex = 0,
@@ -121,7 +122,7 @@
                     animatedNumberWrap.each(function (i, el) {
                         var el = jQuery(el);
                         if( el.hasClass('animate') ) {
-                            if ( el.isVisible(true) ) {
+                            if ( el.isVisible(true) || $body.hasClass( 'tatsu-frame' ) ) {
                                 el.removeClass('animate');
                                 var $endval = Number( el.attr( 'data-number' ) );
                                 el.countTo({
@@ -141,67 +142,62 @@
             }
         }, 
 
+        builderAnimate = function( animationDetails ) {
+            var moduleId = animationDetails.id,
+                animation = animationDetails.animation,
+                animationDuration = animationDetails.animationDuration,
+                animationDelay = animationDetails.animationDelay,
+                animationEle = jQuery('.be-pb-observer-' + moduleId);
+            if( animationEle.length ) {
+                animationEle.removeClass('animated flipInX flipInY fadeIn fadeInDown fadeInLeft fadeInRight fadeInUp slideInDown slideInLeft slideInRight rollIn rollOut bounce bounceIn bounceInUp bounceInDown bounceInLeft bounceInRight fadeInUpBig fadeInDownBig fadeInLeftBig fadeInRightBig flash flip lightSpeedIn pulse rotateIn rotateInUpLeft rotateInDownLeft rotateInUpRight rotateInDownRight shake swing tada wiggle wobble infiniteJump zoomIn none already-visible end-animation');
+                setTimeout(function() {
+                    animationEle.css( 'animation-delay', animationDelay + 'ms' );
+                    animationEle.css( 'animation-duration', animationDuration + 'ms' );
+                    animationEle.one('webkitAnimationStart oanimationstart msAnimationStart animationstart',  function(e) {
+                        animationEle.addClass("end-animation");
+                    });
+                    animationEle.addClass( animation );
+                }, 10);
+            }
+        },
+
         cssAnimate = function( shouldUpdate, moduleId, context ) {
             var filteredElements = null;
-            if( shouldUpdate ) {
-                var el = jQuery('.be-pb-observer-'+moduleId );
-                if( el.hasClass( 'tatsu-animate' ) || el.hasClass( 'be-animate' ) ) {
-                   el.removeClass('animated flipInX flipInY fadeIn fadeInDown fadeInLeft fadeInRight fadeInUp slideInDown slideInLeft slideInRight rollIn rollOut bounce bounceIn bounceInUp bounceInDown bounceInLeft bounceInRight fadeInUpBig fadeInDownBig fadeInLeftBig fadeInRightBig flash flip lightSpeedIn pulse rotateIn rotateInUpLeft rotateInDownLeft rotateInUpRight rotateInDownRight shake swing tada wiggle wobble infiniteJump zoomIn none already-visible end-animation');
-                }else{
-                   el = el.find( '.tatsu-animate, .be-animate' ).removeClass('animated flipInX flipInY fadeIn fadeInDown fadeInLeft fadeInRight fadeInUp slideInDown slideInLeft slideInRight rollIn rollOut bounce bounceIn bounceInUp bounceInDown bounceInLeft bounceInRight fadeInUpBig fadeInDownBig fadeInLeftBig fadeInRightBig flash flip lightSpeedIn pulse rotateIn rotateInUpLeft rotateInDownLeft rotateInUpRight rotateInDownRight shake swing tada wiggle wobble infiniteJump zoomIn none already-visible end-animation');
-                }
-                if( el.length > 0 ) {
-                    jQuery.each( el, function( index, element ) {
-                        element = jQuery( element );
-                        var animationDelay = element.attr('data-animation-delay');
-                        element.css( 'animation-delay', animationDelay + 'ms' );
-                        element.one('webkitAnimationStart oanimationstart msAnimationStart animationstart',  
-                            function(e) {
-                                element.addClass("end-animation");
-                            });
-                        if ( element.isVisible( true ) && ( $win.innerHeight() - element[0].getBoundingClientRect().top > 100 ) ) {
-                            element.addClass("already-visible");
-                            element.addClass(element.attr('data-animation'));
-                            // element.addClass('animated');
-                        }
+            if(animateWrapperCount > 0) {
+                if( null != context ) {
+                    filteredElements = animate_wrapper.filter( function() {
+                        return 0  < jQuery( this ).closest( context ).length;
                     } );
+                }else {
+                    filteredElements = animate_wrapper;
                 }
-            } else {
-                 if(animateWrapperCount > 0) {
-                    if( null != context ) {
-                        filteredElements = animate_wrapper.filter( function() {
-                            return 0  < jQuery( this ).closest( context ).length;
-                        } );
-                    }else {
-                        filteredElements = animate_wrapper;
-                    }
-                    filteredElements.each(function (i, el) {     
-                        var el = jQuery(el);
-                        if(!el.hasClass('already-visible')) {
-                            var animationDelay = el.attr('data-animation-delay');
-                            el.css( 'animation-delay', animationDelay + 'ms' );
-                            el.one('webkitAnimationStart oanimationstart msAnimationStart animationstart',  
-                                function(e) {
-                                    el.addClass("end-animation");
-                                });
-                            // if( null != context ) {
+                filteredElements.each(function (i, el) {     
+                    var el = jQuery(el);
+                    if(!el.hasClass('already-visible')) {
+                        var animationDelay = el.attr('data-animation-delay');
+                        var animationDuration = el.attr('data-animation-duration');
+                        el.css( 'animation-delay', animationDelay + 'ms' );
+                        el.css( 'animation-duration', animationDuration + 'ms' );
+                        el.one('webkitAnimationStart oanimationstart msAnimationStart animationstart',  
+                            function(e) {
+                                el.addClass("end-animation");
+                            });
+                        // if( null != context ) {
 
-                            // }else {
-                                if( el.isVisible(true) && ( $win.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                            
-                                    el.addClass("already-visible");
-                                    el.addClass(el.attr('data-animation'));
-                                    // el.addClass('animated');
-                                    alreadyVisibleIndex ++;
-                                    if( alreadyVisibleIndex >= totalAnimCount && !$body.hasClass('tatsu-frame') ) {
-                                        clearInterval(scrollInterval);
-                                    }
+                        // }else {
+                            if( el.isVisible(true) && ( $win.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                            
+                                el.addClass("already-visible");
+                                el.addClass(el.attr('data-animation'));
+                                // el.addClass('animated');
+                                alreadyVisibleIndex ++;
+                                if( alreadyVisibleIndex >= totalAnimCount && !$body.hasClass('tatsu-frame') ) {
+                                    clearInterval(scrollInterval);
                                 }
-                           // }
-                        }
-                    });
-                }
+                            }
+                        // }
+                    }
+                });
             }
-            
         },
 
         lightbox = function() {
@@ -334,7 +330,8 @@
                             playerVars: { 
                                 'autoplay': autoplay,
                                 'loop' : loopVideo,
-                                'playlist' : loopVideo ? id : ''
+                                'playlist' : loopVideo ? id : '',
+                                'rel' : 0
                             },
                             width : curVideo.width(),
                             height : curVideo.width()/1.7777,
@@ -833,7 +830,7 @@
                     svgIcons.each(function(){
                         var curIcon = $(this),
                             svgOptions = {},
-                            animDuration = curIcon.attr( 'data-animation-duration' ),
+                            animDuration = curIcon.attr( 'data-line-animation-duration' ),
                             animTimingFunc = curIcon.attr( 'data-svg-animation' ) || 'EASE',
                             pathTimingFunc = curIcon.attr( 'data-path-animation' ) || 'EASE',
                             svgIconEle = curIcon.find( 'svg' );
@@ -892,6 +889,40 @@
                     });
                 });
             }
+        },
+        carouselIOSFix = function() {
+            var touchingCarousel = false,
+                touchStartCoords;
+        
+            document.body.addEventListener('touchstart', function(e) {
+                if (e.target.closest('.flickity-slider')) {
+                touchingCarousel = true;
+                } else {
+                touchingCarousel = false;
+                return;
+                }
+        
+                touchStartCoords = {
+                x: e.touches[0].pageX,
+                y: e.touches[0].pageY
+                }
+
+            });
+        
+            document.body.addEventListener('touchmove', function(e) {
+                if (!(touchingCarousel && e.cancelable)) {
+                return;
+                }
+        
+                var moveVector = {
+                x: e.touches[0].pageX - touchStartCoords.x,
+                y: e.touches[0].pageY - touchStartCoords.y
+                };
+        
+                if (Math.abs(moveVector.x) > 7)
+                e.preventDefault()
+        
+            }, {passive: false});
         },
         slider = function() {
             var sliders = $( '.be-slider' ),    
@@ -1011,6 +1042,7 @@
             tatsuCallbacks[ 'tatsu_accordion' ] = tatsu_accordion;
             tatsuCallbacks[ 'tatsu_lists' ] = listsTimeline;
             tatsuCallbacks[ 'tatsu_typed_text' ] = typedText;
+            tatsuCallbacks[ 'tatsu_animated_heading' ] = animatedHeading;
         },
 
         parallax = function() {
@@ -1274,8 +1306,14 @@
             if( typedText.length > 0 ){
                 asyncloader.require( 'typed' ,function() {
                     typedText.each( function(){
-                        var rotatedText = jQuery(this).attr('data-rotate-text').split(',');
-                        var typedTextId = jQuery(this).find('span').attr('id');
+                        var rotatedText = jQuery(this).attr('data-rotate-text').split(','),
+                            textLoop = jQuery(this).attr('data-loop-text'),
+                            typedTextId = jQuery(this).find('span').attr('id');
+                            if( textLoop === '1' ){
+                                textLoop = true;
+                            } else {
+                                textLoop = false;
+                            }
                         new Typed (
                             '#'+typedTextId,
                             { 
@@ -1284,12 +1322,205 @@
                                 backSpeed: 75,
                                 backDelay: 500,
                                 startDelay: 1000,
-                                loop: true, 
+                                loop: textLoop, 
                             }
                         );
                     });
                 });
             } 
+        },
+        animatedHeading = function( shouldUpdate, moduleId ){ 
+            if( animatedHeadings.length ){
+                asyncloader.require( 'anime' ,function() {
+                    animatedHeadings.each(function(){
+                        var $this = $(this);
+
+                        if( moduleId && !$this.closest('.be-pb-observer-' + moduleId).length ){
+                            return;
+                        }
+
+                        if( !$this.isVisible(-100) ){
+                            return;
+                        } else {
+                            if( $this.hasClass('tatsu-anime-applied') ){
+                                return;
+                            } else {
+                                $this.addClass('tatsu-anime-applied');
+                            }
+                        }
+
+                        var headingInner =  $this.find( '.tatsu-animated-heading-inner' ),
+                            animationStyle = $this.attr('data-anime-type'),
+                            animationDuration = $this.attr('data-anime-duration');
+
+                            if( typeof animationDuration === 'string' ){
+                                animationDuration = parseInt(animationDuration);
+                            }
+
+                        switch(animationStyle){
+                            case 'anime_split_letter' :
+                                headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'><span>$&</span></span>") );
+                                anime.timeline()
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter span'),
+                                        translateY: ["1.1em", 0],
+                                        easing: "easeOutExpo",
+                                        duration: 750,
+                                        delay: function(el, i) {
+                                          return ( animationDuration * 4) * (i+1)
+                                        }
+                                })
+                                break;
+                            case 'anime_split_word' :
+                                headingInner.html( headingInner.text().replace(/(\w+)|\W! /g, "<span class='tatsu-animated-heading-letter'><span>$&</span></span>") );
+                                anime.timeline()
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter span'),
+                                        translateY: ["1.1em", 0],
+                                        duration: 750,
+                                        easing: "easeOutExpo",
+                                        delay: function(el, i) {
+                                            return ( animationDuration * 12) * i;
+                                        }
+                                })
+                                break;
+                                case 'anime_from_right' :
+                                    headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                    anime.timeline()
+                                        .add({
+                                            targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                            translateX: [40,0],
+                                            translateZ: 0,
+                                            opacity: [0,1],
+                                            easing: "easeOutExpo",
+                                            duration: 1200,
+                                            delay: function(el, i) {
+                                              return ( animationDuration * 2) * i;
+                                            }
+                                    })
+                                    break;
+                                case 'anime_flip_in' :
+                                    headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                    anime.timeline()
+                                        .add({
+                                            targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                            rotateY: [-90, 0],
+                                            duration: 1300,
+                                            delay: function(el, i) {
+                                              return ( animationDuration * 2) * i;
+                                            }                                        
+                                    })
+                                    break;
+                            case 'anime_top_bottom_lines' :
+                                headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                
+                                anime.timeline()
+                                .add({
+                                    targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                    scale: [0.3,1],
+                                    opacity: [0,1],
+                                    translateZ: 0,
+                                    easing: "easeOutExpo",
+                                    duration: 600,
+                                    delay: function(el, i) {
+                                        return ( animationDuration * 3) * (i+1)
+                                    }
+                                }).add({
+                                    targets: $this[0].querySelectorAll('.tatsu-animated-heading-line'),
+                                    scaleX: [0,1],
+                                    opacity: [0.5,1],
+                                    easing: 'easeOutExpo',
+                                    duration: 900,
+                                    delay: function(el, i, l) {
+                                        return 80 * (l - i);
+                                    }
+                                }, '-=900')
+                                break;
+                                case 'anime_slide_underline' :
+                                    headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                    
+                                    anime.timeline()
+                                    .add({
+                                        targets: $this[0].querySelectorAll('.tatsu-animated-heading-line'),
+                                        scaleX: [0,1],
+                                        opacity: [0.5,1],
+                                        easing: "easeInOutExpo",
+                                        duration: 900
+                                    })
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                        opacity: [0,1],
+                                        translateX: [40,0],
+                                        translateZ: 0,
+                                        scaleX: [0.3, 1],
+                                        easing: "easeOutExpo",
+                                        duration: 1000,
+                                        delay: function(el, i) {
+                                          return ( animationDuration * 8) * i;
+                                        }
+                                      }, '-=600')
+                                    break;
+                                case 'anime_slide_cursor' :
+                                    headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                    
+                                    anime.timeline()
+                                    .add({
+                                        targets: $this[0].querySelectorAll('.tatsu-animated-heading-line'),
+                                        scaleY: [0,1],
+                                        opacity: [0.5,1],
+                                        easing: "easeOutExpo",
+                                        delay : 400,
+                                        duration: 700
+                                    })
+                                    .add({
+                                        targets: $this[0].querySelectorAll('.tatsu-animated-heading-line'),
+                                        translateX: [0,headingInner.width()],
+                                        easing: "easeOutExpo",
+                                        duration: 700,
+                                        delay: 100
+                                    })
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                        opacity: [0,1],
+                                        easing: "easeOutExpo",
+                                        duration: 600,
+                                        delay: function(el, i) {
+                                          return ( animationDuration * 2) * (i+1)
+                                        }
+                                        }, '-=775')
+                                    break;
+                            case 'anime_zoom_enter' :
+                                headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                anime.timeline()
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                        scale: [4,1],
+                                        opacity: [0,1],
+                                        translateZ: 0,
+                                        easing: "easeOutExpo",
+                                        duration: 950,
+                                        delay: function(el, i) {
+                                          return ( animationDuration * 3)*i;
+                                        }
+                                })
+                                break;
+                            case 'anime_fade_in' :
+                                headingInner.html( headingInner.text().replace(/([^*{1}! ]|\w)/g, "<span class='tatsu-animated-heading-letter'>$&</span>") );
+                                anime.timeline()
+                                    .add({
+                                        targets: headingInner[0].querySelectorAll('.tatsu-animated-heading-letter'),
+                                        opacity: [0,1],
+                                        easing: "easeInOutQuad",
+                                        duration: 1500,
+                                        delay: function(el, i) {
+                                          return ( animationDuration * 6) * (i+1)
+                                        }
+                                })
+                                break;
+                        }
+                    });
+                })
+            }
         },
 
         ready = function(){
@@ -1308,6 +1539,7 @@
             closeNotification();
             animatedNumbers();
             carousel();
+            carouselIOSFix();
             slider();
             lineAnimate();
             if( !jQuery( 'body' ).hasClass( 'be-sticky-sections' ) ) {
@@ -1318,13 +1550,15 @@
             tatsu_tabs();
             typedText();
             tatsu_accordion();
+            animatedHeading();
             // backgroundVideo();
             registerCallbacks();
 
             jQuery(window).on( 'tatsu_update.tatsu', function( e, data )  {
                 animate_wrapper = jQuery('.tatsu-animate, .be-animate');
                 skillsWrap = jQuery( '.be-skill' );
-                animateWrapperCount = animate_wrapper.length,
+                animatedHeadings = jQuery('.tatsu-animated-heading-wrap');
+                animateWrapperCount = animate_wrapper.length;
                 animatedNumberWrap = jQuery('.tatsu-an');
                 totalAnimCount = animate_wrapper.length + animatedNumberWrap.length;
                 if( 'trigger_ready' == data.moduleName ) {
@@ -1344,13 +1578,15 @@
                     tatsuCallbacks[data.moduleName]( data.shouldUpdate,data.moduleId );                                         
                 } 
                 if ( 'csstrigger' === data.type ) {
-                  cssAnimate( data.triggeredFromTatsu, data.id );
+                  builderAnimate( data.animationDetails );
                 }
             });
 
             jQuery(window).on('scroll', function(){
                 didScroll = true;
                 progressBar();
+                animatedHeading();
+
             });
 
             cssAnimateScrollCallback();
@@ -1371,7 +1607,8 @@
         return {
             ready: ready,
             lightbox: lightbox,
-            cssAnimate: cssAnimate
+            cssAnimate: cssAnimate,
+            animatedNumbers : animatedNumbers
         }
 
     })(); 

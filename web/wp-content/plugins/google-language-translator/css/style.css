@@ -42,13 +42,23 @@
   content:'\f115';
 }
 
-#glt-settings .glt-advanced-settings h3:before {
-  content:'\f314';
+#glt-settings .glt-flag-settings h3:before {
+  content:'\f227';
+}
+
+#glt-settings .glt-seo-settings h3:before {
+  content:'\f11e';
+}
+
+#glt-settings .glt-gtranslate-ad h3:before {
+  content:'\f326';
 }
 
 #glt-settings .glt-css-settings h3:before {
   content:'\f119';
 }
+
+#glt-settings .glt-seo-settings {background-color: #FFC293;}
 
 #glt-settings .glt-main-settings h3:before,
 #glt-settings .glt-layout-settings h3:before,
@@ -56,7 +66,9 @@
 #glt-settings .glt-floating-widget-settings h3:before,
 #glt-settings .glt-usage-settings h3:before,
 #glt-settings .glt-preview-settings h3:before,
-#glt-settings .glt-advanced-settings h3:before,
+#glt-settings .glt-flag-settings h3:before,
+#glt-settings .glt-seo-settings h3:before,
+#glt-settings .glt-gtranslate-ad h3:before,
 #glt-settings .glt-css-settings h3:before {
   margin-right: 5px;
   display: inline-block;
@@ -75,7 +87,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-#glt-settings .button, 
+#glt-settings .button,
 #glt-settings .button-primary {
   text-shadow: none;
   border-radius: 0;
@@ -89,31 +101,31 @@
   -moz-transition: .25s opacity ease-in-out;
 }
 
-#glt-settings .button { 
-  background: #95a5a6; 
-  border:1px solid #95a5a6; 
-  color:#fff; 
-} 
+#glt-settings .button {
+  background: #95a5a6;
+  border:1px solid #95a5a6;
+  color:#fff;
+}
 
-#glt-settings .button-primary { 
-  background:#ea4335; 
-  border:1px solid #ea4335; 
-} 
+#glt-settings .button-primary {
+  background:#ea4335;
+  border:1px solid #ea4335;
+}
 
-#glt-settings .button:hover { 
-  opacity:0.8; 
-} 
+#glt-settings .button:hover {
+  opacity:0.8;
+}
 
-#glt-settings .button-primary:hover { 
-  opacity:0.8; 
-  background:#ea4335; 
-  border:1px solid #ea4335; 
+#glt-settings .button-primary:hover {
+  opacity:0.8;
+  background:#ea4335;
+  border:1px solid #ea4335;
 }
 
 .tool-container {
     bottom:50px !important;
     top:auto !important;
-    z-index:9999 !important;
+    z-index:99999999 !important;
 }
 
 .tool-container .tool-items a {
@@ -135,17 +147,17 @@ a.wp-helpdesk-logo:focus {
   margin:4px 0;
 }
 
-#google_language_translator select.goog-te-combo { 
+#google_language_translator select.goog-te-combo {
   width:143px;
   background:#fff;
-  box-shadow:none !important; 
-  -moz-box-shadow:none !important; 
-  -webkit-box-shadow:none !important; 
-  padding:3px !important; 
-  height:auto !important; 
-  border:1px solid lightgray !important; 
-  border-radius:0px !important; 
-  -webkit-border-radius:0px; 
+  box-shadow:none !important;
+  -moz-box-shadow:none !important;
+  -webkit-box-shadow:none !important;
+  padding:3px !important;
+  height:auto !important;
+  border:1px solid lightgray !important;
+  border-radius:0px !important;
+  -webkit-border-radius:0px;
   -moz-border-radius:0px !important;
   -o-border-radius:0px !important;
 }
@@ -160,6 +172,7 @@ a.wp-helpdesk-logo:focus {
 
 #flags ul {
   margin:0;
+  padding:0;
 }
 
 #flags li {
@@ -249,7 +262,7 @@ a.single-language span.size16 {
     -o-box-sizing:content-box;
     -ms-box-sizing:content-box;
 }
-  
+
 .tool-container .tool-items a {
   display:inline-block;
   margin:3px 5px 3px;
@@ -267,10 +280,10 @@ a.single-language span.size16 {
   vertical-align:middle;
 }
 
-select.goog-te-combo:focus { 
-  box-shadow:none !important; 
-  -moz-box-shadow:none !important; 
-  -webkit-box-shadow:none !important; 
+select.goog-te-combo:focus {
+  box-shadow:none !important;
+  -moz-box-shadow:none !important;
+  -webkit-box-shadow:none !important;
 }
 
 .metabox-holder {
@@ -279,25 +292,25 @@ select.goog-te-combo:focus {
 }
 
 .metabox-holder h2 {
-  margin-bottom:18px; 
+  margin-bottom:18px;
 }
 
-.submit { 
+.submit {
   padding:0px;
 }
 
 .form-table th {
-  width:50%; 
+  width:50%;
 }
 
-td.advanced { 
+td.advanced {
   padding-top:0px;
   padding-bottom:0px;
 }
 
-p.hello { 
-  font-size:12px; 
-  color:darkgray; 
+p.hello {
+  font-size:12px;
+  color:darkgray;
 }
 
 .flag{
@@ -316,7 +329,7 @@ a.nturl {
 }
 
 .attribution {
-    width:152px; 
+    width:152px;
     line-height:1em;
     margin-top:4px;
 }
@@ -335,10 +348,10 @@ span.goog-branding {
     float: right;
 }
 
-.goog-logo-link, 
-.goog-logo-link:link, 
-.goog-logo-link:visited, 
-.goog-logo-link:hover, 
+.goog-logo-link,
+.goog-logo-link:link,
+.goog-logo-link:visited,
+.goog-logo-link:hover,
 .goog-logo-link:active {
     font-size: 12px;
     font-weight: bold;
@@ -351,12 +364,12 @@ span.goog-branding img {
     float: left;
     margin:0px;
     width: 37px;
-  
+
 }
 
 span.vertical-translator {
-    position:auto; 
-    float:none !important; 
+    position:auto;
+    float:none !important;
     font-size: 11px;
     font-family: arial;
     color: rgb(102, 102, 102);
@@ -380,7 +393,7 @@ span.vertical-translator {
     padding:0px !important;
 }
 
-.tool-container { 
+.tool-container {
     line-height:1;
 }
 

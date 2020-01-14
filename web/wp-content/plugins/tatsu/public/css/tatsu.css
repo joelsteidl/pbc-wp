@@ -562,7 +562,7 @@ body {
    ========================================================================= */
 
 
-@media only screen and (min-width: 1377px) {
+@media only screen and (min-width: 1367px) {
     .tatsu-hide-desktop {
         display: none !important;
     }    
@@ -650,6 +650,9 @@ body {
 
 @media only screen and (max-width: 1366px) and (-webkit-min-device-pixel-ratio: 2) {
     .touch .tatsu-section {
+        background-attachment: scroll !important;
+    }
+    .touch .tatsu-section-background {
         background-attachment: scroll !important;
     }    
 }

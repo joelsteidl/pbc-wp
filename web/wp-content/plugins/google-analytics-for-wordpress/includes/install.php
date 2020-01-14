@@ -57,7 +57,6 @@ class MonsterInsights_Install {
 		// Get a copy of the current MI settings.
 		$this->new_settings = get_option( monsterinsights_get_option_name() );
 
-
 		$version = get_option( 'monsterinsights_current_version', false );
 		$cachec  = false; // have we forced an object cache to be cleared already (so we don't clear it unnecessarily)
 
@@ -107,6 +106,26 @@ class MonsterInsights_Install {
 
 			if ( version_compare( $version, '7.5.0', '<' ) ) {
 				$this->v750_upgrades();
+			}
+
+			if ( version_compare( $version, '7.6.0', '<' ) ) {
+				$this->v760_upgrades();
+			}
+
+			if ( version_compare( $version, '7.7.1', '<' ) ) {
+				$this->v771_upgrades();
+			}
+
+			if ( version_compare( $version, '7.8.0', '<' ) ) {
+				$this->v780_upgrades();
+			}
+
+			if ( version_compare( $version, '7.9.0', '<' ) ) {
+				$this->v790_upgrades();
+			}
+
+			if ( version_compare( $version, '7.10.0', '<' ) ) {
+				$this->v7100_upgrades();
 			}
 
 			// Do not use. See monsterinsights_after_install_routine comment below.
@@ -225,10 +244,10 @@ class MonsterInsights_Install {
 				)
 			),
 			'demographics'              => 1,
-			'ignore_users'              => array( 'administrator' ),
+			'ignore_users'              => array( 'administrator', 'editor' ),
 			'dashboards_disabled'       => 0,
 			'anonymize_ips'             => 0,
-			'extensions_of_files'       => 'doc,exe,js,pdf,ppt,tgz,zip,xls',
+			'extensions_of_files'       => 'doc,pdf,ppt,zip,xls,docx,pptx,xlsx',
 			'subdomain_tracking'        => '',
 			'link_attribution'          => true,
 			'tag_links_in_rss'          => true,
@@ -511,5 +530,144 @@ class MonsterInsights_Install {
 				update_option( 'monsterinsights_notices', $notices );
 			}
 		}
+	}
+
+	/**
+	 * Upgrade routine for version 7.6.0
+	 */
+	public function v760_upgrades() {
+
+		$cross_domains = isset( $this->new_settings['cross_domains'] ) ? $this->new_settings['cross_domains'] : array();
+
+		if ( ! empty( $cross_domains ) && is_array( $cross_domains ) ) {
+			$current_domain = wp_parse_url( home_url() );
+			$current_domain = isset( $current_domain['host'] ) ? $current_domain['host'] : '';
+			if ( ! empty( $current_domain ) ) {
+				$regex = '/^(?:' . $current_domain . '|(?:.+)\.' . $current_domain . ')$/m';
+				foreach ( $cross_domains as $key => $cross_domain ) {
+					if ( ! isset( $cross_domain['domain'] ) ) {
+						continue;
+					}
+					preg_match( $regex, $cross_domain['domain'], $matches );
+					if ( count( $matches ) > 0 ) {
+						unset( $this->new_settings['cross_domains'][ $key ] );
+					}
+				}
+			}
+		}
+
+	}
+
+	/**
+	 * Upgrade routine for version 7.7.1
+	 */
+	public function v771_upgrades() {
+
+		if ( ! monsterinsights_is_pro_version() ) {
+			// We only need to run this for the Pro version.
+			return;
+		}
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+		$plugin = 'wp-scroll-depth/wp-scroll-depth.php';
+		// Check if wp-scroll-depth is active and deactivate to avoid conflicts with the pro scroll tracking feature.
+		if ( is_plugin_active( $plugin ) ) {
+			deactivate_plugins( $plugin );
+		}
+
+	}
+
+	/**
+	 * Upgrade routine for version 7.8.0
+	 */
+	public function v780_upgrades() {
+
+		if ( monsterinsights_get_ua() ) {
+			// If we have a UA, don't show the first run notice.
+			monsterinsights_update_option( 'monsterinsights_first_run_notice', true );
+
+			// If they are already tracking when they upgrade, mark connected time as now.
+			$over_time = get_option( 'monsterinsights_over_time', array() );
+			if ( empty( $over_time['connected_date'] ) ) {
+				$over_time['connected_date'] = time();
+				update_option( 'monsterinsights_over_time', $over_time );
+			}
+		}
+
+	}
+
+	/**
+	 * Upgrade routine for version 7.9.0
+	 */
+	public function v790_upgrades() {
+
+		// If they are already tracking, don't show the notice.
+		if ( monsterinsights_get_ua() ) {
+			update_option( 'monsterinsights_frontend_tracking_notice_viewed', true );
+
+			// If they are already tracking when they upgrade & not already marked mark connected time as now.
+			// Adding this here again as 7.8.0 upgrade didn't run for all users.
+			$over_time = get_option( 'monsterinsights_over_time', array() );
+			if ( empty( $over_time['connected_date'] ) ) {
+				$over_time['connected_date'] = time();
+				update_option( 'monsterinsights_over_time', $over_time );
+			}
+		}
+
+	}
+
+	/**
+	 * Upgrade routine for version 8.0.0
+	 */
+	public function v7100_upgrades() {
+
+		// Remove exe js and tgz from file downloads tracking.
+		$current_downloads = isset( $this->new_settings['extensions_of_files'] ) ? $this->new_settings['extensions_of_files'] : array();
+
+		if ( ! empty( $current_downloads ) ) {
+			$extensions_to_remove = array(
+				'exe',
+				'js',
+				'tgz'
+			);
+			$extensions_to_add    = array(
+				'docx',
+				'pptx',
+				'xlsx',
+			);
+
+			$extensions         = explode( ',', $current_downloads );
+			$updated_extensions = array();
+
+			if ( ! empty( $extensions ) && is_array( $extensions ) ) {
+				foreach ( $extensions as $extension ) {
+					if ( ! in_array( $extension, $extensions_to_remove ) ) {
+						$updated_extensions[] = $extension;
+					}
+				}
+			}
+
+			foreach ( $extensions_to_add as $extension_to_add ) {
+				if ( ! in_array( $extension_to_add, $updated_extensions ) ) {
+					$updated_extensions[] = $extension_to_add;
+				}
+			}
+		} else {
+			$updated_extensions = array(
+				'pdf',
+				'doc',
+				'ppt',
+				'xls',
+				'zip',
+				'docx',
+				'pptx',
+				'xlsx',
+			);
+		}
+
+		$updated_extensions = implode( ',', $updated_extensions );
+
+		$this->new_settings['extensions_of_files'] = $updated_extensions;
+
 	}
 }

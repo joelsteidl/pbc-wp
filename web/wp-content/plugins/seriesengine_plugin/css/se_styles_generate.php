@@ -262,7 +262,7 @@ if ( isset($enmse_options['language']) ) { // Find the Language
 #seriesengine .enmse-watch .enmse-vid-container, #seriesengine .enmse-alternate .enmse-vid-container {
 	position: relative;
 	padding-bottom: 56.25%;
-	padding-top: 30px; 
+	/*padding-top: 30px;*/
 	height: 0; 
 	overflow: hidden;
 }

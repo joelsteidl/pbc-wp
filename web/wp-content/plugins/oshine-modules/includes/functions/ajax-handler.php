@@ -32,7 +32,7 @@ if ( ! function_exists( 'be_themes_contact_authentication' ) ) :
 			}		
 			$subject= $contact_subject;
 			$from = $contact_name." <".$contact_email.">";
-			$headers = "From:" . $from;
+			$headers = "From:" . $from . "\r\n" . 'Reply-To: '.$from;
 			$mail = wp_mail($to,$subject,$contact_comment,$headers);
 			if( $mail ) {
 				$result['status']="success";
@@ -291,12 +291,12 @@ if ( ! function_exists( 'be_themes_get_ajax_full_screen_gutter_portfolio' ) ) :
 				$output .= ( ( 'style2' == $prebuilt_hover_style ) ? '<div class = "be-prebuilt-overlay-wrapper" '.$thumb_bg_special_style.'></div>' : '' );
 				$output .=  ( 'style3' == $prebuilt_hover_style ) ? '<div class = "thumb-shadow-wrapper"></div><div '.$thumb_bg_special_style.' class = "be-thumb-overlay-wrap"></div>' : '';
 				$output .= '<div class="thumb-title-wrap ">';
-				$output .= '<div class="thumb-title '. ( ( 'style5' != $title_style && 'style6' != $title_style && '' == $prebuilt_hover_style ) ? ( 'animated '. $trigger_animation .'"' ) : ''  ) . ( ( '' == $prebuilt_hover_style ) ? ( ' data-animation-type="'.$title_animation_type.'"' ) : ' ' ) . ( !empty( $title_color ) ? 'style="color: '.$title_color.';"' : '').'>';
+				$output .= '<div class="thumb-title '. ( ( 'style5' != $title_style && 'style6' != $title_style && '' == $prebuilt_hover_style ) ? ( 'animated '. $trigger_animation .'"' ) : '"'  ) . ( ( '' == $prebuilt_hover_style ) ? ( ' data-animation-type="'.$title_animation_type.'"' ) : ' ' ) . ( !empty( $title_color ) ? 'style="color: '.$title_color.';"' : '').'>';
 				$output .= ( 'style2' == $prebuilt_hover_style || 'style4' == $prebuilt_hover_style ) ? ( '<div class = "thumb-title-inner-wrap">' ) : '';
 				$output .= get_the_title();
 				$output .= ( 'style2' == $prebuilt_hover_style ) ? ( '</div><hr class = "be-portfolio-prebuilt-hover-separator"></hr></div>' ) : ( ( 'style4' == $prebuilt_hover_style ) ? '</div></div>' : '</div>' );				
 				if(!empty($terms) && (isset($cat_hide) && !($cat_hide) ) ) {
-					$output .= '<div class="portfolio-item-cats '. ( ( 'style5' != $title_style && 'style6' != $title_style && '' == $prebuilt_hover_style ) ? ( 'animated '. $trigger_animation .'"' ) : ''  ) . ( ( '' == $prebuilt_hover_style ) ? ( ' data-animation-type="'.$cat_animation_type.'"' ) : ' ' ) . ( !empty( $cat_color ) ? 'style="color: '.$cat_color.';"' : '').'>';
+					$output .= '<div class="portfolio-item-cats '. ( ( 'style5' != $title_style && 'style6' != $title_style && '' == $prebuilt_hover_style ) ? ( 'animated '. $trigger_animation .'"' ) : '"'  ) . ( ( '' == $prebuilt_hover_style ) ? ( ' data-animation-type="'.$cat_animation_type.'"' ) : ' ' ) . ( !empty( $cat_color ) ? 'style="color: '.$cat_color.';"' : '').'>';
 					$length = 1;
 					$output .= ( ( 'style2' == $prebuilt_hover_style || 'style4' == $prebuilt_hover_style ) ? '<div class = "portfolio-item-cats-inner-wrap">' : '' );
 					foreach ($terms as $term) {
@@ -367,7 +367,7 @@ if ( ! function_exists( 'be_themes_get_ajax_full_screen_gutter_portfolio' ) ) :
 					$output .= '</div>'; //End Gallery
 					$output .= $tempModalContents;
 				endif;
-				$output .= ($global_like_button != 1) ? '<div class="like-button-wrap">'.be_get_like_button(get_the_ID()).'</div>' : '';
+				$output .= ($global_like_button != 1) ? '<div class="portfolio-like like-button-wrap">'.be_get_like_button(get_the_ID()).'</div>' : '';
 				$output .= '</div>'; //End Element Inner
 				$output .= '</div>'; //End Element
 			endwhile;
@@ -390,16 +390,25 @@ if ( ! function_exists( 'be_themes_post_like' ) ) :
 		extract($_POST);
 		$post_like_count = get_post_meta( $post_id, "_post_like_count", true );
 		if (be_AlreadyLiked_post($post_id)) {
-			$result['status'] = "error";
+			$post_like_count = $post_like_count - 1; 
+			unset($_COOKIE[$post_id."_liked"]);
+    		setcookie($post_id."_liked", '', time() - 3600, '/'); // empty value and old timestamp
+			update_post_meta( $post_id, "_post_like_count", $post_like_count );
+			$result['status'] = "success";
+			$result['type'] = "unlike";
 			$result['data'] = "You Already Liked This Item";
 			$result['count'] = $post_like_count;
 		} else {
+			$post_like_count = $post_like_count + 1;
+			unset($_COOKIE[$post_id."_liked"]);
 			setcookie( $post_id."_liked", $post_id, time() + 31536000, "/");
-			update_post_meta( $post_id, "_post_like_count", ++$post_like_count );
+			update_post_meta( $post_id, "_post_like_count", $post_like_count );
 			$result['status'] = "success";
+			$result['type'] = "like";
 			$result['data'] = "You Liked Successfully";
 			$result['count'] = $post_like_count;
 		}
+		// var_dump($result);
 		header('Content-type: application/json');
 		echo json_encode($result);
 		die();
@@ -529,7 +538,7 @@ if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
 							}
 						}
 					}
-					
+
 					$output .= '<a href="'.$image['full_image_url'].'" data-href="'.$image['full_image_url'].'" class="thumb-wrap '.$image['mfp_class'].' '.$gdpr_concern_selector.'" data-gdpr-atts='.$gdpr_atts.' title="'.$image['description'].'">';
 					
 				}
@@ -548,7 +557,7 @@ if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
 				$output .= '</div></div>'; //End Thumb Bg & Thumb Overlay
 				$output .= '</a>'; //End Thumb Wrap
 				$output .= $tempModalContents;
-				$output .= ($like_button != 1 && !empty($image['id'])) ? '<div class="like-button-wrap">'.be_get_like_button($image['id']).'</div>' : '';
+				$output .= ($like_button != 1 && !empty($image['id'])) ? '<div class="gallery-like like-button-wrap">'.be_get_like_button($image['id']).'</div>' : '';
 				$output .= '</div>'; //End Element Inner
 				$output .= '</div>'; //End Element
 			}	
@@ -565,29 +574,40 @@ if ( ! function_exists( 'be_themes_get_be_justified_gallery_with_pagination' ) )
 	function be_themes_get_be_justified_gallery_with_pagination(){
 		
 		extract($_POST);
+
 		if($paged != 0){
 			$images_offset = $paged * $items_per_load;
 		}else{
 			$images_offset = $paged;
-		}
+        }
+        
 
 		$images_arr = explode(',', $images_arr);
 		if($images_offset >= count($images_arr) ) {
 			return 0;
 			die();
-		}
-		
-		$images_subset = array_slice($images_arr, $images_offset, $items_per_load);
-		$images = get_gallery_image_from_source(json_decode(stripslashes($source),true), implode(",",$images_subset), 'photoswipe');
+        }
 
-		echo get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay);
+        
+		
+        $images_subset = array_slice($images_arr, $images_offset, $items_per_load);
+        $source = array (
+			'source' => 'selected',
+			'account_name' => '', 
+			'count' => '',
+			'col' => 'two',
+			'masonry' => 1,
+		);
+		$images = get_gallery_image_from_source( $source, implode(",",$images_subset), 'photoswipe');
+
+		echo get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type);
 	}
 	add_action( 'wp_ajax_nopriv_get_be_justified_gallery_with_pagination', 'be_themes_get_be_justified_gallery_with_pagination' );
 	add_action( 'wp_ajax_get_be_justified_gallery_with_pagination', 'be_themes_get_be_justified_gallery_with_pagination' );
 endif;
 
 if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
-	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay){
+	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type){
 		
 		$output = '';
 
@@ -600,11 +620,41 @@ if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
 		if(!empty($images)){
 			foreach($images as $image) {
 				$image_atts = get_portfolio_image($image['id'], 'three', '1');
-				$attachment_info = be_wp_get_attachment( $image['id'] );
+                $attachment_info = be_wp_get_attachment( $image['id'] );
+                $placeholder_padding = 100;
+                $cur_image_attr = array();
+                $cur_image_class = array( 'thumb-img' );
+                if( !empty( $image['width'] ) && !empty( $image['height'] ) ) {
+                    $placeholder_padding = ($image['height']/$image['width'])*100;
+                    $cur_image_attr[] = 'height = "' . $image['height'] . '"';
+                    $cur_image_attr[] = 'width = "' . $image['width'] . '"';
+                }
+                if( !empty( $lazy_load ) ) {
+                    $cur_image_attr[] = 'data-src = "' . $image['thumbnail'] . '"';
+                }else {
+                    $cur_image_attr[] = 'src = "' . $image['thumbnail'] . '"';
+                }
+                if( !empty( $attachment_info['alt'] ) ) {
+                    $cur_image_attr[] = 'alt = "' . $attachment_info['alt'] . '"';
+				}
+				if( !empty( $attachment_info['title'] ) ) {
+                    $cur_image_attr[] = 'title = "' . $attachment_info['title'] . '"';
+				}
+				if(isset($caption_type)){
+					if( $caption_type === 'none'){
+						$caption = '';
+					}else{
+						$caption = $attachment_info[$caption_type];
+					}
+				}else{
+					$caption = $attachment_info['alt'];
+				}
 				$output .= '<div class="element be-hoverlay '.$image_atts['class'].' '.$hover_style.' '.$img_grayscale.'">';
-				$output .= '<div class="element-inner">';
+				$output .= '<div class="element-inner ' .$image_effect.'-effect">';
 				$output .= '<a href="'.$image['full_image_url'].'" data-size="'.$image['width'].'x'.$image['height'].'" data-href="'.$image['full_image_url'].'" class="thumb-wrap" title="'.$image['description'].'">';
-				$output .= '<div class="flip-wrap"><div class="flip-img-wrap '.$image_effect.'-effect"><img src="'.$image['thumbnail'].'" alt="'.$attachment_info['alt'].'" /></div></div>';
+                $output .= '<div class="flip-img-wrap">';
+                $output .= '<img class = "thumb-img" ' . implode( ' ', $cur_image_attr ) . ' />';
+                $output .= '</div>'; //End flip img wrap
 				if($disable_overlay == 0){
 					$output .= '<div class="thumb-overlay"><div class="thumb-bg" '.$thumb_bg_style.'>';
 					$output .= '<div class="thumb-title-wrap display-table-cell vertical-align-middle align-center fadeIn animated">';
@@ -613,14 +663,20 @@ if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
 				}
 				
 				$output .= '</a>'; //End Thumb Wrap
-				$output .= ($like_button != 1 && !empty($image['id'])) ? '<div class="like-button-wrap">'.be_get_like_button($image['id']).'</div>' : '';
+				$output .= ($like_button != 1 && !empty($image['id'])) ? '<div class="gallery-like  like-button-wrap">'.be_get_like_button($image['id']).'</div>' : '';
 				$output .= '</div>'; //End Element Inner
+				$output .= '<div class="caption">'.$caption.'</div>';
 				$output .= '</div>'; //End Element
 			}
 		}
 		return $output;
 	}
 endif;
+
+/* ---------------------------------------------  */
+// Mail Chimp 
+/* ---------------------------------------------  */
+
 
 if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) :
 	function be_themes_mailchimp_subscription() {

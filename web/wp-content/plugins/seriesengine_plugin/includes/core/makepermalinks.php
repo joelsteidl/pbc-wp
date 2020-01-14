@@ -91,6 +91,7 @@
 					'post_date_gmt' => $convertdate,
 					'post_title' => $cpttitle,
 					'post_excerpt' => $finalexcerpt,
+					'post_content' => '<span style="display: none"></span>',
 					'post_status' => 'publish',
 					'comment_status' => 'closed',
 					'ping_status' => 'closed',

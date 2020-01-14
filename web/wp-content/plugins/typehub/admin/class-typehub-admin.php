@@ -89,7 +89,7 @@ class Typehub_Admin {
 			$settings = $store->get_store();
 			$typekit_fonts = array();
 			if( !empty( $settings['settings']['typekitId'] ) ) {
-				$typekit_fonts = get_typekit_data($store->get_store()['settings']['typekitId']);
+				$typekit_fonts = typehub_get_typekit_data($store->get_store()['settings']['typekitId']);
 			} 
 		
 			$typehub_fonts = array(
@@ -114,6 +114,14 @@ class Typehub_Admin {
 				'nonce' => wp_create_nonce('typehub-security'),
 			));
 			do_action( 'typehub_add_data' );
+
+
+			$colorhub_data = get_option( 'colorhub_data' );
+			if( !empty( $colorhub_data ) ){
+				wp_localize_script( 'typehub-bundle', 'colorhub', $colorhub_data );
+			}
+
+
 		}
 
 	}

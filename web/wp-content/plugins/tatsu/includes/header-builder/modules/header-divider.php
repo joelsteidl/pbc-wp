@@ -1,6 +1,6 @@
 <?php 
 
-function tatsu_header_divider( $atts, $content ) {
+function tatsu_header_divider( $atts, $content, $tag ) {
 
     $atts = shortcode_atts( array(
         'width' => '',
@@ -9,23 +9,16 @@ function tatsu_header_divider( $atts, $content ) {
         'margin' => '',
         'hide_in' => '',
         'key' => be_uniqid_base36(true)
-    ), $atts );
+    ), $atts, $tag );
 
     extract( $atts );
     $output = '';
-    $visibility_classes = '';
-    $custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_header_divider', $key, 'Header' );
+    $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key, 'Header' );
     $unique_class = 'tatsu-'.$key;
-    
-    //Handle Resposive Visibility controls
-    if( !empty( $hide_in ) ) {
-        $hide_in = explode(',', $hide_in);
-        foreach ( $hide_in as $device ) {
-            $visibility_classes .= ' tatsu-hide-'.$device;
-        }
-    }
+    $css_id = be_get_id_from_atts( $atts );
+    $visibility_classes = be_get_visibility_classes_from_atts( $atts );
 
-    $output =  '<div class="tatsu-header-module tatsu-header-divider-wrap '.$unique_class.' '.$visibility_classes.'">   
+    $output =  '<div '.$css_id.' class="tatsu-header-module tatsu-header-divider-wrap '.$unique_class.' '.$visibility_classes.' '.$css_classes.'">   
                     '.$custom_style_tag.'
                 </div>';
 
@@ -33,5 +26,139 @@ function tatsu_header_divider( $atts, $content ) {
 }
 
 add_shortcode( 'tatsu_header_divider', 'tatsu_header_divider' );
+
+add_action( 'tatsu_register_header_modules', 'tatsu_register_header_divider' );
+function tatsu_register_header_divider() {
+	$controls = array (
+		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_separator',
+		'title' => __( 'Separator', 'tatsu' ),
+		'is_js_dependant' => false,
+		'child_module' => '',
+		'type' => 'single',
+		'inline' => true,
+        'is_built_in' => true,
+		'group_atts' => array(
+			array(
+				'type'		=> 'tabs',
+				'style'		=> 'style1',
+				'group'	=> array(
+					array(
+						'type' => 'tab',
+						'title' => __('Style', 'tatsu'),
+						'group'	=> array(
+                            'width',
+                            'height',
+                            'color',
+						)
+					),
+					array(
+						'type' => 'tab',
+						'title' => __('Advanced', 'tatsu'),
+						'group'	=> array(
+							array(
+								'type' => 'accordion',
+								'active' => 'none',
+								'group' => array(
+									array(
+										'type' => 'panel',
+										'title' => __('Spacing', 'tatsu'),
+										'group' => array(
+											'margin',
+										)
+                                    ),
+								)
+							)
+						)
+					)
+				)
+			)
+		),
+		'atts' => array (
+			array (
+				'att_name' => 'width',
+				'type' => 'slider',
+				'label' => __( 'Divider Width', 'tatsu' ),
+				'options' => array(
+					'min' => '0',
+					'max' => '100',
+					'step' => '1',
+					'unit' => 'px',
+				),	        		
+				'default' => '1',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-header-divider-wrap' => array(
+						'property' => 'width',
+						'append' => 'px'
+					),
+				),
+			),
+			array (
+				'att_name' => 'height',
+				'type' => 'slider',
+				'label' => __( 'Divider Height', 'tatsu' ),
+				'options' => array(
+					'min' => '0',
+					'max' => '100',
+					'step' => '1',
+					'unit' => 'px',
+				),	        		
+				'default' => '20',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-header-divider-wrap' => array(
+						'property' => 'height',
+						'append' => 'px',
+					),
+				),
+			),
+			array (
+				'att_name' => 'color',
+				'type' => 'color',
+				'options' => array (
+						'gradient' => true
+				),
+				'label' => __( 'Divider Color', 'tatsu' ),
+				'default' => '#efefef', 
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-header-divider-wrap' => array(
+						'property' => 'background',
+					),
+				),
+			),
+			array (
+				'att_name' => 'margin',
+				'type' => 'input_group',
+				'label' => __( 'Margin', 'tatsu' ),
+				'default' => '0px 15px 0px 0px',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-header-divider-wrap' => array(
+						'property' => 'margin',
+					),
+				),
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'width' => '1',
+					'color' => '#efefef'
+				),
+			)
+		),	        
+	);
+	tatsu_register_header_module( 'tatsu_header_divider', $controls, 'tatsu_header_divider' );
+}
 
 ?>

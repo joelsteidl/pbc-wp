@@ -3,7 +3,7 @@
  * Plugin Name:       Oshine Modules
  * Plugin URI:        http://oshine.wpengine.com
  * Description:       Shortcode Modules that come along with the OSHINE Theme, integrated with TATSU Page Builder plugin
- * Version:           2.2.7
+ * Version:           3.0.9
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+
@@ -40,7 +40,7 @@ register_deactivation_hook( __FILE__, 'deactivate_oshine_modules' );
 
 require OSHINE_MODULES_PLUGIN_DIR. 'plugin-update-checker/plugin-update-checker.php';
 $oshine_modules_update_checker = new PluginUpdateChecker_3_1 (
-    'http://brandexponents.com/oshin-plugins/oshine-modules.json',
+    'https://brandexponents.com/be-plugins/oshine-modules.json',
     __FILE__,
     'oshine-modules'
 );

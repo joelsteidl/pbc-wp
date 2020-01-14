@@ -1,17 +1,21 @@
 <?php
 if ( !function_exists( 'tatsu_icon_group' ) ) {	
-	function tatsu_icon_group( $atts, $content ){
+	function tatsu_icon_group( $atts, $content, $tag ){
 		$atts = shortcode_atts( array (
 			'alignment' => 'center',
 			'margin' => '',
 			'builder_mode' => '',
 			'hide_in' => '',
+			'css_classes' => '',
 			'key' => be_uniqid_base36(true),
-		),$atts );
+		),$atts, $tag );
 
 		extract( $atts );
 		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_icon_group', $key, $builder_mode );
 		$custom_class_name = 'tatsu-'.$key;
+
+		$css_id = be_get_id_from_atts( $atts );
+
 		$visibility_classes = '';
 		//Handle Resposive Visibility controls
 		if( !empty( $hide_in ) ) {
@@ -19,9 +23,18 @@ if ( !function_exists( 'tatsu_icon_group' ) ) {
 			foreach ( $hide_in as $device ) {
 				$visibility_classes .= ' tatsu-hide-'.$device;
 			}
+		} else {
+			$visibility_classes = be_get_visibility_classes_from_atts( $atts ); 
 		}
+
+		$data_animations = be_get_animation_data_atts( $atts );
+		if( !empty( $animation_type ) && 'none' !== $animation_type ) {
+            $css_classes .= ' tatsu-animate ';
+        }
+
+
 		// $output = '<div class="tatsu-module tatsu-icon-group align-'.$alignment.' '.$custom_class_name.' '.$visibility_classes.'" >'.do_shortcode( $content ).'</div>'.$custom_style_tag;		
-		$output = '<div class="tatsu-module tatsu-icon-group '.$custom_class_name.' '.$visibility_classes.'" >' . $custom_style_tag .do_shortcode( $content ).'</div>';		
+		$output = '<div '.$css_id.' class="tatsu-module tatsu-icon-group '.$custom_class_name.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.' >' . $custom_style_tag .do_shortcode( $content ).'</div>';		
 		return $output;	
 	}	
 	add_shortcode( 'tatsu_icon_group', 'tatsu_icon_group' );
@@ -61,6 +74,93 @@ if( !function_exists( 'tatsu_icon_group_header_atts' ) ) {
 		return $atts;
 	}
 	add_filter( 'tatsu_header_modify_atts', 'tatsu_icon_group_header_atts', 10, 2 );
+}
+
+add_action('tatsu_register_header_modules', 'tatsu_register_icon_group', 9);
+add_action('tatsu_register_modules', 'tatsu_register_icon_group', 5);
+
+function tatsu_register_icon_group()
+{
+	$controls = array(
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#icon_group',
+		'title' => __('Icon Group', 'tatsu'),
+		'is_js_dependant' => false,
+		'child_module' => 'tatsu_icon',
+		'type' => 'multi',
+		'is_built_in' => true,
+		'group_atts' => array(
+			array(
+				'type'		=> 'tabs',
+				'style'		=> 'style1',
+				'group'		=> array(
+					array(
+						'type' => 'tab',
+						'title' => __('Style', 'tatsu'),
+						'group'	=> array(
+							'alignment'
+						)
+					),
+					array(
+						'type'	=> 'tab',
+						'title'	=> __('Advanced', 'tatsu'),
+						'group'	=> array(
+							array(
+								'type' => 'accordion',
+								'active'=> 'none',
+								'group' => array(
+									array(
+										'type' => 'panel',
+										'title'=> __('Spacing', 'tatsu'),
+										'group'=> array(
+											'margin'
+										)
+									)
+								)
+							)
+						)
+					)
+				)
+			)
+		),
+		'atts' => array(
+			array(
+				'att_name' => 'alignment',
+				'type' => 'button_group',
+				'is_inline' => true,
+				'label' => __('Align', 'tatsu'),
+				'options' => array(
+					'left' => 'Left',
+					'center' => 'Center',
+					'right' => 'Right'
+				),
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-icon-group' => array(
+						'property' => 'text-align',
+					),
+				),
+				'default' => 'left',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'margin',
+				'type' => 'input_group',
+				'label' => __('Margin', 'tatsu'),
+				'default' => '0px 0px 20px 0px',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-icon-group' => array(
+						'property' => 'margin',
+					),
+				),
+			),
+		),
+	);
+	tatsu_remap_modules(array('tatsu_icon_group', 'icon_group'), $controls, 'tatsu_icon_group');
+	tatsu_register_header_module('tatsu_icon_group', $controls, 'tatsu_icon_group');
 }
 
 ?>

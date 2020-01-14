@@ -3,7 +3,7 @@
 		GALLERY
 *****************************************************/
 if (!function_exists('tatsu_gallery')) {
-	function tatsu_gallery( $atts ) {
+	function tatsu_gallery( $atts, $content, $tag ) {
 		global $be_themes_data;
 		$atts = shortcode_atts( array (
 			'gutter_style' => 'style1',
@@ -18,7 +18,8 @@ if (!function_exists('tatsu_gallery')) {
 			'overlay_color' => '',
 			'overlay_opacity' => '85',
 			'placeholder_color' => '',
-			'image_source' => 'selected',
+            'image_source' => 'selected',
+            'two_col_mobile' => '0',
 			'images' => '',
 			'account_name' => 'themeforest',
 			'count' => 10,
@@ -29,15 +30,18 @@ if (!function_exists('tatsu_gallery')) {
 			'margin' => '',
 			'link' => 'none',
 			'key' => be_uniqid_base36(true),
-		),$atts );		
+		),$atts, $tag );		
 
 		extract( $atts );
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_gallery', $key );
+		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key );
 		$unique_class_name = 'tatsu-'.$key;
-
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
+		$animate = ( 'none' !== $animation_type ) ? 'tatsu-animate' : '' ; 		
+		$data_animations = be_get_animation_data_atts( $atts );
 		$lazy_load = (isset($lazy_load) && !empty($lazy_load) && intval($lazy_load) != 0) ? $lazy_load : 0;
 		$delay_load = (isset($delay_load) && !empty($delay_load) && intval($delay_load) != 0) ? $delay_load : 0;
-		$enable_data_src = ( !( wp_doing_ajax() || ( defined('REST_REQUEST') && REST_REQUEST ) ) && $lazy_load ) ? 1 : 0;
+		$enable_data_src = ( !( wp_doing_ajax() || ( defined('REST_REQUEST') && REST_REQUEST ) || isset($_GET['tatsu']) ) && $lazy_load ) ? 1 : 0;
 		$lazy_load_class = ( !empty( $lazy_load ) && $enable_data_src ) ? 'be-lazy-load' : '';
 		$aspect_ratio = get_theme_mod('gallery_aspect_ratio', '1.6');
 		$gutter_width = ( isset( $gutter_width ) ) ? intval( $gutter_width ) : intval(40);
@@ -107,10 +111,10 @@ if (!function_exists('tatsu_gallery')) {
         
 		
 		if($images && is_array($images) && !isset($images['error']) && empty($images['error'])) {
-			$output .= '<div class="tatsu-gallery-wrap tatsu-gallery-module tatsu-module '.$disable_hover_icon.' '.$unique_class_name.'">';
+			$output .= '<div '.$css_id.' class="tatsu-gallery-wrap tatsu-gallery-module tatsu-module '.$disable_hover_icon.' '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>';
             $output .= '<div class="gallery   '. $hover_style .' ' . ( 0 != $masonry ? 'masonry_enable ' : '' ) . '"  >';
             
-			$output .= '<div class="gallery-container be-grid be-row be-cols-'.$columns_as_number.' clickable clearfix  " data-aspect-ratio="1.6" data-animation-target = ".gallery-thumb-img-wrap" data-cols="'.$columns_as_number.'" data-scroll-reveal = "'.$delay_load .'" data-animation = "'.$initial_load_style.'" data-gutter="'.$gutter_width.'" ' . ( empty( $masonry ) ? 'data-layout="metro"' : 'data-layout = "masonry"' ).  '>';
+			$output .= '<div class="gallery-container be-grid be-row be-cols-'.$columns_as_number.' clickable clearfix  " data-aspect-ratio="1.6" data-animation-target = ".gallery-thumb-img-wrap" data-cols="'.$columns_as_number.'" data-scroll-reveal = "'.$delay_load .'" data-animation = "'.$initial_load_style.'" data-gutter="'.$gutter_width.'" ' . ( empty( $masonry ) ? 'data-layout="metro"' : 'data-layout = "masonry"' ) . ' ' . ( !empty( $two_col_mobile ) ? 'data-mobile-cols="2"' : '' ) . '>';
 
         
 		$masonry_enable = ((!isset($masonry)) || empty($masonry)) ? 'masonry_disable' : 'masonry_enable';
@@ -260,4 +264,328 @@ if (!function_exists('tatsu_gallery')) {
     add_filter( 'tatsu_shortcode_output_content_filter', 'tatsu_gallery_prevent_autop', 10, 2 );
 
 }
+
+add_action('tatsu_register_modules', 'tatsu_register_gallery', 8);
+function tatsu_register_gallery()
+{
+	$controls = array(
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#gallery',
+		'title' => __('Gallery', 'tatsu'),
+		'is_js_dependant' => true,
+		'type' => 'single',
+		'should_autop' => false,
+		'is_built_in' => false,
+		'group_atts' => array(
+			array(
+				'type'		=> 'tabs',
+				'style'		=> 'style1',
+				'group'		=> array(
+					//Tab1
+					array(
+						'type' => 'tab',
+						'title' => __('Content', 'tatsu'),
+						'group'	=> array(
+							'image_source',
+							'ids',
+							'items_per_load',
+							'account_name',
+							'count',
+							'hover_show_title',
+						),
+					),
+					//Tab2
+					array(
+						'type' => 'tab',
+						'title' => __('Style', 'tatsu'),
+						'group'	=> array(
+							array( //Styling Details
+								'type' => 'accordion',
+								'active' => 'all',
+								'group' => array(
+									array(
+										'type' => 'panel',
+										'title' => __('Layout', 'tatsu'),
+										'group' => array(
+                                            'columns',
+                                            'two_col_mobile',
+											'gutter_style',
+											'gutter_width',
+											'masonry',
+										)
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Loading', 'tatsu'),
+										'group' => array(
+											'lazy_load',
+											'delay_load',
+											'placeholder_color',
+											'initial_load_style'
+										)
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Colors', 'tatsu'),
+										'group' => array(
+											'overlay_color',
+											'hover_content_color',
+										)
+									),
+								),
+							),
+						),
+					),
+					//Tab3
+					array(
+						'type' => 'tab',
+						'title' => __('Advanced', 'tatsu'),
+						'group'	=> array(
+
+						),
+					),
+				),
+			),
+		),
+		'atts' => array(
+			array(
+				'att_name' => 'image_source',
+				'type' => 'select',
+				'label' => __('Image Source', 'tatsu'),
+
+				'options' => array(
+					'selected' => 'Selected Images',
+					'instagram' => 'Instagram',
+					'flickr' => 'Flickr',
+				),
+				'default' => 'selected',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'ids',
+				'type' => 'multi_image_picker',
+				'label' => __('Upload / Select Gallery Images', 'tatsu'),
+				'tooltip' => '',
+				'visible' => array('image_source', '=', 'selected'),
+			),
+			array(
+				'att_name' => 'account_name',
+				'type' => 'text',
+				'label' => __('Account Name', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'hidden' => array('image_source', '=', 'selected'),
+			),
+			array(
+				'att_name' => 'count',
+				'type' => 'slider',
+				'label' => __('Images Count', 'tatsu'),
+				'options' => array(
+					'min' => '1',
+					'max' => '20',
+					'step' => '1',
+				),
+				'default' => '10',
+				'tooltip' => '',
+				'hidden' => array('image_source', '=', 'selected'),
+			),
+			array(
+				'att_name' => 'columns',
+				'type' => 'select',
+				'label' => __('Columns', 'tatsu'),
+				'options' => array(
+					'1' => 'One',
+					'2' => 'Two',
+					'3' => 'Three',
+					'4' => 'Four',
+					'5' => 'Five',
+				),
+				'default' => '3',
+				'tooltip' => ''
+            ),
+            array (
+                'att_name'  => 'two_col_mobile',
+                'label' => __( '2 Column Grid in Mobile', 'tatsu' ),
+                'type'  => 'switch',
+                'default' => '0',
+                'tooltip' => '',  
+            ),
+			array(
+				'att_name' => 'lazy_load',
+				'type' => 'switch',
+				'label' => __('Lazy Load Images', 'tatsu'),
+				'default' => 0,
+				'tooltip' => 'Lazy Load'
+			),
+			array(
+				'att_name' => 'delay_load',
+				'type' => 'switch',
+				'label' => __('Reveal images only on scroll', 'tatsu'),
+				'default' => 1,
+				'tooltip' => 'Delay Load Grid'
+			),
+			array(
+				'att_name' => 'placeholder_color',
+				'type' => 'color',
+				'label' => __('Placeholder Background', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-gallery-module .gallery-thumb-img-wrap' => array(
+						'property' => 'background-color',
+					),
+				),
+			),
+			array(
+				'att_name' => 'items_per_load',
+				'type' => 'text',
+				'label' => __('Items To Load', 'tatsu'),
+				'default' => '9',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'gutter_style',
+				'type' => 'select',
+				'label' => __('Gutter Style', 'tatsu'),
+				'options' => array(
+					'style1' => 'With Margin',
+					'style2' => 'Without Margin',
+				),
+				'default' => 'style2',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'gutter_width',
+				'type' => 'number',
+				'is_inline' => true,
+				'label' => __('Gutter Width', 'tatsu'),
+				'options' => array(
+					'unit' => 'px',
+				),
+				'default' => '40',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .gallery-container' => array(
+						'property' => 'margin',
+						'prepend' => '0 -',
+						'append' => 'px',
+						'operation' => array('/', 2),
+						'when' => array('gutter_style', '=', 'style2'),
+					),
+					'.tatsu-{UUID}.tatsu-gallery-wrap .gallery-container ' => array(
+						'property' => 'padding',
+						'prepend' => '0 ',
+						'append' => 'px',
+						'operation' => array('/', 2),
+						'when' => array('gutter_style', '=', 'style1'),
+					),
+					'.tatsu-{UUID} .gallery-container .gallery-cell.be-col' => array(
+						'property' => 'margin-bottom',
+						'append' => 'px'
+					),
+					'.tatsu-{UUID} .gallery-container .gallery-cell.be-col ' => array(
+						'property' => 'padding',
+						'prepend' => '0 ',
+						'append' => 'px',
+						'operation' => array('/', 2),
+					),
+					'.tatsu-{UUID}.tatsu-gallery-module .gallery-container ' => array(
+						'property' => 'margin-bottom',
+						'prepend' => '-',
+						'append' => 'px !important'
+					),
+				),
+			),
+			array(
+				'att_name' => 'masonry',
+				'type' => 'switch',
+				'label' => __('Preserve Image Aspect Ratio', 'tatsu'),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array(
+				'att_name' => 'initial_load_style',
+				'type' => 'select',
+				'label' => __('Image Load Animation', 'tatsu'),
+				'options' => array(
+					'init-slide-left' => 'Slide Left',
+					'init-slide-right' => 'Slide Right',
+					'init-slide-top' => 'Slide Top',
+					'init-slide-bottom' => 'Slide Bottom',
+					'init-scale' => 'Scale',
+					'fadeIn' => 'Fade In',
+					'none' => 'None',
+				),
+				'default' => 'fadeIn',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'hover_show_title',
+				'type' => 'switch',
+				'label' => __('Show Title On Hover', 'tatsu'),
+				'default' => '0',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'hover_content_color',
+				'type' => 'color',
+				'label' => __('Title Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'visible' => array('hover_show_title', '=', '1'),
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-gallery-module .thumb-title' => array(
+						'property' => 'color',
+					),
+				),
+			),
+			array(
+				'att_name' => 'overlay_color',
+				'type' => 'color',
+				'label' => __('Image Overlay Color', 'tatsu'),
+				'options'		=> array(
+					'gradient'	=> true
+				),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-gallery-module .thumb-bg' => array(
+						'property' => 'background-color',
+					),
+				),
+			),
+			// array(
+			// 	'att_name' => 'margin',
+			// 	'type' => 'input_group',
+			// 	'label' => __('Margin', 'tatsu'),
+			// 	'default' => '0 0 60px 0',
+			// 	'tooltip' => '',
+			// 	'css'	  => true,
+			// 	'responsive'	=> true,
+			// 	'selectors'	=> array(
+			// 		'.tatsu-{UUID} .tatsu-module'	=> array(
+			// 			'property'		=> 'margin',
+			// 		)
+			// 	)
+			// ),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'initial_load_style' => 'fadeIn',
+					'overlay_color' => array('id' => 'palette:0', 'color' => tatsu_get_color('tatsu_accent_color')),
+					'hover_content_color' => '#fff',
+				),
+			)
+		),
+	);
+	tatsu_register_module('gallery', $controls, 'tatsu_gallery');
+	tatsu_remap_modules(array('tatsu_gallery', 'gallery', 'oshine_gallery'), $controls, 'tatsu_gallery');
+}
+
 ?>

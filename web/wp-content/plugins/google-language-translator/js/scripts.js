@@ -18,13 +18,15 @@ function GLTFireEvent(lang_pair, lang_dest) {
 }
 
 function doGoogleLanguageTranslator(lang_pair) {
+    if(window.glt_request_uri) return true;
+
     if (lang_pair.value) lang_pair = lang_pair.value;
     if (lang_pair == '') return;
     var lang_dest = lang_pair.split('|')[1];
     var event;
     var classic = jQuery('.goog-te-combo');
     var simple = jQuery('.goog-te-menu-frame:first');
-    var simpleValue = simple.contents().find('.goog-te-menu2-item span.text:contains('+lang_text+')'); 
+    var simpleValue = simple.contents().find('.goog-te-menu2-item span.text:contains('+lang_text+')');
     if (classic.length == 0) {
       for (var i = 0; i < simple.length; i++) {
         event = simple[i];
@@ -32,7 +34,7 @@ function doGoogleLanguageTranslator(lang_pair) {
       }
     } else {
       for (var i = 0; i < classic.length; i++) {
-        event = classic[i]; 
+        event = classic[i];
         //alert('Classic is active.');
       }
     }
@@ -47,19 +49,19 @@ function doGoogleLanguageTranslator(lang_pair) {
       } else {
         event.value = lang_dest;
         if (lang_prefix != default_lang) {
-          simpleValue.click(); 
+          simpleValue.click();
         } else {
           jQuery('.goog-te-banner-frame:first').contents().find('.goog-close-link').get(0).click();
-        }       
-      }  
+        }
+      }
     }
 }
 
 jQuery(document).ready(function($) {
   $('#glt-translate-trigger,#glt-translate-trigger font').toolbar({
-    content: '#flags', 
-    position: 'top', 
-    hideOnClick: true, 
+    content: '#flags',
+    position: 'top',
+    hideOnClick: true,
     event: 'click',
     style: 'primary'
   });
@@ -134,13 +136,13 @@ if ( typeof Object.create !== 'function' ) {
 
         setTrigger: function() {
             var self = this;
-			
-			if (self.options.event == 'onload') {
+
+            if (self.options.event == 'onload') {
                 $(window).load(function(event) {
                     event.preventDefault();
                     self.show();
                 });
-			}
+            }
 
             if (self.options.event == 'click') {
                 self.$elem.on('click', function(event) {
@@ -216,7 +218,8 @@ if ( typeof Object.create !== 'function' ) {
 
             location.html(content);
             location.find('.tool-item').on('click', function(event) {
-                event.preventDefault();
+                if(typeof window.glt_request_uri == 'undefined')
+                    event.preventDefault();
                 self.$elem.trigger('toolbarItemClick', this);
             });
         },
@@ -299,8 +302,8 @@ if ( typeof Object.create !== 'function' ) {
             self.toolbar.show().css({'opacity': 1}).addClass('animate-'+self.options.animation);
             self.$elem.trigger('toolbarShown');
         },
-		
-		hide: function() {
+
+        hide: function() {
             var self = this;
             var animation = {'opacity': 0};
             self.$elem.removeClass('pressed');
@@ -359,19 +362,25 @@ jQuery(function($) {
   $('#flags a, a.single-language, .tool-items a').each(function() {
     $(this).attr('data-lang', $(this).attr('title'));
   });
-	
+
   $(document.body).on("click", "a.flag", function() {
-	lang_text = $(this).attr('data-lang');
-    default_lang = $('#google_language_translator').attr('class').split("-").pop();
+    lang_text = $(this).attr('data-lang');
+    default_lang = window.glt_default_lang || $('#google_language_translator').attr('class').split("-").pop();
     lang_prefix = $(this).attr("class").split(" ")[2];
-	lang_prefix == default_lang ? l() : n();
+    lang_prefix == default_lang ? l() : n();
     function l() {
       doGoogleLanguageTranslator(default_lang + "|" + default_lang);
     }
     function n() {
       doGoogleLanguageTranslator(default_lang + "|" + lang_prefix);
     }
-	$(".tool-container").hide();
+    $(".tool-container").hide();
   });
+
+  if(window.glt_request_uri) {
+    $('#google_language_translator select').on('change', function() {
+        doGLTTranslate($(this).val());
+    })
+  }
 });
 

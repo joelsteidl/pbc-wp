@@ -3,7 +3,7 @@
 		GALLERY
 *****************************************************/
 if (!function_exists('be_gallery')) {
-	function be_gallery( $atts ) {
+	function be_gallery( $atts, $content, $tag ) {
 		global $be_themes_data;
 		$atts = shortcode_atts( array (
 			'col' => 'three',
@@ -14,7 +14,8 @@ if (!function_exists('be_gallery')) {
 			'gutter_width' => 40,
 			'masonry'=> '0',
 			'maintain_order' => '0',
-			'initial_load_style' => 'none',
+            'initial_load_style' => 'none',
+            'two_col_mobile' => '0',
 			'item_parallax' => 0,
 			'hover_content_option' => 'icon',
 			'disable_hover_icon' => '0',
@@ -40,13 +41,20 @@ if (!function_exists('be_gallery')) {
 			'columns' => 'three',
 			'link' => 'none',
 			'key' => be_uniqid_base36(true),
-		),$atts );		
+		),$atts, $tag );		
 
 		extract( $atts );
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'be_gallery', $key );
+		$custom_style_tag = be_generate_css_from_atts( $atts, 'oshine_gallery', $key );
 		$unique_class_name = 'tatsu-'.$key;
 
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
 
+
+		$data_animations = be_get_animation_data_atts( $atts );
+		if( !empty( $animation_type ) && 'none' !== $animation_type ) {
+            $css_classes .= ' tatsu-animate ';
+        }
 
 		$lazy_load = (isset($lazy_load) && !empty($lazy_load) && intval($lazy_load) != 0) ? $lazy_load : 0;
 		$delay_load = (isset($delay_load) && !empty($delay_load) && intval($delay_load) != 0) ? $delay_load : 0;
@@ -54,13 +62,13 @@ if (!function_exists('be_gallery')) {
 	    $delay_load_class = ( !empty( $delay_load ) ) ? 'portfolio-delay-load' : '';
 		$init_image_load = '';
 	    $lazy_load_class = ( !empty( $lazy_load ) ) ? 'portfolio-lazy-load' : '';
-		$enable_data_src = ( !( wp_doing_ajax() || ( defined('REST_REQUEST') && REST_REQUEST ) ) && $lazy_load ) ? 1 : 0;
+		$enable_data_src = ( !( wp_doing_ajax() || ( defined('REST_REQUEST') && REST_REQUEST ) || isset($_GET['tatsu']) ) && $lazy_load ) ? 1 : 0;
 		$output = $thumb_overlay_color = $gradient_style_color = '';
 		$col = ((!isset($col)) || empty($col)) ? 'three' : $col;
 		$columns = ((!isset($columns)) || empty($columns)) ? 0 : $columns;
 		$placeholder_color = ( ( isset( $placeholder_color ) ) && (!empty( $placeholder_color ) ) ) ? $placeholder_color : '';
 		$link = ((!isset($link)) || empty($link)) ? '' : $link;
-		$items_per_load = ((!isset($items_per_load)) || empty($items_per_load)) ? '' : $items_per_load;
+		$items_per_load = !empty( $items_per_load ) && is_numeric( $items_per_load ) ? intval( $items_per_load ) : 9;
 		$gallery_paginate =  ((!isset($gallery_paginate)) || empty($gallery_paginate)) ? 'none' : $gallery_paginate;
 		$gutter_style = ((!isset($gutter_style)) || empty($gutter_style)) ? 'style1' : $gutter_style;
 		$gutter_width = (isset($gutter_width) || $gutter_width == 0 || !empty($gutter_width)) ? intval( $gutter_width ) : intval(40);
@@ -192,16 +200,18 @@ if (!function_exists('be_gallery')) {
 		if( $lazy_load_class && 'none' != $gallery_paginate ) {
 			$gallery_paginate = 'none';
 		}
-		if('none' != $gallery_paginate && '' != $items_per_load){
+		if('none' != $gallery_paginate){
 			$images_subset = array_slice(explode(',', $images), $images_offset, $items_per_load);
 		}else{
 			$images_subset = explode(',', $images);
 		}
-		$images = get_gallery_image_from_source($source, implode(",",$images_subset), $lightbox_type);
+        $images = get_gallery_image_from_source($source, implode(",",$images_subset), $lightbox_type);
+        
+        $two_col_mobile = !empty( $two_col_mobile ) ? ' portfolio-two-col-mobile' : '';
 		
 		if($images && is_array($images) && !isset($images['error']) && empty($images['error'])) {
-			$output .= '<div class="portfolio-all-wrap  oshine-gallery-module '.$disable_hover_icon.' '.$unique_class_name.'">';
-			$output .= '<div class="portfolio '. $delay_load_class .' full-screen ' . $lazy_load_class . ' full-screen-gutter '.$gutter_style.'-gutter '.$col.'-col ' . ( 0 != $masonry ? 'masonry_enable ' : '' ) . '" '.$portfolio_wrap_style.' '. ( ( $lazy_load || $delay_load ) ? ( 'data-placeholder-color="'.$placeholder_color.'"' ) : '' ) .' data-action="get_be_gallery_with_pagination" ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-paged="1" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-aspect-ratio = "'.$aspect_ratio.'" data-source=\''.json_encode($source).'\' data-gutter-width="'.$gutter_width.'" data-images-array="'.$images_arr.'" data-col="'.$col.'" data-items-per-load="'.$items_per_load.'" data-hover-style="'.$hover_style.'" data-image-grayscale="'.$img_grayscale.'" data-lightbox-type="'.$lightbox_type.'" data-image-source="'.$image_source.'" data-image-effect="'.$image_effect.'" data-thumb-overlay-color="'.$thumb_overlay_color.'" data-grad-style-color="'.$gradient_style_color.'" data-like-button="'.$like_button.'" data-hover-content="'.$hover_content_option.'" data-hover-content-color="'.$hover_content_color.'" >';
+			$output .= '<div '.$css_id.' class="portfolio-all-wrap  oshine-gallery-module '.$disable_hover_icon.' '.$unique_class_name.' '.$css_classes.' '.$visibility_classes.'" '.$data_animations.'>';
+			$output .= '<div class="portfolio '. $delay_load_class . $two_col_mobile .' full-screen ' . $lazy_load_class . ' full-screen-gutter '.$gutter_style.'-gutter '.$col.'-col ' . ( 0 != $masonry ? 'masonry_enable ' : '' ) . '" '.$portfolio_wrap_style.' '. ( ( $lazy_load || $delay_load ) ? ( 'data-placeholder-color="'.$placeholder_color.'"' ) : '' ) .' data-action="get_be_gallery_with_pagination" ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-paged="1" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-aspect-ratio = "'.$aspect_ratio.'" data-source=\''.json_encode($source).'\' data-gutter-width="'.$gutter_width.'" data-images-array="'.$images_arr.'" data-col="'.$col.'" data-items-per-load="'.$items_per_load.'" data-hover-style="'.$hover_style.'" data-image-grayscale="'.$img_grayscale.'" data-lightbox-type="'.$lightbox_type.'" data-image-source="'.$image_source.'" data-image-effect="'.$image_effect.'" data-thumb-overlay-color="'.$thumb_overlay_color.'" data-grad-style-color="'.$gradient_style_color.'" data-like-button="'.$like_button.'" data-hover-content="'.$hover_content_option.'" data-hover-content-color="'.$hover_content_color.'" >';
 			$output .= '<div class="portfolio-container clickable clearfix portfolio-shortcode '.$element_class.' '.$initial_load_style.' '.$item_parallax.'">';
 			$output .= get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$enable_data_src,$delay_load,$placeholder_color); //1.9
 			$output .= '</div>'; //end portfolio-container
@@ -235,4 +245,416 @@ if( !function_exists( 'oshine_prevent_gallery_autop' ) ) {
 	}
 	add_filter( 'tatsu_shortcode_output_content_filter', 'oshine_prevent_gallery_autop', 10, 2 );
 }
-?>
+
+add_action( 'tatsu_register_modules', 'oshine_register_gallery');
+function oshine_register_gallery() {
+	$controls = array (
+		'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#gallery',
+		'title' => __( 'Gallery', 'oshine-modules' ),
+		'is_js_dependant' => true,
+		'type' => 'single',
+		'is_built_in' => false,
+		'group_atts' => array (
+			array (
+				'type'	=>	'tabs',
+				'style'	=>	'style1',
+				'group'	=>	array (
+					array (
+						'type'	=>	'tab',
+						'title'	=>	__( 'Content' , 'tatsu'),
+						'group'	=>	array (
+							'image_source',
+							'ids',
+							'account_name',
+							'count',
+							'columns',
+							'lightbox_type',
+							'gallery_paginate',
+							'items_per_load',
+							'like_button',
+						)
+					),
+					array (
+						'type'	=>	'tab',
+						'title'	=>	__( 'Style' , 'tatsu'),
+						'group'	=>	array (
+							array (
+								'type' => 'accordion' ,
+								'active' => array(0),
+								'group' => array (
+									array (
+										'type' => 'panel',
+										'title' => __( 'Effects', 'tatsu' ),
+										'group' => array (
+											'image_effect',
+											'default_image_style',
+											'hover_image_style',
+											'hover_style',
+											'hover_content_option',
+											'item_parallax',
+											)
+										),
+									array (
+										'type' => 'panel',
+										'title' => __( 'Layout', 'tatsu' ),
+										'group' => array (
+											'gutter_style',
+											'gutter_width',
+											'masonry',
+                                            'maintain_order',
+                                            'two_col_mobile',
+										)
+									),
+									array (
+										'type' => 'panel',
+										'title' => __( 'Colors', 'tatsu' ),
+										'group' => array (
+											'gradient',
+											'gradient_direction',
+											'overlay_color',
+											'gradient_color',
+											'hover_content_color',
+											'placeholder_color',
+										)
+									),
+									array (
+										'type' => 'panel',
+										'title' => __( 'Loading options', 'tatsu' ),
+										'group' => array (
+											'lazy_load',
+											'delay_load',
+											'initial_load_style',
+										)
+									),
+								)
+							)
+						),
+					),
+					array (
+						'type'	=>	'tab',
+						'title'	=>	__( 'Advanced' , 'tatsu'),
+						'group'	=>	array (
+								
+						)
+					),
+				)
+			),
+		),
+		'atts' => array (
+			array (
+				'att_name' => 'image_source',
+				'type' => 'select',
+				'label' => __( 'Image Source', 'oshine-modules' ),
+				'options' => array (
+					'selected' => 'Selected Images',
+					'instagram' => 'Instagram',
+					//'pintrest' => 'Pintrest',
+					//'dribble' => 'Dribble',
+					'flickr' => 'Flickr', 
+				),
+				'default'=> 'selected',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'ids',
+				'type' => 'multi_image_picker',
+				'label' => __( 'Upload / Select Gallery Images', 'oshine-modules' ),
+				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
+			),
+			array (
+				'att_name' => 'account_name',
+				'type' => 'text',
+				'label' => __( 'Account Name', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+				'hidden' => array( 'image_source', '=', 'selected' ),
+			),
+			array (
+				'att_name' => 'count',
+				'type' => 'slider',
+				'label' => __( 'Images Count', 'oshine-modules' ),
+				'options' => array(
+					'min' => '1',
+					'max' => '20',
+					'step' => '1',
+				),
+				'default' => '10',
+				'tooltip' => '',
+				'hidden' => array( 'image_source', '=', 'selected' ),
+			),		        	
+			array (
+				'att_name' => 'columns',
+				'type' => 'button_group',
+				'label' => __( 'Number of Columns', 'oshine-modules' ),
+				'options'=> array (
+					'1' => 'One',
+					'2' => 'Two',
+					'3' => 'Three',
+					'4' => 'Four',
+					'5' => 'Five', 
+				),
+				'default' => '3',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'lightbox_type',
+				'type' => 'select',
+				'label' => __( 'Lightbox Style', 'oshine-modules' ),
+				'options' => array(
+					'photoswipe' => 'Photo Swipe',
+					'magnific' => 'Magnific Popup (Supports Video)',
+				),
+				'default' => 'photoswipe',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'lazy_load',
+				'type' => 'switch',
+				'label' => __( 'Enable Lazy Load', 'oshine_modules' ),
+				'default' => 0,
+				'tooltip' => 'Lazy Load'
+			),
+			array (
+				'att_name' => 'delay_load',
+				'type' => 'switch',
+				'label' => __( 'Reveal items only on scroll', 'oshine_modules' ),
+				'default' => 0,
+				'tooltip' => 'Delay Load Grid'
+			),
+			array (
+				'att_name' => 'placeholder_color',
+				'type' => 'color',
+				'label' => __( 'Grid Placeholder Color', 'oshine_modules' ),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'gallery_paginate',
+				'type' => 'select',
+				'label' => __( 'Gallery Pagination Style', 'oshine-modules' ),
+				'options' => array (
+					'none'	=> 'None',
+					'infinite' => 'Infinite Scrolling',
+					'loadmore' => 'Load More',
+				),
+				'default' => 'none',
+				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
+				'is_inline' => true,
+			),	
+			array (
+				'att_name' => 'items_per_load',
+				'type' => 'text',
+				'label' => __( 'Items Per Load', 'oshine-modules' ),
+				'default' => '9',
+				'tooltip' => '',
+				'hidden' => array( 'gallery_paginate', '=', 'none' ),
+            ),
+            array (
+                'att_name'  => 'two_col_mobile',
+                'label' => __( '2 column grid in mobile', 'oshine-modules' ),
+                'type'  => 'switch',
+                'default' => '0',
+                'tooltip' => '',  
+            ),
+			array (
+				'att_name' => 'gutter_style',
+				'type' => 'select',
+				'label' => __( 'Gutter Style', 'oshine-modules' ),
+				'options' => array (
+					'style1' => 'With Margin',
+					'style2' => 'Without Margin',
+				),
+				'default' => 'style2',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'gutter_width',
+				'type' => 'number',
+				'label' => __('Gutter Width','oshine-modules'),
+				'options' => array(
+					'unit' => 'px',
+				),
+				'default' => '40',
+				'is_inline' => true,
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'masonry',
+				'type' => 'switch',
+				'label' => __( 'Enable Masonry Layout', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'maintain_order',
+				'type' => 'switch',
+				'label' => __( 'Maintain Order', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'initial_load_style',
+				'type' => 'select',
+				'label' => __( 'Image Load Animation', 'oshine-modules' ),
+				'options' => array (
+					'init-slide-left' => 'Slide Left',
+					'init-slide-right' => 'Slide Right',
+					'init-slide-top' => 'Slide Top',
+					'init-slide-bottom' => 'Slide Bottom',
+					'init-scale' => 'Scale',
+					'fadeIn' => 'Fade In',
+					'none' => 'None',
+				),
+				'default' => 'none',
+				'tooltip' => '',
+				'is_inline' => true,
+			),
+			array (
+				'att_name' => 'item_parallax',
+				'type' => 'switch',
+				'label' => __( 'Enable Parallax Effect to Portfolio Items', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'hover_style',
+				'type' => 'select',
+				'label' => __( 'Hover Style', 'oshine-modules' ),
+				'options' => array (
+					'style1-hover' => 'Style1 - Fade Toggle',
+					'style2-hover' => 'Style2 - 3D FLIP Horizontal',
+					'style3-hover' => 'Style3 - Direction Aware',
+					'style4-hover' => 'Style4 - Direction Aware Inverse',
+					'style5-hover' => 'Style5 - FadeIn & Scale',
+					'style6-hover' => 'Style6 - Fall',
+					'style7-hover' => 'Style7 - 3D FLIP Vertical',
+					'style8-hover' => 'Style8 - 3D Rotate',
+				),
+				'default' => 'style1-hover',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'hover_content_option',
+				'type' => 'button_group',
+				'label' => __( 'On Image Hover', 'oshine-modules' ),
+				'options'=> array(
+					'none' => 'None', 
+					'icon' => 'Show Icon', 
+					'title' => 'Show Title', 
+				),
+				'default' => 'icon',
+				'tooltip' => ''
+			),	        	
+			array (
+				'att_name' => 'hover_content_color',
+				'type' => 'color',
+				'label' => __( 'Hover Content Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'default_image_style',
+				'type' => 'select',
+				'label' => __( 'Default Image Style', 'oshine-modules' ),
+				'options' => array (
+					'black_white' => 'Black And White',
+					'color' => 'Color'
+				),
+				'default' => 'color',
+				'tooltip' => '',
+				'is_inline' => true,
+			),
+			array (
+				'att_name' => 'hover_image_style',
+				'type' => 'select',
+				'label' => __( 'Hover Image Style', 'oshine-modules' ),
+				'options' => array (
+					'black_white' => 'Black And White',
+					'color' => 'Color'
+				),
+				'default' => 'color',
+				'tooltip' => '',
+				'is_inline' => true,
+			),
+			array (
+				'att_name' => 'image_effect',
+				'type' => 'select',
+				'label' => __( 'Image Effects', 'oshine-modules' ),
+				'options' => array (
+					'zoom-in' => 'Zoom In',
+					'zoom-out' => 'Zoom Out',
+					'zoom-in-rotate' => 'Zoom In Rotate',
+					'zoom-out-rotate' => 'Zoom Out Rotate',
+					'none' => 'None'
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'overlay_color',
+				'type' => 'color',
+				'label' => __( 'Thumbnail Overlay Color / Gradient Start Color', 'oshine-modules' ),
+				'default' => '',
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'gradient',
+				'type' => 'switch',
+				'label' => __( 'Enable Gradient Overlay', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),	            
+			array (
+				'att_name' => 'gradient_color',
+				'type' => 'color',
+				'options' => array(
+					'gradient' => true,
+				),
+				'label' => __( 'Thumbnail Overlay Gradient End Color', 'oshine-modules' ),
+				'default' => '',
+				'visible' => array('gradient', '=', '1'),
+				'tooltip' => '',
+			),
+			array (
+				'att_name' => 'gradient_direction',
+				'type' => 'button_group',
+				'label' => __( 'Gradient Direction', 'oshine-modules' ),
+				'options' => array (
+					'right' => 'Horizontal',
+					'bottom' => 'Vertical', 
+				),
+				'visible' => array ('gradient' , '=' , '1'),
+				'is_inline' => true,
+				'default' => 'right',
+				'tooltip' => ''
+			),
+			array (
+				'att_name' => 'like_button',
+				'type' => 'switch',
+				'label' => __( 'Disable Like Button', 'oshine-modules' ),
+				'default' => 0,
+				'tooltip' => '',
+			),
+
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'overlay_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
+					'hover_content_color' => array( 'id' => 'palette:1', 'color' => tatsu_get_color( 'tatsu_accent_twin_color' ) ),
+					'initial_load_style' => 'scale',
+				),
+			)
+		),
+	);
+	if( function_exists( 'tatsu_remap_modules' ) ) {
+		tatsu_remap_modules( [ 'oshine_gallery', 'tatsu_gallery', 'gallery' ], $controls, 'be_gallery' );
+	}else {
+		tatsu_register_module( 'oshine_gallery', $controls );
+		tatsu_register_module( 'gallery', $controls );	
+	}
+}

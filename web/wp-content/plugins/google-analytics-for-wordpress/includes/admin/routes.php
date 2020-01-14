@@ -27,6 +27,8 @@ class MonsterInsights_Rest_Routes {
 		add_action( 'wp_ajax_monsterinsights_handle_settings_import', array( $this, 'handle_settings_import' ) );
 
 		add_action( 'admin_notices', array( $this, 'hide_old_notices' ), 0 );
+
+		add_action( 'wp_ajax_monsterinsights_vue_dismiss_first_time_notice', array( $this, 'dismiss_first_time_notice' ) );
 	}
 
 	/**
@@ -36,7 +38,7 @@ class MonsterInsights_Rest_Routes {
 
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
-		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) ) {
+		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) || ! monsterinsights_is_pro_version() ) {
 			return;
 		}
 
@@ -63,7 +65,7 @@ class MonsterInsights_Rest_Routes {
 	}
 
 	/**
-	 * Ajax handler for grabbing the license
+	 * Ajax handler for grabbing the current authenticated profile.
 	 */
 	public function get_profile() {
 
@@ -85,7 +87,7 @@ class MonsterInsights_Rest_Routes {
 	}
 
 	/**
-	 * Ajax handler for grabbing the license
+	 * Ajax handler for grabbing the settings.
 	 */
 	public function get_settings() {
 
@@ -113,7 +115,7 @@ class MonsterInsights_Rest_Routes {
 	}
 
 	/**
-	 * Ajax handler for grabbing the license
+	 * Ajax handler for updating the settings.
 	 */
 	public function update_settings() {
 
@@ -242,6 +244,10 @@ class MonsterInsights_Rest_Routes {
 		$parsed_addons['memberpress'] = array(
 			'active' => defined( 'MEPR_VERSION' ) && version_compare( MEPR_VERSION, '1.3.43', '>' ),
 		);
+		// LifterLMS.
+		$parsed_addons['lifterlms'] = array(
+			'active' => function_exists( 'LLMS' ) && version_compare( LLMS()->version, '3.32.0', '>=' ),
+		);
 		// Cookiebot.
 		$parsed_addons['cookiebot'] = array(
 			'active' => function_exists( 'cookiebot_active' ) && cookiebot_active(),
@@ -283,9 +289,37 @@ class MonsterInsights_Rest_Routes {
 			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugin-smtp.png',
 			'title'     => 'WP Mail SMTP',
 			'excerpt'   => __( 'SMTP (Simple Mail Transfer Protocol) is an industry standard for sending emails. SMTP helps increase email deliverability by using proper authentication', 'google-analytics-for-wordpress' ),
-			'installed' => array_key_exists( 'optinmonster/optin-monster-wp-api.php', $installed_plugins ),
+			'installed' => array_key_exists( 'wp-mail-smtp/wp_mail_smtp.php', $installed_plugins ),
 			'basename'  => 'wp-mail-smtp/wp_mail_smtp.php',
 			'slug'      => 'wp-mail-smtp',
+		);
+		// SeedProd.
+		$parsed_addons['coming-soon'] = array(
+			'active'    => function_exists( 'seed_csp4_activation' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/seedprod.png',
+			'title'     => 'SeedProd',
+			'excerpt'   => __( 'Better Coming Soon & Maintenance Mode Pages', 'google-analytics-for-wordpress' ),
+			'installed' => array_key_exists( 'coming-soon/coming-soon.php', $installed_plugins ),
+			'basename'  => 'coming-soon/coming-soon.php',
+			'slug'      => 'coming-soon',
+		);
+		$parsed_addons['rafflepress'] = array(
+			'active'    => function_exists( 'rafflepress_lite_activation' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/rafflepress.png',
+			'title'     => 'RafflePress',
+			'excerpt'   => __( 'Get More Traffic with Viral Giveaways', 'google-analytics-for-wordpress' ),
+			'installed' => array_key_exists( 'rafflepress/rafflepress.php', $installed_plugins ),
+			'basename'  => 'rafflepress/rafflepress.php',
+			'slug'      => 'rafflepress',
+		);
+		$parsed_addons['trustpulse-api'] = array(
+			'active'    => class_exists( 'TPAPI' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/trustpulse.png',
+			'title'     => 'TrustPulse',
+			'excerpt'   => __( 'Social Proof Notifications that Boost Sales', 'google-analytics-for-wordpress' ),
+			'installed' => array_key_exists( 'trustpulse-api/trustpulse.php', $installed_plugins ),
+			'basename'  => 'trustpulse-api/trustpulse.php',
+			'slug'      => 'trustpulse-api',
 		);
 		// Gravity Forms.
 		$parsed_addons['gravity_forms'] = array(
@@ -312,8 +346,6 @@ class MonsterInsights_Rest_Routes {
 
 		if ( isset( $installed_plugins[ $plugin_basename ] ) ) {
 			$installed = true;
-			$ms_active = is_plugin_active_for_network( $plugin_basename );
-			$ss_active = is_plugin_active( $plugin_basename );
 
 			if ( is_multisite() && is_network_admin() ) {
 				$active = is_plugin_active_for_network( $plugin_basename );
@@ -368,12 +400,12 @@ class MonsterInsights_Rest_Routes {
 			return;
 		}
 
-		$manual_ua_code     = isset( $_POST['manual_ua_code'] ) ? sanitize_text_field( wp_unslash( $_POST['manual_ua_code'] ) ) : '';
-		$manual_ua_code     = monsterinsights_is_valid_ua( $manual_ua_code ); // Also sanitizes the string.
-		$manual_ua_code_old = MonsterInsights()->auth->get_manual_ua();
+		$manual_ua_code = isset( $_POST['manual_ua_code'] ) ? sanitize_text_field( wp_unslash( $_POST['manual_ua_code'] ) ) : '';
+		$manual_ua_code = monsterinsights_is_valid_ua( $manual_ua_code ); // Also sanitizes the string.
 		if ( ! empty( $_REQUEST['isnetwork'] ) && sanitize_text_field( wp_unslash( $_REQUEST['isnetwork'] ) ) ) {
 			define( 'WP_NETWORK_ADMIN', true );
 		}
+		$manual_ua_code_old = is_network_admin() ? MonsterInsights()->auth->get_network_manual_ua() : MonsterInsights()->auth->get_manual_ua();
 
 		if ( $manual_ua_code && $manual_ua_code_old && $manual_ua_code_old === $manual_ua_code ) {
 			// Same code we had before
@@ -529,17 +561,19 @@ class MonsterInsights_Rest_Routes {
 		$report = MonsterInsights()->reporting->get_report( $report_name );
 
 		$isnetwork = ! empty( $_REQUEST['isnetwork'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['isnetwork'] ) ) : '';
-		$start     = ! empty( $_POST['start'] ) ? sanitize_text_field( wp_unslash( $_POST['start'] ) ) : '';
-		$end       = ! empty( $_POST['end'] ) ? sanitize_text_field( wp_unslash( $_POST['end'] ) ) : '';
+		$start     = ! empty( $_POST['start'] ) ? sanitize_text_field( wp_unslash( $_POST['start'] ) ) : date( 'Y-m-d', strtotime( '-30 days' ) );
+		$end       = ! empty( $_POST['end'] ) ? sanitize_text_field( wp_unslash( $_POST['end'] ) ) : date( 'Y-m-d', strtotime( '-1 day' ) );
+
 		$args      = array(
 			'start' => $start,
 			'end'   => $end,
 		);
+
 		if ( $isnetwork ) {
 			$args['network'] = true;
 		}
 
-		if ( ! MonsterInsights()->license->license_can( $report->level ) ) {
+		if ( monsterinsights_is_pro_version() && ! MonsterInsights()->license->license_can( $report->level ) ) {
 			$data = array(
 				'success' => false,
 				'error'   => 'license_level',
@@ -551,6 +585,16 @@ class MonsterInsights_Rest_Routes {
 		if ( ! empty( $data['success'] ) && ! empty( $data['data'] ) ) {
 			wp_send_json_success( $data['data'] );
 		} else if ( isset( $data['success'] ) && false === $data['success'] && ! empty( $data['error'] ) ) {
+			// Use a custom handler for invalid_grant errors.
+			if ( strpos( $data['error'], 'invalid_grant' ) > 0 ) {
+				wp_send_json_error(
+					array(
+						'message' => 'invalid_grant',
+						'footer'  => '',
+					)
+				);
+			}
+
 			wp_send_json_error(
 				array(
 					'message' => $data['error'],
@@ -649,5 +693,15 @@ class MonsterInsights_Rest_Routes {
 		wp_send_json_success();
 
 		wp_die();
+	}
+
+	/**
+	 * Store that the first run notice has been dismissed so it doesn't show up again.
+	 */
+	public function dismiss_first_time_notice() {
+
+		monsterinsights_update_option( 'monsterinsights_first_run_notice', true );
+
+		wp_send_json_success();
 	}
 }

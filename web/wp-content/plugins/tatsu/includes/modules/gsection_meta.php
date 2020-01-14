@@ -80,4 +80,81 @@ if ( ! function_exists( 'tatsu_gsection_meta' ) ) {
 	add_shortcode( 'tatsu_gsection_meta', 'tatsu_gsection_meta' );
 }
 
+add_action('tatsu_register_global_section', 'tatsu_register_gsection_meta');
+function tatsu_register_gsection_meta()
+{
+	$controls = array(
+		'icon' => '',
+		'title' => __('Global Section Meta', 'tatsu'),
+		'is_js_dependant' => false,
+		'child_module' => '',
+		'type' => 'single',
+		'is_built_in' => true,
+		'atts' => array_merge(
+			array(
+				array(
+					'att_name' => 'post_type',
+					'type' => 'select',
+					'label' => __('Post Type', 'tatsu'),
+					'options' => tatsu_get_custom_post_types(),
+					'default' => 'post',
+					'tooltip' => ''
+				),
+			),
+			tatsu_global_section_meta_values(),
+			array_values(array_filter(array(
+				array(
+					'att_name' => 'meta_prefix',
+					'type' => 'text',
+					'label' => __('Meta Prefix', 'tatsu'),
+					'default' => '',
+					'tooltip' => '',
+				),
+				array(
+					'att_name' => 'alignment',
+					'type' => 'button_group',
+					'label' => __('Alignment', 'tatsu'),
+					'options' => array(
+						'left' => 'Left',
+						'center' => 'Center',
+						'right' => 'Right',
+					),
+					'default' => 'center',
+					'tooltip' => ''
+				),
+				(function_exists('typehub_get_exposed_selectors') ? array(
+					'att_name' => 'title_font',
+					'type' => 'select',
+					'label' => __('Font for Meta', 'tatsu'),
+					'options' => typehub_get_exposed_selectors(),
+					'default' => '',
+					'tooltip' => ''
+				) : false),
+				array(
+					'att_name' => 'margin',
+					'type' => 'input_group',
+					'label' => __('Margin', 'tatsu'),
+					'default' => '0px 0px 30px 0px',
+					'tooltip' => '',
+					'responsive' => true,
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID}.tatsu-module' => array(
+							'property' => 'margin',
+						),
+					),
+				),
+			)))
+		),
+		'presets' => array(
+			'default' => array(
+				'preset' => array(
+					'height' => '1',
+				),
+			)
+		),
+	);
+	tatsu_register_global_module('tatsu_gsection_meta', $controls);
+}
+
 ?>

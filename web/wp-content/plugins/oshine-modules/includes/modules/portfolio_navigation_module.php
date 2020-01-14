@@ -3,7 +3,7 @@
 		Portfolio Navigation
 *****************************************************/
 if (!function_exists('portfolio_navigation_module')) {
-	function portfolio_navigation_module( $atts, $content ) {
+	function portfolio_navigation_module( $atts, $content, $tag ) {
 		$atts = shortcode_atts( array (
 			'style' => 'style1',
 			'title_align' => 'center',
@@ -11,19 +11,21 @@ if (!function_exists('portfolio_navigation_module')) {
 		    'animate' => 0,
 			'animation_type'=>'fadeIn',
 			'key' => be_uniqid_base36(true),
-		),$atts );		
+		),$atts, $tag );		
 
 		extract( $atts );
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'portfolio_navigation_module', $key );
+		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key );
 		$unique_class_name = 'tatsu-'.$key;
-		
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
+		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '';  		
+		$data_animations = be_get_animation_data_atts( $atts );		
 		global $be_themes_data;
 		$portfolio_home_page = get_post_meta( get_the_ID(), 'be_themes_portfolio_home_page', true); //Get link from Meta Options
 		$portfolio_home_page = ($portfolio_home_page == '' ? $be_themes_data['portfolio_home_page'] : $portfolio_home_page) ; //Get link from Options panel link is not present in Meta Options
 		$portfolio_catg_traversal = (1 == get_post_meta( get_the_ID(), 'be_themes_traverse_catg', true) ? true : false);
 	    $output = "";
 	    $style = ((!isset($style)) || empty($style)) ? 'style1' : $style;
-	    $animate = ( isset( $animate ) && 1 == $animate ) ? 'be-animate' : '' ;
 	    $grid_icon_background = '';
 	    //$nav_links_color = '';
         if ( is_singular( 'portfolio' ) ) {
@@ -38,7 +40,7 @@ if (!function_exists('portfolio_navigation_module')) {
         }
 		if((!is_page_template( 'gallery.php' )) || (!is_page_template( 'portfolio.php' ))) {
 			if($style == 'style1') {
-				$output .= '<div class="portfolio-nav-wrap style1-navigation oshine-module '.$animate.' align-'.$title_align.' '.$unique_class_name.'" data-animation="'.$animation_type.'" '.$nav_links_color.'>';
+				$output .= '<div '.$css_id.' class="portfolio-nav-wrap style1-navigation oshine-module '.$animate.' align-'.$title_align.' '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.'>';
 				// ob_start();  
 				// get_template_part( 'single', 'navigation' ); 
 				// $output .= ob_get_contents();  
@@ -53,7 +55,7 @@ if (!function_exists('portfolio_navigation_module')) {
 					$output .= $custom_style_tag;
 				$output .= '</div>';
 			} else {
-				$output .= '<div class="portfolio-nav-wrap oshine-module '.$animate.' '.$unique_class_name.'" data-animation="'.$animation_type.'" '.$nav_links_color.'>';
+				$output .= '<div '.$css_id.' class="portfolio-nav-wrap oshine-module '.$animate.' '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.'>';
 	    		$output .= '<div id="nav-below" class="single-page-nav style2-navigation">';
 	    		$next_post = get_previous_post($portfolio_catg_traversal, ' ', 'portfolio_categories');
 				$prev_post = get_next_post($portfolio_catg_traversal, ' ', 'portfolio_categories');
@@ -83,4 +85,115 @@ if (!function_exists('portfolio_navigation_module')) {
 	}
 	add_shortcode( 'portfolio_navigation_module', 'portfolio_navigation_module' );
 }
-?>
+
+add_action( 'tatsu_register_modules', 'oshine_register_portfolio_navigation_module' );
+function oshine_register_portfolio_navigation_module() {
+		$controls = array (
+	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#portfolio_navigation',
+	        'title' => __( 'Portfolio Navigation', 'oshine-modules' ),
+	        'is_js_dependant' => false,
+	        'type' => 'single',
+	        'is_built_in' => false,
+			'group_atts' => array (
+				array (
+					'type'	=>	'tabs',
+					'style'	=>	'style1',
+					'group'	=>	array (
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Style' , 'tatsu'),
+							'group'	=>	array (
+								array (
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+										array (
+											'type' => 'panel',
+											'title' => __( 'Shape and size', 'tatsu' ),
+											'group' => array (
+												'style',
+												'title_align',
+											)
+										),
+										array (
+											'type' => 'panel',
+											'title' => __( 'Colors', 'tatsu' ),
+											'group' => array (
+												'nav_links_color',
+											)
+										)
+									)
+								),
+							),
+						),
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Advanced' , 'tatsu'),
+							'group'	=>	array (
+									array(
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+										array (
+											'type' => 'panel',
+											'title' => __( 'Animation', 'tatsu' ),
+											'group' => array (
+											)
+										),
+									)
+								),
+							)
+						),
+					)
+				),
+			),
+	        'atts' => array (
+	        	array (
+	        		'att_name' => 'style',
+					'type' => 'button_group',
+					'is_inline' => true,
+	        		'label' => __( 'Style', 'oshine-modules' ),
+					'options'=> array(
+						'style1' => 'Style 1', 
+						'style2' => 'Style 2'
+					),
+					'default'=> 'style1',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+	        		'att_name' => 'title_align',
+					'type' => 'button_group',
+					'is_inline' => true,
+	        		'label' => __( 'Alignment', 'oshine-modules' ),
+	        		'options' => array(
+	        			'left' => 'Left',
+	        			'center' => 'Center',
+	        			'right' => 'Right'
+	        		),
+	        		'default' => 'center',
+	        		'tooltip' => ''
+	        	),
+	            array (
+					'att_name' => 'nav_links_color',
+					'type' => 'color',
+					'label' => __( 'Color', 'oshine-modules' ),
+					'default' => '',
+					'tooltip' => '',
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID} .home-grid-icon span' => array(
+							'property' => 'background',
+						),
+						'.tatsu-{UUID} h6' => array(
+							'property' => 'color',
+							'when' => array('style', '!=', 'style1'),
+						),
+						'.tatsu-{UUID}.portfolio-nav-wrap' => array(
+							'property' => 'color',
+						),
+					),
+	            ),
+	        ),
+	    );
+	tatsu_register_module( 'portfolio_navigation_module', $controls );
+}

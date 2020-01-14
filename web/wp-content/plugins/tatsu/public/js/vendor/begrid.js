@@ -106,7 +106,11 @@
                     this.cols = 2;
                 }
             }else {
-                this.cols = 1;
+                if( null != this.ele.attr('data-mobile-cols') ) {
+                    this.cols = parseInt(this.ele.attr('data-mobile-cols'));
+                }else {
+                    this.cols = 1;
+                }
             }
         }
     };

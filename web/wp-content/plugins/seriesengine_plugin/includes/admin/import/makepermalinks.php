@@ -80,6 +80,7 @@
 					'post_title' => $cpttitle,
 					'post_excerpt' => $finalexcerpt,
 					'post_status' => 'publish',
+					'post_content' => '<span style="display: none"></span>',
 					'comment_status' => 'closed',
 					'ping_status' => 'closed',
 					'post_name' => $permatitle,

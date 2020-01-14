@@ -1,19 +1,20 @@
 <?php
 // Change linebreak to tatsu_empty_space in parser
 if (!function_exists('tatsu_empty_space')) {
-	function tatsu_empty_space( $atts ) {
+	function tatsu_empty_space( $atts, $content, $tag) {
 		$atts = shortcode_atts( array(
-	        'height'=>'50',
-	        'hide_in' => 0,
+			'height'=>'50',
+			'css_classes' => '',
 			'key' => be_uniqid_base36(true),
-	    ),$atts);
-
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_empty_space', $atts['key'] );
-		$custom_class_name = 'tatsu-'.$atts['key'];
-
-
+	    ),$atts, $tag);
 
 		extract($atts);
+
+		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $atts['key'] );
+		$custom_class_name = 'tatsu-'.$atts['key'];
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts ); 
+
 	    $class = '';
 		//Handle Resposive Visibility controls
 		if( !empty( $hide_in ) ) {
@@ -23,11 +24,77 @@ if (!function_exists('tatsu_empty_space')) {
 			}
 		}	
 		$output = '';
-		$output .= '<div class="tatsu-empty-space '.$class." ". $custom_class_name .' " >'.$custom_style_tag.'</div>';
+		$output .= '<div '.$css_id.' class="tatsu-empty-space '.$class." ". $custom_class_name .' '. $visibility_classes.' " >'.$custom_style_tag.'</div>';
 		return $output;
 	}
 	add_shortcode( 'tatsu_empty_space', 'tatsu_empty_space' );
 	add_shortcode( 'linebreak', 'tatsu_empty_space' );
+}
+
+add_action('tatsu_register_modules', 'tatsu_register_empty_space', 9);
+function tatsu_register_empty_space()
+{
+	$controls = array(
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#empty_space',
+		'title' => __('Extra Spacing', 'tatsu'),
+		'is_js_dependant' => false,
+		'type' => 'single',
+		'is_built_in' => true,
+		'drag_handle' => true,
+		// 'group_atts' => array(			
+		// 	array(
+		// 		'type'		=> 'tabs',
+		// 		'style'		=> 'style1',
+		// 		'group'		=> array(
+		// 			//Tab1
+		// 			array(
+		// 				'type' => 'tab',
+		// 				'title' => __('Content', 'tatsu'),
+		// 				'group'	=> array(
+		// 					'height',
+		// 				),
+		// 			),
+		// 			array(
+		// 				'type' => 'tab',
+		// 				'title' => __('Advanced', 'tatsu'),
+		// 				'group'	=> array(
+		// 				),
+		// 			),
+		// 		),
+		// 	),
+		// ),
+
+		'atts' => array(
+			array(
+				'att_name' => 'height',
+				'type' => 'number',
+				'label' => __('Height', 'tatsu'),
+				'options' => array(
+					'unit' => 'px',
+				),
+				'default' => '',
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-empty-space' => array(
+						'property' => 'height',
+						'append' => 'px'
+					),
+				),
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'height' => '30'
+				),
+			)
+		),
+	);
+	tatsu_remap_modules(array('tatsu_empty_space', 'linebreak'), $controls, 'tatsu_empty_space');
 }
 
 ?>

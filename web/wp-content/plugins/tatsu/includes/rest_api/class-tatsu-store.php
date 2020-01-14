@@ -7,14 +7,17 @@ class Tatsu_Store {
 	private $core_modules;
 	private $store;
 
-	public function __construct() {
-		$this->store = array();	
-	}
+	public function __construct( $post_id = null ) {
+        $this->store = array();	
+        if( !empty( $post_id ) ) {
+            $this->post_id = $post_id;
+        }
+    }
 
 
 	public function get_store( WP_REST_Request $request ) {
 		$this->post_id = $request->get_param('post_id');
-		$this->store = array_merge( $this->get_module_options(), $this->get_page_content(), $this->get_page_templates() );
+		$this->store = array_merge( $this->get_module_options(), $this->get_page_content() );
 		if( tatsu_check_if_global() && array_key_exists( 'tatsu_module_options', $this->store ) ) {
 			$this->store[ 'tatsu_module_options' ] = array_merge( $this->store[ 'tatsu_module_options' ], $this->get_gsection_modules() );
 		}
@@ -33,21 +36,19 @@ class Tatsu_Store {
 		return Tatsu_Global_Module_Options::getInstance()->get_modules();
 	}
 
-	private function get_module_options() {
+	public function get_module_options() {
 		return Tatsu_Module_Options::getInstance()->get_module_options(); 
 	}
 
 
-	private function get_page_content() {
+	public function get_page_content() {
 		$tatsu_page_content = new Tatsu_Page_Content( $this->post_id );
 		return array(
-			'tatsu_page_content' => array(
-				'inner' => $tatsu_page_content->get_tatsu_content(),
-			    'name' => 'home',
-			    'title' => 'home',
-			    'builderLayout' => 'list',
-			    'childModule' => 'section' ,
-			)
+            'inner' => $tatsu_page_content->get_tatsu_content(),
+            'name' => 'home',
+            'title' => 'home',
+            'builderLayout' => 'list',
+            'childModule' => 'section' ,
 		);
 	}
 
@@ -71,8 +72,27 @@ class Tatsu_Store {
 			echo 'false';
 			wp_die();
 		}
-				
+
+		$body_fonts = !empty( $_POST['tatsu_body_fonts'] ) ? json_decode( stripslashes( $_POST['tatsu_body_fonts'] ), true ) : array();
+
 		$this->post_id = $_POST['post_id'];
+
+		if( !empty( $_POST['post_name'] ) && !empty( $_POST['post_status'] ) ){
+			$post_data = array(
+				'ID'           => $this->post_id,
+				'post_title'   => $_POST['post_name'],
+				'post_status' => $_POST['post_status'],
+			);
+		  
+			wp_update_post( $post_data );
+        }
+        
+        tatsu_update_custom_css_js( $this->post_id, $_POST['custom_css'], $_POST['custom_js'] );
+
+		if( !empty( $body_fonts ) ){
+			update_post_meta( $this->post_id, 'tatsu_body_fonts', $body_fonts );
+		}
+
 		if( $this->save_page_content( $_POST['page_content'] ) ) {
 			echo 'true';
 			wp_die();
@@ -101,6 +121,9 @@ class Tatsu_Store {
 		$this->content = stripslashes( urldecode($_POST['shortocde']) );
 		$parser = new Tatsu_Parser( $this->content, false );
 		$tatsu_content = $parser->parse( $this->content );
+		if( ob_get_length() ) {
+			ob_clean();
+		}
 		header('Content-Type: application/json');
 		echo json_encode( $tatsu_content );
 		wp_die();
@@ -110,6 +133,25 @@ class Tatsu_Store {
 	private function isJson($string) {
  		json_decode($string);
  		return ( json_last_error() == JSON_ERROR_NONE );
+	}
+
+	public function ajax_get_revision_content(  ){
+
+		$revision_id = $_POST['revision_id'];
+		$post_id = $_POST['post_id'];
+		$selected_revision = wp_get_post_revision( $revision_id);
+
+		$parser = new Tatsu_Parser();
+
+		$revision_content = $parser->parse( $selected_revision->post_content );
+
+		echo json_encode($revision_content);
+		wp_die();
+	}
+
+	public function ajax_get_revision_data(){
+		echo json_encode( tatsu_revision_data( $_POST['post_id'], $_POST['offset'] ) );
+		wp_die();
 	}
 
 }

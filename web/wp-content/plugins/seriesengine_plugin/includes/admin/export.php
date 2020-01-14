@@ -80,7 +80,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 6 ) { 
+		if ( $enmse_language == 7 ) { 
+			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
+		} elseif ( $enmse_language == 6 ) { 
 			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
 		} elseif ( $enmse_language == 5 ) { 
 			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
@@ -368,6 +370,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						'post_title' => $cpttitle,
 						'post_excerpt' => $finalexcerpt,
 						'post_status' => 'publish',
+						'post_content' => '<span style="display: none"></span>',
 						'comment_status' => 'closed',
 						'ping_status' => 'closed',
 						'post_name' => $permatitle,
@@ -1538,6 +1541,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			include('import/sermonmanager.php');
 			include('import/makepermalinks.php');
 			
+		} elseif ( $_POST && $_GET['seplugin'] == "3") { /* -------------- Church Content ------------------- */
+			global $wpdb;
+			$poffset = 10000;
+
+			include('import/churchcontent.php');
+			//include('import/makepermalinks.php');
+			
 		}
 
 		global $wpdb;
@@ -1564,6 +1574,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$smcheck = 0;
 		} else {
 			$smcheck = 1;
+		}
+
+		$enmse_churchcontentsql = "SELECT ID FROM " . $wpdb->prefix . "posts" . " WHERE post_type = 'ctc_sermon' LIMIT 1"; 
+		$enmse_churchcontent = $wpdb->get_results( $enmse_churchcontentsql );
+		if( empty($enmse_churchcontent) ) {
+			$cccheck = 0;
+		} else {
+			$cccheck = 1;
 		}
 
 
@@ -1593,6 +1611,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<?php include ('messagebox.php'); ?>
 
 	<h3>Export All Series Engine Content</h3>
+	
 	<p>Whether you're moving sites or just want to back up your data, it's easy to export all of your Series Engine content to a simple .CSV file.</p>
 	<p><a href="http://seriesengine.com/importexport.php" target="_blank">Click here to read our extensive guide</a> for migrating Series Engine content between sites.</p>
 	<p><em>Exporting data <strong>will not</strong> change or delete any plugin content.</em></p>
@@ -1685,6 +1704,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<p><em>Note: Running the importer below won't do anything to change your existing <em>Sermon Manager</em> data.</em></p>
 	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&seupdate=0&seimport=0&seplugin=2" method="post">
 		<input name="Submit" type="submit" class="button" value="Import Sermon Manager Content" tabindex="35" />
+	</form>
+	<?php } ?>
+	<?php if ( $cccheck == 1 ) { ?>
+	<h3>Import from the <em>Church Content Plugin</em></h3>
+	<p>Hey! It looks like you have the <em>Church Content Plugin</em> installed. Do you want to import <strong>all</strong> of your <em>Church Content Plugin</em> sermon content (Sermons, Series, Speakers, Notes, etc) into Series Engine? If so, click the button below. For more about importing from the <em>Church Content Plugin</em>, visit <a href="http://seriesengine.com/churchcontent.php">this help page</a>.</p>
+	<p><em>Note: Running the importer below won't do anything to change your existing <em>Church Content Plugin</em> data.</em></p>
+	<form action="<?php echo $_SERVER['REQUEST_URI']; ?>&seupdate=0&seimport=0&seplugin=3" method="post">
+		<input name="Submit" type="submit" class="button" value="Import Church Content Plugin Content" tabindex="35" />
 	</form>
 	<?php } ?>
 

@@ -53,11 +53,7 @@ class Tatsu_Frame {
 	}	
 
 	private function loaded_from_iframe() {
-		// if ( ! User::is_current_user_can_edit() ) {
-		// 	return false;
-		// }
-
-		if ( !current_user_can ('edit_pages') ) {
+		if ( isset( $_GET['post_id'] ) && !tatsu_is_post_editable_by_current_user( $_GET['post_id'] ) ) {
 			return false;
 		}
 
@@ -77,7 +73,11 @@ class Tatsu_Frame {
 	 * @return array
 	 */
 	public function body_class( $classes = array() ) {
+
+		$tatsu_theme = get_option('tatsu_ui_theme','dark');
+
 		$classes[] = 'tatsu-frame';
+		$classes[] = 'tatsu-theme-' . $tatsu_theme;
 		return $classes;
 	}
 
@@ -147,8 +147,11 @@ class Tatsu_Frame {
 	 */
 	public function enqueue_scripts() {
 
+		$tatsu_theme = get_option('tatsu_ui_theme','dark');
+
 		wp_enqueue_script( 'tiny-mce-js', includes_url( 'js/tinymce/tinymce.min.js' ) );
-		wp_enqueue_style( 'tatsu-frame-css', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ), array(), $this->version );
+		wp_enqueue_style( 'tatsu-frame-css', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ) );
+		wp_enqueue_style( 'tatsu-context-menu-css', plugins_url( $tatsu_theme === 'dark' ? 'builder/css/dark-context-menu.css' : 'builder/css/light-context-menu.css', dirname(__FILE__) ) );
 		wp_enqueue_script( 'tatsu-frame-js', plugins_url( 'builder/js/tatsu-frame.js', dirname(__FILE__) ), array(), $this->version , true );
 		wp_enqueue_style( 'tatsu-roboto-font', '//fonts.googleapis.com/css?family=Roboto:400,700', array(), null );
 		do_action('tatsu_frame_enqueue');

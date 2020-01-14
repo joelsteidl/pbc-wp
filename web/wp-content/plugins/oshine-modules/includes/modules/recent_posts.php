@@ -3,14 +3,16 @@
 			RECENT POSTS
 **************************************/
 if ( ! function_exists( 'be_recent_posts' ) ) {
-	function be_recent_posts( $atts, $content ) {
-		extract( shortcode_atts( array (
+	function be_recent_posts( $atts, $content, $tag ) {
+		$atts = shortcode_atts( array (
 			'number'=>'three',
 			'filter_by' => 'category',
 			'categories' => '',
 			'tags' => '',
-			'hide_excerpt' => '',
-	    ), $atts ) );
+            'hide_excerpt' => '',
+            'key' => be_uniqid_base36(true),
+        ), $atts , $tag);
+        extract( $atts );
 		if( $number == 'three' ) {
 			$posts_per_page = 3;
 			$column = 'third';
@@ -23,7 +25,24 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
 		$categories = !empty( $categories ) ? explode( ',', $categories ) : '';
 		$tags = !empty( $tags ) ? explode( ',', $tags ) : '';
 		$hide_excerpt = (isset($hide_excerpt) && ($hide_excerpt)) ? 'hide-excerpt' : '' ;
-		$terms = 'post_tag' == $filter_by ? $tags : $categories; 
+        $terms = 'post_tag' == $filter_by ? $tags : $categories; 
+        
+        $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key );
+        $css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
+        $data_animations = be_get_animation_data_atts( $atts );
+        $unique_class_name = ' tatsu-'.$atts['key'];
+        $classes = array( $unique_class_name, 'related-items', 'oshine-recent-posts', 'style3-blog', $hide_excerpt, 'oshine-module', 'clearfix' );
+        if( !empty( $visibility_classes ) ) {
+            $classes[] = $visibility_classes;
+        }
+        if( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) {
+            $classes[] = 'tatsu-animate';
+        }
+        if( !empty( $css_classes ) ) {
+            $classes[] = $css_classes;
+        }
+
 		
 		$tax_query = array (
 			array(
@@ -55,7 +74,8 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
 		global $meta_sep, $blog_attr;
 		$my_query = new WP_Query( $args  );
 		if( $my_query->have_posts() ) {
-			$output .= '<div class="related-items oshine-recent-posts style3-blog '.$hide_excerpt.' oshine-module clearfix">';
+            $output .= '<div ' . $css_id . ' class="' . implode( ' ', $classes ).  '" ' . $data_animations . ' >';
+            $output .= $custom_style_tag;
 			$blog_attr['style'] = 'shortcodes';
 			$blog_attr['gutter_width'] = 0;
 			while ( $my_query->have_posts() ) : $my_query->the_post(); 
@@ -73,4 +93,103 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
 	}
 	add_shortcode( 'recent_posts', 'be_recent_posts' );
 }
-?>
+
+add_action( 'tatsu_register_modules', 'oshine_register_recent_posts');
+function oshine_register_recent_posts() {
+		$post_categories = get_categories();
+		$post_tags = get_tags();
+		$category_options = array();
+		$tag_options = array();
+		foreach( $post_categories as $category ) {
+			if( is_object( $category ) ) {
+				$category_options[ $category->slug ] = $category->name;
+			}
+		}
+		foreach( $post_tags as $tag ) {
+			if( is_object( $tag ) ) {
+				$tag_options[ $tag->slug ] = $tag->name;
+			}
+		}
+		$controls = array (
+	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#recent_posts',
+	        'title' => __( 'Recent - Blog Posts Masonry Style', 'oshine-modules' ),
+	        'is_js_dependant' => true,
+	        'type' => 'single',
+	        'is_built_in' => false,
+			'group_atts' => array (
+				array (
+					'type'	=>	'tabs',
+					'style'	=>	'style1',
+					'group'	=>	array (
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Content' , 'tatsu'),
+							'group'	=>	array (
+								'number',
+								'filter_by',
+								'categories',
+								'tags',
+								'hide_excerpt',
+							)
+						),
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Advanced' , 'tatsu'),
+							'group'	=>	array (
+							)
+						),
+					)
+				),
+			),
+	        'atts' => array (
+	            array (
+	        		'att_name' => 'number',
+                    'type' => 'button_group',
+                    'is_inline' => true,
+	        		'label' => __( 'Number of Items', 'oshine-modules' ),
+	        		'options' => array (
+						'three' => 'Three',
+						'four' => 'Four',
+					),
+	        		'default' => 'three',
+	        		'tooltip' => ''
+				),
+				array (
+					'att_name' => 'filter_by',
+                    'type' => 'button_group',
+                    'is_inline' => true,
+					'label' => __( 'Filter By', 'oshine-modules' ),
+					'options' => array (
+						'category' => 'Categories',
+						'post_tag' => 'Tags',
+					),
+					'default' => 'category',
+					'tooltip' => ''
+				),
+				array (
+					'att_name' => 'categories',
+					'type' => 'grouped_checkbox',
+					'label' => __( 'Categories', 'oshine-modules' ),
+					'options' => $category_options,
+					'tooltip' => '',
+					'visible' => array ( 'filter_by', '=', 'category' )
+				),
+				array (
+					'att_name' => 'tags',
+					'type' => 'grouped_checkbox',
+					'label' => 'Tags',
+					'options' => $tag_options,
+					'tooltip' => '',
+					'visible' => array ( 'filter_by', '=', 'post_tag' )
+				),
+	        	array (
+	              	'att_name' => 'hide_excerpt',
+	              	'type' => 'switch',
+	              	'label' => __( 'Hide Excerpt', 'oshine-modules' ),
+	              	'default' => 0,
+	              	'tooltip' => '',
+	            ),
+	        ),
+	    );
+	tatsu_register_module( 'recent_posts', $controls );
+}

@@ -19,7 +19,7 @@ function tatsuToggle(speed, easing, callback) {
     }    
 
     var adjustTopSectionPadding = function() {
-        if( jQuery('#tatsu-header-wrap').hasClass('header-auto-pad') ){
+        if( jQuery('#tatsu-header-wrap').hasClass('header-auto-pad') && !jQuery('body').hasClass('tatsu-frame') ){
             var firstSection = jQuery('#be-content .tatsu-section:first-child .tatsu-section-pad'),
                 adjustedPadding = 0,
                 responsivePadding,

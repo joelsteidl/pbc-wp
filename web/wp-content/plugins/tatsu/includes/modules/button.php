@@ -1,6 +1,6 @@
 <?php
 if (!function_exists('tatsu_button')) {
-	function tatsu_button( $atts, $content, $module_name = '' ) {
+	function tatsu_button( $atts, $content, $tag ) {
 		$atts = ( shortcode_atts( array (
 			'button_text' => '',
 			'icon' => 'none',
@@ -27,7 +27,7 @@ if (!function_exists('tatsu_button')) {
 			'enable_box_shadow' => 0,
 			'box_shadow' => '',
 			'typography' => '',
-			'enable_margin' => '',
+			'enable_margin' => 'null',
 			'margin' => '',
 			// 'custom_button_height' => '',
 			// 'custom_button_width' => '',
@@ -50,16 +50,19 @@ if (!function_exists('tatsu_button')) {
 			'dark_hover_border_color' => '',
 			'hide_in' => '',
 			'key' => be_uniqid_base36(true),
-		), $atts ) );
+			'outer_border_color' => '',
+		), $atts, $tag ) );
 		
 		extract( $atts );
 
-		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_button', $key , $builder_mode );
-		$custom_class_name = 'tatsu-'.$key;
-		
+		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key , $builder_mode );
+		$unique_class_name = 'tatsu-'.$key;
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
+		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '';  		
+		$data_animations = be_get_animation_data_atts( $atts );
 		$mfp_class = '';
 		$output = '';
-		$visibility_classes = '';
 		$new_tab = ( isset( $new_tab ) && 1 == $new_tab ) ? 'target="_blank"' : '' ;
 		
 		$background_animation = ( !empty( $background_animation ) && 'none' != $background_animation ) ? $background_animation : 'bg-animation-none';
@@ -72,7 +75,7 @@ if (!function_exists('tatsu_button')) {
 				$alignment = '';
 			}
 		}
-		$animate = ( isset( $animate ) && 1 == $animate ) ? ' tatsu-animate' : ''; 
+		
 		$button_style = ( isset( $button_style ) && !empty( $button_style ) ) ? $button_style : '';
 
 		$hover_effect = !empty( $hover_effect ) && 'none' !== $hover_effect ? $hover_effect : '';
@@ -111,12 +114,12 @@ if (!function_exists('tatsu_button')) {
 		}
 
 		//Handle Resposive Visibility controls
-		if( !empty( $hide_in ) ) {
-			$hide_in = explode(',', $hide_in);
-			foreach ( $hide_in as $device ) {
-				$visibility_classes .= ' tatsu-hide-'.$device;
-			}
-		}
+		// if( !empty( $hide_in ) ) {
+		// 	$hide_in = explode(',', $hide_in);
+		// 	foreach ( $hide_in as $device ) {
+		// 		$visibility_classes .= ' tatsu-hide-'.$device;
+		// 	}
+		// }
 
 		//GDPR Privacy preference popup logic
 		$gdpr_atts = '{}';
@@ -150,10 +153,11 @@ if (!function_exists('tatsu_button')) {
 		
 		$icon = ( isset($icon) && !empty($icon) && ($icon != 'none') ) ? '<i class="tatsu-icon '.$icon.'"></i>' : '' ;
 		$icon_alignment = ( isset($icon_alignment) && !empty($icon_alignment) ) ? $icon_alignment : 'left' ;
+		$button_text_label = $button_text;
 		$button_text = ( $icon_alignment == 'right' ) ? $button_text.$icon : $icon.$button_text ;
 
-		$output .= '<div class="tatsu-module tatsu-normal-button tatsu-button-wrap '.$alignment.' '.$image_wrap_class.' '.$custom_class_name.' '.$hover_effect.' '.$visibility_classes.'">';
-		$output .= '<a class="tatsu-shortcode '.$type.'btn tatsu-button '.$icon_alignment.'-icon '.$button_style.' '.$animate.' '.$mfp_class.' '.$background_animation.' ' . $gdpr_concern_selector .' " href="'.$url.'" style= "'.$bg_animation_css.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>'.$button_text.'</a>' ; 
+		$output .= '<div '.$css_id.' class="tatsu-module tatsu-normal-button tatsu-button-wrap '.$alignment.' '.$image_wrap_class.' '.$unique_class_name.' '.$hover_effect.' '.$visibility_classes.' '.$css_classes.'">';
+		$output .= '<a class="tatsu-shortcode '.$type.'btn tatsu-button '.$icon_alignment.'-icon '.$button_style.' '.$animate.' '.$mfp_class.' '.$background_animation.' ' . $gdpr_concern_selector .' " href="'.$url.'" style= "'.$bg_animation_css.'" '.$data_animations.' aria-label="'.$button_text_label.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>'.$button_text.'</a>' ; 
 		$output .= $custom_style_tag;
 		$output .= '</div>'; 
 		return $output;
@@ -162,6 +166,20 @@ if (!function_exists('tatsu_button')) {
 	add_shortcode( 'button', 'tatsu_button' );
 }
 
+if( !function_exists( 'tatsu_button_remove_atts' ) ){
+	function tatsu_button_remove_atts( $atts ){
+		if( array_key_exists('enable_margin', $atts) && $atts['enable_margin'] == '0' ){
+			if( $atts['alignment'] === 'none' ){
+				$atts['margin'] = '{"d":"0px 0px 10px 0px"}';
+			} else {
+				$atts['margin'] = '{"d":"0px 0px 40px 0px"}';
+			}
+		}
+		return $atts;
+	}
+
+	add_filter('tatsu_button_before_css_generation', 'tatsu_button_remove_atts');
+}
 
 if( !function_exists( 'tatsu_button_header_atts' ) ) {
 	function tatsu_button_header_atts( $atts, $tag ) {
@@ -171,16 +189,10 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 				'type' => '',
 				'default' => 'Header',
 			);
-			$atts['hide_in'] = array (
-				'type' => 'screen_visibility',
-				'label' => __( 'Hide in', 'tatsu' ),
-				'default' => '',
-				'tooltip' => '',
-			);
 				// Light Scheme Colors
 			$atts['light_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Color', 'tatsu' ),
+				'label' => __( 'Text Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'css' => true,
@@ -193,7 +205,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['light_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'BG Color', 'tatsu' ),
+				'label' => __( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'css' => true,
@@ -221,7 +233,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['light_hover_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Color', 'tatsu' ),
+				'label' => __( 'Hover Text Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -234,7 +246,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['light_hover_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover BG Color', 'tatsu' ),
+				'label' => __( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -262,7 +274,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 				// Dark Scheme Colors
 			$atts['dark_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Color', 'tatsu' ),
+				'label' => __( 'Text Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'css' => true,
@@ -275,7 +287,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['dark_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'BG Color', 'tatsu' ),
+				'label' => __( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'css' => true,
@@ -303,7 +315,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['dark_hover_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Color', 'tatsu' ),
+				'label' => __( 'Hover Text Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -316,7 +328,7 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 			
 			$atts['dark_hover_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover BG Color', 'tatsu' ),
+				'label' => __( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -363,6 +375,638 @@ if( !function_exists( 'tatsu_button_header_atts' ) ) {
 		return $atts;
 	}
 	add_filter( 'tatsu_header_modify_atts', 'tatsu_button_header_atts', 10, 2 );
+}
+
+
+add_action('tatsu_register_modules', 'tatsu_register_button', 3);
+add_action('tatsu_register_header_modules', 'tatsu_register_button', 9);
+function tatsu_register_button()
+{
+	$controls = array(
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#button',
+		'title' => __('Button', 'tatsu'),
+		'is_js_dependant' => false,
+		'hint'	=> 'button_text',
+		'child_module' => '',
+		'inline' => true,
+		'type' => 'single',
+		'is_built_in' => true,
+		
+		//Tab1
+		'group_atts'			=> array(
+			array(
+				'type'		=> 'tabs',
+				'style'		=> 'style1',
+				'group'		=> array(
+					array(
+						'type' => 'tab',
+						'title' => __('Content', 'tatsu'),
+						'group'	=> array(
+                            'button_text',
+                            'icon',
+							'url',
+							'new_tab',
+							'lightbox',
+							'image',
+							'video_url',
+						)
+					),
+					//Tab2
+					array(
+						'type' => 'tab',
+						'title' => __('Style', 'tatsu'),
+						'group'	=> array(
+							array(
+								'type' => 'accordion',
+								'active' => array(0, 1, 2),
+								'group' => array(
+									array( //Shape and Size Accordion
+										'type' => 'panel',
+										'title' => __('Style and Alignment', 'tatsu'),
+										'group'		=> array(
+											'type',
+											'button_style',
+                                            'alignment',
+                                            'icon_alignment',
+										),
+									),
+									'border_width', //button's border property
+									array( //color accordion
+										'type'		=> 'panel',
+										'title'		=> __('Colors', 'tatsu'),
+										'group'		=> array(
+											array(
+												'type'  	=> 'tabs',
+												'style'		=> 'style1',
+												'group'		=> array(
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Normal', 'tatsu'),
+														'group'		=> array(
+															'bg_color',
+															'color',
+															'border_color',
+														),
+													),
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Hover', 'tatsu'),
+														'group'		=> array(
+															'hover_bg_color',
+															'hover_color',
+															'hover_border_color',
+														),
+													),
+												),
+											),
+										),
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Light Scheme Colors', 'tatsu'),
+										'group' => array(
+											array(
+												'type'  	=> 'tabs',
+												'style'		=> 'style1',
+												'group'		=> array(
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Normal', 'tatsu'),
+														'group'		=> array(
+															'light_bg_color',
+															'light_color',
+															'light_border_color',
+														),
+													),
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Hover', 'tatsu'),
+														'group'		=> array(
+															'light_hover_bg_color',
+															'light_hover_color',
+															'light_hover_border_color'
+														),
+													),
+												),
+											),
+										)
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Dark Scheme Colors', 'tatsu'),
+										'group' => array(
+											array(
+												'type'  	=> 'tabs',
+												'style'		=> 'style1',
+												'group'		=> array(
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Normal', 'tatsu'),
+														'group'		=> array(
+															'dark_bg_color',
+															'dark_color',
+															'dark_border_color',
+														),
+													),
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Hover', 'tatsu'),
+														'group'		=> array(
+															'dark_hover_bg_color',
+															'dark_hover_color',
+															'dark_hover_border_color'
+														),
+													),
+												),
+											),
+										)
+									),
+								)
+							),
+						)
+					),
+
+					array( //Tab3
+						'type' => 'tab',
+						'title' => __('Advanced', 'tatsu'),
+						'group'	=> array(
+							array(
+								'type' => 'accordion',
+								'active' => 'none',
+								'group' => array(
+									array(
+										'type' => 'panel',
+										'title' => __('Spacing', 'tatsu'),
+										'group' => array(
+											'margin',
+										)
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Border', 'tatsu'),
+										'group' => array(
+											'border_style',
+											'border',
+											'outer_border_color',
+										)
+									),
+									array(
+										'type' => 'panel',
+										'title' => __('Animation', 'tatsu'),
+										'group' => array(
+											'background_animation',
+											'hover_effect',
+										)
+									),
+									array(  //Shadow accordion
+										'type' => 'panel',
+										'title' => __('Shadow', 'tatsu'),
+										'group' => array(
+											array(
+												'type'  	=> 'tabs',
+												'style'		=> 'style1',
+												'group'		=> array(
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Normal', 'tatsu'),
+														'group'		=> array(
+															'box_shadow',
+
+														),
+													),
+													array(
+														'type'		=> 'tab',
+														'title'		=> __('Hover', 'tatsu'),
+														'group'		=> array(
+															'hover_box_shadow',
+														),
+													),
+												),
+											)
+										),
+									),
+								)
+							)
+						)
+					)
+				)
+			)
+		),
+		'atts' => array(
+			array(
+				'att_name' => 'button_text',
+				'type' => 'text',
+				'label' => __('Text', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'url',
+				'type' => 'text',
+				'is_inline' => false,
+				'options' => array(
+					'placeholder' => 'https://example.com',
+				),
+				'label' => __('Link URL', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'new_tab',
+				'type' => 'switch',
+				'label' => __('Open in a new tab', 'tatsu'),
+				'default' => '0',
+				'tooltip' => '',
+				'visible' => array('url', '!=', ''),
+			),
+			array(
+				'att_name' => 'type',
+				'is_inline' => true,
+				'type' => 'button_group',
+				'label' => __('Size', 'tatsu'),
+				'options' => array(
+					'small' => 'S',
+					'medium' => 'M',
+					'large' => 'L',
+					'x-large' => 'XL',
+					'block' => 'Block',
+					//'custom' => 'Custom',
+				),
+				'default' => 'medium',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'button_style',
+				'is_inline' => true,
+				'type' => 'button_group',
+				'label' => __('Shape', 'tatsu'),
+				'options' => array(
+					'none' => 'Rectangular',
+					'rounded' => 'Rounded',
+					'circular' => 'Pill'
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'alignment',
+				'is_inline' => true,
+				'type' => 'button_group',
+				'label' => __('Align', 'tatsu'),
+				'options' => array(
+					'none' => 'None',
+					'left' => 'Left',
+					'center' => 'Center',
+					'right' => 'Right'
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'bg_color',
+				'type' => 'color',
+				'label' => __('Background Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button' => array(
+						'property' => 'background-color',
+						'when' => array(
+							array('background_animation', '!=', 'bg-animation-slide-left'), // set this way to overcome a wierd issue where the bg animation value of none was set differently for some buttons
+							array('background_animation', '!=', 'bg-animation-slide-right'),
+							array('background_animation', '!=', 'bg-animation-slide-top'),
+							array('background_animation', '!=', 'bg-animation-slide-bottom'),
+						),
+						'relation' => 'and'
+					),
+				),
+			),
+			array(
+				'att_name' => 'hover_bg_color',
+				'type' => 'color',
+				'label' => __('Hover Background Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button:hover' => array(
+						'property' => 'background-color',
+						'when' => array(
+							array('background_animation', '!=', 'bg-animation-slide-left'),
+							array('background_animation', '!=', 'bg-animation-slide-right'),
+							array('background_animation', '!=', 'bg-animation-slide-top'),
+							array('background_animation', '!=', 'bg-animation-slide-bottom'),
+						),
+						'relation' => 'and'
+					),
+				),
+			),
+			array(
+				'att_name' => 'color',
+				// 'type' => 'color',
+				'type' => 'color',
+				'label' => __('Text Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button' => array(
+						'property' => 'color',
+					),
+				),
+			),
+			array(
+				'att_name' => 'hover_color',
+				'type' => 'color',
+				'label' => __('Hover Text Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button:hover' => array(
+						'property' => 'color',
+					),
+				),
+			),
+			array(
+				'att_name' => 'border_width',
+				'type' => 'number',
+				'is_inline' => true,
+				'label' => __('Border Size', 'tatsu'),
+				'options' => array(
+					'unit' => 'px',
+					'add_unit_to_value' => false,
+				),
+				'default' => '0',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button' => array(
+						'property' => 'border-width',
+						'when' => array('border_width', '!=', '0px'),
+						'append' => 'px',
+					),
+				),
+			),
+			array(
+				'att_name' => 'border_color',
+				'type' => 'color',
+				'label' => __('Border Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				// 'visible' => array( 'border_width', '>', '0' ),
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button' => array(
+						'property' => 'border-color',
+						'when' => array('border_width', '!=', '0px'),
+					),
+				),
+			),
+			array(
+				'att_name' => 'hover_border_color',
+				'type' => 'color',
+				'label' => __('Hover Border Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				// 'visible' => array( 'border_width', '>', '0' ),
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button:hover' => array(
+						'property' => 'border-color',
+						'when' => array('border_width', '!=', '0px'),
+					),
+				),
+			),
+			array(
+				'att_name' => 'icon',
+				'type' => 'icon_picker',
+				'label' => __('Icon', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+                'att_name' => 'icon_alignment',
+                'is_inline' => true,
+				'type' => 'button_group',
+				'label' => __('Icon Alignment', 'tatsu'),
+				'options' => array(
+					'left' => 'Left',
+					'right' => 'Right',
+				),
+				'default' => 'left',
+				'tooltip' => '',
+				'visible' => array('icon', '!=', ''),
+			),
+			array(
+				'att_name' => 'lightbox',
+				'type' => 'switch',
+				'default' => 0,
+				'label' => __('Enable Lightbox Image / Video', 'tatsu'),
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'image',
+				'type' => 'single_image_picker',
+				'label' => __('Background Image', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'visible' => array('lightbox', '=', '1'),
+			),
+			array(
+				'att_name' => 'video_url',
+				'type' => 'text',
+				'label' => __('Youtube / Vimeo Url in lightbox', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'visible' => array('lightbox', '=', '1'),
+			),
+			array(
+				'att_name' => 'hover_effect',
+				'is_inline' => true,
+				'type' => 'button_group',
+				'label' => __('Hover Effect', 'tatsu'),
+				'options' => array(
+					'none' => 'None',
+					'button-transform' => 'Slide up',
+					'button-scale' => 'Scale'
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'background_animation',
+				'type' => 'select',
+				'label' => __('Background Animation', 'tatsu'),
+				'options' => array(
+					'none' => 'None',
+					'bg-animation-slide-left' => 'Slide Left',
+					'bg-animation-slide-right' => 'Slide Right',
+					'bg-animation-slide-top' => 'Slide Top',
+					'bg-animation-slide-bottom' => 'Slide Bottom',
+				),
+				'default' => 'none',
+				'tooltip' => ''
+			),
+			// array(
+			// 	'att_name' => 'animate',
+			// 	'type' => 'switch',
+			// 	'default' => 0,
+			// 	'label' => __('Enable Css Animations', 'tatsu'),
+			// 	'tooltip' => ''
+			// ),
+			// array(
+			// 	'att_name' => 'animation_type',
+			// 	'type' => 'select',
+			// 	'options' => tatsu_css_animations(),
+			// 	'label' => __('Animation Type', 'tatsu'),
+			// 	'default' => 'fadeIn',
+			// 	'tooltip' => '',
+			// 	'visible' => array('animate', '=', '1'),
+			// ),
+			// array(
+			// 	'att_name' => 'animation_delay',
+			// 	'type' => 'slider',
+			// 	'options' => array(
+			// 		'min' => '0',
+			// 		'max' => '2000',
+			// 		'step' => '50',
+			// 		'unit' => 'ms',
+			// 	),
+			// 	'default' => '0',
+			// 	'label' => __('Animation Delay', 'tatsu'),
+			// 	'tooltip' => '',
+			// 	'visible' => array('animate', '=', '1'),
+			// ),
+			array(
+				'att_name' => 'margin',
+				'type' => 'input_group',
+				'label' => __('Margin', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'responsive' => true,   // in js attsfromdisplay device is empty
+				'selectors' => array(
+					'.tatsu-{UUID}.tatsu-button-wrap' => array(
+						'property' => 'margin',
+						'when' => array(
+							array('alignment', '=', 'none'),
+							array('margin', '!=', '0px 0px 10px 0px'),
+						),
+						'relation' => 'and',
+					),
+					'.tatsu-{UUID}.tatsu-normal-button' => array(
+						'property' => 'margin',
+						'when' => array(
+							array('alignment', '!=', 'none'),
+							array('margin', '!=', '0px 0px 40px 0px'),
+						),
+						'relation' => 'and',
+					)
+				),
+			),
+			array(
+				'att_name' => 'box_shadow',
+				'type' => 'input_box_shadow',
+				'label' => __('Shadow', 'tatsu'),
+				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button' => array(
+						'property' => 'box-shadow',
+						'when' => array('box_shadow', '!=', '0px 0px 0px 0px rgba(0,0,0,0)'),
+					),
+				),
+			),
+			array(
+				'att_name' => 'hover_box_shadow',
+				'type' => 'input_box_shadow',
+				'label' => __('Shadow on hover', 'tatsu'),
+				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-button:hover' => array(
+						'property' => 'box-shadow',
+						'when' => array('hover_box_shadow', '!=', '0px 0px 0px 0px rgba(0,0,0,0)'),
+					),
+				),
+			),
+			array (
+				'att_name' => 'border_style',
+				'type' => 'select',
+				'label' => __( 'Border Style', 'tatsu' ),
+				'options' => array(
+					'none' => 'None',
+					'solid' => 'Solid',
+					'dashed' => 'Dashed',
+					'double' => 'Double',
+					'dotted' => 'Dotted',
+				),
+				'default' => array( 'd' => 'solid', 'l' => 'solid', 't' => 'solid', 'm' => 'solid' ),
+				'tooltip' => '',
+				'css' => true,
+				'responsive' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}' => array(
+						'property' => 'border-style',
+						'when' => array(
+							array( 'border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+							array( 'border', 'notempty' ),
+							array( 'border_style', '!=',  array( 'd' => 'none' ) ),
+						),
+						'relation' => 'and',            
+					),
+				),
+			),
+			array (
+				'att_name' => 'border',
+				'type' => 'input_group',
+				'label' => __( 'Border Width', 'tatsu' ),
+				'default' => '0px 0px 0px 0px',
+				'exclude' => array( 'tatsu_image', 'tatsu_lists' ),
+				'tooltip' => '',
+				'responsive' => true,
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}' => array(
+						'property' => 'border-width',
+						'when' => array( 'border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+					),
+				),
+			),
+			array(
+				'att_name' => 'outer_border_color',
+				'type' => 'color',
+				'label' => __('Border Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID}' => array(
+						'property' => 'border-color',
+						'when' => array('border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+					),
+				),
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'button_text' => 'Click Here',
+					'bg_color' => array('id' => 'palette:0', 'color' => tatsu_get_color('tatsu_accent_color')),
+					'color' => array('id' => 'palette:1', 'color' => tatsu_get_color('tatsu_accent_twin_color')),
+					'button_style' => 'circular',
+				),
+			)
+		),
+	);
+	tatsu_remap_modules(array('tatsu_button', 'button'), $controls, 'tatsu_button');
+	tatsu_register_header_module('tatsu_button', $controls, 'tatsu_header_button');
 }
 
 

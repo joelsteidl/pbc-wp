@@ -310,6 +310,10 @@
     padding: 15px 36px;
 }
 
+.tatsu-header-col .tatsu-button-wrap.block-center {
+    width: 100%;
+}
+
 /* Gradient Button */  
 
 .tatsu-gradient-button .tatsu-button:after, 
@@ -410,6 +414,7 @@
 }
 
 .tatsu-frame .tatsu-gradient-button .tatsu-button-wrap:hover .tatsu-button-text span {
+    opacity: 1;
     visibility: visible;
     transition: none;
 }
@@ -425,6 +430,9 @@
     text-align: right;
 }
 .tatsu-gradient-button.align-block .tatsu-button-wrap {
+    display: inline-block;
+}
+.tatsu-gradient-button.tatsu-block-button .tatsu-button-wrap {
     display:  block;
 }
 
@@ -580,7 +588,7 @@ a.tatsu-icon-shortcode.icon-plain{
 
 /*********************** Button Addons *************************/
 .tatsu-button-wrap.button-transform .tatsu-button:hover,
-.tatsu-gradient-button.button-transform:hover .tatsu-button-wrap{
+.tatsu-gradient-button.button-transform .tatsu-button-wrap:hover {
     transform: translateY(-5px);
 }
 .tatsu-button-wrap.button-scale .tatsu-button:hover,
@@ -637,10 +645,12 @@ a.tatsu-icon-shortcode.icon-plain{
 *********************************************************************/
 
 .tatsu-call-to-action {
-    padding: 30px 0px;
     display: table;
     width: 100%;
     text-align: center;
+}
+.tatsu-cta-inner {
+    padding: 30px 0;
 }
 .tatsu-action-content {
     display: inline;
@@ -1165,6 +1175,7 @@ a.tatsu-icon-shortcode.icon-plain{
 
 .tatsu-notification {
     margin-bottom: 20px;
+    border-radius: 2px;
 }
 
 .tatsu-success, .wpcf7-response-output.wpcf7-mail-sent-ok {
@@ -1175,15 +1186,12 @@ a.tatsu-icon-shortcode.icon-plain{
     background: #de4141;
     color:#ffd6d6;
 }
-.tatsu-notification, .wpcf7-response-output.wpcf7-validation-errors, .wpcf7-response-output.wpcf7-mail-sent-ok {
+.tatsu-notification-inner, .wpcf7-response-output.wpcf7-validation-errors, .wpcf7-response-output.wpcf7-mail-sent-ok {
     cursor: default;
-    line-height:20px;
-    margin-bottom:20px;
+    line-height:1.5;
     padding: 15px;
-    border:none;
     text-align: center;
     position: relative;
-    border-radius: 2px;
 }  
 .tatsu-notification span.close {
     cursor: pointer;
@@ -1197,6 +1205,7 @@ a.tatsu-icon-shortcode.icon-plain{
     font-size: 14px;
     color: #fff;
 }
+
 
 /*********************************************************************
             SKILLS
@@ -1410,6 +1419,9 @@ hr.tatsu-divider{
             GOOGLE MAPS
 *********************************************************************/
 
+.tatsu-gmap-wrapper {
+    box-sizing: content-box;
+}
 .tatsu-gmap {
     height: inherit;
 }
@@ -1613,7 +1625,7 @@ body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
 
 
 @media only screen and ( min-width: 768px ) and ( max-width: 959px ) {
-    .tatsu-call-to-action{
+    .tatsu-cta-inner{
         padding: 30px 30px;
     }
     .tatsu-action-content, 
@@ -3878,6 +3890,14 @@ Navigation Menu Widgets
     bottom : -35px;
 }
 
+.tatsu-animate .be-slider.flickity-enabled{
+    visibility: hidden;
+}
+
+.tatsu-animate.end-animation .be-slider.flickity-enabled{
+    visibility: visible;
+}
+
 /**
  * Style1
  */
@@ -4054,8 +4074,258 @@ Navigation Menu Widgets
     body:not( .tatsu-frame ) .tatsu-multi-layer-image.tatsu-external-image img {
         position: static;
     }
+    .tatsu-multi-layer-image-inner {
+        position: relative;
+    }
 
+/**
+ *  Video Placeholder
+ */
+.be-embed-placeholder {
+    position:  relative;
+}
+.be-embed-placeholder::before {
+    content:  '';
+    padding-top:  56.25%;
+    display:  block;
+}
+.be-embed-placeholder .be-vimeo-embed {
+    position: absolute;
+    top : 0;
+    left: 0;
+    width : 100%;
+    height: 100%;
+    opacity: 0;
+}
+/*******************************
+        ANIMATED HEADING
+********************************/
 
-    
+.tatsu-animated-heading-wrap {
+    position: relative;
+    visibility: hidden;
+    line-height: 0;
+    margin-bottom: 10px;
+}
 
+.tatsu-animated-heading-wrap .tatsu-animated-heading-inner {
+    position: relative;
+    display: inline-block;
+    padding-top: 0.2em;
+    padding-right: 0.05em;
+    padding-bottom: 0.1em;
+    overflow: hidden;
+    margin: 0;
+}
+.tatsu-animated-heading-wrap .tatsu-animated-heading-letter ,
+.tatsu-animated-heading-wrap .tatsu-animated-heading-letter span{
+    transform-origin: 0 100%;
+    display: inline-block;
+    line-height: 1em;
+    color: inherit;
+}
+.tatsu-animated-heading-wrap.anime_split_word .tatsu-animated-heading-letter,
+.tatsu-animated-heading-wrap.anime_split_letter .tatsu-animated-heading-letter{
+    display: inline-block;
+    overflow-y: hidden;
+}
 
+.tatsu-animated-heading-wrap.tatsu-anime-applied:not(.tatsu-animate) {
+    visibility: visible;
+}
+
+.tatsu-animated-heading-wrap .tatsu-animated-heading-line {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    height: 3px;
+    width: 100%;
+    transform-origin: 0 0;
+}
+
+.tatsu-animated-heading-wrap.anime_slide_cursor .tatsu-animated-heading-line {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    height: 100%;
+    width: 3px;
+    transform-origin: 0 50%;
+}
+
+.tatsu-animated-heading-wrap.anime_slide_underline .tatsu-animated-heading-line {
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    transform-origin: 100% 100%;
+    bottom: 0;
+}
+.tatsu-animated-heading-wrap .tatsu-animated-heading-inner-wrap{
+    display: inline-block;
+    position: relative;
+}
+.tatsu-animated-heading-wrap .tatsu-animated-heading-line1 { 
+    top: 0; 
+}
+.tatsu-animated-heading-wrap .tatsu-animated-heading-line2 {
+    bottom: 0;
+}
+/*******************************
+    WP FORMS FIELD STYLES
+********************************/
+
+/* Common Styling */
+
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form select {
+    background: url(../../img/select_arrow.svg) no-repeat 98%;
+    cursor: pointer;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-sublabel{
+    margin: 7px 0px 0px;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]{
+    margin: 15px 0 5px;
+    border: 0px;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-label{
+    margin: 0 0 10px 0;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field{
+    margin-bottom: 10px;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]::-webkit-slider-thumb{
+	background-color: rgba(23,129,241,1) !important;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]::-moz-range-thumb{
+    background-color: rgba(23,129,241,1) !important;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]::-ms-thumb {
+    background-color: rgba(23,129,241,1) !important;
+}
+
+/* Solid */
+
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form  input:not([type = "submit"]),
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form  textarea,
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form  select {
+    padding: 15px 0 15px 10px;
+    border: 1px solid transparent;
+    transition : border-color 0.3s;
+    border-radius :3px;
+    box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.16);
+    height: auto;
+    background-color: rgba(245,246,250,1);
+}
+
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form input:not([type = "submit"]):focus,
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form textarea:focus,
+.tatsu-wp-form-rounded .wpforms-container-full .wpforms-form select:focus {
+    border-color : #1890FF;
+}
+
+/* Line */
+
+.tatsu-wp-form-border-with-underline .wpforms-container-full .wpforms-form select {
+    border : 0;
+    box-shadow: none;
+}
+.tatsu-wp-form-border-with-underline .wpforms-container-full .wpforms-form textarea,
+.tatsu-wp-form-border-with-underline .wpforms-container-full .wpforms-form input:not([type = "submit"]),
+.tatsu-wp-form-border-with-underline .wpforms-container-full .wpforms-form select {
+    border: 1px solid #D8D8D8;
+    padding: 15px 0 15px 10px;
+    box-shadow: none;
+    height: auto; 
+}
+
+.tatsu-wp-forms .tatsu-wp-form-border-with-underline div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]{
+    border: 1px solid #D8D8D8;
+}
+
+/** Rounded Inner Shadow */
+
+.tatsu-wp-form-rounded-with-underline div.wpforms-container-full .wpforms-form input:not([type = "submit"]),
+.tatsu-wp-form-rounded-with-underline div.wpforms-container-full .wpforms-form textarea,
+.tatsu-wp-form-rounded-with-underline div.wpforms-container-full .wpforms-form select {
+    padding: 15px 0 15px 10px;
+    box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.15);
+    border : 0;
+    height: auto;
+}
+
+/** Pill */
+
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form input:not([type = "submit"]),
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form select,
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form textarea {
+    height: auto;
+    border : 1px solid transparent;
+    padding: 15px 0 15px 20px;
+    border-radius:  50px;
+    box-shadow: none;
+    transition: box-shadow 0.3s, border-color 0.3s;
+    background-color: rgba(245,246,250,1);
+}
+.tatsu-wp-forms .tatsu-wp-form-pill  div.wpforms-container-full .wpforms-form .wpforms-field-number-slider input[type=range]{
+    background-color: rgba(245,246,250,1);
+}
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form textarea {
+    border-radius: 9px;
+}
+
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form input:not([type = "submit"]):focus,
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form textarea:focus,
+.tatsu-wp-form-pill div.wpforms-container-full .wpforms-form select:focus {
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.16);
+    border-color: #1890FF;
+}
+
+.tatsu-wp-forms .tatsu-wp-form-pill div.wpforms-container-full .wpforms-form select{
+    background-position-x: 96%;
+}
+
+/*******************************
+    WP FORMS BUTTON STYLES
+********************************/
+
+/* Common Style */
+
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form button[type=submit]{
+    background: #1890FF;
+    color:#ffffff;
+    padding: 15px 25px;
+    border:0px;
+    margin: 15px 0px 0px;
+}
+.tatsu-wp-forms div.wpforms-container-full .wpforms-form button[type=submit]:hover{
+    background: #1890FF;
+}
+
+/** Rounded Style */
+.tatsu-wp-form-submit-rounded div.wpforms-container-full .wpforms-form button[type=submit] {
+    border-radius: 2px;
+}
+
+/** Rounded Block */
+.tatsu-wp-form-submit-rounded-block div.wpforms-container-full .wpforms-form button[type=submit] {
+   border-radius: 4px;
+   width : 100%;
+}
+.tatsu-wp-form-submit-rounded-block div.wpforms-container-full .wpforms-form button[type=submit]:hover {
+    box-shadow:  0 10px 14px 1px rgba(0, 0, 0, 0.19);
+}
+
+/** Pill */
+.tatsu-wp-form-submit-pill div.wpforms-container-full .wpforms-form button[type=submit] {
+   border-radius: 25px;
+}
+
+/** Pill Block */
+.tatsu-wp-form-submit-pill-block div.wpforms-container-full .wpforms-form button[type=submit] {
+   border-radius: 25px;
+   width : 100%;
+}
+.tatsu-wp-form-submit-pill-block div.wpforms-container-full .wpforms-form button[type=submit]:hover {
+   box-shadow:  0 10px 14px 1px rgba(0, 0, 0, 0.19);
+}

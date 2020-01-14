@@ -1,6 +1,8 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 6 ) { 
+	if ( $enmse_language == 7 ) { 
+		include('../lang/dut_bible_books.php');
+	} elseif ( $enmse_language == 6 ) { 
 		include('../lang/chint_bible_books.php');
 	} elseif ( $enmse_language == 5 ) { 
 		include('../lang/chins_bible_books.php');
@@ -324,6 +326,18 @@
 		$trans = "";
 	} elseif ( $enmse_trans == 414 ) {
 		$trans = "";
+	} elseif ( $enmse_trans == 165 ) {
+		$trans = " (SV-RJ)";
+	} elseif ( $enmse_trans == 51 ) {
+		$trans = " (DELUT)";
+	} elseif ( $enmse_trans == 73 ) {
+		$trans = " (HFA)";
+	} elseif ( $enmse_trans == 877 ) {
+		$trans = " (NBH)";
+	} elseif ( $enmse_trans == 2016 ) {
+		$trans = " (NRSV)";
+	} elseif ( $enmse_trans == 37 ) {
+		$trans = " (CEB)";
 	}
 
  ?>

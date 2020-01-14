@@ -162,16 +162,14 @@
 
             } );
              document.getElementsByClassName( 'tatsu-add-tools-icon-wrapper' )[1].addEventListener('click', function( event ) {
-
                 event.stopPropagation();
                 event.preventDefault();
-                var message = 'addModule ' + currentPath.slice(0,7) + ' ' + curAddToolsPosition;
-                parent.postMessage( message, '*' );
-                
+                var message = 'addModule ' + currentPath.split('-').slice(0, 4).join('-') + ' ' + curAddToolsPosition;
+                parent.postMessage( message, '*' );                
             } );
             document.getElementsByClassName( 'tatsu-add-tools-icon-wrapper' )[1].addEventListener( 'mouseenter', function( event ) {
 
-                var message = 'setDrag ' + currentPath.slice(0,7) + ' ' + curAddToolsPosition;
+                var message = 'setDrag ' + currentPath.split('-').slice(0, 4).join('-') + ' ' + curAddToolsPosition;
                 parent.postMessage( message, '*' );
 
             } );
@@ -247,8 +245,13 @@
                          },
                          setup : function( editor ) {
                              editor.on( 'keyup', function( event ) {
+                                var path = jQuery( '#' + editor.id ).closest( '.tatsu-module-preview' ).attr( 'data-path' );
+                                parent.postMessage( 'pushToState' + ' ' + editor.id + ' ' + path, '*' );
 
-                                parent.postMessage( 'pushToState' + ' ' + editor.id, '*' );
+                             } );
+                             editor.on( 'change', function( event ) {
+                                var path = jQuery( '#' + editor.id ).closest( '.tatsu-module-preview' ).attr( 'data-path' );
+                                parent.postMessage( 'pushToState' + ' ' + editor.id + ' ' + path, '*' );
 
                              } );
                              editor.on( 'init', function( event ) {
@@ -309,13 +312,14 @@
             else if( event.data.split(',')[0] === 'hover_set') {
                  var id = event.data.split(',')[1],
                      title = event.data.split( ',' )[2],
+                     name =  event.data.split( ',' )[3],
                      selector = '.be-pb-observer-'+id,
                      element  = jQuery( selector );
                      
-                 if( !element.hasClass( 'active' ) ) {
+                 if( !element.hasClass( 'active' ) && element.offset() ) {
                      jQuery('#tatsu-observer').css({'display' : 'inline-block','top' : element.offset().top, 'left' : element.offset().left, 'height' : element.innerHeight(), 'width' : element.outerWidth() });
                      jQuery('#tatsu-observer-tooltip').text( event.data.split(',')[2] );     
-                     if( 'undefined' != typeof event.data.split(',')[2] && ( 'Section' != title && 'Header Row' != title ) ){
+                     if( 'undefined' != typeof event.data.split(',')[2] && ( 'tatsu_section' != name && 'Header Row' != title ) ){
                         jQuery( '#tatsu-observer-tooltip' ).addClass('out');
                      }else{
                         jQuery( '#tatsu-observer-tooltip' ).removeClass('out')
@@ -329,8 +333,9 @@
             }else if( 'add_selection' === data.split( ',' )[0] ) {
                 var dataArray = data.split( ',' ),
                     selector = '.be-pb-observer-' + dataArray[1],
-                    element = jQuery( selector );
-                jQuery( selector ).css( 'outline', '1px solid #20cbd4' );
+                    element = jQuery( selector ),
+                    primaryColor = jQuery('body').hasClass('tatsu-theme-dark') ? '#00b4ff' : '#1b86f1';
+                jQuery( selector ).css( 'border', '1px solid '+primaryColor );
 
             }else if( data.split( ',' )[0] === 'drag_set' ) {
                 var dataArray = data.split( ',' ),

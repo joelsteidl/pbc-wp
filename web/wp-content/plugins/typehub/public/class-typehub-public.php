@@ -183,11 +183,21 @@ class Typehub_Public {
 				if( !empty( $family['value'] ) ) {
 					if( 'standard' === $family['source'] ) {
 						$font_stack = ';';
+						$css .= 'font-family: '.$family['value'].$font_stack;
 					} else {
 						$font_stack = ",-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen-Sans,Ubuntu,Cantarell,'Helvetica Neue',sans-serif;";
+						$css .= 'font-family: "'.$family['value'].'"'.$font_stack;
 					}
-					$css .= 'font-family: '.$family['value'].$font_stack;
 				}
+			} else if( 'color' === $property ){
+				if( gettype( $value ) === 'string' ){
+					$css .= $property.': '.$value.';';
+				} else {
+					if( function_exists( 'be_compute_color' ) ){
+						$css .= $property.': '. be_compute_color( json_encode( $value) )[0].';';
+					}
+				}
+				
 			} else {
 				if( !empty( $value ) ) {
 					$css .= $property.': '.$value.';';
@@ -250,12 +260,6 @@ class Typehub_Public {
 						if( !empty( $scheme_family[1] ) ) {
 							$family = $scheme_family[1];
 							$source = $scheme_family[0];
-							if( 'custom' === $source ) {
-								$url = typehub_get_custom_font_source( $family );
-								if( $url ) {
-									$urls[] = $url;
-								}	
-							}
 						}
 					} else {
 						$family = $font;
@@ -267,6 +271,13 @@ class Typehub_Public {
 						$webfonts[$source][] = $family.":".$weights_as_string; // Load Fonts using link tag instead of webfont loader to avoid fout :( TODO: add async loading option
 					} else {
 						$webfonts[$source][] = "'".$family.":".$weights_as_string."'";
+					}
+
+					if( 'custom' === $source ) {
+						$url = typehub_get_custom_font_source( $family );
+						if( $url ) {
+							$urls[] = $url;
+						}	
 					}
 				}
 			}

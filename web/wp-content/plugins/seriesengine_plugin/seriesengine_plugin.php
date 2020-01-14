@@ -2,7 +2,7 @@
 /* Plugin Name: Series Engine 
 Plugin URI: http://seriesengine.com
 Description: Series Engine is the best way to share audio and video with WordPress. To get started, activate the plugin and open the new "Series Engine" menu. Follow the instructions on the <a href="admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide">User Guide page</a> to embed a media browser, change the color scheme and more.
-Version: 2.7.7
+Version: 2.7.9.4
 Author: Eric Murrell (Volacious) 
 Author URI: http://seriesengine.com */ 
 
@@ -18,21 +18,23 @@ $ENMSEUpdateChecker = PucFactory::buildUpdateChecker(
 
 /* ----- Install the Plugin ----- */
 
-define ( 'ENMSE_CURRENT_VERSION', '2.7.7' );
+define ( 'ENMSE_CURRENT_VERSION', '2.7.9.4' );
 
 $enmse_options = get_option( 'enm_seriesengine_options' ); 
 
-if ( isset($enmse_options['timely']) ) { 
-	if ( $enmse_options['timely'] == 0 ) {
+if ( version_compare( get_bloginfo( 'version' ), '5.3', '<' ) ) { // Fix timezone issues if WordPress is less than 5.3
+	if ( isset($enmse_options['timely']) ) { 
+		if ( $enmse_options['timely'] == 0 ) {
+			$enmse_timezone = get_option('timezone_string'); // Set Correct Timezone
+			if ( $enmse_timezone != null ) {
+				date_default_timezone_set(get_option('timezone_string')); 
+			}
+		}
+	} else {
 		$enmse_timezone = get_option('timezone_string'); // Set Correct Timezone
 		if ( $enmse_timezone != null ) {
 			date_default_timezone_set(get_option('timezone_string')); 
 		}
-	}
-} else {
-	$enmse_timezone = get_option('timezone_string'); // Set Correct Timezone
-	if ( $enmse_timezone != null ) {
-		date_default_timezone_set(get_option('timezone_string')); 
 	}
 }
 
@@ -1058,7 +1060,7 @@ endif;
 
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7.7" ) {
+if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7.9.4" ) {
 	include('includes/core/updates.php');
 }
 

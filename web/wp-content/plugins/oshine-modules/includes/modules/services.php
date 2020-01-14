@@ -61,4 +61,246 @@ function service_css( $atts ) {
 	return $atts;
 }
 
-?>
+
+add_action( 'tatsu_register_modules', 'oshine_register_services');
+function oshine_register_services() {
+		$controls = array (
+	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#services',
+	        'title' => __( 'Services', 'oshine-modules' ),
+	        'is_js_dependant' => false,
+	        'child_module' => 'service',
+	        'type' => 'multi',
+	        'initial_children' => 3,
+			'is_built_in' => true,
+			'group_atts' => array (
+				array (
+					'type'	=>	'tabs',
+					'style'	=>	'style1',
+					'group'	=>	array (
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Style' , 'tatsu'),
+							'group'	=>	array (
+								array (
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+										array (
+											'type' => 'panel',
+											'title' => __( 'Colors', 'tatsu' ),
+											'group' => array (
+												'line_color',
+											)
+										)
+									)
+								),
+							),
+						),
+					),
+				),
+			),
+	        'atts' => array (
+	            array (
+		            'att_name' => 'line_color',
+		            'type' => 'color',
+		            'label' => __( 'Timeline Color', 'oshine-modules' ),
+		            'default' => '',//sec_border
+					'tooltip' => '',
+					'css' => true,
+				  	'selectors' => array(
+					    '.tatsu-{UUID} .timeline' => array(
+							'property' => 'background',
+						),
+					),
+	            ),
+	        ),
+	        'presets' => array(
+	        	'default' => array(
+	        		'title' => '',
+	        		'image' => '',
+	        		'preset' => array(
+	        			'line_color' => '#efefef',
+	        		),
+	        	)
+	        ),
+	    );
+	tatsu_register_module( 'services', $controls );
+}
+
+
+
+add_action( 'tatsu_register_modules', 'oshine_register_service');
+function oshine_register_service() {
+		$controls = array (
+	        'icon' => '',
+	        'title' => __( 'Service', 'oshine-modules' ),
+	        'is_js_dependant' => false,
+	        'child_module' => '',
+	        'type' => 'sub_module',
+			'is_built_in' => true,
+			'group_atts' => array (
+				array (
+					'type'	=>	'tabs',
+					'style'	=>	'style1',
+					'group'	=>	array (
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Content' , 'tatsu'),
+							'group'	=>	array (
+								'icon',
+								'icon_size',
+								'content',
+							)
+						),
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Style' , 'tatsu'),
+							'group'	=>	array (
+								array (
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+										array (
+											'type' => 'panel',
+											'title' => __( 'Colors', 'tatsu' ),
+											'group' => array (
+												array (
+													'type' => 'tabs',
+													'style' => 'style1',
+													'group' => array(
+														array(
+															'type' => 'tab',
+															'title' => __('Normal' , 'tatsu'),
+															'group' => array (
+																'icon_color',
+																'icon_bg_color',
+																'content_bg_color',
+															)
+														),
+														array(
+															'type' => 'tab',
+															'title' => __('Hover' , 'tatsu'),
+															'group' => array (
+																'icon_hover_bg_color',
+																'icon_hover_color',
+															)
+														),
+													)
+												)
+											)
+										)
+									)
+								),
+							),
+						),
+					),
+				),
+			),
+	        'atts' => array (
+	            array (
+	        		'att_name' => 'icon',
+	        		'type' => 'icon_picker',
+	        		'label' => __( 'Service Icon', 'oshine-modules' ),
+	        		'default' => '',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+	        		'att_name' => 'icon_size',
+	        		'type' => 'button_group',
+	        		'label' => __( 'Service Icon Size', 'oshine-modules' ),
+	        		'options' => array (
+						'small'	=>	'Small',
+						'medium' => 'Medium',
+						'large' => 'Large'
+					),
+	        		'default' => 'medium',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+		            'att_name' => 'icon_bg_color',
+		            'type' => 'color',
+		            'label' => __( 'Service Icon Background Color', 'oshine-modules' ),
+		            'default' => '',//sec_bg
+					'tooltip' => '',
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID} .service-icon' => array(
+							'property' => 'background-color',
+						),
+					),
+	            ),
+	        	array (
+		            'att_name' => 'icon_color',
+		            'type' => 'color',
+		            'label' => __( 'Service Icon Color', 'oshine-modules' ),
+		            'default' => '',
+					'tooltip' => '',
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID} .service-icon' => array(
+							'property' => 'color',
+						),
+					),
+	            ),
+	        	array (
+		            'att_name' => 'icon_hover_bg_color',
+		            'type' => 'color',
+		            'label' => __( 'Service Icon Hover Background Color', 'oshine-modules' ),
+		            'default' => '',//color_scheme
+					'tooltip' => '',
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID} .service-wrap:hover .service-icon' => array(
+							'property' => 'background-color',
+						),
+					),
+	            ),
+	        	array (
+		            'att_name' => 'icon_hover_color',
+		            'type' => 'color',
+		            'label' => __( 'Service Icon Hover Color', 'oshine-modules'),
+		            'default' => '',//alt_bg_text_color
+					'tooltip' => '',
+					'css' => true,
+					'selectors' => array(
+						'.tatsu-{UUID} .service-wrap:hover .service-icon' => array(
+							'property' => 'color',
+						),
+					),
+	            ),
+	            array (
+	        		'att_name' => 'content',
+	        		'type' => 'tinymce',
+	        		'label' => __( 'Servies Content', 'oshine-modules' ),
+	        		'default' => '',
+	        		'tooltip' => ''
+ 	        	),	
+ 	        	array (
+		            'att_name' => 'content_bg_color',
+		            'type' => 'color',
+		            'label' => __( 'Services content BG color', 'oshine-modules' ),
+		            'default' => '',//sec_bg
+					'tooltip' => '',
+					'css' => true,
+				  	'selectors' => array(
+					    '.tatsu-{UUID} .service-content' => array(
+							'property' => 'background',
+						),
+					),
+	            ),
+	        ),
+	        'presets' => array(
+	        	'default' => array(
+	        		'title' => '',
+	        		'image' => '',
+	        		'preset' => array(
+	        			'icon' => 'icon-icon_desktop',
+	        			'icon_bg_color' => array( 'id' => 'palette:0', 'color' => tatsu_get_color( 'tatsu_accent_color' ) ),
+	        			'icon_color' => array( 'id' => 'palette:1', 'color' => tatsu_get_color( 'tatsu_accent_twin_color' ) ),
+	        			'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',	        			
+	        		),
+	        	)
+	        ),
+	    );
+	tatsu_register_module( 'service', $controls );
+}

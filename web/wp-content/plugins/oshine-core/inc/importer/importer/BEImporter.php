@@ -133,7 +133,12 @@ class BEThemeImporter {
           'v43' => 'V43 Modern Landing Page', 
           'v44' => 'V44 Modern Creative Agency',
           'v45' => 'V45 Film Studio / Videographer ', 
-          'v46' => 'V46 Luxury Spa',                                 
+          'v46' => 'V46 Luxury Spa', 
+          'v47' => 'V47 Creative Agency Illustration style', 
+          'v48' => 'V48 Modern Photography',   
+          'v49' => 'V49 Split Screen Portfolio',   
+          'v50' => 'V50 Title Carousel Portfolio',  
+          'v51' => 'V51 Modern Coworking Space',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }

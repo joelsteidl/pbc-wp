@@ -292,7 +292,7 @@ function typehub_get_font_options(){
     $custom_fonts = Typehub_Custom_Fonts::getInstance()->get_fonts();
     $typekit_fonts = array();
     if( !empty( $store['settings']['typekitId'] ) ) {
-        $typekit_fonts = get_typekit_data($store['settings']['typekitId']);
+        $typekit_fonts = typehub_get_typekit_data($store['settings']['typekitId']);
     }
 
     $font_options = array(

@@ -80,6 +80,7 @@ class Oshine_Modules_Public {
 		}else {
 			wp_enqueue_style( 'be-slider', plugin_dir_url( __FILE__ ) . 'css/be-slider.css' );
 			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/oshine-modules.css', array(), $this->version, 'all' );
+			wp_enqueue_style( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'css/justified-gallery.css', array(), $this->version, 'all' );
 		}
 
 	}

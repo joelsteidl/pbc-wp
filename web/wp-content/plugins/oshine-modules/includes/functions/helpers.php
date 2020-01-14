@@ -341,7 +341,8 @@ if ( ! function_exists( 'be_like_count' ) ) {
 if ( ! function_exists( 'be_get_like_button' ) ) {
 	function be_get_like_button( $post_id ) {
 		if(be_AlreadyLiked_post( $post_id ) ) {
-			$liked = 'liked disable';
+			// $liked = 'liked disable';
+			$liked = 'liked';
 		} else {
 			$liked = 'no-liked';
 		}
@@ -432,15 +433,14 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 		switch ($source['source']) {
 			case 'instagram':
 				$transient_var = 'transient_instagram_user_data_'.$source['account_name'].'_'.$source['count'];
-				delete_transient( $transient_var );
 				$transient_media = get_transient( $transient_var );
-				if($transient_media && isset($transient_media) && !empty($transient_media)) {
+				if($transient_media && isset($transient_media) && !empty($transient_media) && !is_wp_error($transient_media)) {
 					$media = unserialize($transient_media);
 				} else {
 					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
 						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
-						if(isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
+						if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
 							delete_transient( $transient_var );
 							$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
 							return $return;

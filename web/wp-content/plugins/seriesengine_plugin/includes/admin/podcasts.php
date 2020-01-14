@@ -168,6 +168,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					
 					$enmse_redirect = strip_tags($_POST['podcast_redirect']);
 					$enmse_redirect_url = strip_tags($_POST['podcast_redirect_url']);
+					$enmse_custom_lang = strip_tags($_POST['podcast_custom_lang']);
 					
 
 					if ( $enmse_podcast_option == "mostrecent" ) {
@@ -201,7 +202,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					}
 					
 					if (empty($enmse_errors)) {
-						$enmse_new_values = array( 'audio_video' => $enmse_audio_video, 'title' => $enmse_title, 'explicit' => $enmse_explicit, 'redirect_podcast' => $enmse_redirect, 'redirect_url' => $enmse_redirect_url, 'description' => $enmse_description, 'author' => $enmse_author, 'email' => $enmse_author_email, 'logo_url' => $enmse_logo_url, 'link_url' => $enmse_link_url, 'category' => $enmse_category, 'subcategory' => $enmse_subcategory, 'podcast_display' => $enmse_podcast_display, 'series_type_id' => $enmse_stid, 'series_id' => $enmse_sid, 'topic_id' => $enmse_tid, 'speaker_id' => $enmse_spid );						
+						$enmse_new_values = array( 'audio_video' => $enmse_audio_video, 'title' => $enmse_title, 'explicit' => $enmse_explicit, 'redirect_podcast' => $enmse_redirect, 'custom_lang' => $enmse_custom_lang, 'redirect_url' => $enmse_redirect_url, 'description' => $enmse_description, 'author' => $enmse_author, 'email' => $enmse_author_email, 'logo_url' => $enmse_logo_url, 'link_url' => $enmse_link_url, 'category' => $enmse_category, 'subcategory' => $enmse_subcategory, 'podcast_display' => $enmse_podcast_display, 'series_type_id' => $enmse_stid, 'series_id' => $enmse_sid, 'topic_id' => $enmse_tid, 'speaker_id' => $enmse_spid );						
 						$enmse_where = array( 'se_podcast_id' => $enmse_pid ); 
 						$wpdb->update( $wpdb->prefix . "se_podcasts", $enmse_new_values, $enmse_where ); 
 						$enmse_messages[] = "Podcast successfully updated!";
@@ -395,6 +396,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 				$enmse_redirect = strip_tags($_POST['podcast_redirect']);
 				$enmse_redirect_url = strip_tags($_POST['podcast_redirect_url']);
+				$enmse_custom_lang = strip_tags($_POST['podcast_custom_lang']);
 				
 				$enmse_podcast_option = strip_tags($_POST['podcast_option']);
 				
@@ -450,7 +452,8 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						'speaker_id' => $enmse_spid,
 						'explicit' => $enmse_explicit,  
 						'redirect_podcast' => $enmse_redirect, 
-						'redirect_url' => $enmse_redirect_url   
+						'redirect_url' => $enmse_redirect_url, 
+						'custom_lang' => $enmse_custom_lang     
 						); 
 					$wpdb->insert( $wpdb->prefix . "se_podcasts", $enmse_newpodcast );
 					$enmse_messages[] = "You have successfully added a new podcast to Series Engine!";
@@ -663,6 +666,13 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					</th>
 					<td><input id='podcast_redirect_url' name='podcast_redirect_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['podcast_redirect_url']);} ?>" tabindex="16" /></td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">
+						Podcast Language:
+						<p class="se-form-instructions">Leave this blank unless you've manually customized the language labels of your install. You can find a list of <a href="http://www.rssboard.org/rss-language-codes" target="_blank">language codes here</a>.</p>
+					</th>
+					<td><input id='podcast_custom_lang' name='podcast_custom_lang' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['podcast_custom_lang']);} ?>" tabindex="17" /></td>
+				</tr>
 			</table>
 			<p class="submit"><input name="Submit" type="submit" class="button-primary" value="Create Podcast" tabindex="14" /></p>
 		</form>
@@ -863,9 +873,16 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					</th>
 					<td><input id='podcast_redirect_url' name='podcast_redirect_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['podcast_redirect_url']);} else {echo stripslashes($enmse_podcast->redirect_url);} ?>" tabindex="16" /></td>
 				</tr>
+				<tr valign="top">
+					<th scope="row">
+						Podcast Language:
+						<p class="se-form-instructions">Leave this blank unless you've manually customized the language labels of your install. You can find a list of <a href="http://www.rssboard.org/rss-language-codes" target="_blank">language codes here</a>.</p>
+					</th>
+					<td><input id='podcast_custom_lang' name='podcast_custom_lang' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['podcast_custom_lang']);} else {echo stripslashes($enmse_podcast->custom_lang);} ?>" tabindex="17" /></td>
+				</tr>
 			</table>
 		
-		<p class="submit"><input name="Submit" type="submit" class="button-primary" value="Save Changes" tabindex="14" /></p>
+		<p class="submit"><input name="Submit" type="submit" class="button-primary" value="Save Changes" tabindex="18" /></p>
 	</form>
 	<p><a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php_podcasts', __FILE__ ) ?>">&laquo; All Podcasts</a></p>
 	<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />

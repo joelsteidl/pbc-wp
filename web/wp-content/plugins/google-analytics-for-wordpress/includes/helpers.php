@@ -314,11 +314,11 @@ function monsterinsights_is_dev_url( $url = '' ) {
 			$is_local_url = true;
 		}
 
-		$tlds_to_check = array( '.dev', '.local', ':8888' );
+		$tlds_to_check = array( '.local', ':8888', ':8080', ':8081', '.invalid', '.example', '.test' );
 		foreach ( $tlds_to_check as $tld ) {
 				if ( false !== strpos( $host, $tld ) ) {
 					$is_local_url = true;
-					continue;
+					break;
 				}
 
 		}
@@ -329,7 +329,7 @@ function monsterinsights_is_dev_url( $url = '' ) {
 				$subdomain = str_replace( array( '*', '(.)' ), '(.*)', $subdomain );
 				if ( preg_match( '/^(' . $subdomain . ')/', $host ) ) {
 					$is_local_url = true;
-					continue;
+					break;
 				}
 			}
 		}
@@ -1115,8 +1115,183 @@ function monsterinsights_get_shareasale_url( $shareasale_id, $shareasale_redirec
 
 	// Whether we have an ID or not, filter the ID.
 	$shareasale_redirect = apply_filters( 'monsterinsights_shareasale_redirect_url', $shareasale_redirect, $custom );
-	$shareasale_url      = sprintf( 'http://www.shareasale.com/r.cfm?B=971799&U=%s&M=69975&urllink=%s', $shareasale_id, $shareasale_redirect );
-
+	$shareasale_url      = sprintf( 'https://www.shareasale.com/r.cfm?B=971799&U=%s&M=69975&urllink=%s', $shareasale_id, $shareasale_redirect );
+	$shareasale_url      = apply_filters( 'monsterinsights_shareasale_redirect_entire_url', $shareasale_url, $shareasale_id, $shareasale_redirect );
 	return $shareasale_url;
 }
 
+/**
+ * Get a clean page title for archives.
+ */
+function monsterinsights_get_page_title() {
+
+	$title = __( 'Archives' );
+
+	if ( is_category() ) {
+		/* translators: Category archive title. %s: Category name */
+		$title = sprintf( __( 'Category: %s' ), single_cat_title( '', false ) );
+	} elseif ( is_tag() ) {
+		/* translators: Tag archive title. %s: Tag name */
+		$title = sprintf( __( 'Tag: %s' ), single_tag_title( '', false ) );
+	} elseif ( is_author() ) {
+		/* translators: Author archive title. %s: Author name */
+		$title = sprintf( __( 'Author: %s' ), '<span class="vcard">' . get_the_author() . '</span>' );
+	} elseif ( is_year() ) {
+		/* translators: Yearly archive title. %s: Year */
+		$title = sprintf( __( 'Year: %s' ), get_the_date( _x( 'Y', 'yearly archives date format' ) ) );
+	} elseif ( is_month() ) {
+		/* translators: Monthly archive title. %s: Month name and year */
+		$title = sprintf( __( 'Month: %s' ), get_the_date( _x( 'F Y', 'monthly archives date format' ) ) );
+	} elseif ( is_day() ) {
+		/* translators: Daily archive title. %s: Date */
+		$title = sprintf( __( 'Day: %s' ), get_the_date( _x( 'F j, Y', 'daily archives date format' ) ) );
+	} elseif ( is_tax( 'post_format' ) ) {
+		if ( is_tax( 'post_format', 'post-format-aside' ) ) {
+			$title = _x( 'Asides', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-gallery' ) ) {
+			$title = _x( 'Galleries', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-image' ) ) {
+			$title = _x( 'Images', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-video' ) ) {
+			$title = _x( 'Videos', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-quote' ) ) {
+			$title = _x( 'Quotes', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-link' ) ) {
+			$title = _x( 'Links', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-status' ) ) {
+			$title = _x( 'Statuses', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-audio' ) ) {
+			$title = _x( 'Audio', 'post format archive title' );
+		} elseif ( is_tax( 'post_format', 'post-format-chat' ) ) {
+			$title = _x( 'Chats', 'post format archive title' );
+		}
+	} elseif ( is_post_type_archive() ) {
+		/* translators: Post type archive title. %s: Post type name */
+		$title = sprintf( __( 'Archives: %s' ), post_type_archive_title( '', false ) );
+	} elseif ( is_tax() ) {
+		$tax = get_taxonomy( get_queried_object()->taxonomy );
+		/* translators: Taxonomy term archive title. 1: Taxonomy singular name, 2: Current taxonomy term */
+		$title = sprintf( __( '%1$s: %2$s' ), $tax->labels->singular_name, single_term_title( '', false ) );
+	}
+
+	return $title;
+
+}
+
+/**
+ * Make a request to the front page and check if the tracking code is present. Moved here from onboarding wizard
+ * to be used in the site health check.
+ *
+ * @return array
+ */
+function monsterinsights_is_code_installed_frontend() {
+		// Grab the front page html.
+	$request = wp_remote_request( home_url(), array(
+		'sslverify' => false,
+	) );
+	$errors  = array();
+
+	if ( 200 === wp_remote_retrieve_response_code( $request ) ) {
+
+		$body            = wp_remote_retrieve_body( $request );
+		$current_ua_code = monsterinsights_get_ua_to_output();
+		$ua_limit        = 2;
+		// If the ads addon is installed another UA is added to the page.
+		if ( class_exists( 'MonsterInsights_Ads' ) ) {
+			$ua_limit = 3;
+		}
+		// Translators: The placeholders are for making the "We noticed you're using a caching plugin" text bold.
+		$cache_error = sprintf( esc_html__( '%1$sWe noticed you\'re using a caching plugin or caching from your hosting provider.%2$s Be sure to clear the cache to ensure the tracking appears on all pages and posts. %3$s(See this guide on how to clear cache)%4$s.', 'google-analytics-for-wordpress' ), '<b>', '</b>', ' <a href="https://www.wpbeginner.com/beginners-guide/how-to-clear-your-cache-in-wordpress/" target="_blank">', '</a>' );
+		// Translators: The placeholders are for making the "We have detected multiple tracking codes" text bold & adding a link to support.
+		$multiple_ua_error = sprintf( esc_html__( '%1$sWe have detected multiple tracking codes%2$s! You should remove non-MonsterInsights ones. If you need help finding them please %3$sread this article%4$s.', 'google-analytics-for-wordpress' ), '<b>', '</b>', '<a href="https://www.monsterinsights.com/docs/how-to-find-duplicate-google-analytics-tracking-codes-in-wordpress/" target="_blank">', '</a>' );
+
+		// First, check if the tracking frontend code is present.
+		if ( false === strpos( $body, '__gaTracker' ) ) {
+			$errors[] = $cache_error;
+		} else {
+			// Check if the current UA code is actually present.
+			if ( $current_ua_code && false === strpos( $body, $current_ua_code ) ) {
+				// We have the tracking code but using another UA, so it's cached.
+				$errors[] = $cache_error;
+			}
+			// Grab all the UA codes from the page.
+			$pattern = '/UA-[0-9]+/m';
+			preg_match_all( $pattern, $body, $matches );
+			// If more than twice ( because MI has a ga-disable-UA also ), let them know to remove the others.
+			if ( ! empty( $matches[0] ) && is_array( $matches[0] ) && count( $matches[0] ) > $ua_limit ) {
+				$errors[] = $multiple_ua_error;
+			}
+		}
+	}
+
+	return $errors;
+}
+
+/**
+ * Returns a HEX color to highlight menu items based on the admin color scheme.
+ */
+function monsterinsights_menu_highlight_color() {
+
+	$color_scheme = get_user_option( 'admin_color' );
+	$color        = '#7cc048';
+	if ( 'light' === $color_scheme || 'blue' === $color_scheme ) {
+		$color = '#5f3ea7';
+	}
+
+	return $color;
+}
+
+/**
+ * Track Pretty Links redirects with MonsterInsights.
+ *
+ * @param string $url The url to which users get redirected.
+ */
+function monsterinsights_custom_track_pretty_links_redirect( $url ) {
+	if ( ! function_exists( 'monsterinsights_mp_track_event_call' ) ) {
+		return;
+	}
+	// Try to determine if click originated on the same site.
+	$referer = ! empty( $_SERVER['HTTP_REFERER'] ) ? $_SERVER['HTTP_REFERER'] : '';
+	if ( ! empty( $referer ) ) {
+		$current_site_url    = get_bloginfo( 'url' );
+		$current_site_parsed = wp_parse_url( $current_site_url );
+		$parsed_referer      = wp_parse_url( $referer );
+		if ( ! empty( $parsed_referer['host'] ) && ! empty( $current_site_parsed['host'] ) && $current_site_parsed['host'] === $parsed_referer['host'] ) {
+			// Don't track clicks originating from same site as those are tracked with JS.
+			return;
+		}
+	}
+	// Check if this is an affiliate link and use the appropriate category.
+	$ec            = 'outbound-link';
+	$inbound_paths = monsterinsights_get_option( 'affiliate_links', array() );
+	$path          = empty( $_SERVER['REQUEST_URI'] ) ? '' : $_SERVER['REQUEST_URI'];
+	if ( ! empty( $inbound_paths ) && is_array( $inbound_paths ) && ! empty( $path ) ) {
+		$found = false;
+		foreach ( $inbound_paths as $inbound_path ) {
+			if ( empty( $inbound_path['path'] ) ) {
+				continue;
+			}
+			if ( 0 === strpos( $path, trim( $inbound_path['path'] ) ) ) {
+				$label = ! empty( $inbound_path['label'] ) ? trim( $inbound_path['label'] ) : 'aff';
+				$ec   .= '-' . $label;
+				$found = true;
+				break;
+			}
+		}
+		if ( ! $found ) {
+			return;
+		}
+	} else {
+		// no paths setup in MonsterInsights settings
+		return;
+	}
+
+	$track_args = array(
+		't'  => 'event',
+		'ec' => $ec,
+		'ea' => $url,
+		'el' => 'external-redirect',
+	);
+	monsterinsights_mp_track_event_call( $track_args );
+}
+add_action( 'prli_before_redirect', 'monsterinsights_custom_track_pretty_links_redirect' );

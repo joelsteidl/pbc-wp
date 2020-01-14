@@ -38,7 +38,13 @@ class Tatsu_Module_Options {
 		if( function_exists( $output_function ) ) {
 			add_shortcode( $tag, $output_function );
 		}
-		$options = tatsu_parse_module_options($options);
+
+        if( array_key_exists( 'group_atts', $options ) ) {
+            tatsu_parse_group_atts( $options['group_atts'], $options['atts'] );
+        }
+        $options = apply_filters( 'tatsu_register_module_filter_options', $options, $tag );
+        $options = tatsu_parse_module_options($options);
+
 		$new_module = array( $tag => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}
@@ -56,7 +62,13 @@ class Tatsu_Module_Options {
 			}
 		}
 		add_shortcode( $module_name, $output_function );
-		$options = tatsu_parse_module_options($options);
+        
+        if( array_key_exists( 'group_atts', $options ) ) {
+            tatsu_parse_group_atts( $options['group_atts'], $options['atts'] );
+        }
+        $options = apply_filters( 'tatsu_register_module_filter_options', $options, $module_name );
+        $options = tatsu_parse_module_options($options);
+
 		$new_module = array( $module_name => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}
@@ -74,7 +86,7 @@ class Tatsu_Module_Options {
 		foreach( $this->remapped_modules as $remapped_module => $remapped_to ) {
 			unset($all_modules[$remapped_module]);
 		}
-		$this->module_options['tatsu_module_options'] = $all_modules;
+		$this->module_options = $all_modules;
 		return $this->module_options;
 	}
 
@@ -86,6 +98,14 @@ class Tatsu_Module_Options {
 	public function get_module_type( $tag ){
 		if( array_key_exists( $tag, $this->modules ) ){
 			return $this->modules[$tag]['type'];
+		} else {
+			return false;
+		}
+	}
+
+	public function is_built_in( $tag ){
+		if( array_key_exists( $tag, $this->modules ) && array_key_exists( 'is_built_in', $this->modules[$tag] ) ){
+			return $this->modules[$tag]['is_built_in'];
 		} else {
 			return false;
 		}

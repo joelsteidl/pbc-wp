@@ -69,7 +69,7 @@ class Oshine_Modules {
 	public function __construct() {
 
 		$this->plugin_name = 'oshine-modules';
-		$this->version = '2.2.7';
+		$this->version = '3.0.9';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -122,12 +122,7 @@ class Oshine_Modules {
 		/**
 		 * Oshine Modules Configurations
 		 */
-		require_once OSHINE_MODULES_PLUGIN_DIR . 'includes/class-oshine-modules-config.php';
-
-		/**
-		 * Oshine Modules Configurations
-		 */
-		require_once OSHINE_MODULES_PLUGIN_DIR . 'includes/modules/module_options.php';				
+		require_once OSHINE_MODULES_PLUGIN_DIR . 'includes/class-oshine-modules-config.php';		
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
@@ -139,6 +134,8 @@ class Oshine_Modules {
 		 * side of the site.
 		 */
 		require_once OSHINE_MODULES_PLUGIN_DIR . 'public/class-oshine-modules-public.php';
+
+		include_once OSHINE_MODULES_PLUGIN_DIR . 'includes/templates/index.php';
 
 		$this->loader = new Oshine_Modules_Loader();
 

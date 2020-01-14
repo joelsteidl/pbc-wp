@@ -9,7 +9,7 @@
  * Plugin Name:       Type Hub
  * Plugin URI:        http://brandexponents.com
  * Description:       Typehub lets you take complete control over the typography of your website.
- * Version:           1.4.3
+ * Version:           2.0
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+
@@ -28,7 +28,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'TYPEHUB_VERSION', '1.4.3' );
+define( 'TYPEHUB_VERSION', '2.0' );
 
 if( !defined( 'TYPEHUB_PLUGIN_URL' ) ) {
 	define( 'TYPEHUB_PLUGIN_URL', plugins_url( '', __FILE__ ) );

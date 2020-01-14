@@ -64,7 +64,7 @@ class Tatsu_Footer_Module_Options {
 
 	public function get_module_options() {
 		$normal_modules = Tatsu_Module_Options::getInstance()->get_modules();
-		$this->module_options['tatsu_module_options'] = array_merge( $normal_modules, $this->modules );
+		$this->module_options = array_merge( $normal_modules, $this->modules );
 		return $this->module_options;
 	}
 

@@ -28,3 +28,40 @@ if( !function_exists( 'tatsu_rev_slider_output_filter' ) ) {
         return $output;
     }
 }
+
+if (!function_exists('tatsu_register_rev_slider')) {
+	add_action('tatsu_register_modules', 'tatsu_register_rev_slider');
+	function tatsu_register_rev_slider()
+	{
+		if (class_exists('RevSlider')) {
+			global $wpdb;
+			$query = sprintf('select alias, title from %srevslider_sliders r', $wpdb->prefix);
+			$sliders = $wpdb->get_results($query);
+			$sliders_option = array();
+			if (is_array($sliders)) {
+				foreach ($sliders as $slider) {
+					if (is_object($slider)) {
+						$sliders_option[$slider->alias] = $slider->title;
+					}
+				}
+			}
+			$controls = array(
+				'icon' => '',
+				'title' => __('Slider Revolution', 'tatsu'),
+				'is_js_dependant' => false,
+				'type' => 'single',
+				'is_built_in' => false,
+				'atts' => array(
+					array(
+						'att_name' => 'rev_slider_alias',
+						'type' => 'select',
+						'label' => __('Slider Name', 'tatsu'),
+						'options' => $sliders_option,
+						'tooltip'	=> '',
+					),
+				)
+			);
+			tatsu_register_module('tatsu_rev_slider', $controls, 'tatsu_rev_slider');
+		}
+	}
+}

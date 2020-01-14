@@ -279,14 +279,20 @@
 						} elseif ( $d->meta_key == "sermon_video" ) { // Video Embed
 							$embed_code = $d->meta_value;
 						} elseif ( $d->meta_key == "sermon_notes" ) { // Sermon Notes
-							$featured_title = "Sermon Notes";
-							$featured_file = $d->meta_value;
+							if ( $d->meta_value != '' ) {
+								$featured_title = "Sermon Notes";
+								$featured_file = $d->meta_value;
+							}
 						} elseif ( $d->meta_key == "sermon_bulletin" ) { // Bulletin
-							$bulletin = $d->meta_value;
+							if ( $d->meta_value != '' ) {
+								$bulletin = $d->meta_value;
+							}
 						} elseif ( $d->meta_key == "_wpfc_sermon_duration" ) { // Audio Length
 							$message_length = $d->meta_value;
 						} elseif ( $d->meta_key == "_thumbnail_id" ) { // Image ID
-							$findimage = $d->meta_value; 
+							if ( $d->meta_value != '' ) {
+								$findimage = $d->meta_value; 
+							}
 						} elseif ( $d->meta_key == "Views" ) { // View Count
 							$viewcount = $d->meta_value; 
 						}

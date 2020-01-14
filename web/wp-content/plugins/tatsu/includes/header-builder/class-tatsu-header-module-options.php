@@ -45,8 +45,13 @@ class Tatsu_Header_Module_Options {
 			add_shortcode( $tag, $output_function );
 		}else {
 			$options[ 'shortcode_registered' ] = false;
-		}
-		$options = tatsu_parse_module_options($options);
+        }
+        
+        if( array_key_exists( 'group_atts', $options ) ) {
+            tatsu_parse_group_atts( $options['group_atts'], $options['atts'] );
+        }
+        $options = apply_filters( 'tatsu_register_header_module_filter_options', $options, $tag );
+        $options = tatsu_parse_module_options($options);
 		$new_module = array( $tag => $options );
 		$this->modules = array_merge( $this->modules, $new_module );
 	}
@@ -63,7 +68,7 @@ class Tatsu_Header_Module_Options {
 	}
 
 	public function get_module_options() {
-		$this->module_options['tatsu_module_options'] = $this->modules;
+        $this->module_options = $this->modules;
 		return $this->module_options;
 	}
 

@@ -52,19 +52,29 @@ if ( isset($enmse_options['lang_podcastmessagefrom']) ) {
 }
 
 // Podcast language
-if ( isset($enmse_options['language']) ) { 
-	$langval = $enmse_options['language'];
-	if ( $langval == 4 ) { // Turkish
-		$enmse_podcastlanguage =  "tr";
-	} elseif ( $langval == 3 ) { // German
-		$enmse_podcastlanguage =  "de";
-	} elseif ( $langval == 2 ) { // Spanish
-		$enmse_podcastlanguage =  "es";
-	} else { // English
+if ( $enmse_podcast->custom_lang == NULL ) {
+	if ( isset($enmse_options['language']) ) { 
+		$langval = $enmse_options['language'];
+		if ( $langval == 7 ) { // Dutch
+			$enmse_podcastlanguage =  "nl";
+		} elseif ( $langval == 6 ) { // Traditional Chinese
+			$enmse_podcastlanguage =  "zh-tw";
+		} elseif ( $langval == 5 ) { // Simplified Chinese
+			$enmse_podcastlanguage =  "zh-cn";
+		} elseif ( $langval == 4 ) { // Turkish
+			$enmse_podcastlanguage =  "tr";
+		} elseif ( $langval == 3 ) { // German
+			$enmse_podcastlanguage =  "de";
+		} elseif ( $langval == 2 ) { // Spanish
+			$enmse_podcastlanguage =  "es";
+		} else { // English
+			$enmse_podcastlanguage =  "en";
+		}
+	} else {
 		$enmse_podcastlanguage =  "en";
 	}
 } else {
-	$enmse_podcastlanguage =  "en";
+	$enmse_podcastlanguage =  htmlspecialchars(stripslashes($enmse_podcast->custom_lang));
 }
 
 if ( $enmse_podcastlanguage == "tr" ) {

@@ -70,7 +70,7 @@ class Typehub {
 		if ( defined( 'TYPEHUB_VERSION' ) ) {
 			$this->version = TYPEHUB_VERSION;
 		} else {
-			$this->version = '1.4.1';
+			$this->version = '1.5';
 		}
 		$this->plugin_name = 'typehub';
 
@@ -208,6 +208,7 @@ class Typehub {
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'addAdminMenu' );
 		$this->loader->add_action( 'load_typehub_exposed_selectors', $plugin_admin ,'get_exposed_selectors' );
 		$this->loader->add_action( 'load_typehub_exposed_selectors', $plugin_admin ,'get_font_options' );
+		$this->loader->add_action( 'wp_head', $this, 'typehub_head' , 30 );
 
 	}
 
@@ -256,6 +257,9 @@ class Typehub {
 		$this->loader->add_action( 'wp_ajax_download_font', $plugin_store, 'ajax_download_font' );
 		$this->loader->add_action( 'wp_ajax_refresh_changes', $plugin_store, 'ajax_refresh_changes' );
 		$this->loader->add_action( 'wp_ajax_sync_typekit', $plugin_store, 'ajax_sync_typekit' );
+		$this->loader->add_action( 'wp_ajax_add_custom_font', $plugin_store, 'ajax_add_custom_font' );
+		$this->loader->add_action( 'wp_ajax_nopriv_add_custom_font', $plugin_store, 'ajax_add_custom_font' );
+		$this->loader->add_action( 'wp_ajax_remove_custom_font', $plugin_store, 'ajax_remove_custom_font' );
 	}
 
 	/**
@@ -286,6 +290,10 @@ class Typehub {
 	 */
 	public function get_loader() {
 		return $this->loader;
+	}
+
+	public function typehub_head(){
+		do_action('typehub_head');
 	}
 
 	/**

@@ -163,7 +163,9 @@ if ( isset($enmse_options['language']) ) { // Find the Language
 	$enmse_language = 1;
 }
 
-if ( $enmse_language == 6 ) { // Traditional Chinese
+if ( $enmse_language == 7 ) { // Dutch
+	include('lang/dut_bible_books.php');
+} elseif ( $enmse_language == 6 ) { // Traditional Chinese
 	include('lang/chint_bible_books.php');
 } elseif ( $enmse_language == 5 ) { // Simplified Chinese
 	include('lang/chins_bible_books.php');
@@ -352,7 +354,7 @@ if ( !defined('ENMSE_FIND_PAGE') ) { // Find current page for building URLs
 	<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v2.7.7.122318 -->
+	<!-- v2.7.9.4.112119 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

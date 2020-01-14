@@ -1,6 +1,6 @@
 <?php
 if( !function_exists( 'tatsu_img_slider' ) ) {
-    function tatsu_img_slider($atts,$content) {
+    function tatsu_img_slider($atts,$content,$tag) {
         
         $atts =  shortcode_atts( array (
             'type'             => 'ribbon',
@@ -11,6 +11,10 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
             'full_screen_offset'=> '',
             'center_scale'      => '',
             'border_radius'     => '',
+            'border' => '',
+            'border_color'  => '',
+            'border_style' => '',
+            'box_shadow' => '',
             'destroy_slider'    => '',
             'lazy_load'         => '0',
             'adaptive_images'   => '0',
@@ -25,24 +29,35 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
             'infinite'          => '1',
             'swipe_to_slide'    => '0',
             'destroy_in_mobile' => '1',  
-            'margin'            => '',
 			'key' => be_uniqid_base36(true),
-		),$atts );
+		),$atts, $tag );
 
         extract( $atts );
 
 
-        $custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_image_carousel', $atts['key'] );
+        $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $atts['key'] );
 
         $custom_class_name = ' tatsu-'.$atts['key'];
 
         $slider_type = !empty( $type ) ? $type : 'fixed';
 
-        //wrapper classes
+        $css_id = be_get_id_from_atts( $atts );
+        $visibility_classes = be_get_visibility_classes_from_atts( $atts );
+
         $wrapper_classes = array( 'tatsu-media-carousel', 'tatsu-module', 'clearfix', $custom_class_name );
 
-        //classes
         $classes = array( 'tatsu-media-carousel-inner', 'tatsu-carousel' );
+        if( !empty( $visibility_classes ) ) {
+            $wrapper_classes[] = $visibility_classes;
+        }
+        if( !empty( $atts['css_classes'] ) ) {
+            $wrapper_classes[] = $atts['css_classes'];
+        }
+        if( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) {
+            $wrapper_classes[] = 'tatsu-animate';
+        }
+        $wrapper_attrs = be_get_animation_data_atts( $atts );
+
         if( 'fixed' === $slider_type ) {
             $classes[] = 'tatsu-fixed-carousel';
             if( !empty( $center_scale ) ) {
@@ -112,9 +127,10 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
         $classes = implode( ' ', $classes );
         $data_attrs = implode( ' ', $data_attrs );
         $images_array = !empty( $images ) ? explode( ',', $images ) : array(); 
+
         ob_start();
         ?>
-            <div class = "<?php echo $wrapper_classes; ?>" >
+            <div <?php echo $css_id; ?> class = "<?php echo $wrapper_classes; ?>" <?php echo $wrapper_attrs; ?>>
                 <?php echo $custom_style_tag; ?>
                 <div class = "<?php echo $classes; ?>" <?php echo $data_attrs; ?> >
                     <?php if( !empty( $images_array ) ) : ?>
@@ -173,4 +189,406 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
         return ob_get_clean();
     }
     add_shortcode( 'tatsu_image_carousel', 'tatsu_img_slider' );
+}
+
+add_action('tatsu_register_modules', 'tatsu_register_image_carousel');
+function tatsu_register_image_carousel()
+{
+	$controls = array(
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#image_carousel',
+		'title' => __('Image Carousel', 'tatsu'),
+		'is_js_dependant' => false,
+		'child_module' => '',
+		'type' => 'single',
+		'is_built_in' => true,
+
+		//Tab1
+		'group_atts'			=> array(
+			array(
+				'type'		=> 'tabs',
+				'style'		=> 'style1',
+				'group'		=> array(
+
+					array(
+						'type' => 'tab',
+						'title' => __('Content', 'tatsu'),
+						'group'	=> array(
+							'type',
+							'images',
+                            'slides_to_show',
+                            'lazy_load',
+                            'adaptive_images',
+                            'destroy_in_mobile',
+                            'center_scale',
+						)
+					),
+
+					//Tab2
+					array(
+						'type' => 'tab',
+						'title' => __('Style', 'tatsu'),
+						'group'	=> array(
+                            'full_screen',
+                            'full_screen_offset',
+                            'height',
+                            'slide_gutter',
+                            'arrows',
+                            'pagination',
+                            'dots_color',
+                            'slide_show',
+                            'slide_show_speed',
+                            'swipe_to_slide',
+                            'infinite',
+                            'slide_bg_color',
+						),
+					),
+
+					array( //Tab3
+						'type' => 'tab',
+						'title' => __('Advanced', 'tatsu'),
+						'group'	=> array(
+                            array(
+                                'type'  => 'accordion',
+                                'active' => '',
+                                'group' => array (
+                                    array (
+                                        'type'  => 'panel',
+                                        'title' => __( 'Border', 'tatsu' ),
+                                        'group' => array (
+                                            'border_style',
+                                            'border',
+                                            'border_color',
+                                            'border_radius',
+                                        )
+                                    ),
+                                    array (
+                                        'type'  => 'panel',
+                                        'title' => __( 'Shadow', 'tatsu' ),
+                                        'group' => array (
+                                            'box_shadow',
+                                        )
+                                    )
+                                )
+                            ),
+						)
+					)
+				)
+			)
+		),
+
+
+		'atts' => array(
+			array(
+				'att_name'		=> 'type',
+				'type'			=> 'select',
+				'label'			=> __('Type', 'tatsu'),
+				'options'		=> array(
+					'ribbon'	=> 'Ribbon Carosuel',
+					'centered_ribbon'	=> 'Ribbon - Centered Carousel',
+					'fixed'		=> 'Fixed Width Carousel Slider',
+					'client_carousel'	=> 'Client Carousel',
+				),
+				'default' => 'client_carousel'
+			),
+			array(
+				'att_name'	=> 'images',
+				'type'		=> 'multi_image_picker',
+				'label'		=> __('Images', 'tatsu'),
+				'default'	=> '',
+				'options'	=> array(
+					'type'	=> 'both',
+					'size'	=> 'full'
+				)
+			),
+			array(
+				'att_name'	=> 'center_scale',
+				'type'		=> 'switch',
+				'label'		=> __('Center Scale Images', 'tatsu'),
+				'default'	=> '0',
+				'visible'	=> array('type', '=', 'fixed'),
+			),
+			array(
+				'att_name'	=> 'lazy_load',
+				'type'		=> 'switch',
+				'label'		=> __('Lazy Load', 'tatsu'),
+				'default'	=> '0',
+			),
+			array(
+				'att_name'		=> 'adaptive_images',
+				'type'			=> 'switch',
+				'label'			=> __('Adaptive Images', 'tatsu'),
+				'default'		=> '0',
+			),
+			array(
+				'att_name'	 => 'slide_gutter',
+				'type'		 => 'number',
+				'options' => array(
+					'unit' => 'px',
+				),
+				'label'		 => __('Gutter Width', 'tatsu'),
+				'default'	 => '0',
+                'css'		 => true,
+                'is_inline' => true,
+				'selectors'	 => array(
+					'.tatsu-{UUID} .tatsu-carousel-col' => array(
+						'property'	=> 'padding',
+						'prepend'	=> '0 ',
+						'append'	=> 'px',
+						'operation'	=> array('/', 2)
+					),
+					'.tatsu-{UUID} .tatsu-carousel'		=> array(
+						'property'		=> 'margin',
+						'prepend'		=> '0 -',
+						'append'		=> 'px',
+						'operation'		=> array('/', 2),
+					),
+				),
+			),
+			array(
+				'att_name'	 => 'height',
+				'type'		 => 'number',
+				'options' => array(
+					'unit' => 'px',
+				),
+				'label'		=> __('Height', 'tatsu'),
+                'default'	=> '500',
+                'is_inline' => true,
+				'responsive' => true,
+				'css' 		=> true,
+				'selectors'	=> array(
+					'.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+						'property'	=> 'height',
+						'append'	=> 'px',
+						'when'		=> array('full_screen', '!=', '1')
+					),
+				),
+				'visible'	=> array('full_screen', '=', '0'),
+			),
+			array(
+				'att_name'		=> 'full_screen',
+				'type'			=> 'switch',
+				'label'			=> __('Full Screen Slider', 'tatsu'),
+				'default'		=> '0',
+			),
+			array(
+				'att_name'		=> 'full_screen_offset',
+                'type'			=> 'text',
+                'is_inline' => true,
+				'label'			=> __('Full Screen Offset', 'tatsu'),
+				'default'		=> '',
+				'visible'	=> array('full_screen', '==', '1'),
+			),
+			array(
+				'att_name'	=> 'slides_to_show',
+				'type'		=> 'slider',
+				'options'	=> array(
+					'min'	=> '1',
+					'max'	=> '6'
+				),
+				'label'		=> __('Slides Per Row', 'tatsu'),
+				'default'	=> '3',
+				'visible'	=> array(
+					'condition' => array(
+						array('type', '==', 'fixed'),
+						array('type', '==', 'client_carousel')
+					),
+					'relation'	=> 'or'
+				)
+            ),
+            array (
+                'att_name' => 'border_style',
+                'type' => 'select',
+                'label' => __( 'Border Style', 'tatsu' ),
+                'options' => array(
+                    'none' => 'None',
+                    'solid' => 'Solid',
+                    'dashed' => 'Dashed',
+                    'double' => 'Double',
+                    'dotted' => 'Dotted',
+                ),
+                'default' => array( 'd' => 'solid', 'l' => 'solid', 't' => 'solid', 'm' => 'solid' ),
+                'tooltip' => '',
+                'css' => true,
+                'responsive' => true,
+                'selectors' => array(
+                    '.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+                        'property' => 'border-style',
+                        'when' => array(
+                            array( 'border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+                            array( 'border', 'notempty' ),
+                            array( 'border_style', '!=', array( 'd' => 'none' ) ),
+                        ),
+                        'relation' => 'and',             
+                    ),
+                ),
+            ),
+            array (
+                'att_name' => 'box_shadow',
+                'type' => 'input_box_shadow',
+                'label' => __( 'Box Shadow', 'tatsu' ),
+                'tooltip' => '',
+                'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
+                'css' => true,
+                'selectors' => array(
+                    '.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+                        'property' => 'box-shadow',
+                        'when' => array('box_shadow', '!=', '0px 0px 0px 0px rgba(0,0,0,0)' ),
+                    ),
+                ),
+            ),
+            array (
+                'att_name' => 'border',
+                'type' => 'input_group',
+                'label' => __( 'Border Width', 'tatsu' ),
+                'default' => '0px 0px 0px 0px',
+                'tooltip' => '',
+                'responsive' => true,
+                'css' => true,
+                'selectors' => array(
+                    '.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+                        'property' => 'border-width',
+                        'when' => array(
+                            array('border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+                            array( 'border', 'notempty' ),
+                            array( 'border_style', '!=', 'none' ),
+                        ),
+                        'relation' => 'and',
+                    ),
+                ),
+            ),
+            array (
+                'att_name' => 'border_color',
+                'type' => 'color',
+                'label' => __( 'Border Color', 'tatsu' ),
+                'default' => '',
+                'tooltip' => '',
+                'css' => true,
+                'selectors' => array(
+                    '.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+                        'property' => 'border-color',
+                        'when' => array(
+                            array('border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
+                            array( 'border', 'notempty' ),
+                            array( 'border_style', '!=', 'none' ),
+                        ),
+                        'relation' => 'and',
+                    ),
+                ),
+            ),
+			array(
+				'att_name'	=> 'border_radius',
+				'type'		=> 'number',
+				'label'		=> __('Border Radius', 'tatsu'),
+				'options' 	=> array(
+					'unit'	=> 'px'
+				),
+				'default'	=> '0',
+				'css'		=> true,
+				'selectors'	=> array(
+					'.tatsu-{UUID} .tatsu-carousel-col-inner'		=>  array(
+						'property'			=> 'border-radius',
+						'append'			=> 'px'
+					)
+				)
+			),
+			array(
+				'att_name'			=> 'slide_bg_color',
+				'type'				=> 'color',
+				'label'				=> __('Slide Background Color', 'tatsu'),
+				'default'			=> '',
+				'css'				=> true,
+				'selectors'			=> array(
+					'.tatsu-{UUID} .tatsu-carousel-col-inner' => array(
+						'property'	=> 'background'
+					)
+				)
+			),
+			array(
+				'att_name'	=> 'arrows',
+				'type'		=> 'switch',
+				'label'		=> __('Arrows', 'tatsu'),
+				'default'	=> '0',
+				'tooltip'	=> ''
+			),
+			array(
+				'att_name' => 'pagination',
+				'type' => 'switch',
+				'label' => __( 'Dots', 'tatsu'),
+				'default' => 0,
+				'tooltip' => '',
+			),
+			array(
+				'att_name' => 'dots_color',
+				'type' => 'color',
+				'label' => __('Dots Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'visible'	  => array('pagination', '=', '1'),
+				'css' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .flickity-page-dots .is-selected' => array(
+						'property' => 'background',
+						'when'	   => array('pagination', '=', '1'),
+					),
+				),
+			),
+			array(
+				'att_name' => 'infinite',
+				'type' => 'switch',
+				'label' => __(' Infinite Carousel', 'tatsu'),
+				'default' => 1,
+				'tooltip' => '',
+			),
+			array(
+				'att_name' => 'slide_show',
+				'type' => 'switch',
+				'label' => __('Slide Show', 'tatsu'),
+				'default' => 0,
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'slide_show_speed',
+				'type' => 'slider',
+				'visible' => array('slide_show', '=', '1'),
+				'label' => __('Slide Show Speed', 'tatsu'),
+				'options' => array(
+					'min' => '0',
+					'max' => '5000',
+					'step' => '1000',
+					'unit' => 'ms',
+				),
+				'default' => '2000',
+				'tooltip' => ''
+			),
+			array(
+				'att_name'	=> 'swipe_to_slide',
+				'type'		=> 'switch',
+				'label'		=> __('Free Scroll', 'tatsu'),
+				'default'	=> '1',
+				'tooltip'	=> ''
+			),
+			array(
+				'att_name' => 'destroy_in_mobile',
+				'type' => 'switch',
+				'label' => __('Stack Images in Mobile view', 'tatsu'),
+				'default' => 0,
+				'tooltip' => '',
+			),
+		),
+		'presets' => array(
+			'default' => array(
+				'title' => '',
+				'image' => '',
+				'preset' => array(
+					'images'			=> '::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150',
+					'height'			=> '150',
+					'style'				=> 'client_carousel',
+					'slide_gutter'		=> '20',
+					'dots_color'		=> array('id' => 'palette:0', 'color' => tatsu_get_color('tatsu_accent_color')),
+					'slides_to_show'	=> '5',
+				),
+			)
+		),
+	);
+	tatsu_register_module('tatsu_image_carousel', $controls);
 }

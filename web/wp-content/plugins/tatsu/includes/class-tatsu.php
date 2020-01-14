@@ -72,7 +72,7 @@ class Tatsu {
 		if( defined( 'TATSU_VERSION' ) ) {
 			$this->version = TATSU_VERSION;
 		}else {
-			$this->version = '2.9.3.1.1';
+			$this->version = '3.1.9';
 		}
 		$this->load_dependencies();
 		$this->set_locale();
@@ -291,7 +291,9 @@ class Tatsu {
 		 */
 		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-module-options.php';
 		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-page-content.php';
-		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-page-templates.php';					
+		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-page-templates.php';
+		require_once TATSU_PLUGIN_DIR. 'includes/templates/sections/index.php';	
+		require_once TATSU_PLUGIN_DIR. 'includes/templates/pages/index.php';									
 		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-store.php';
 		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-section-concepts.php';
 		require_once TATSU_PLUGIN_DIR. 'includes/header-builder/class-tatsu-header-concepts.php';
@@ -313,6 +315,12 @@ class Tatsu {
 		 * Class responsible for registering custom post templates
 		 */
 		require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-post-templates.php';
+
+		/**
+		 * Register Custom Selectors with Typehub
+		 */
+
+		include_once TATSU_PLUGIN_DIR . 'includes/integrations/typehub.php';
 
 		$this->loader = new Tatsu_Loader();
 
@@ -373,8 +381,8 @@ class Tatsu {
 		$this->loader->add_action( 'save_post', $plugin_admin ,'tatsu_save_global_section_settings_on_posts' );
 		$this->loader->add_action( 'save_post', $plugin_admin ,'tatsu_save_header_options' );
 
-		$this->loader->add_action( 'customize_register', $plugin_admin, 'tatsu_add_customizer_options', 100 );
-		$this->loader->add_action( 'admin_action_tatsu_new_post', $plugin_admin, 'tatsu_create_new_post' );
+        $this->loader->add_action( 'customize_register', $plugin_admin, 'tatsu_add_customizer_options', 100 );
+        $this->loader->add_action( 'admin_action_tatsu_new_post', $plugin_admin, 'tatsu_create_new_post' );
 		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_edit_in_dashboard', 10, 2 );
 		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'add_edit_in_dashboard', 10, 2 );
 		$this->loader->add_filter( 'display_post_states', $plugin_admin, 'add_tatsu_post_state', 10, 2 );
@@ -419,7 +427,15 @@ class Tatsu {
 
 		$this->loader->add_filter( 'body_class', $plugin_public, 'single_page_site' );
 		
+        //common atts
+        $this->loader->add_action( 'tatsu_register_module_filter_options', $plugin_public, 'tatsu_add_common_atts_to_module_options', 10, 2 );
+        $this->loader->add_action( 'tatsu_register_header_module_filter_options', $plugin_public, 'tatsu_add_common_atts_to_module_options', 10, 2 );
+        $this->loader->add_action( 'tatsu_register_header_module_filter_options', $plugin_public, 'tatsu_remove_animation_atts', 9999, 2 );
+        $this->loader->add_action( 'wp_loaded', $this, 'tatsu_add_common_atts_to_shortcodes', 12 );
 
+        //custom css and js
+        $this->loader->add_action( 'wp_head', $plugin_public, 'tatsu_add_custom_style', 9999 );
+        $this->loader->add_action( 'wp_footer', $plugin_public, 'tatsu_add_custom_scripts', 9999 );
 	}
 
 	/**
@@ -433,11 +449,18 @@ class Tatsu {
 		$plugin_builder = new Tatsu_Builder( $this->get_plugin_name(), $this->get_version() );
 		$plugin_iframe_loader = new Tatsu_Frame( $this->get_plugin_name(), $this->get_version() );
 		$tatsu_integrations = new Tatsu_Integrations();
-		$this->loader->add_action( 'template_redirect', $plugin_builder, 'init', 999999 );
+        $this->loader->add_action( 'template_redirect', $plugin_builder, 'init', 999999 );
 		$this->loader->add_action( 'template_redirect', $plugin_iframe_loader, 'init',9999999 );
 		$this->loader->add_action( 'init', $tatsu_integrations, 'init' );
-		$this->loader->add_action( 'init', $this, 'tatsu_add_image_size' );
-		//$this->loader->add_action( 'plugins_loaded', $post_templates, 'init' );
+        $this->loader->add_action( 'init', $this, 'tatsu_add_image_size' );
+        
+        //admin load hooks
+        $this->loader->add_action( 'admin_action_tatsu', $plugin_builder, 'init' );
+        $this->loader->add_action( 'admin_action_tatsu-global', $plugin_builder, 'init' );
+        $this->loader->add_action( 'admin_action_tatsu-header', $plugin_builder, 'init' );
+        $this->loader->add_action( 'admin_action_tatsu-footer', $plugin_builder, 'init' );
+
+        //$this->loader->add_action( 'plugins_loaded', $post_templates, 'init' );
 
 	}	
 
@@ -453,6 +476,10 @@ class Tatsu {
 		$plugin_store = new Tatsu_Store();
 		$this->loader->add_action( 'wp_ajax_tatsu_save_store', $plugin_store, 'ajax_save_store' );
 	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_save_store', $plugin_store, 'ajax_save_store' );
+
+		$this->loader->add_action( 'wp_ajax_get_revision_content', $plugin_store, 'ajax_get_revision_content' );
+
+		$this->loader->add_action( 'wp_ajax_get_revision_data', $plugin_store, 'ajax_get_revision_data' );
 	
 		$plugin_module = new Tatsu_Module();
 		$this->loader->add_action( 'wp_ajax_tatsu_module', $plugin_module, 'ajax_get_module_shorcode_output' );
@@ -470,6 +497,8 @@ class Tatsu {
 
 		$plugin_templates = Tatsu_Page_Templates::getInstance();
 		$this->loader->add_action( 'wp_ajax_tatsu_get_template', $plugin_templates, 'ajax_get_template' );
+		$this->loader->add_action( 'wp_ajax_tatsu_get_templates_list', $plugin_templates, 'get_templates_list' );
+		$this->loader->add_action( 'wp_ajax_tatsu_get_prebuilt_templates', $plugin_templates, 'get_prebuilt_templates' );
 	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_template', $plugin_templates, 'ajax_get_template' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_save_template', $plugin_templates, 'ajax_save_template' );
@@ -531,7 +560,7 @@ class Tatsu {
 		$this->loader->add_action( 'wp_loaded', Tatsu_Footer_Module_Options::getInstance() , 'setup_hooks' );
 		$this->loader->add_action( 'wp_loaded', Tatsu_Footer_Concepts::getInstance() , 'setup_hooks' );
 		$this->loader->add_action( 'wp_loaded', Tatsu_Global_Section_Meta::getInstance(), 'setup_hooks' );
-		$this->loader->add_action( 'wp_loaded', Tatsu_Global_Module_Options::getInstance(), 'setup_hooks' );
+        $this->loader->add_action( 'wp_loaded', Tatsu_Global_Module_Options::getInstance(), 'setup_hooks' );
 	}
 
 	/**
@@ -551,7 +580,18 @@ class Tatsu {
 		// closing tag
 		$rep = preg_replace("/(<p>)?\[\/($block)](<\/p>|<br \/>)?/","[/$2]",$rep);
 		return $rep;
-	}
+    }
+    
+    public function tatsu_add_common_atts_to_shortcodes() {
+        $all_builder_modules = Tatsu_Module_Options::getInstance()->get_module_options();
+        $remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();
+        $all_header_modules = Tatsu_Header_Module_Options::getInstance()->get_module_options();
+        $plugin_public = new Tatsu_Public( $this->get_plugin_name(), $this->get_version() );
+        $all_modules = $all_builder_modules + $all_header_modules + $remapped_modules;
+        foreach( $all_modules as $tag => $options ) {
+            add_filter( "shortcode_atts_$tag", array( $plugin_public, 'tatsu_add_common_atts_to_shortcode' ), 10, 4 );
+        }
+    }
 
 	/**
 	 * Get Images From ID's via Admin Ajax
@@ -624,8 +664,11 @@ class Tatsu {
 	 */
 
 	public function admin_bar_edit_link( WP_Admin_Bar $wp_admin_bar ) {
-		global $post_id;
-		if( !is_archive() && !is_admin() ) {
+        global $post_id;
+        if( empty( $post_id ) ) {
+            $post_id = get_the_ID();
+        }
+		if( !is_archive() && !is_admin() && tatsu_is_post_editable_by_current_user( $post_id ) ) {
 			$wp_admin_bar->add_node( array(
 				'id'    => 'tatsu_edit_page',
 				'title' => esc_html__( 'Edit with Tatsu', 'tatsu' ),
@@ -633,7 +676,7 @@ class Tatsu {
 			));	
 		}
 
-		if( current_theme_supports('tatsu-header-builder') ) {
+		if( current_theme_supports('tatsu-header-builder') && current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_node( array(
 				'id'    => 'tatsu_header_builder',
 				'title' => esc_html__( 'Tatsu Header Builder', 'tatsu' ),
@@ -641,7 +684,7 @@ class Tatsu {
 			));	
 		}
 
-		if( current_theme_supports('tatsu-footer-builder') ) {
+		if( current_theme_supports('tatsu-footer-builder') && current_user_can( 'manage_options' ) ) {
 			$wp_admin_bar->add_node( array(
 				'id'    => 'tatsu_footer_builder',
 				'title' => esc_html__( 'Tatsu Footer Builder', 'tatsu' ),
@@ -735,29 +778,38 @@ class Tatsu {
 	}
 
 	public function fonts_to_load($content){
-        if( current_theme_supports('tatsu-header-builder') ) {
-			global $post;
-			$post_type = get_post_type();
-			$header_id = 0;
+		global $post;
+
+		if( is_object ($post) ){
 			$header_fonts = array();
-			if( TATSU_HEADER_CPT_NAME === $post_type ) {
-				$header_id = $post->ID;
-			} else {
-				$header_id  = tatsu_get_active_header_id();
+			if( current_theme_supports('tatsu-header-builder') ) {
+				$post_type = get_post_type();
+				$header_id = 0;
+				if( TATSU_HEADER_CPT_NAME === $post_type ) {
+					$header_id = $post->ID;
+				} else {
+					$header_id  = tatsu_get_active_header_id();
+				}
+
+				$header_store = new Tatsu_Header_Store( $header_id );
+				$header_content = $header_store->get_header_store();
+
+				$header_fonts = $header_content['fonts'];
+		
+				if( isset( $header_fonts[0] ) ){
+					$header_fonts = $header_fonts[0];
+				}
 			}
 
+			$body_fonts =  get_post_meta( $post->ID , 'tatsu_body_fonts', true );
 
-			$header_store = new Tatsu_Header_Store( $header_id );
-			$header_content = $header_store->get_header_store();
-
-			$header_fonts = $header_content['tatsu_page_content']['fonts']; //array_key_exists( 'fonts', $header_store ) ? $header_store['fonts']: array(); 
-
-			if( !empty($header_fonts[0]) ){
-				if( is_array( $header_fonts[0] ) ){
-					return array_merge_recursive( $content, $header_fonts[0] );
-				}else{
-					return $content;
-				}
+			if( !empty( $body_fonts ) ){
+				$fonts_to_load = array_merge_recursive( $header_fonts, $body_fonts );
+			} else {
+				$fonts_to_load = $header_fonts;
+			}
+			if( !empty($fonts_to_load) && is_array( $fonts_to_load ) ){
+				return array_merge_recursive( $content, $fonts_to_load );
 			} else {
 				return $content;
 			}	

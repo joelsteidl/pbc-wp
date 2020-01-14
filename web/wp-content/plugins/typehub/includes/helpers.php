@@ -158,7 +158,7 @@ if( !function_exists( 'be_get_font_family' ) ) {
 					break;
 				case 'typekit':
 					if(!empty($store['settings']['typekitId'])){
-						$typekit_data = get_typekit_data($store['settings']['typekitId']);
+						$typekit_data = typehub_get_typekit_data($store['settings']['typekitId']);
 						if(!empty($typekit_data[$font[1]])){
 							$family = array(
 								'source' => 'typekit',
@@ -214,8 +214,8 @@ function typehub_google_fonts_url( $config ) {
     }
     return $font_url;
 }
-if( !function_exists( 'get_typekit_data' ) ) {
-	function get_typekit_data($typekitId){
+if( !function_exists( 'typehub_get_typekit_data' ) ) {
+	function typehub_get_typekit_data($typekitId){
 		$typekit_response = get_transient( 'typehub_typekit_'.$typekitId );
 		if( !$typekit_response ) {
 			$typekit_response = json_decode(file_get_contents('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
@@ -307,8 +307,8 @@ if( !function_exists( 'get_google_fonts_by_user' ) ){
 
 
 
-if( !function_exists('download_font_from_google') ){
-	function download_font_from_google($font_name){
+if( !function_exists('typehub_download_font_from_google') ){
+	function typehub_download_font_from_google($font_name){
 		$slugged_name = sluggify_font_name($font_name);
 		$response = wp_remote_get( 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name );
 		if( !is_wp_error( $response ) ){
@@ -329,7 +329,7 @@ if( !function_exists('download_font_from_google') ){
 
 				if( !is_wp_error( $font_zip_file ) ){
 					unzip_file( $font_zip_file, $google_fonts_dir.$font_name.'/' );
-					write_css_link_to_file($font_name);
+					typehub_write_css_link_to_file($font_name);
 					return 'success';
 				}else{
 					return 'invalid zip';
@@ -378,8 +378,8 @@ if( !function_exists( 'get_weights_of_font' ) ){
 }
 
 
-if( !function_exists( 'write_css_link_to_file' ) ){
-	function write_css_link_to_file($font_family){
+if( !function_exists( 'typehub_write_css_link_to_file' ) ){
+	function typehub_write_css_link_to_file($font_family){
 
 		$slugged_name = sluggify_font_name($font_family);
 		$response = wp_remote_get( 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name );
@@ -445,8 +445,8 @@ if( !function_exists( 'get_font_download_URL' ) ){
 	}
 }
 
-if( !function_exists( 'delete_unused_fonts' ) ){
-    function delete_unused_fonts()
+if( !function_exists( 'typehub_delete_unused_fonts' ) ){
+    function typehub_delete_unused_fonts()
     {
 		global $wp_filesystem;
 		if ( empty( $wp_filesystem ) ) {
@@ -462,7 +462,7 @@ if( !function_exists( 'delete_unused_fonts' ) ){
 		
 		foreach( $fonts_to_delete as $font => $value ){
 				
-			delete_directory($google_fonts_dir.$value);
+			typehub_delete_directory($google_fonts_dir.$value);
 			
 		}
 		$cssFile = $google_fonts_dir.'google-fonts.css';
@@ -472,8 +472,8 @@ if( !function_exists( 'delete_unused_fonts' ) ){
 	}
 }
 
-if( !function_exists( 'delete_directory' ) ){
-	function delete_directory($dirname) {
+if( !function_exists( 'typehub_delete_directory' ) ){
+	function typehub_delete_directory($dirname) {
 		if (is_dir($dirname))
 		  $dir_handle = opendir($dirname);
 	if (!$dir_handle)
@@ -483,13 +483,96 @@ if( !function_exists( 'delete_directory' ) ){
 			   if (!is_dir($dirname."/".$file))
 					unlink($dirname."/".$file);
 			   else
-					delete_directory($dirname.'/'.$file);
+					typehub_delete_directory($dirname.'/'.$file);
 		  }
 	}
 	closedir($dir_handle);
 	rmdir($dirname);
 	return true;
 }
+}
+
+if( !function_exists( 'be_solid_color' ) ) {
+	function be_solid_color( $color ){
+		return array($color,$color,'solid');
+	}
+}
+
+if( !function_exists( 'be_gradient_color' ) ) {
+	function be_gradient_color( $color_arr ){
+		$color_value = ''; 
+		$first_color_stop = '';
+		$i = 0;
+		$color_value = 'linear-gradient(';
+		$color_value .= $color_arr['angle'].'deg';
+		$colorPositions = $color_arr['colorPositions'];
+		foreach( $colorPositions as $colorPos => $colorCode ){
+			$color_value .= ', '. $colorCode .' '. $colorPos.'%';
+			if( $i == 0 ){
+				$first_color_stop = $colorCode;
+			}
+			$i++;
+		}
+		$color_value .= ')';
+		return array( $color_value, $first_color_stop, 'gradient' );
+	}
+}
+
+if( !function_exists( 'be_compute_color' ) ) {
+	function be_compute_color( $color ){
+		$color_value = ''; 
+		$first_color_stop = '';
+		$colorHubColor = '';
+		$i = 0;
+		if(! empty( $color)){
+			if( be_is_json( $color ) ){
+				$color_arr = json_decode( $color, true );
+				if( array_key_exists( 'id', $color_arr ) ) {
+					$id_array = explode( ':', $color_arr['id'] );
+					$color_data = $color_arr['color'];
+					if( $id_array[0] == 'swatch' && function_exists( 'colorhub_get_swatch' ) ){
+						$swatch = colorhub_get_swatch( $id_array[1] );
+						$color_data = $swatch['color'];
+					}
+					if( $id_array[0] == 'palette' && function_exists( 'colorhub_get_palette' ) ){
+						$color_data = colorhub_get_palette( $id_array[1] );
+					}
+					if( is_array( $color_data ) ){
+						return be_gradient_color( $color_data );
+					} else{
+						return be_solid_color( $color_data );
+					}
+				} 
+				else {
+					return be_gradient_color( $color_arr );
+				}
+			} else {
+				return be_solid_color( $color );
+			}
+		}
+		return array( $color_value, $first_color_stop, 'solid' );
+	}
+}
+
+add_action('typehub_register_font', 'typehub_register_user_custom_fonts');
+
+function typehub_register_user_custom_fonts(){
+	$store = typehub_get_store();
+	
+	if( !empty($store['custom']['fonts']) && is_array($store['custom']['fonts']) ){
+		$fonts = $store['custom']['fonts'];
+
+		foreach( $fonts as $fontname => $values ){
+			$temp = array(
+				'name' => $fontname,
+				'src'  => $values['src'],
+				'variants' => array(
+					'400' => 'Normal 400'
+				)
+			);
+			typehub_register_font( $temp );
+		}
+	}
 }
 
 ?>

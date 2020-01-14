@@ -35,6 +35,6 @@
 		<?php include('share.php'); /* Share Links */ ?>
 	</div>
 	<?php } else {
-		echo "<p>&nbsp;</p>";
+		echo "<p class=\"enmse-blank-p\">&nbsp;</p>";
 	} ?>
 </div>

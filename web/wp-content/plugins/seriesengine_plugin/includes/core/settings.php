@@ -936,12 +936,13 @@
 	function enm_seriesengine_deftrans_input() {
 		$se_options = get_option( 'enm_seriesengine_options' );
 		$deftrans = $se_options['deftrans'];
-		if ($deftrans == "48") {
+		if ($deftrans == "165") {
 			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
 						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -952,13 +953,57 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165' selected='selected'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "48") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48' selected='selected'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -973,6 +1018,7 @@
 						<option value='1588' selected='selected'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -983,13 +1029,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1004,6 +1056,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12' selected='selected'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1014,13 +1067,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1045,13 +1104,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1066,6 +1131,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59' selected='selected'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1076,13 +1142,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1097,6 +1169,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72' selected='selected'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1107,13 +1180,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1128,6 +1207,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359' selected='selected'>ICB - International Childrens Bible</option>
@@ -1138,13 +1218,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1159,6 +1245,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1169,13 +1256,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1190,6 +1283,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1200,13 +1294,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1221,6 +1321,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1231,13 +1332,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1252,6 +1359,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1262,13 +1370,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1283,6 +1397,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1293,13 +1408,19 @@
 						<option value='111' selected='selected'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1314,6 +1435,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1324,13 +1446,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114' selected='selected'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1345,6 +1473,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1358,10 +1487,15 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1376,6 +1510,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1386,13 +1521,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1407,6 +1548,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1417,13 +1559,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157' selected='selected'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157' selected='selected'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1438,6 +1586,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1448,13 +1597,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57' selected='selected'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1469,6 +1624,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1479,13 +1635,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108' selected='selected'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1500,6 +1662,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1510,13 +1673,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149' selected='selected'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1531,6 +1700,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1541,13 +1711,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128' selected='selected'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1562,6 +1738,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1572,13 +1749,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1593,6 +1776,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1603,13 +1787,209 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414' selected='selected'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "51") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51' selected='selected'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "73") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73' selected='selected'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "877") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877' selected='selected'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "2016") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016' selected='selected'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "37") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37' selected='selected'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1624,6 +2004,7 @@
 						<option value='1588'>AMP - Amplified Bible</option>
 						<option value='12'>ASV - American Standard Version</option>
 						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
 						<option value='59' selected='selected'>ESV - English Standard Version</option>
 						<option value='72'>HCSB - Holman Christian Standard Bible</option>
 						<option value='1359'>ICB - International Childrens Bible</option>
@@ -1634,13 +2015,19 @@
 						<option value='111'>NIV - New International Version</option>
 						<option value='114'>NKJV - New King James Version</option>
 						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
-						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1694,7 +2081,7 @@
 
 	add_settings_field(
 		'enm_seriesengine_timely', 
-		'Calendar/Event Plugin Compatibility?: <p class="se-form-instructions">Fixes timezone issues for those using certain calendar and event plugins. Don\'t enable otherwise.</p>', 
+		'Calendar/Event Plugin Compatibility?: <p class="se-form-instructions">Fixes timezone issues for those using certain calendar and event plugins in older versions of WordPress. Don\'t enable otherwise.</p>', 
 		'enm_seriesengine_timely', 
 		'seriesengine_plugin', 
 		'enm_seriesengine_settings' 
@@ -2058,18 +2445,20 @@
 	function enm_seriesengine_language_input() {
 		$se_options = get_option( 'enm_seriesengine_options' );
 		$language = $se_options['language'];
-		if ($language == "6") { //Traditional Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		if ($language == "7") { //Dutch
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\" selected='selected'>Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} elseif ($language == "6") { //Traditional Chinese
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "5") { //Simplified Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "4") { //Turkish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "3") { //German
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "2") { //Spanish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} else { // English
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		}
 	};
 
@@ -4012,7 +4401,9 @@
 			$valid['pagenumberselectedtext'] = 'D4D4D4';
 		}
 
-		if ( $input['language'] == 6 ) { //Traditional Chinese
+		if ( $input['language'] == 7 ) { //Dutch
+			include(dirname(__FILE__) . '/../lang/dut_default_values.php');
+		} elseif ( $input['language'] == 6 ) { //Traditional Chinese
 			include(dirname(__FILE__) . '/../lang/chint_default_values.php');
 		} elseif ( $input['language'] == 5 ) { //Simplified Chinese
 			include(dirname(__FILE__) . '/../lang/chins_default_values.php');
@@ -4027,7 +4418,9 @@
 		}
 
 		if ( $input['languageprev'] == "" || ( $input['languageprev'] >= 1 && ( $input['languageprev'] != $input['language'] ) ) ) {
-			if ( $input['language'] == 6 ) { //Traditional Chinese
+			if ( $input['language'] == 7 ) { //Dutch
+				include(dirname(__FILE__) . '/../lang/dut_trans.php');
+			} elseif ( $input['language'] == 6 ) { //Traditional Chinese
 				include(dirname(__FILE__) . '/../lang/chint_trans.php');
 			} elseif ( $input['language'] == 5 ) { //Simplified Chinese
 				include(dirname(__FILE__) . '/../lang/chins_trans.php');

@@ -50,10 +50,11 @@ class Tatsu_Page_Content {
 
 
 	private function set_the_content() {
+		$status = get_post_status($this->post_id);
 		$my_post = array(
 	    	'ID' => $this->post_id,
 			'post_content' => $this->content,
-			'post_status' => 'publish'
+			'post_status' => $status
 		);
 		// Update the post into the database
 		return wp_update_post( $my_post );

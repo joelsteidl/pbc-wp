@@ -302,6 +302,9 @@ span.sub-menu-indicator{
     float: right;
     text-align: right;
 }
+.tatsu-sidebar-navigation .sub-menu-indicator{ 
+    right: -20px;
+}
 .tatsu-menu > ul > li > span.sub-menu-indicator{
     top: 50%;
     transform: translateY(-50%);
@@ -531,6 +534,7 @@ span.sub-menu-indicator{
 .tatsu-mobile-menu .sub-menu-indicator,
 .tatsu-sidebar-menu .sub-menu-indicator{
     display: inline-block;
+    text-align: center;
 }
 
 .tatsu-mobile-menu li.menu-item-has-children .sub-menu-indicator svg,
@@ -593,6 +597,14 @@ span.sub-menu-indicator{
 .tatsu-header-row .tatsu-icon {
     margin: 0px !important;
     vertical-align: initial;
+}
+
+.tatsu-header-row .tatsu-button.right-icon i.tatsu-icon {
+    margin: 0 0 0 1em !important;
+}
+
+.tatsu-header-row .tatsu-button.left-icon i.tatsu-icon {
+    margin: 0 1em 0 0 !important;
 }
 
 /* Icon Card */

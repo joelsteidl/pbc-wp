@@ -3,9 +3,9 @@
 		PORTFOLIO CAROUSEL
 **************************************/
 if (!function_exists('be_portfolio_carousel')) {
-	function be_portfolio_carousel( $atts ) {
+	function be_portfolio_carousel( $atts, $content, $tag ) {
 		global $be_themes_data;
-		extract( shortcode_atts( array (
+		$atts = shortcode_atts( array (
 	        'category'=> '',
 	        'items_per_page'=> '-1',
 	        'hover_style' => 'style1-hover',
@@ -25,8 +25,15 @@ if (!function_exists('be_portfolio_carousel')) {
 			'cat_hide' => '0',
 			'like_button' => 0,
 			'slide_show' => '0',
-			'slide_show_speed' => 4000,			
-	    ) , $atts ) );
+			'slide_show_speed' => 4000,
+			'key' => be_uniqid_base36(true),			
+		) , $atts, $tag );
+		
+		extract( $atts );
+
+		$custom_style_tag = be_generate_css_from_atts( $atts, 'portfolio_carousel', $key );
+		$unique_class_name = 'tatsu-'.$key;
+
 		$output = $global_thumb_overlay_color = $thumb_overlay_color = $global_gradient_style_color = $gradient_style_color = '';
 		$category = explode(',', $category);
 		$hover_image_style = ((!isset($hover_image_style)) || empty($hover_image_style)) ? 'color' : $hover_image_style;
@@ -83,7 +90,17 @@ if (!function_exists('be_portfolio_carousel')) {
 			}
 			
 		}
-		$output .= '<div class="carousel-wrap portfolio-carousel oshine-module">';
+
+		$css_id = be_get_id_from_atts( $atts );
+		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
+
+
+		$data_animations = be_get_animation_data_atts( $atts );
+		if( !empty( $animation_type ) && 'none' !== $animation_type ) {
+            $css_classes .= ' tatsu-animate ';
+        }
+
+		$output .= '<div '.$css_id.' class="carousel-wrap portfolio-carousel oshine-module '.$unique_class_name.' '.$css_classes.' '.$visibility_classes.'" '.$data_animations.'>';
 		// $output .= '<div class="caroufredsel_wrapper clearfix"><ul class="be-carousel portfolios-carousel">';
 		$output .= '<ul class="be-owl-carousel portfolio-carousel-module" data-slide-show="'.$slide_show.'" data-slide-show-speed="'.$slide_show_speed.'">';
 		$items_per_page = (empty($items_per_page)) ? -1 : $items_per_page ; 
@@ -255,7 +272,7 @@ if (!function_exists('be_portfolio_carousel')) {
 					$output .= '</div>'; //End Gallery
 				endif;
 				$output .= '</div>';
-				$output .= ($like_button != 1) ? '<div class="like-button-wrap">'.be_get_like_button(get_the_ID()).'</div>' : '';
+				$output .= ($like_button != 1) ? '<div class="portfolio-like like-button-wrap">'.be_get_like_button(get_the_ID()).'</div>' : '';
 				$output .= '</li>';
 			endwhile;
 		endif;
@@ -263,9 +280,275 @@ if (!function_exists('be_portfolio_carousel')) {
 		$output .='</ul>';
 		// $output .='<a class="prev be-carousel-nav" href="#"><i class="font-icon icon-arrow_carrot-left"></i></a><a class="next be-carousel-nav" href="#"><i class="font-icon icon-arrow_carrot-right"></i></a>';
 		// $output .='</div>'; 'Caroufredsel Wrapper Close'
+		$output .= $custom_style_tag;
 		$output .='</div>';
 		return $output;
 	}
 	add_shortcode( 'portfolio_carousel' , 'be_portfolio_carousel' );
 }
-?>
+
+add_action( 'tatsu_register_modules', 'oshine_register_portfolio_carousel');
+function oshine_register_portfolio_carousel() {
+
+		$portfolio_categories = get_terms('portfolio_categories');
+		$options = array();
+		foreach ( $portfolio_categories as $category ) {
+			if( is_object( $category ) ) {
+				$options[$category->slug] = $category->name;
+			}
+		}
+
+		$controls = array (
+	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#portfolio',
+	        'title' => __( 'Portfolio Carousel', 'oshine-modules' ),
+	        'is_js_dependant' => true,
+	        'type' => 'single',
+			'is_built_in' => false,
+			'group_atts' => array (
+				array (
+					'type'	=>	'tabs',
+					'style'	=>	'style1',
+					'group'	=>	array (
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Content' , 'tatsu'),
+							'group'	=>	array (
+								'category',
+								'items_per_page',
+								'cat_hide',
+								'like_button',
+							)
+						),
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Style' , 'tatsu'),
+							'group'	=>	array (
+								array (
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+										array (
+											'type' => 'panel',
+											'title' => __( 'Shape and Size', 'tatsu' ),
+											'group' => array (
+												'hover_style',
+												'title_style',
+												'default_image_style',
+												'hover_image_style',
+												'image_effect',
+												)
+											),
+										array (
+											'type' => 'panel',
+											'title' => __( 'Colors', 'tatsu' ),
+											'group' => array (
+												'gradient',
+												'gradient_direction',
+												'gradient_color',
+												'overlay_color',
+												'title_color',
+												'cat_color',
+											)
+										),
+										array (
+											'type' => 'panel',
+											'title' => __( 'Loading options', 'tatsu' ),
+											'group' => array (
+												'title_animation_type',
+												'cat_animation_type',
+											)
+										),
+									)
+								)
+							),
+						),
+						array (
+							'type'	=>	'tab',
+							'title'	=>	__( 'Advanced' , 'tatsu'),
+							'group'	=>	array (
+									array(
+									'type' => 'accordion' ,
+									'active' => array(0, 1),
+									'group' => array (
+	
+									)
+								),
+							)
+						),
+					)
+				),
+			),
+	        'atts' => array (
+	        	array (
+	        		'att_name' => 'category',
+	        		'type' => 'grouped_checkbox',
+	        		'label' => __( 'Portfolio Categories', 'oshine-modules' ),
+	        		'options' => $options,
+	        	),	        	
+	        	array (
+	        		'att_name' => 'items_per_page',
+					'type' => 'number',
+					'options' => array(
+	        			'unit' => '',
+	        		),
+	        		'label' => __( 'Number of Items Per Page', 'oshine-modules' ),
+	        		'default' => '8',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+	        		'att_name' => 'hover_style',
+	        		'type' => 'select',
+	        		'label' => __( 'Hover Style', 'oshine-modules' ),
+					'options' => array (
+						'style1-hover' => 'Style1 - Fade Toggle',
+						'style2-hover' => 'Style2 - 3D FLIP Horizontal',
+						'style3-hover' => 'Style3 - Direction Aware',
+						'style4-hover' => 'Style4 - Direction Aware Inverse',
+						'style5-hover' => 'Style5 - FadeIn & Scale',
+						'style6-hover' => 'Style6 - Fall',
+						'style7-hover' => 'Style7 - 3D FLIP Vertical',
+						'style8-hover' => 'Style8 - 3D Rotate',
+					),
+	        		'default' => 'style1-hover',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+	        		'att_name' => 'title_style',
+	        		'type' => 'select',
+	        		'label' => __( 'Title Style', 'oshine-modules' ),
+					'options' => array (
+						'style1' => 'Boxed Title and Meta - Middle',
+						'style2' => 'Title and Meta - Top',
+						'style3' => 'Title and Meta - Middle',
+						'style4' => 'Title and Meta - Bottom',
+						'style5' => 'Title and Meta - Below Thumbnail',
+						'style6' => 'Title and Meta - Below Thumbnail with no Margin',
+						'style7' => 'Title and Meta - Slide Up from Bottom',
+					),
+					'default'=> 'style1',
+	        		'tooltip' => ''
+	        	),
+	        	array (
+	        		'att_name' => 'default_image_style',
+	        		'type' => 'select',
+	        		'label' => __( 'Default Image Style', 'oshine-modules' ),
+	        		'options' => array (
+						'black_white' => 'Black And White',
+						'color' => 'Color'
+					),
+	        		'default' => 'color',
+					'tooltip' => '',
+					'is_inline' => true,
+	        	),
+	        	array (
+	        		'att_name' => 'hover_image_style',
+	        		'type' => 'select',
+	        		'label' => __( 'Hover Image Style', 'oshine-modules' ),
+	        		'options' => array (
+						'black_white' => 'Black And White',
+						'color' => 'Color'
+					),
+	        		'default' => 'color',
+					'tooltip' => '',
+					'is_inline' => true,
+	        	),
+	        	array (
+	        		'att_name' => 'image_effect',
+	        		'type' => 'select',
+	        		'label' => __( 'Image Effects', 'oshine-modules' ),
+					'options' => array (
+						'zoom-in' => 'Zoom In',
+						'zoom-out' => 'Zoom Out',
+						'zoom-in-rotate' => 'Zoom In Rotate',
+						'zoom-out-rotate' => 'Zoom Out Rotate',
+						'none' => 'None'
+					),
+	        		'default' => 'none',
+	        		'tooltip' => ''
+	        	),
+				array (
+		            'att_name' => 'overlay_color',
+					'type' => 'color',
+					'options' => array(
+						'gradient' => false,
+					),
+		            'label' => __( 'Thumbnail Overlay Color / Gradient Start Color', 'oshine-modules' ),
+		            'default' => '',
+					'tooltip' => '',
+	            ),	            
+	            array (
+	              	'att_name' => 'gradient',
+	              	'type' => 'switch',
+	              	'label' => __( 'Enable Gradient Overlay', 'oshine-modules' ),
+	              	'default' => 0,
+	              	'tooltip' => '',
+	            ),
+				array (
+					'att_name' => 'gradient_color',
+		            'type' => 'color',
+					'label' => __( 'Thumbnail Overlay Gradient End Color', 'oshine-modules' ),
+					'visible' => array ('gradient' , '=' , '1'),
+		            'default' => '',
+		            'tooltip' => '',
+	            ),
+	        	array (
+	        		'att_name' => 'gradient_direction',
+	        		'type' => 'button_group',
+	        		'label' => __( 'Gradient Direction', 'oshine-modules' ),
+					'options' => array (
+						'right' => 'Horizontal',
+						'bottom' => 'Vertical', 
+					),
+					'visible' => array ('gradient' , '=' , '1'),
+					'default' => 'right',
+					'is_inline' => true,
+	        		'tooltip' => ''
+	        	),
+	            array (
+	              	'att_name' => 'title_color',
+	              	'type' => 'color',
+	              	'label' => __( 'Title Color', 'oshine-modules' ),
+	              	'default' => '',
+	              	'tooltip' => '',
+	            ),
+	            array (
+	              	'att_name' => 'cat_color',
+	              	'type' => 'color',
+	              	'label' => __( 'Categories Color', 'oshine-modules' ),
+	              	'default' => '',
+	              	'tooltip' => '',
+	            ),	
+	            array (
+	              	'att_name' => 'cat_hide',
+	              	'type' => 'switch',
+	              	'label' => __( 'Hide Categories ?', 'oshine-modules' ),
+	              	'default' => 0,
+	              	'tooltip' => '',
+	            ),
+	            array (
+	              	'att_name' => 'like_button',
+	              	'type' => 'switch',
+	              	'label' => __( 'Disable Like Button', 'oshine-modules' ),
+	              	'default' => 0,
+	              	'tooltip' => '',
+	            ),
+				array (
+					'att_name' => 'title_animation_type',
+					'type' => 'select',
+					'label' => __('Portfolio Title Animation','oshine-modules'),
+					'options' => tatsu_css_animations(),
+					'default' => 'none',
+					'is_inline' => true,
+				),
+				array (
+					'att_name' => 'cat_animation_type',
+					'type' => 'select',
+					'label' => __('Portfolio Categories Animation','oshine-modules'),
+					'options' => tatsu_css_animations(),
+					'default' => 'none',
+					'is_inline' => true,
+				),
+	        ),
+	    );
+	tatsu_register_module( 'portfolio_carousel', $controls );
+}
