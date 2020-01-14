@@ -5,4 +5,3 @@ web/wp-config.php
 web/wp-config-ddev.php
 .vscode
 dbs/*
-.ddev
