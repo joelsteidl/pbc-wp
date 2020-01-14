@@ -67,10 +67,10 @@
 	text-transform: none;
 }
 
-#groupsengine a:link {color: #669933; text-decoration: underline; font-weight: 300; border: none; background: none;}
-#groupsengine a:visited {color: #669933; text-decoration: underline; font-weight: 300; border: none; background: none;}
-#groupsengine a:hover {color: #669933; text-decoration: none; font-weight: 300; border: none; background: none;}
-#groupsengine a:active {color: #669933; text-decoration: underline; font-weight: 300; border: none; background: none;}
+#groupsengine a:link {color: #CA9E2C; text-decoration: underline; font-weight: 300; border: none; background: none;}
+#groupsengine a:visited {color: #CA9E2C; text-decoration: underline; font-weight: 300; border: none; background: none;}
+#groupsengine a:hover {color: #CA9E2C; text-decoration: none; font-weight: 300; border: none; background: none;}
+#groupsengine a:active {color: #CA9E2C; text-decoration: underline; font-weight: 300; border: none; background: none;}
 
 #groupsengine img { max-width: none !important; } /* Google Maps Fixes */
 #groupsengine label { width: auto; display: inline; }
@@ -159,12 +159,12 @@
 		background: url('../images/interface/light_search.png') no-repeat;
 		background-size: 18px 18px;
 	background-position: 10px 11px;
-	background-color: #669933;
+	background-color: #CA9E2C;
 	float: left;
 	text-decoration: none;
 	line-height: 40px;
 	text-transform: uppercase;
-	color: #FFFFFF;
+	color: #EAD8AA;
 	font-size: 14px !important;
 }
 
@@ -225,9 +225,9 @@
 	text-decoration: none;
 	line-height: 40px;
 	text-transform: uppercase;
-	color: #FFFFFF;
+	color: #EAD8AA;
 		background: url('../images/interface/light_contact.png') no-repeat;
-		background-color: #669933;
+		background-color: #CA9E2C;
 	background-size: 18px 18px;
 	background-position: 10px 10px;
 	font-size: 14px !important;
@@ -259,7 +259,7 @@
 	text-align: right;
 	padding: 0 10px 0 0;
 	margin: 0 important!;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-explore-options input.ge-zip {
@@ -268,7 +268,7 @@
 	background-color: #ffffff;
 	padding: 5px;
 	margin: 0;
-	color: #444444	font-size: 14px !important;
+	color: #000000	font-size: 14px !important;
 	-webkit-appearance: none;
 }
 
@@ -279,7 +279,7 @@
 #groupsengine .ge-explore-options select {
 	border: 1px solid #ffffff;
 	background-color: #ffffff;
-	color: #444444;
+	color: #000000;
 	display: inline;
 	width: 72%;
 	font-size: 14px !important;
@@ -298,7 +298,7 @@
 #groupsengine .ge-explore-options select.time {
 	border: 1px solid #ffffff;
 	background-color: #ffffff;
-	color: #444444;
+	color: #000000;
 	display: inline;
 	width: 32%;
 	font-size: 14px !important;
@@ -318,8 +318,8 @@
 	width: 20%;
 	height: 30px;
 	line-height: 30px;
-	background-color: #669933;
-	color: #FFFFFF;
+	background-color: #CA9E2C;
+	color: #EAD8AA;
 	text-align: center;
 	text-transform: uppercase;
 	margin: 0 auto;
@@ -391,7 +391,7 @@
 	padding: 30px 20px 20px 20px;
 	text-align: center;
 	font-size: 18px !important;
-	color: #444444;
+	color: #000000;
 	font-style: italic !important;
 }
 
@@ -412,21 +412,18 @@
 	text-transform: none;
 	font-size: 15px !important;
 	padding: 18px 10px 10px 10px;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-groups-table td {
 	border: none;
 	padding: 15px 10px 15px 10px;
 	font-size: 14px !important;
-	color: #444444;
+	color: #000000;
 }
 
 
 
-#groupsengine .ge-groups-table td.ge-group-ages, #groupsengine .ge-groups-table th.ge-group-ages {
-	display: none;
-}
 
 #groupsengine .ge-groups-table td.ge-group-locations, #groupsengine .ge-groups-table th.ge-group-locations {
 	display: none;
@@ -434,7 +431,13 @@
 
 
 
+#groupsengine .ge-groups-table td.ge-group-childcare, #groupsengine .ge-groups-table th.ge-group-childcare {
+	display: none;
+}
 
+#groupsengine .ge-groups-table td.ge-group-status, #groupsengine .ge-groups-table th.ge-group-status {
+	display: none;
+}
 
 /* ----- Map Markers ----- */
 
@@ -494,7 +497,7 @@
 	width: 200px;
 	margin: 0;
 	padding: 0;
-	color: #444444;
+	color: #000000;
 	line-height: 100%;
 }
 
@@ -519,7 +522,7 @@
 #groupsengine .ge-single-group h3 {
 	font-size: 38px !important;
 	padding: 15px 0 15px 0;
-	color: #444444}
+	color: #000000}
 
 #groupsengine .ge-single-group .ge-group-description {
 	margin: 0 0 15px 0;
@@ -528,7 +531,7 @@
 #groupsengine .ge-single-group .ge-group-description p {
 	font-size: 14px !important;
 	line-height: 140%;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-single-group .ge-group-related {
@@ -539,12 +542,12 @@
 
 #groupsengine .ge-single-group .ge-group-related p {
 	text-align: center;
-	color: #444444;
+	color: #000000;
 	font-size: 14px !important;
 }
 
 #groupsengine .ge-single-group .ge-group-related p a {
-	color: #669933;
+	color: #CA9E2C;
 }
 
 #groupsengine .ge-single-group .ge-social {
@@ -673,11 +676,11 @@
 #groupsengine table.ge-detailstable {
 	width: 100%;
 	background-color: #f1f1f1;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine table.ge-detailstable a {
-	color: #669933;
+	color: #CA9E2C;
 }
 
 #groupsengine .ge-single-group td.ge-group-details {
@@ -686,7 +689,7 @@
 }
 
 #groupsengine table.ge-detailstable td {
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine table.ge-detailstable .ge-top td {
@@ -707,7 +710,7 @@
 
 #groupsengine span.ge-label {
 	font-weight: 700;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine #ge-map-canvas {
@@ -735,23 +738,23 @@
 #groupsengine .ge-leader-contact h3 {
 	font-size: 38px !important;
 	padding: 5px 0 15px 0;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-leader-contact .ge-instructions {
 	margin: 0 0 15px 0;
-	color: #444444 !important;
+	color: #000000 !important;
 }
 
 body #groupsengine .ge-leader-contact .ge-instructions p {
 	font-size: 14px !important;
 	line-height: 140%;
-	color: #444444 !important;
+	color: #000000 !important;
 }
 
 #groupsengine .ge-leader-contact .ge-error-message {
 	padding: 15px;
-	background-color: #607D8B;
+	background-color: #EAD8AA;
 	font-size: 1.1em;
 	line-height: 140%;
 	margin: 0 0 15px 0;
@@ -761,7 +764,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	font-size: 15px !important;
 	line-height: 140%;
 	padding: 0 0 10px 0;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-leader-contact .ge-error-message ul {
@@ -772,12 +775,12 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 #groupsengine .ge-leader-contact .ge-error-message ul li {
 	font-size: 15px !important;
 	margin: 0 0 4px 20px;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine .ge-single-group .ge-success-message {
 	padding: 15px 15px 5px 15px;
-	background-color: #607D8B;
+	background-color: #EAD8AA;
 	font-size: 14px !important;
 	line-height: 140%;
 	margin: 0 0 15px 0;
@@ -787,7 +790,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	font-size: 14px !important;
 	line-height: 130%;
 	padding: 0 0 10px 0;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine form.ge-contact-form {
@@ -813,7 +816,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 #groupsengine table.ge-leader-contact-form td.ge-contact-label label {
 	font-weight: 700;
 	font-size: 14px !important;
-	color: #444444}
+	color: #000000}
 
 #groupsengine table.ge-leader-contact-form td.ge-contact-input {
 	padding: 5px;
@@ -827,7 +830,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	padding: 5px 10px 5px 10px;
 	height: 30px;
 	width: 60%;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine table.ge-leader-contact-form textarea {
@@ -836,7 +839,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	padding: 10px;
 	height: 150px;
 	width: 95%;
-	color: #444444;
+	color: #000000;
 }
 
 #groupsengine table.ge-leader-contact-form input:focus, #groupsengine table.ge-leader-contact-form textarea:focus { 
@@ -848,8 +851,8 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	width: 180px;
 	height: 40px;
 	line-height: 40px;
-	background-color: #669933;
-	color: #FFFFFF;
+	background-color: #CA9E2C;
+	color: #EAD8AA;
 	text-align: center;
 	text-transform: uppercase;
 	margin: 0;
@@ -875,7 +878,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	-webkit-border-radius: 0;
 	min-height: 0;
 	text-align: left;
-	color: #444444;
+	color: #000000;
 }
 
 /* ----------- reCAPTCHA STYLES ---------- */
@@ -901,7 +904,7 @@ body #groupsengine .ge-leader-contact .ge-instructions p {
 	font-size: 15px !important;
 	padding: 5px 10px 5px 10px;
 	height: 30px;
-	color: #444444;
+	color: #000000;
 }
 
 span.perecaptcha_options {
@@ -914,7 +917,7 @@ span.perecaptcha_options {
 div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_link a {
 	font-size: 15px !important;
 	text-decoration: underline;
-	color: #669933;
+	color: #CA9E2C;
 }
 
 #groupsengine .ge-leader-contact table tr td.spamcell iframe {
@@ -945,23 +948,23 @@ div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_li
 	padding: 5px 10px 5px 10px !important;
 	width: 170px !important;
 	background-color: #f1f1f1;
-	color: #444444 !important;
+	color: #000000 !important;
 }
 
 .recaptchaajax input#recaptcha_response_field::-webkit-input-placeholder  {
-   color: #444444 !important;
+   color: #000000 !important;
 }
 
 .recaptchaajax input#recaptcha_response_field:-moz-placeholder  {
-   color: #444444 !important;
+   color: #000000 !important;
 }
 
 .recaptchaajax input#recaptcha_response_field::-moz-placeholder  {
-   color: #444444 !important;
+   color: #000000 !important;
 }
 
 .recaptchaajax input#recaptcha_response_field:-ms-input-placeholder  {
-   color: #444444 !important;
+   color: #000000 !important;
 }
 
 .recaptchaajax #recaptcha_reload_btn, .recaptchaajax #recaptcha_switch_audio_btn, .recaptchaajax #recaptcha_switch_img_btn, .recaptchaajax #recaptcha_whatsthis_btn {
@@ -1040,9 +1043,9 @@ div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_li
 	height: 30px;
 	line-height: 30px;
 	text-align: center;
-	background-color: #669933;
+	background-color: #CA9E2C;
 	text-decoration: none;
-	color: #ffffff;
+	color: #EAD8AA;
 	border-radius: 15px;
 	padding: 0;
 	font-size: 14px !important;
@@ -1147,8 +1150,8 @@ div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_li
 }
 
 #groupsengine .enmge-copy-link-box a.enmge-copy-link-done {
-	background-color: #669933;
-	color: #FFFFFF;
+	background-color: #CA9E2C;
+	color: #EAD8AA;
 	text-decoration: none;
 	text-align: center;
 	font-size: 13px !important;
@@ -1536,7 +1539,7 @@ div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_li
 	}
 
 	#groupsengine .ge-groups-table td.ge-group-topic::before {
-		content: "Language: ";
+		content: "Topic: ";
 		font-weight: 700;
 	}
 
@@ -1705,12 +1708,12 @@ div.recaptcha_only_if_image a, div.recaptcha_only_if_audio a, div.perecaptcha_li
 				background: url('../images/interface/light_search2x.png') no-repeat;
 				background-size: 18px 18px;
 		background-position: 10px 11px;
-		background-color: #669933;
+		background-color: #CA9E2C;
 	}
 
 	#groupsengine .ge-explore-bar h4.ge-contact-leader a {
 				background: url('../images/interface/light_contact2x.png') no-repeat;
-				background-color: #669933;
+				background-color: #CA9E2C;
 		background-size: 18px 18px;
 		background-position: 10px 11px;
 	}

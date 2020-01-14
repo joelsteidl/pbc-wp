@@ -1,7 +1,8 @@
 .idea
 .DS_Store
-web/wp-content/*
+web/wp-content/uploads/*
 web/wp-config.php
 web/wp-config-ddev.php
 .vscode
 dbs/*
+.ddev

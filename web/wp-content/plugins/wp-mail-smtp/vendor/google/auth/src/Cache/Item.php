@@ -35,7 +35,7 @@ final class Item implements CacheItemInterface
     private $value;
 
     /**
-     * @var \DateTime|null
+     * @var \DateTime
      */
     private $expiration;
 
@@ -81,7 +81,7 @@ final class Item implements CacheItemInterface
             return true;
         }
 
-        return $this->currentTime()->getTimestamp() < $this->expiration->getTimestamp();
+        return new \DateTime() < $this->expiration;
     }
 
     /**
@@ -126,9 +126,9 @@ final class Item implements CacheItemInterface
     public function expiresAfter($time)
     {
         if (is_int($time)) {
-            $this->expiration = $this->currentTime()->add(new \DateInterval("PT{$time}S"));
+            $this->expiration = new \DateTime("now + $time seconds");
         } elseif ($time instanceof \DateInterval) {
-            $this->expiration = $this->currentTime()->add($time);
+            $this->expiration = (new \DateTime())->add($time);
         } elseif ($time === null) {
             $this->expiration = $time;
         } else {
@@ -181,10 +181,5 @@ final class Item implements CacheItemInterface
         }
 
         return false;
-    }
-
-    protected function currentTime()
-    {
-        return new \DateTime('now', new \DateTimeZone('UTC'));
     }
 }
