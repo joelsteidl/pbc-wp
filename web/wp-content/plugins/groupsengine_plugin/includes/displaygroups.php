@@ -1012,7 +1012,7 @@ $enmge_scl = 0;
 	        	var contentString = '<div class="enmge-individual-marker">'+// popup window above marker
 					      '<p class="title"><?php if ( $enmge_single->group_onsite > 0 ) { echo $enmge_single->group_location_label . " - " . $enmge_single->group_campus_name; } else { echo $enmge_single->group_location_label; } ?></p>'+
 					      '<p class="address"><?php if ( isset($enmge_location) && $enmge_location->location_address1 != null ) { echo $enmge_location->location_address1; } if ( isset($enmge_location) && $enmge_location->location_address1 != null && $enmge_location->location_address2 != null ) { echo "<br />"; } if ( isset($enmge_location) && $enmge_location->location_address2 != null ) { echo $enmge_location->location_address2; } if ( isset($enmge_location) && $enmge_location->location_address1 != null || isset($enmge_location) && $enmge_location->location_address2 != null ) { echo "<br />"; } if ( isset($enmge_location) && $enmge_location->location_city != null ) { echo $enmge_location->location_city; } if ( isset($enmge_location) && $enmge_location->location_city != null && $enmge_location->location_state != null ) { echo ", "; } if ( isset($enmge_location) && $enmge_location->location_state != null ) { echo $enmge_location->location_state; } ?><?php if ( $enmge_single->group_location_privacy == 1 ) { ?><?php if ( $enmge_single->group_address1 != null ) { echo $enmge_single->group_address1; } if ( $enmge_single->group_address1 != null && $enmge_single->group_address2 != null ) { echo "<br />"; } if ( $enmge_single->group_address2 != null ) { echo $enmge_single->group_address2; } if ( $enmge_single->group_address1 != null || $enmge_single->group_address2 != null ) { echo "<br />"; } if ( $enmge_single->group_city != null ) { echo $enmge_single->group_city; } if ( $enmge_single->group_city != null && $enmge_single->group_state != null ) { echo ", "; } if ( $enmge_single->group_state != null ) { echo $enmge_single->group_state; } ?><?php } ?></p>'+
-					      '<p class="links"><?php if ( $enmge_single->group_location_privacy == 1 ) { ?><a href="https://www.google.com/maps/place/<?php echo $enmge_searchaddress; ?>" target="_blank">Directions</a><?php } ?><?php if ( $enmge_single->group_location_privacy == 1 && $enmge_cgl == 1 ) { ?> | <?php } ?><?php if ( $enmge_cgl == 1 ) { ?><a href="<?php echo $enmge_thispage . "&amp;enmge_cl=1&amp;enmge_gid=" . $enmge_single->group_id . $enmge_sortoptions . $enmge_pageoptions; ?>" class="enmge-ajax-pointer-contact" name="<?php echo "&amp;enmge_cl=1&amp;enmge_gid=" . $enmge_single->group_id; ?>">Contact Leader</a><?php } ?></p>'+
+					      '<p class="links"><?php if ( $enmge_single->group_location_privacy == 1 ) { ?><a href="https://www.google.com/maps/place/<?php echo $enmge_searchaddress; ?>" target="_blank">Directions</a><?php } ?></p>'+
 					      '</div>';
 
 				var infowindow = new google.maps.InfoWindow({
@@ -1039,8 +1039,8 @@ $enmge_scl = 0;
 	    	<div class="ge-social">
 	    		<?php $enmge_sharelink = urlencode($enmge_thispage . '&enmge_gid=' . $enmge_gid); ?>
 	    		<ul>
-	    			<li class="ge-facebook"><a href="http://www.facebook.com/sharer.php?u=<?php echo $enmge_sharelink; ?>">Facebook</a></li>
-	    			<li class="ge-twitter"><a href="http://twitter.com/home/?status=%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:%20<?php echo $enmge_sharelink; ?>">Twitter</a></li>
+	    			<li class="ge-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $enmge_sharelink; ?>">Facebook</a></li>
+	    			<li class="ge-twitter"><a href="https://twitter.com/intent/tweet?status=%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:%20<?php echo $enmge_sharelink; ?>">Twitter</a></li>
 	    			<li class="ge-share"><a href="<?php echo rawurldecode($enmge_sharelink); ?>" class="enmge-copy-link">Copy Link</a></li>
 	    			<li class="ge-email"><a href="mailto:TypeEmailHere@address.com?subject=Check%20out%20%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>&body=Check%20out%20%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>%20at%20the%20link%20below:%0A%0A<?php echo $enmge_sharelink; ?>">Email Link</a></li>
 	    		</ul>
@@ -1643,7 +1643,7 @@ $enmge_scl = 0;
 	<p class="enmge-poweredbytext">Powered by <a href="http://groupsengine.com" target="_blank">Groups Engine</a></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v1.2.8.1 092719 -->
+	<!-- v1.3.1 080720 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

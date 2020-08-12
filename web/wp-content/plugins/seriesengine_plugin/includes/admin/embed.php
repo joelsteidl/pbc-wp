@@ -83,7 +83,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		
 ?>
 <div class="wrap">
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/embed_code274.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/embed_code281.js'; ?>"></script>
 
 	
 	<h2 class="enmse">Embed Into a Page or Post</h2>

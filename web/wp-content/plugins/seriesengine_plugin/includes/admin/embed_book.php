@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Choose relevant topic to embed ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -58,7 +55,7 @@
 
 		global $wpdb;
 		
-		$enmse_stid = strip_tags($_GET['enmse_stid']);
+		$enmse_stid = strip_tags($_REQUEST['enmse_stid']);
 		
 		if ( $enmse_stid == 0 ) {
 			// Get All Topics
@@ -96,4 +93,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

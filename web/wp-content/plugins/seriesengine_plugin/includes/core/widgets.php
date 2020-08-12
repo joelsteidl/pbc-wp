@@ -61,7 +61,9 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 7 ) { // Dutch
+		if ( $enmse_language == 8 ) { // Japanese
+			$enmse_from =  "いつ";
+		} elseif ( $enmse_language == 7 ) { // Dutch
 			$enmse_from =  "wanneer";
 		} elseif ( $enmse_language == 6 ) { // Traditional Chinese
 			$enmse_from =  "來自";
@@ -262,7 +264,9 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 7 ) { // Dutch
+		if ( $enmse_language == 8 ) { // Japanese
+			$enmse_from =  "いつ";
+		} elseif ( $enmse_language == 7 ) { // Dutch
 			$enmse_from =  "wanneer";
 		} elseif ( $enmse_language == 6 ) { // Traditional Chinese
 			$enmse_from =  "來自";

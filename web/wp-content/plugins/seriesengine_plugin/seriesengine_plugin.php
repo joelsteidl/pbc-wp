@@ -2,7 +2,7 @@
 /* Plugin Name: Series Engine 
 Plugin URI: http://seriesengine.com
 Description: Series Engine is the best way to share audio and video with WordPress. To get started, activate the plugin and open the new "Series Engine" menu. Follow the instructions on the <a href="admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide">User Guide page</a> to embed a media browser, change the color scheme and more.
-Version: 2.7.9.4
+Version: 2.8.2
 Author: Eric Murrell (Volacious) 
 Author URI: http://seriesengine.com */ 
 
@@ -18,7 +18,8 @@ $ENMSEUpdateChecker = PucFactory::buildUpdateChecker(
 
 /* ----- Install the Plugin ----- */
 
-define ( 'ENMSE_CURRENT_VERSION', '2.7.9.4' );
+define ( 'ENMSE_CURRENT_VERSION', '2.8.2' );
+define( 'ENMSE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 $enmse_options = get_option( 'enm_seriesengine_options' ); 
 
@@ -350,6 +351,8 @@ function enm_seriesengine_admin_enqueue() {
 
 	wp_register_script( 'seriesengineAdminWidget', plugins_url('/js/se_widget.js', __FILE__) );
 	wp_enqueue_script( 'seriesengineAdminWidget' );
+	wp_localize_script( 'seriesengineAdminWidget', 'seajax',
+            array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 
 	if ( $se_nofonta == 0 ) {
 		wp_register_style( 'seriesenginefontawesome', plugins_url('/css/font-awesome/css/font-awesome.min.css', __FILE__) );
@@ -381,11 +384,15 @@ function enm_seriesengine_frontend_styles() {
 		$se_nofonta = 0;
 	}
 	if ( $se_noajax == 1 ) {
-		wp_register_script( 'SeriesEngineFrontendJavascript', plugins_url('/js/seriesenginefrontendnoajax274.js', __FILE__) );
+		wp_register_script( 'SeriesEngineFrontendJavascript', plugins_url('/js/seriesenginefrontendnoajax281.js', __FILE__) );
 		wp_enqueue_script( 'SeriesEngineFrontendJavascript' );
+		wp_localize_script( 'SeriesEngineFrontendJavascript', 'seajax',
+            array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	} else {
-		wp_register_script( 'SeriesEngineFrontendJavascript', plugins_url('/js/seriesenginefrontend275.js', __FILE__) );
+		wp_register_script( 'SeriesEngineFrontendJavascript', plugins_url('/js/seriesenginefrontend281.js', __FILE__) );
 		wp_enqueue_script( 'SeriesEngineFrontendJavascript' );
+		wp_localize_script( 'SeriesEngineFrontendJavascript', 'seajax',
+            array( 'ajaxurl' => admin_url( 'admin-ajax.php' ) ) );
 	}
 	if(is_multisite()) { 
 		global $current_blog;
@@ -1033,7 +1040,7 @@ class mp3file
 	}
 }
 
-/* Support for Page Builders */
+/* ----- Support for Page Builders ----- */
 
 /* Beaver Builder */
 
@@ -1057,11 +1064,188 @@ function enmse_initialize_divi_extension() {
 add_action( 'divi_extensions_init', 'enmse_initialize_divi_extension' );
 endif;
 
+/* Elementor */
+
+if ( did_action( 'elementor/loaded' ) ) {
+
+require_once 'pagebuilders/elementor-seriesengine/elementor-init.php';
+
+}
+
+/* New AJAX Stuff */
+
+function seriesengine_ajaxlinks() { // Main AJAX
+    include(plugin_dir_path( __FILE__ ) . 'includes/ajaxlinks.php'); 
+}
+ 
+add_action( 'wp_ajax_nopriv_seriesengine_ajaxlinks', 'seriesengine_ajaxlinks' );
+add_action( 'wp_ajax_seriesengine_ajaxlinks', 'seriesengine_ajaxlinks' );
+
+function seriesengine_ajaxpag() { // Pagination AJAX
+    include(plugin_dir_path( __FILE__ ) . 'includes/display/pagination/newrelated.php'); 
+}
+ 
+add_action( 'wp_ajax_nopriv_seriesengine_ajaxpag', 'seriesengine_ajaxpag' );
+add_action( 'wp_ajax_seriesengine_ajaxpag', 'seriesengine_ajaxpag' );
+
+function seriesengine_ajaxapag() { // Archive Pagination AJAX
+    include(plugin_dir_path( __FILE__ ) . 'includes/display/pagination/newarchives.php'); 
+}
+ 
+add_action( 'wp_ajax_nopriv_seriesengine_ajaxapag', 'seriesengine_ajaxapag' );
+add_action( 'wp_ajax_seriesengine_ajaxapag', 'seriesengine_ajaxapag' );
+
+function seriesengine_ajaxviewcount() { // View Count AJAX
+    include(plugin_dir_path( __FILE__ ) . 'includes/viewcount.php'); 
+}
+ 
+add_action( 'wp_ajax_nopriv_seriesengine_ajaxviewcount', 'seriesengine_ajaxviewcount' );
+add_action( 'wp_ajax_seriesengine_ajaxviewcount', 'seriesengine_ajaxviewcount' );
+
+function seriesengine_ajaxembedseriestypes() { // Gen Embed Code Series Types
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_seriestypes.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedseriestypes', 'seriesengine_ajaxembedseriestypes' );
+
+function seriesengine_ajaxembedoptions() { // Gen Embed Code Options
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_options.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedoptions', 'seriesengine_ajaxembedoptions' );
+
+function seriesengine_ajaxembedseries() { // Gen Embed Code Series
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_series.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedseries', 'seriesengine_ajaxembedseries' );
+
+function seriesengine_ajaxembedtopic() { // Gen Embed Code Topic
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_topic.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedtopic', 'seriesengine_ajaxembedtopic' );
+
+function seriesengine_ajaxembedspeaker() { // Gen Embed Code Speaker
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_speaker.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedspeaker', 'seriesengine_ajaxembedspeaker' );
+
+function seriesengine_ajaxembedbook() { // Gen Embed Code Book
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_book.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedbook', 'seriesengine_ajaxembedbook' );
+
+function seriesengine_ajaxembedmessage() { // Gen Embed Code Message
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_message.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedmessage', 'seriesengine_ajaxembedmessage' );
+
+function seriesengine_ajaxembedcode() { // Gen Embed Code Code
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/embed_generate_code.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxembedcode', 'seriesengine_ajaxembedcode' );
+
+function seriesengine_ajaxmessagenewtopic() { // Messages add new topic
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/newtopicslist.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagenewtopic', 'seriesengine_ajaxmessagenewtopic' );
+
+function seriesengine_ajaxmessagenewspeaker() { // Messages add new speaker
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/newspeakerslist.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagenewspeaker', 'seriesengine_ajaxmessagenewspeaker' );
+
+function seriesengine_ajaxmessagenewfile() { // Messages add new file
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/newfile.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagenewfile', 'seriesengine_ajaxmessagenewfile' );
+
+function seriesengine_ajaxmessageeditfileform() { // Messages edit file
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/fileedit.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessageeditfileform', 'seriesengine_ajaxmessageeditfileform' );
+
+function seriesengine_ajaxmessagedeletefile() { // Messages delete file
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/filedelete.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagedeletefile', 'seriesengine_ajaxmessagedeletefile' );
+
+function seriesengine_ajaxsortfiles() { // Messages Sort Files
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/sortfiles.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxsortfiles', 'seriesengine_ajaxsortfiles' );
+
+function seriesengine_ajaxmessagenewscripture() { // Messages add new scripture
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/newscripture.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagenewscripture', 'seriesengine_ajaxmessagenewscripture' );
+
+function seriesengine_ajaxmessageeditscripture() { // Messages edit scripture
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/scriptureedit.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessageeditscripture', 'seriesengine_ajaxmessageeditscripture' );
+
+function seriesengine_ajaxmessagedeletescripture() { // Messages delete scripture
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/scripturedelete.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxmessagedeletescripture', 'seriesengine_ajaxmessagedeletescripture' );
+
+function seriesengine_ajaxsortscripture() { // Messages Sort Scripture
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/sortscriptures.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxsortscripture', 'seriesengine_ajaxsortscripture' );
+
+function seriesengine_ajaxsortseriestypes() { // Sort Series Types
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/sortseriestypes.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxsortseriestypes', 'seriesengine_ajaxsortseriestypes' );
+
+function seriesengine_ajaxsorttopics() { // Sort Series Types
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/sorttopics.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxsorttopics', 'seriesengine_ajaxsorttopics' );
+
+function seriesengine_ajaxpodcastloadseries() { // Podcast Load Series
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/podcast_series.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxpodcastloadseries', 'seriesengine_ajaxpodcastloadseries' );
+
+function seriesengine_ajaxpodcastloadspeaker() { // Podcast Load Speaker
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/podcast_speaker.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxpodcastloadspeaker', 'seriesengine_ajaxpodcastloadspeaker' );
+
+function seriesengine_ajaxpodcastloadtopic() { // Podcast Load Topic
+    include(plugin_dir_path( __FILE__ ) . 'includes/admin/podcast_topic.php'); 
+}
+
+add_action( 'wp_ajax_seriesengine_ajaxpodcastloadtopic', 'seriesengine_ajaxpodcastloadtopic' );
 
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.7.9.4" ) {
+if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.8.2" ) {
 	include('includes/core/updates.php');
 }
+
+
 
 ?>

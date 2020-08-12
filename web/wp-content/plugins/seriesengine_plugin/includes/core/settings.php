@@ -465,7 +465,7 @@
 		}
 	};
 
-	add_settings_field( // Primary Series Type
+	/*add_settings_field( // Primary Series Type
 		'enm_seriesengine_permalink_single_seriestype', 
 		'Permalink Page - Series Type: <p class="se-form-instructions">If you have the explorer dropdowns enabled, what Series Type do you want to limit their search options to?.</p>', 
 		'enm_seriesengine_permalink_single_seriestype_input', 
@@ -499,7 +499,7 @@
 			}
 		};
 		echo "</select>";
-	};
+	};*/
 
 	add_settings_field(
 		'enm_seriesengine_permalink_single_explorer', 
@@ -957,8 +957,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165' selected='selected'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -966,6 +974,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -995,8 +1007,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48' selected='selected'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1004,6 +1024,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1033,8 +1057,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1042,6 +1074,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1071,8 +1107,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1080,6 +1124,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1108,8 +1156,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1117,6 +1173,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1146,8 +1206,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1155,6 +1223,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1184,8 +1256,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1193,6 +1273,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1222,8 +1306,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1231,6 +1323,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1260,8 +1356,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1269,6 +1373,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1298,8 +1406,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1307,6 +1423,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1336,8 +1456,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1345,6 +1473,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1374,8 +1506,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1383,6 +1523,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1412,8 +1556,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1421,6 +1573,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1450,8 +1606,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1459,6 +1623,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1487,8 +1655,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1496,6 +1672,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1525,8 +1705,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1534,6 +1722,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1563,15 +1755,27 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
 						<option value='73'>HFA - Hoffnung für alle</option>
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
-						<option value='157' selected='selected'>SCH2000 - Schlachter 2000</option>
+						<option value='157' selected='selected'>SCH2000 - Schl
+						achter 2000</option><option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1601,8 +1805,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57' selected='selected'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1610,6 +1822,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1639,8 +1855,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1648,6 +1872,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108' selected='selected'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1677,8 +1905,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1686,6 +1922,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149' selected='selected'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1715,8 +1955,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1724,6 +1972,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128' selected='selected'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1753,8 +2005,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1762,6 +2022,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1790,9 +2054,17 @@
 						<option value='2016'>NRSV - New Revised Standard Version</option>
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
-						<option value='414' selected='selected'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='414' selected='selected'>CUNP-上帝 - 新標點和合
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>本, 神版</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1800,6 +2072,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1829,8 +2105,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51' selected='selected'>DELUT - Lutherbibel 1912</option>
@@ -1838,6 +2122,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1867,8 +2155,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1876,6 +2172,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1905,8 +2205,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1914,6 +2222,10 @@
 						<option value='877' selected='selected'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1943,8 +2255,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1952,6 +2272,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1981,8 +2305,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -1990,6 +2322,460 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "83") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83' selected='selected'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "1819") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819' selected='selected'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "1820") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820' selected='selected'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "15") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15' selected='selected'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "162") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162' selected='selected'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "44") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44' selected='selected'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "509") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509' selected='selected'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "2367") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367' selected='selected'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
+						<option value='" . $deftrans . "'>------- SPANISH ------</option>
+						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
+						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
+						<option value='" . $deftrans . "'>------- TURKISH ------</option>
+						<option value='170'>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+						<option value='" . $deftrans . "'>------- OTHER ------</option>
+						<option value='6'>AFR83 - Afrikaans 1983</option>
+					</select><br /><br />";
+		} elseif ($deftrans == "133") {
+			echo "<select id='deftrans' name='enm_seriesengine_options[deftrans]'>
+						<option value='" . $deftrans . "'>------- ENGLISH ------</option>
+						<option value='1588'>AMP - Amplified Bible</option>
+						<option value='12'>ASV - American Standard Version</option>
+						<option value='1713'>CSB - Christian Standard Bible</option>
+						<option value='37'>CEB - Common English Bible</option>
+						<option value='59'>ESV - English Standard Version</option>
+						<option value='72'>HCSB - Holman Christian Standard Bible</option>
+						<option value='1359'>ICB - International Childrens Bible</option>
+						<option value='1'>KJV - King James Version</option>
+						<option value='1171'>MEV - Modern English Version</option>
+						<option value='97'>MSG - The Message</option>
+						<option value='100'>NASB - New American Standard Bible</option>
+						<option value='111'>NIV - New International Version</option>
+						<option value='114'>NKJV - New King James Version</option>
+						<option value='116'>NLT - New Living Translation</option>
+						<option value='2016'>NRSV - New Revised Standard Version</option>
+						<option value='" . $deftrans . "'>------- CHINESE ------</option>
+						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
+						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
+						<option value='" . $deftrans . "'>------- DUTCH ------</option>
+						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133' selected='selected'>PDV2017 - Parole de Vie 2017</option>
+						<option value='" . $deftrans . "'>------- GERMAN ------</option>
+						<option value='57'>ELB - Elberfelder 1905</option>
+						<option value='51'>DELUT - Lutherbibel 1912</option>
+						<option value='73'>HFA - Hoffnung für alle</option>
+						<option value='877'>NBH - NeÜ Bibel.heute</option>
+						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
+						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -2019,8 +2805,16 @@
 						<option value='" . $deftrans . "'>------- CHINESE ------</option>
 						<option value='48'>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value='414'>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value='" . $deftrans . "'>------- CZECH ------</option>
+						<option value='15'>B21 - Bible 21</option>
+						<option value='162'>BCZ - Slovo na cestu</option>
+						<option value='44'>BKR - Bible Kralica 1613</option>
+						<option value='509'>CSP - Cesky studijni preklad</option>
 						<option value='" . $deftrans . "'>------- DUTCH ------</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
+						<option value='" . $deftrans . "'>------ FRENCH ------</option>
+						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
 						<option value='51'>DELUT - Lutherbibel 1912</option>
@@ -2028,6 +2822,10 @@
 						<option value='877'>NBH - NeÜ Bibel.heute</option>
 						<option value='108'>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value='157'>SCH2000 - Schlachter 2000</option>
+						<option value='" . $deftrans . "'>------- JAPANESE ------</option>
+						<option value='83'>JCB - リビングバイブル</option>
+						<option value='1819'>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value='1820'>口語訳 Japanese: 聖書　口語訳</option>
 						<option value='" . $deftrans . "'>------- SPANISH ------</option>
 						<option value='149'>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value='128'>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -2445,20 +3243,22 @@
 	function enm_seriesengine_language_input() {
 		$se_options = get_option( 'enm_seriesengine_options' );
 		$language = $se_options['language'];
-		if ($language == "7") { //Dutch
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\" selected='selected'>Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		if ($language == "8") { //Japanese
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\" selected='selected'>Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} elseif ($language == "7") { //Dutch
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\" selected='selected'>Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "6") { //Traditional Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "5") { //Simplified Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "4") { //Turkish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "3") { //German
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "2") { //Spanish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} else { // English
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		}
 	};
 
@@ -4061,7 +4861,7 @@
 		$valid['permalinkslug'] = $input['permalinkslug'];
 		$valid['permalink_ogtags'] = $input['permalink_ogtags'];
 		$valid['permalink_show_post_type'] = $input['permalink_show_post_type'];
-		$valid['permalink_single_seriestype'] = $input['permalink_single_seriestype'];
+		//$valid['permalink_single_seriestype'] = $input['permalink_single_seriestype'];
 		$valid['permalink_single_explorer'] = $input['permalink_single_explorer'];
 		$valid['permalink_single_explorer_series'] = $input['permalink_single_explorer_series'];
 		$valid['permalink_single_explorer_speaker'] = $input['permalink_single_explorer_speaker'];
@@ -4401,7 +5201,9 @@
 			$valid['pagenumberselectedtext'] = 'D4D4D4';
 		}
 
-		if ( $input['language'] == 7 ) { //Dutch
+		if ( $input['language'] == 8 ) { //Japanese
+			include(dirname(__FILE__) . '/../lang/jap_default_values.php');
+		} elseif ( $input['language'] == 7 ) { //Dutch
 			include(dirname(__FILE__) . '/../lang/dut_default_values.php');
 		} elseif ( $input['language'] == 6 ) { //Traditional Chinese
 			include(dirname(__FILE__) . '/../lang/chint_default_values.php');
@@ -4418,7 +5220,9 @@
 		}
 
 		if ( $input['languageprev'] == "" || ( $input['languageprev'] >= 1 && ( $input['languageprev'] != $input['language'] ) ) ) {
-			if ( $input['language'] == 7 ) { //Dutch
+			if ( $input['language'] == 8 ) { //Japanese
+				include(dirname(__FILE__) . '/../lang/jap_trans.php');
+			} elseif ( $input['language'] == 7 ) { //Dutch
 				include(dirname(__FILE__) . '/../lang/dut_trans.php');
 			} elseif ( $input['language'] == 6 ) { //Traditional Chinese
 				include(dirname(__FILE__) . '/../lang/chint_trans.php');

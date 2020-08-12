@@ -72,7 +72,7 @@ class Tatsu {
 		if( defined( 'TATSU_VERSION' ) ) {
 			$this->version = TATSU_VERSION;
 		}else {
-			$this->version = '3.1.9';
+			$this->version = '3.2';
 		}
 		$this->load_dependencies();
 		$this->set_locale();

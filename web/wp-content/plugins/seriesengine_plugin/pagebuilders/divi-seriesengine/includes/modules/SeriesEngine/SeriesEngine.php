@@ -651,8 +651,8 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_audiodownloade = "";
 		}
 
-		if ( $enmse_cardview != "Classic List View" ) { 
-			if ( $enmse_cardview != "Grid View" ) {
+		if ( $enmse_cardview != "0" ) { 
+			if ( $enmse_cardview != "1" ) {
 				$enmse_cardviewe = " enmse_cv=2"; 
 			} else {
 				$enmse_cardviewe = " enmse_cv=1"; 
@@ -722,7 +722,7 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_relatede = ""; 
 		} 
 
-		if ( $enmse_related_sort == "Newest First" ) { 
+		if ( $enmse_related_sort == "1" ) { 
 			$enmse_related_sorte = " enmse_sort=1"; 
 		} else {
 			$enmse_related_sorte = ""; 

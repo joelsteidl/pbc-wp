@@ -1,8 +1,5 @@
 <?php /* ----- Groups Engine - Add a new file straight from the Groups admin page ----- */
 
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-
 	if ( current_user_can( 'edit_posts' ) ) { 
 
 		// ***** Get Labels
@@ -10,11 +7,17 @@
 
 		global $wpdb;
 
-		if ( $_POST ) {
+		if ( isset($_REQUEST['formdata']) ) {
+			parse_str($_REQUEST['formdata'], $_POST);
+		}
+		
+
+		if ( isset($_REQUEST['new']) && $_REQUEST['new'] == 1 ) {
+
 			$enmge_file_name = $_POST['file_name'];
 			$enmge_file_url = $_POST['file_url'];
 			$enmge_file_username = $_POST['file_username'];
-			$enmge_group_id = $_GET['group_id'];
+			$enmge_group_id = $_REQUEST['group_id'];
 
 			$enmge_newfile = array(
 				'file_name' => $enmge_file_name, 
@@ -30,9 +33,21 @@
 				'file_id' => $enmge_new_file_id
 			); 
 			$wpdb->insert( $wpdb->prefix . "ge_group_file_matches", $enmge_newmfm );
+			
+			if ( $enmge_group_id > 0 ) {
+				// Get All Files
+				$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d GROUP BY file_name ORDER BY sort_id ASC"; 
+				$enmge_fsql = $wpdb->prepare( $enmge_preparredfsql, $enmge_group_id );
+				$enmge_files = $wpdb->get_results( $enmge_fsql );
+			} else {
+				// Get All Files
+				$enmge_preparredfsql = "SELECT * FROM " . $wpdb->prefix . "ge_files" . " LEFT JOIN " . $wpdb->prefix . "ge_group_file_matches" . " USING (file_id) WHERE group_id = %d AND file_username = %d GROUP BY file_name ORDER BY sort_id ASC"; 
+				$enmge_fsql = $wpdb->prepare( $enmge_preparredfsql, $enmge_group_id, $enmge_file_username );
+				$enmge_files = $wpdb->get_results( $enmge_fsql );
+			}
 		} else {
-			$enmge_group_id = $_GET['group_id'];
-			$enmge_file_username = $_GET['file_username'];
+			$enmge_group_id = $_REQUEST['group_id'];
+			$enmge_file_username = $_REQUEST['file_username'];
 			
 			if ( $enmge_group_id > 0 ) {
 				// Get All Files
@@ -49,9 +64,7 @@
 		}
 
 ?>
-<?php if ($_POST) { ?>
-<?php } else { ?>
-	<?php if ( isset($_GET['done']) ) { ?>
+	<?php if ( !isset($_REQUEST['new']) ) { ?>
 		<script type="text/javascript">
 		jQuery(document).ready(function(){
 			jQuery("#enmgesmessage").delay(4000).slideUp();
@@ -63,7 +76,19 @@
 			};
 			jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize"); 
-				jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+				jQuery.ajax({
+					method: "POST",
+			        url: geajax.ajaxurl, 
+			        data: {
+			            'action': 'groupsengine_ajaxsortfiles',
+			            'frow': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
@@ -101,7 +126,19 @@
 			};
 			jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize"); 
-				jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php'; ?>", order, function(){}); 
+				jQuery.ajax({
+					method: "POST",
+			        url: geajax.ajaxurl, 
+			        data: {
+			            'action': 'groupsengine_ajaxsortfiles',
+			            'frow': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
@@ -128,7 +165,6 @@
 		</tbody>
 		</table>
 	<?php } ?>
-<?php } ?>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

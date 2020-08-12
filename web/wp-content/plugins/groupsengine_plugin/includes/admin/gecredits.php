@@ -1,2 +1,2 @@
 <?php /* ----- Groups Engine - Admin Credits ----- */ ?>
-<p id="ge-copyright">Groups Engine v1.2.8.1 &copy; Volacious</p>
+<p id="ge-copyright">Groups Engine v1.3.1 &copy; Volacious</p>

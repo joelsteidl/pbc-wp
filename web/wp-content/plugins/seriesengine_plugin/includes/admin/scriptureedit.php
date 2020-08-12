@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Edit a scripture straight from the Messages admin page ----- */
 
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		global $wpdb;
@@ -34,32 +31,34 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 7 ) { 
-			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
+		if ( $enmse_language == 8 ) { 
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
+		} elseif ( $enmse_language == 7 ) { 
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/dut_bible_books.php');
 		} elseif ( $enmse_language == 6 ) { 
-			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/chint_bible_books.php');
 		} elseif ( $enmse_language == 5 ) { 
-			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/chins_bible_books.php');
 		} elseif ( $enmse_language == 4 ) { 
-			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/turk_bible_books.php');
 		} elseif ( $enmse_language == 3 ) { 
-			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/ger_bible_books.php');
 		} elseif ( $enmse_language == 2 ) { 
-			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/spa_bible_books.php');
 		} else {
-			include(dirname(__FILE__) . '/../lang/eng_bible_books.php');
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/eng_bible_books.php');
 		}
 
-		if ( isset($_GET['update']) && $_GET['update'] == 1 ) {
-			$enmse_start_book = strip_tags($_GET['start_book']);
-			$enmse_start_chapter = strip_tags($_GET['start_chapter']);
-			$enmse_start_verse = strip_tags($_GET['start_verse']);
-			$enmse_end_verse = strip_tags($_GET['end_verse']);
-			$enmse_trans = strip_tags($_GET['trans']);
-			$enmse_focus = strip_tags($_GET['focus']);
-			$enmse_scripture_username = strip_tags($_GET['username']);
-			$enmse_message_id = strip_tags($_GET['message_id']);
-			$enmse_scripture_id = strip_tags($_GET['scripture_id']);
+		if ( isset($_REQUEST['update']) && $_REQUEST['update'] == 1 ) {
+			$enmse_start_book = strip_tags($_REQUEST['start_book']);
+			$enmse_start_chapter = strip_tags($_REQUEST['start_chapter']);
+			$enmse_start_verse = strip_tags($_REQUEST['start_verse']);
+			$enmse_end_verse = strip_tags($_REQUEST['end_verse']);
+			$enmse_trans = strip_tags($_REQUEST['trans']);
+			$enmse_focus = strip_tags($_REQUEST['focus']);
+			$enmse_scripture_username = strip_tags($_REQUEST['username']);
+			$enmse_message_id = strip_tags($_REQUEST['message_id']);
+			$enmse_scripture_id = strip_tags($_REQUEST['scripture_id']);
 
 			include('scripture/scriptureformatting.php');
 
@@ -114,7 +113,7 @@
 			$enmse_findthescripture = $wpdb->prepare( $enmse_findthescripturesql, $enmse_scripture_id );
 			$enmse_scripture = $wpdb->get_row( $enmse_findthescripture, OBJECT );	
 		} else {
-			$enmse_scripture_id = strip_tags($_GET['scripture_id']);
+			$enmse_scripture_id = strip_tags($_REQUEST['scripture_id']);
 
 			$enmse_findthescripturesql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " WHERE scripture_id = %d"; 
 			$enmse_findthescripture = $wpdb->prepare( $enmse_findthescripturesql, $enmse_scripture_id );
@@ -122,9 +121,7 @@
 		}
 
 ?>
-<?php if ($_POST) { ?>
-<?php } else { ?>
-	<?php if ( isset($_GET['done']) ) { ?>
+	<?php if ( isset($_REQUEST['done']) ) { ?>
 		<h3>Add a New Scripture Reference</h3>		
 		<table class="form-table">
 			<tr valign="top">
@@ -300,8 +297,16 @@
 						<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 						<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value="<?php echo $deftrans; ?>">------ CZECH ------</option>
+						<option value="15"<?php if ( $deftrans == 15 ) { echo " selected=\"selected\""; } ?>>B21 - Bible 21</option>
+						<option value="162"<?php if ( $deftrans == 162 ) { echo " selected=\"selected\""; } ?>>BCZ - Slovo na cestu</option>
+						<option value="44"<?php if ( $deftrans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
+						<option value="509"<?php if ( $deftrans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 						<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
 						<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
+						<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
+						<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+						<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 						<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 						<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
 						<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
@@ -309,6 +314,10 @@
 						<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 						<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+						<option value="<?php echo $deftrans; ?>">------ JAPANESE ------</option>
+						<option value="83"<?php if ( $deftrans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
+						<option value="1819"<?php if ( $deftrans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value="1820"<?php if ( $deftrans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
 						<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -329,7 +338,7 @@
 			</tr>
 		</table>
 		<br />
-		<input type="hidden" name="scripture_username" value="<?php echo $_GET['username']; ?>" id="scripture_username" />
+		<input type="hidden" name="scripture_username" value="<?php echo $_REQUEST['username']; ?>" id="scripture_username" />
 		<a href="#" id="addnewscripture" class="button">Attach New Scripture Reference</a>
 	<?php } else { ?>
 		<h3>Edit Scripture Reference</h3>	
@@ -507,8 +516,16 @@
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ CHINESE ------</option>
 						<option value="48"<?php if ( $enmse_scripture->trans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 						<option value="414"<?php if ( $enmse_scripture->trans == 414 ) { echo " selected=\"selected\""; }  ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ CZECH ------</option>
+						<option value="15"<?php if ( $enmse_scripture->trans == 15 ) { echo " selected=\"selected\""; } ?>>B21 - Bible 21</option>
+						<option value="162"<?php if ( $enmse_scripture->trans == 162 ) { echo " selected=\"selected\""; } ?>>BCZ - Slovo na cestu</option>
+						<option value="44"<?php if ( $enmse_scripture->trans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
+						<option value="509"<?php if ( $enmse_scripture->trans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ DUTCH ------</option>
 						<option value="165"<?php if ( $enmse_scripture->trans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ FRENCH ------</option>
+						<option value="2367"<?php if ( $enmse_scripture->trans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+						<option value="133"<?php if ( $enmse_scripture->trans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ GERMAN ------</option>
 						<option value="57"<?php if ( $enmse_scripture->trans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
 						<option value="51"<?php if ( $enmse_scripture->trans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
@@ -516,6 +533,10 @@
 						<option value="877"<?php if ( $enmse_scripture->trans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 						<option value="108"<?php if ( $enmse_scripture->trans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
 						<option value="157"<?php if ( $enmse_scripture->trans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ JAPANESE ------</option>
+						<option value="83"<?php if ( $enmse_scripture->trans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
+						<option value="1819"<?php if ( $enmse_scripture->trans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+						<option value="1820"<?php if ( $enmse_scripture->trans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $enmse_scripture->trans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $enmse_scripture->trans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -536,11 +557,10 @@
 			</tr>
 		</table>
 		<br />
-		<input type="hidden" name="scripture_username" value="<?php echo $_GET['username']; ?>" id="scripture_username" />
+		<input type="hidden" name="scripture_username" value="<?php echo $_REQUEST['username']; ?>" id="scripture_username" />
 		<input type="hidden" name="scripture_id" value="<?php echo $enmse_scripture->scripture_id; ?>" id="scripture_id" />
 		<a href="#" id="editscripture" class="button">Save Changes</a>
 	<?php } ?>
-<?php } ?>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

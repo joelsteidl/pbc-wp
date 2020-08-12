@@ -4204,6 +4204,12 @@ Navigation Menu Widgets
     background-color: rgba(23,129,241,1) !important;
 }
 
+div.wpforms-container-full .wpforms-form input:not([type = "submit"]):focus,
+div.wpforms-container-full .wpforms-form textarea:focus,
+div.wpforms-container-full .wpforms-form select:focus {
+    border: 1px solid  #1890FF !important;
+}
+
 /* Solid */
 
 .tatsu-wp-form-rounded .wpforms-container-full .wpforms-form  input:not([type = "submit"]),

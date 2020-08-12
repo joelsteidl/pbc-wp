@@ -1,19 +1,21 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 7 ) { 
-		include('../lang/dut_bible_books.php');
+	if ( $enmse_language == 8 ) { 
+		include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
+	} elseif ( $enmse_language == 7 ) { 
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/dut_bible_books.php');
 	} elseif ( $enmse_language == 6 ) { 
-		include('../lang/chint_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/chint_bible_books.php');
 	} elseif ( $enmse_language == 5 ) { 
-		include('../lang/chins_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/chins_bible_books.php');
 	} elseif ( $enmse_language == 4 ) { 
-		include('../lang/turk_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/turk_bible_books.php');
 	} elseif ( $enmse_language == 3 ) { 
-		include('../lang/ger_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/ger_bible_books.php');
 	} elseif ( $enmse_language == 2 ) { 
-		include('../lang/spa_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/spa_bible_books.php');
 	} else {
-		include('../lang/eng_bible_books.php');
+		include(ENMSE_PLUGIN_PATH  . 'includes/lang/eng_bible_books.php');
 	}
 
 	if ( $enmse_start_book == 1 ) {
@@ -338,6 +340,24 @@
 		$trans = " (NRSV)";
 	} elseif ( $enmse_trans == 37 ) {
 		$trans = " (CEB)";
+	} elseif ( $enmse_trans == 83 ) {
+		$trans = " (JCB)";
+	} elseif ( $enmse_trans == 1819 ) {
+		$trans = "";
+	} elseif ( $enmse_trans == 1820 ) {
+		$trans = "";
+	} elseif ( $enmse_trans == 15 ) {
+		$trans = " (B21)";
+	} elseif ( $enmse_trans == 162 ) {
+		$trans = " (BCZ)";
+	} elseif ( $enmse_trans == 44 ) {
+		$trans = " (BKR)";
+	} elseif ( $enmse_trans == 509 ) {
+		$trans = " (CSP)";
+	} elseif ( $enmse_trans == 2367 ) {
+		$trans = " (NFC)";
+	} elseif ( $enmse_trans == 133 ) {
+		$trans = " (PDV2017)";
 	}
 
  ?>

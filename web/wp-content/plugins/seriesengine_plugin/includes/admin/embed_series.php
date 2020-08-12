@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Choose relevant series to embed ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -34,10 +31,10 @@
 
 		global $wpdb;
 		
-		$enmse_stid = strip_tags($_GET['enmse_stid']);
+		$enmse_stid = strip_tags($_REQUEST['enmse_stid']);
 		
 		$enmse_message = 0;
-		if ( isset($_GET['enmse_message']) ) {
+		if ( isset($_REQUEST['enmse_message']) ) {
 			$enmse_message = 1;
 		}
 		
@@ -98,4 +95,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

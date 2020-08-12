@@ -1082,7 +1082,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				});
 			});
 		</script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options127.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options130.js'; ?>"></script>
 
 		<h2 class="enmge">Add a New <?php echo stripslashes($enmge_grouptitle); ?></h2>
 		<?php include ('errorbox.php'); ?>
@@ -1684,7 +1684,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php?xxge=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+								jQuery.ajax({
+									method: "POST",
+							        url: geajax.ajaxurl, 
+							        data: {
+							            'action': 'groupsengine_ajaxsortfiles',
+							            'frow': order
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							}});
 						});
 						</script>
@@ -1781,7 +1793,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			});
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options127.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/group_options130.js'; ?>"></script>
 	<h2 class="enmge">Edit <?php echo stripslashes($enmge_grouptitle); ?> <a href="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&enmge_duplicate=1&amp;enmge_gid=' . $_GET['enmge_gid'], __FILE__ ) ?>" class="add-new-h2">Duplicate</a> <a href="<?php echo admin_url( '/admin.php?page=groupsengine_plugin/groupsengine_plugin.php&enmge_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
 	<?php include ('messagebox.php'); ?>
@@ -2380,7 +2392,19 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/sortfiles.php?xxge=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+								jQuery.ajax({
+									method: "POST",
+							        url: geajax.ajaxurl, 
+							        data: {
+							            'action': 'groupsengine_ajaxsortfiles',
+							            'frow': order
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							}});
 						});
 						</script>

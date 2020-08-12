@@ -185,7 +185,7 @@
                         // if( null != context ) {
 
                         // }else {
-                            if( el.isVisible(true) && ( $win.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                            
+                            if( el.isVisible(true) && ( $win.innerHeight() - el[0].getBoundingClientRect().top > 40 ) ) {                           
                                 el.addClass("already-visible");
                                 el.addClass(el.attr('data-animation'));
                                 // el.addClass('animated');
@@ -1179,6 +1179,9 @@
                         animatedNumbers();
                     }
                 }, 100); 
+            }
+            if( $body.hasClass( 'be-sticky-sections' ) && 960 >= window.innerWidth ){
+                cssAnimate(false, '');  
             }        
         },
         tatsu_tabs = function( shouldUpdate,moduleId ) {

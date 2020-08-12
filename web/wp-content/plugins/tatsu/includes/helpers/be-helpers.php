@@ -515,7 +515,7 @@ if( !function_exists( 'be_get_video_details' ) ){
 		}else if( strpos( $url,'vimeo' ) !== false ) {
 
 			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-			$response = wp_remote_get( "http://vimeo.com/api/v2/video/$vimeo_id.php" );
+			$response = wp_remote_get( "https://vimeo.com/api/v2/video/$vimeo_id.php" );
 
 			if( $size  === 'small'){
 				$size = '_320x180';

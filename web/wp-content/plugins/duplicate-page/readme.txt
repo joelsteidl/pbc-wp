@@ -2,8 +2,8 @@
 Contributors: mndpsingh287
 Tags: Page Duplicate, Post duplicate, duplicate custom posts, duplicate page, duplicate post, duplicate ,custom posts, post, page, duplicate this, duplicate, content duplicate, duplicate content, data duplicate, duplicate data, copy page, clone page,wordpress page duplicate, wordpress post duplicate, Copy post, wordpress page duplicator, wordpress post duplicator, Cloner, duplicate post
 Requires at least: 3.4
-Tested up to: 5.3
-Stable tag: 4.0
+Tested up to: 5.4
+Stable tag: 4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -56,6 +56,14 @@ https://www.youtube.com/watch?v=Fj8BHxvebXs&feature=youtu.be
 5. Duplicate Post / Page will Appear. 
 
 == Changelog ==
+
+= 4.2(26th March, 2020) =
+
+* Fixed Translations string issue
+
+= 4.1(20th Feb, 2020) =
+
+* Fixed Translations issue
 
 = 4.0(20th Sep, 2019) =
 

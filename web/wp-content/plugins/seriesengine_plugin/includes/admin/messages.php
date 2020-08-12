@@ -127,7 +127,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 7 ) { 
+		if ( $enmse_language == 8 ) { 
+			include(dirname(__FILE__) . '/../lang/jap_bible_books.php');
+		} elseif ( $enmse_language == 7 ) { 
 			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
 		} elseif ( $enmse_language == 6 ) { 
 			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
@@ -447,7 +449,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_embed_code']) < 1 ) { //here
 						$enmse_embed_code = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code'])) {
+						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
 							$enmse_embed_code = $_POST['message_embed_code'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
 							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
@@ -479,7 +481,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed'])) {
+						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
 							$enmse_alternate_embed = $_POST['message_alternate_embed'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
 							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
@@ -579,7 +581,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						$enmse_findthespeakersql = "SELECT speaker_id, first_name, last_name FROM " . $wpdb->prefix . "se_speakers" . " LEFT JOIN " . $wpdb->prefix . "se_message_speaker_matches USING (speaker_id) WHERE message_id = %d GROUP BY speaker_id LIMIT 1"; 
 						$enmse_findthespeaker = $wpdb->prepare( $enmse_findthespeakersql, $enmse_mid );
 						$enmse_speaker = $wpdb->get_row( $enmse_findthespeaker, OBJECT );
-						$enmse_speaker_name = $enmse_speaker->first_name . ' ' . $enmse_speaker->last_name;
+						$enmse_speaker_name = stripslashes($enmse_speaker->first_name) . ' ' . stripslashes($enmse_speaker->last_name);
 
 						// Get the Primary Series Info
 						if ( $enmse_primary_series != 0 ) {
@@ -990,7 +992,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_embed_code']) < 1 ) {
 						$enmse_embed_code = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code'])) {
+						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
 							$enmse_embed_code = $_POST['message_embed_code'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
 							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
@@ -1022,7 +1024,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed'])) {
+						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
 							$enmse_alternate_embed = $_POST['message_alternate_embed'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
 							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
@@ -1080,7 +1082,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						$enmse_nfindthespeakersql = "SELECT * FROM " . $wpdb->prefix . "se_speakers" . " WHERE speaker_id = %d"; 
 						$enmse_nfindthespeaker = $wpdb->prepare( $enmse_nfindthespeakersql, $enmse_speaker );
 						$enmse_speakerrow = $wpdb->get_row( $enmse_nfindthespeaker, OBJECT );
-						$enmse_speaker_name = $enmse_speakerrow->first_name . ' ' . $enmse_speakerrow->last_name;
+						$enmse_speaker_name = stripslashes($enmse_speakerrow->first_name) . ' ' . stripslashes($enmse_speakerrow->last_name);
 
 						$enmse_newmessage = array(
 							'title' => $enmse_title, 
@@ -1460,7 +1462,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 			});
 		</script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
 		<h2 class="enmse">Add a New <?php echo $enmsemessaget; ?></h2>
 		<?php include ('errorbox.php'); ?>
 		<p>Fill out the form fields below to enter a new <?php echo $enmsemessaget; ?> into the Series Engine. Remember that a <?php echo $enmsemessaget; ?> will not be publicly available unless you supply a video embed, audio file or alternate video embed. <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide#se-messages"; ?>" class="enmse-learn-more">Learn more about <?php echo $enmsemessagetp; ?>...</a></p>
@@ -1489,7 +1491,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="n">Add a New <?php echo $enmsespeakert; ?></option>
 								<option value="0">-----------------</option>
 								<?php foreach ($enmse_sp as $sp) {  ?>
-								<option value="<?php echo $sp->speaker_id; ?>" <?php if ($_POST && !empty($enmse_errors)) {if ($_POST['message_speaker'] == $sp->speaker_id) { ?>selected="selected"<?php }} ?>><?php echo $sp->first_name . " " . $sp->last_name; ?></option>
+								<option value="<?php echo $sp->speaker_id; ?>" <?php if ($_POST && !empty($enmse_errors)) {if ($_POST['message_speaker'] == $sp->speaker_id) { ?>selected="selected"<?php }} ?>><?php echo stripslashes($sp->first_name) . " " . stripslashes($sp->last_name); ?></option>
 								<?php } ?>
 							</select><br />
 							<div id="newspeakersection" style="display: none">
@@ -1514,7 +1516,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					</tr>
 					<tr valign="top">
 						<th scope="row">Audio URL:</th>
-						<td><input id='message_audio_url' name='message_audio_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_audio_url'];} ?>' tabindex="5" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+						<td><input id='message_audio_url' name='message_audio_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_audio_url']);} ?>" tabindex="5" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
@@ -1532,7 +1534,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							(or) Video URL:
 							<p class="se-form-instructions"><em>Direct file paths to .mp4 files only; NO embed codes.</em></p>
 						</th>
-						<td><input id='message_video_embed_url' name='message_video_embed_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_video_embed_url'];} ?>' tabindex="7" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+						<td><input id='message_video_embed_url' name='message_video_embed_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_video_embed_url']);} ?>" tabindex="7" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">Add to <?php echo $enmseseriest; ?>:</th>
@@ -1631,7 +1633,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<p class="se-form-instructions">This will override the embed code above and embed this video clip instead.<br /><br />
 							<em>Direct file paths to .mp4 files only; NO embed codes.</em></p>
 						</th>
-						<td><input id='message_additional_video_embed_url' name='message_additional_video_embed_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_additional_video_embed_url'];} ?>' tabindex="14" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-additional-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+						<td><input id='message_additional_video_embed_url' name='message_additional_video_embed_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_additional_video_embed_url']);} ?>" tabindex="14" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-additional-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">
@@ -1687,8 +1689,21 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								return ui;
 							};
 							jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+								var order = jQuery(this).sortable("serialize");
+								jQuery.ajax({
+									method: "POST",
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxsortscripture',
+							            'row': order
+							        },
+							        success:function(data) {
+
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							}});
 						});
 						</script>
@@ -1897,8 +1912,16 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 									<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 									<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+									<option value="<?php echo $deftrans; ?>">------ CZECH ------</option>
+									<option value="15"<?php if ( $deftrans == 15 ) { echo " selected=\"selected\""; } ?>>B21 - Bible 21</option>
+									<option value="162"<?php if ( $deftrans == 162 ) { echo " selected=\"selected\""; } ?>>BCZ - Slovo na cestu</option>
+									<option value="44"<?php if ( $deftrans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
+									<option value="509"<?php if ( $deftrans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 									<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
 									<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
+									<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
+									<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+									<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 									<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 									<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
 									<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
@@ -1906,6 +1929,10 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 									<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
 									<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+									<option value="<?php echo $deftrans; ?>">------ JAPANESE ------</option>
+									<option value="83"<?php if ( $deftrans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
+									<option value="1819"<?php if ( $deftrans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+									<option value="1820"<?php if ( $deftrans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
 									<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 									<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 									<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -1942,7 +1969,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					</tr>
 					<tr valign="top">
 						<th scope="row">Audio URL:</th>
-						<td><input id='message_audio_url_dummy' name='message_audio_url_dummy' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_audio_url'];} ?>' tabindex="22" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;TB_iframe=1', __FILE__ ); ?>" class="thickbox se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+						<td><input id='message_audio_url_dummy' name='message_audio_url_dummy' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_audio_url']);} ?>" tabindex="22" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;TB_iframe=1', __FILE__ ); ?>" class="thickbox se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">Audio File Size:</th>
@@ -1954,7 +1981,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					</tr>
 					<tr valign="top">
 						<th scope="row">Video URL:</th>
-						<td><input id='message_video_url' name='message_video_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_video_url'];} ?>' tabindex="25" /></td>
+						<td><input id='message_video_url' name='message_video_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_video_url']);} ?>" tabindex="25" /></td>
 					</tr>
 					<tr valign="top">
 						<th scope="row">Video File Size:</th>
@@ -1996,8 +2023,21 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								return ui;
 							};
 							jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-								var order = jQuery(this).sortable("serialize"); 
-								jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+								var order = jQuery(this).sortable("serialize");
+								jQuery.ajax({
+									method: "POST",
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxsortfiles',
+							            'frow': order
+							        },
+							        success:function(data) {
+
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							}});
 						});
 						</script>
@@ -2097,7 +2137,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
 
 	<h2 class="enmse">Edit <?php echo $enmsemessaget; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
@@ -2128,7 +2168,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							<option value="n">Add a New <?php echo $enmsespeakert; ?></option>
 							<option value="0">-----------------</option>
 							<?php foreach ($enmse_sp as $sp) {  ?>
-							<option value="<?php echo $sp->speaker_id; ?>" <?php if ($_POST && !empty($enmse_errors)) {if ($_POST['message_speaker'] == $sp->speaker_id) { ?>selected="selected"<?php }} else { if ( $enmse_speaker->speaker_id == $sp->speaker_id ) { ?>selected="selected"<?php }} ?>><?php echo $sp->first_name . " " . $sp->last_name; ?></option>
+							<option value="<?php echo $sp->speaker_id; ?>" <?php if ($_POST && !empty($enmse_errors)) {if ($_POST['message_speaker'] == $sp->speaker_id) { ?>selected="selected"<?php }} else { if ( $enmse_speaker->speaker_id == $sp->speaker_id ) { ?>selected="selected"<?php }} ?>><?php echo stripslashes($sp->first_name) . " " . stripslashes($sp->last_name); ?></option>
 							<?php } ?>
 						</select><br />
 						<div id="newspeakersection" style="display: none">
@@ -2153,7 +2193,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				</tr>
 				<tr valign="top">
 					<th scope="row">Audio URL:</th>
-					<td><input id='message_audio_url' name='message_audio_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_audio_url'];} else {if ($enmse_single->audio_url != "0") {echo $enmse_single->audio_url;}} ?>' tabindex="5" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+					<td><input id='message_audio_url' name='message_audio_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_audio_url']);} else {if ($enmse_single->audio_url != "0") {echo stripslashes($enmse_single->audio_url);}} ?>" tabindex="5" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">
@@ -2171,7 +2211,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						(or) Video URL:
 						<p class="se-form-instructions"><em>Direct file paths to .mp4 files only; NO embed codes.</em></p>
 					</th>
-					<td><input id='message_video_embed_url' name='message_video_embed_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_video_embed_url'];} else {if ($enmse_single->video_embed_url != "0") {echo $enmse_single->video_embed_url;}} ?>' tabindex="7" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+					<td><input id='message_video_embed_url' name='message_video_embed_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_video_embed_url']);} else {if ($enmse_single->video_embed_url != "0") {echo stripslashes($enmse_single->video_embed_url);}} ?>" tabindex="7" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">Add to <?php echo $enmseseriest; ?>:</th>
@@ -2283,7 +2323,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						<p class="se-form-instructions">This will override the embed code above and embed this video clip instead.<br /><br />
 						<em>Direct file paths to .mp4 files only; NO embed codes.</em></p>
 					</th>
-					<td><input id='message_additional_video_embed_url' name='message_additional_video_embed_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_additional_video_embed_url'];} else {if ($enmse_single->additional_video_embed_url != "0") {echo $enmse_single->additional_video_embed_url;}} ?>' tabindex="14" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-additional-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+					<td><input id='message_additional_video_embed_url' name='message_additional_video_embed_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_additional_video_embed_url']);} else {if ($enmse_single->additional_video_embed_url != "0") {echo stripslashes($enmse_single->additional_video_embed_url);}} ?>" tabindex="14" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;type=file&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-additional-video se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 				</tr>
 				<tr valign="top">
 					<th scope="row">
@@ -2347,8 +2387,20 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							return ui;
 						};
 						jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-							var order = jQuery(this).sortable("serialize"); 
-							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+							var order = jQuery(this).sortable("serialize");
+							jQuery.ajax({
+								method: "POST",
+						        url: seajax.ajaxurl, 
+						        data: {
+						            'action': 'seriesengine_ajaxsortscripture',
+						            'row': order
+						        },
+						        success:function(data) {
+						        },
+						        error: function(errorThrown){
+						            console.log(errorThrown);
+						        }
+						    });
 						}});
 					});
 					</script>
@@ -2557,8 +2609,16 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="<?php echo $deftrans; ?>">------ CHINESE ------</option>
 								<option value="48"<?php if ( $deftrans == 48 ) { echo " selected=\"selected\""; } ?>>CUNPSS-神 - 新标点和合本, 神版</option>
 								<option value="414"<?php if ( $deftrans == 414 ) { echo " selected=\"selected\""; } ?>>CUNP-上帝 - 新標點和合本, 神版</option>
+								<option value="<?php echo $deftrans; ?>">------ CZECH ------</option>
+								<option value="15"<?php if ( $deftrans == 15 ) { echo " selected=\"selected\""; } ?>>B21 - Bible 21</option>
+								<option value="162"<?php if ( $deftrans == 162 ) { echo " selected=\"selected\""; } ?>>BCZ - Slovo na cestu</option>
+								<option value="44"<?php if ( $deftrans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
+								<option value="509"<?php if ( $deftrans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 								<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
 								<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
+								<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
+								<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+								<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 								<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 								<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
 								<option value="51"<?php if ( $deftrans == 51 ) { echo " selected=\"selected\""; } ?>>DELUT - Lutherbibel 1912</option>
@@ -2566,6 +2626,10 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="877"<?php if ( $deftrans == 877 ) { echo " selected=\"selected\""; } ?>>NBH - NeÜ Bibel.heute</option>
 								<option value="108"<?php if ( $deftrans == 108 ) { echo " selected=\"selected\""; } ?>>NGU2011 - Neue Genfer Übersetzung</option>
 								<option value="157"<?php if ( $deftrans == 157 ) { echo " selected=\"selected\""; } ?>>SCH2000 - Schlachter 2000</option>
+								<option value="<?php echo $deftrans; ?>">------ JAPANESE ------</option>
+								<option value="83"<?php if ( $deftrans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
+								<option value="1819"<?php if ( $deftrans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
+								<option value="1820"<?php if ( $deftrans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
 								<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 								<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 								<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -2603,7 +2667,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				</tr>
 				<tr valign="top">
 					<th scope="row">Audio URL:</th>
-					<td><input id='message_audio_url_dummy' name='message_audio_url_dummy' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_audio_url'];} else {if ($enmse_single->audio_url != "0") {echo $enmse_single->audio_url;}} ?>' tabindex="22" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-podcast-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
+					<td><input id='message_audio_url_dummy' name='message_audio_url_dummy' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_audio_url']);} else {if ($enmse_single->audio_url != "0") {echo stripslashes($enmse_single->audio_url);}} ?>" tabindex="22" /> &nbsp;<a href="<?php echo admin_url( '/media-upload.php?post_id=0&#038;TB_iframe=1', __FILE__ ); ?>" class="enmse-upload-message-podcast-audio se-upload-link" id="content-add_media" title="Add Media" onclick="return false;"><img src="<?php echo admin_url(); ?>/images/media-button.png?ver=20111005" width="15" height="15" class="se-media-button" /> &nbsp;Upload File</a></td>
 				</tr>
 				<tr valign="top" <?php if ($enmseid3 == 1 && $enmse_single->audio_url == "0") { ?>style="display: none"<?php } ?>>
 					<th scope="row">Audio File Size:</th>
@@ -2616,7 +2680,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 				</tr>
 				<tr valign="top">
 					<th scope="row">Video URL:</th>
-					<td><input id='message_video_url' name='message_video_url' type='text' value='<?php if ($_POST && !empty($enmse_errors)) {echo $_POST['message_video_url'];} else {if ($enmse_single->video_url != "0") {echo $enmse_single->video_url;}} ?>' tabindex="25" /></td>
+					<td><input id='message_video_url' name='message_video_url' type='text' value="<?php if ($_POST && !empty($enmse_errors)) {echo stripslashes($_POST['message_video_url']);} else {if ($enmse_single->video_url != "0") {echo stripslashes($enmse_single->video_url);}} ?>" tabindex="25" /></td>
 				</tr>
 				<tr valign="top" <?php if ($enmseid3 == 1 && $enmse_single->video_url == "0") { ?>style="display: none"<?php } ?>>
 					<th scope="row">Video File Size:</th>
@@ -2658,8 +2722,20 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							return ui;
 						};
 						jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-							var order = jQuery(this).sortable("serialize"); 
-							jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . base64_encode(ABSPATH); ?>", order, function(){}); 
+							var order = jQuery(this).sortable("serialize");
+							jQuery.ajax({
+								method: "POST",
+						        url: seajax.ajaxurl, 
+						        data: {
+						            'action': 'seriesengine_ajaxsortfiles',
+						            'frow': order
+						        },
+						        success:function(data) {
+						        },
+						        error: function(errorThrown){
+						            console.log(errorThrown);
+						        }
+						    });
 						}});
 					});
 					</script>
@@ -2752,7 +2828,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<?php include ('secredits.php'); ?>
 <?php }} else { // Display the main listing of Messages ?>
 	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/deletemessage.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options274.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
 	<h2 class="enmse">Create and Edit <?php echo $enmsemessagetp; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('messagebox.php'); ?>
 

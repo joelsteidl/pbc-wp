@@ -81,7 +81,7 @@ if( !function_exists( 'tatsu_process_col' ) ) {
         global $tatsu_process_title_font, $tatsu_process_content_font;
         $title_font = !empty( $tatsu_process_title_font ) ? $tatsu_process_title_font : '';
         $content_font = !empty( $tatsu_process_content_font ) ? $tatsu_process_content_font : '';
-
+		$icon_label = str_replace(array('tatsu','icon','-','_'),'',$icon);
         $svg_icon_html = '';
         if( 'svg' == $icon_type ) {
             $classes[] = 'tatsu-process-icon-type-svg';
@@ -100,14 +100,14 @@ if( !function_exists( 'tatsu_process_col' ) ) {
 
 		$classes[] = $css_classes;
         $classes = implode( ' ', $classes );
-        ob_start();
+		ob_start();
         ?>
             <div <?php echo $css_id; ?> class = "<?php echo $classes; ?>" <?php echo $data_animations; ?> >
                 <?php echo $custom_style_tag; ?>
                 <div class = "tatsu-process-header">
                     <div class = "tatsu-process-icon">
                         <?php if( 'icon' == $icon_type ) : ?>
-                            <i class = "tatsu-icon <?php echo $icon;?>">
+                            <i class = "tatsu-icon <?php echo $icon;?>" aria-label = "<?php echo $icon_label;?>" >
                             </i>
                         <?php else: ?>
                             <?php echo $svg_icon_html; ?>

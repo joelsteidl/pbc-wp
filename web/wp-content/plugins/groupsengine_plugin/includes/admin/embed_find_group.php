@@ -1,8 +1,5 @@
 <?php /* ----- Groups Engine - Generate embed code based on user input ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		global $wpdb;
@@ -11,7 +8,7 @@
 		$enmge_grouptitle = $enmge_options['grouptitle'];
 		$enmge_groupptitle = $enmge_options['groupptitle']; 
 		
-		$enmge_gt = strip_tags($_GET['enmge_gtid']);
+		$enmge_gt = strip_tags($_REQUEST['enmge_gtid']);
 
 		if ( $enmge_gt != 0 ) {
 			$enmge_preparredsql = "SELECT group_id, group_title FROM " . $wpdb->prefix . "ge_groups" . " LEFT JOIN " . $wpdb->prefix . "ge_group_group_type_matches" . " USING (group_id) WHERE group_type_id = %d GROUP BY group_id ORDER BY group_id DESC"; 
@@ -38,4 +35,4 @@
 </table>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

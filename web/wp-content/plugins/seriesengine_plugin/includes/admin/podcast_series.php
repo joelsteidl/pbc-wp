@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Load Relevant Series for Podcast Generation ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -22,7 +19,7 @@
 
 		global $wpdb;
 		
-		$enmse_stid = strip_tags($_GET['enmse_stid']);
+		$enmse_stid = strip_tags($_REQUEST['enmse_stid']);
 		
 		if ( $enmse_stid == 0 ) {
 			// Get All Series
@@ -61,4 +58,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

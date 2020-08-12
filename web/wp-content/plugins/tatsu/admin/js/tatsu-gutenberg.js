@@ -18,7 +18,7 @@
         }
         addTatsuPanel = function() {
             var tatsuEditorPanel = $($('#tatsu-gutenberg-editor-panel').html()),
-                gutenbergBlockList = $('#editor').find('.editor-block-list__layout, .editor-post-text-editor');
+                gutenbergBlockList = $('#editor').find('.block-editor-block-list__layout, .editor-post-text-editor');
             if( 0 < gutenbergBlockList.length ) {
                 gutenbergBlockList.after(tatsuEditorPanel);
             }

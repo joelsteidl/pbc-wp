@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Add a new file straight from the Messages admin page ----- */
 
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -40,15 +37,15 @@
 
 		global $wpdb;
 
-		if ( isset($_GET['new']) && $_GET['new'] == 1 ) {
-			$enmse_start_book = strip_tags($_GET['start_book']);
-			$enmse_start_chapter = strip_tags($_GET['start_chapter']);
-			$enmse_start_verse = strip_tags($_GET['start_verse']);
-			$enmse_end_verse = strip_tags($_GET['end_verse']);
-			$enmse_trans = strip_tags($_GET['trans']);
-			$enmse_focus = strip_tags($_GET['focus']);
-			$enmse_scripture_username = strip_tags($_GET['username']);
-			$enmse_message_id = strip_tags($_GET['message_id']);
+		if ( isset($_REQUEST['new']) && $_REQUEST['new'] == 1 ) {
+			$enmse_start_book = strip_tags($_REQUEST['start_book']);
+			$enmse_start_chapter = strip_tags($_REQUEST['start_chapter']);
+			$enmse_start_verse = strip_tags($_REQUEST['start_verse']);
+			$enmse_end_verse = strip_tags($_REQUEST['end_verse']);
+			$enmse_trans = strip_tags($_REQUEST['trans']);
+			$enmse_focus = strip_tags($_REQUEST['focus']);
+			$enmse_scripture_username = strip_tags($_REQUEST['username']);
+			$enmse_message_id = strip_tags($_REQUEST['message_id']);
 
 			include('scripture/scriptureformatting.php');
 
@@ -123,7 +120,7 @@
 				// Get All Scriptures
 				$enmse_preparredscsql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d GROUP BY scm_match_id ORDER BY sort_id ASC"; 
 				$enmse_scsql = $wpdb->prepare( $enmse_preparredscsql, $enmse_message_id );
-				$enmse_scriptures = $wpdb->get_results( $enmse_fsql );
+				$enmse_scriptures = $wpdb->get_results( $enmse_scsql );
 			} else {
 				// Get All Files
 				$enmse_preparredscsql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND scripture_username = %d GROUP BY scm_match_id ORDER BY sort_id ASC"; 
@@ -131,8 +128,8 @@
 				$enmse_scriptures = $wpdb->get_results( $enmse_scsql );
 			}
 		} else {
-			$enmse_message_id = strip_tags($_GET['message_id']);
-			$enmse_scripture_username = strip_tags($_GET['username']);
+			$enmse_message_id = strip_tags($_REQUEST['message_id']);
+			$enmse_scripture_username = strip_tags($_REQUEST['username']);
 			
 			if ( $enmse_message_id > 0 ) {
 				// Get All Scriptures
@@ -149,9 +146,7 @@
 		}
 
 ?>
-<?php if ($_POST) { ?>
-<?php } else { ?>
-	<?php if ( isset($_GET['done']) ) { ?>
+	<?php if ( isset($_REQUEST['done']) ) { ?>
 		<script type="text/javascript">
 		jQuery(document).ready(function(){
 			jQuery("#enmsescmessage").delay(4000).slideUp();
@@ -162,8 +157,20 @@
 				return ui;
 			};
 			jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-				var order = jQuery(this).sortable("serialize"); 
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
+				var order = jQuery(this).sortable("serialize");
+				jQuery.ajax({
+					method: "POST",
+			        url: seajax.ajaxurl, 
+			        data: {
+			            'action': 'seriesengine_ajaxsortscripture',
+			            'row': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
@@ -206,13 +213,25 @@
 			};
 			jQuery("#scripturetable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize");
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortscriptures.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
+				jQuery.ajax({
+					method: "POST",
+			        url: seajax.ajaxurl, 
+			        data: {
+			            'action': 'seriesengine_ajaxsortscripture',
+			            'row': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
 		<br />
 		<h3>References Currently Associated with This <?php echo $enmsemessaget; ?>...</h3>
-		<p id="enmsescmessage"><em>Your scripture reference was sucessfully edited.</em></p>
+		<p id="enmsescmessage"><em>Your scripture reference was sucessfully added.</em></p>
 		<table class="widefat" id="scripturetable"> 
 		<thead> 
 			<tr> 
@@ -238,7 +257,6 @@
 		<br />
 		<br />
 	<?php } ?>
-<?php } ?>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

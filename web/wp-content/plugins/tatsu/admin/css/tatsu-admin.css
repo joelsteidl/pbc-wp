@@ -209,8 +209,11 @@ body:not(.edited_with_tatsu) .tatsu-switch-builder-gutenburg {
 .edited_with_tatsu .tatsu-switch-builder-tatsu {
 	display: none;
 }
-.edited_with_tatsu .editor-block-list__layout {
+.edited_with_tatsu .block-editor-block-list__layout {
 	display: none;
+}
+.edited_with_tatsu .edit-post-visual-editor .block-editor-writing-flow__click-redirect{
+	min-height: 0px;
 }
 
 #tatsu-switch-to-gutenberg-modal .notification-dialog {

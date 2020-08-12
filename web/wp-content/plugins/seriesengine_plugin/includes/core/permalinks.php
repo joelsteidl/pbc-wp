@@ -149,11 +149,9 @@ function seriesengine_message_single() {
 		$enmse_blurb = null;
 	}
 
-	if ( $enmse_seriestype == 0 ) {
-		$enmse_seriestypev = "";
-	} else {
-		$enmse_seriestypev = " enmse_dsst=" . $enmse_seriestype;
-	}
+	
+	$enmse_seriestypev = "";
+
 
 	if ( $enmse_explorer == 0 ) {
 		$enmse_explorerv = "";

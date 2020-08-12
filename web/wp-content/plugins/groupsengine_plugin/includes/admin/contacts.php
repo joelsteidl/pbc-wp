@@ -239,14 +239,22 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
 				jQuery('#contact_group_type').live("change", function() {
-					var pluginurl = jQuery('#enmge-get-plugin-link').attr("title");
-					var gerandom = Math.floor(Math.random()*1001);
 					var gtvalue = jQuery(this).val();
-					var xxge = "<?php echo base64_encode(ABSPATH); ?>";
 					if ( gtvalue != "n" ) {
-						jQuery('#groupsfield').load(pluginurl+"contactfindgroup.php?enmge_gtid="+gtvalue+"&xxge="+xxge+"&enmge_random="+gerandom, function() {
-							jQuery("#groupsfield").show();
-						});
+						jQuery.ajax({ 
+					        url: geajax.ajaxurl, 
+					        data: {
+					            'action': 'groupsengine_ajaxcontactfindgroup',
+					            'enmge_gtid': gtvalue
+					        },
+					        success:function(data) {
+					        	jQuery('#groupsfield').html(data);
+					        	jQuery("#groupsfield").show();
+					        },
+					        error: function(errorThrown){
+					            console.log(errorThrown);
+					        }
+					    });
 					} else {
 						jQuery("#groupsfield").hide();
 					};

@@ -1,10 +1,5 @@
 <?php /* ----- Series Engine - Pull in media browser links with AJAX ----- */
 
-
-	require_once( 'loadwpfiles.php' );
-
-
-	header('HTTP/1.1 200 OK');
 	
 	global $wpdb;
 	global $wp_version;
@@ -18,6 +13,16 @@
 	$enmse_playerdetailsbackground = $enmse_options['playerdetailsbackground'];
 	$enmse_poweredby = $enmse_options['poweredby'];
 	$enmse_dateformat = get_option( 'date_format' ); 
+
+	$embedoptions = $_REQUEST['embedoptions']; // Parse Values via new AJAX method
+	$ajaxvalues = $_REQUEST['ajaxvalues'];
+	$enmse_permalink = $_REQUEST['enmse_permalink'];
+	$combinedvalues = "?" . $embedoptions . $ajaxvalues;
+	$ajax_query_str = parse_url($combinedvalues, PHP_URL_QUERY);
+	parse_str($ajax_query_str, $ajaxvars);
+	foreach ($ajaxvars as $key => $value) {
+		$_GET[$key] = $value;
+	}
 
 	if ( isset($enmse_options['usepermalinks']) ) { 
 		$enmse_usepermalinks = $enmse_options['usepermalinks'];
@@ -128,7 +133,9 @@
 		$enmse_language = 1;
 	}
 
-	if ( $enmse_language == 7 ) { // Dutch
+	if ( $enmse_language == 8 ) { // Japanese
+		include('lang/jap_bible_books.php');
+	} elseif ( $enmse_language == 7 ) { // Dutch
 		include('lang/dut_bible_books.php');
 	} elseif ( $enmse_language == 6 ) { // Traditional Chinese
 		include('lang/chint_bible_books.php');
@@ -144,11 +151,13 @@
 		include('lang/eng_bible_books.php');
 	}
 
-	if ( $enmse_language == 4 ) {
-		$enmse_langswitch = 1;
-	} else {
-		$enmse_langswitch = 0;
-	}
+if ( $enmse_language == 4 ) {
+	$enmse_langswitch = 1;
+} elseif ( $enmse_language == 8 ) {
+	$enmse_langswitch = 2;
+} else {
+	$enmse_langswitch = 0;
+}
 
 	// ***** DEFINE EMBED OPTIONS
 	$enmse_lo = strip_tags($_GET['enmse_lo']);
@@ -274,7 +283,7 @@
 
 	}
 
-		$enmse_thispage = $_GET['enmse_permalink'];
+		$enmse_thispage = strip_tags($enmse_permalink);
 		$enmse_randomval = rand();
 
 	?>
@@ -292,9 +301,8 @@
 					jQuery(document).ready(function() {
 						jQuery('#seriesengine audio').mediaelementplayer({stretching: 'responsive'});
 						jQuery('#seriesengine video').mediaelementplayer({stretching: 'responsive'});
+						
 						jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -303,14 +311,24 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "audio";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -319,14 +337,24 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "video";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -335,8 +363,20 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "alternate";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 					});								
@@ -358,9 +398,8 @@
 					jQuery(document).ready(function() {
 						jQuery('#seriesengine audio').mediaelementplayer({stretching: 'responsive'});
 						jQuery('#seriesengine video').mediaelementplayer({stretching: 'responsive'});
+
 						jQuery("#seriesengine audio.enmseaplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -369,14 +408,24 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "audio";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmsevplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -385,14 +434,24 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "video";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 
 						jQuery("#seriesengine video.enmseaplayer").bind("play", function(){
-							var loadurl = jQuery(".enmse-plugin-url").val();
-							var xxse = jQuery(".xxse").val();
 							var begcurrent = jQuery(this).attr("rel");
 							if ( begcurrent == "" ) {
 								begcurrent = 0;
@@ -401,8 +460,20 @@
 							var m = jQuery(this).attr("name");
 							var newcount = current+1;
 							var mtype = "alternate";
-							var posturl = loadurl+"/includes/viewcount.php?xxse="+xxse;
-							jQuery.post(posturl, { count: newcount, id: m, type: mtype });
+							jQuery.ajax({
+							        url: seajax.ajaxurl, 
+							        data: {
+							            'action': 'seriesengine_ajaxviewcount',
+							            'count' : newcount,
+							            'id' : m,
+							            'type' : mtype
+							        },
+							        success:function(data) {
+							        },
+							        error: function(errorThrown){
+							            console.log(errorThrown);
+							        }
+							    });
 							jQuery(this).unbind();
 						});
 					});				
@@ -423,7 +494,12 @@
 		<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 		<?php } ?>
 		<div style="clear: right"></div>
+		<?php if ( preg_match('/(fb-roo)\w+/', $enmse_singlemessage->embed_code) || preg_match('/(fb-roo)\w+/', $enmse_singlemessage->alternate_embed) ) { ?>
+		<script type="text/javascript">
+			FB.XFBML.parse();
+		</script>
+		<?php } ?>
 	<?php // Deny access to sneaky people!
 	} else {
 		exit("Access Denied");
-	} ?>
+	} die(); ?>

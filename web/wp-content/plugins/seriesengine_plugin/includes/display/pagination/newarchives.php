@@ -1,6 +1,4 @@
 <?php /* ----- Series Engine - Pull in media browser links with AJAX ----- */
-	require_once( '../../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
 	
 	global $wpdb;
 	global $wp_version;
@@ -14,6 +12,16 @@
 	$enmse_playerdetailsbackground = $enmse_options['playerdetailsbackground'];
 	$enmse_poweredby = $enmse_options['poweredby'];
 	$enmse_dateformat = get_option( 'date_format' ); 
+
+	$embedoptions = $_REQUEST['embedoptions']; // Parse Values via new AJAX method
+	$ajaxvalues = $_REQUEST['ajaxvalues'];
+	$enmse_permalink = $_REQUEST['enmse_permalink'];
+	$combinedvalues = "?" . $embedoptions . $ajaxvalues;
+	$ajax_query_str = parse_url($combinedvalues, PHP_URL_QUERY);
+	parse_str($ajax_query_str, $ajaxvars);
+	foreach ($ajaxvars as $key => $value) {
+		$_GET[$key] = $value;
+	}
 
 	if ( isset($enmse_options['archiveliststyle']) ) { 
 		$enmse_archivetype = $enmse_options['archiveliststyle'];
@@ -168,4 +176,4 @@
 	<?php // Deny access to sneaky people!
 	} else {
 		exit("Access Denied");
-	} ?>
+	} die(); ?>

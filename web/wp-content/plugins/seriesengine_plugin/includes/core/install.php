@@ -10,7 +10,7 @@
 	
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.7.9.4";
+	$enmse_db_version = "2.8.2";
 	if( !defined(get_option( 'enmse_db_version' )) ) {
 		add_option("enmse_db_version", $enmse_db_version);
 	} else {
@@ -592,7 +592,7 @@
 		'usepermalinks' => '1',
 		'permalinkslug' => 'messages',
 		'permalink_ogtags' => '1',
-		'permalink_single_seriestype' => '0',
+		//'permalink_single_seriestype' => '0',
 		'permalink_single_explorer' => '0',
 		'permalink_single_explorer_series' => '1',
 		'permalink_single_explorer_speaker' => '1',

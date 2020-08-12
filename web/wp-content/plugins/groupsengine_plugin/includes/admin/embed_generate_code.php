@@ -1,46 +1,43 @@
 <?php /* ----- Groups Engine - Generate embed code based on user input ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		global $wpdb;
 		
-		$enmge_em = strip_tags($_GET['enmge_em']);
-		$enmge_gid = strip_tags($_GET['enmge_gid']);
-		$enmge_gt = strip_tags($_GET['enmge_gtid']);
-		$enmge_t = strip_tags($_GET['enmge_tid']);
-		$enmge_l = strip_tags($_GET['enmge_lid']);
-		$enmge_m = strip_tags($_GET['enmge_m']);
-		$enmge_d = strip_tags($_GET['enmge_d']);
-		$enmge_st = strip_tags($_GET['enmge_st']);
-		$enmge_et = strip_tags($_GET['enmge_et']);
-		$enmge_sa = strip_tags($_GET['enmge_sa']);
-		$enmge_ea = strip_tags($_GET['enmge_ea']);
-		$enmge_z = strip_tags($_GET['enmge_zip']);
-		$enmge_cz = strip_tags($_GET['enmge_cz']);
-		$enmge_zl = strip_tags($_GET['enmge_zl']);
-		$enmge_v = strip_tags($_GET['enmge_v']);
-		$enmge_vo = strip_tags($_GET['enmge_vo']);
-		$enmge_glcl = strip_tags($_GET['enmge_glcl']);
-		$enmge_cl = strip_tags($_GET['enmge_cl']);
-		$enmge_gl = strip_tags($_GET['enmge_gl']);
-		$enmge_fo = strip_tags($_GET['enmge_fo']);
-		$enmge_xgt = strip_tags($_GET['enmge_xgt']);
-		$enmge_xt = strip_tags($_GET['enmge_xt']);
-		$enmge_xl = strip_tags($_GET['enmge_xl']);
-		$enmge_xm = strip_tags($_GET['enmge_xm']);
-		$enmge_xd = strip_tags($_GET['enmge_xd']);
-		$enmge_xst = strip_tags($_GET['enmge_xst']);
-		$enmge_xsa = strip_tags($_GET['enmge_xsa']);
-		$enmge_xz = strip_tags($_GET['enmge_xz']);
-		$enmge_sm = strip_tags($_GET['enmge_sm']);
-		$enmge_glsm = strip_tags($_GET['enmge_glsm']);
-		$enmge_pag = strip_tags($_GET['enmge_pag']);
-		$enmge_sort = strip_tags($_GET['enmge_sort']);
-		$enmge_status = strip_tags($_GET['enmge_status']);
-		$enmge_start = strip_tags($_GET['enmge_start']);
+		$enmge_em = strip_tags($_REQUEST['enmge_em']);
+		$enmge_gid = strip_tags($_REQUEST['enmge_gid']);
+		$enmge_gt = strip_tags($_REQUEST['enmge_gtid']);
+		$enmge_t = strip_tags($_REQUEST['enmge_tid']);
+		$enmge_l = strip_tags($_REQUEST['enmge_lid']);
+		$enmge_m = strip_tags($_REQUEST['enmge_m']);
+		$enmge_d = strip_tags($_REQUEST['enmge_d']);
+		$enmge_st = strip_tags($_REQUEST['enmge_st']);
+		$enmge_et = strip_tags($_REQUEST['enmge_et']);
+		$enmge_sa = strip_tags($_REQUEST['enmge_sa']);
+		$enmge_ea = strip_tags($_REQUEST['enmge_ea']);
+		$enmge_z = strip_tags($_REQUEST['enmge_zip']);
+		$enmge_cz = strip_tags($_REQUEST['enmge_cz']);
+		$enmge_zl = strip_tags($_REQUEST['enmge_zl']);
+		$enmge_v = strip_tags($_REQUEST['enmge_v']);
+		$enmge_vo = strip_tags($_REQUEST['enmge_vo']);
+		$enmge_glcl = strip_tags($_REQUEST['enmge_glcl']);
+		$enmge_cl = strip_tags($_REQUEST['enmge_cl']);
+		$enmge_gl = strip_tags($_REQUEST['enmge_gl']);
+		$enmge_fo = strip_tags($_REQUEST['enmge_fo']);
+		$enmge_xgt = strip_tags($_REQUEST['enmge_xgt']);
+		$enmge_xt = strip_tags($_REQUEST['enmge_xt']);
+		$enmge_xl = strip_tags($_REQUEST['enmge_xl']);
+		$enmge_xm = strip_tags($_REQUEST['enmge_xm']);
+		$enmge_xd = strip_tags($_REQUEST['enmge_xd']);
+		$enmge_xst = strip_tags($_REQUEST['enmge_xst']);
+		$enmge_xsa = strip_tags($_REQUEST['enmge_xsa']);
+		$enmge_xz = strip_tags($_REQUEST['enmge_xz']);
+		$enmge_sm = strip_tags($_REQUEST['enmge_sm']);
+		$enmge_glsm = strip_tags($_REQUEST['enmge_glsm']);
+		$enmge_pag = strip_tags($_REQUEST['enmge_pag']);
+		$enmge_sort = strip_tags($_REQUEST['enmge_sort']);
+		$enmge_status = strip_tags($_REQUEST['enmge_status']);
+		$enmge_start = strip_tags($_REQUEST['enmge_start']);
 	
 ?>
 
@@ -58,4 +55,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

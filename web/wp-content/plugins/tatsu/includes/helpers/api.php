@@ -196,6 +196,10 @@ function tatsu_get_svg_icon( $svg_name = '' ) {
 		if( !empty( $svg_family_name_array[1] ) ) {
 			$svg_name = $svg_family_name_array[1] . '.svg' ;
 			$svg_icon_html = file_get_contents( TATSU_PLUGIN_DIR . '/includes/icons/svgs/' . $svg_name );
+			// to support custom SVG icons
+			if(!$svg_icon_html){
+				$svg_icon_html = file_get_contents( get_stylesheet_directory_uri() . '/custom-svg-icons/' . $svg_name );
+			}
 			return $svg_icon_html;
 		}
 	}

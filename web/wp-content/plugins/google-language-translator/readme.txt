@@ -5,8 +5,8 @@ Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io/?xyz=3167
 Tags: translate wordpress, translate, translator, translation, language, multi language
 Requires at least: 2.9
-Tested up to: 5.3
-Stable tag: 6.0.3
+Tested up to: 5.4
+Stable tag: 6.0.6
 
 Translate WordPress with Google Language Translator multilanguage plugin which allows to insert Google Translate widget anywhere on your website.
 
@@ -74,15 +74,23 @@ Please check our [FAQ](https://gtranslate.io/?xyz=3167#faq) to get quick answers
 Yes! We have free version and paid versions with [advanced features](https://gtranslate.io/?xyz=3167#pricing).
 
 = What is the quality of translation? =
-We use Google neural machine translations which are very accurate for popular language pairs. In the paid versions you can refine the translations manually and order professional translations directly from your site.
-
-You can read this blog post for more info: https://gtranslate.io/blog/translation-quality-got-better-with-neural-machine-translations
+In our free version we use Phrase Based Machine Translations provided by Google Translate, while in our paid versions use Google Translate Neural Translations which are very accurate for popular language pairs.
+In the paid versions you can refine the automatic translations yourself or order professional translations or proofreading of a translated content.
+You can get a translation cost estimate by using our [Website Translation Cost Calculator](https://gtranslate.io/website-translation-quote)
 
 = Are the translations provided free of charge? =
-Yes, we use Google Translate widget for website which provides free machine translations which makes it possible to make your wordpress website multilingual instantly upon installation.
+Yes, we use Google Translate widget for website which provides free phrase based machine translations, which makes it possible to make your wordpress website multilingual instantly upon installation.
+In our paid versions we use Google Translate state of the art Neural Translations which are included in the service price and there are no limits on the word count.
+
+Besides we offer cost effective automatic translation proofreading service and also professional translation service.
+You can get an estimate from our [Website Translation Price Calculator](https://gtranslate.io/website-translation-quote)
 
 = Can I modify the translations? =
-That feature is available in our paid version. You will be able to make edits directly on the page without losing the context.
+That feature is available only in our paid version. You will be able to make edits directly on the page without losing the context.
+
+By the way, we can help you to translate your website with a cost effective approach by post-editing your automatic translated content.
+The proofreading service will be done by a native speakers and if you want to take the quality to another service, we also have a professional website translation service available.
+You can get an instant website translation estimate by using our [Website Word Counter](https://gtranslate.io/website-translation-quote) tool.
 
 = Which languages are supported? =
 Here is the list: Afrikaans, Albanian, Amharic, Arabic, Armenian, Azerbaijani, Basque, Belarusian, Bengali, Bosnian, Bulgarian, Catalan, Cebuano, Chichewa, Chinese (Simplified), Chinese (Traditional), Corsican, Croatian, Czech, Danish, Dutch, English, Esperanto, Estonian, Filipino, Finnish, French, Frisian, Galician, Georgian, German, Greek, Gujarati, Haitian Creole, Hausa, Hawaiian, Hebrew, Hindi, Hmong, Hungarian, Icelandic, Igbo, Indonesian, Irish, Italian, Japanese, Javanese, Kannada, Kazakh, Khmer, Korean, Kurdish (Kurmanji), Kyrgyz, Lao, Latin, Latvian, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Malayalam, Maltese, Maori, Marathi, Mongolian, Myanmar (Burmese), Nepali, Norwegian, Pashto, Persian, Polish, Portuguese, Punjabi, Romanian, Russian, Samoan, Scottish Gaelic, Serbian, Sesotho, Shona, Sindhi, Sinhala, Slovak, Slovenian, Somali, Spanish, Sudanese, Swahili, Swedish, Tajik, Tamil, Telugu, Thai, Turkish, Ukrainian, Urdu, Uzbek, Vietnamese, Welsh, Xhosa, Yiddish, Yoruba, Zulu
@@ -105,6 +113,9 @@ Free vesion is a nice looking language selector you can place on your website. I
 = Do I need to pay for Google Translate API key usage? =
 No, we provide the automatic translations for free.
 
+In our free version we provide Phrase Based machine translations from Google Translate. While in our paid versions we provide you state of the art Neural Translations from Google Translate. We also do not have limits on the number of words on your website unlike other translate plugins.
+By the way we alse offer a cost effective approach for improving the website translations. You can get a automatic translation post-editing service from us, which will be done by a native speaker or order a professional translation. You can get an instant estimate for your website on [Website Translation Quote](https://gtranslate.io/website-translation-quote)
+
 = Can I test before making a payment? =
 Yes, we have a 15 days free trial for our new customers.
 
@@ -120,7 +131,9 @@ Trial is available for new customers only. If you do not wish to continue you ma
 You can check that this website is indexed in Google by searching for site:gtranslate.io.
 
 = How I can edit the translations or order professional human translations? =
-You need to go to the language you want to edit, for instance, French: http://domain.com/fr/ and add ?language_edit=1 to the end of the URL: http://domain.com/fr/?language_edit=1 and you will see the Edit and Add to Cart buttons near each text.
+You need to go to the language you want to edit, for instance, French: http://domain.com/fr/ and add ?language_edit=1 to the end of the URL: http://domain.com/fr/?language_edit=1 and you will see the Edit buttons near each text. Read more at [How to edit translations?](https://docs.gtranslate.io/en/articles/1348921-how-to-edit-translations)
+
+If you want us to translate your website professionally or provide you a proofreading service for automatic translated content, you can get an instant estimate from [Website Translation Quote](https://gtranslate.io/website-translation-quote), where you will get a detailed document with the list of pages, unique word count and prices to translate them.
 
 = What should I do if the translate widget does not show on my website? =
 1. Make sure that the plugin is installed and activated.
@@ -139,6 +152,17 @@ You need to go to the language you want to edit, for instance, French: http://do
 Yes! Add the "notranslate" class to the HTML element containing your text. For example, the following text will be excluded from translation: <span class="notranslate">Hello World!</span>
 
 == Changelog ==
+= 6.0.6 =
+* Added more servers into the list of our growing Translation Delivery Network
+
+= 6.0.5 =
+* Cross-site scripting (XSS) vulnerability fixed: Only possible for sub-domain, sub-directory paid options with hreflang tags enabled:
+An attacker can generate a malicious link and if followed by a victim then javascript code can be executed on victim's computer
+
+= 6.0.4 =
+* Missing closing li tag issue fixed in flags only language switcher
+* Readme updated
+
 = 6.0.3 =
 * Solved issue with http Refresh header which was not redirecting to correct URL in translated version
 * Email translation is coming: we need volunteers to test translation of emails, please contact live chat

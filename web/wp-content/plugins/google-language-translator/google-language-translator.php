@@ -2,7 +2,7 @@
 /*
 Plugin Name: Google Language Translator
 Plugin URI: https://gtranslate.io/?xyz=3167
-Version: 6.0.3
+Version: 6.0.6
 Description: The MOST SIMPLE Google Translator plugin.  This plugin adds Google Translator to your website by using a single shortcode, [google-translator]. Settings include: layout style, hide/show specific languages, hide/show Google toolbar, and hide/show Google branding. Add the shortcode to pages, posts, and widgets.
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io
@@ -801,7 +801,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a>';
+              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             } //foreach
           else:
             foreach ($new_languages_array_codes as $value) {
@@ -838,7 +838,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a>';
+              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             }//foreach
           endif;
       endif;
@@ -1794,6 +1794,7 @@ $('.languages').find('input:checkbox').prop('checked', false); }); }); </script>
                         <li style="list-style:square outside"><?php _e('Search engine friendly (SEF) URLs', 'glt'); ?></li>
                         <li style="list-style:square outside"><?php _e('Human level neural translations', 'glt'); ?></li>
                         <li style="list-style:square outside"><?php _e('Edit translations manually', 'glt'); ?></li>
+                        <li style="list-style:square outside"><a href="https://gtranslate.io/website-translation-quote" title="Website Translation Price Calculator" target="_blank"><?php _e('Automatic translation post-editing service and professional translations', 'glt'); ?></a></li>
                         <li style="list-style:square outside"><?php _e('Meta data translation (keywords, page description, etc...)', 'glt'); ?></li>
                         <li style="list-style:square outside"><?php _e('URL/slug translation', 'glt'); ?></li>
                         <li style="list-style:square outside"><?php _e('Language hosting (custom domain like example.fr, example.es)', 'glt'); ?></li>
@@ -1803,7 +1804,7 @@ $('.languages').find('input:checkbox').prop('checked', false); }); }); </script>
                         <li style="list-style:square outside"><?php _e('Priority Live Chat support', 'glt'); ?></li>
                       </ul>
 
-                      <p><?php _e('Prices starting from <b>$5.99/month</b>!', 'glt'); ?></p>
+                      <p><?php _e('Prices starting from <b>$7.99/month</b>!', 'glt'); ?></p>
 
                       <a href="https://gtranslate.io/?xyz=3167#pricing" target="_blank" class="button-primary"><?php _e('Try Now (15 days free)', 'glt'); ?></a> <a href="https://gtranslate.io/?xyz=3167#faq" target="_blank" class="button-primary"><?php _e('FAQ', 'glt'); ?></a> <a href="https://gtranslate.io/?xyz=3167#contact" target="_blank" class="button-primary"><?php _e('Live Chat', 'glt'); ?></a>
                   </div> <!-- .inside -->
@@ -2239,11 +2240,11 @@ if($glt_seo_active == '1' and ($glt_url_structure == 'sub_directory' or $glt_url
             if($current_url !== false) {
                 // adding default language
                 if($default_language === 'iw')
-                    echo '<link rel="alternate" hreflang="he" href="'.$current_url.'" />'."\n";
+                    echo '<link rel="alternate" hreflang="he" href="'.esc_url($current_url).'" />'."\n";
                 elseif($default_language === 'jw')
-                    echo '<link rel="alternate" hreflang="jv" href="'.$current_url.'" />'."\n";
+                    echo '<link rel="alternate" hreflang="jv" href="'.esc_url($current_url).'" />'."\n";
                 else
-                    echo '<link rel="alternate" hreflang="'.$default_language.'" href="'.$current_url.'" />'."\n";
+                    echo '<link rel="alternate" hreflang="'.$default_language.'" href="'.esc_url($current_url).'" />'."\n";
 
                 // adding enabled languages
                 foreach($enabled_languages as $lang) {
@@ -2257,11 +2258,11 @@ if($glt_seo_active == '1' and ($glt_url_structure == 'sub_directory' or $glt_url
 
                     if(!empty($href) and $lang != $default_language) {
                         if($lang === 'iw')
-                            echo '<link rel="alternate" hreflang="he" href="'.$href.'" />'."\n";
+                            echo '<link rel="alternate" hreflang="he" href="'.esc_url($href).'" />'."\n";
                         elseif($lang === 'jw')
-                            echo '<link rel="alternate" hreflang="jv" href="'.$href.'" />'."\n";
+                            echo '<link rel="alternate" hreflang="jv" href="'.esc_url($href).'" />'."\n";
                         else
-                            echo '<link rel="alternate" hreflang="'.$lang.'" href="'.$href.'" />'."\n";
+                            echo '<link rel="alternate" hreflang="'.$lang.'" href="'.esc_url($href).'" />'."\n";
                     }
                 }
             }

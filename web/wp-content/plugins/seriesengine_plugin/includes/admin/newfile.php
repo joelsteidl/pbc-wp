@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Add a new file straight from the Messages admin page ----- */
 
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -22,13 +19,13 @@
 
 		global $wpdb;
 
-		if ( isset($_GET['new']) && $_GET['new'] == 1 ) {
-			$enmse_file_name = strip_tags($_GET['file_name']);
-			$enmse_file_url = strip_tags($_GET['file_url']);
-			$enmse_file_new_window = strip_tags($_GET['file_new_window']);
-			$enmse_file_username = strip_tags($_GET['file_username']);
-			$enmse_message_id = strip_tags($_GET['message_id']);
-			$enmse_featured = strip_tags($_GET['featured']);
+		if ( isset($_REQUEST['new']) && $_REQUEST['new'] == 1 ) {
+			$enmse_file_name = strip_tags($_REQUEST['file_name']);
+			$enmse_file_url = strip_tags($_REQUEST['file_url']);
+			$enmse_file_new_window = strip_tags($_REQUEST['file_new_window']);
+			$enmse_file_username = strip_tags($_REQUEST['file_username']);
+			$enmse_message_id = strip_tags($_REQUEST['message_id']);
+			$enmse_featured = strip_tags($_REQUEST['featured']);
 
 			if ( $enmse_featured == 1 ) {
 				$enmse_preparredcfsql = "SELECT * FROM " . $wpdb->prefix . "se_files" . " LEFT JOIN " . $wpdb->prefix . "se_message_file_matches" . " USING (file_id) WHERE message_id = %d AND featured = 1 GROUP BY file_name ORDER BY sort_id ASC"; 
@@ -77,8 +74,8 @@
 				$enmse_files = $wpdb->get_results( $enmse_fsql );
 			}
 		} else {
-			$enmse_message_id = strip_tags($_GET['message_id']);
-			$enmse_file_username = strip_tags($_GET['file_username']);
+			$enmse_message_id = strip_tags($_REQUEST['message_id']);
+			$enmse_file_username = strip_tags($_REQUEST['file_username']);
 			
 			if ( $enmse_message_id > 0 ) {
 				// Get All Files
@@ -95,9 +92,7 @@
 		}
 
 ?>
-<?php if ($_POST) { ?>
-<?php } else { ?>
-	<?php if ( isset($_GET['done']) ) { ?>
+	<?php if ( isset($_REQUEST['new']) ) { ?>
 		<script type="text/javascript">
 		jQuery(document).ready(function(){
 			jQuery("#enmsesmessage").delay(4000).slideUp();
@@ -108,14 +103,26 @@
 				return ui;
 			};
 			jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
-				var order = jQuery(this).sortable("serialize"); 
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
+				var order = jQuery(this).sortable("serialize");
+				jQuery.ajax({
+					method: "POST",
+			        url: seajax.ajaxurl, 
+			        data: {
+			            'action': 'seriesengine_ajaxsortfiles',
+			            'frow': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
 		<br />
 		<h3>Links and Downloads Currently Associated with This <?php echo $enmsemessaget; ?>...</h3>
-		<p id="enmsesmessage"><em>Your link/download was sucessfully edited.</em></p>
+		<p id="enmsesmessage"><em>Your link/download was sucessfully added.</em></p>
 		<table class="widefat" id="filestable"> 
 		<thead> 
 			<tr> 
@@ -153,13 +160,25 @@
 			};
 			jQuery("#filestable tbody").sortable({ helper: fixHelper, opacity: 0.6, cursor: 'move', update: function() {
 				var order = jQuery(this).sortable("serialize");
-				jQuery.post("<?php echo plugins_url() .'/seriesengine_plugin/includes/admin/sortfiles.php?xxse=' . strip_tags($_GET['xxse']); ?>", order, function(){}); 
+				jQuery.ajax({
+					method: "POST",
+			        url: seajax.ajaxurl, 
+			        data: {
+			            'action': 'seriesengine_ajaxsortfiles',
+			            'frow': order
+			        },
+			        success:function(data) {
+			        },
+			        error: function(errorThrown){
+			            console.log(errorThrown);
+			        }
+			    });
 			}});
 		});
 		</script>
 		<br />
 		<h3>Links and Downloads Currently Associated with This <?php echo $enmsemessaget; ?>...</h3>
-		<p id="enmsesmessage"><em>Your new link/download was added sucessfully.</em></p>
+		<p id="enmsesmessage"><em>Your link/download was sucessfully edited.</em></p>
 		<table class="widefat" id="filestable"> 
 		<thead> 
 			<tr>
@@ -186,7 +205,6 @@
 		<br />
 		<br />
 	<?php } ?>
-<?php } ?>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

@@ -1,20 +1,18 @@
 <?php /* ----- Series Engine - Edit a file straight from the Messages admin page ----- */
 
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		global $wpdb;
 
-		if ( isset($_GET['update']) && $_GET['update'] == 1 ) {
-			$enmse_file_name = strip_tags($_GET['file_name']);
-			$enmse_file_url = strip_tags($_GET['file_url']);
-			$enmse_file_username = strip_tags($_GET['file_username']);
-			$enmse_file_new_window = strip_tags($_GET['file_new_window']);
-			$enmse_message_id = strip_tags($_GET['mid']);
-			$enmse_featured = strip_tags($_GET['featured']);
-			$enmse_fid = strip_tags($_GET['fid']);
+
+		if ( isset($_REQUEST['update']) && $_REQUEST['update'] == 1 ) {
+			$enmse_file_name = strip_tags($_REQUEST['file_name']);
+			$enmse_file_url = strip_tags($_REQUEST['file_url']);
+			$enmse_file_username = strip_tags($_REQUEST['file_username']);
+			$enmse_file_new_window = strip_tags($_REQUEST['file_new_window']);
+			$enmse_message_id = strip_tags($_REQUEST['mid']);
+			$enmse_featured = strip_tags($_REQUEST['featured']);
+			$enmse_fid = strip_tags($_REQUEST['fid']);
 
 			if ( $enmse_featured == 1 ) {
 				$enmse_preparredcfsql = "SELECT * FROM " . $wpdb->prefix . "se_files" . " LEFT JOIN " . $wpdb->prefix . "se_message_file_matches" . " USING (file_id) WHERE message_id = %d AND featured = 1 GROUP BY file_name ORDER BY sort_id ASC"; 
@@ -42,7 +40,7 @@
 			$enmse_findthefile = $wpdb->prepare( $enmse_findthefilesql, $enmse_fid );
 			$enmse_single = $wpdb->get_row( $enmse_findthefile, OBJECT );	
 		} else {
-			$enmse_fid = strip_tags($_GET['fid']);
+			$enmse_fid = strip_tags($_REQUEST['fid']);
 
 			$enmse_findthefilesql = "SELECT * FROM " . $wpdb->prefix . "se_files" . " WHERE file_id = %d"; 
 			$enmse_findthefile = $wpdb->prepare( $enmse_findthefilesql, $enmse_fid );
@@ -50,9 +48,7 @@
 		}
 
 ?>
-<?php if ($_POST) { ?>
-<?php } else { ?>
-	<?php if ( isset($_GET['done']) ) { ?>
+	<?php if ( isset($_REQUEST['update']) ) { ?>
 		<h3>Attach a Link or Download</h3>		
 		<table class="form-table">
 			<tr valign="top">
@@ -82,7 +78,7 @@
 			</tr>
 		</table>
 		<br />
-		<input type="hidden" name="file_username" value="<?php echo $_GET['file_username']; ?>" id="file_username" />
+		<input type="hidden" name="file_username" value="<?php echo $_REQUEST['file_username']; ?>" id="file_username" />
 		<a href="#" id="addnewfile" class="button">Attach New Link/Download</a>
 	<?php } else { ?>
 		<h3>Edit Link/Download</h3>		
@@ -114,11 +110,10 @@
 			</tr>
 		</table>
 		<br />
-		<input type="hidden" name="file_username" value="<?php echo $_GET['file_username']; ?>" id="file_username" />
+		<input type="hidden" name="file_username" value="<?php echo $_REQUEST['file_username']; ?>" id="file_username" />
 		<input type="hidden" name="file_id" value="<?php echo $enmse_single->file_id; ?>" id="file_id" />
 		<a href="#" id="editfile" class="button">Save Changes</a>
 	<?php } ?>
-<?php } ?>
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

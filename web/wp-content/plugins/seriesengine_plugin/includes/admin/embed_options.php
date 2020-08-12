@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Choose embed options ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 	
 
 		// ***** Get Labels
@@ -183,4 +180,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

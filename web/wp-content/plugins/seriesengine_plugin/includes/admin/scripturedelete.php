@@ -1,15 +1,12 @@
 <?php /* ----- Series Engine - Delete a file ----- */
 
-require_once( '../loadwpfiles.php' );
-header('HTTP/1.1 200 OK');
-
 if ( current_user_can( 'edit_pages' ) ) { 
 
 	global $wpdb;
 	
-	if ( isset($_GET['did']) ) { // If deleting a file
-		$enmse_deleted_id = strip_tags($_GET['did']);
-		$enmse_message_id = strip_tags($_GET['mid']);
+	if ( isset($_REQUEST['did']) ) { // If deleting a file
+		$enmse_deleted_id = strip_tags($_REQUEST['did']);
+		$enmse_message_id = strip_tags($_REQUEST['mid']);
 
 		$enmse_delete_query_preparred = "DELETE FROM " . $wpdb->prefix . "se_scriptures" . " WHERE scripture_id=%d";
 		$enmse_delete_query = $wpdb->prepare( $enmse_delete_query_preparred, $enmse_deleted_id ); 
@@ -30,7 +27,7 @@ if ( current_user_can( 'edit_pages' ) ) {
 			$enmse_bdeleted = $wpdb->query( $enmse_bdelete_query );
 		}
 
-		if ( isset($_GET['f']) ) {
+		if ( isset($_REQUEST['f']) && $_REQUEST['f'] == 1 ) {
 
 			if ( $enmse_message_id > 0 ) {
 				$enmse_preparredscmsql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND focus = 1 GROUP BY scm_match_id ORDER BY sort_id ASC"; 
@@ -56,4 +53,4 @@ if ( current_user_can( 'edit_pages' ) ) {
 	}
 } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

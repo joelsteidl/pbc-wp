@@ -20,6 +20,7 @@ if( !function_exists( 'tatsu_wp_forms' ) ) {
         ), $atts, $tag );
 
         extract($atts);
+        $form_id = tatsu_validate_wpforms($form_id);
         
         $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $atts['key'] );
         $unique_class_name = ' tatsu-'.$atts['key'];
@@ -68,6 +69,27 @@ if( !function_exists( 'tatsu_wp_forms' ) ) {
     add_shortcode( 'tatsu_wp_forms', 'tatsu_wp_forms' );
 }
 
+if( !function_exists( 'tatsu_validate_wpforms' ) ) {
+    function tatsu_validate_wpforms( $form_id ){
+        
+        $valid_form = get_post($form_id);
+        if( NULL == $valid_form || 'wpforms' != $valid_form->post_type ){
+            $wp_forms = get_posts(
+                array(
+                    'numberposts'      => 1,
+                    'post_type'        => 'wpforms'
+                )
+            );
+            foreach( $wp_forms as $index => $wp_form ) {
+                if( $index == 0 ){
+                    $valid_form = get_post($wp_form->ID);
+                }
+            }
+        } 
+        return $valid_form->ID;
+
+    }
+}
 if( !function_exists( 'tatsu_wp_forms_prevent_autop' ) ) {
     function tatsu_wp_forms_prevent_autop( $content_filter, $tag ) {
         if( 'tatsu_wp_forms' === $tag ) {

@@ -1,8 +1,5 @@
 <?php /* ----- Series Engine - Load the relevant message to embed ----- */
 	
-	require_once( '../loadwpfiles.php' );
-	header('HTTP/1.1 200 OK');
-	
 	if ( current_user_can( 'edit_pages' ) ) { 
 
 		// ***** Get Labels
@@ -34,7 +31,7 @@
 
 		global $wpdb;
 		
-		$enmse_sid = strip_tags($_GET['enmse_sid']);
+		$enmse_sid = strip_tags($_REQUEST['enmse_sid']);
 		
 		// Get All Messages
 		$enmse_preparredsql = "SELECT * FROM " . $wpdb->prefix . "se_messages" . " LEFT JOIN " . $wpdb->prefix . "se_series_message_matches" . " USING (message_id) WHERE series_id = %d GROUP BY title ORDER BY date ASC"; 
@@ -64,4 +61,4 @@
 
 <?php } else {
 	exit("Access Denied");
-} ?>
+} die(); ?>

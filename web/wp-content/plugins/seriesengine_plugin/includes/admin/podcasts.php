@@ -505,7 +505,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 ?>
 <div class="wrap"> 
 <?php if ( isset($_GET['enmse_action']) && ( $enmse_podcast_created == null && !isset($_GET['enmse_did']) ) ) { if ( $_GET['enmse_action'] == 'new' ) { // If they're adding a new Podcast ?>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/podcast_code274.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/podcast_code281.js'; ?>"></script>
 		
 		<h2 class="enmse">Create a New Podcast</h2>
 		<?php include ('errorbox.php'); ?>
@@ -680,7 +680,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<input type="hidden" name="xxse" value="<?php echo base64_encode(ABSPATH); ?>" id="xxse" />
 		<?php include ('secredits.php'); ?>
 <?php } elseif ( ($_GET['enmse_action'] == 'edit') && ( $enmse_podcastcount == 1 ) ) { ?>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/podcast_code274.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/podcast_code281.js'; ?>"></script>
 	
 	<h2 class="enmse">Edit Podcast <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php_podcasts&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
