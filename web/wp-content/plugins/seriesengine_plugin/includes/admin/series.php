@@ -273,7 +273,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 <?php if ( isset($_GET['enmse_action']) && ( $enmse_single_created == null&& !isset($_GET['enmse_did']) ) ) { if ( $_GET['enmse_action'] == 'new' ) { // If they're adding a new Series ?>
 		<link rel='stylesheet' href='<?php echo plugins_url() .'/seriesengine_plugin/css/jqueryui.css'; ?>' type='text/css' media='all' />
 		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/series_options.js'; ?>" ></script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/datepicker.js'; ?>" ></script>
+		
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
 				jQuery("#series_start_date").datepicker({ dateFormat: 'yy-mm-dd' });
@@ -350,7 +350,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 <?php } elseif ( ($_GET['enmse_action'] == 'edit') && ( $enmse_singlecount == 1 ) ) { // Edit Series ?>
 	<link rel='stylesheet' href='<?php echo plugins_url() .'/seriesengine_plugin/css/jqueryui.css'; ?>' type='text/css' media='all' />
 	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/series_options.js'; ?>" ></script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/datepicker.js'; ?>" ></script>
+	
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			jQuery("#series_start_date").datepicker({ dateFormat: 'yy-mm-dd' });

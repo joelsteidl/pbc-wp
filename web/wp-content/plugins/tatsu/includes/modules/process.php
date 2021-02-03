@@ -134,7 +134,7 @@ function tatsu_register_process()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#process',
-		'title' => __('Process', 'tatsu'),
+		'title' => esc_html__('Process', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => 'tatsu_process_col',
 		'type' => 'multi',
@@ -147,7 +147,7 @@ function tatsu_register_process()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type'		=> 'accordion',
@@ -156,7 +156,7 @@ function tatsu_register_process()
 									'icon_size',
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Colors', 'tatsu'),
+										'title'		=> esc_html__('Colors', 'tatsu'),
 										'group'		=> array(
 											
 											array(
@@ -165,7 +165,7 @@ function tatsu_register_process()
 												'group'		=> array(
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Normal', 'tatsu'),
+														'title'		=> esc_html__('Normal', 'tatsu'),
 														'group'		=> array(
 															'icon_color',
 															'title_color',
@@ -175,7 +175,7 @@ function tatsu_register_process()
 													),
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Hover', 'tatsu'),
+														'title'		=> esc_html__('Hover', 'tatsu'),
 														'group'		=> array(
 															'icon_hover_color',
 															'title_hover_color',
@@ -188,7 +188,7 @@ function tatsu_register_process()
 									),
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Typography', 'tatsu'),
+										'title'		=> esc_html__('Typography', 'tatsu'),
 										'group'		=> array(
 											'title_font',
 											'content_font',
@@ -200,7 +200,7 @@ function tatsu_register_process()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 						)
 					)
@@ -212,20 +212,20 @@ function tatsu_register_process()
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'		=> 'title_font',
 				'type'			=> 'select',
-				'label'			=> __('Title Font', 'tatsu'),
+				'label'			=> esc_html__('Title Font', 'tatsu'),
 				'default'		=> 'h5',
 				'options'		=> typehub_get_exposed_selectors()
 			) : false,
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'		=> 'content_font',
 				'type'			=> 'select',
-				'label'			=> __('Content Font', 'tatsu'),
+				'label'			=> esc_html__('Content Font', 'tatsu'),
 				'default'		=> 'body',
 				'options'		=> typehub_get_exposed_selectors()
 			) : false,
 			array(
 				'att_name'		=> 'divider_color',
-				'label'			=> __('Divider Color', 'tatsu'),
+				'label'			=> esc_html__('Divider Color', 'tatsu'),
 				'default'		=> '#D8D8D8',
 				'type'			=> 'color',
 				'css'			=> true,
@@ -238,7 +238,7 @@ function tatsu_register_process()
 			array(
 				'att_name'		=> 'icon_size',
 				'type'			=> 'slider',
-				'label'			=> __('Icon Size', 'tatsu'),
+				'label'			=> esc_html__('Icon Size', 'tatsu'),
 				'default'		=> '30',
 				'options'		=> array(
 					'min'		=> '10',
@@ -266,7 +266,7 @@ function tatsu_register_process()
 			array(
 				'att_name' => 'icon_color',
 				'type' 	   => 'color',
-				'label'    => __('Icon Color', 'tatsu'),
+				'label'    => esc_html__('Icon Color', 'tatsu'),
 				'default'   => '',
 				'tooltip'   => '',
 				'css'		=> true,
@@ -279,7 +279,7 @@ function tatsu_register_process()
 			array(
 				'att_name' => 'icon_hover_color',
 				'type' 	   => 'color',
-				'label'    => __('Icon Hover Color', 'tatsu'),
+				'label'    => esc_html__('Icon Hover Color', 'tatsu'),
 				'default'   => '',
 				'tooltip'   => '',
 				'css'		=> true,
@@ -292,7 +292,7 @@ function tatsu_register_process()
 			array(
 				'att_name'		=> 'title_color',
 				'type'			=> 'color',
-				'label'			=> __('Title Color', 'tatsu'),
+				'label'			=> esc_html__('Title Color', 'tatsu'),
 				'default'		=> '',
 				'css'			=> true,
 				'selectors'		=> array(
@@ -304,7 +304,7 @@ function tatsu_register_process()
 			array(
 				'att_name'		=> 'title_hover_color',
 				'type'			=> 'color',
-				'label'			=> __('Title Hover Color', 'tatsu'),
+				'label'			=> esc_html__('Title Hover Color', 'tatsu'),
 				'default'		=> '',
 				'css'			=> true,
 				'selectors'		=> array(
@@ -316,7 +316,7 @@ function tatsu_register_process()
 			array(
 				'att_name'		=> 'content_color',
 				'type'			=> 'color',
-				'label'			=> __('Content Color', 'tatsu'),
+				'label'			=> esc_html__('Content Color', 'tatsu'),
 				'default'		=> '',
 				'css'			=> true,
 				'selectors'		=> array(
@@ -328,7 +328,7 @@ function tatsu_register_process()
 			array(
 				'att_name' => 'animate',
 				'type' => 'switch',
-				'label' => __('Enable CSS Animation', 'tatsu'),
+				'label' => esc_html__('Enable CSS Animation', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -352,7 +352,7 @@ function tatsu_register_process_col()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Process Col', 'tatsu'),
+		'title' => esc_html__('Process Col', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'sub_module',
@@ -365,7 +365,7 @@ function tatsu_register_process_col()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'icon_type',
 							'icon',
@@ -377,7 +377,7 @@ function tatsu_register_process_col()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 						)
 					)
@@ -389,7 +389,7 @@ function tatsu_register_process_col()
 				'att_name'	    => 'icon_type',
 				'type'			=> 'button_group',
 				'is_inline'     => true,
-				'label'			=> __('Icon Type', 'tatsu'),
+				'label'			=> esc_html__('Icon Type', 'tatsu'),
 				'default'		=> 'icon',
 				'options'		=> array(
 					'svg'		=> 'Svg',
@@ -399,7 +399,7 @@ function tatsu_register_process_col()
 			array(
 				'att_name'		=> 'icon',
 				'type'			=> 'icon_picker',
-				'label'			=> __('Icon', 'tatsu'),
+				'label'			=> esc_html__('Icon', 'tatsu'),
 				'default'		=> '',
 				'tooltip'		=> '',
 				'visible'		=> array('icon_type', '=', 'icon')
@@ -407,7 +407,7 @@ function tatsu_register_process_col()
 			array(
 				'att_name'		=> 'svg_icon',
 				'type'			=> 'svg_icon_picker',
-				'label'			=> __('Svg Icon', 'tatsu'),
+				'label'			=> esc_html__('Svg Icon', 'tatsu'),
 				'default'		=> 'linea:basic_paperplane',
 				'visible'		=> array('icon_type', '=', 'svg'),
 				'tooltip'		=> ''
@@ -415,7 +415,7 @@ function tatsu_register_process_col()
 			array(
 				'att_name'		=> 'line_animate',
 				'type'			=> 'switch',
-				'label'			=> __('Enable Line Animate', 'tatsu'),
+				'label'			=> esc_html__('Enable Line Animate', 'tatsu'),
 				'default'		=> '',
 				'visible'		=> array('icon_type', '=', 'svg'),
 				'tooltip'		=> ''
@@ -423,14 +423,14 @@ function tatsu_register_process_col()
 			array(
 				'att_name'		=> 'title',
 				'type'			=> 'text',
-				'label'			=> __('Title', 'tatsu'),
+				'label'			=> esc_html__('Title', 'tatsu'),
 				'default'		=> ''
 			),
 
 			array(
 				'att_name'		=> 'content',
 				'type'			=> 'tinymce',
-				'label'			=> __('Content', 'tatsu'),
+				'label'			=> esc_html__('Content', 'tatsu'),
 				'default'		=> ''
 			),
 		),

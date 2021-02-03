@@ -78,9 +78,6 @@ if (!function_exists('tatsu_section')) {
 	    $classes = '';	    
 		$output = '';
 		
-
-	    //$hide_mobile = (isset($hide_mobile) && $hide_mobile == 1) ? 'hide-mobile' : '';
-
 	    if( !isset($bg_animation) || empty($bg_animation) || $bg_animation == 'none' ) {
 	    	$bg_animation = '';
 	    } else if( 'tatsu-parallax' === $bg_animation ) {
@@ -167,7 +164,6 @@ if (!function_exists('tatsu_section')) {
 		}
 
 		//Handle BG Overlay
-		//var_dump( $bg_overlay, $overlay_blend_mode, $overlay_color );
 		if( (!empty($bg_overlay) ) || ( isset($overlay_blend_mode) && $overlay_blend_mode !== 'none' ) ) {
 			$classes .= ' tatsu-bg-overlay';
 			$bg_overlay_markup .= '<div class="tatsu-overlay tatsu-section-overlay"></div>';
@@ -232,7 +228,6 @@ if (!function_exists('tatsu_section')) {
 			}
 		}
 					
-		// getModuleStyles($atts);
 		//Append to custom classes 
 		$section_class = !empty($section_class) ? str_replace(',', ' ', $section_class) : '' ;
 		$section_class = apply_filters( 'tatsu_section_classes', $section_class );
@@ -242,8 +237,6 @@ if (!function_exists('tatsu_section')) {
 			$section_id = 'id="'.$section_id.'"';
 		}
 
-	//	$output .= $hover_3d_wrap_start;
-	    
 	    $output .= '<div '.$section_id.' class="'.$custom_class_name.' tatsu-section '.$section_class.' '.$animate.' tatsu-clearfix" data-title="'.$section_title.'" '.$data_animations.' data-headerscheme="'.$full_screen_header_scheme.'">';
 		$output .= $top_divider_html;
 		$output .= $fullscreen_wrap_start; 
@@ -263,7 +256,6 @@ if (!function_exists('tatsu_section')) {
 		$output .= $custom_style_tag;
 
 	    $output .= '</div>';
-	//	$output .= $hover_3d_wrap_end;
 	
 		return $output;
 	}
@@ -295,10 +287,6 @@ if( !function_exists( 'tatsu_section_remove_atts' ) ){
 			$atts['offset_value'] = '';
 		}
 
-		// if( ( empty( $atts['bg_overlay'] ) ) && ( $atts['overlay_blend_mode'] !== 'none' ) ){
-		// 	$atts['overlay_color'] = '';
-		// }
-
 		return $atts;
 	}
 
@@ -312,7 +300,7 @@ function tatsu_register_section()
 	$divider_options = tatsu_get_shape_dividers();
 	$controls = array(
 		'icon' => '',
-		'title' => __('Section', 'tatsu'),
+		'title' => esc_html__('Section', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => 'tatsu_row',
 		'type' => 'core',
@@ -326,7 +314,7 @@ function tatsu_register_section()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -334,7 +322,7 @@ function tatsu_register_section()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Background', 'tatsu'),
+										'title' => esc_html__('Background', 'tatsu'),
 										'group' => array(
 											array(
 												'type'		=> 'tabs',
@@ -342,7 +330,7 @@ function tatsu_register_section()
 												'group'		=> array(
 													array(
 														'type' => 'tab',
-														'title' => __('Color', 'tatsu'),
+														'title' => esc_html__('Color', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_color',
 														'group'	=> array(
 															'bg_color',
@@ -350,7 +338,7 @@ function tatsu_register_section()
 													),
 													array(
 														'type' => 'tab',
-														'title' => __('Image', 'tatsu'),
+														'title' => esc_html__('Image', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_image',
 														'group'	=> array(
 															'bg_image',
@@ -363,7 +351,7 @@ function tatsu_register_section()
 													),
 													array(
 														'type' => 'tab',
-														'title' => __('Video', 'tatsu'),
+														'title' => esc_html__('Video', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_video',
 														'group'	=> array(
 															'bg_video_mp4_src',
@@ -377,7 +365,7 @@ function tatsu_register_section()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Overlay', 'tatsu'),
+										'title' => esc_html__('Overlay', 'tatsu'),
 										'group' => array(
 											'overlay_color',
 											'overlay_blend_mode',
@@ -385,7 +373,7 @@ function tatsu_register_section()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Section Height', 'tatsu'),
+										'title' => esc_html__('Section Height', 'tatsu'),
 										'group' => array(
 											'section_height_type',
 											'custom_height',
@@ -394,7 +382,7 @@ function tatsu_register_section()
 									),
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Shape Dividers', 'tatsu'),
+										'title'		=> esc_html__('Shape Dividers', 'tatsu'),
 										'group'		=> array(
 											array(
 												'type'  	=> 'tabs',
@@ -402,7 +390,7 @@ function tatsu_register_section()
 												'group'		=> array(
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Top', 'tatsu'),
+														'title'		=> esc_html__('Top', 'tatsu'),
 														'group'		=> array(
 															'top_divider',
 															'top_divider_color',
@@ -415,7 +403,7 @@ function tatsu_register_section()
 													),
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Bottom', 'tatsu'),
+														'title'		=> esc_html__('Bottom', 'tatsu'),
 														'group'		=> array(
 															'bottom_divider',
 															'bottom_divider_color',
@@ -432,7 +420,7 @@ function tatsu_register_section()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Others', 'tatsu'),
+										'title' => esc_html__('Others', 'tatsu'),
 										'group' => array(
 											'offset_value',
 											'overflow',
@@ -445,7 +433,7 @@ function tatsu_register_section()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -453,23 +441,15 @@ function tatsu_register_section()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 											'padding',
 										)
 									),
-									// array(
-									// 	'type' => 'panel',
-									// 	'title' => __('Border', 'tatsu'),
-									// 	'group'		=> array(
-									// 		'border',
-									// 		'border_color',
-									// 	),
-									// ),
 									array(
 										'type' => 'panel',
-										'title' => __('Identifiers', 'tatsu'),
+										'title' => esc_html__('Identifiers', 'tatsu'),
 										'group' => array(
 											'section_title',
 											'section_id',
@@ -479,7 +459,7 @@ function tatsu_register_section()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Visibility', 'tatsu'),
+										'title' => esc_html__('Visibility', 'tatsu'),
 										'group' => array(
 											'z_index'
 										)
@@ -498,7 +478,7 @@ function tatsu_register_section()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Color', 'tatsu'),
+				'label' => esc_html__('Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -523,7 +503,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'bg_repeat',
 				'type' => 'select',
-				'label' => __('Repeat', 'tatsu'),
+				'label' => esc_html__('Repeat', 'tatsu'),
 				'options' => array(
 					'repeat' => 'Repeat Horizontally & Vertically',
 					'repeat-x' => 'Repeat Horizontally',
@@ -549,7 +529,7 @@ function tatsu_register_section()
 				'att_name' => 'bg_attachment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Attachment', 'tatsu'),
+				'label' => esc_html__('Attachment', 'tatsu'),
 				'options' => array(
 					'scroll' => 'Scroll',
 					'fixed' => 'Fixed'
@@ -573,7 +553,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'bg_position',
 				'type' => 'select',
-				'label' => __('Position', 'tatsu'),
+				'label' => esc_html__('Position', 'tatsu'),
 				'options' => array(
 					'top left' => 'Top Left',
 					'top right' => 'Top Right',
@@ -604,7 +584,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'bg_size',
 				'type' => 'select',
-				'label' => __('Size', 'tatsu'),
+				'label' => esc_html__('Size', 'tatsu'),
 				'options' => array(
 					'cover' => 'Cover',
 					'contain' => 'Contain',
@@ -630,11 +610,10 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'bg_animation',
 				'type' => 'select',
-				'label' => __('Animation', 'tatsu'),
+				'label' => esc_html__('Animation', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'tatsu-parallax' => 'Parallax',
-					//'tatsu-3d-rotate' => '3D Hover',
 					'tatsu-bg-horizontal-animation' => 'Horizontal Loop Animation',
 					'tatsu-bg-vertical-animation' => 'Vertical Loop Animation',
 				),
@@ -645,7 +624,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'padding',
 				'type' => 'input_group',
-				'label' => __('Padding', 'tatsu'),
+				'label' => esc_html__('Padding', 'tatsu'),
 				'default' => '90px 0px 90px 0px',
 				'tooltip' => '',
 				'options'	=> array(
@@ -664,7 +643,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -680,57 +659,22 @@ function tatsu_register_section()
 					),
 				),
 			),
-			// array(
-			// 	'att_name' => 'border',
-			// 	'type' => 'input_group',
-			// 	'label' => __('Border Thickness', 'tatsu'),
-			// 	'default' => '0px 0px 0px 0px',
-			// 	'tooltip' => '',
-			// 	'css' => true,
-			// 	'options'	=> array(
-			// 		'unit'	=> array('px', '%', 'em'),
-			// 		'labels' => array('top', 'right', 'bottom', 'left'),
-			// 	),
-			// 	'selectors' => array(
-			// 		'.tatsu-{UUID}.tatsu-section' => array(
-			// 			'property' => 'border-width',
-			// 			'when' => array('border_color', 'notempty'),
-			// 		),
-			// 	)
-			// ),
-			// array(
-			// 	'att_name' => 'border_color',
-			// 	'type' => 'color',
-			// 	'options' => array(
-			// 		'gradient' => true
-			// 	),
-			// 	'label' => __('Border Color', 'tatsu'),
-			// 	'default' => '',
-			// 	'tooltip' => '',
-			// 	'css' => true,
-			// 	'selectors' => array(
-			// 		'.tatsu-{UUID}.tatsu-section' => array(
-			// 			'property' => 'border-color',
-			// 			'when' => array('border_color', 'notempty'),
-			// 		),
-			// 	)
-			// ),
 			array(
 				'att_name' => 'bg_video_mp4_src',
 				'type' => 'text',
-				'label' => __('.MP4 Source', 'tatsu'),
+				'label' => esc_html__('.MP4 Source', 'tatsu'),
 				'default' => '',
 			),
 			array(
 				'att_name' => 'bg_video_ogg_src',
 				'type' => 'text',
-				'label' => __('.OGG Source', 'tatsu'),
+				'label' => esc_html__('.OGG Source', 'tatsu'),
 				'default' => '',
 			),
 			array(
 				'att_name' => 'bg_video_webm_src',
 				'type' => 'text',
-				'label' => __('.WEBM Source', 'tatsu'),
+				'label' => esc_html__('.WEBM Source', 'tatsu'),
 				'default' => '',
 			),
 			array(
@@ -739,7 +683,7 @@ function tatsu_register_section()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Overlay Color', 'tatsu'),
+				'label' => esc_html__('Overlay Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -757,7 +701,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'overlay_blend_mode',
 				'type' => 'select',
-				'label' => __('Blend Mode', 'tatsu'),
+				'label' => esc_html__('Blend Mode', 'tatsu'),
 				'options' => tatsu_get_blend_modes(),
 				'default' => 'normal',
 				'tooltip' => '',
@@ -772,7 +716,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'section_height_type',
 				'type' => 'select',
-				'label' => __('Height', 'tatsu'),
+				'label' => esc_html__('Height', 'tatsu'),
 				'options' => array(
 					'auto' => 'Auto',
 					'full_screen' => 'Full Screen',
@@ -785,7 +729,7 @@ function tatsu_register_section()
 				'att_name'		=> 'custom_height',
 				'type'			=> 'number',
 				'is_inline'     => true,
-				'label'			=> __('Custom Height', 'tatsu'),
+				'label'			=> esc_html__('Custom Height', 'tatsu'),
 				'default'		=> '',
 				'responsive'	=> true,
 				'css'			=> true,
@@ -808,7 +752,7 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'vertical_align',
 				'type' => 'button_group',
-				'label' => __('Vertical Alignment', 'tatsu'),
+				'label' => esc_html__('Vertical Alignment', 'tatsu'),
 				'options' => array(
 					'flex-start' => 'Top',
 					'center' => 'Middle',
@@ -838,7 +782,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'top_divider',
 				'type'			=> 'select',
-				'label'			=> __('Separator', 'tatsu'),
+				'label'			=> esc_html__('Separator', 'tatsu'),
 				'options'		=> !empty($divider_options) ? $divider_options['top'] : array(),
 				'default'		=> 'none'
 			),
@@ -846,7 +790,7 @@ function tatsu_register_section()
 				'att_name' => 'top_divider_zindex',
 				'type'	=> 'number',
 				'is_inline' => true,
-				'label'	=> __('Stack Order', 'tatsu'),
+				'label'	=> esc_html__('Stack Order', 'tatsu'),
 				'options' => array(
 					'unit' => '',
 				),
@@ -863,7 +807,7 @@ function tatsu_register_section()
 				'att_name' => 'bottom_divider_zindex',
 				'type'	=> 'number',
 				'is_inline' => true,
-				'label'	=> __('Stack Order', 'tatsu'),
+				'label'	=> esc_html__('Stack Order', 'tatsu'),
 				'options' => array(
 					'unit' => '',
 				),
@@ -879,14 +823,14 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'bottom_divider',
 				'type'			=> 'select',
-				'label'			=> __('Separator', 'tatsu'),
+				'label'			=> esc_html__('Separator', 'tatsu'),
 				'options'		=> !empty($divider_options) ? $divider_options['bottom'] : array(),
 				'default'		=> 'none'
 			),
 			array(
 				'att_name'		=> 'top_divider_height',
 				'type'			=> 'slider',
-				'label'			=> __('Height', 'tatsu'),
+				'label'			=> esc_html__('Height', 'tatsu'),
 				'options'		=> array(
 					'min'		=> 0,
 					'max'		=> 500,
@@ -909,7 +853,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'top_divider_position',
 				'type'			=> 'select',
-				'label'			=> __('Position', 'tatsu'),
+				'label'			=> esc_html__('Position', 'tatsu'),
 				'options'		=> array(
 					'above'		=> 'Above Section Content',
 					'over'		=> 'Over Section Content'
@@ -926,7 +870,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'bottom_divider_height',
 				'type'			=> 'slider',
-				'label'			=> __('Height', 'tatsu'),
+				'label'			=> esc_html__('Height', 'tatsu'),
 				'options'		=> array(
 					'min'		=> 0,
 					'max'		=> 500,
@@ -949,7 +893,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'bottom_divider_position',
 				'type'			=> 'select',
-				'label'			=> __('Position', 'tatsu'),
+				'label'			=> esc_html__('Position', 'tatsu'),
 				'options'		=> array(
 					'below'		=> 'Below Section Content',
 					'over'		=> 'Over Section Content'
@@ -966,7 +910,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'top_divider_color',
 				'type'			=> 'color',
-				'label'			=> __('Color', 'tatsu'),
+				'label'			=> esc_html__('Color', 'tatsu'),
 				'default'		=> '#ffffff',
 				'tooltip'		=> '',
 				'visible'		=> array('top_divider', '!=', 'none'),
@@ -981,7 +925,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'bottom_divider_color',
 				'type'			=> 'color',
-				'label'			=> __('Color', 'tatsu'),
+				'label'			=> esc_html__('Color', 'tatsu'),
 				'default'		=> '#ffffff',
 				'tooltip'		=> '',
 				'visible'		=> array('bottom_divider', '!=', 'none'),
@@ -996,7 +940,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'invert_top_divider',
 				'type'			=> 'switch',
-				'label'			=> __('Invert', 'tatsu'),
+				'label'			=> esc_html__('Invert', 'tatsu'),
 				'default'		=> '0',
 				'visible'		=> array('top_divider', '!=', 'none'),
 				'tooltip'		=> ''
@@ -1004,7 +948,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'invert_bottom_divider',
 				'type'			=> 'switch',
-				'label'			=> __('Invert', 'tatsu'),
+				'label'			=> esc_html__('Invert', 'tatsu'),
 				'default'		=> '0',
 				'visible'		=> array('bottom_divider', '!=', 'none'),
 				'tooltip'		=> ''
@@ -1012,7 +956,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'flip_top_divider',
 				'type'			=> 'switch',
-				'label'			=> __('Flip', 'tatsu'),
+				'label'			=> esc_html__('Flip', 'tatsu'),
 				'default'		=> '0',
 				'visible'		=> array('top_divider', '!=', 'none'),
 				'tooltip'		=> ''
@@ -1020,7 +964,7 @@ function tatsu_register_section()
 			array(
 				'att_name'		=> 'flip_bottom_divider',
 				'type'			=> 'switch',
-				'label'			=> __('Flip', 'tatsu'),
+				'label'			=> esc_html__('Flip', 'tatsu'),
 				'default'		=> '0',
 				'visible'		=> array('bottom_divider', '!=', 'none'),
 				'tooltip'		=> ''
@@ -1028,21 +972,21 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'section_id',
 				'type' => 'text',
-				'label' => __('CSS ID', 'tatsu'),
+				'label' => esc_html__('CSS ID', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'section_class',
 				'type' => 'text',
-				'label' => __('CSS Classes', 'tatsu'),
+				'label' => esc_html__('CSS Classes', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'section_title',
 				'type' => 'text',
-				'label' => __('Name', 'tatsu'),
+				'label' => esc_html__('Name', 'tatsu'),
 				'default' => '',
 				'options' => array(
 					'placeholder' => 'Section Title'
@@ -1053,7 +997,7 @@ function tatsu_register_section()
 				'att_name' => 'offset_value',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Offset Top By', 'tatsu'),
+				'label' => esc_html__('Offset Top By', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -1077,19 +1021,18 @@ function tatsu_register_section()
 				'att_name' => 'full_screen_header_scheme',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Header Color Scheme', 'tatsu'),
+				'label' => esc_html__('Header Color Scheme', 'tatsu'),
 				'options' => array(
 					'background--light' => 'Dark',
 					'background--dark' => 'Light',
 				),
 				'default' => 'background--dark',
 				'tooltip' => '',
-				//'visible' => array( 'full_screen', '=', '1' ),
 			),
 			array(
 				'att_name' => 'overflow',
 				'type' => 'switch',
-				'label' => __('Hide Section Overflow', 'tatsu'),
+				'label' => esc_html__('Hide Section Overflow', 'tatsu'),
 				'default' => false,
 				'tooltip' => '',
 			),
@@ -1097,7 +1040,7 @@ function tatsu_register_section()
 				'att_name'	=> 'z_index',
 				'type'		=> 'number',
 				'is_inline' => true,
-				'label'		=> __( 'Z Index', 'tatsu' ),
+				'label'		=> esc_html__( 'Z Index', 'tatsu' ),
 				'options'	=> array (
 					'unit'	=> '',
 					'add_unit_to_value' => false

@@ -3,7 +3,7 @@ if( !function_exists( 'tatsu_modules_typehub_add_options' ) ) {
     function tatsu_modules_typehub_add_options() {
         $modules = array (
             'tatsu_wpforms_label'   =>   array (
-                'label'        => __( 'WP Forms Label', 'tatsu' ),
+                'label'        => esc_html__( 'WP Forms Label', 'tatsu' ),
                 'selector'     => '.tatsu-wp-forms div.wpforms-container-full .wpforms-form label.wpforms-field-label',
                 'img'          => '',
                 'responsive' => true,
@@ -18,7 +18,7 @@ if( !function_exists( 'tatsu_modules_typehub_add_options' ) ) {
                 )
             ),
             'tatsu_wpforms_entry'  =>   array (
-                'label'        => __( 'WP Forms Entry', 'tatsu' ),
+                'label'        => esc_html__( 'WP Forms Entry', 'tatsu' ),
                 'selector'     =>  '.tatsu-wp-forms div.wpforms-container-full .wpforms-form select, .tatsu-wp-forms div.wpforms-container-full .wpforms-form input:not([type = "submit"]), .tatsu-wp-forms div.wpforms-container-full .wpforms-form label.wpforms-field-label-inline',
                 'img'          => '',
                 'responsive' => true,
@@ -33,7 +33,7 @@ if( !function_exists( 'tatsu_modules_typehub_add_options' ) ) {
                 )
             ),
             'tatsu_wpforms_sublabel'   =>   array (
-                'label'        => __( 'WP Forms Sublabel', 'tatsu' ),
+                'label'        => esc_html__( 'WP Forms Sublabel', 'tatsu' ),
                 'selector'     => '.tatsu-wp-forms div.wpforms-container-full .wpforms-form label.wpforms-field-sublabel',
                 'img'          => '',
                 'responsive' => true,

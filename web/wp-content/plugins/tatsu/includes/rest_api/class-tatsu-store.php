@@ -21,14 +21,11 @@ class Tatsu_Store {
 		if( tatsu_check_if_global() && array_key_exists( 'tatsu_module_options', $this->store ) ) {
 			$this->store[ 'tatsu_module_options' ] = array_merge( $this->store[ 'tatsu_module_options' ], $this->get_gsection_modules() );
 		}
-	//	$header_store = new Tatsu_Header_Store();
-	//	$this->store = $header_store->get_store();
 		$response = new WP_REST_Response( $this->store );
 		if( ob_get_length() ) {
 			ob_clean();
 		}
 		$response->header('Content-Type', 'application/json' );
-		//return $this->store;
 		return $response;
 	}	
 
@@ -75,25 +72,25 @@ class Tatsu_Store {
 
 		$body_fonts = !empty( $_POST['tatsu_body_fonts'] ) ? json_decode( stripslashes( $_POST['tatsu_body_fonts'] ), true ) : array();
 
-		$this->post_id = $_POST['post_id'];
+		$this->post_id = be_sanitize_text_field($_POST['post_id']);
 
 		if( !empty( $_POST['post_name'] ) && !empty( $_POST['post_status'] ) ){
 			$post_data = array(
 				'ID'           => $this->post_id,
-				'post_title'   => $_POST['post_name'],
-				'post_status' => $_POST['post_status'],
+				'post_title'   => be_sanitize_text_field($_POST['post_name']),
+				'post_status' => be_sanitize_text_field($_POST['post_status']),
 			);
 		  
 			wp_update_post( $post_data );
         }
         
-        tatsu_update_custom_css_js( $this->post_id, $_POST['custom_css'], $_POST['custom_js'] );
+        tatsu_update_custom_css_js( $this->post_id, be_sanitize_textarea_field($_POST['custom_css']), be_sanitize_textarea_field($_POST['custom_js']) );
 
 		if( !empty( $body_fonts ) ){
 			update_post_meta( $this->post_id, 'tatsu_body_fonts', $body_fonts );
 		}
 
-		if( $this->save_page_content( $_POST['page_content'] ) ) {
+		if( $this->save_page_content( be_sanitize_textarea_field($_POST['page_content']) ) ) {
 			echo 'true';
 			wp_die();
 		}
@@ -137,8 +134,8 @@ class Tatsu_Store {
 
 	public function ajax_get_revision_content(  ){
 
-		$revision_id = $_POST['revision_id'];
-		$post_id = $_POST['post_id'];
+		$revision_id = be_sanitize_text_field($_POST['revision_id']);
+		$post_id = be_sanitize_text_field($_POST['post_id']);
 		$selected_revision = wp_get_post_revision( $revision_id);
 
 		$parser = new Tatsu_Parser();

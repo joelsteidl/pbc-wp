@@ -60,7 +60,7 @@ function tatsu_register_dropcap2()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#dropcap',
-		'title' => __('Dropcap - 2', 'tatsu'),
+		'title' => esc_html__('Dropcap - 2', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -75,7 +75,7 @@ function tatsu_register_dropcap2()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'letter',
 							'icon',
@@ -85,7 +85,7 @@ function tatsu_register_dropcap2()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array( //Spacing and styling accordion
 								'type' => 'accordion',
@@ -93,7 +93,7 @@ function tatsu_register_dropcap2()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __(' Styling', 'tatsu'),
+										'title' => esc_html__(' Styling', 'tatsu'),
 										'group' => array(
 											'size',
 											'title_font',
@@ -101,7 +101,7 @@ function tatsu_register_dropcap2()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __(' Color', 'tatsu'),
+										'title' => esc_html__(' Color', 'tatsu'),
 										'group' => array(
 											'color',
 											'title_color',
@@ -114,7 +114,7 @@ function tatsu_register_dropcap2()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //spacing and styling accordion
 								'type' => 'accordion',
@@ -133,7 +133,7 @@ function tatsu_register_dropcap2()
 			array(
 				'att_name' => 'letter',
 				'type' => 'text',
-				'label' => __('Letter', 'tatsu'),
+				'label' => esc_html__('Letter', 'tatsu'),
 				'is_inline' => false,
 				'default' => '',
 				'visible' => array( 'icon', '=', '' ),
@@ -196,14 +196,14 @@ function tatsu_register_dropcap2()
 			array(
 				'att_name' => 'dropcap_title',
 				'type' => 'text',
-				'label' => __('Dropcap Title', 'tatsu'),
+				'label' => esc_html__('Dropcap Title', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'title_font',
 				'type' => 'select',
-				'label' => __('Title Font', 'tatsu'),
+				'label' => esc_html__('Title Font', 'tatsu'),
 				'options' => array(
 					'body' => 'Body',
 					'h1' => 'H1',
@@ -222,7 +222,7 @@ function tatsu_register_dropcap2()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Title Color', 'tatsu'),
+				'label' => esc_html__('Title Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'css' => true,

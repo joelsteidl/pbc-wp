@@ -91,14 +91,14 @@ class Tatsu_Public {
 			}
 		}
 		if( !empty( $suffix ) ) {
-			wp_enqueue_style( 'tatsu-main-css', $assets_base_url . 'css/tatsu.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-main', $assets_base_url . 'css/tatsu.min.css', array(), $this->version, 'all' );
 		}else{
-			wp_enqueue_style( 'tatsu-vendor-css', $assets_base_url . 'css/vendor.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'tatsu-main-css', $assets_base_url . 'css/tatsu.css', array('tatsu-vendor-css'), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-vendor', $assets_base_url . 'css/vendor.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'tatsu-main', $assets_base_url . 'css/tatsu.css', array('tatsu-vendor'), $this->version, 'all' );
 			wp_enqueue_style( 'tatsu-shortcodes', $assets_base_url . 'css/tatsu-shortcodes.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'tatsu-css-animations', $assets_base_url . 'css/tatsu-css-animations.css', array(), $this->version, 'all' );
 			if( current_theme_supports('tatsu-header-builder') ) {
-				wp_enqueue_style( 'tatsu-header-css', $assets_base_url . 'css/tatsu-header.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'tatsu-header', $assets_base_url . 'css/tatsu-header.css', array(), $this->version, 'all' );
 			}
 		}
 		Tatsu_Icons::getInstance()->enqueue_styles();
@@ -349,7 +349,6 @@ class Tatsu_Public {
 			if( !empty( $active_header_id ) ) {
 				$header_store = new Tatsu_Header_Store( $active_header_id );
 				$header_content = $header_store->get_header_store();
-				// echo tatsu_header_css_print( $header_content['inner'] ); 
 			}
 		}
 	}
@@ -379,17 +378,14 @@ class Tatsu_Public {
 				$header_content	= $header_content['inner'];
 				$output = '';
 				foreach( $header_content as $rows ) {
-					//$columns = $rows['inner'];
 					if( empty( $rows['inner'] ) || !is_array( $rows['inner'] ) ) {
 						continue;
 					}
 					foreach( $rows['inner'] as $column ) {
-						//$modules = $column['inner'];
 						if( empty( $column['inner'] ) || !is_array( $column['inner'] ) ) {
 							continue;
 						}
 						foreach( $column['inner'] as $module ) {
-							//$slide_menu_cols = $module['inner'];
 							if( empty( $module['inner'] ) || !is_array( $module['inner'] ) ) {
 								continue;
 							}
@@ -467,7 +463,6 @@ class Tatsu_Public {
 				}
 
 				$temp_post_type = $post_type;
-				//$temp_post_id = $post_id;				
 
 				if( !( array_key_exists( $post_type, $post_settings ) &&
 					array_key_exists( $section_position, $post_settings[ $post_type ] ) ) ){
@@ -476,7 +471,6 @@ class Tatsu_Public {
 
 						if( array_key_exists( $section_position, $post_settings['all']) ){
 							$temp_post_type = 'all';
-							//$temp_post_id = null;
 						}
 						
 					}

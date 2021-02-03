@@ -17,7 +17,7 @@ class Tatsu_Header_Store {
 			echo 'false';
 			wp_die();
 		}        
-		$this->post_id = $_POST['post_id'];
+		$this->post_id = be_sanitize_text_field($_POST['post_id']);
 		if( empty( $this->post_id ) ) {
 			echo false;
 			wp_die();
@@ -43,7 +43,6 @@ class Tatsu_Header_Store {
 			ob_clean();
 		}
 		$response->header('Content-Type', 'application/json' );
-		//return $this->store;
 		return $response;
 	}	
 
@@ -93,7 +92,7 @@ class Tatsu_Header_Store {
 
 	private function get_header_templates() {
 		return array(
-			'tatsu_header_templates' => array()  //Tatsu_Header_Templates::getInstance()->get_templates_list()
+			'tatsu_header_templates' => array()
 		);
 	}
 
@@ -103,7 +102,7 @@ class Tatsu_Header_Store {
 			echo 'false';
 			wp_die();
 		}
-		$this->post_id = $_POST['post_id'];
+		$this->post_id = be_sanitize_text_field($_POST['post_id']);
 		if( empty( $this->post_id ) ) {
 			echo 'false';
 			wp_die();
@@ -123,7 +122,7 @@ class Tatsu_Header_Store {
 			}
 		}
 
-        tatsu_update_custom_css_js( $this->post_id, $_POST['custom_css'], $_POST['custom_js'] );
+        tatsu_update_custom_css_js( $this->post_id, be_sanitize_textarea_field($_POST['custom_css']), be_sanitize_textarea_field($_POST['custom_js']) );
 
 		if( $this->save_store( $header_content, $header_settings, $header_fonts ) ) {
 			echo 'true';
@@ -134,16 +133,6 @@ class Tatsu_Header_Store {
 		}
 
 	}
-
-	// private function save_header_fonts( $fonts ) {
-	// 	$fonts = stripslashes( $fonts );  // added for admin-ajax requests
-        
-    //     if( $this->isJson( $fonts ) ) {
-	// 		return update_option( 'tatsu_header_fonts' , $fonts );	
-	// 	}
-
-	// 	return false;		
-	// }
 
 	public function save_store( $header_content, $header_settings, $header_fonts ) {
 		if( !empty( $header_settings ) ) {
@@ -159,18 +148,6 @@ class Tatsu_Header_Store {
 		return wp_update_post( $args );
 		return false;
 	}
-
-	// private function save_settings( $settings ) {
-		
-	// 	$settings = stripslashes( $settings );
-		
-	// 	if( $this->isJson( $settings ) ) {
-
-	// 		return update_option( 'tatsu_header_settings' , $settings );
-	// 	}
-		
-	// 	return false;
-	// }
 
 	private function isJson($string) {
  		json_decode($string);

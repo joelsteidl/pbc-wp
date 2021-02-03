@@ -10,7 +10,7 @@ if ( version_compare( get_bloginfo( 'version' ), '3.8', '<' ) ) { // Don't activ
 
 	// Define DB version
 	global $enmge_db_version;
-	$enmge_db_version = "1.3.1";
+	$enmge_db_version = "1.3.3";
 	if( !defined(get_option( 'enmge_db_version' )) ) {
 		add_option("enmge_db_version", $enmge_db_version);
 	} else {

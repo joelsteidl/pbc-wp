@@ -37,7 +37,6 @@ if (!function_exists('tatsu_animated_link')) {
 		$output .= '<div '.$css_id.' class="tatsu-animated-link tatsu-animated-link-'. $link_style . ' ' .$unique_class_name. ' tatsu-module tatsu-animated-link-align-'. $alignment .' '.$css_classes.' '.$visibility_classes.'"><a class = "tatsu-animated-link-inner '. $animate . $link_text_font . '" href = "'. $url .'" ' . $new_tab . ' '.$data_animations.' aria-label = "'.$link_text.'">';
 		$output .= '<span class = "tatsu-animated-link-text"  >'.$link_text.'</span>';
         if( $link_style == 'style4' ){
-            //$output .= '<div class = "next-arrow"><span class="arrow-line-one" ></span><span class="arrow-line-two" ></span><span class="arrow-line-three"></span></div>';
 			$output .= '<span class = "tatsu-animated-link-arrow"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="15px" viewBox="0 0 30 18" enable-background="new 0 0 30 18" xml:space="preserve">
 			<path class="tatsu-svg-arrow-head" d="M20.305,16.212c-0.407,0.409-0.407,1.071,0,1.479s1.068,0.408,1.476,0l7.914-7.952c0.408-0.409,0.408-1.071,0-1.481
 				l-7.914-7.952c-0.407-0.409-1.068-0.409-1.476,0s-0.407,1.071,0,1.48l7.185,7.221L20.305,16.212z"></path>
@@ -72,7 +71,7 @@ function tatsu_register_animated_link()
 {
 	$controls  =  array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#animated_link',
-		'title' => __('Animated Link', 'tatsu'),
+		'title' => esc_html__('Animated Link', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -84,7 +83,7 @@ function tatsu_register_animated_link()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'link_text',
 							'url',
@@ -95,7 +94,7 @@ function tatsu_register_animated_link()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'link_style',
 							'alignment',
@@ -105,7 +104,7 @@ function tatsu_register_animated_link()
 								'group' => array(
 									array(
 										'type'  => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type' => 'tabs',
@@ -113,7 +112,7 @@ function tatsu_register_animated_link()
 												'group'	=> array(
 													array (
 														'type' => 'tab',
-														'title' => __('Normal', 'tatsu'),
+														'title' => esc_html__('Normal', 'tatsu'),
 														'group' => array(
 															'color',
 															'line_color',
@@ -121,7 +120,7 @@ function tatsu_register_animated_link()
 													),
 													array (
 														'type' => 'tab',
-														'title' => __('Hover', 'tatsu'),
+														'title' => esc_html__('Hover', 'tatsu'),
 														'group' => array(
 															'hover_color',
 															'line_hover_color',
@@ -140,14 +139,14 @@ function tatsu_register_animated_link()
 
 					array( //Tab3
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
 								'group' => array(
 									array(
 										'type'  => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group'	=> array(
 											'margin',
 										)
@@ -165,7 +164,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'link_text',
 				'type' => 'text',
-				'label' => __('Link Text', 'tatsu'),
+				'label' => esc_html__('Link Text', 'tatsu'),
 				'is_inline' => false,
 				'default' => 'Learn More',
 				'tooltip' => ''
@@ -174,7 +173,7 @@ function tatsu_register_animated_link()
 				'att_name' => 'link_style',
 				'type' => 'select',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'style1' => 'Style 1',
 					'style2' => 'Style 2',
@@ -187,7 +186,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'url',
 				'type' => 'text',
-				'label' => __('Link URL', 'tatsu'),
+				'label' => esc_html__('Link URL', 'tatsu'),
 				'is_inline' => false,
 				'default' => '',
 				'tooltip' => ''
@@ -195,7 +194,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'new_tab',
 				'type' => 'switch',
-				'label' => __('Open in a new tab', 'tatsu'),
+				'label' => esc_html__('Open in a new tab', 'tatsu'),
 				'default' => '0',
 				'tooltip' => '',
 				'visible' => array('url', '!=', ''),
@@ -203,7 +202,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'custom_font_size',
 				'type' => 'switch',
-				'label' => __('Custom Font Size', 'tatsu'),
+				'label' => esc_html__('Custom Font Size', 'tatsu'),
 				'default' => '0',
 				'tooltip' => ''
 			),
@@ -211,7 +210,7 @@ function tatsu_register_animated_link()
 				'att_name' => 'font_size',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Font Size', 'tatsu'),
+				'label' => esc_html__('Font Size', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -231,7 +230,7 @@ function tatsu_register_animated_link()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'none' 	=> 'None',
 					'left' 	=> 'Left',
@@ -244,7 +243,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'color',
 				'type' => 'color',
-				'label' => __('Text Color', 'tatsu'),
+				'label' => esc_html__('Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -257,7 +256,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'hover_color',
 				'type' => 'color',
-				'label' => __('Hover Text Color', 'tatsu'),
+				'label' => esc_html__('Hover Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -279,7 +278,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'line_color',
 				'type' => 'color',
-				'label' => __('Line/Arrow Color', 'tatsu'),
+				'label' => esc_html__('Line/Arrow Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -297,7 +296,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'line_hover_color',
 				'type' => 'color',
-				'label' => __('Line/Arrow Hover Color', 'tatsu'),
+				'label' => esc_html__('Line/Arrow Hover Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -323,7 +322,7 @@ function tatsu_register_animated_link()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 40px 0px',
 				'tooltip' => '',
 				'css'	  => true,

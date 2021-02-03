@@ -21,7 +21,7 @@
     0% {
       opacity: 1;
     }
-  
+      
     100% {
       opacity: 0;
     }
@@ -1966,6 +1966,11 @@
       position : absolute;
   
   }
+
+  .internet_expoler .oshine-portfolio-module .flip-img-wrap img, 
+  .internet_expoler .oshine-gallery-module .flip-img-wrap img {
+    max-width:none !important;
+  }
   
   .element.bw_to_bw .element-inner .flip-img-wrap img,
   .element.bw_to_c .element-inner .flip-img-wrap img,
@@ -3213,7 +3218,9 @@
       margin: 0px;
       line-height: 7px !important;
   }
-  
+  .oshine-mc-wrap .field_consent {
+      margin-bottom: 20px;
+    }
   
   /*********************************************************************
               PRICING TABLE
@@ -4116,7 +4123,7 @@
     overflow: hidden;
     -ms-touch-action: none;
     touch-action: none;
-    z-index: 1500;
+    z-index: 999999;
     -webkit-text-size-adjust: 100%;
     /* create separate layer, to avoid paint on window.onscroll in webkit/blink */
     -webkit-backface-visibility: hidden;

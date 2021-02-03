@@ -45,7 +45,7 @@ function tatsu_register_gsection_title()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Global Section Title', 'tatsu'),
+		'title' => esc_html__('Global Section Title', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -54,7 +54,7 @@ function tatsu_register_gsection_title()
 			array(
 				'att_name' => 'alignment',
 				'type' => 'button_group',
-				'label' => __('Alignment', 'tatsu'),
+				'label' => esc_html__('Alignment', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -66,7 +66,7 @@ function tatsu_register_gsection_title()
 			(function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name' => 'title_font',
 				'type' => 'select',
-				'label' => __('Font for Title', 'tatsu'),
+				'label' => esc_html__('Font for Title', 'tatsu'),
 				'options' => typehub_get_exposed_selectors(),
 				'default' => '',
 				'tooltip' => ''
@@ -74,7 +74,7 @@ function tatsu_register_gsection_title()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 30px 0px',
 				'tooltip' => '',
 				'responsive' => true,

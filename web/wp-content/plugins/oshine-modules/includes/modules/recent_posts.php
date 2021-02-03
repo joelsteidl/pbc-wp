@@ -10,6 +10,7 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
 			'categories' => '',
 			'tags' => '',
             'hide_excerpt' => '',
+			'adaptive_image'    => 0,
             'key' => be_uniqid_base36(true),
         ), $atts , $tag);
         extract( $atts );
@@ -78,6 +79,7 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
             $output .= $custom_style_tag;
 			$blog_attr['style'] = 'shortcodes';
 			$blog_attr['gutter_width'] = 0;
+			$blog_attr['adaptive_image'] = $adaptive_image;
 			while ( $my_query->have_posts() ) : $my_query->the_post(); 
 				$output .= '<div class="'.$column.'-col recent-posts-col be-hoverlay">';
 				ob_start();
@@ -130,6 +132,7 @@ function oshine_register_recent_posts() {
 								'categories',
 								'tags',
 								'hide_excerpt',
+								'adaptive_image',
 							)
 						),
 						array (
@@ -189,6 +192,13 @@ function oshine_register_recent_posts() {
 	              	'default' => 0,
 	              	'tooltip' => '',
 	            ),
+				array(
+					'att_name' => 'adaptive_image',
+					'type' => 'switch',
+					'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
 	        ),
 	    );
 	tatsu_register_module( 'recent_posts', $controls );

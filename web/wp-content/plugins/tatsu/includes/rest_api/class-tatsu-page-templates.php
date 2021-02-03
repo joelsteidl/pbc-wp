@@ -51,9 +51,9 @@ class Tatsu_Page_Templates {
 			echo 'false';
 			wp_die();
 		}
-		$name = $_POST['name'];
-		$template_type = $_POST['template_type'];
-        $collection_type = $_POST['collection_type'];
+		$name = be_sanitize_text_field($_POST['name']);
+		$template_type = be_sanitize_text_field($_POST['template_type']);
+        $collection_type = be_sanitize_text_field($_POST['collection_type']);
         $template_content = '';
         $possible_template_types = array( 'prebuilt', 'custom' );
 		if( in_array( $template_type, $possible_template_types ) ) {
@@ -102,12 +102,12 @@ class Tatsu_Page_Templates {
 			echo 'false';
 			wp_die();
 		}
-		$name = $_POST['name'];
-		$type = $_POST['type'];
-		$title = $_POST['title'];
+		$name = be_sanitize_text_field($_POST['name']);
+		$type = be_sanitize_text_field($_POST['type']);
+		$title = be_sanitize_text_field($_POST['title']);
 		$created_by = $_POST['created_by'];
 		$created_at = $_POST['created_at'];
-		$inner = json_decode( stripslashes( $_POST['template_content'] ) , true );
+		$inner = json_decode(stripslashes( $_POST['template_content'] ) , true );
 		$inner = $inner['inner'];
 
 		$templates = get_option('tatsu_templates', '');
@@ -149,8 +149,8 @@ class Tatsu_Page_Templates {
 			wp_die();
 		}
 
-		$name = $_POST['name'];
-		$type = $_POST['type'];
+		$name = be_sanitize_text_field($_POST['name']);
+		$type = be_sanitize_text_field($_POST['type']);
 		$templates = get_option('tatsu_templates', '');
 		$templates = json_decode( $templates, true );
 		unset( $templates[$type][$name] );
@@ -234,8 +234,8 @@ class Tatsu_Page_Templates {
 	}
 
 	public function get_prebuilt_templates() {
-		$type = $_POST['type'];
-		$offset = $_POST['offset'];
+		$type = be_sanitize_text_field($_POST['type']);
+		$offset = be_sanitize_text_field($_POST['offset']);
 		$possible_collection_type = array( 'sections', 'templates' );
 		if( in_array( $type, $possible_collection_type ) ) {	
 			$target_collection = $this->templates[$type];

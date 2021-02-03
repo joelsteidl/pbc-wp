@@ -42,6 +42,10 @@
             },
 
             writeScript = function( src ) {
+                var currentSite = window.location.href;
+                   if(currentSite.indexOf("https://")>-1){
+                       src = src.replace("http:", "https:");
+                   }
                 return new Promise( function(resolve, reject ) { 
                     var s = document.createElement('script');
                     s.type = "text/javascript";

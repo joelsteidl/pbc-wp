@@ -1,5 +1,12 @@
 /**OS SCROLLBAR**/
 ;(function($) {
+	var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("NET4");
+    console.log(ua);
+    console.log(msie);
+    if(msie > -1){
+    	$('body').addClass('internet_expoler');
+    }
 	var scrollbarWidth = 0;
 	$.getScrollbarWidth = function() {
 		if ( !scrollbarWidth ) {
@@ -686,7 +693,8 @@
                                     visibleImages.one( 'load', function() {
                                         $(this).closest( '.element' ).addClass('jg-entry-visible');
                                     }).each( function( el ) {
-                                        var curEl = $(this);
+                                        var curEl = $(this)
+										curEl.attr( 'srcset', curEl.attr( 'data-srcset' ) );
                                         curEl.attr( 'src', curEl.attr( 'data-src' ) );
                                     });
                                     itemsToLazyLoad = itemsToLazyLoad.not( visibleImages );
@@ -1332,7 +1340,7 @@
 		            	$contact_status = $contact_form.find(".contact_status"), 
 						$contact_loader = $contact_form.find(".contact_loader"),
 						consent_checkbox = $contact_form.find('.consent-checkbox'),
-						isConsentGiven = !consent_checkbox.length || consent_checkbox.attr('checked') ? true: false;
+						isConsentGiven = consent_checkbox.is(':checked');
 					if( !isConsentGiven ) {
 						$contact_status.removeClass("tatsu-success").addClass("tatsu-error");
 						$contact_status.html( $contact_form.attr('data-consent-error') ).slideDown();
@@ -1821,6 +1829,7 @@
 
                         var windowTotalWidth = jQuery(window).width() + jQuery.getScrollbarWidth() ,
 							$isBlog = jQuery( 'body' ).hasClass( 'blog' ) ;
+						console.log(jQuery.getScrollbarWidth())
                         if( windowTotalWidth < 1280 && windowTotalWidth >= 768 ) {
 							if( ( $isBlog && windowTotalWidth > 960 ) || !$isBlog ) {
 								switch(this.closest_portfolio.attr('data-col')){
@@ -1874,10 +1883,11 @@
 					},
                     this.getRoundedWidth = function () {
 
-                        var rounded_width = this.getContainerWidth() ;
-                        while ((rounded_width % this.noOfColumns()) !== 0) {
-                            rounded_width = rounded_width + 1;
-                        }
+                        var rounded_width = Math.floor(this.getContainerWidth() );
+                        var nCols = this.noOfColumns();
+                        if(nCols == 0) nCols = 1;
+                        var remainder = Math.floor(rounded_width / nCols);
+                        rounded_width = remainder * nCols + nCols;
                         this.setContainerWidth( rounded_width );
                         return rounded_width; 
                     

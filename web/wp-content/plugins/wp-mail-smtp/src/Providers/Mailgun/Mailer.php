@@ -227,7 +227,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $attachments
+	 * @param array $attachments The array of attachments data.
 	 */
 	public function set_attachments( $attachments ) {
 
@@ -249,8 +249,7 @@ class Mailer extends MailerAbstract {
 				if ( is_file( $attachment[0] ) && is_readable( $attachment[0] ) ) {
 					$file = file_get_contents( $attachment[0] );
 				}
-			}
-			catch ( \Exception $e ) {
+			} catch ( \Exception $e ) {
 				$file = false;
 			}
 
@@ -267,7 +266,7 @@ class Mailer extends MailerAbstract {
 		if ( ! empty( $data ) ) {
 
 			// First, generate a boundary for the multipart message.
-			$boundary = base_convert( uniqid( 'boundary', true ), 10, 36 );
+			$boundary = $this->phpmailer->generate_id();
 
 			// Iterate through pre-built params and build a payload.
 			foreach ( $this->body as $key => $value ) {
@@ -368,6 +367,27 @@ class Mailer extends MailerAbstract {
 	}
 
 	/**
+	 * We might need to do something after the email was sent to the API.
+	 * In this method we preprocess the response from the API.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param mixed $response Response data.
+	 */
+	protected function process_response( $response ) {
+
+		parent::process_response( $response );
+
+		if (
+			! is_wp_error( $response ) &&
+			! empty( $this->response['body']->id )
+		) {
+			$this->phpmailer->MessageID = $this->response['body']->id;
+			$this->verify_sent_status   = true;
+		}
+	}
+
+	/**
 	 * Whether the email is sent or not.
 	 * We basically check the response code from a request to provider.
 	 * Might not be 100% correct, not guarantees that email is delivered.
@@ -393,6 +413,8 @@ class Mailer extends MailerAbstract {
 				esc_html__( 'This could point to an incorrect Domain Name in the plugin settings.', 'wp-mail-smtp' ) . PHP_EOL .
 				esc_html__( 'Please check the WP Mail SMTP plugin settings and make sure the Mailgun Domain Name setting is correct.', 'wp-mail-smtp' );
 
+			$this->error_message = $message;
+
 			Debug::set( $message );
 
 			return false;
@@ -408,7 +430,7 @@ class Mailer extends MailerAbstract {
 	 *
 	 * @return string
 	 */
-	protected function get_response_error() {
+	public function get_response_error() {
 
 		$body = (array) wp_remote_retrieve_body( $this->response );
 
@@ -420,6 +442,8 @@ class Mailer extends MailerAbstract {
 			} else {
 				$error_text[] = \json_encode( $body['message'] );
 			}
+		} elseif ( ! empty( $this->error_message ) ) {
+			$error_text[] = $this->error_message;
 		} elseif ( ! empty( $body[0] ) ) {
 			if ( is_string( $body[0] ) ) {
 				$error_text[] = $body[0];

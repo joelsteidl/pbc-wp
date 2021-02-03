@@ -4,7 +4,7 @@ add_action( 'tatsu_register_header_concepts', 'tatsu_register_header_concepts' )
 function tatsu_register_header_concepts() {
 
 	tatsu_register_header_concept( 'simple', array(
-			'title' => 'Simple',
+			'title' => esc_html__('Simple', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/simple.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -14,7 +14,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'detailed', array(
-			'title' => 'Detailed',
+			'title' => esc_html__('Detailed', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/detailed.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -25,7 +25,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'full_width_center_menu', array(
-			'title' => 'Full Width Center Menu',
+			'title' => esc_html__('Full Width Center Menu', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/full_width_center_menu.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -35,7 +35,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'center_logo', array(
-			'title' => 'Center Logo',
+			'title' => esc_html__('Center Logo', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/center_logo.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -45,7 +45,7 @@ function tatsu_register_header_concepts() {
 	);	
 
 	tatsu_register_header_concept( 'full_width_social_icons', array(
-			'title' => 'Full Width with Social Icons',
+			'title' => esc_html__('Full Width with Social Icons', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/full_width_social_icons.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -55,7 +55,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'standard_with_cta', array(
-			'title' => 'Standard with CTA',
+			'title' => esc_html__('Standard with CTA', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/standard_with_cta.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -65,7 +65,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'sliding_menu', array(
-			'title' => 'Sliding Menu',
+			'title' => esc_html__('Sliding Menu', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/sliding_menu.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -75,7 +75,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'bottom_navigation', array(
-			'title' => 'Navigation below Logo',
+			'title' => esc_html__('Navigation below Logo', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/bottom_navigation.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -85,7 +85,7 @@ function tatsu_register_header_concepts() {
 	);
 
 	tatsu_register_header_concept( 'left_nav', array(
-			'title' => 'Logo & Navigation to the left',
+			'title' => esc_html__('Logo & Navigation to the left', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/header-builder/concepts/img/left_nav.jpg',
 			'is_built_in' => true,
 			'width' => '520',

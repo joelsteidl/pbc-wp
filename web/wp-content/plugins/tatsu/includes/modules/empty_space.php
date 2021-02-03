@@ -36,39 +36,16 @@ function tatsu_register_empty_space()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#empty_space',
-		'title' => __('Extra Spacing', 'tatsu'),
+		'title' => esc_html__('Extra Spacing', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => true,
 		'drag_handle' => true,
-		// 'group_atts' => array(			
-		// 	array(
-		// 		'type'		=> 'tabs',
-		// 		'style'		=> 'style1',
-		// 		'group'		=> array(
-		// 			//Tab1
-		// 			array(
-		// 				'type' => 'tab',
-		// 				'title' => __('Content', 'tatsu'),
-		// 				'group'	=> array(
-		// 					'height',
-		// 				),
-		// 			),
-		// 			array(
-		// 				'type' => 'tab',
-		// 				'title' => __('Advanced', 'tatsu'),
-		// 				'group'	=> array(
-		// 				),
-		// 			),
-		// 		),
-		// 	),
-		// ),
-
 		'atts' => array(
 			array(
 				'att_name' => 'height',
 				'type' => 'number',
-				'label' => __('Height', 'tatsu'),
+				'label' => esc_html__('Height', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),

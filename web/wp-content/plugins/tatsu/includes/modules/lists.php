@@ -8,7 +8,6 @@ if ( !function_exists('tatsu_lists') ) {
 			'timeline_color'		=> '',
 			'list_item_margin'		=> '',
 			'vertical_alignment' 	=> 'none',
-		//	'reverse_list'			=> '',
 			'custom_border'			=> '0',
 			'circled'				=> '',
 			'icon_bg'				=> '',
@@ -117,7 +116,7 @@ add_action('tatsu_register_modules', 'tatsu_register_lists', 7);
 function tatsu_register_lists() {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#lists',
-		'title' => __('Lists', 'tatsu'),
+		'title' => esc_html__('Lists', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => 'tatsu_list',
 		'initial_children' => 5,
@@ -131,7 +130,7 @@ function tatsu_register_lists() {
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'style',
 							'circled',
@@ -149,7 +148,7 @@ function tatsu_register_lists() {
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -157,7 +156,7 @@ function tatsu_register_lists() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __( 'Border', 'tatsu'),
+										'title' => esc_html__( 'Border', 'tatsu'),
 										'group' => array(
 											'outer_border',
 											'outer_border_color',
@@ -173,7 +172,7 @@ function tatsu_register_lists() {
 		'atts' => array(
 			array(
 				'att_name'		=> 'style',
-				'label'			=> __('Lists Style', 'tatsu'),
+				'label'			=> esc_html__('Lists Style', 'tatsu'),
 				'type'			=> 'button_group',
 				'is_inline' => true,
 				'options'		=>  array(
@@ -186,7 +185,7 @@ function tatsu_register_lists() {
 			array(
 				'att_name' => 'circled',
 				'type' => 'switch',
-				'label' => __('Circle the Icon/Number', 'tatsu'),
+				'label' => esc_html__('Circle the Icon/Number', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -196,7 +195,7 @@ function tatsu_register_lists() {
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color if circled', 'tatsu'),
+				'label' => esc_html__('Background Color if circled', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'visible' => array('circled', '=', '1'),
@@ -214,7 +213,7 @@ function tatsu_register_lists() {
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Icon/Number Color', 'tatsu'),
+				'label' => esc_html__('Icon/Number Color', 'tatsu'),
 				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css'	  => true,
@@ -226,7 +225,7 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'timeline',
-				'label'			=> __('Enable Timeline', 'tatsu'),
+				'label'			=> esc_html__('Enable Timeline', 'tatsu'),
 				'type'			=> 'switch',
 				'default'		=> '0',
 				'visible'		=> array(
@@ -239,7 +238,7 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'timeline_color',
-				'label'			=> __('Timeline Color', 'tatsu'),
+				'label'			=> esc_html__('Timeline Color', 'tatsu'),
 				'type'			=> 'color',
 				'default'		=> '',
 				'tooltip'		=> '',
@@ -266,7 +265,7 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'list_item_margin',
-				'label'			=> __('List Item Bottom Margin', 'tatsu'),
+				'label'			=> esc_html__('List Item Bottom Margin', 'tatsu'),
 				'type'			=> 'number',
 				'options'		=> array(
 					'unit'		=> 'px'
@@ -290,7 +289,7 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'vertical_alignment',
-				'label'			=> __('Vertical Align', 'tatsu'),
+				'label'			=> esc_html__('Vertical Align', 'tatsu'),
 				'type'			=> 'select',
 				'is_inline'     => true,
 				'options'		=> array(
@@ -303,13 +302,13 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'custom_border',
-				'label'			=> __('Show divider between list items', 'tatsu'),
+				'label'			=> esc_html__('Show divider between list items', 'tatsu'),
 				'type'			=> 'switch',
 				'default'		=> '0',
 			),
 			array(
 				'att_name'		=> 'border',
-				'label'			=> __('Divider Width', 'tatsu'),
+				'label'			=> esc_html__('Divider Width', 'tatsu'),
 				'type'			=> 'number',
 				'default'		=> '0',
 				'options'		=> array(
@@ -328,7 +327,7 @@ function tatsu_register_lists() {
 			),
 			array(
 				'att_name'		=> 'border_color', // divider border
-				'label'			=> __('Divider Color', 'tatsu'),
+				'label'			=> esc_html__('Divider Color', 'tatsu'),
 				'type'			=> 'color',
 				'default'		=> '',
 				'visible'		=> array('custom_border', '=', '1'),
@@ -343,7 +342,7 @@ function tatsu_register_lists() {
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -370,7 +369,7 @@ function tatsu_register_lists() {
 			array (
 				'att_name' => 'outer_border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -385,7 +384,7 @@ function tatsu_register_lists() {
 			array (
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -407,26 +406,12 @@ function tatsu_register_list()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('List', 'tatsu'),
+		'title' => esc_html__('List', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'sub_module',
 		'is_built_in' => true,
 		'hint' => 'content',
 		'group_atts'			=> array(
-			// array(
-			// 	'type'		=> 'tabs',
-			// 	'style'		=> 'style1',
-			// 	'group'		=> array(
-			// 		//Tab1
-			// 		array(
-			// 			'type' => 'tab',
-			// 			'title' => __('Content', 'tatsu'),
-			// 			'group'	=> array(
-			// 				'content'
-			// 			)
-			// 		)
-			// 	)
-			// ),
 			array(
 				'type'		=> 'tabs',
 				'style'		=> 'style1',
@@ -434,14 +419,14 @@ function tatsu_register_list()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'content'
 						)
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'icon',
 							'circled',
@@ -453,7 +438,7 @@ function tatsu_register_list()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -461,14 +446,14 @@ function tatsu_register_list()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __( 'Spacing', 'tatsu'),
+										'title' => esc_html__( 'Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __( 'Border', 'tatsu'),
+										'title' => esc_html__( 'Border', 'tatsu'),
 										'group' => array(
 											'border_style',
 											'border',
@@ -486,14 +471,14 @@ function tatsu_register_list()
 			array(
 				'att_name' => 'icon',
 				'type' => 'icon_picker',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'circled',
 				'type' => 'switch',
-				'label' => __('Circle the Icon', 'tatsu'),
+				'label' => esc_html__('Circle the Icon', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -503,7 +488,7 @@ function tatsu_register_list()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color if circled', 'tatsu'),
+				'label' => esc_html__('Background Color if circled', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'visible' => array('circled', '=', '1'),
@@ -525,7 +510,7 @@ function tatsu_register_list()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Icon/Number Color', 'tatsu'),
+				'label' => esc_html__('Icon/Number Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -539,14 +524,14 @@ function tatsu_register_list()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name'		=> 'border_color',
 				'type'			=> 'color',
-				'label'		=> __('List Divider Color', 'tatsu'),
+				'label'		=> esc_html__('List Divider Color', 'tatsu'),
 				'default'		=> '',
 				'tooltip'		=> '',
 				'css'			=> true,
@@ -559,7 +544,7 @@ function tatsu_register_list()
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -578,7 +563,7 @@ function tatsu_register_list()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -604,7 +589,7 @@ function tatsu_register_list()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -619,7 +604,7 @@ function tatsu_register_list()
 			array (
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,

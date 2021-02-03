@@ -95,7 +95,7 @@ function tatsu_register_svg_icon()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#svg_icon',
-		'title' => __('SVG Icon', 'tatsu'),
+		'title' => esc_html__('SVG Icon', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -106,7 +106,7 @@ function tatsu_register_svg_icon()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'svg_icon',
 							'custom_icon',
@@ -115,7 +115,7 @@ function tatsu_register_svg_icon()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -123,7 +123,7 @@ function tatsu_register_svg_icon()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Styling', 'tatsu'),
+										'title' => esc_html__('Styling', 'tatsu'),
 										'group' => array(
 											'color',
 											'bg_color',
@@ -136,7 +136,7 @@ function tatsu_register_svg_icon()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Line Animation', 'tatsu'),
+										'title' => esc_html__('Line Animation', 'tatsu'),
 										'group' => array(
 											'line_animate',
 											'stroke_width',
@@ -151,7 +151,7 @@ function tatsu_register_svg_icon()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( 
 								'type' => 'accordion',
@@ -159,14 +159,14 @@ function tatsu_register_svg_icon()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										),
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Animation', 'tatsu'),
+										'title' => esc_html__('Animation', 'tatsu'),
 										'group' => array(
 											'animation_type',
 											'animation_delay',
@@ -185,7 +185,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name'	=> 'svg_icon',
 				'type'		=> 'svg_icon_picker',
-				'label'		=> __('Svg Icon', 'tatsu'),
+				'label'		=> esc_html__('Svg Icon', 'tatsu'),
 				'default'	=> 'linea:basic_paperplane',
 				'tooltip'	=> '',
 				'visible'	=> array('custom_icon', '=', '0'),
@@ -194,7 +194,7 @@ function tatsu_register_svg_icon()
 				'att_name'		=> 'custom_icon',
 				'type'			=> 'switch',
 				'default'		=> '0',
-				'label'			=> __('Upload Custom Icon', 'tatsu'),
+				'label'			=> esc_html__('Upload Custom Icon', 'tatsu'),
 				'tooltip'		=> '',
 			),
 			array(
@@ -214,7 +214,7 @@ function tatsu_register_svg_icon()
 				'att_name' => 'style',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'circled'	=> 'Circled',
 					'plain'		=> 'Plain',
@@ -226,7 +226,7 @@ function tatsu_register_svg_icon()
 				'att_name' => 'size',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Size', 'tatsu'),
+				'label' => esc_html__('Size', 'tatsu'),
 				'options' => array(
 					'small' => 'S',
 					'medium' => 'M',
@@ -241,7 +241,7 @@ function tatsu_register_svg_icon()
 				'att_name' => 'width',
 				'type' => 'number',
 				'is_inline'     => true,
-				'label' => __('Width', 'tatsu'),
+				'label' => esc_html__('Width', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -271,7 +271,7 @@ function tatsu_register_svg_icon()
 				'att_name' => 'height',
 				'type' => 'number',
 				'is_inline'     => true,
-				'label' => __('Height', 'tatsu'),
+				'label' => esc_html__('Height', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -291,7 +291,7 @@ function tatsu_register_svg_icon()
 				'att_name'		=> 'stroke_width',
 				'type'			=> 'number',
 				'is_inline'     => true,
-				'label'			=> __('Stroke Width', 'tatsu'),
+				'label'			=> esc_html__('Stroke Width', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -310,7 +310,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name' => 'bg_color',
 				'type' => 'color',
-				'label' => __('SVG Background Color', 'tatsu'),
+				'label' => esc_html__('SVG Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -327,7 +327,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name' => 'color',
 				'type' => 'color',
-				'label' => __('SVG Color', 'tatsu'),
+				'label' => esc_html__('SVG Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -341,7 +341,7 @@ function tatsu_register_svg_icon()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'left' => 'Left',
@@ -354,14 +354,14 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name' => 'line_animate',
 				'type' => 'switch',
-				'label' => __('Enable SVG Line Animation', 'tatsu'),
+				'label' => esc_html__('Enable SVG Line Animation', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'path_animation_type',
 				'type' => 'select',
-				'label' => __('Path Animation', 'tatsu'),
+				'label' => esc_html__('Path Animation', 'tatsu'),
 				'options' => array(
 					'LINEAR' => 'Linear',
 					'EASE' => 'Ease',
@@ -376,7 +376,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name' => 'svg_animation_type',
 				'type' => 'select',
-				'label' => __('SVG Animation', 'tatsu'),
+				'label' => esc_html__('SVG Animation', 'tatsu'),
 				'options' => array(
 					'LINEAR' => 'Linear',
 					'EASE' => 'Ease',
@@ -391,7 +391,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0 0 30px 0',
 				'tooltip' => '',
 				'css'	  => true,
@@ -412,7 +412,7 @@ function tatsu_register_svg_icon()
 					'unit' => '',
 				),
 				'default' => '100',
-				'label' => __('Animation Duration', 'tatsu'),
+				'label' => esc_html__('Animation Duration', 'tatsu'),
 				'tooltip' => '',
 				'visible' => array('line_animate', '=', '1'),
 			),
@@ -427,7 +427,7 @@ function tatsu_register_svg_icon()
 					'step' => '50',
 					'unit' => 'ms',
 				),
-				'label' => __( 'Animation Duration', 'tatsu' ),
+				'label' => esc_html__( 'Animation Duration', 'tatsu' ),
 				'visible' => array( 'animation_type', '!=', 'none' ),
 				'tooltip' => ''
 			),
@@ -436,7 +436,7 @@ function tatsu_register_svg_icon()
 				'type' => 'select',
 				'exclude' => array( 'tatsu_testimonial_carousel', 'tatsu_empty_space' ),
 				'options' => tatsu_css_animations(),
-				'label' => __( 'Animation Type', 'tatsu' ),
+				'label' => esc_html__( 'Animation Type', 'tatsu' ),
 				'default' => 'none',
 				'tooltip' => '',
 			),
@@ -451,7 +451,7 @@ function tatsu_register_svg_icon()
 				   'unit' => 'ms',
 			   ),
 			   'default' => '0',	        		
-			   'label' => __( 'Animation Delay', 'tatsu' ),
+			   'label' => esc_html__( 'Animation Delay', 'tatsu' ),
 			   'tooltip' => '',
 			   'visible' => array( 'animation_type', '!=', 'none' ),
 			),

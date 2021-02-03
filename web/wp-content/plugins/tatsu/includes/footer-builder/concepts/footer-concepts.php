@@ -2,7 +2,7 @@
 add_action( 'tatsu_register_footer_concepts', 'tatsu_register_footer_concepts' );
 function tatsu_register_footer_concepts() {
 	tatsu_register_footer_concept( 'simple', array(
-			'title' => 'Simple',
+			'title' => esc_html__('Simple', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/footer-builder/concepts/img/simple.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -12,7 +12,7 @@ function tatsu_register_footer_concepts() {
 	);
 
 	tatsu_register_footer_concept( 'shop', array(
-			'title' => 'Shop',
+			'title' => esc_html__('Shop', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/footer-builder/concepts/img/shop.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -23,7 +23,7 @@ function tatsu_register_footer_concepts() {
 	);
 	
 	tatsu_register_footer_concept( 'minimal', array(
-			'title' => 'Minimal',
+			'title' => esc_html__('Minimal', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/footer-builder/concepts/img/minimal.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -33,7 +33,7 @@ function tatsu_register_footer_concepts() {
 	);	
 
 	tatsu_register_footer_concept( 'subscribe', array(
-			'title' => 'With Subscription Box',
+			'title' => esc_html__('With Subscription Box', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/footer-builder/concepts/img/subscribe.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -43,7 +43,7 @@ function tatsu_register_footer_concepts() {
 	);	
 
 	tatsu_register_footer_concept( 'professional', array(
-			'title' => 'Professional',
+			'title' => esc_html__('Professional', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/footer-builder/concepts/img/professional.jpg',
 			'is_built_in' => true,
 			'width' => '520',

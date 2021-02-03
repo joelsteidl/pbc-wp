@@ -42,7 +42,7 @@ if ( ! function_exists( 'be_icon_card' ) ) {
         }
         $classes[] = $size;
         $classes[] = $style;
-
+		$icon_label = str_replace(array('tatsu','icon','-','_'),'',$icon);
 
 		$caption_tag = 'div';
 		if ('body' == $caption_font){
@@ -54,7 +54,7 @@ if ( ! function_exists( 'be_icon_card' ) ) {
 			$caption_tag = $caption_font;
 		}
 		$output .= '<div ' .$css_id . ' class = "' . implode( ' ', $classes ) . '" ' . $data_animations . ' >';
-		$output .= '<i class="font-icon '.$icon.'  " ></i>';
+		$output .= '<i class="font-icon '.$icon.'  " aria-label = "'.$icon_label.'" ></i>';
 		$output .= '<div class="title-with-icon-card" >';
 		$output .= !empty($title) ? '<'.$title_font.' class="title" >'.$title.'</'.$title_font.'>' : '';
 		$output .= !empty($caption) ? '<'.$caption_tag.' class="caption '.$caption_font_style.'" >'.$caption.'</'.$caption_tag.'>' : '';

@@ -240,8 +240,6 @@ if( !class_exists('Tatsu_Parser')) {
 								}
 							}
 						} else {
-						//	$atts['id'] = '';
-						//	$atts['image'] = '';
 							$atts['image_varying_size_src'] = '';
 							$atts['size'] = 'full';
 						}
@@ -321,7 +319,6 @@ if( !class_exists('Tatsu_Parser')) {
 					}
 
 					if( array_key_exists('bg_overlay', $atts) && empty( $atts['bg_overlay'] ) ){
-						//$atts['overlay_color'] = '';
 						$atts['overlay_blend_mode'] = 'none';
 					}
 
@@ -372,12 +369,6 @@ if( !class_exists('Tatsu_Parser')) {
 
 				if( 'tatsu_button' === $tag || 'tatsu_gradient_button' === $tag){
 					if( array_key_exists( 'enable_margin',$atts) && empty( $atts['enable_margin'] ) ){
-
-						// if( $atts['alignment'] === 'none' ){
-						// 	$atts['margin'] = '{"d":"0px 0px 10px 0px"}';
-						// } else {
-						// 	$atts['margin'] = '{"d":"0px 0px 40px 0px"}';
-						// }
 						$atts['margin'] = '';
 					}
 

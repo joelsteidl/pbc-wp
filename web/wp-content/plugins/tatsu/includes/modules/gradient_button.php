@@ -21,14 +21,8 @@ if (!function_exists('tatsu_gradient_button')) {
 			'animate' => 0,
 			'animation_type' => 'fadeIn',
 			'animation_delay' => 0,
-			// 'enable_box_shadow' => 0,
-			// 'box_shadow_custom' => '',
 			'enable_margin' => 'null',
 			'margin' => '',
-			// 'custom_button_height' => '',
-			// 'custom_button_width' => '',
-			// 'custom_text_size' => '',
-			// 'custom_text_letter_spacing' => '',
 			'hover_effect' => '',
 			'builder_mode' => '',
 			'light_color' => '#f5f5f5',
@@ -52,7 +46,6 @@ if (!function_exists('tatsu_gradient_button')) {
 		
 		extract( $atts );
 
-		//$custom_style_tag = !empty( $module_name ) ? be_generate_css_from_atts( $atts, 'tatsu_gradient_button', $key ) : '';
 		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key, $builder_mode );
 		$unique_class_name = 'tatsu-'.$key;
 		$css_id = be_get_id_from_atts( $atts );
@@ -121,14 +114,6 @@ if (!function_exists('tatsu_gradient_button')) {
 			}
 		}
 
-		//Handle Resposive Visibility controls
-		// if( !empty( $hide_in ) ) {
-		// 	$hide_in = explode(',', $hide_in);
-		// 	foreach ( $hide_in as $device ) {
-		// 		$visibility_classes .= ' tatsu-hide-'.$device;
-		// 	}
-		// }
-
 		$output .= '
 		<div '.$css_id.' class="tatsu-module tatsu-gradient-button tatsu-button-container tatsu-'.$type.'-button '.$alignment.' '.$unique_class_name.' '.$hover_bg_class.' '.$hover_effect.' '.$visibility_classes.' '.$css_classes.'">
 			<div class="tatsu-button-wrap ' . $animate . '" '.$data_animations.'>
@@ -138,7 +123,6 @@ if (!function_exists('tatsu_gradient_button')) {
 			</div>
 			'.$custom_style_tag.'
 		</div>';
-		//$output .= $custom_style_tag;
 		return $output;
 	}
 	add_shortcode( 'tatsu_gradient_button', 'tatsu_gradient_button' );
@@ -171,7 +155,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Text Color', 'tatsu' ),
+				'label' => esc_html__( 'Text Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'css' => true,
@@ -185,7 +169,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_bg_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'css' => true,
@@ -200,7 +184,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_border_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'css' => true,
@@ -215,7 +199,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_hover_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Text Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Text Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -229,7 +213,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_hover_bg_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -244,7 +228,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['light_hover_border_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Border Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -259,7 +243,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Text Color', 'tatsu' ),
+				'label' => esc_html__( 'Text Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'css' => true,
@@ -273,7 +257,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_bg_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'css' => true,
@@ -288,7 +272,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_border_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'css' => true,
@@ -303,7 +287,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_hover_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Text Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Text Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -317,7 +301,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_hover_bg_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -332,7 +316,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			$atts['dark_hover_border_color'] = array (
 				'type' => 'color',
 				'options' => array ( 'gradient' => true ),
-				'label' => __( 'Hover Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Border Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -346,7 +330,7 @@ if( !function_exists( 'tatsu_gradient_button_header_atts' ) ) {
 			// Modify Atts
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -376,7 +360,7 @@ function tatsu_register_gradient_button()
 
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#button',
-		'title' => __('Gradient Button', 'tatsu'),
+		'title' => esc_html__('Gradient Button', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'inline' => true,
@@ -392,7 +376,7 @@ function tatsu_register_gradient_button()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'button_text',
 							'url',
@@ -405,7 +389,7 @@ function tatsu_register_gradient_button()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=>
 						array(
 							array(
@@ -414,7 +398,7 @@ function tatsu_register_gradient_button()
 								'group' => array(
 									array( //Shape and Size Accordion
 										'type' => 'panel',
-										'title' => __('Style and Alignment', 'tatsu'),
+										'title' => esc_html__('Style and Alignment', 'tatsu'),
 										'group' => array(
 											'type',
 											'alignment',
@@ -423,7 +407,7 @@ function tatsu_register_gradient_button()
 									'border_width', //border property
 									array( //color accordion
 										'type'		=> 'panel',
-										'title'		=> __('Colors', 'tatsu'),
+										'title'		=> esc_html__('Colors', 'tatsu'),
 										'group'		=> array(
 											array(
 												'type'  	=> 'tabs',
@@ -431,7 +415,7 @@ function tatsu_register_gradient_button()
 												'group'		=> array(
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Normal', 'tatsu'),
+														'title'	=> esc_html__('Normal', 'tatsu'),
 														'group'	=> array(
 															'bg_color',
 															'color',
@@ -440,7 +424,7 @@ function tatsu_register_gradient_button()
 													),
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Hover', 'tatsu'),
+														'title'	=> esc_html__('Hover', 'tatsu'),
 														'group'	=> array(
 															'hover_bg_color',
 															'hover_color',
@@ -453,7 +437,7 @@ function tatsu_register_gradient_button()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Light Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Light Scheme Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'  	=> 'tabs',
@@ -461,7 +445,7 @@ function tatsu_register_gradient_button()
 												'group'		=> array(
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Normal', 'tatsu'),
+														'title'	=> esc_html__('Normal', 'tatsu'),
 														'group'	=> array(
 															'light_bg_color',
 															'light_color',
@@ -470,7 +454,7 @@ function tatsu_register_gradient_button()
 													),
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Hover', 'tatsu'),
+														'title'	=> esc_html__('Hover', 'tatsu'),
 														'group'	=> array(
 															'light_hover_bg_color',
 															'light_hover_color',
@@ -483,7 +467,7 @@ function tatsu_register_gradient_button()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Dark Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Dark Scheme Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'  	=> 'tabs',
@@ -491,7 +475,7 @@ function tatsu_register_gradient_button()
 												'group'		=> array(
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Normal', 'tatsu'),
+														'title'	=> esc_html__('Normal', 'tatsu'),
 														'group'	=> array(
 															'dark_bg_color',
 															'dark_color',														
@@ -500,7 +484,7 @@ function tatsu_register_gradient_button()
 													),
 													array(
 														'type'	=> 'tab',
-														'title'	=> __('Hover', 'tatsu'),
+														'title'	=> esc_html__('Hover', 'tatsu'),
 														'group'	=> array(
 															'dark_hover_bg_color',
 															'dark_hover_color',														
@@ -518,7 +502,7 @@ function tatsu_register_gradient_button()
 					//Tab 3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -526,14 +510,14 @@ function tatsu_register_gradient_button()
 								'group' => array(
 									array( //Spacing and Styling Accordion
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group' => array(
 											'border_style',
 											'border',
@@ -542,7 +526,7 @@ function tatsu_register_gradient_button()
 									),
 									array(  //Shadow accordion
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group' => array(
 											array(
 												'type'  	=> 'tabs',
@@ -550,7 +534,7 @@ function tatsu_register_gradient_button()
 												'group'		=> array(
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Normal', 'tatsu'),
+														'title'		=> esc_html__('Normal', 'tatsu'),
 														'group'		=> array(
 															'box_shadow',
 
@@ -558,7 +542,7 @@ function tatsu_register_gradient_button()
 													),
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Hover', 'tatsu'),
+														'title'		=> esc_html__('Hover', 'tatsu'),
 														'group'		=> array(
 															'hover_box_shadow',
 														),
@@ -569,7 +553,7 @@ function tatsu_register_gradient_button()
 									),
 									array( //Animation accordion
 										'type' => 'panel',
-										'title' => __('Animation', 'tatsu'),
+										'title' => esc_html__('Animation', 'tatsu'),
 										'group' => array(
 											'hover_effect',
 										)
@@ -585,7 +569,7 @@ function tatsu_register_gradient_button()
 			array(
 				'att_name' => 'button_text',
 				'type' => 'text',
-				'label' => __('Text', 'tatsu'),
+				'label' => esc_html__('Text', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -596,14 +580,14 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'placeholder' => 'https://example.com',
 				),
-				'label' => __('Link URL', 'tatsu'),
+				'label' => esc_html__('Link URL', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'new_tab',
 				'type' => 'switch',
-				'label' => __('Open in a new tab', 'tatsu'),
+				'label' => esc_html__('Open in a new tab', 'tatsu'),
 				'default' => '0',
 				'tooltip' => '',
 				'visible' => array('url', '!=', ''),
@@ -612,14 +596,13 @@ function tatsu_register_gradient_button()
 				'att_name' => 'type',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Button Size', 'tatsu'),
+				'label' => esc_html__('Button Size', 'tatsu'),
 				'options' => array(
 					'small' => 'S',
 					'medium' => 'M',
 					'large' => 'L',
 					'x-large' => 'XL',
 					'block' => 'Block',
-					//'custom' => 'Custom',
 				),
 				'default' => 'medium',
 				'tooltip' => ''
@@ -628,7 +611,7 @@ function tatsu_register_gradient_button()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'left' => 'Left',
@@ -644,7 +627,7 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -660,7 +643,7 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Hover Background Color', 'tatsu'),
+				'label' => esc_html__('Hover Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -672,12 +655,11 @@ function tatsu_register_gradient_button()
 			),
 			array(
 				'att_name' => 'color',
-				// 'type' => 'color',
 				'type' => 'color',
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Text Color', 'tatsu'),
+				'label' => esc_html__('Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -693,7 +675,7 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Hover Text Color', 'tatsu'),
+				'label' => esc_html__('Hover Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -707,7 +689,7 @@ function tatsu_register_gradient_button()
 				'att_name' => 'border_width',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Border Size', 'tatsu'),
+				'label' => esc_html__('Border Size', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => false,
@@ -734,10 +716,9 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
-				// 'visible' => array( 'border_width', '>', '0' ),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-button-wrap:after' => array(
@@ -752,10 +733,9 @@ function tatsu_register_gradient_button()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Hover Border Color', 'tatsu'),
+				'label' => esc_html__('Hover Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
-				// 'visible' => array( 'border_width', '>', '0' ),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-button-wrap:before' => array(
@@ -768,13 +748,13 @@ function tatsu_register_gradient_button()
 				'att_name' => 'lightbox',
 				'type' => 'switch',
 				'default' => 0,
-				'label' => __('Enable Lightbox Image / Video', 'tatsu'),
+				'label' => esc_html__('Enable Lightbox Image / Video', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'image',
 				'type' => 'single_image_picker',
-				'label' => __('Background Image', 'tatsu'),
+				'label' => esc_html__('Background Image', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('lightbox', '=', '1'),
@@ -782,7 +762,7 @@ function tatsu_register_gradient_button()
 			array(
 				'att_name' => 'video_url',
 				'type' => 'text',
-				'label' => __('Youtube / Vimeo Url in lightbox', 'tatsu'),
+				'label' => esc_html__('Youtube / Vimeo Url in lightbox', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('lightbox', '=', '1'),
@@ -791,7 +771,7 @@ function tatsu_register_gradient_button()
 				'att_name' => 'hover_effect',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Hover Effect', 'tatsu'),
+				'label' => esc_html__('Hover Effect', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'button-transform' => 'Slide up',
@@ -800,40 +780,10 @@ function tatsu_register_gradient_button()
 				'default' => 'none',
 				'tooltip' => ''
 			),
-			// array(
-			// 	'att_name' => 'animate',
-			// 	'type' => 'switch',
-			// 	'default' => 0,
-			// 	'label' => __('Enable Css Animations', 'tatsu'),
-			// 	'tooltip' => ''
-			// ),
-			// array(
-			// 	'att_name' => 'animation_type',
-			// 	'type' => 'select',
-			// 	'options' => tatsu_css_animations(),
-			// 	'label' => __('Animation Type', 'tatsu'),
-			// 	'default' => 'fadeIn',
-			// 	'tooltip' => '',
-			// 	'visible' => array('animate', '=', '1'),
-			// ),
-			// array(
-			// 	'att_name' => 'animation_delay',
-			// 	'type' => 'slider',
-			// 	'options' => array(
-			// 		'min' => '0',
-			// 		'max' => '2000',
-			// 		'step' => '50',
-			// 		'unit' => 'ms',
-			// 	),
-			// 	'default' => '0',
-			// 	'label' => __('Animation Delay', 'tatsu'),
-			// 	'tooltip' => '',
-			// 	'visible' => array('animate', '=', '1'),
-			// ),
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 10px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -860,7 +810,7 @@ function tatsu_register_gradient_button()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -888,7 +838,7 @@ function tatsu_register_gradient_button()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'exclude' => array( 'tatsu_image', 'tatsu_lists' ),
 				'tooltip' => '',
@@ -904,7 +854,7 @@ function tatsu_register_gradient_button()
 			array(
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -918,7 +868,7 @@ function tatsu_register_gradient_button()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Shadow', 'tatsu'),
+				'label' => esc_html__('Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -932,7 +882,7 @@ function tatsu_register_gradient_button()
 			array(
 				'att_name' => 'hover_box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Shadow on hover', 'tatsu'),
+				'label' => esc_html__('Shadow on hover', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,

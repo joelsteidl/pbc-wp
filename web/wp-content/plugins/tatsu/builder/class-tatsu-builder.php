@@ -22,9 +22,9 @@ class Tatsu_Builder {
 	public function init() {
 
 		if ( isset( $_GET['id'] ) ) {
-			$this->post_id = $_GET['id'];
+			$this->post_id = be_sanitize_text_field($_GET['id']);
 		} else if( isset( $_GET['post'] ) ) {
-            $this->post_id = $_GET['post'];
+            $this->post_id = be_sanitize_text_field($_GET['post']);
         } else {
 			$queried_object = get_queried_object();
 			if( is_object( $queried_object ) && isset($queried_object->ID) ) {
@@ -75,7 +75,7 @@ class Tatsu_Builder {
 
 		// Load Tatsu Index Page
 		$this->builder_html_index();
-		die;
+		exit;
 	}
 
 	private function is_edit_mode() {
@@ -207,7 +207,6 @@ class Tatsu_Builder {
 
         }
 
-		//$post_id = get_the_ID();
 		$rest_api_url = remove_query_arg( 'lang', get_rest_url(null, '/tatsu/v1/') );
 		wp_register_script(
 			'tatsu',

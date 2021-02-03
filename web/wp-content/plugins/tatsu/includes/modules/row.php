@@ -14,7 +14,6 @@ if (!function_exists('tatsu_row')) {
 			'swap_cols'	=> 0,		
 	        'hide_in' => '',
 			'layout' => '1/1',
-			//'max_width' => '',
 			'box_shadow' => '',
 			'border_radius' => '',
 			'padding' => '',
@@ -34,10 +33,6 @@ if (!function_exists('tatsu_row')) {
 	    $class = '';
 	    $row_style = '';
 
-		//if(isset( $column_spacing ) && isset( $no_space_columns ) && $column_spacing != '' && $column_spacing != 0 ){
-			//$row_wrapper_start = '';
-			//$row_wrapper_end = '</div>';
-		//}
 		$row_layout = !empty( $layout ) ? preg_replace( '/\s+/', '', $layout ) : '';
 		if( 'tatsu_row' == $tag ) {
 			if( empty( $full_width ) ){
@@ -138,7 +133,7 @@ function tatsu_register_row()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Row', 'tatsu'),
+		'title' => esc_html__('Row', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => 'tatsu_column',
 		'label' => 'Row',
@@ -153,7 +148,7 @@ function tatsu_register_row()
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'full_width',
 							'bg_color',
@@ -163,7 +158,7 @@ function tatsu_register_row()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Column Structure', 'tatsu'),
+										'title' => esc_html__('Column Structure', 'tatsu'),
 										'group' => array(
 											'no_margin_bottom',
 											'equal_height_columns',
@@ -179,7 +174,7 @@ function tatsu_register_row()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -187,7 +182,7 @@ function tatsu_register_row()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 											'padding',
@@ -195,7 +190,7 @@ function tatsu_register_row()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group'		=> array(
 											'border_style',
 											'border',
@@ -205,14 +200,14 @@ function tatsu_register_row()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group' => array(
 											'box_shadow',
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Identifiers', 'tatsu'),
+										'title' => esc_html__('Identifiers', 'tatsu'),
 										'group' => array(
 											'row_id',
 											'row_class'
@@ -229,7 +224,7 @@ function tatsu_register_row()
 			array(
 				'att_name' => 'full_width',
 				'type' => 'switch',
-				'label' => __('Full Width Row', 'tatsu'),
+				'label' => esc_html__('Full Width Row', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -239,7 +234,7 @@ function tatsu_register_row()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -252,7 +247,7 @@ function tatsu_register_row()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -280,7 +275,7 @@ function tatsu_register_row()
 			array(
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __('Border Width', 'tatsu'),
+				'label' => esc_html__('Border Width', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'responsive' => true,
@@ -304,7 +299,7 @@ function tatsu_register_row()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -324,21 +319,21 @@ function tatsu_register_row()
 			array(
 				'att_name' => 'no_margin_bottom',
 				'type' => 'switch',
-				'label' => __('Nullify default bottom margin of columns', 'tatsu'),
+				'label' => esc_html__('Nullify default bottom margin of columns', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'equal_height_columns',
 				'type' => 'switch',
-				'label' => __('Equal height columns ?', 'tatsu'),
+				'label' => esc_html__('Equal height columns ?', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'gutter',
 				'type' => 'select',
-				'label' => __('Column Spacing', 'tatsu'),
+				'label' => esc_html__('Column Spacing', 'tatsu'),
 				'options' => array(
 					'tiny' => 'Tiny',
 					'small' => 'Small',
@@ -354,7 +349,7 @@ function tatsu_register_row()
 				'att_name' => 'column_spacing',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Custom Spacing', 'tatsu'),
+				'label' => esc_html__('Custom Spacing', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -366,21 +361,21 @@ function tatsu_register_row()
 			array(
 				'att_name'	=> 'fullscreen_cols',
 				'type'		=> 'switch',
-				'label'		=> __('Fullscreen Columns', 'tatsu'),
+				'label'		=> esc_html__('Fullscreen Columns', 'tatsu'),
 				'default'	=> 0,
 				'tooltip'	=> ''
 			),
 			array(
 				'att_name'		=> 'swap_cols',
 				'type'			=> 'switch',
-				'label'			=> __('Swap Columns in Mobile', 'tatsu'),
+				'label'			=> esc_html__('Swap Columns in Mobile', 'tatsu'),
 				'default'		=> 0,
 				'tooltip'		=> ''
 			),
 			array(
 				'att_name' => 'padding',
 				'type' => 'input_group',
-				'label' => __('Padding', 'tatsu'),
+				'label' => esc_html__('Padding', 'tatsu'),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -395,7 +390,7 @@ function tatsu_register_row()
 			array(
 				'att_name' => 'margin',
 				'type' => 'negative_number',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px',
 				'options' => array(
 					'labels' => array('Top', 'Bottom'),
@@ -420,21 +415,21 @@ function tatsu_register_row()
 			array(
 				'att_name' => 'row_id',
 				'type' => 'text',
-				'label' => __('CSS ID', 'tatsu'),
+				'label' => esc_html__('CSS ID', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'row_class',
 				'type' => 'text',
-				'label' => __('CSS Classes', 'tatsu'),
+				'label' => esc_html__('CSS Classes', 'tatsu'),
 				'default' => '',
 				'tooltip' => 'Use this to add a css class identifier to this Row. Separate multiple classes using Comma',
 			),
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Box Shadow', 'tatsu'),
+				'label' => esc_html__('Box Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -449,7 +444,7 @@ function tatsu_register_row()
 				'att_name' => 'border_radius',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Border Radius', 'tatsu'),
+				'label' => esc_html__('Border Radius', 'tatsu'),
 				'options' => array(
 					'unit' => array( 'px', '%' ),
 					'add_unit_to_value' => true,
@@ -474,7 +469,7 @@ function tatsu_register_inner_row()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#inner_row',
-		'title' => __('Inner Row', 'tatsu'),
+		'title' => esc_html__('Inner Row', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => 'tatsu_inner_column',
 		'allowed_sub_modules' => array('tatsu_inner_column'),
@@ -489,7 +484,7 @@ function tatsu_register_inner_row()
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'bg_color',
 							array(
@@ -498,7 +493,7 @@ function tatsu_register_inner_row()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Column Structure', 'tatsu'),
+										'title' => esc_html__('Column Structure', 'tatsu'),
 										'group' => array(
 											'no_margin_bottom',
 											'equal_height_columns',
@@ -513,7 +508,7 @@ function tatsu_register_inner_row()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -521,7 +516,7 @@ function tatsu_register_inner_row()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 											'padding',
@@ -529,7 +524,7 @@ function tatsu_register_inner_row()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group'		=> array(
 											'border_style',
 											'border',
@@ -539,14 +534,14 @@ function tatsu_register_inner_row()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group' => array(
 											'box_shadow',
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Identifiers', 'tatsu'),
+										'title' => esc_html__('Identifiers', 'tatsu'),
 										'group' => array(
 											'row_id',
 											'row_class'
@@ -563,21 +558,21 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'no_margin_bottom',
 				'type' => 'switch',
-				'label' => __('Nullify Default Bottom Margin Of Columns', 'tatsu'),
+				'label' => esc_html__('Nullify Default Bottom Margin Of Columns', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'equal_height_columns',
 				'type' => 'switch',
-				'label' => __('Equal Height Columns ?', 'tatsu'),
+				'label' => esc_html__('Equal Height Columns ?', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'gutter',
 				'type' => 'select',
-				'label' => __('Column Spacing', 'tatsu'),
+				'label' => esc_html__('Column Spacing', 'tatsu'),
 				'options' => array(
 					'tiny' => 'Tiny',
 					'small' => 'Small',
@@ -592,7 +587,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'column_spacing',
 				'type' => 'number',
-				'label' => __('Custom Spacing', 'tatsu'),
+				'label' => esc_html__('Custom Spacing', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -604,7 +599,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name'		=> 'swap_cols',
 				'type'			=> 'switch',
-				'label'			=> __('Swap Columns in Mobile', 'tatsu'),
+				'label'			=> esc_html__('Swap Columns in Mobile', 'tatsu'),
 				'default'		=> 0,
 				'tooltip'		=> ''
 			),
@@ -614,7 +609,7 @@ function tatsu_register_inner_row()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -627,7 +622,7 @@ function tatsu_register_inner_row()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -655,7 +650,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __('Border Width', 'tatsu'),
+				'label' => esc_html__('Border Width', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'responsive' => true,
@@ -679,7 +674,7 @@ function tatsu_register_inner_row()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -700,7 +695,7 @@ function tatsu_register_inner_row()
 				'att_name' => 'border_radius',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Border Radius', 'tatsu'),
+				'label' => esc_html__('Border Radius', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -718,7 +713,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Box Shadow', 'tatsu'),
+				'label' => esc_html__('Box Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -732,7 +727,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'margin',
 				'type' => 'negative_number',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px',
 				'options' => array(
 					'labels' => array('Top', 'Bottom'),
@@ -757,7 +752,7 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'padding',
 				'type' => 'input_group',
-				'label' => __('Padding', 'tatsu'),
+				'label' => esc_html__('Padding', 'tatsu'),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -772,14 +767,14 @@ function tatsu_register_inner_row()
 			array(
 				'att_name' => 'row_id',
 				'type' => 'text',
-				'label' => __('CSS ID', 'tatsu'),
+				'label' => esc_html__('CSS ID', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'row_class',
 				'type' => 'text',
-				'label' => __('CSS Classes', 'tatsu'),
+				'label' => esc_html__('CSS Classes', 'tatsu'),
 				'default' => '',
 				'tooltip' => 'Use this to add a css class identifier to this Row. Separate multiple classes using Comma',
 			),

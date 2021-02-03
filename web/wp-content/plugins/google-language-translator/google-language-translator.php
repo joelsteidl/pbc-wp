@@ -2,7 +2,7 @@
 /*
 Plugin Name: Google Language Translator
 Plugin URI: https://gtranslate.io/?xyz=3167
-Version: 6.0.6
+Version: 6.0.8
 Description: The MOST SIMPLE Google Translator plugin.  This plugin adds Google Translator to your website by using a single shortcode, [google-translator]. Settings include: layout style, hide/show specific languages, hide/show Google toolbar, and hide/show Google branding. Add the shortcode to pages, posts, and widgets.
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io

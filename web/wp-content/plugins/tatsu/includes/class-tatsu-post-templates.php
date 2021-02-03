@@ -22,10 +22,10 @@
         public function init() {
             $this->templates = apply_filters( 'tatsu_post_templates', array( 
                 'page' => array (
-                    'blank.php' => 'Tatsu Template'
+                    'blank.php' => esc_html__('Tatsu Template', 'tatsu')
                 ),
                 'post'  => array (
-                    'blank.php' => 'Tatsu Template',
+                    'blank.php' => esc_html__('Tatsu Template', 'tatsu'),
                 )
             ) );
             if ( !version_compare( floatval( get_bloginfo( 'version' ) ), '4.7', '<' ) ) {

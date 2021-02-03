@@ -124,14 +124,10 @@ class Tatsu_Admin {
 		if( empty( $edited_with ) ) {
 			$edited_with = 'editor';	
 		}?>
-		<input type="hidden" id="tatsu_edited_with" name="_edited_with" value="<?php echo $edited_with; ?>" /> 
+		<input type="hidden" id="tatsu_edited_with" name="_edited_with" value="<?php echo esc_attr($edited_with); ?>" /> 
 		<div id="tatsu_buttons">
-			<a href="<?php echo tatsu_edit_url( $post_id ); ?>" id="edit_with_tatsu_button" class="tatsu_edit_button">
-				Edit With Tatsu
-			</a>
-			<a href="#" id="edit_with_wordpress_editor" class="tatsu_edit_button">
-				Switch To Wordpress Editor
-			</a>
+			<a href="<?php echo tatsu_edit_url( $post_id ); ?>" id="edit_with_tatsu_button" class="tatsu_edit_button"><?php esc_html_e('Edit with Tatsu' , 'tatsu');?></a>
+			<a href="#" id="edit_with_wordpress_editor" class="tatsu_edit_button"><?php esc_html_e('Switch To Wordpress Editor' , 'tatsu');?></a>
 		</div>
 		<div id="tatsu_edit_post_wrap">
 			<a href="<?php echo tatsu_edit_url( $post_id ); ?>">
@@ -139,7 +135,7 @@ class Tatsu_Admin {
                     <svg width="120px" height="35px" viewBox="0 0 233 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                         <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
                         <title>Tatsu</title>
-                        <desc>Created with Sketch.</desc>
+						<desc><?php esc_html_e('Created with Sketch.' , 'tatsu');?></desc>
                         <defs></defs>
                         <g id="Artboard" stroke="none" stroke-width="1" fill-rule="evenodd" transform="translate(-484.000000, -295.000000)">
                             <g id="Tatsu" transform="translate(483.000000, 267.000000)" >
@@ -147,7 +143,7 @@ class Tatsu_Admin {
                             </g>
                         </g>
                     </svg>
-					<span>Edit With Tatsu</span>
+					<span><?php echo esc_html__('Edit With Tatsu' , 'tatsu'); ?></span>
 				</span>
 			</a>			
 		</div>	
@@ -187,7 +183,7 @@ class Tatsu_Admin {
         if ( empty( $_GET['post_type'] ) ) {
 			$post_type = 'post';
 		} else {
-			$post_type = $_GET['post_type'];
+			$post_type = be_sanitize_text_field($_GET['post_type']);
         }
         
         if( !tatsu_is_post_type_editable_by_current_user( $post_type ) ) {
@@ -219,9 +215,21 @@ class Tatsu_Admin {
 				wp_update_post($post_data);
 				wp_redirect( tatsu_edit_url( $post_id ) );
 			}
-			die;
+			exit;
 		}else {
 			wp_die( sprintf( 'Type %s does not exist.', $post_type ) );
+		}
+	}
+
+	public function tatsu_admin_menu() {
+		add_menu_page('Tatsu', 'Tatsu', 'manage_options', 'tatsu_settings', 'tatsu_settings_page', '');
+		add_submenu_page('tatsu_settings', 'Settings', 'Settings', 'manage_options', 'tatsu_settings', 'tatsu_settings_page');
+		add_submenu_page('tatsu_settings', 'Global Sections', 'Global Sections', 'manage_options', 'edit.php?post_type=tatsu_gsections');
+		if( current_theme_supports( 'tatsu-header-builder' ) ) {
+			add_submenu_page('tatsu_settings', 'Headers', 'Headers', 'manage_options', 'edit.php?post_type=' . TATSU_HEADER_CPT_NAME);
+		}
+		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
+			add_submenu_page('tatsu_settings', 'Footer', 'Footer', 'manage_options', 'edit.php?post_type=' . TATSU_FOOTER_CPT_NAME);
 		}
 	}
 
@@ -256,9 +264,9 @@ class Tatsu_Admin {
 					'thumbnail',
 					'revisions'
 				),
-				//'taxonomies' => array( 'category', 'post_tag' ),
 				'menu_position' => 5,
 				'exclude_from_search' =>  false,
+				'show_in_menu' => false
 			);
 			register_post_type( 'tatsu_gsections',$args );
 		}
@@ -292,9 +300,9 @@ class Tatsu_Admin {
 					'thumbnail',
 					'revisions'
 				),
-				//'taxonomies' => array( 'category', 'post_tag' ),
 				'menu_position' => 4,
 				'exclude_from_search' =>  true,
+				'show_in_menu' => false
 			);
 			register_post_type( TATSU_HEADER_CPT_NAME, $args );
 		}
@@ -328,9 +336,9 @@ class Tatsu_Admin {
 					'thumbnail',
 					'revisions'
 				),
-				//'taxonomies' => array( 'category', 'post_tag' ),
 				'menu_position' => 5,
 				'exclude_from_search' =>  true,
+				'show_in_menu' => false
 			);
 			register_post_type( TATSU_FOOTER_CPT_NAME, $args );
 		}
@@ -341,7 +349,7 @@ class Tatsu_Admin {
         $admin_load = get_option( 'tatsu_admin_load', false );
 		if ( TATSU_HEADER_CPT_NAME == $screen->id || TATSU_FOOTER_CPT_NAME == $screen->id ) {
             global $post;
-			$post_id = $_GET[ 'post' ];
+			$post_id = be_sanitize_text_field($_GET[ 'post' ]);
             if( !tatsu_is_post_editable_by_current_user( $post_id ) ) {
                 return;
             }
@@ -523,7 +531,7 @@ class Tatsu_Admin {
 										'light' => 'Light',
 			),
 			'section'			=> $section_name,
-			'label'				=> __( 'Tatsu UI Theme', 'tatsu' ),
+			'label'				=> esc_html__( 'Tatsu UI Theme', 'tatsu' ),
         ) );
         
         $wp_customize->add_setting( 'tatsu_admin_load', array (
@@ -534,8 +542,8 @@ class Tatsu_Admin {
         $wp_customize->add_control( 'tatsu_admin_load', array (
             'type'  => 'checkbox',
             'section'  => $section_name,
-            'label' => __( 'Admin Side Loading', 'tatsu' ),
-            'description' => __( 'Debug/Plugin Compatibility Mode', 'tatsu' ),
+            'label' => esc_html__( 'Admin Side Loading', 'tatsu' ),
+            'description' => esc_html__( 'Debug/Plugin Compatibility Mode', 'tatsu' ),
         ) );
 	}
 
@@ -544,6 +552,12 @@ class Tatsu_Admin {
 		if( current_theme_supports('tatsu-global-sections') ){
 			add_submenu_page("options-general.php", 'Tatsu Global Sections', 'Tatsu Global Sections', 'manage_options', 'tatsu_global_section_settings' , 'tatsu_global_section_settings_options' );
 		}
+	}
+
+	public function tatsu_register_setting() {
+		register_setting('tatsu_settings', 'tatsu_active_header');
+		register_setting('tatsu_settings', 'tatsu_active_footer');
+		register_setting('tatsu_settings', 'tatsu_global_section_data');
 	}
 
 	public function tatsu_add_global_section_settings() {
@@ -603,9 +617,9 @@ class Tatsu_Admin {
 
 			// Sanitize user input.
 			$my_data = array();
-			$my_data['top'] = sanitize_text_field( $_POST['position_top'] );
-			$my_data['penultimate'] = sanitize_text_field( $_POST['position_penultimate'] );
-			$my_data['bottom'] = sanitize_text_field( $_POST['position_bottom'] );
+			$my_data['top'] = be_sanitize_text_field( $_POST['position_top'] );
+			$my_data['penultimate'] = be_sanitize_text_field( $_POST['position_penultimate'] );
+			$my_data['bottom'] = be_sanitize_text_field( $_POST['position_bottom'] );
 
 			// Update the meta field in the database.
 			update_post_meta( $post_id, '_tatsu_global_section_on_post', $my_data );
@@ -645,7 +659,7 @@ class Tatsu_Admin {
 							<label for="tatsu_active_header_override"><strong>Active Header</strong></label>
 							<select name="tatsu_active_header_override" id="tatsu_active_header_override">
 								<?php foreach( $headers_list as $header_name => $header_title ) : ?>
-                                    <option value = "<?php echo $header_name; ?>" <?php selected( $active_header_override, $header_name ); ?>><?php echo $header_title; ?></option>
+									<option value = "<?php echo $header_name; ?>" <?php selected( $active_header_override, $header_name ); ?>><?php echo esc_html($header_title); ?></option>
                                 <?php endforeach; ?>
 							</select>
 						</p>
@@ -701,11 +715,11 @@ class Tatsu_Admin {
         }
 
         $my_data = array();
-        $my_data['tatsu_active_header_override'] = $_POST['tatsu_active_header_override'];
-		$my_data['tatsu_page_header_style'] = $_POST['tatsu_page_header_style'];
-		$my_data['tatsu_page_header_scheme'] = $_POST['tatsu_page_header_scheme'];
-		$my_data[ 'tatsu_header_auto_pad' ] = $_POST['tatsu_header_auto_pad'];
-		$my_data[ 'tatsu_header_single_page_site' ] = $_POST['tatsu_header_single_page_site'];
+        $my_data['tatsu_active_header_override'] = be_sanitize_text_field($_POST['tatsu_active_header_override']);
+		$my_data['tatsu_page_header_style'] = be_sanitize_text_field($_POST['tatsu_page_header_style']);
+		$my_data['tatsu_page_header_scheme'] = be_sanitize_text_field($_POST['tatsu_page_header_scheme']);
+		$my_data[ 'tatsu_header_auto_pad' ] = be_sanitize_text_field($_POST['tatsu_header_auto_pad']);
+		$my_data[ 'tatsu_header_single_page_site' ] = be_sanitize_text_field($_POST['tatsu_header_single_page_site']);
 
 		update_post_meta( $post_id, '_tatsu_header_options', $my_data );
 	}

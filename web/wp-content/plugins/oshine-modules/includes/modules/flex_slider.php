@@ -2,15 +2,18 @@
 /**************************************
 			BE IMAGE SLIDER
 **************************************/
+session_start();
 if (!function_exists('be_flex_slider')) {
 	function be_flex_slider( $atts, $content, $tag ) {
 		$atts =  shortcode_atts( array(
 			'slide_show' => '0',
             'slide_show_speed' => 1000,
+			'adaptive_image'    => 0,
             'key' => be_uniqid_base36(true),
         ), $atts, $tag );
         extract( $atts );
 	    global $be_themes_data;
+		$_SESSION['adaptive_image'] = $adaptive_image;
 		if(!isset($be_themes_data['slider_navigation_style']) || empty($be_themes_data['slider_navigation_style'])) {
 			$arrow_style = 'style1-arrow';
 		} else {
@@ -48,7 +51,7 @@ if (!function_exists('be_flex_slider')) {
 }
 
 if (!function_exists('be_flex_slide')) {
-	function be_flex_slide( $atts, $content ){
+	function be_flex_slide( $atts, $content){
 			extract( shortcode_atts( array(
 				'image'=>'',
 				'video'=>'',
@@ -71,7 +74,15 @@ if (!function_exists('be_flex_slide')) {
 				if ( !empty( $image ) ) { // check if the post has a Post Thumbnail assigned to it.
 					//$attachment_info = wp_get_attachment_image_src( $image, $size );
 					//$attachment_url = $attachment_info[0];
-					$output .=  '<img src="'.$image.'" alt="" />';
+					//print_r($attachment_info);
+					if(!empty($_SESSION['adaptive_image']) && $_SESSION['adaptive_image'] == 1){
+						$image_id = attachment_url_to_postid($image);
+						$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full');
+						//print_r($image)	;
+						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" />';
+					}else{
+						$output .=  '<img src="'.$image.'" alt="" />';
+					}
 				}
 			}
 	        $output .='</div>';
@@ -101,7 +112,8 @@ function oshine_register_flex_slider() {
 							'title'	=>	__( 'Style' , 'oshine-modules'),
 							'group'	=>	array (								
                                 'slide_show',
-                                'slide_show_speed',											
+                                'slide_show_speed',		
+								'adaptive_image'									
 							)
                         ),
                         array (
@@ -134,6 +146,13 @@ function oshine_register_flex_slider() {
                     'default' => '2000',
                     'visible' => array ( 'slide_show', '=', '1' ),
 					'tooltip' => ''
+				),
+				array(
+					'att_name' => 'adaptive_image',
+					'type' => 'switch',
+					'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
 				),
 			),
 		);

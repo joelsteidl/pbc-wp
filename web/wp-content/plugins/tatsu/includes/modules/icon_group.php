@@ -32,8 +32,6 @@ if ( !function_exists( 'tatsu_icon_group' ) ) {
             $css_classes .= ' tatsu-animate ';
         }
 
-
-		// $output = '<div class="tatsu-module tatsu-icon-group align-'.$alignment.' '.$custom_class_name.' '.$visibility_classes.'" >'.do_shortcode( $content ).'</div>'.$custom_style_tag;		
 		$output = '<div '.$css_id.' class="tatsu-module tatsu-icon-group '.$custom_class_name.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.' >' . $custom_style_tag .do_shortcode( $content ).'</div>';		
 		return $output;	
 	}	
@@ -47,7 +45,7 @@ if( !function_exists( 'tatsu_icon_group_header_atts' ) ) {
 			// New Atts
 			$atts['hide_in'] = array (
 				'type' => 'screen_visibility',
-				'label' => __( 'Hide in', 'tatsu' ),
+				'label' => esc_html__( 'Hide in', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 			);
@@ -58,7 +56,7 @@ if( !function_exists( 'tatsu_icon_group_header_atts' ) ) {
 			// Modify Atts
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -83,7 +81,7 @@ function tatsu_register_icon_group()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#icon_group',
-		'title' => __('Icon Group', 'tatsu'),
+		'title' => esc_html__('Icon Group', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => 'tatsu_icon',
 		'type' => 'multi',
@@ -95,14 +93,14 @@ function tatsu_register_icon_group()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'alignment'
 						)
 					),
 					array(
 						'type'	=> 'tab',
-						'title'	=> __('Advanced', 'tatsu'),
+						'title'	=> esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -110,7 +108,7 @@ function tatsu_register_icon_group()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title'=> __('Spacing', 'tatsu'),
+										'title'=> esc_html__('Spacing', 'tatsu'),
 										'group'=> array(
 											'margin'
 										)
@@ -127,7 +125,7 @@ function tatsu_register_icon_group()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -146,7 +144,7 @@ function tatsu_register_icon_group()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'responsive' => true,

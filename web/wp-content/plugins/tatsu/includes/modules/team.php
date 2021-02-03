@@ -158,7 +158,7 @@ add_action('tatsu_register_modules', 'tatsu_register_team');
 function tatsu_register_team() {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#team',
-		'title' => __('Team', 'tatsu'),
+		'title' => esc_html__('Team', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -170,7 +170,7 @@ function tatsu_register_team() {
                 'group' => array (
                     array (
                         'type'  => 'tab',
-                        'title' => __( 'Content', 'tatsu' ),
+                        'title' => esc_html__( 'Content', 'tatsu' ),
                         'group' => array (
                             'title',
                             'designation',
@@ -183,7 +183,7 @@ function tatsu_register_team() {
                                 'group' => array (
                                     array(
                                         'type' => 'panel',
-                                        'title' => __('Social Icons', 'tatsu'),
+                                        'title' => esc_html__('Social Icons', 'tatsu'),
                                         'group'	=> array(
                                             'facebook',
                                             'twitter',
@@ -199,7 +199,7 @@ function tatsu_register_team() {
                     ),
                     array (
                         'type'  => 'tab',
-                        'title' => __( 'Style', 'tatsu' ),
+                        'title' => esc_html__( 'Style', 'tatsu' ),
                         'group' => array (
                             'style',
                             array(
@@ -208,14 +208,14 @@ function tatsu_register_team() {
                                 'group' => array (
                                     array (
                                         'type'  => 'panel',
-                                        'title' => __( 'Colors', 'tatsu' ),
+                                        'title' => esc_html__( 'Colors', 'tatsu' ),
                                         'group' => array (
                                             array(
                                                 'type'  => 'tabs',
                                                 'group' => array (
                                                     array (
                                                         'type'  => 'tab',
-                                                        'title' => __( 'Normal', 'tatsu' ),
+                                                        'title' => esc_html__( 'Normal', 'tatsu' ),
                                                         'group' => array (
                                                             'title_color',
                                                             'designation_color',                                                            
@@ -225,7 +225,7 @@ function tatsu_register_team() {
                                                     ),
                                                     array (
                                                         'type'  => 'tab',
-                                                        'title' => __( 'Hover', 'tatsu' ),
+                                                        'title' => esc_html__( 'Hover', 'tatsu' ),
                                                         'group' => array (
                                                             'name_hover_color',
                                                             'designation_hover_color',
@@ -238,7 +238,7 @@ function tatsu_register_team() {
                                     ),
                                     array (
                                         'type'  => 'panel',
-                                        'title' => __( 'Typography', 'tatsu' ),
+                                        'title' => esc_html__( 'Typography', 'tatsu' ),
                                         'group' => array (
                                             'name_font',
                                             'designation_font',
@@ -246,7 +246,7 @@ function tatsu_register_team() {
                                     ),
                                     array (
                                         'type'  => 'panel',
-                                        'title' => __( 'Alignment', 'tatsu' ),
+                                        'title' => esc_html__( 'Alignment', 'tatsu' ),
                                         'group' => array (
                                             'vertical_alignment',
                                             'title_alignment_static',
@@ -258,7 +258,7 @@ function tatsu_register_team() {
                     ),
                     array (
                         'type'  => 'tab',
-                        'title' => __( 'Advanced', 'tatsu' ),
+                        'title' => esc_html__( 'Advanced', 'tatsu' ),
                         'group' => array (
                             array(
                                 'type'  => 'accordion',
@@ -276,7 +276,7 @@ function tatsu_register_team() {
 				'att_name'	=> 'style',
                 'type'	=> 'button_group',
                 'is_inline' => true,
-				'label'	=> __('Style', 'tatsu'),
+				'label'	=> esc_html__('Style', 'tatsu'),
 				'options'	=> array(
 					'style1'	=> 'Style 1',
 					'style2'	=> 'Style 2'
@@ -286,21 +286,21 @@ function tatsu_register_team() {
 			array(
 				'att_name' => 'title',
 				'type' => 'text',
-				'label' => __('Name', 'tatsu'),
+				'label' => esc_html__('Name', 'tatsu'),
 				'default' => '',
 				'tooltip' => 'Name or Title for the Team Member'
 			),
 			array(
 				'att_name' => 'designation',
 				'type' => 'text',
-				'label' => __('Designation', 'tatsu'),
+				'label' => esc_html__('Designation', 'tatsu'),
 				'default' => '',
 				'tooltip' => 'Designation of the Team Member'
 			),
 			array(
 				'att_name' => 'image',
 				'type' => 'single_image_picker',
-				'label' => __('Image', 'tatsu'),
+				'label' => esc_html__('Image', 'tatsu'),
 				'tooltip' => '',
 			),
 			array(
@@ -309,7 +309,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => false,
 				),
-				'label' => __('Name', 'tatsu'),
+				'label' => esc_html__('Name', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -325,7 +325,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => false,
 				),
-				'label' => __('Name', 'tatsu'),
+				'label' => esc_html__('Name', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -341,7 +341,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => false,
 				),
-				'label' => __('Designation', 'tatsu'),
+				'label' => esc_html__('Designation', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -357,7 +357,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => false,
 				),
-				'label' => __('Designation', 'tatsu'),
+				'label' => esc_html__('Designation', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -370,49 +370,49 @@ function tatsu_register_team() {
 			array(
 				'att_name' => 'facebook',
 				'type' => 'text',
-				'label' => __('Facebook', 'tatsu'),
+				'label' => esc_html__('Facebook', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'twitter',
 				'type' => 'text',
-				'label' => __('Twitter', 'tatsu'),
+				'label' => esc_html__('Twitter', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'google_plus',
 				'type' => 'text',
-				'label' => __('Google Plus', 'tatsu'),
+				'label' => esc_html__('Google Plus', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'instagram',
 				'type' => 'text',
-				'label' => __('Instagram', 'tatsu'),
+				'label' => esc_html__('Instagram', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'linkedin',
 				'type' => 'text',
-				'label' => __('LinkedIn', 'tatsu'),
+				'label' => esc_html__('LinkedIn', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'email',
 				'type' => 'text',
-				'label' => __('Email', 'tatsu'),
+				'label' => esc_html__('Email', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'icon_color',
 				'type' => 'color',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -426,7 +426,7 @@ function tatsu_register_team() {
 			array(
 				'att_name' => 'icon_hover_color',
 				'type' => 'color',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -441,7 +441,7 @@ function tatsu_register_team() {
 				'att_name' => 'vertical_alignment',
                 'type' => 'button_group',
                 'is_inline' => true,
-				'label' => __('Vertical', 'tatsu'),
+				'label' => esc_html__('Vertical', 'tatsu'),
 				'options' => array(
 					'flex-start' => 'Top',
 					'center' => 'Center',
@@ -461,7 +461,7 @@ function tatsu_register_team() {
 				'att_name' => 'title_alignment_static',
                 'type' => 'button_group',
                 'is_inline' => true,
-				'label' => __('Horizontal', 'tatsu'),
+				'label' => esc_html__('Horizontal', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -476,7 +476,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => true,
 				),
-				'label' => __('Overlay', 'tatsu'),
+				'label' => esc_html__('Overlay', 'tatsu'),
 				'default' => '',	//color_scheme
 				'tooltip' => '',
 				'css' => true,
@@ -489,7 +489,7 @@ function tatsu_register_team() {
 			array(
 				'att_name' => 'lazy_load',
 				'type' => 'switch',
-				'label' => __('Lazy Load', 'tatsu'),
+				'label' => esc_html__('Lazy Load', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -499,7 +499,7 @@ function tatsu_register_team() {
 				'options' => array(
 					'gradient' => false,
 				),
-				'label' => __('Placeholder Background', 'tatsu'),
+				'label' => esc_html__('Placeholder Background', 'tatsu'),
 				'default' => '',
                 'tooltip' => '',
                 'visible'  => array ( 'lazy_load', '=', '1' ),
@@ -515,7 +515,7 @@ function tatsu_register_team() {
 				'type'	=> 'select',
 				'att_name'	=> 'name_font',
 				'options'	=> typehub_get_exposed_selectors(),
-				'label'		=> __('Name', 'tatsu'),
+				'label'		=> esc_html__('Name', 'tatsu'),
 				'default'	=> 'h6',
 				'tooltip'	=> ''
 			) : false,
@@ -523,7 +523,7 @@ function tatsu_register_team() {
 				'type'	=> 'select',
 				'att_name'	=> 'designation_font',
 				'options'	=> typehub_get_exposed_selectors(),
-				'label'		=> __('Designation', 'tatsu'),
+				'label'		=> esc_html__('Designation', 'tatsu'),
 				'default'	=> 'h9',
 				'tooltip'	=> ''
 			) : false,

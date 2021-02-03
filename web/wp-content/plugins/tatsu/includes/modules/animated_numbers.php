@@ -60,7 +60,7 @@ function tatsu_register_animated_numbers()
 {
 	$controls =  array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#animated_numbers',
-		'title' => __('Animated Numbers', 'tatsu'),
+		'title' => esc_html__('Animated Numbers', 'tatsu'),
 		'is_js_dependant' => true,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -76,7 +76,7 @@ function tatsu_register_animated_numbers()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							array( //Tab1
 								'type' => 'accordion',
@@ -92,7 +92,7 @@ function tatsu_register_animated_numbers()
 					),
 					array( //Tab2
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -100,7 +100,7 @@ function tatsu_register_animated_numbers()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Font Sizes', 'tatsu'),
+										'title' => esc_html__('Font Sizes', 'tatsu'),
 										'group' => array(
 											'number_size',
 											'caption_size',
@@ -114,7 +114,7 @@ function tatsu_register_animated_numbers()
 										'group' => array(
 											array(
 												'type' => 'panel',
-												'title' => __('Colors', 'tatsu'),
+												'title' => esc_html__('Colors', 'tatsu'),
 												'group' => array(
 													'number_color',
 													'caption_color',
@@ -132,7 +132,7 @@ function tatsu_register_animated_numbers()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							
 						),
@@ -145,25 +145,25 @@ function tatsu_register_animated_numbers()
 			array(
 				'att_name' => 'number',
 				'type' => 'text',
-				'label' => __('Number', 'tatsu'),
+				'label' => esc_html__('Number', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'caption',
 				'type' => 'text',
-				'label' => __('Caption', 'tatsu'),
+				'label' => esc_html__('Caption', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'prefix',
 				'type' => 'text',
-				'label' => __('Prefix', 'tatsu'),
+				'label' => esc_html__('Prefix', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'suffix',
 				'type' => 'text',
-				'label' => __('Suffix', 'tatsu'),
+				'label' => esc_html__('Suffix', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
@@ -172,7 +172,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label' => __('Number', 'tatsu'),
+				'label' => esc_html__('Number', 'tatsu'),
 				'tooltip' => '',
 				'css' => true,
 				'is_inline' => true,
@@ -189,7 +189,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label' => __('Caption', 'tatsu'),
+				'label' => esc_html__('Caption', 'tatsu'),
 				'tooltip' => '',
 				'css' => true,
 				'is_inline' => true,
@@ -206,7 +206,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label' => __('Prefix', 'tatsu'),
+				'label' => esc_html__('Prefix', 'tatsu'),
 				'tooltip' => '',
 				'css'	=> true,
 				'is_inline' => true,
@@ -223,7 +223,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label' => __('Suffix', 'tatsu'),
+				'label' => esc_html__('Suffix', 'tatsu'),
 				'tooltip' => '',
 				'css'	=> true,
 				'is_inline' => true,
@@ -240,7 +240,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Number', 'tatsu'),
+				'label' => esc_html__('Number', 'tatsu'),
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
@@ -255,7 +255,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Caption', 'tatsu'),
+				'label' => esc_html__('Caption', 'tatsu'),
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
@@ -270,7 +270,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Prefix', 'tatsu'),
+				'label' => esc_html__('Prefix', 'tatsu'),
 				'tooltip' => '',
 				'css'	=> true,
 				'selectors'	=> array(
@@ -285,7 +285,7 @@ function tatsu_register_animated_numbers()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Suffix', 'tatsu'),
+				'label' => esc_html__('Suffix', 'tatsu'),
 				'tooltip' => '',
 				'css'	=> true,
 				'selectors'	=> array(
@@ -297,7 +297,7 @@ function tatsu_register_animated_numbers()
 			array(
 				'att_name' => 'alignment',
 				'type' => 'button_group',
-				'label' => __('Alignment', 'tatsu'),
+				'label' => esc_html__('Alignment', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',

@@ -72,7 +72,7 @@ function tatsu_register_tabs()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#tabs',
-		'title' => __('Tabs', 'tatsu'),
+		'title' => esc_html__('Tabs', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => 'tatsu_tab',
 		'type' => 'multi',
@@ -85,7 +85,7 @@ function tatsu_register_tabs()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'style',
 							array(
@@ -94,7 +94,7 @@ function tatsu_register_tabs()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'  	=> 'tabs',
@@ -102,7 +102,7 @@ function tatsu_register_tabs()
 												'group'		=> array(
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Normal', 'tatsu'),
+														'title'		=> esc_html__('Normal', 'tatsu'),
 														'group'		=> array(
 															'title_color',
 															'background_color',
@@ -111,7 +111,7 @@ function tatsu_register_tabs()
 													),
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Active', 'tatsu'),
+														'title'		=> esc_html__('Active', 'tatsu'),
 														'group'		=> array(
 															'active_title_color',
 															'active_background_color',
@@ -127,7 +127,7 @@ function tatsu_register_tabs()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -135,7 +135,7 @@ function tatsu_register_tabs()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group' => array(
 											'border_style',
 											'border',
@@ -154,7 +154,7 @@ function tatsu_register_tabs()
 				'att_name' => 'style',
 				'type' => 'select',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'style1' 	=> 'Style 1',
 					'style2' 	=> 'Style 2',
@@ -167,7 +167,7 @@ function tatsu_register_tabs()
 			array(
 				'att_name' => 'title_color',
 				'type' => 'color',
-				'label' => __('Title Color', 'tatsu'),
+				'label' => esc_html__('Title Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -180,7 +180,7 @@ function tatsu_register_tabs()
 			array(
 				'att_name' => 'background_color',
 				'type' => 'color',
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array(
@@ -205,7 +205,7 @@ function tatsu_register_tabs()
 			array(
 				'att_name' => 'active_title_color',
 				'type' => 'color',
-				'label' => __('Active Title Color', 'tatsu'),
+				'label' => esc_html__('Active Title Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -218,7 +218,7 @@ function tatsu_register_tabs()
 			array(
 				'att_name' => 'active_background_color',
 				'type' => 'color',
-				'label' => __('Active Background Color', 'tatsu'),
+				'label' => esc_html__('Active Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'style1'),
@@ -233,7 +233,7 @@ function tatsu_register_tabs()
 			array(
 				'att_name' => 'border_color',
 				'type'	   => 'color',
-				'label'		=> __('Border Color', 'tatsu'),
+				'label'		=> esc_html__('Border Color', 'tatsu'),
 				'default'	=> '#d8d8d8',
 				'tooltip'	=> '',
 				'visible'	=> array(
@@ -252,7 +252,7 @@ function tatsu_register_tabs()
 			array (
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'exclude' => array( 'tatsu_image', 'tatsu_lists', 'tatsu_call_to_action' ),
 				'tooltip' => '',
@@ -267,7 +267,7 @@ function tatsu_register_tabs()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -294,7 +294,7 @@ function tatsu_register_tabs()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -331,7 +331,7 @@ function tatsu_register_tab()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Tab', 'tatsu'),
+		'title' => esc_html__('Tab', 'tatsu'),
 		'child_module' => '',
 		'type' => 'sub_module',
 		'is_built_in' => true,
@@ -340,21 +340,21 @@ function tatsu_register_tab()
 			array(
 				'att_name' => 'title',
 				'type' => 'text',
-				'label' => __('Title', 'tatsu'),
+				'label' => esc_html__('Title', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'icon',
 				'type' => 'icon_picker',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),

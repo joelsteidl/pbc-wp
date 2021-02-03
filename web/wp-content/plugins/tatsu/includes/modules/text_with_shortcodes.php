@@ -35,7 +35,7 @@ if( !function_exists( 'tatsu_text_with_shortcodes_header_atts' ) ) {
 			);
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -60,7 +60,7 @@ function tatsu_register_text_with_shortcodes()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#text',
-		'title' => __('Shortcode Editor', 'tatsu'),
+		'title' => esc_html__('Shortcode Editor', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -75,14 +75,14 @@ function tatsu_register_text_with_shortcodes()
 
 					array( //Tab1
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'content',
 						),
 					),
 					array( //Tab2
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								"type" => "accordion",
@@ -90,7 +90,7 @@ function tatsu_register_text_with_shortcodes()
 							  	"group" => array(
 										array(
 											'type' => 'panel',
-											'title' => __('Spacing', 'tatsu'),
+											'title' => esc_html__('Spacing', 'tatsu'),
 											'group' => array(
 												'margin',
 											)
@@ -108,7 +108,7 @@ function tatsu_register_text_with_shortcodes()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Shortcode', 'tatsu'),
+				'label' => esc_html__('Shortcode', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),

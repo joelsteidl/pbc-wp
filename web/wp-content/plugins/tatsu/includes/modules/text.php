@@ -36,26 +36,13 @@ if (!function_exists('tatsu_text')) {
 		$data_animations = be_get_animation_data_atts( $atts );
 	    $output = '';
 		
-		// if( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) {
-		// 	$animate = 'tatsu-animate';
-		// 	$bool = true;
-		// } else {
-		// 	$animate = '';
-		// }
-		// if( isset( $scroll_to_animate ) && 1 == $scroll_to_animate ) {
-	    // 	$scroll_to_animate = 'scrollToFade';
-	    // 	$bool = true;
-	    // } else {
-		// 	$scroll_to_animate = '';
-		// }
+
 		
 		if($max_width < 100){
 			if($wrap_alignment == 'left'){
-				//$margin = 'margin-right: 0; margin-left:0;';
 				$margin = '';
 			}
 			if($wrap_alignment == 'center'){
-				//$margin = 'margin-right:auto; margin-left:auto;';
 				$margin = 'tatsu-align-center';
 			}
 			if($wrap_alignment == 'right'){
@@ -65,7 +52,7 @@ if (!function_exists('tatsu_text')) {
 		else{
 			$margin = ''; 
 		}
-
+		//rolling back Rinkesh's update. next update should be carefully checked.
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-text-block-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'"><div class="tatsu-text-inner '.$margin.' '.$animate.' clearfix" '.$data_animations.'>';
 		$output .= $custom_style_tag;
 		$output .= do_shortcode(  $content );
@@ -87,14 +74,14 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 			);
 			$atts['hide_in'] = array (
 				'type' => 'screen_visibility',
-				'label' => __( 'Hide in', 'tatsu' ),
+				'label' => esc_html__( 'Hide in', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 			);
 			// Light Scheme Colors
 			$atts['light_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Color', 'tatsu' ),
+				'label' => esc_html__( 'Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'css' => true,
@@ -112,7 +99,7 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 			// Dark Scheme Colors
 			$atts['dark_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Color', 'tatsu' ),
+				'label' => esc_html__( 'Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'css' => true,
@@ -130,7 +117,7 @@ if( !function_exists( 'tatsu_text_header_atts' ) ) {
 			// Modify Atts
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -155,7 +142,7 @@ function tatsu_register_text()
 {
 	$controls =  array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#text',
-		'title' => __('Text Block', 'tatsu'),
+		'title' => esc_html__('Text Block', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
@@ -170,7 +157,7 @@ function tatsu_register_text()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -183,7 +170,7 @@ function tatsu_register_text()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -191,19 +178,19 @@ function tatsu_register_text()
 								'group' => array(
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Width and Alignment', 'tatsu'),
+										'title'		=> esc_html__('Width and Alignment', 'tatsu'),
 										'group'		=> array(
 											'max_width',
 											array(
 												'type'		=> 'tab',
-												'title'		=> __('Wrap Alignment', 'tatsu'),
+												'title'		=> esc_html__('Wrap Alignment', 'tatsu'),
 												'group'		=> array(
 													'wrap_alignment',
 												),
 											),
 											array(
 												'type'		=> 'tab',
-												'title'		=> __('Text Alignment', 'tatsu'),
+												'title'		=> esc_html__('Text Alignment', 'tatsu'),
 												'group'		=> array(
 													'text_alignment',
 												),
@@ -212,7 +199,7 @@ function tatsu_register_text()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											'color',
 											'bg_color',
@@ -220,21 +207,21 @@ function tatsu_register_text()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Light Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Light Scheme Colors', 'tatsu'),
 										'group' => array(
 											'light_color'
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Dark Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Dark Scheme Colors', 'tatsu'),
 										'group' => array(
 											'dark_color'
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Typography', 'tatsu'),
+										'title' => esc_html__('Typography', 'tatsu'),
 										'group' => array(
 											'text_typography'
 										)
@@ -245,7 +232,7 @@ function tatsu_register_text()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -253,7 +240,7 @@ function tatsu_register_text()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 											'padding',
@@ -261,7 +248,7 @@ function tatsu_register_text()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group' => array(
 											'border_style',
 											'border',
@@ -271,7 +258,7 @@ function tatsu_register_text()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group' => array(
 											'box_shadow',
 										)
@@ -289,7 +276,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -299,7 +286,7 @@ function tatsu_register_text()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -312,7 +299,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'color',
 				'type' => 'color',
-				'label' => __( 'Text Color', 'tatsu' ),
+				'label' => esc_html__( 'Text Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -328,7 +315,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'max_width',
 				'type' => 'slider',
-				'label' => __('Content Width', 'tatsu'),
+				'label' => esc_html__('Content Width', 'tatsu'),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -351,7 +338,7 @@ function tatsu_register_text()
 				'att_name' => 'wrap_alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Wrap Align', 'tatsu'),
+				'label' => esc_html__('Wrap Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -364,7 +351,7 @@ function tatsu_register_text()
 				'att_name' => 'text_alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Text Align', 'tatsu'),
+				'label' => esc_html__('Text Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -383,7 +370,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 30px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -398,7 +385,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Shadow', 'tatsu'),
+				'label' => esc_html__('Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -412,7 +399,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'padding',
 				'type' => 'input_group',
-				'label' => __('Padding', 'tatsu'),
+				'label' => esc_html__('Padding', 'tatsu'),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -427,7 +414,7 @@ function tatsu_register_text()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -454,7 +441,7 @@ function tatsu_register_text()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -469,7 +456,7 @@ function tatsu_register_text()
 			array (
 				'att_name' => 'border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -483,7 +470,7 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'border_radius',
 				'type' => 'number',
-				'label' => __('Border Radius', 'tatsu'),
+				'label' => esc_html__('Border Radius', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -501,14 +488,14 @@ function tatsu_register_text()
 			array(
 				'att_name' => 'text_typography',
 				'type' => 'typography',
-				'label' => __( 'Typography', 'tatsu' ),
+				'label' => esc_html__( 'Typography', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
 				'is_inline' => true,
 				'selectors' => array(
-					'.tatsu-{UUID}.tatsu-text-block-wrap .tatsu-text-inner' => array(
+					'.tatsu-{UUID}.tatsu-text-block-wrap .tatsu-text-inner *' => array(
 						'property' => 'typography',
 					)
 				),

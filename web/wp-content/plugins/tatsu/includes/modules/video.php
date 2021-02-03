@@ -20,8 +20,6 @@ if ( !function_exists('tatsu_video') ) {
 		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? 'tatsu-animate' : '' ;
 		$data_animations = be_get_animation_data_atts( $atts );
 		$output ='';
-		//$output .= ( isset( $animate ) && 1 == $animate ) ? '<div class="tatsu-animate" data-animation="'.$animation_type.'">' : '' ;
-
 
 	    switch ( $source ) {
 			case 'youtube':
@@ -29,7 +27,6 @@ if ( !function_exists('tatsu_video') ) {
 				$output .= '<div '.$css_id.' class="tatsu-module tatsu-video tatsu-youtube-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>'.$custom_style_tag;
 				$output .= tatsu_youtube( $url, $autoplay, $loop_video );
 				$output .= '</div>';
-				//$output .= ( isset( $animate ) && 1 == $animate ) ? '</div>' : '' ;
 				return $output;
 				break;
 			case 'vimeo':
@@ -37,12 +34,10 @@ if ( !function_exists('tatsu_video') ) {
 				$output .= '<div '.$css_id.' class="tatsu-module tatsu-video tatsu-vimeo-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>'.$custom_style_tag;
 				$output .= tatsu_vimeo( $url, $autoplay, $loop_video );
 				$output .= '</div>';
-				//$output .= ( isset( $animate ) && 1 == $animate ) ? '</div>' : '' ;
 				return $output;
 				break;
 			default:
 				$output .= '<div '.$css_id.' class="tatsu-module tatsu-video tatsu-hosted-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>'.$custom_style_tag.'<video  width = "100%" controls controlsList="nodownload" poster = "'.$placeholder.'" '.( $loop_video ? "loop" : "") .' '. ($autoplay ? "autoplay muted" : "") .' ><source src="'.$url.'" type="video/mp4"></video></div>';
-				//$output .= ( isset( $animate ) && 1 == $animate ) ? '</div>' : '' ;
 				
 				return $output;
 				break;
@@ -90,7 +85,7 @@ if ( !function_exists( 'tatsu_vimeo' ) ) {
 		if( ! empty( $url ) ) {
 			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
 			if( !function_exists( 'be_gdpr_privacy_ok' ) ){
-				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-id = "' . $video_id . '"></div></div>';
+				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-id = "' . $video_id . '" data-autoplay = "' . $autoplay . '" data-loop = "' . $loop_video . '"></div></div>';
 			} else {
 				if( !empty( $_COOKIE ) ){
 					if( !( be_gdpr_privacy_ok( 'vimeo' ) )  ){
@@ -117,7 +112,7 @@ function tatsu_register_video()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#video',
-		'title' => __('Video', 'tatsu'),
+		'title' => esc_html__('Video', 'tatsu'),
 		'is_js_dependant' => true,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -131,7 +126,7 @@ function tatsu_register_video()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							array( //Video source accordion
 								'type' => 'accordion',
@@ -139,7 +134,7 @@ function tatsu_register_video()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Video Source', 'tatsu'),
+										'title' => esc_html__('Video Source', 'tatsu'),
 										'group' => array(
 											'source',
 											'url',
@@ -155,7 +150,7 @@ function tatsu_register_video()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(),
 					),
 				),
@@ -166,7 +161,7 @@ function tatsu_register_video()
 				'att_name' => 'source',
 				'type' => 'select',
 				'is_inline'=> false,
-				'label' => __('Source', 'tatsu'),
+				'label' => esc_html__('Source', 'tatsu'),
 				'options' => array(
 					'youtube' => 'Youtube',
 					'vimeo' => 'Vimeo',
@@ -178,7 +173,7 @@ function tatsu_register_video()
 			array(
 				'att_name' => 'url',
 				'type' => 'text',
-				'label' => __('Video URL', 'tatsu'),
+				'label' => esc_html__('Video URL', 'tatsu'),
 				'is_inline'=> false,
 				'default' => '',
 				'tooltip' => '',
@@ -186,21 +181,21 @@ function tatsu_register_video()
 			array(
 				'att_name' => 'placeholder',
 				'type' => 'single_image_picker',
-				'label' => __('Place Holder Image', 'tatsu'),
+				'label' => esc_html__('Place Holder Image', 'tatsu'),
 				'tooltip' => '',
 				'visible' => array('source', '=', 'selfhosted'),
 			),
 			array(
 				'att_name' => 'autoplay',
 				'type' => 'switch',
-				'label' => __('Autoplay', 'tatsu'),
+				'label' => esc_html__('Autoplay', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'loop_video',
 				'type' => 'switch',
-				'label' => __('Loop', 'tatsu'),
+				'label' => esc_html__('Loop', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),

@@ -31,7 +31,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		
 ?>
 <div class="wrap">
-	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/embed_code.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/groupsengine_plugin/js/embed_code132.js'; ?>"></script>
 
 	<h2 class="enmge" style="padding-bottom: 5px">Embed Into a Page or Post</h2>
 	<p id="enmge-get-plugin-link" title="<?php echo plugins_url() .'/groupsengine_plugin/includes/admin/'; ?>"></p>

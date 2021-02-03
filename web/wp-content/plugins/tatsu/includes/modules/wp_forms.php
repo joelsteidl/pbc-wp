@@ -135,7 +135,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
             }
             $controls = array (
                 'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#wpforms',
-                'title' => __( 'WP Forms', 'tatsu' ),
+                'title' => esc_html__( 'WP Forms', 'tatsu' ),
                 'is_js_dependant' => true,
                 'type' => 'single',
                 'is_built_in' => false,
@@ -145,14 +145,14 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                         'group' => array (
                             array (
                                 'type'  => 'tab',
-                                'title' => __( 'Content', 'tatsu' ),
+                                'title' => esc_html__( 'Content', 'tatsu' ),
                                 'group' => array (
                                     'form_id'
                                 )
                             ),
                             array (
                                 'type'  => 'tab',
-                                'title' => __( 'Style', 'tatsu' ),
+                                'title' => esc_html__( 'Style', 'tatsu' ),
                                 'group' => array (
                                     'form_type',
                                     'button_type',
@@ -162,12 +162,11 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                                         'group' => array (
                                             array (
                                                 'type'  => 'panel',
-                                                'title' => __( 'Colors', 'tatsu' ),
+                                                'title' => esc_html__( 'Colors', 'tatsu' ),
                                                 'group' => array (
                                                     'bg_color',
                                                     'color',
                                                     'label_color',
-                                                    // 'accent_color',
                                                     'button_color',
                                                     'button_bg_color',
                                                     'border_color',
@@ -179,7 +178,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                             ),
                             array (
                                 'type'  => 'tab',
-                                'title' => __( 'Advanced', 'tatsu' ),
+                                'title' => esc_html__( 'Advanced', 'tatsu' ),
                                 'group' => array (
                                     array (
                                         'type'  => 'accordion',
@@ -187,7 +186,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                                         'group' => array (
                                             array (
 												'type' => 'panel',
-												'title' => __( 'Border', 'tatsu' ),
+												'title' => esc_html__( 'Border', 'tatsu' ),
 												'group' => array (
                                                     'border_style',
                                                     'border',
@@ -206,7 +205,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'form_id',
                         'type'			=> 'select',
-                        'label'			=> __( 'Forms', 'tatsu' ),
+                        'label'			=> esc_html__( 'Forms', 'tatsu' ),
                         'options'		=> $forms,
                         'default'		=> $default_form_id,
                         'tooltip'		=> '',	
@@ -215,7 +214,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                         'att_name'		=> 'bg_color',
                         'type'			=> 'color',
                         'gradient'      => false,
-                        'label'			=> __( 'Background', 'tatsu' ),
+                        'label'			=> esc_html__( 'Background', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'visible'		=> array ( 'form_type', '!=', 'border-with-underline' ),
@@ -232,7 +231,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'color',
                         'type'			=> 'color',
-                        'label'			=> __( 'Text', 'tatsu' ),
+                        'label'			=> esc_html__( 'Text', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -247,7 +246,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'label_color',
                         'type'			=> 'color',
-                        'label'			=> __( 'Label', 'tatsu' ),
+                        'label'			=> esc_html__( 'Label', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -262,63 +261,33 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'form_type',
                         'type'			=> 'select',
-                        'label'			=> __( 'Form Style', 'tatsu' ),
+                        'label'			=> esc_html__( 'Form Style', 'tatsu' ),
                         'default'		=> 'rounded',
                         'tooltip'		=> '',
                         'options'		=> array (
-                            'rounded'					=> __( 'Solid', 'tatsu' ),
-                            'border-with-underline'	=> __( 'Line', 'tatsu' ),
-                            'rounded-with-underline'	=> __( 'Rounded - Inner Shadow ', 'tatsu' ),
-                            'pill'					=> __( 'Pill', 'tatsu' ),
+                            'rounded'					=> esc_html__( 'Solid', 'tatsu' ),
+                            'border-with-underline'	=> esc_html__( 'Line', 'tatsu' ),
+                            'rounded-with-underline'	=> esc_html__( 'Rounded - Inner Shadow ', 'tatsu' ),
+                            'pill'					=> esc_html__( 'Pill', 'tatsu' ),
                         )
                     ),
-                    // array (
-                    //     'att_name'		=> 'accent_color',
-                    //     'type'			=> 'color',
-                    //     'label'			=> __( 'Accent', 'tatsu' ),
-                    //     'default'		=> '',
-                    //     'tooltip'		=> '',
-                    //     'css'			=> true,
-                    //     'selectors'		=> array (
-                    //         '.tatsu-{UUID} input:not([type = "submit"]):focus, .tatsu-{UUID} textarea:focus, .tatsu-{UUID} select:focus' => array (
-                    //             'property'		=> 'border-color',
-                    //             'when'			=> array (
-                    //                 array ('form_type', '=', 'pill' ),
-                    //                 array( 'form_type', '=', 'rounded' ),
-                    //             ),
-                    //             'relation'		=> 'or',
-                    //         ),
-                    //         '.tatsu-{UUID} .exp-form-border' => array (
-                    //             'property'		=> 'background-color',
-                    //             'when'			=> array (
-                    //                 array ( 'form_type', '=', 'border-with-underline' ),
-                    //                 array ( 'form_type', '=', 'rounded-with-underline' ),
-                    //             ),
-                    //             'relation'		=> 'or',
-                    //         ),
-                    //         '.tatsu-{UUID} .exp-form-border-with-underline .exp-form-field-active .exp-form-field-label'	=> array (
-                    //             'property'		=> 'color',
-                    //             'when'			=> array ( 'form_type', '=', 'border-with-underline' ),
-                    //         )
-                    //     )
-                    // ),
                     array (
                         'att_name'		=> 'button_type',
                         'type'			=> 'select',
-                        'label'			=> __( 'Button Style', 'tatsu' ),
+                        'label'			=> esc_html__( 'Button Style', 'tatsu' ),
                         'default'		=> 'rounded',
                         'tooltip'		=> '',
                         'options'		=> array (
-                            'rounded'			=> __( 'Rounded', 'tatsu' ),
-                            'pill'		=>  __( 'Pill', 'tatsu' ),
-                            'rounded-block' => __( 'Rounded Block', 'tatsu' ),
-                            'pill-block'	=> __( 'Pill - Block', 'tatsu' ),
+                            'rounded'			=> esc_html__( 'Rounded', 'tatsu' ),
+                            'pill'		=>  esc_html__( 'Pill', 'tatsu' ),
+                            'rounded-block' => esc_html__( 'Rounded Block', 'tatsu' ),
+                            'pill-block'	=> esc_html__( 'Pill - Block', 'tatsu' ),
                         )
                     ),
                     array (
                         'att_name'		=> 'button_color',
                         'type'			=> 'color',
-                        'label'			=> __( 'Button', 'tatsu' ),
+                        'label'			=> esc_html__( 'Button', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -331,7 +300,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'button_bg_color',
                         'type'			=> 'color',
-                        'label'			=> __( 'Button Background', 'tatsu' ),
+                        'label'			=> esc_html__( 'Button Background', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -344,7 +313,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name'		=> 'border_color',
                         'type'			=> 'color',
-                        'label'			=> __( 'Border', 'tatsu' ),
+                        'label'			=> esc_html__( 'Border', 'tatsu' ),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -359,7 +328,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name' => 'border_style',
                         'type' => 'select',
-                        'label' => __( 'Border Style', 'tatsu' ),
+                        'label' => esc_html__( 'Border Style', 'tatsu' ),
                         'options' => array(
                             'none' => 'None',
                             'solid' => 'Solid',
@@ -384,7 +353,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name' => 'border',
                         'type' => 'input_group',
-                        'label' => __( 'Border Width', 'tatsu' ),
+                        'label' => esc_html__( 'Border Width', 'tatsu' ),
                         'default' => '0px 0px 0px 0px',
                         'tooltip' => '',
                         'responsive' => true,
@@ -398,7 +367,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                     array (
                         'att_name' => 'outer_border_color',
                         'type' => 'color',
-                        'label' => __( 'Border Color', 'tatsu' ),
+                        'label' => esc_html__( 'Border Color', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                         'css' => true,
@@ -415,7 +384,7 @@ if( !function_exists( 'tatsu_register_wp_forms' ) ) {
                         'is_inline' => true,
                         'exclude' => array('tatsu_empty_space'),
                         'is_inline' => true,
-                        'label'		=> __( 'Border Radius', 'tatsu' ),
+                        'label'		=> esc_html__( 'Border Radius', 'tatsu' ),
                         'options' 	=> array (
                             'unit'	=> array( 'px', '%' ),
                         ),

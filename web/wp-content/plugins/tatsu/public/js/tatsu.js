@@ -1,5 +1,6 @@
 ;(function($) {
-    /**
+    'use strict';
+	/**
    * Resize Background Video
    */
     $.fn.tatsuResizeMedia = function() {

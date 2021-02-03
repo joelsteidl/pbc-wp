@@ -214,11 +214,41 @@ function typehub_google_fonts_url( $config ) {
     }
     return $font_url;
 }
+
+function typehub_curl_fetch($url) {
+	$ch = curl_init();
+	curl_setopt ($ch, CURLOPT_URL, $url);
+	curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 5);
+	curl_setopt ($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+	$contents = curl_exec($ch);
+	if (curl_errno($ch)) {
+	  return curl_error($ch);
+	  $contents = '';
+	} else {
+	  curl_close($ch);
+	}
+
+	if (!is_string($contents) || !strlen($contents)) {
+		return "Failed to get contents.";
+		$contents = '';
+	}
+
+	return $contents;
+}
+
 if( !function_exists( 'typehub_get_typekit_data' ) ) {
 	function typehub_get_typekit_data($typekitId){
 		$typekit_response = get_transient( 'typehub_typekit_'.$typekitId );
 		if( !$typekit_response ) {
-			$typekit_response = json_decode(file_get_contents('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
+			
+			try {
+				$typekit_response = json_decode(typehub_curl_fetch('https://typekit.com/api/v1/json/kits/'.$typekitId.'/published'));
+			} catch(Exception $e) {
+				return false;
+			}
+			
 			set_transient( 'typehub_typekit_'.$typekitId, $typekit_response, 60*60*24*365 );
 		}
 		if( !empty( $typekit_response->kit ) ){
@@ -409,6 +439,17 @@ if( !function_exists( 'typehub_write_css_link_to_file' ) ){
 				$temp_variant = '400italic';
 			}
 
+			$font_list = list_files($google_fonts_dir . "/".$font_family."/");
+			foreach ($font_list as $key => $value) {
+				if( strpos($value,'-'.$variant.'.') ) {
+					$first_font_file = $value;
+					continue;
+				}
+			}
+
+			$font_file_name_w_ext = explode($font_family."/", $first_font_file)[1];
+			$font_file_name = explode('.',$font_file_name_w_ext)[0];
+
 			if( in_array( $temp_variant, $weights ) ){
 				$extensions = array( 'eot?#iefix','woff2','woff','ttf','svg#'.str_replace(" ",'',$font_family) );
 				$formats = array( 'embedded-opentype','woff2','woff','truetype','svg' );
@@ -416,11 +457,11 @@ if( !function_exists( 'typehub_write_css_link_to_file' ) ){
 				$output .= "font-family: '".$font_family."';\n";
 				$output .= "font-style: ".$font_style.";\n";
 				$output .= "font-weight: ".$font_weight.";\n";
-				$output .= "src: url('./".$font_family."/".$font_name."-".$version."-".$subsets."-".$variant.".eot');\n";
+				$output .= "src: url('./".$font_family."/".$font_file_name.".eot');\n";
 				$output .= "src:local('".$local[0]."'), local('".$local[1]."'),\n";
 
 				for($i = 0; $i < 5; $i++){
-					$output .= "url('./".$font_family."/".$font_name."-".$version."-".$subsets."-".$variant.".".$extensions[$i]."') format('".$formats[$i]."'),\n";
+					$output .= "url('./".$font_family."/".$font_file_name.".".$extensions[$i]."') format('".$formats[$i]."'),\n";
 				}
 				$output = substr($output,0,-2).";\n}\n\n";
 		}

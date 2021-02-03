@@ -93,7 +93,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
             <svg width="233px" height="68px" viewBox="0 0 233 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
                 <title>Tatsu</title>
-                <desc>Created with Sketch.</desc>
+                <desc><?php esc_html_e('Created with Sketch.' , 'tatsu');?></desc>
                 <defs></defs>
                 <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-484.000000, -295.000000)">
                     <g id="Tatsu" transform="translate(483.000000, 267.000000)" fill="#242424">

@@ -71,7 +71,7 @@ function tatsu_register_accordion()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#accordion',
-		'title' => __('Accordion Toggles', 'tatsu'),
+		'title' => esc_html__('Accordion Toggles', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => 'tatsu_toggle',
 		'allowed_sub_modules' => array('tatsu_toggle'),
@@ -85,7 +85,7 @@ function tatsu_register_accordion()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'style',
 							'collapsed',
@@ -95,7 +95,7 @@ function tatsu_register_accordion()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											'title_color',
 											'title_hover_color',
@@ -105,7 +105,7 @@ function tatsu_register_accordion()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Typography', 'tatsu'),
+										'title' => esc_html__('Typography', 'tatsu'),
 										'group' => array(
 											'title_font',
 											'content_font',
@@ -117,7 +117,7 @@ function tatsu_register_accordion()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -125,14 +125,14 @@ function tatsu_register_accordion()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin'
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Border', 'tatsu'),
+										'title' => esc_html__('Border', 'tatsu'),
 										'group' => array(
 											'border_style',
 											'border',
@@ -151,7 +151,7 @@ function tatsu_register_accordion()
 				'att_name' => 'style',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options'	=> array(
 					'style1' => 'Style1',
 					'style2' => 'Style 2',
@@ -162,14 +162,14 @@ function tatsu_register_accordion()
 			array(
 				'att_name' => 'collapsed',
 				'type' => 'switch',
-				'label' => __('Collapse content', 'tatsu'),
+				'label' => esc_html__('Collapse content', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'title_color',
 				'type' => 'color',
-				'label' => __('Title Color', 'tatsu'),
+				'label' => esc_html__('Title Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -182,7 +182,7 @@ function tatsu_register_accordion()
 			array(
 				'att_name' => 'title_hover_color',
 				'type' => 'color',
-				'label' => __('Title Hover Color', 'tatsu'),
+				'label' => esc_html__('Title Hover Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -195,7 +195,7 @@ function tatsu_register_accordion()
 			array(
 				'att_name' => 'content_bg_color',
 				'type' => 'color',
-				'label' => __('Content Background Color', 'tatsu'),
+				'label' => esc_html__('Content Background Color', 'tatsu'),
 				'default' => '', //sec_bg
 				'tooltip' => '',
 				'css' => true,
@@ -208,7 +208,7 @@ function tatsu_register_accordion()
 			array(
 				'att_name' => 'border_color',
 				'type' => 'color',
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '', //sec_bg
 				'tooltip' => '',
 				'css' => true,
@@ -224,7 +224,7 @@ function tatsu_register_accordion()
 			array (
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'exclude' => array( 'tatsu_image', 'tatsu_lists', 'tatsu_call_to_action' ),
 				'tooltip' => '',
@@ -239,7 +239,7 @@ function tatsu_register_accordion()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -266,7 +266,7 @@ function tatsu_register_accordion()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -281,7 +281,7 @@ function tatsu_register_accordion()
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'title_font',
 				'type'		=> 'select',
-				'label'		=> __('Title Font', 'tatsu'),
+				'label'		=> esc_html__('Title Font', 'tatsu'),
 				'options'	=> typehub_get_exposed_selectors(),
 				'default'	=> 'h6',
 				'tooltip'	=> ''
@@ -289,7 +289,7 @@ function tatsu_register_accordion()
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'content_font',
 				'type'		=> 'select',
-				'label'		=> __('Content Font', 'tatsu'),
+				'label'		=> esc_html__('Content Font', 'tatsu'),
 				'options'	=> typehub_get_exposed_selectors(),
 				'default'	=> 'body',
 				'tooltip'	=> ''
@@ -297,7 +297,7 @@ function tatsu_register_accordion()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0 0 60px 0',
 				'tooltip' => '',
 				'css'	  => true,
@@ -327,7 +327,7 @@ function tatsu_register_toggle()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Toggle', 'tatsu'),
+		'title' => esc_html__('Toggle', 'tatsu'),
 		'child_module' => '',
 		'type' => 'sub_module',
 		'is_built_in' => false,
@@ -336,14 +336,14 @@ function tatsu_register_toggle()
 			array(
 				'att_name' => 'title',
 				'type' => 'text',
-				'label' => __('Title', 'tatsu'),
+				'label' => esc_html__('Title', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),

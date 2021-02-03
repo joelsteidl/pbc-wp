@@ -149,6 +149,8 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                                 }
                                 if( !empty( $id ) ) {
                                     $attachment_details = be_wp_get_attachment( $id );
+                                    $img_alt = $attachment_details[ 'alt' ];
+                                    $img_attr[] = sprintf('alt = "%s"', $img_alt);
                                     if( !empty( $attachment_details ) ) {
                                         $url = $attachment_details[ 'src' ];
                                         if( 'centered_ribbon' === $slider_type || 'ribbon' === $slider_type || !empty( $destroy_in_mobile ) ) {
@@ -160,13 +162,22 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                                     }
                                 }
                                 if( !empty( $adaptive_images ) ) {
-                                    $img_srcset = wp_get_attachment_image_srcset( $id, 'full' );
-                                    $sizes = wp_calculate_image_sizes( 'full', null, null, $id );
-                                    if( !empty( $lazy_load ) ) {
-                                        $img_attr[] = sprintf( 'data-srcset = "%s"', $img_srcset );
-                                    }else {
-                                        $img_attr[] = sprintf( 'srcset = "%s"', $img_srcset );
-                                    }
+									$image_id = attachment_url_to_postid($url);
+									if($image_id == 0){
+										if( !empty( $lazy_load ) ) {
+											$img_attr[] = sprintf( 'data-src = "%s"', $url );
+										}else {
+											$img_attr[] = sprintf( 'src = "%s"', $url );
+										}	
+									}else{
+										$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full' );
+										$sizes = wp_calculate_image_sizes( 'full', null, null, $image_id );
+										if( !empty( $lazy_load ) ) {
+											$img_attr[] = sprintf( 'data-srcset = "%s"', $img_srcset );
+										}else {
+											$img_attr[] = sprintf( 'srcset = "%s"', $img_srcset );
+										}
+									}
                                     $img_attr[] = sprintf( 'sizes = "%s"', $sizes );
                                 }else {
                                     if( !empty( $lazy_load ) ) {
@@ -196,7 +207,7 @@ function tatsu_register_image_carousel()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#image_carousel',
-		'title' => __('Image Carousel', 'tatsu'),
+		'title' => esc_html__('Image Carousel', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -211,7 +222,7 @@ function tatsu_register_image_carousel()
 
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'type',
 							'images',
@@ -226,7 +237,7 @@ function tatsu_register_image_carousel()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             'full_screen',
                             'full_screen_offset',
@@ -245,7 +256,7 @@ function tatsu_register_image_carousel()
 
 					array( //Tab3
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
                             array(
                                 'type'  => 'accordion',
@@ -253,7 +264,7 @@ function tatsu_register_image_carousel()
                                 'group' => array (
                                     array (
                                         'type'  => 'panel',
-                                        'title' => __( 'Border', 'tatsu' ),
+                                        'title' => esc_html__( 'Border', 'tatsu' ),
                                         'group' => array (
                                             'border_style',
                                             'border',
@@ -263,7 +274,7 @@ function tatsu_register_image_carousel()
                                     ),
                                     array (
                                         'type'  => 'panel',
-                                        'title' => __( 'Shadow', 'tatsu' ),
+                                        'title' => esc_html__( 'Shadow', 'tatsu' ),
                                         'group' => array (
                                             'box_shadow',
                                         )
@@ -281,7 +292,7 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'		=> 'type',
 				'type'			=> 'select',
-				'label'			=> __('Type', 'tatsu'),
+				'label'			=> esc_html__('Type', 'tatsu'),
 				'options'		=> array(
 					'ribbon'	=> 'Ribbon Carosuel',
 					'centered_ribbon'	=> 'Ribbon - Centered Carousel',
@@ -293,7 +304,7 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'	=> 'images',
 				'type'		=> 'multi_image_picker',
-				'label'		=> __('Images', 'tatsu'),
+				'label'		=> esc_html__('Images', 'tatsu'),
 				'default'	=> '',
 				'options'	=> array(
 					'type'	=> 'both',
@@ -303,20 +314,20 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'	=> 'center_scale',
 				'type'		=> 'switch',
-				'label'		=> __('Center Scale Images', 'tatsu'),
+				'label'		=> esc_html__('Center Scale Images', 'tatsu'),
 				'default'	=> '0',
 				'visible'	=> array('type', '=', 'fixed'),
 			),
 			array(
 				'att_name'	=> 'lazy_load',
 				'type'		=> 'switch',
-				'label'		=> __('Lazy Load', 'tatsu'),
+				'label'		=> esc_html__('Lazy Load', 'tatsu'),
 				'default'	=> '0',
 			),
 			array(
 				'att_name'		=> 'adaptive_images',
 				'type'			=> 'switch',
-				'label'			=> __('Adaptive Images', 'tatsu'),
+				'label'			=> esc_html__('Adaptive Images', 'tatsu'),
 				'default'		=> '0',
 			),
 			array(
@@ -325,7 +336,7 @@ function tatsu_register_image_carousel()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label'		 => __('Gutter Width', 'tatsu'),
+				'label'		 => esc_html__('Gutter Width', 'tatsu'),
 				'default'	 => '0',
                 'css'		 => true,
                 'is_inline' => true,
@@ -350,7 +361,7 @@ function tatsu_register_image_carousel()
 				'options' => array(
 					'unit' => 'px',
 				),
-				'label'		=> __('Height', 'tatsu'),
+				'label'		=> esc_html__('Height', 'tatsu'),
                 'default'	=> '500',
                 'is_inline' => true,
 				'responsive' => true,
@@ -367,14 +378,14 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'		=> 'full_screen',
 				'type'			=> 'switch',
-				'label'			=> __('Full Screen Slider', 'tatsu'),
+				'label'			=> esc_html__('Full Screen Slider', 'tatsu'),
 				'default'		=> '0',
 			),
 			array(
 				'att_name'		=> 'full_screen_offset',
                 'type'			=> 'text',
                 'is_inline' => true,
-				'label'			=> __('Full Screen Offset', 'tatsu'),
+				'label'			=> esc_html__('Full Screen Offset', 'tatsu'),
 				'default'		=> '',
 				'visible'	=> array('full_screen', '==', '1'),
 			),
@@ -385,7 +396,7 @@ function tatsu_register_image_carousel()
 					'min'	=> '1',
 					'max'	=> '6'
 				),
-				'label'		=> __('Slides Per Row', 'tatsu'),
+				'label'		=> esc_html__('Slides Per Row', 'tatsu'),
 				'default'	=> '3',
 				'visible'	=> array(
 					'condition' => array(
@@ -398,7 +409,7 @@ function tatsu_register_image_carousel()
             array (
                 'att_name' => 'border_style',
                 'type' => 'select',
-                'label' => __( 'Border Style', 'tatsu' ),
+                'label' => esc_html__( 'Border Style', 'tatsu' ),
                 'options' => array(
                     'none' => 'None',
                     'solid' => 'Solid',
@@ -425,7 +436,7 @@ function tatsu_register_image_carousel()
             array (
                 'att_name' => 'box_shadow',
                 'type' => 'input_box_shadow',
-                'label' => __( 'Box Shadow', 'tatsu' ),
+                'label' => esc_html__( 'Box Shadow', 'tatsu' ),
                 'tooltip' => '',
                 'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
                 'css' => true,
@@ -439,7 +450,7 @@ function tatsu_register_image_carousel()
             array (
                 'att_name' => 'border',
                 'type' => 'input_group',
-                'label' => __( 'Border Width', 'tatsu' ),
+                'label' => esc_html__( 'Border Width', 'tatsu' ),
                 'default' => '0px 0px 0px 0px',
                 'tooltip' => '',
                 'responsive' => true,
@@ -459,7 +470,7 @@ function tatsu_register_image_carousel()
             array (
                 'att_name' => 'border_color',
                 'type' => 'color',
-                'label' => __( 'Border Color', 'tatsu' ),
+                'label' => esc_html__( 'Border Color', 'tatsu' ),
                 'default' => '',
                 'tooltip' => '',
                 'css' => true,
@@ -478,7 +489,7 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'	=> 'border_radius',
 				'type'		=> 'number',
-				'label'		=> __('Border Radius', 'tatsu'),
+				'label'		=> esc_html__('Border Radius', 'tatsu'),
 				'options' 	=> array(
 					'unit'	=> 'px'
 				),
@@ -494,7 +505,7 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'			=> 'slide_bg_color',
 				'type'				=> 'color',
-				'label'				=> __('Slide Background Color', 'tatsu'),
+				'label'				=> esc_html__('Slide Background Color', 'tatsu'),
 				'default'			=> '',
 				'css'				=> true,
 				'selectors'			=> array(
@@ -506,21 +517,21 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'	=> 'arrows',
 				'type'		=> 'switch',
-				'label'		=> __('Arrows', 'tatsu'),
+				'label'		=> esc_html__('Arrows', 'tatsu'),
 				'default'	=> '0',
 				'tooltip'	=> ''
 			),
 			array(
 				'att_name' => 'pagination',
 				'type' => 'switch',
-				'label' => __( 'Dots', 'tatsu'),
+				'label' => esc_html__( 'Dots', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'dots_color',
 				'type' => 'color',
-				'label' => __('Dots Color', 'tatsu'),
+				'label' => esc_html__('Dots Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible'	  => array('pagination', '=', '1'),
@@ -535,14 +546,14 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name' => 'infinite',
 				'type' => 'switch',
-				'label' => __(' Infinite Carousel', 'tatsu'),
+				'label' => esc_html__(' Infinite Carousel', 'tatsu'),
 				'default' => 1,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'slide_show',
 				'type' => 'switch',
-				'label' => __('Slide Show', 'tatsu'),
+				'label' => esc_html__('Slide Show', 'tatsu'),
 				'default' => 0,
 				'tooltip' => ''
 			),
@@ -550,7 +561,7 @@ function tatsu_register_image_carousel()
 				'att_name' => 'slide_show_speed',
 				'type' => 'slider',
 				'visible' => array('slide_show', '=', '1'),
-				'label' => __('Slide Show Speed', 'tatsu'),
+				'label' => esc_html__('Slide Show Speed', 'tatsu'),
 				'options' => array(
 					'min' => '0',
 					'max' => '5000',
@@ -563,14 +574,14 @@ function tatsu_register_image_carousel()
 			array(
 				'att_name'	=> 'swipe_to_slide',
 				'type'		=> 'switch',
-				'label'		=> __('Free Scroll', 'tatsu'),
+				'label'		=> esc_html__('Free Scroll', 'tatsu'),
 				'default'	=> '1',
 				'tooltip'	=> ''
 			),
 			array(
 				'att_name' => 'destroy_in_mobile',
 				'type' => 'switch',
-				'label' => __('Stack Images in Mobile view', 'tatsu'),
+				'label' => esc_html__('Stack Images in Mobile view', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 			),

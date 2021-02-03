@@ -6,7 +6,7 @@
  * Author:              MonsterInsights
  * Author URI:          https://www.monsterinsights.com/?utm_source=liteplugin&utm_medium=pluginheader&utm_campaign=authoruri&utm_content=7%2E0%2E0
  *
- * Version:             7.12.2
+ * Version:             7.15.1
  * Requires at least:   3.8.0
  * Requires PHP:        5.2
  *
@@ -69,7 +69,7 @@ final class MonsterInsights_Lite {
 	 * @access public
 	 * @var string $version Plugin version.
 	 */
-	public $version = '7.12.2';
+	public $version = '7.15.1';
 
 	/**
 	 * Plugin file.
@@ -135,6 +135,15 @@ final class MonsterInsights_Lite {
 	public $notifications;
 
 	/**
+	 * Holds instance of MonsterInsights Notification Events
+	 *
+	 * @since 7.12.3
+	 * @access public
+	 * @var MonsterInsights_Notification_Event $notification_event Instance of MonsterInsights_Notification_Event class.
+	 */
+	public $notification_event;
+
+	/**
 	 * Holds instance of MonsterInsights Auth class.
 	 *
 	 * @since 7.0.0
@@ -160,6 +169,15 @@ final class MonsterInsights_Lite {
 	 * @var MonsterInsights_Rest_Routes $routes Instance of rest routes.
 	 */
 	public $routes;
+
+	/**
+	 * The tracking mode used in the frontend.
+	 *
+	 * @since 7.15.0
+	 * @accces public
+	 * @var string
+	 */
+	public $tracking_mode;
 
 	/**
 	 * Primary class constructor.
@@ -216,7 +234,7 @@ final class MonsterInsights_Lite {
 
 			// This does the version to version background upgrade routines and initial install
 			$mi_version = get_option( 'monsterinsights_current_version', '5.5.3' );
-			if ( version_compare( $mi_version, '7.12.0', '<' ) ) {
+			if ( version_compare( $mi_version, '7.15.0', '<' ) ) {
 				monsterinsights_lite_call_install_and_upgrade();
 			}
 
@@ -229,11 +247,12 @@ final class MonsterInsights_Lite {
 
 			// Load admin only components.
 			if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
-				self::$instance->notices       = new MonsterInsights_Notice_Admin();
-				self::$instance->reporting     = new MonsterInsights_Reporting();
-				self::$instance->api_auth      = new MonsterInsights_API_Auth();
-				self::$instance->routes        = new MonsterInsights_Rest_Routes();
-				self::$instance->notifications = new MonsterInsights_Notifications();
+				self::$instance->notices            = new MonsterInsights_Notice_Admin();
+				self::$instance->reporting          = new MonsterInsights_Reporting();
+				self::$instance->api_auth           = new MonsterInsights_API_Auth();
+				self::$instance->routes             = new MonsterInsights_Rest_Routes();
+				self::$instance->notifications      = new MonsterInsights_Notifications();
+				self::$instance->notification_event = new MonsterInsights_Notification_Event();
 			}
 
 			if ( monsterinsights_is_pro_version() ) {
@@ -534,6 +553,10 @@ final class MonsterInsights_Lite {
 
 			// Notifications class.
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/notifications.php';
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/notification-event.php';
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/notification-event-runner.php';
+			// Add notification manual events for lite version.
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/notifications/notification-events.php';
 		}
 
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/api-request.php';
@@ -546,6 +569,21 @@ final class MonsterInsights_Lite {
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/frontend.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/seedprod.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/measurement-protocol.php';
+	}
+
+	/**
+	 * Get the tracking mode for the frontend scripts.
+	 *
+	 * @return string
+	 */
+	public function get_tracking_mode() {
+
+		if ( ! isset( $this->tracking_mode ) ) {
+			// This will already be set to 'analytics' to anybody already using the plugin before 7.15.0.
+			$this->tracking_mode = monsterinsights_get_option( 'tracking_mode', 'gtag' );
+		}
+
+		return $this->tracking_mode;
 	}
 }
 
@@ -642,6 +680,18 @@ function monsterinsights_lite_uninstall_hook() {
 
 		// Delete data
 		$instance->reporting->delete_aggregate_data('site');
+	}
+
+	// Clear notification cron schedules
+	$schedules = wp_get_schedules();
+
+	if  ( is_array( $schedules ) && ! empty( $schedules ) ) {
+		foreach ( $schedules as $key => $value ) {
+			if ( 0 === strpos($key, "monsterinsights_notification_") ) {
+				$cron_hook = implode("_", explode( "_", $key, -2 ) ) . '_cron';
+				wp_clear_scheduled_hook( $cron_hook );
+			}
+		}
 	}
 
 }

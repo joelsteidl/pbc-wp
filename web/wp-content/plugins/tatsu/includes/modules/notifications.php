@@ -32,7 +32,7 @@ function tatsu_register_notifications()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#notifications',
-		'title' => __('Notifications', 'tatsu'),
+		'title' => esc_html__('Notifications', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -45,7 +45,7 @@ function tatsu_register_notifications()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'content',
 							'class',
@@ -54,7 +54,7 @@ function tatsu_register_notifications()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'bg_color',
 							'color',
@@ -64,7 +64,7 @@ function tatsu_register_notifications()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //spacing and styling accordion
 								'type' => 'accordion',
@@ -72,7 +72,7 @@ function tatsu_register_notifications()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -92,7 +92,7 @@ function tatsu_register_notifications()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '', //alt_bg
 				'tooltip' => '',
 				'css' => true,
@@ -109,7 +109,7 @@ function tatsu_register_notifications()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Text Color', 'tatsu'),
+				'label' => esc_html__('Text Color', 'tatsu'),
 				'default' => '', //alt_text
 				'tooltip' => '',
 				'css' => true,
@@ -123,14 +123,14 @@ function tatsu_register_notifications()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Notification Content', 'tatsu'),
+				'label' => esc_html__('Notification Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'responsive' => true,

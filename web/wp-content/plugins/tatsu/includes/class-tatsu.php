@@ -72,7 +72,7 @@ class Tatsu {
 		if( defined( 'TATSU_VERSION' ) ) {
 			$this->version = TATSU_VERSION;
 		}else {
-			$this->version = '3.2';
+			$this->version = '3.3.0';
 		}
 		$this->load_dependencies();
 		$this->set_locale();
@@ -312,6 +312,10 @@ class Tatsu {
 		require_once TATSU_PLUGIN_DIR. 'includes/footer-builder/class-tatsu-footer-concepts.php';
 
 		/**
+		 * Class for theme supports
+		 */
+		require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-theme-support.php';
+		/**
 		 * Class responsible for registering custom post templates
 		 */
 		require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-post-templates.php';
@@ -358,21 +362,25 @@ class Tatsu {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'save_post', $this, 'after_save_post' );
-	//	$this->loader->add_action( 'wp_restore_post_revision', $this, 'restore_revision' );
 
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'edit_with_tatsu_button' );
-		$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'add_body_class' );	
+		$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'add_body_class' , 11);	
 
 		//double width, height option in gallery
 		$this->loader->add_filter( 'attachment_fields_to_edit', $plugin_admin, 'add_media_edit_options', 10, 2 );
 		$this->loader->add_filter( 'attachment_fields_to_save', $plugin_admin, 'add_media_save_options', 10, 2 );
 		
+		$this->loader->add_action( 'init', Tatsu_Theme_Support::getInstance(), 'init' );
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_global_section_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_header_register_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_footer_register_post_type' );
 
+		$this->loader->add_action( 'admin_menu', $plugin_admin , 'tatsu_admin_menu' );
+		$this->loader->add_action( 'admin_init', $plugin_admin , 'tatsu_register_setting' );
+		/*
 		$this->loader->add_action( 'admin_init', $plugin_admin , 'tatsu_add_global_section_settings' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin , 'tatsu_global_section_settings' );
+		/**/
 		$this->loader->add_action( 'load-post.php', $plugin_admin, 'redirect_tatsu_header_footer_builder' );
 
 		$this->loader->add_action( 'add_meta_boxes', $plugin_admin, 'tatsu_add_gsection_meta_box_to_posts' );
@@ -408,7 +416,6 @@ class Tatsu {
 
 		$this->loader->add_action( 'tatsu_print_header', $plugin_public, 'header_print' );
 		$this->loader->add_action( 'tatsu_print_footer', $plugin_public, 'print_footer' );
-		//$this->loader->add_action( 'after_body', $plugin_public, 'header_css_print' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'sliding_menu' );
 
@@ -460,8 +467,6 @@ class Tatsu {
         $this->loader->add_action( 'admin_action_tatsu-header', $plugin_builder, 'init' );
         $this->loader->add_action( 'admin_action_tatsu-footer', $plugin_builder, 'init' );
 
-        //$this->loader->add_action( 'plugins_loaded', $post_templates, 'init' );
-
 	}	
 
 
@@ -475,7 +480,6 @@ class Tatsu {
 	private function define_ajax_hooks() {
 		$plugin_store = new Tatsu_Store();
 		$this->loader->add_action( 'wp_ajax_tatsu_save_store', $plugin_store, 'ajax_save_store' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_save_store', $plugin_store, 'ajax_save_store' );
 
 		$this->loader->add_action( 'wp_ajax_get_revision_content', $plugin_store, 'ajax_get_revision_content' );
 
@@ -483,33 +487,25 @@ class Tatsu {
 	
 		$plugin_module = new Tatsu_Module();
 		$this->loader->add_action( 'wp_ajax_tatsu_module', $plugin_module, 'ajax_get_module_shorcode_output' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_module', $plugin_module, 'ajax_get_module_shorcode_output' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_paste_shortcode', $plugin_store, 'ajax_paste_shortcode' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_paste_shortcode', $plugin_store, 'ajax_paste_shortcode' );		
 
 
 		$this->loader->add_action( 'wp_ajax_tatsu_get_images_from_id', $this, 'ajax_get_images_from_id' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_images_from_id', $this, 'ajax_get_images_from_id' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_get_image', $this, 'ajax_get_image' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_image', $this, 'ajax_get_image' );
 
 		$plugin_templates = Tatsu_Page_Templates::getInstance();
 		$this->loader->add_action( 'wp_ajax_tatsu_get_template', $plugin_templates, 'ajax_get_template' );
 		$this->loader->add_action( 'wp_ajax_tatsu_get_templates_list', $plugin_templates, 'get_templates_list' );
 		$this->loader->add_action( 'wp_ajax_tatsu_get_prebuilt_templates', $plugin_templates, 'get_prebuilt_templates' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_template', $plugin_templates, 'ajax_get_template' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_save_template', $plugin_templates, 'ajax_save_template' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_save_template', $plugin_templates, 'ajax_save_template' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_delete_template', $plugin_templates, 'ajax_delete_template' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_delete_template', $plugin_templates, 'ajax_delete_template' );	
 
 		$plugin_concepts =  Tatsu_Section_Concepts::getInstance();	
 		$this->loader->add_action( 'wp_ajax_tatsu_get_concepts', $plugin_concepts, 'ajax_get_section_concepts' );
-	//	$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_concepts', $plugin_concepts, 'ajax_get_section_concepts' );
 
 		$header_concepts =  Tatsu_Header_Concepts::getInstance();	
 		$this->loader->add_action( 'wp_ajax_tatsu_get_header_concepts', $header_concepts, 'ajax_get_header_concepts' );
@@ -518,7 +514,6 @@ class Tatsu {
 		$header_store =  new Tatsu_Header_Store();	
 		$this->loader->add_action( 'wp_ajax_tatsu_get_header_store', $header_store, 'ajax_get_store' );
 		$this->loader->add_action( 'wp_ajax_tatsu_save_header_store', $header_store, 'ajax_save_store' );
-		//$this->loader->add_action( 'wp_ajax_nopriv_tatsu_get_header_store', $header_store, 'ajax_get_store' );
 
 		$footer_store =  new Tatsu_Footer_Store();	
 		$footer_concepts =  Tatsu_Footer_Concepts::getInstance();	
@@ -606,7 +601,7 @@ class Tatsu {
 		}
 
 		$images =  stripslashes( $_POST['images'] );
-		$size =  $_POST['size'];
+		$size =  be_sanitize_text_field($_POST['size']);
 		if( $images ) {
 			$images = json_decode( $images, true );
 		}
@@ -621,7 +616,7 @@ class Tatsu {
 		}
 
 		echo json_encode($image_url);
-		wp_die();
+		exit;
 	}
 
 	/**
@@ -636,9 +631,9 @@ class Tatsu {
 			wp_die();
 		}
 
-		$id = $_POST['id'];
-		$size = $_POST['size'];
-		$image = $_POST['image'];
+		$id = be_sanitize_text_field($_POST['id']);
+		$size = be_sanitize_text_field($_POST['size']);
+		$image = be_sanitize_text_field($_POST['image']);
 		$upload_dir_paths = wp_upload_dir();
 		if ( false !== strpos( $image, $upload_dir_paths['baseurl'] ) ) {
 			$image_details = wp_get_attachment_image_src( $id, $size ); 
@@ -651,7 +646,7 @@ class Tatsu {
 			echo $image;
 		}
 		
-		wp_die();
+		exit;
 	 }
 
 
@@ -702,7 +697,7 @@ class Tatsu {
 
 	public function after_save_post( $post_id ) {
 		if( array_key_exists( '_edited_with', $_POST ) ) {
-			update_post_meta( $post_id, '_edited_with', $_POST['_edited_with'] );
+			update_post_meta( $post_id, '_edited_with', be_sanitize_text_field($_POST['_edited_with']) );
 		}
 
 		$parent_id = wp_is_post_revision( $post_id );

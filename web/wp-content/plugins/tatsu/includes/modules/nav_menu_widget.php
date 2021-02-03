@@ -78,7 +78,7 @@ function tatsu_register_wp_menu_links()
 
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#vertical_nav_menu',
-		'title' => __('Navigation Menu', 'tatsu'),
+		'title' => esc_html__('Navigation Menu', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => false,
@@ -94,7 +94,7 @@ function tatsu_register_wp_menu_links()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -110,7 +110,7 @@ function tatsu_register_wp_menu_links()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -118,7 +118,7 @@ function tatsu_register_wp_menu_links()
 								'group' => array(
 									array( //color accordion
 										'type'		=> 'panel',
-										'title'		=> __('Colors', 'tatsu'),
+										'title'		=> esc_html__('Colors', 'tatsu'),
 										'group'		=> array(
 											'border_width', //border property
 											array(
@@ -127,14 +127,14 @@ function tatsu_register_wp_menu_links()
 												'group'		=> array(
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Normal', 'tatsu'),
+														'title'		=> esc_html__('Normal', 'tatsu'),
 														'group'		=> array(
 															'menu_color',
 														),
 													),
 													array(
 														'type'		=> 'tab',
-														'title'		=> __('Hover', 'tatsu'),
+														'title'		=> esc_html__('Hover', 'tatsu'),
 														'group'		=> array(
 															'menu_hover_color'
 														),
@@ -155,7 +155,7 @@ function tatsu_register_wp_menu_links()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //spacing and styling accordion
 								'type' => 'accordion',
@@ -163,7 +163,7 @@ function tatsu_register_wp_menu_links()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -180,7 +180,7 @@ function tatsu_register_wp_menu_links()
 			array(
 				'att_name' => 'menu_name',
 				'type' => 'select',
-				'label' => __('Menu Name', 'oshine-modules'),
+				'label' => esc_html__('Menu Name', 'oshine-modules'),
 				'options' => tatsu_header_get_menu_list()[0],
 				'tooltip' => '',
 				'default' =>  tatsu_header_get_menu_list()[1]
@@ -188,7 +188,7 @@ function tatsu_register_wp_menu_links()
 			array(
 				'att_name' => 'menu_style',
 				'type' => 'select',
-				'label' => __('Orientation', 'oshine-modules'),
+				'label' => esc_html__('Orientation', 'oshine-modules'),
 				'options' => array(
 					'vertical' => 'Vertical',
 					'horizontal' => 'Horizontal'
@@ -200,7 +200,7 @@ function tatsu_register_wp_menu_links()
 				'att_name' => 'wrap_alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Alignment', 'tatsu'),
+				'label' => esc_html__('Alignment', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -219,7 +219,7 @@ function tatsu_register_wp_menu_links()
 			array(
 				'att_name' => 'menu_color',
 				'type' => 'color',
-				'label' => __('Menu Color', 'tatsu'),
+				'label' => esc_html__('Menu Color', 'tatsu'),
 				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css' => true,
@@ -232,7 +232,7 @@ function tatsu_register_wp_menu_links()
 			array(
 				'att_name' => 'menu_hover_color',
 				'type' => 'color',
-				'label' => __('Menu Hover Color', 'tatsu'),
+				'label' => esc_html__('Menu Hover Color', 'tatsu'),
 				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css' => true,
@@ -246,20 +246,20 @@ function tatsu_register_wp_menu_links()
 				'att_name' => 'show_arrow',
 				'type' => 'switch',
 				'default' => 1,
-				'label' => __('Show Arrow', 'tatsu'),
+				'label' => esc_html__('Show Arrow', 'tatsu'),
 				'tooltip' => ''
 			),
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'link_font',
 				'type'		=> 'select',
-				'label'		=> __('Title Font', 'tatsu'),
+				'label'		=> esc_html__('Title Font', 'tatsu'),
 				'default'	=> 'body',
 				'options'	=> typehub_get_exposed_selectors()
 			) : false,
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0 0 30px 0',
 				'tooltip' => '',
 				'css'	  => true,
@@ -270,13 +270,6 @@ function tatsu_register_wp_menu_links()
 					)
 				)
 			),
-			// array(
-			// 	'att_name' => 'hide_in',
-			// 	'type' => 'screen_visibility',
-			// 	'label' => __('Hide in', 'tatsu'),
-			// 	'default' => '',
-			// 	'tooltip' => '',
-			// ),
 		),
 	);
 	tatsu_register_module('tatsu_wp_menu_links', $controls);

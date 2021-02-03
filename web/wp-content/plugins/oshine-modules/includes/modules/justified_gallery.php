@@ -25,6 +25,7 @@ if (!function_exists('be_justified_gallery')) {
 			'gallery_paginate' => 0,
 			'caption_type' => 'alt',
 			'like_button' => 0,
+			'adaptive_image'    => 0,
             'images' => '',
             'key' => be_uniqid_base36(true),
 		) , $atts, $tag );
@@ -122,7 +123,7 @@ if (!function_exists('be_justified_gallery')) {
 			$output .= '<div '.$css_id.' class="justified-gallery-outer-wrap oshine-module '.$disable_hover_icon.' '.$unique_class_name.' '.$animate.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.'>';
             $output .= '<div class=" justified-gallery-inner-wrap " data-action="get_be_justified_gallery_with_pagination" data-paged="1" data-source=\''.json_encode($source).'\' data-images-array="'.$images_arr.'" data-items-per-load="'.$items_per_load.'" data-hover-style="'.$hover_style.'" data-image-grayscale="'.$img_grayscale.'" data-image-effect="'.$image_effect.'" data-thumb-overlay-color="'.$thumb_overlay_color.'" data-grad-style-color="'.$gradient_style_color.'" data-like-button="'.$like_button.'" data-disable-overlay="'.$disable_overlay.'" >';
 			$output .= '<div class=" justified-gallery clickable clearfix be-photoswipe-gallery '.$initial_load_style.'" data-gutter-width="'.$gutter_width.'" data-image-height="'.$image_height.'" ' . ( !empty( $lazy_load ) ? 'data-lazy-load = "1"' : '' ) . ' >';
-			$output .= get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type);
+			$output .= get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type,$adaptive_image);
 			$output .= '</div>'; //end justified-gallery
 			if('' != $items_per_load && (1 == $gallery_paginate) ) {
 				$output .='<div class="trigger_infinite_scroll justified_gallery_infinite_scroll"></div>';  
@@ -190,6 +191,7 @@ function oshine_register_justified_gallery() {
 												'gradient',
                                                 'gradient_direction',
                                                 'lazy_load',
+												'adaptive_image'
 												)
 											),
 										array (
@@ -426,6 +428,13 @@ function oshine_register_justified_gallery() {
 	              	'default' => 0,
 	              	'tooltip' => '',
 	            ),
+				array(
+					'att_name' => 'adaptive_image',
+					'type' => 'switch',
+					'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
 	        ),
 	        'presets' => array(
 	        	'default' => array(

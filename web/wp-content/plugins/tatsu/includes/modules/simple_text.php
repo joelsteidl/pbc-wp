@@ -58,7 +58,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // function tatsu_register_simple_text() {
 // 	$controls = array (
 // 	        'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#inline_text',
-// 	        'title' => __( 'Simple Text', 'tatsu' ),
+// 	        'title' => esc_html__( 'Simple Text', 'tatsu' ),
 // 	        'is_js_dependant' => false,
 // 	        'type' => 'single',
 // 	        'is_built_in' => true,
@@ -67,7 +67,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 	            // array (
 // 	        	// 	'att_name' => 'max_width',
 // 	        	// 	'type' => 'slider',
-// 	        	// 	'label' => __( 'Content Width', 'tatsu' ),
+// 	        	// 	'label' => esc_html__( 'Content Width', 'tatsu' ),
 // 	        	// 	'options' => array(
 // 	        	// 		'min' => '0',
 // 	        	// 		'max' => '100',
@@ -95,7 +95,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 	        	array (
 // 	        		'att_name' => 'tag_to_use',
 // 	        		'type' => 'select',
-// 	        		'label' => __( 'Tag to use for Text', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Tag to use for Text', 'tatsu' ),
 // 	        		'options' => array (
 // 						'h1' => 'h1',
 // 						'h2' => 'h2',
@@ -117,7 +117,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 					'options' => array (
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Text Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Text Color', 'tatsu' ),
 // 					'default' => '',
 // 				   'tooltip' => '',
 // 				   'css' => true,
@@ -148,7 +148,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 					'att_name' => 'style',
 // 					'type' => 'button_group',
-// 					'label' => __( 'Text Properties',  'tatsu'  ),
+// 					'label' => esc_html__( 'Text Properties',  'tatsu'  ),
 // 					'options' => array (
 // 						'default' => 'Default',
 // 						'custom' => 'Custom',
@@ -159,7 +159,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 	            array (
 // 	        		'att_name' => 'font_size',
 // 	        		'type' => 'number',
-// 	        		'label' => __( 'Font Size', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Font Size', 'tatsu' ),
 // 	        		'options' => array(
 // 	        			'unit' => 'px',
 // 	        		),
@@ -178,7 +178,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 	        		'att_name' => 'line-height',
 // 	        		'type' => 'number',
-// 	        		'label' => __( 'Line Height', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Line Height', 'tatsu' ),
 // 	        		'options' => array(
 // 	        			'unit' => 'px',
 // 	        		),
@@ -198,7 +198,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array(
 // 					'att_name' => 'letter_spacing',
 // 					'type' => 'slider',
-// 					'label' => __('Letter Spacing', 'tatsu'),
+// 					'label' => esc_html__('Letter Spacing', 'tatsu'),
 // 					'options' => array(
 // 						'min' => 0,
 // 						'max' => 25,
@@ -220,7 +220,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 	        		'att_name' => 'text_transform',
 // 	        		'type' => 'select',
-// 	        		'label' => __( 'Text Transform', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Text Transform', 'tatsu' ),
 // 	        		'options' => array (
 // 						'uppercase' => 'Uppercase',
 // 						'lowercase' => 'Lowercase',
@@ -243,7 +243,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 //                     'att_name' => 'wrap_alignment',
 //                     'type' => 'button_group',
-//                     'label' => __( 'Text Alignment', 'tatsu' ),
+//                     'label' => esc_html__( 'Text Alignment', 'tatsu' ),
 //                     'options' => array (
 //                         'left' => 'Left',
 //                         'center' => 'Center',                        
@@ -262,7 +262,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 	        		'att_name' => 'margin',
 // 	        		'type' => 'input_group',
-// 	        		'label' => __( 'Margin', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Margin', 'tatsu' ),
 // 	              	'default' => '0px 0px 0px 0px',
 // 					'tooltip' => '',
 // 					'responsive' => true,
@@ -277,7 +277,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 	            array (
 // 	              'att_name' => 'padding',
 // 	              'type' => 'input_group',
-// 	              'label' => __( 'Padding', 'tatsu' ),
+// 	              'label' => esc_html__( 'Padding', 'tatsu' ),
 // 	              'default' => '0px 0px 0px 0px',
 // 				  'tooltip' => '',
 // 				  'css' => true,
@@ -292,7 +292,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 	            array (
 // 	        		'att_name' => 'border_thickness',
 // 	        		'type' => 'number',
-// 	        		'label' => __( 'Border Thickness', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Border Thickness', 'tatsu' ),
 // 	        		'options' => array(
 // 	        			'unit' => 'px',
 // 	        		),
@@ -314,7 +314,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 					'options' => array (
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Border Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Border Color', 'tatsu' ),
 // 					'default' => '',
 // 				   'tooltip' => '',
 // 				   'css' => true,
@@ -328,7 +328,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				// array(
 // 				// 	'att_name' => 'border_radius',
 // 				// 	'type' => 'slider',
-// 				// 	'label' => __('Border Radius', 'tatsu'),
+// 				// 	'label' => esc_html__('Border Radius', 'tatsu'),
 // 				// 	'options' => array(
 // 				// 		'min' => 0,
 // 				// 		'max' => 1000,
@@ -352,7 +352,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 					'options' => array (
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Background Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Background Color', 'tatsu' ),
 // 					'default' => '',
 // 				   'tooltip' => '',
 // 				   'css' => true,
@@ -365,14 +365,14 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 					'att_name' => 'enable_box_shadow',
 // 					'type' => 'switch',
-// 					'label' => __( 'Enable Box Shadow', 'tatsu' ),
+// 					'label' => esc_html__( 'Enable Box Shadow', 'tatsu' ),
 // 					'default' => 0,
 // 					'tooltip' => '',
 // 				), 
 // 				array (
 // 					'att_name' => 'box_shadow_custom',
 // 					'type' => 'input_box_shadow',
-// 					'label' => __( 'Box Shadow Values', 'tatsu' ),
+// 					'label' => esc_html__( 'Box Shadow Values', 'tatsu' ),
 // 					'default' => '0 0 15px 0 rgba(198,202,202,0.4)',
 // 					'tooltip' => '',
 // 					'visible' => array( 'enable_box_shadow', '=', '1' ),
@@ -387,14 +387,14 @@ if ( !function_exists( 'simple_text' ) ) {
 // 				array (
 // 	        		'att_name' => 'animate',
 // 	        		'type' => 'switch',
-// 	        		'label' => __( 'Enable CSS Animation', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Enable CSS Animation', 'tatsu' ),
 // 	        		'default Value' => 0,
 // 	        		'tooltip' => ''
 // 	        	),
 // 	             array (
 // 	              'att_name' => 'animation_type',
 // 	              'type' => 'select',
-// 	              'label' => __( 'Animation Type', 'tatsu' ),
+// 	              'label' => esc_html__( 'Animation Type', 'tatsu' ),
 // 	              'options' => tatsu_css_animations(),
 // 	              'default' => 'fadeIn',
 // 	              'tooltip' => '',
@@ -410,7 +410,7 @@ if ( !function_exists( 'simple_text' ) ) {
 // 						'unit' => 'ms',
 // 	        		),
 // 					'default' => '0',	        		
-// 	        		'label' => __( 'Animation Delay', 'tatsu' ),
+// 	        		'label' => esc_html__( 'Animation Delay', 'tatsu' ),
 // 	        		'tooltip' => '',
 // 					'visible' => array( 'animate', '=', '1' ),
 // 	        	),	

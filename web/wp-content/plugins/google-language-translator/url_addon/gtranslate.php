@@ -27,7 +27,7 @@ if(isset($get_params['gurl']))
     unset($get_params['gurl']);
 
 if(count($get_params)) {
-    $page_url .= '?' . http_build_query($get_params);
+    $page_url .= '?' . rtrim(str_replace('=&', '&', http_build_query($get_params)), '=');
 }
 
 $main_lang = isset($data['default_language']) ? $data['default_language'] : $main_lang;
@@ -219,7 +219,7 @@ $response_headers = explode(PHP_EOL, $header);
 //print_r($response_headers);
 $headers_sent = '';
 foreach($response_headers as $header) {
-    if(!empty($header) and !preg_match('/Content\-Length:|Transfer\-Encoding:|Content\-Encoding:|Link:/i', $header)) {
+    if(!empty(trim($header)) and !preg_match('/Content\-Length:|Transfer\-Encoding:|Content\-Encoding:|Link:/i', $header)) {
 
         if(preg_match('/^(Location|Refresh):/i', $header)) {
             $header = str_ireplace($host, $_SERVER['HTTP_HOST'] . '/' . $glang, $header);

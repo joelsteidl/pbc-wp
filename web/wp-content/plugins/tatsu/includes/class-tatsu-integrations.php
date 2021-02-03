@@ -55,8 +55,8 @@ class Tatsu_Integrations {
 		?>
 		<script type = "text/html" id = "tatsu-gutenberg-switch-button">
 			<a href = "<?php echo $change_builder_url; ?>" class = "button button-large <?php echo (!$edited_with_tatsu ? 'button-primary' : ''); ?>" id = "tatsu-switch-builder-button">
-				<span class = "tatsu-switch-builder-gutenburg">Edit with Gutenberg</span>
-				<span class = "tatsu-switch-builder-tatsu">Edit with Tatsu</span>
+				<span class = "tatsu-switch-builder-gutenburg"><?php esc_html_e('Edit with Gutenberg' , 'tatsu');?></span>
+				<span class = "tatsu-switch-builder-tatsu"><?php esc_html_e('Edit with Tatsu' , 'tatsu');?></span>
 			</a>
 		</script>
 		<script type = "text/html" id = "tatsu-gutenberg-editor-panel">
@@ -66,7 +66,7 @@ class Tatsu_Integrations {
                         <svg width="120px" height="35px" viewBox="0 0 233 68" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                             <!-- Generator: Sketch 48.1 (47250) - http://www.bohemiancoding.com/sketch -->
                             <title>Tatsu</title>
-                            <desc>Created with Sketch.</desc>
+                            <desc><?php esc_html_e('Created with Sketch.' , 'tatsu');?></desc>
                             <defs></defs>
                             <g id="Artboard" stroke="none" stroke-width="1" fill-rule="evenodd" transform="translate(-484.000000, -295.000000)">
                                 <g id="Tatsu" transform="translate(483.000000, 267.000000)" >
@@ -74,9 +74,7 @@ class Tatsu_Integrations {
                                 </g>
                             </g>
                         </svg>
-						<span>
-							<?php echo esc_html__(  'Edit With Tatsu' , 'tatsu' ); ?>
-						</span>
+						<span><?php echo esc_html__('Edit With Tatsu' , 'tatsu'); ?></span>
 					</span>
 				</a>			
 			</div>	
@@ -87,14 +85,14 @@ class Tatsu_Integrations {
 				</div>
 				<div class = "notification-dialog">
 					<p class = "message">
-						<?php echo esc_html__( 'This post was previously edited in Tatsu. You can continue in Gutenberg, but you may lose data and formatting.', 'tatsu' ); ?>
+						<?php echo esc_html__( 'This post was previously edited in Tatsu. You can continue in Gutenberg, but you may lose data and formatting.', 'tatsu'); ?>
 					</p>
 					<div class = "buttons">
 						<a href = "<?php echo tatsu_edit_url( $post_id ); ?>" class = "button button-primary close-modal">
-							<?php echo esc_html__( 'Continue with Tatsu', 'tatsu' ); ?>
+							<?php echo esc_html__( 'Continue with Tatsu', 'tatsu'); ?>
 						</a>
 						<a href = "<?php echo $gutenberg_builder_url; ?>" class = "button">
-							<?php echo esc_html__( 'Edit in Gutenberg', 'tatsu' ); ?>
+							<?php echo esc_html__( 'Edit in Gutenberg', 'tatsu'); ?>
 						</a>
 					</div>
 				</div>
@@ -117,7 +115,7 @@ class Tatsu_Integrations {
 			return;
 		}
 		$builder_mode = $_GET['builder'];
-		$post_id = $_GET['post'];
+		$post_id = be_sanitize_text_field($_GET['post']);
 		$redirect_url = '';
 		if( 'editor' === $builder_mode ) {
 			update_post_meta( $post_id, '_edited_with', 'editor' );

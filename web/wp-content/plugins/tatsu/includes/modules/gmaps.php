@@ -2,7 +2,6 @@
 if ( ! function_exists( 'tatsu_gmaps' ) ) {
 	function tatsu_gmaps( $atts, $content, $tag ) {
 		$atts =  shortcode_atts( array(
-			//'api_key' =>'',
 			'address'=>'',
 			'latitude'=>'',
 			'longitude'=>'',
@@ -30,13 +29,12 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 			if(!empty($latitude) && !empty($longitude)) {
 				$map_error = false;
 			} 
-			else if( ! empty( $address ) ) { //&& !empty($api_key) ) {
+			else if( ! empty( $address ) ) {
 				$map_error = false;
 				$transient_var = be_generate_slug($address, 10);
 				$transient_result = get_transient( $transient_var );
 				if(!$transient_result ) {
-					//$coordinates = file_get_contents('http://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) . '&sensor=true');
-					$response = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) );//. '&key='.urlencode( $api_key ) );
+					$response = wp_remote_get('https://maps.googleapis.com/maps/api/geocode/json?address=' . urlencode($address) );
 					if ( is_wp_error( $response ) ) {
 						$map_error = true;
 						delete_transient( $transient_var );
@@ -130,7 +128,7 @@ function tatsu_register_gmaps()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#gmaps',
-		'title' => __('Google Maps', 'tatsu'),
+		'title' => esc_html__('Google Maps', 'tatsu'),
 		'is_js_dependant' => true,
 		'type' => 'single',
 		'is_built_in' => false,
@@ -142,7 +140,7 @@ function tatsu_register_gmaps()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'address',
 							'latitude',
@@ -152,7 +150,7 @@ function tatsu_register_gmaps()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'height',
 							'zoom',
@@ -163,7 +161,7 @@ function tatsu_register_gmaps()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //Video source accordion
 								'type' => 'accordion',
@@ -180,21 +178,21 @@ function tatsu_register_gmaps()
 			array(
 				'att_name' => 'address',
 				'type' => 'text',
-				'label' => __('Address', 'tatsu'),
+				'label' => esc_html__('Address', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'latitude',
 				'type' => 'text',
-				'label' => __('Latitude', 'tatsu'),
+				'label' => esc_html__('Latitude', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'longitude',
 				'type' => 'text',
-				'label' => __('Longitude', 'tatsu'),
+				'label' => esc_html__('Longitude', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -202,7 +200,7 @@ function tatsu_register_gmaps()
 				'att_name' => 'height',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Height', 'tatsu'),
+				'label' => esc_html__('Height', 'tatsu'),
 				'options' => array(
 					'unit' => array( 'px', 'vh' ),
 					'add_unit_to_value' => false,
@@ -221,7 +219,7 @@ function tatsu_register_gmaps()
 			array(
 				'att_name' => 'zoom',
 				'type' => 'slider',
-				'label' => __('Zoom', 'tatsu'),
+				'label' => esc_html__('Zoom', 'tatsu'),
 				'options' => array(
 					'min' => '1',
 					'max' => '25',
@@ -233,7 +231,7 @@ function tatsu_register_gmaps()
 			array(
 				'att_name' => 'style',
 				'type' => 'select',
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'standard' => 'Standard',
 					'greyscale' => 'Greyscale',
@@ -250,7 +248,7 @@ function tatsu_register_gmaps()
 			array(
 				'att_name' => 'marker',
 				'type' => 'single_image_picker',
-				'label' => __('Custom Marker Pin', 'tatsu'),
+				'label' => esc_html__('Custom Marker Pin', 'tatsu'),
 				'tooltip' => '',
 			),
 		),

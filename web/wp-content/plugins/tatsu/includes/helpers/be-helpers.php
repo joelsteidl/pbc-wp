@@ -1,4 +1,18 @@
 <?php
+/* ---------------------------------------------  */
+// Filter to sanitize string 
+/* ---------------------------------------------  */
+if ( ! function_exists( 'be_sanitize_textarea_field' ) ) {
+	function be_sanitize_textarea_field( $string_data) {
+		return $string_data;
+	}
+}
+
+if ( ! function_exists( 'be_sanitize_text_field' ) ) {
+	function be_sanitize_text_field( $string_data) {
+		return $string_data;
+	}
+}
 
 /* ---------------------------------------------  */
 // Filter to generate slug for custom sidebars
@@ -116,8 +130,6 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 		if( empty( $condition_array ) ) {
 			return true;
 		}
-		//$iterator = is_array( $condition_array[0] ) && is_string( $condition_array[0][0] ) ? $condition_array[0]: $condition_array;
-		
 		foreach( $condition_array as $each_key => $each_value ){// when array of array
 
 			//NOTE: $checking[0] is the att to check , $checking[1] is the condition and $checking[2] is the value to check against
@@ -159,7 +171,6 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 				$checking_2 = !empty($checking[2]) ? $checking[2] : null ;
 			}
 			$checking_0 = trim( $checking_0 );   // trim coz responsive values vil have space in last
-			//if( is_array ( $checking ) ){
 				switch( $checking[1] ){
 					case 'empty':
 						if( empty( $checking_0 ) ){
@@ -204,7 +215,6 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 						}
 						break;
 				}
-			//}
 		}
 		if( in_array( true, $check_flag ) ){
 			if( ( 'and' == $relation && !in_array( false, $check_flag ) ) || ( 'and' != $relation ) ){
@@ -295,7 +305,6 @@ if( !function_exists( 'be_compute_css' ) ) {
 
 		if( !empty( $condition['operation'] ) && is_array( $condition['operation'] ) ){
 			$operation = $condition['operation'];
-			//extract($operation);
 			switch($operation[0]){
 				case '/':
 					$val /=  $operation[1];
@@ -327,15 +336,7 @@ if( !function_exists( 'be_compute_css' ) ) {
 			
 			return 'transform: translateY('.$prepend.$val.$append.');';
 		} else {
-			//if( !empty( $prepend ) || !empty( $append )){
-				// if( !empty( $condition['append'] ) && !empty( $condition['prepend'] ) ){
-				// 	return $property.': '.$condition['prepend'].$val.$condition['append'].';';
-				// } elseif( !empty( $condition['prepend'] ) ){
-				// 	return $property.': '.$condition['prepend'].$val.';';
-				// }
-				return $property.': '.$prepend.$val.$append.';';
-			// }
-			// return $property.': '.$val.';';		
+			return $property.': '.$prepend.$val.$append.';';
 		}
 	}
 }
@@ -804,15 +805,15 @@ if( !function_exists( 'be_split_number_text' ) ) {
 		$i = $length-1;
 		$text = '';
 		$number = '';
-		while( $i >= 0 ) {
-			if( !is_numeric( $string[$i] ) ) {
-				$text = $string[$i].$text;
-			} else {
-				$number = substr( $string, 0, $i+1 );
-				break;
-			}
-			$i--;
-		} 
+        while( $i >= 0 ) {
+            if( isset($string[$i]) && !is_numeric( $string[$i] ) ) {
+                $text = $string[$i].$text;
+            } else {
+                $number = substr( $string, 0, $i+1 );
+                break;
+            }
+            $i--;
+        } 
 		return array(
 			$text,
 			$number

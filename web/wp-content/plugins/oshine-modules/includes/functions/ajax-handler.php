@@ -447,7 +447,7 @@ if ( ! function_exists( 'be_themes_get_be_gallery_with_pagination' ) ) :
 endif;
 
 if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
-	function get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$lazy_load,$delay_load,$placeholder_color){
+	function get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$lazy_load,$delay_load,$placeholder_color,$adaptive_image){
 		
 		global $be_themes_data;
 		$isdwdh = false;
@@ -549,7 +549,14 @@ if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
 					$thumb_bg_style = '';
 				}
 				//End
-				$output .= '<div class="flip-wrap"><div ' . ( ( "masonry_enable" == $masonry_enable || 'flickr' == $image_source ) ? ( 'data-aspect-ratio="'.$masonry_aspect_ratio.'"' )  : '' ) . ' style = "padding-bottom : '. $placeholder_padding .'%;'.( !empty( $placeholder_color ) ? 'background-color:'. $placeholder_color : '' ).';" class="flip-img-wrap '.$image_effect.'-effect"><img '. ( $lazy_load ? 'data-src="'.$image['thumbnail'] : 'src="'.$image['thumbnail'] ) .'"' . ( $isdwdh ? ( ' data-aspect-ratio="'.$current_dwdh_aspect_ratio.'"' ) : '' ) . ' alt="'.$attachment_info['alt'].'" /></div></div>';
+				$output .= '<div class="flip-wrap"><div ' . ( ( "masonry_enable" == $masonry_enable || 'flickr' == $image_source ) ? ( 'data-aspect-ratio="'.$masonry_aspect_ratio.'"' )  : '' ) . ' style = "padding-bottom : '. $placeholder_padding .'%;'.( !empty( $placeholder_color ) ? 'background-color:'. $placeholder_color : '' ).';" class="flip-img-wrap '.$image_effect.'-effect">';
+				if( isset( $adaptive_image ) && $adaptive_image == 1 ) {
+					$img_srcset = wp_get_attachment_image_srcset( $image['id'], 'full');
+					$output .= '<img '. ( $lazy_load ? 'data-srcset="'.$img_srcset : 'srcset="'.$img_srcset ) .'"' . ( $isdwdh ? ( ' data-aspect-ratio="'.$current_dwdh_aspect_ratio.'"' ) : '' ) . ' alt="'.$attachment_info['alt'].'" data-attr="'.$adaptive_image.'" data-id="'.$image['id'].'"/>';
+				}else{
+				$output .= '<img '. ( $lazy_load ? 'data-src="'.$image['thumbnail'] : 'src="'.$image['thumbnail'] ) .'"' . ( $isdwdh ? ( ' data-aspect-ratio="'.$current_dwdh_aspect_ratio.'"' ) : '' ) . ' alt="'.$attachment_info['alt'].'" data-attr="'.$adaptive_image.'"/>';
+				}
+				$output .= '</div></div>';
 				$output .= '<div class="thumb-overlay"><div class="thumb-bg" '.$thumb_bg_style.'>';
 				$output .= '<div class="thumb-title-wrap display-table-cell vertical-align-middle align-center fadeIn animated">';
 				$output .= $output_hover_content;
@@ -607,7 +614,7 @@ if ( ! function_exists( 'be_themes_get_be_justified_gallery_with_pagination' ) )
 endif;
 
 if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
-	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type){
+	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type,$adaptive_image){
 		
 		$output = '';
 
@@ -629,11 +636,20 @@ if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
                     $cur_image_attr[] = 'height = "' . $image['height'] . '"';
                     $cur_image_attr[] = 'width = "' . $image['width'] . '"';
                 }
-                if( !empty( $lazy_load ) ) {
-                    $cur_image_attr[] = 'data-src = "' . $image['thumbnail'] . '"';
-                }else {
-                    $cur_image_attr[] = 'src = "' . $image['thumbnail'] . '"';
-                }
+				if( isset( $adaptive_image ) && $adaptive_image == 1 ) {
+					$img_srcset = wp_get_attachment_image_srcset( $image['id'], 'full');
+					if( !empty( $lazy_load ) ) {
+						$cur_image_attr[] = 'data-srcset = "' . $img_srcset . '"';
+					}else {
+						$cur_image_attr[] = 'srcset = "' . $img_srcset . '"';
+					}
+				}else{
+					if( !empty( $lazy_load ) ) {
+						$cur_image_attr[] = 'data-src = "' . $image['thumbnail'] . '"';
+					}else {
+						$cur_image_attr[] = 'src = "' . $image['thumbnail'] . '"';
+					}
+				}
                 if( !empty( $attachment_info['alt'] ) ) {
                     $cur_image_attr[] = 'alt = "' . $attachment_info['alt'] . '"';
 				}
@@ -649,7 +665,10 @@ if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
 				}else{
 					$caption = $attachment_info['alt'];
 				}
-				$output .= '<div class="element be-hoverlay '.$image_atts['class'].' '.$hover_style.' '.$img_grayscale.'">';
+				if(empty($lazy_load)){
+					$laz_class = 'jg-entry-visible';	
+				}
+				$output .= '<div class="element be-hoverlay '.$image_atts['class'].' '.$hover_style.' '.$img_grayscale.' '.$laz_class.'">';
 				$output .= '<div class="element-inner ' .$image_effect.'-effect">';
 				$output .= '<a href="'.$image['full_image_url'].'" data-size="'.$image['width'].'x'.$image['height'].'" data-href="'.$image['full_image_url'].'" class="thumb-wrap" title="'.$image['description'].'">';
                 $output .= '<div class="flip-img-wrap">';

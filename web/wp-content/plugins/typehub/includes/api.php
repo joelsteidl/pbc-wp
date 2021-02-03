@@ -251,15 +251,25 @@ function typehub_import( $data ) {
     $store = $plugin_store->get_store();
     $saved_values = !empty( $store['savedValues'] ) ? $store['savedValues'] : array();
     $font_schemes = !empty( $store['fontSchemes'] ) ? $store['fontSchemes'] : array();
+    $settings_value = !empty( $store['settings'] ) ? $store['settings'] : array();
+    $custom_value = !empty( $store['custom'] ) ? $store['custom'] : array();
 
     $new_values = ( isset( $data['savedValues'] ) && is_array( $data['savedValues'] ) ) ? $data['savedValues'] : array();
     $new_schemes = ( isset( $data['fontSchemes'] ) && is_array( $data['fontSchemes'] ) ) ? $data['fontSchemes'] : array();
+    $new_settings = ( isset( $data['settings'] ) && is_array( $data['settings'] ) ) ? $data['settings'] : array();
+    $new_custom = ( isset( $data['custom'] ) && is_array( $data['custom'] ) ) ? $data['custom'] : array();
 
     // Merge Saved Values
     $data['savedValues'] = array_merge( $saved_values, $new_values );
 
     //Merge Font Schemes
     $data['fontSchemes'] = array_merge( $font_schemes, $new_schemes );
+
+    //Merge settings values
+    $data['settings'] = array_merge( $settings_value, $new_settings );
+
+    //Merge custom values
+    $data['custom'] = array_merge( $custom_value, $new_custom );
 
     return $plugin_store->save_store( $data );
 
@@ -274,10 +284,10 @@ function typehub_get_exposed_selectors() {
     $options = !empty( $store['optionConfig'] ) && is_array( $store['optionConfig'] ) ? $store['optionConfig'] : array();
     $exposed_selectors = array();
     foreach( $options as $option => $config ) {
-        if( array_key_exists( 'expose', $config ) && !empty( $config[ 'expose' ] ) ) {
+        if( ( array_key_exists( 'expose', $config ) && !empty( $config[ 'expose' ] ) ) || ( array_key_exists( 'category', $config ) && $config[ 'category' ] == 'Custom' ) )  {
             $exposed_selectors[ $option ] = $config[ 'label' ];
         }
-    }
+    }     
     return $exposed_selectors;
 }
 

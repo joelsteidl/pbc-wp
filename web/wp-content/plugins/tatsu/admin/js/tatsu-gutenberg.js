@@ -8,7 +8,8 @@
                     showWarningModal();
                 });
             }
-            if( 0 < gutenberg.length ) {
+            if( 0 < gutenberg.length && ! gutenberg.find( '#tatsu-switch-builder-button' ).length ) {
+                // alert(2);
                 gutenberg.find('.edit-post-header-toolbar').append(buttonHtml);
             }
         },
@@ -17,16 +18,27 @@
             $('body').append(modal);
         }
         addTatsuPanel = function() {
-            var tatsuEditorPanel = $($('#tatsu-gutenberg-editor-panel').html()),
+            var tatsuEditorPanel = $($('#tatsu-gutenberg-editor-panel').html()), gutenberg = $('#editor'), 
                 gutenbergBlockList = $('#editor').find('.block-editor-block-list__layout, .editor-post-text-editor');
-            if( 0 < gutenbergBlockList.length ) {
+            if( 0 < gutenbergBlockList.length  && ! gutenberg.find( '#tatsu_edit_post_wrap' ).length ) {
                 gutenbergBlockList.after(tatsuEditorPanel);
             }
         };
-    $(function() {
+    
+    if(wp.data != undefined) {
+        wp.data.subscribe( function() {
+                setTimeout( function() {
+                    addToggleButton();
+                    addTatsuPanel();
+                }, 1 );
+            } );
+    } else {
+        $(function() {
         setTimeout(function() {
+            // alert(1);
             addToggleButton();
             addTatsuPanel();
-        }, 0)
-    })
+            }, 1)
+        })
+    }
 })(jQuery)

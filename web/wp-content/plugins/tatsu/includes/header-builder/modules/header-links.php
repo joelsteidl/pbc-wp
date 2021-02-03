@@ -36,7 +36,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_links' );
 function tatsu_register_header_links() {
 	$controls = array (
 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_links',
-		'title' => __( 'Links', 'tatsu' ),
+		'title' => esc_html__( 'Links', 'tatsu' ),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -49,7 +49,7 @@ function tatsu_register_header_links() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
                             'link_text',
                             'url',
@@ -58,7 +58,7 @@ function tatsu_register_header_links() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             array(
 								'type' => 'accordion',
@@ -66,7 +66,7 @@ function tatsu_register_header_links() {
 								'group' => array(
                                     array (
                                         'type' => 'panel',
-                                        'title' => __( 'Colors', 'tatsu' ),
+                                        'title' => esc_html__( 'Colors', 'tatsu' ),
                                         'group' => array (
                                             'color',
                                             'hover_color',
@@ -74,7 +74,7 @@ function tatsu_register_header_links() {
                                     ),
                                     array (
                                         'type' => 'panel',
-                                        'title' => __( 'Typography', 'tatsu' ),
+                                        'title' => esc_html__( 'Typography', 'tatsu' ),
                                         'group' => array (
                                             'link_typography'
                                         )
@@ -85,7 +85,7 @@ function tatsu_register_header_links() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -93,7 +93,7 @@ function tatsu_register_header_links() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -109,7 +109,7 @@ function tatsu_register_header_links() {
 			array(
 				'att_name' => 'link_typography',
 				'type' => 'typography',
-				'label' => __( 'Link Typography', 'tatsu' ),
+				'label' => esc_html__( 'Link Typography', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',
@@ -124,21 +124,21 @@ function tatsu_register_header_links() {
 			array (
 				'att_name' => 'link_text',
 				'type' => 'text',
-				'label' => __( 'Link Text', 'tatsu' ),
+				'label' => esc_html__( 'Link Text', 'tatsu' ),
 				'default' => 'Click Here',
 				'tooltip' => ''
 			),
 			array (
 				'att_name' => 'url',
 				'type' => 'text',
-				'label' => __( 'Link URL', 'tatsu' ),
+				'label' => esc_html__( 'Link URL', 'tatsu' ),
 				'default' => '#',
 				'tooltip' => ''
 			),
 			array (
 				'att_name' => 'new_tab',
 				'type' => 'switch',
-				'label' => __( 'Open in a new tab', 'tatsu' ),
+				'label' => esc_html__( 'Open in a new tab', 'tatsu' ),
 				'default' => true,
 				'tooltip' => '',
 				'visible' => array( 'url', '!=', '' ),
@@ -146,7 +146,7 @@ function tatsu_register_header_links() {
 			array (
 				'att_name' => 'color',
 				'type' => 'color',
-				'label' => __( 'Link Color', 'tatsu' ),
+				'label' => esc_html__( 'Link Color', 'tatsu' ),
 				'default' => '#212121', 
 				'tooltip' => '',
 				'css' => true,
@@ -159,7 +159,7 @@ function tatsu_register_header_links() {
 			array (
 				'att_name' => 'hover_color',
 				'type' => 'color',
-				'label' => __( 'Link Hover Color', 'tatsu' ),
+				'label' => esc_html__( 'Link Hover Color', 'tatsu' ),
 				'default' => '#212121', 
 				'tooltip' => '',
 				'css' => true,
@@ -172,7 +172,7 @@ function tatsu_register_header_links() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,

@@ -39,7 +39,6 @@ if (!function_exists('tatsu_testimonial')) {
 		$alignment = (isset($alignment) && !empty($alignment)) ? $alignment : 'center';
 
 		if ( !empty( $author_image ) ) {
-			//$author_image = tatsu_get_image_from_url( $author_image, 'thumbnail' );
 			$author_image =  '<div class="tatsu_testimonial_img"><img src="'.$author_image.'" alt="'.$alt_text.'" /></div>';
 		}
 
@@ -67,7 +66,7 @@ function tatsu_register_testimonial()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#bubble_testimonial',
-		'title' => __('Bubble Testimonial', 'tatsu'),
+		'title' => esc_html__('Bubble Testimonial', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -82,7 +81,7 @@ function tatsu_register_testimonial()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							array( //Tab1
 								'type' => 'accordion',
@@ -100,7 +99,7 @@ function tatsu_register_testimonial()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -109,7 +108,7 @@ function tatsu_register_testimonial()
 
 									array( //color accordion
 										'type'		=> 'panel',
-										'title'		=> __('Colors', 'tatsu'),
+										'title'		=> esc_html__('Colors', 'tatsu'),
 										'group'		=> array(
 											'content_color',
 											'author_color',
@@ -125,7 +124,7 @@ function tatsu_register_testimonial()
 
 					array( //Tab3
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -150,7 +149,7 @@ function tatsu_register_testimonial()
 			array(
 				'att_name' => 'description',
 				'type' => 'text_area',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -160,7 +159,7 @@ function tatsu_register_testimonial()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Content Text Color', 'tatsu'),
+				'label' => esc_html__('Content Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -174,7 +173,7 @@ function tatsu_register_testimonial()
 			array(
 				'att_name' => 'bg_color',
 				'type' => 'color',
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -183,10 +182,6 @@ function tatsu_register_testimonial()
 						'property' => 'border-color',
 						'when' => array('bg_color', 'notempty'),
 					),
-					// '.tatsu-{UUID} .tatsu_testimonial_inner_wrap::after' => array(
-					// 	'property' => array('border-top-color', 'border-left-color'),
-					// 	'when' => array('bg_color', 'notempty'),
-					// ),
 					'.tatsu-{UUID} .tatsu_testimonial_content' => array(
 						'property' => 'background-color',
 						'when' => array('bg_color', 'notempty'),
@@ -199,13 +194,13 @@ function tatsu_register_testimonial()
 				'options' => array(
 					'size' => 'thumbnail',
 				),
-				'label' => __('Author Image', 'tatsu'),
+				'label' => esc_html__('Author Image', 'tatsu'),
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'author',
 				'type' => 'text',
-				'label' => __('Author Name', 'tatsu'),
+				'label' => esc_html__('Author Name', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -215,7 +210,7 @@ function tatsu_register_testimonial()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Author Name Color', 'tatsu'),
+				'label' => esc_html__('Author Name Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -229,7 +224,7 @@ function tatsu_register_testimonial()
 			array(
 				'att_name' => 'author_role',
 				'type' => 'text',
-				'label' => __('Designation', 'tatsu'),
+				'label' => esc_html__('Designation', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -239,7 +234,7 @@ function tatsu_register_testimonial()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Designation Color', 'tatsu'),
+				'label' => esc_html__('Designation Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -254,7 +249,7 @@ function tatsu_register_testimonial()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Alignment', 'tatsu'),
+				'label' => esc_html__('Alignment', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -266,7 +261,7 @@ function tatsu_register_testimonial()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Shadow', 'tatsu'),
+				'label' => esc_html__('Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,

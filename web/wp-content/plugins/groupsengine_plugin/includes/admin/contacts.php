@@ -238,7 +238,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<link rel='stylesheet' href='<?php echo plugins_url() .'/groupsengine_plugin/css/jqueryui.css'; ?>' type='text/css' media='all' />
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
-				jQuery('#contact_group_type').live("change", function() {
+				jQuery(document).on("change", "#contact_group_type", function() {
 					var gtvalue = jQuery(this).val();
 					if ( gtvalue != "n" ) {
 						jQuery.ajax({ 

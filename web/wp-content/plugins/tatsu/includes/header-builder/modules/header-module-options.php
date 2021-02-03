@@ -4,7 +4,7 @@
 // function tatsu_register_header_row() {
 // 		$controls = array (
 // 	        'icon' => '',
-// 	        'title' => __( 'Row', 'tatsu' ),
+// 	        'title' => esc_html__( 'Row', 'tatsu' ),
 // 	        'is_js_dependant' => false,
 // 	        'child_module' => 'tatsu_header_column',
 // 	        'type' => 'core',
@@ -29,7 +29,7 @@
 // 					'group' => array (		
 // 						array (
 // 							'type' => 'panel',
-// 							'title' => __( 'Identifiers', 'tatsu' ),
+// 							'title' => esc_html__( 'Identifiers', 'tatsu' ),
 // 							'group' => array (
 // 								'row_title',
 // 								'id',
@@ -38,7 +38,7 @@
 // 						),
 // 						array (
 // 							'type' => 'panel',
-// 							'title' => __( 'Transparency Settings', 'tatsu' ),
+// 							'title' => esc_html__( 'Transparency Settings', 'tatsu' ),
 // 							'group' => array (
 // 								'transparent_row_bg',
 // 								'transparent_row_border',
@@ -53,7 +53,7 @@
 //                 array (
 //                     'att_name' => 'full_width',
 //                     'type' => 'switch',
-//                     'label' => __( 'Full Width Header ?', 'tatsu' ),
+//                     'label' => esc_html__( 'Full Width Header ?', 'tatsu' ),
 //                     'default' => false,
 //                     'tooltip' => '',
 //                 ),
@@ -63,7 +63,7 @@
 // 				  'options' => array (
 // 						'gradient' => true
 // 				  ),
-// 	              'label' => __( 'Background Color', 'tatsu' ),
+// 	              'label' => esc_html__( 'Background Color', 'tatsu' ),
 // 	              'default' => '#ffffff',
 // 				  'tooltip' => '',
 // 				  'css' => true,
@@ -76,7 +76,7 @@
 // 				array (
 // 					'att_name' => 'default_visibility',
 // 					'type' => 'button_group',
-// 					'label' => __( 'Default Visibility', 'tatsu' ),
+// 					'label' => esc_html__( 'Default Visibility', 'tatsu' ),
 // 					'options' => array (
 // 						'visible' => 'Visible',
 // 						'hidden' => 'Hidden',	        			
@@ -87,7 +87,7 @@
 // 				array (
 // 					'att_name' => 'sticky_visibility',
 // 					'type' => 'button_group',
-// 					'label' => __( 'Visibility in Sticky Header', 'tatsu' ),
+// 					'label' => esc_html__( 'Visibility in Sticky Header', 'tatsu' ),
 // 					'options' => array (
 // 						'visible' => 'Visible',
 // 						'hidden' => 'Hidden',	        			
@@ -98,7 +98,7 @@
 // 				array (
 // 					'att_name' => 'padding',
 // 					'type' => 'input_group',
-// 					'label' => __( 'Padding', 'tatsu' ),
+// 					'label' => esc_html__( 'Padding', 'tatsu' ),
 // 					'default' => '30px 0px 30px 0px',
 // 					'tooltip' => '',
 // 					'responsive' => true,
@@ -111,7 +111,7 @@
 // 				), 
 // 				array (
 // 					'att_name'			=> 'box_shadow',
-// 					'label'				=> __( 'Box Shadow', 'tatsu' ),
+// 					'label'				=> esc_html__( 'Box Shadow', 'tatsu' ),
 // 					'type'				=> 'input_box_shadow',
 // 					'default'			=> '0px 0px 0px 0px rgba(0,0,0,0)',
 // 					'css'				=> true,
@@ -125,7 +125,7 @@
 // 				array (
 // 					'att_name' => 'sticky_padding',
 // 					'type' => 'input_group',
-// 					'label' => __( 'Sticky Padding', 'tatsu' ),
+// 					'label' => esc_html__( 'Sticky Padding', 'tatsu' ),
 // 					'default' => '15px 0px 15px 0px',
 // 					'tooltip' => '',
 // 					'responsive' => true,
@@ -139,7 +139,7 @@
 // 	            array (
 // 	              'att_name' => 'border',
 // 	              'type' => 'input_group',
-// 	              'label' => __( 'Border Thickness', 'tatsu' ),
+// 	              'label' => esc_html__( 'Border Thickness', 'tatsu' ),
 // 	              'default' => '0px 0px 0px 0px',
 // 	              'tooltip' => '',
 // 				  'css' => true,
@@ -153,7 +153,7 @@
 // 	            array (
 // 	              'att_name' => 'border_color',
 // 				  'type' => 'color',
-// 	              'label' => __( 'Border Color', 'tatsu' ),
+// 	              'label' => esc_html__( 'Border Color', 'tatsu' ),
 // 	              'default' => '',
 // 	              'tooltip' => '',
 // 				  'css' => true,
@@ -171,7 +171,7 @@
 // 					'options' => array (
 // 						  'gradient' => true
 // 					),
-// 					'label' => __( 'Background Color when Header is Transparent', 'tatsu' ),
+// 					'label' => esc_html__( 'Background Color when Header is Transparent', 'tatsu' ),
 // 					'default' => 'rgba(0,0,0,0)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -184,7 +184,7 @@
 // 				  array (
 // 					'att_name' => 'transparent_row_border',
 // 					'type' => 'color',
-// 					'label' => __( 'Border Color when Header is Transparent', 'tatsu' ),
+// 					'label' => esc_html__( 'Border Color when Header is Transparent', 'tatsu' ),
 // 					'default' => 'rgba(0,0,0,0)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -199,35 +199,35 @@
 // 				  array (
 //                     'att_name' => 'disable_color_scheme',
 //                     'type' => 'switch',
-//                     'label' => __( 'Do Not Apply Color Scheme', 'tatsu' ),
+//                     'label' => esc_html__( 'Do Not Apply Color Scheme', 'tatsu' ),
 //                     'default' => false,
 //                     'tooltip' => '',
 //                 ),
 // 				array (
 // 					'att_name' => 'row_title',
 // 					'type' => 'text',
-// 					'label' => __( 'Row Title', 'tatsu' ),
+// 					'label' => esc_html__( 'Row Title', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 				  ),
 //                 array (
 //                     'att_name' => 'hide_in',
 //                     'type' => 'screen_visibility',
-//                     'label' => __( 'Hide in', 'tatsu' ),
+//                     'label' => esc_html__( 'Hide in', 'tatsu' ),
 //                     'default' => '',
 //                     'tooltip' => '',
 //                 ),
 // 	             array (
 // 	              'att_name' => 'id',
 // 	              'type' => 'text',
-// 	              'label' => __( 'Custom Id', 'tatsu' ),
+// 	              'label' => esc_html__( 'Custom Id', 'tatsu' ),
 // 	              'default' => '',
 // 	              'tooltip' => '',
 // 	            ),
 // 	             array (
 // 	              'att_name' => 'class',
 // 	              'type' => 'text',
-// 	              'label' => __( 'Custom Class', 'tatsu' ),
+// 	              'label' => esc_html__( 'Custom Class', 'tatsu' ),
 // 	              'default' => '',
 // 	              'tooltip' => '',
 // 	            ),
@@ -240,7 +240,7 @@
 // function tatsu_register_header_column() {
 //     $controls = array (
 //         'icon' => '',
-//         'title' => __( 'Column', 'tatsu' ),
+//         'title' => esc_html__( 'Column', 'tatsu' ),
 //         'is_js_dependant' => false,
 //         'type' => 'core',
 // 		'builder_layout'=> 'list',
@@ -251,7 +251,7 @@
 //             array (
 //                 'att_name' => 'column_width',
 //                 'type' => 'slider',
-//                 'label' => __( 'Width', 'tatsu' ),
+//                 'label' => esc_html__( 'Width', 'tatsu' ),
 //                 'options' => array(
 //                     'min' => '0',
 //                     'max' => '100',
@@ -273,7 +273,7 @@
 //             array (
 //                 'att_name' => 'horizontal_alignment',
 //                 'type' => 'button_group',
-//                 'label' => __( 'Horizontal Alignment', 'tatsu' ),
+//                 'label' => esc_html__( 'Horizontal Alignment', 'tatsu' ),
 //                 'options' => array (
 //                     'flex-start' => 'Left',
 //                     'center' => 'Center',	        			
@@ -293,7 +293,7 @@
 //             array (
 //                 'att_name' => 'vertical_alignment',
 //                 'type' => 'button_group',
-//                 'label' => __( 'Vertical Alignment', 'tatsu' ),
+//                 'label' => esc_html__( 'Vertical Alignment', 'tatsu' ),
 //                 'options' => array (
 //                     'flex-start' => 'Top',
 //                     'center' => 'Middle',	        			
@@ -313,7 +313,7 @@
 //             array (
 //               'att_name' => 'padding',
 //               'type' => 'input_group',
-//               'label' => __( 'Padding', 'tatsu' ),
+//               'label' => esc_html__( 'Padding', 'tatsu' ),
 //               'default' => '0px 0px 0px 0px',
 //               'tooltip' => '',
 // 			  'css' => true,
@@ -328,7 +328,7 @@
 //             array (
 //                 'att_name' => 'sidebar_vertical_alignment',
 //                 'type' => 'button_group',
-//                 'label' => __( 'Vertical Alignment', 'tatsu' ),
+//                 'label' => esc_html__( 'Vertical Alignment', 'tatsu' ),
 //                 'options' => array (
 //                     'flex-start' => 'Top',
 //                     'center' => 'Middle',	        			
@@ -350,7 +350,7 @@
 //             array (
 //                 'att_name' => 'sidebar_horizontal_alignment',
 //                 'type' => 'button_group',
-//                 'label' => __( 'Horizontal Alignment', 'tatsu' ),
+//                 'label' => esc_html__( 'Horizontal Alignment', 'tatsu' ),
 //                 'options' => array (
 //                     'flex-start' => 'Left',
 //                     'center' => 'Center',	        			
@@ -369,21 +369,21 @@
 //              array (
 //               'att_name' => 'hide_in',
 //               'type' => 'screen_visibility',
-//               'label' => __( 'Hide in', 'tatsu' ),
+//               'label' => esc_html__( 'Hide in', 'tatsu' ),
 //               'default' => '',
 //               'tooltip' => '',
 //             ),
 //             array (
 //                 'att_name' => 'id',
 //                 'type' => 'text',
-//                 'label' => __( 'Custom Id', 'tatsu' ),
+//                 'label' => esc_html__( 'Custom Id', 'tatsu' ),
 //                 'default' => '',
 //                 'tooltip' => '',
 //               ),
 //                array (
 //                 'att_name' => 'class',
 //                 'type' => 'text',
-//                 'label' => __( 'Custom Class', 'tatsu' ),
+//                 'label' => esc_html__( 'Custom Class', 'tatsu' ),
 //                 'default' => '',
 //                 'tooltip' => '',
 //               ),
@@ -397,7 +397,7 @@
 // function tatsu_register_header_logo() {
 //     $controls = array (
 //         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_logo',
-//         'title' => __( 'Logo', 'tatsu' ),
+//         'title' => esc_html__( 'Logo', 'tatsu' ),
 //         'is_js_dependant' => false,
 //         'type' => 'single',
 // 		'is_built_in' => true,
@@ -407,7 +407,7 @@
 // 			array (
 // 				'att_name' => 'height',
 // 				'type' => 'slider',
-// 				'label' => __( 'Logo Height', 'tatsu' ),
+// 				'label' => esc_html__( 'Logo Height', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '500',
@@ -428,7 +428,7 @@
 // 			array (
 // 				'att_name' => 'sticky_height',
 // 				'type' => 'slider',
-// 				'label' => __( 'Sticky Header - Logo Height', 'tatsu' ),
+// 				'label' => esc_html__( 'Sticky Header - Logo Height', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '500',
@@ -449,28 +449,28 @@
 // 			array (
 // 				'att_name' => 'default',
 // 				'type' => 'single_image_picker',
-// 				'label' => __( 'Default Logo', 'tatsu' ),
+// 				'label' => esc_html__( 'Default Logo', 'tatsu' ),
 // 				'default' => TATSU_PLUGIN_URL.'/img/exponent-dark-logo.svg',
 // 				'tooltip' => '',
 // 			),
 // 			array (
 // 				'att_name' => 'dark',
 // 				'type' => 'single_image_picker',
-// 				'label' => __( 'Dark Logo', 'tatsu' ),
+// 				'label' => esc_html__( 'Dark Logo', 'tatsu' ),
 // 				'default' => TATSU_PLUGIN_URL.'/img/exponent-dark-logo.svg',
 // 				'tooltip' => '',
 // 			),
 // 			array (
 // 				'att_name' => 'light',
 // 				'type' => 'single_image_picker',
-// 				'label' => __( 'Light Logo', 'tatsu' ),
+// 				'label' => esc_html__( 'Light Logo', 'tatsu' ),
 // 				'default' => TATSU_PLUGIN_URL.'/img/exponent-light-logo.svg',
 // 				'tooltip' => '',
 // 			),
 // 			array (
 // 			  'att_name' => 'margin',
 // 			  'type' => 'input_group',
-// 			  'label' => __( 'Margin', 'tatsu' ),
+// 			  'label' => esc_html__( 'Margin', 'tatsu' ),
 // 			  'default' => '0px 30px 0px 0px',
 // 			  'tooltip' => '',
 // 			  'css' => true,
@@ -484,28 +484,28 @@
 // 			 array (
 // 			  'att_name' => 'hide_in',
 // 			  'type' => 'screen_visibility',
-// 			  'label' => __( 'Hide in', 'tatsu' ),
+// 			  'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 			  'default' => '',
 // 			  'tooltip' => '',
 // 			),
 // 			array (
 // 				'att_name' => 'id',
 // 				'type' => 'text',
-// 				'label' => __( 'Custom Id', 'tatsu' ),
+// 				'label' => esc_html__( 'Custom Id', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			  ),
 // 			   array (
 // 				'att_name' => 'class',
 // 				'type' => 'text',
-// 				'label' => __( 'Custom Class', 'tatsu' ),
+// 				'label' => esc_html__( 'Custom Class', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			  ),
 // 			  array (
 // 				  'att_name' => 'hide_in',
 // 				  'type' => 'screen_visibility',
-// 				  'label' => __( 'Hide in', 'tatsu' ),
+// 				  'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 				  'default' => '',
 // 				  'tooltip' => '',
 // 			  ),
@@ -518,7 +518,7 @@
 // function tatsu_register_hamburger_menu() {
 //     $controls = array (
 //         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#hamburger_menu',
-//         'title' => __( 'Hamburger Menu', 'tatsu' ),
+//         'title' => esc_html__( 'Hamburger Menu', 'tatsu' ),
 //         'is_js_dependant' => true,
 //         'type' => 'multi',
 // 		'is_built_in' => true,
@@ -534,7 +534,7 @@
 // 				'options' => array (
 // 					  'gradient' => true
 // 				),
-// 				'label' => __( 'Icon Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -550,7 +550,7 @@
 // 				'options' => array (
 // 						'gradient' => true
 // 				),
-// 				'label' => __( 'Icon Hover Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Icon Hover Color', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -563,7 +563,7 @@
 // 			array (
 // 				'att_name' => 'icon_width',
 // 				'type' => 'slider',
-// 				'label' => __( 'Line Width', 'tatsu' ),
+// 				'label' => esc_html__( 'Line Width', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '100',
@@ -583,7 +583,7 @@
 // 			array (
 // 				'att_name' => 'icon_thickness',
 // 				'type' => 'slider',
-// 				'label' => __( 'Line Thickness', 'tatsu' ),
+// 				'label' => esc_html__( 'Line Thickness', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '10',
@@ -603,7 +603,7 @@
 // 			array (
 // 				'att_name' => 'icon_spacing',
 // 				'type' => 'slider',
-// 				'label' => __( 'Line Spacing', 'tatsu' ),
+// 				'label' => esc_html__( 'Line Spacing', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '30',
@@ -623,7 +623,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -637,7 +637,7 @@
 // 			array (
 // 				'att_name' => 'panel_width',
 // 				'type' => 'slider',
-// 				'label' => __( 'Panel Width', 'tatsu' ),
+// 				'label' => esc_html__( 'Panel Width', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '600',
@@ -661,7 +661,7 @@
 // 				'options' => array (
 // 						'gradient' => true
 // 				),
-// 				'label' => __( 'Panel Background Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Panel Background Color', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -674,7 +674,7 @@
 //                 array (
 //                     'att_name' => 'hide_in',
 //                     'type' => 'screen_visibility',
-//                     'label' => __( 'Hide in', 'tatsu' ),
+//                     'label' => esc_html__( 'Hide in', 'tatsu' ),
 //                     'default' => '',
 //                     'tooltip' => '',
 //                 ),
@@ -689,7 +689,7 @@
 
 // 	$controls = array (
 //         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#horizontal_nav_menu',
-//         'title' => __( 'Horizontal Menu', 'tatsu' ),
+//         'title' => esc_html__( 'Horizontal Menu', 'tatsu' ),
 //         'is_js_dependant' => true,
 //         'type' => 'single',
 // 		'is_built_in' => false,
@@ -704,7 +704,7 @@
 // 				'group' => array (
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Spacing', 'tatsu' ),
+// 						'title' => esc_html__( 'Spacing', 'tatsu' ),
 // 						'group' => array (
 // 							'margin',
 // 							'links_margin'
@@ -712,7 +712,7 @@
 // 					),
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Colors', 'tatsu' ),
+// 						'title' => esc_html__( 'Colors', 'tatsu' ),
 // 						'group' => array (
 // 							'menu_color',
 // 							'menu_hover_color',
@@ -722,7 +722,7 @@
 // 					),	
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Sub Menu', 'tatsu' ),
+// 						'title' => esc_html__( 'Sub Menu', 'tatsu' ),
 // 						'group' => array (
 // 							'submenu_width',
 // 							'submenu_padding',
@@ -737,7 +737,7 @@
 // 					),
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Typography', 'tatsu' ),
+// 						'title' => esc_html__( 'Typography', 'tatsu' ),
 // 						'group' => array (
 // 							'menu_link',
 // 							'sub_menu_link'
@@ -751,7 +751,7 @@
 // 			array (
 // 				'att_name' => 'menu_name',
 // 				'type' => 'select',
-// 				'label' => __( 'Menu Name', 'oshine-modules' ),
+// 				'label' => esc_html__( 'Menu Name', 'oshine-modules' ),
 // 				'options' => tatsu_header_get_menu_list()[0],
 // 				'tooltip' => '',
 // 				'default' => tatsu_header_get_menu_list()[1]
@@ -759,14 +759,14 @@
 // 			// array (
 // 			// 	'att_name' => 'disable_in_mobile',
 // 			// 	'type' => 'switch',
-// 			// 	'label' => __( 'Disable in Mobile', 'tatsu' ),
+// 			// 	'label' => esc_html__( 'Disable in Mobile', 'tatsu' ),
 // 			// 	'default' => false,
 // 			// 	'tooltip' => '',
 // 			// ),
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -783,7 +783,7 @@
 // 			  array (
 // 				'att_name' => 'links_margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Space between Links', 'tatsu' ),
+// 				'label' => esc_html__( 'Space between Links', 'tatsu' ),
 // 				'default' => '0px 10px 0px 0px',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -798,7 +798,7 @@
 // 			array (
 // 				'att_name' => 'menu_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Menu Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu Color', 'tatsu' ),
 // 				'default' => '#000000',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -814,7 +814,7 @@
 // 			array (
 // 				'att_name' => 'menu_hover_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Menu Hover Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu Hover Color', 'tatsu' ),
 // 				'default' => 'rgba(34,147,215,1)',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -857,7 +857,7 @@
 // 				array (
 // 					'att_name' => 'transparent_menu_hover_color',
 // 					'type' => 'color',
-// 					'label' => __( 'Menu Hover Color on Light Scheme', 'tatsu' ),
+// 					'label' => esc_html__( 'Menu Hover Color on Light Scheme', 'tatsu' ),
 // 					'default' => 'rgba(34,147,215,1)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -885,7 +885,7 @@
 // 				array (
 // 					'att_name' => 'transparent_menu_hover_color_dark',
 // 					'type' => 'color',
-// 					'label' => __( 'Menu Hover Color on Dark Scheme', 'tatsu' ),
+// 					'label' => esc_html__( 'Menu Hover Color on Dark Scheme', 'tatsu' ),
 // 					'default' => 'rgba(255,255,255,0.5)',//get_colorhub_palette_color(0),
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -913,7 +913,7 @@
 // 			array(
 // 				'att_name' => 'menu_link',
 // 				'type' => 'typography',
-// 				'label' => __( 'Menu', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu', 'tatsu' ),
 // 				'responsive' => true,
 // 				'default' => '',
 // 				'tooltip' => '',
@@ -933,7 +933,7 @@
 // 				'options' => array(
 // 					'gradient' => true
 // 				),
-// 				'label' => __( 'Panel Background', 'tatsu' ),
+// 				'label' => esc_html__( 'Panel Background', 'tatsu' ),
 // 				'default' => '#ffffff',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -953,7 +953,7 @@
 // 				'options' => array(
 // 					'gradient' => true
 // 				),
-// 				'label' => __( 'Link Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Link Color', 'tatsu' ),
 // 				'default' => '#1c1c1c',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -972,7 +972,7 @@
 // 					'options' => array(
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Link Hover Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Link Hover Color', 'tatsu' ),
 // 					'default' => 'rgba(34,147,215,1)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1003,7 +1003,7 @@
 // 					'options' => array(
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Link Hover BG Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Link Hover BG Color', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1019,7 +1019,7 @@
 // 				array (
 // 					'att_name' => 'submenu_width',
 // 					'type' => 'slider',
-// 					'label' => __( 'Width', 'tatsu' ),
+// 					'label' => esc_html__( 'Width', 'tatsu' ),
 // 					'options' => array(
 // 						'min' => '100',
 // 						'max' => '600',
@@ -1043,7 +1043,7 @@
 // 				array (
 // 					'att_name' => 'submenu_padding',
 // 					'type' => 'slider',
-// 					'label' => __( 'Sub Menu Padding', 'tatsu' ),
+// 					'label' => esc_html__( 'Sub Menu Padding', 'tatsu' ),
 // 					'options' => array(
 // 						'min' => '0',
 // 						'max' => '100',
@@ -1066,7 +1066,7 @@
 // 				array (
 // 					'att_name' => 'sub_menu_shadow',
 // 					'type' => 'input_box_shadow',
-// 					'label' => __( 'Box Shadow', 'tatsu' ),
+// 					'label' => esc_html__( 'Box Shadow', 'tatsu' ),
 // 					'default' => '0px 0px 24px 2px rgba(45,62,80,0.12)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1081,7 +1081,7 @@
 // 	            array (
 // 					'att_name' => 'sub_menu_border',
 // 					'type' => 'color',
-// 					'label' => __( 'Sub Menu Border', 'tatsu' ),
+// 					'label' => esc_html__( 'Sub Menu Border', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1102,7 +1102,7 @@
 // 				array(
 // 					'att_name' => 'sub_menu_link',
 // 					'type' => 'typography',
-// 					'label' => __( 'Sub Menu', 'tatsu' ),
+// 					'label' => esc_html__( 'Sub Menu', 'tatsu' ),
 // 					'responsive' => true,
 // 					'default' => '',
 // 					'tooltip' => '',
@@ -1119,14 +1119,14 @@
 // 				array (
 // 					'att_name'		=> 'mega_menu',
 // 					'type'			=> 'switch',
-// 					'label'			=> __( 'Mega Menu', 'tatsu' ),
+// 					'label'			=> esc_html__( 'Mega Menu', 'tatsu' ),
 // 					'default'		=> '0',
 // 					'tooltip'		=> '',
 // 				),
 // 				array (
 // 					'att_name' => 'hide_in',
 // 					'type' => 'screen_visibility',
-// 					'label' => __( 'Hide in', 'tatsu' ),
+// 					'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 				),
@@ -1140,7 +1140,7 @@
 
 // 	$controls = array (
 //         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#vertical_nav_menu',
-//         'title' => __( 'Vertical Menu', 'tatsu' ),
+//         'title' => esc_html__( 'Vertical Menu', 'tatsu' ),
 //         'is_js_dependant' => true,
 //         'type' => 'single',
 // 		'is_built_in' => false,
@@ -1155,7 +1155,7 @@
 // 				'group' => array (
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Spacing', 'tatsu' ),
+// 						'title' => esc_html__( 'Spacing', 'tatsu' ),
 // 						'group' => array (
 // 							'links_margin',
 // 							'margin'
@@ -1163,7 +1163,7 @@
 // 					),		
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Colors', 'tatsu' ),
+// 						'title' => esc_html__( 'Colors', 'tatsu' ),
 // 						'group' => array (
 // 							'menu_color',
 // 							'menu_hover_color',
@@ -1171,7 +1171,7 @@
 // 					),	
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Sub Menu', 'tatsu' ),
+// 						'title' => esc_html__( 'Sub Menu', 'tatsu' ),
 // 						'group' => array (
 // 							'sub_menu_text_color',
 // 							'sub_menu_hover_color',
@@ -1180,7 +1180,7 @@
 // 					),
 // 					array (
 // 						'type' => 'panel',
-// 						'title' => __( 'Typography', 'tatsu' ),
+// 						'title' => esc_html__( 'Typography', 'tatsu' ),
 // 						'group' => array (
 // 							'menu_link',
 // 							'sub_menu_link'
@@ -1195,7 +1195,7 @@
 // 			array (
 // 				'att_name' => 'menu_name',
 // 				'type' => 'select',
-// 				'label' => __( 'Menu Name', 'oshine-modules' ),
+// 				'label' => esc_html__( 'Menu Name', 'oshine-modules' ),
 // 				'options' => tatsu_header_get_menu_list()[0],
 // 				'tooltip' => '',
 // 				'default' =>  tatsu_header_get_menu_list()[1]
@@ -1203,7 +1203,7 @@
 // 			array (
 // 			'att_name' => 'links_margin',
 // 			'type' => 'input_group',
-// 			'label' => __( 'Space between Links', 'tatsu' ),
+// 			'label' => esc_html__( 'Space between Links', 'tatsu' ),
 // 			'default' => '0px 0px 5px 0px',
 // 			'tooltip' => '',
 // 			'css' => true,
@@ -1217,7 +1217,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1232,7 +1232,7 @@
 // 			array (
 // 				'att_name' => 'menu_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Menu Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu Color', 'tatsu' ),
 // 				'default' => '#000000',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1248,7 +1248,7 @@
 // 			array(
 // 				'att_name' => 'menu_link',
 // 				'type' => 'typography',
-// 				'label' => __( 'Menu', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu', 'tatsu' ),
 // 				'responsive' => true,
 // 				'default' => '',
 // 				'tooltip' => '',
@@ -1265,7 +1265,7 @@
 // 			array (
 // 				'att_name' => 'menu_hover_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Menu Hover Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Menu Hover Color', 'tatsu' ),
 // 				'default' => 'rgba(34,147,215,1)',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1297,7 +1297,7 @@
 // 				'options' => array(
 // 					'gradient' => true
 // 				),
-// 				'label' => __( 'Link Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Link Color', 'tatsu' ),
 // 				'default' => '#1c1c1c',
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1316,7 +1316,7 @@
 // 					'options' => array(
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Link Hover Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Link Hover Color', 'tatsu' ),
 // 					'default' => 'rgba(34,147,215,1)',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1347,7 +1347,7 @@
 // 					'options' => array(
 // 						'gradient' => true
 // 					),
-// 					'label' => __( 'Link Hover BG Color', 'tatsu' ),
+// 					'label' => esc_html__( 'Link Hover BG Color', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 					'css' => true,
@@ -1360,7 +1360,7 @@
 // 				array(
 // 					'att_name' => 'sub_menu_link',
 // 					'type' => 'typography',
-// 					'label' => __( 'Sub Menu', 'tatsu' ),
+// 					'label' => esc_html__( 'Sub Menu', 'tatsu' ),
 // 					'responsive' => true,
 // 					'default' => '',
 // 					'tooltip' => '',
@@ -1374,7 +1374,7 @@
 // 				array (
 // 					'att_name' => 'hide_in',
 // 					'type' => 'screen_visibility',
-// 					'label' => __( 'Hide in', 'tatsu' ),
+// 					'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 					'default' => '',
 // 					'tooltip' => '',
 // 				),
@@ -1387,7 +1387,7 @@
 // function tatsu_register_header_divider() {
 // 	$controls = array (
 // 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_separator',
-// 		'title' => __( 'Separator', 'tatsu' ),
+// 		'title' => esc_html__( 'Separator', 'tatsu' ),
 // 		'is_js_dependant' => false,
 // 		'child_module' => '',
 // 		'type' => 'single',
@@ -1397,7 +1397,7 @@
 // 			array (
 // 				'att_name' => 'width',
 // 				'type' => 'slider',
-// 				'label' => __( 'Divider Width', 'tatsu' ),
+// 				'label' => esc_html__( 'Divider Width', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '100',
@@ -1418,7 +1418,7 @@
 // 			array (
 // 				'att_name' => 'height',
 // 				'type' => 'slider',
-// 				'label' => __( 'Divider Height', 'tatsu' ),
+// 				'label' => esc_html__( 'Divider Height', 'tatsu' ),
 // 				'options' => array(
 // 					'min' => '0',
 // 					'max' => '100',
@@ -1442,7 +1442,7 @@
 // 				'options' => array (
 // 						'gradient' => true
 // 				),
-// 				'label' => __( 'Divider Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Divider Color', 'tatsu' ),
 // 				'default' => '#efefef', 
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1455,7 +1455,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 15px 0px 0px',
 // 				'tooltip' => '',
 // 				'responsive' => true,
@@ -1469,7 +1469,7 @@
 // 			array (
 // 				'att_name' => 'hide_in',
 // 				'type' => 'screen_visibility',
-// 				'label' => __( 'Hide in', 'tatsu' ),
+// 				'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			),
@@ -1492,7 +1492,7 @@
 // function tatsu_register_header_links() {
 // 	$controls = array (
 // 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_links',
-// 		'title' => __( 'Links', 'tatsu' ),
+// 		'title' => esc_html__( 'Links', 'tatsu' ),
 // 		'is_js_dependant' => false,
 // 		'child_module' => '',
 // 		'type' => 'single',
@@ -1502,7 +1502,7 @@
 // 			array(
 // 				'att_name' => 'link_typography',
 // 				'type' => 'typography',
-// 				'label' => __( 'Typography', 'tatsu' ),
+// 				'label' => esc_html__( 'Typography', 'tatsu' ),
 // 				'responsive' => true,
 // 				'default' => '',
 // 				'tooltip' => '',
@@ -1516,21 +1516,21 @@
 // 			array (
 // 				'att_name' => 'link_text',
 // 				'type' => 'text',
-// 				'label' => __( 'Link Text', 'tatsu' ),
+// 				'label' => esc_html__( 'Link Text', 'tatsu' ),
 // 				'default' => 'Click Here',
 // 				'tooltip' => ''
 // 			),
 // 			array (
 // 				'att_name' => 'url',
 // 				'type' => 'text',
-// 				'label' => __( 'URL', 'tatsu' ),
+// 				'label' => esc_html__( 'URL', 'tatsu' ),
 // 				'default' => '#',
 // 				'tooltip' => ''
 // 			),
 // 			array (
 // 				'att_name' => 'new_tab',
 // 				'type' => 'switch',
-// 				'label' => __( 'Open in a new tab', 'tatsu' ),
+// 				'label' => esc_html__( 'Open in a new tab', 'tatsu' ),
 // 				'default' => true,
 // 				'tooltip' => '',
 // 				'visible' => array( 'url', '!=', '' ),
@@ -1538,7 +1538,7 @@
 // 			array (
 // 				'att_name' => 'color',
 // 				'type' => 'color',
-// 				'label' => __( 'Link Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Link Color', 'tatsu' ),
 // 				'default' => '#212121', 
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1551,7 +1551,7 @@
 // 			array (
 // 				'att_name' => 'hover_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Hover Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Hover Color', 'tatsu' ),
 // 				'default' => '#212121', 
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1564,7 +1564,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'responsive' => true,
@@ -1578,7 +1578,7 @@
 // 			array (
 // 				'att_name' => 'hide_in',
 // 				'type' => 'screen_visibility',
-// 				'label' => __( 'Hide in', 'tatsu' ),
+// 				'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			),
@@ -1591,7 +1591,7 @@
 // function tatsu_register_search() {
 // 	$controls = array (
 // 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#search_lens',
-// 		'title' => __( 'Search', 'tatsu' ),
+// 		'title' => esc_html__( 'Search', 'tatsu' ),
 // 		'is_js_dependant' => true,
 // 		'child_module' => '',
 // 		'type' => 'single',
@@ -1601,7 +1601,7 @@
 // 			array (
 // 				'att_name' => 'icon_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Icon Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 // 				'default' => '#212121', 
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1614,7 +1614,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'responsive' => true,
@@ -1628,7 +1628,7 @@
 // 			array (
 // 				'att_name' => 'hide_in',
 // 				'type' => 'screen_visibility',
-// 				'label' => __( 'Hide in', 'tatsu' ),
+// 				'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			),
@@ -1644,7 +1644,7 @@
 // function tatsu_register_wpml_language_switcher() {
 // 	$controls = array (
 // 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#lang_selector',
-// 		'title' => __( 'WPML Language Switcher', 'tatsu' ),
+// 		'title' => esc_html__( 'WPML Language Switcher', 'tatsu' ),
 // 		'is_js_dependant' => true,
 // 		'child_module' => '',
 // 		'type' => 'single',
@@ -1654,7 +1654,7 @@
 // 			array (
 // 				'att_name' => 'current_lang_color',
 // 				'type' => 'color',
-// 				'label' => __( 'Current Language Color', 'tatsu' ),
+// 				'label' => esc_html__( 'Current Language Color', 'tatsu' ),
 // 				'default' => '#212121', 
 // 				'tooltip' => '',
 // 				'css' => true,
@@ -1670,28 +1670,28 @@
 // 			array (
 // 				'att_name' => 'flag_visibility',
 // 				'type' => 'switch',
-// 				'label' => __( 'Flag', 'tatsu' ),
+// 				'label' => esc_html__( 'Flag', 'tatsu' ),
 // 				'default' => false,
 // 				'tooltip' => '',
 // 			),
 // 			// array (
 // 			// 	'att_name' => 'native_language_visibility',
 // 			// 	'type' => 'switch',
-// 			// 	'label' => __( 'Native language name', 'tatsu' ),
+// 			// 	'label' => esc_html__( 'Native language name', 'tatsu' ),
 // 			// 	'default' => true,
 // 			// 	'tooltip' => '',
 // 			// ),
 // 			array (
 // 				'att_name' => 'language_name',
 // 				'type' => 'switch',
-// 				'label' => __( 'Language name in current language', 'tatsu' ),
+// 				'label' => esc_html__( 'Language name in current language', 'tatsu' ),
 // 				'default' => false,
 // 				'tooltip' => '',
 // 			),
 // 			array(
 // 				'att_name' => 'lang_typography',
 // 				'type' => 'typography',
-// 				'label' => __( 'Typography', 'tatsu' ),
+// 				'label' => esc_html__( 'Typography', 'tatsu' ),
 // 				'responsive' => true,
 // 				'default' => '',
 // 				'tooltip' => '',
@@ -1708,7 +1708,7 @@
 // 			array (
 // 				'att_name' => 'margin',
 // 				'type' => 'input_group',
-// 				'label' => __( 'Margin', 'tatsu' ),
+// 				'label' => esc_html__( 'Margin', 'tatsu' ),
 // 				'default' => '0px 30px 0px 0px',
 // 				'tooltip' => '',
 // 				'responsive' => true,
@@ -1722,7 +1722,7 @@
 // 			array (
 // 				'att_name' => 'hide_in',
 // 				'type' => 'screen_visibility',
-// 				'label' => __( 'Hide in', 'tatsu' ),
+// 				'label' => esc_html__( 'Hide in', 'tatsu' ),
 // 				'default' => '',
 // 				'tooltip' => '',
 // 			),

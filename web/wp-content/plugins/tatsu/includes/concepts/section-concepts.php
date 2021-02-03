@@ -3,7 +3,7 @@
 add_action( 'tatsu_register_section_concepts', 'tatsu_register_in_built_concepts' );
 function tatsu_register_in_built_concepts() {
 	tatsu_register_section_concept( 'title-video-icon', array(
-			'title' => 'Title And Video Icon',
+			'title' => esc_html__('Title And Video Icon', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_00.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -14,7 +14,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'agency-intro', array(
-			'title' => 'v25 Agency Intro',
+			'title' => esc_html__('v25 Agency Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_01.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -26,7 +26,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'purle-intro', array(
-			'title' => 'Bright & Bold Intro',
+			'title' => esc_html__('Bright & Bold Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_02.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -38,7 +38,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'jane-intro', array(
-			'title' => 'Jane Creative Professional Intro',
+			'title' => esc_html__('Jane Creative Professional Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_03.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -50,7 +50,7 @@ function tatsu_register_in_built_concepts() {
 	);	
 
 	tatsu_register_section_concept( 'john-intro', array(
-			'title' => 'John Photographer Intro',
+			'title' => esc_html__('John Photographer Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_04.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -63,7 +63,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'business-intro', array(
-			'title' => 'v23 Business Intro',
+			'title' => esc_html__('v23 Business Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_05.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -75,7 +75,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'v19-intro', array(
-			'title' => 'Multi Purpose Intro',
+			'title' => esc_html__('Multi Purpose Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_06.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -88,7 +88,7 @@ function tatsu_register_in_built_concepts() {
 	);		
 
 	tatsu_register_section_concept( 'v19-intro', array(
-			'title' => 'Multi Purpose Intro',
+			'title' => esc_html__('Multi Purpose Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_06.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -101,7 +101,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'left-text-right-image', array(
-			'title' => 'Left Text Right Image',
+			'title' => esc_html__('Left Text Right Image', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_07.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -113,7 +113,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'right-text-left-image', array(
-			'title' => 'Right Text Left Image',
+			'title' => esc_html__('Right Text Left Image', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_08.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -125,7 +125,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'left-text-no-space-image', array(
-			'title' => 'Left Text Right Image No Space Columns',
+			'title' => esc_html__('Left Text Right Image No Space Columns', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_09.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -137,7 +137,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'right-text-no-space-image', array(
-			'title' => 'Right Text Left Image No Space Columns',
+			'title' => esc_html__('Right Text Left Image No Space Columns', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_10.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -149,7 +149,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'iphone-middle', array(
-			'title' => 'iPhone in the Middle',
+			'title' => esc_html__('iPhone in the Middle', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_11.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -171,7 +171,7 @@ function tatsu_register_in_built_concepts() {
 	);	
 
 	tatsu_register_section_concept( 'iphone-left', array(
-			'title' => 'iPhone Left',
+			'title' => esc_html__('iPhone Left', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_12.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -187,7 +187,7 @@ function tatsu_register_in_built_concepts() {
 	);	
 
 	tatsu_register_section_concept( 'green-about-intro', array(
-			'title' => 'Green About Intro',
+			'title' => esc_html__('Green About Intro', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_13.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -199,7 +199,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'icon-text-center-align', array(
-			'title' => 'Icons & Text Center Aligned',
+			'title' => esc_html__('Icons & Text Center Aligned', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_14.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -215,7 +215,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'icon-text-no-space', array(
-			'title' => 'Icon & Text Group No space between columns',
+			'title' => esc_html__('Icon & Text Group No space between columns', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_15.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -231,7 +231,7 @@ function tatsu_register_in_built_concepts() {
 	);	
 
 	tatsu_register_section_concept( 'icon-text-left-aligned', array(
-			'title' => 'Icons & Text Left Aligned',
+			'title' => esc_html__('Icons & Text Left Aligned', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_16.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -247,7 +247,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'client-carousel', array(
-			'title' => 'Client Carousel',
+			'title' => esc_html__('Client Carousel', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_17.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -257,7 +257,7 @@ function tatsu_register_in_built_concepts() {
 	);	
 
 	tatsu_register_section_concept( 'team', array(
-			'title' => 'Team',
+			'title' => esc_html__('Team', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_18.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -269,7 +269,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'testimonial-carousel', array(
-			'title' => 'Testimonial',
+			'title' => esc_html__('Testimonial', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_19.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -281,7 +281,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'callout-1', array(
-			'title' => 'Callout 1',
+			'title' => esc_html__('Callout 1', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_20.jpg',
 			'is_built_in' => true,
 			'width' => '520',
@@ -291,7 +291,7 @@ function tatsu_register_in_built_concepts() {
 	);
 
 	tatsu_register_section_concept( 'callout-2', array(
-			'title' => 'Callout 2',
+			'title' => esc_html__('Callout 2', 'tatsu'),
 			'img' => TATSU_PLUGIN_URL.'/includes/concepts/img/tatsu_concepts_1_21.jpg',
 			'is_built_in' => true,
 			'width' => '520',

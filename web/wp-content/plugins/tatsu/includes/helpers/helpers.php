@@ -75,11 +75,6 @@ function tatsu_validate_color( $color ) {
 	return false;
 }
 
-
-// function tatsu_edit_url( $post_id ) {
-// 	return esc_url( add_query_arg( array( 'tatsu' => '1', 'id' => $post_id  ), get_permalink( $post_id ) ) );
-// }
-
 function tatsu_edit_url( $post_id ) {
     $admin_load = get_option( 'tatsu_admin_load', false );
     $post_type = get_post_type( $post_id );
@@ -251,22 +246,6 @@ function tatsu_check_if_global() {
 	return false;
 }
 
-
-// function tatsu_get_image_from_url( $image_url, $size = 'full' ) {
-// 	global $wpdb;
-// 	$attachment = $wpdb->get_col( $wpdb->prepare( "SELECT ID FROM $wpdb->posts  WHERE guid = '%s';", $image_url ) );
-// 	if( !empty( $attachment[0] ) ) {
-// 		$image_thumb = wp_get_attachment_image_src( $attachment[0], $size );
-// 		if( $image_thumb ) {
-// 			return $image_thumb[0];
-// 		} else {
-// 			return $image_url;
-// 		}
-// 	} else {
-// 		return $image_url;
-// 	}
-// }
-
 function tatsu_get_image_id_from_url( $attachment_url = '', $size = 'full' ) {
  
 	global $wpdb;
@@ -282,9 +261,6 @@ function tatsu_get_image_id_from_url( $attachment_url = '', $size = 'full' ) {
  
 	// Make sure the upload path base directory exists in the attachment URL, to verify that we're working with a media library image
 	if ( false !== strpos( $attachment_url, $upload_dir_paths['baseurl'] ) ) {
- 
-		// If this is the URL of an auto-generated thumbnail, get the URL of the original image
-		//$attachment_url = preg_replace( '/-\d+x\d+(?=\.(jpg|jpeg|png|gif)$)/i', '', $attachment_url );
  
 		// Remove the upload path base directory from the attachment URL
 		$attachment_url = str_replace( $upload_dir_paths['baseurl'] . '/', '', $attachment_url );
@@ -428,7 +404,7 @@ if( !function_exists( 'tatsu_get_global_sections' ) ) {
 	function tatsu_get_global_sections() {
 		$global_section_array = array();
 
-		$global_sections_posts = get_posts(array( 'post_type' => 'tatsu_gsections') );
+		$global_sections_posts = get_posts(array( 'post_type' => 'tatsu_gsections', 'numberposts' => '-1') );
 		if( $global_sections_posts ) {
 			foreach( $global_sections_posts as $section ) {
 				$global_section_array[ (string) $section->ID ] =  $section->post_title;
@@ -657,18 +633,6 @@ if( !function_exists( 'tatsu_parse_module_options' ) ) {
 			}
 		}
 
-		//escape translatable string
-		// if( array_key_exists( 'group_atts', $options ) && is_array( $options['group_atts'] ) ) {
-		// 	$options[ 'group_atts' ] = tatsu_escape_group_atts( $options[ 'group_atts' ] );
-		// }
-		// if( array_key_exists( 'atts', $options ) && is_array( $options['atts'] ) ) {
-		// 	foreach( $options[ 'atts' ] as $index => $att ) {
-		// 		if( !empty( $att ) && is_array( $att ) && array_key_exists( 'label', $att ) ) {
-		// 			$options['atts'][$index]['label'] = esc_html( $options['atts'][$index]['label'] );
-		// 		}
-		// 	}
-        // }
-        
         //parse group atts
         if( array_key_exists( 'group_atts', $options ) && is_array( $options['group_atts'] ) ) {
             tatsu_remove_empty_group_att_structures( $options['group_atts'] );
@@ -755,10 +719,18 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 						}
 					}else{
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Cutomizer > GLOBAL SITE SETTINGS. Access Token for your account can be generated from http://instagram.pixelunion.net/', 'exponent-modules').'</div>';
+						$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
 						return $return;
 					}					
 				}
+                if($media && isset($media) && !empty($media)) {
+                    $images = json_decode($media["body"]);
+                    if($images->meta->code != '200'){
+                        delete_transient( $transient_var );
+						$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$images->meta->error_message;
+                        return $return;
+                    }
+                }
 
 				if($media && isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
@@ -836,7 +808,6 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 						$attachment_thumb_url = $attachment_thumb[0];
 						$attachment_full_url = $attachment_full[0];
 						$video_url = get_post_meta( $image, 'be_themes_featured_video_url', true );
-						//var_dump( $video_url );
 						$attachment_info = be_wp_get_attachment($image);
 						$has_video = false;
 						if( (! empty( $video_url ))  ) {
@@ -944,10 +915,6 @@ if ( !function_exists( 'tatsu_crop_gallery_images' ) ) {
 if( !function_exists( 'get_colorhub_palette_color' ) ){
 	function get_colorhub_palette_color( $palette_id ){
 		if( function_exists( 'colorhub_get_palette' ) ){
-			// return array(
-			// 		"id" => "palette:".$palette_id,
-			// 		"color" => colorhub_get_palette( $palette_id )
-			// );
 			return colorhub_get_palette( $palette_id );
 		}
 		return '#338ffa';
@@ -1009,7 +976,7 @@ if (!function_exists( 'tatsu_get_page_id' )) {
 		if( !is_object($post) ) {
 	        return;
 	    }			
-		if( be_themes_is_woocommerce_activated() && function_exists('is_shop') && is_shop() ) {
+		if( function_exists('be_themes_is_woocommerce_activated') && be_themes_is_woocommerce_activated() && function_exists('is_shop') && is_shop() ) {
 			$post_id = get_option('woocommerce_shop_page_id');
 		} else if(is_home()) {
 			$post_id = get_option( 'page_for_posts' );

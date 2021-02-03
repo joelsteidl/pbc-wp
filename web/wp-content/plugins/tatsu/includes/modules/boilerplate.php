@@ -33,7 +33,7 @@ function tatsu_register_module_name()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '',
-		'title' => __('Module Name', 'tatsu'),
+		'title' => esc_html__('Module Name', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -45,14 +45,14 @@ function tatsu_register_module_name()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'alignment',
 						),
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							
 						),
@@ -65,7 +65,7 @@ function tatsu_register_module_name()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',

@@ -30,11 +30,13 @@ if (!function_exists('tatsu_code')) {
 }
 
 add_action('tatsu_register_modules', 'tatsu_register_code', 9);
+add_action( 'tatsu_register_header_modules', 'tatsu_register_code' );
+
 function tatsu_register_code()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#code',
-		'title' => __('Code', 'tatsu'),
+		'title' => esc_html__('Code', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -51,7 +53,7 @@ function tatsu_register_code()
 
 					array( //Tab1
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'content',
 							
@@ -59,7 +61,7 @@ function tatsu_register_code()
 					),
 					array( //Tab2
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								"type" => "accordion",
@@ -67,7 +69,7 @@ function tatsu_register_code()
 							  "group" => array(
 								array( 
 									'type' => 'panel',
-									'title' => __('Identifiers', 'tatsu'),
+									'title' => esc_html__('Identifiers', 'tatsu'),
 									'group'		=> array(
 										'id',
 										'class',
@@ -86,21 +88,21 @@ function tatsu_register_code()
 			array(
 				'att_name' => 'content',
 				'type' => 'text_area',
-				'label' => __('Code Content', 'tatsu'),
+				'label' => esc_html__('Code Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'id',
 				'type' => 'text',
-				'label' => __('CSS ID', 'tatsu'),
+				'label' => esc_html__('CSS ID', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'class',
 				'type' => 'text',
-				'label' => __('CSS Classes', 'tatsu'),
+				'label' => esc_html__('CSS Classes', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
@@ -116,6 +118,7 @@ function tatsu_register_code()
 		),
 	);
 	tatsu_register_module('tatsu_code', $controls);
+	tatsu_register_header_module( 'tatsu_code', $controls, 'tatsu_code' );
 }
 
 ?>

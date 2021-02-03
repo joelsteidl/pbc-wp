@@ -2,7 +2,7 @@
 /* Plugin Name: Series Engine 
 Plugin URI: http://seriesengine.com
 Description: Series Engine is the best way to share audio and video with WordPress. To get started, activate the plugin and open the new "Series Engine" menu. Follow the instructions on the <a href="admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide">User Guide page</a> to embed a media browser, change the color scheme and more.
-Version: 2.8.2
+Version: 2.8.3.2
 Author: Eric Murrell (Volacious) 
 Author URI: http://seriesengine.com */ 
 
@@ -18,7 +18,7 @@ $ENMSEUpdateChecker = PucFactory::buildUpdateChecker(
 
 /* ----- Install the Plugin ----- */
 
-define ( 'ENMSE_CURRENT_VERSION', '2.8.2' );
+define ( 'ENMSE_CURRENT_VERSION', '2.8.3.2' );
 define( 'ENMSE_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 $enmse_options = get_option( 'enm_seriesengine_options' ); 
@@ -348,6 +348,7 @@ function enm_seriesengine_admin_enqueue() {
 	wp_enqueue_script( 'jquery-ui-sortable' );
 	wp_enqueue_script( 'jquery-ui-draggable' );
 	wp_enqueue_script( 'jquery-ui-droppable' );
+	wp_enqueue_script('jquery-ui-datepicker');
 
 	wp_register_script( 'seriesengineAdminWidget', plugins_url('/js/se_widget.js', __FILE__) );
 	wp_enqueue_script( 'seriesengineAdminWidget' );
@@ -949,7 +950,7 @@ class mp3file
 	public static function is_mpeg10(&$mp3)  { return ($mp3['MPEG version']=='11'); }
 	public static function is_mpeg20(&$mp3)  { return ($mp3['MPEG version']=='10'); }
 	public static function is_mpeg25(&$mp3)  { return ($mp3['MPEG version']=='00'); }
-	public static function is_mpeg20or25(&$mp3)  { return ($mp3['MPEG version']{1}=='0'); }
+	public static function is_mpeg20or25(&$mp3)  { return ($mp3['MPEG version'][1]=='0'); }
 	//-----------------------------------------------------------------------------
 	public static function bitratelookup(&$mp3)
 	{
@@ -1242,7 +1243,7 @@ add_action( 'wp_ajax_seriesengine_ajaxpodcastloadtopic', 'seriesengine_ajaxpodca
 
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.8.2" ) {
+if ( get_option( 'enmse_db_version' ) && get_option( 'enmse_db_version' ) < "2.8.3.2" ) {
 	include('includes/core/updates.php');
 }
 

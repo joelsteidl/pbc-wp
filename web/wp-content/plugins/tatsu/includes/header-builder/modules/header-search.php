@@ -40,7 +40,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_search' );
 function tatsu_register_search() {
 	$controls = array (
 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#search_lens',
-		'title' => __( 'Search', 'tatsu' ),
+		'title' => esc_html__( 'Search', 'tatsu' ),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
@@ -53,14 +53,14 @@ function tatsu_register_search() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             'icon_color',
 						)
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -68,7 +68,7 @@ function tatsu_register_search() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -84,7 +84,7 @@ function tatsu_register_search() {
 			array (
 				'att_name' => 'icon_color',
 				'type' => 'color',
-				'label' => __( 'Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 				'default' => '#212121', 
 				'tooltip' => '',
 				'css' => true,
@@ -97,7 +97,7 @@ function tatsu_register_search() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,

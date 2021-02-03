@@ -19,7 +19,7 @@ class Tatsu_Footer_Store {
 			echo 'false';
 			wp_die();
 		}        
-		$this->post_id = $_POST['post_id'];
+		$this->post_id = be_sanitize_text_field($_POST['post_id']);
 		if( empty( $this->post_id ) ) {
 			echo false;
 			wp_die();
@@ -80,13 +80,13 @@ class Tatsu_Footer_Store {
 			echo 'false';
 			wp_die();
 		}
-		$this->post_id = $_POST['post_id'];
+		$this->post_id = be_sanitize_text_field($_POST['post_id']);
 		if( empty( $this->post_id ) ) {
 			echo false;
 			wp_die();
         }
 
-        tatsu_update_custom_css_js( $this->post_id, $_POST['custom_css'], $_POST['custom_js'] );
+        tatsu_update_custom_css_js( $this->post_id, be_sanitize_textarea_field($_POST['custom_css']), be_sanitize_textarea_field($_POST['custom_js']) );
 
         $footer_content = !empty( $_POST['page_content'] ) ? tatsu_shortcodes_from_content( json_decode( stripslashes( $_POST['page_content'] ), true ) ) : '';
 		if( $this->save_store( $footer_content ) ) {

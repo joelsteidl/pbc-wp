@@ -61,31 +61,12 @@ class Tatsu_Config {
 		$this->common_atts = array (
             array (
                 'atts'  => array(
-                    // array (
-                    //     'att_name' => 'z_index',
-                    //     'is_inline' => true,
-                    //     'exclude' => array( 'tatsu_empty_space', 'tatsu_multi_layer_image' ),
-                    //     'type' => 'number',
-                    //     'options' 	=> array (
-                    //         'unit'	=> ''
-                    //     ),
-                    //     'label' => __( 'Z-Index', 'tatsu' ),
-                    //     'default' => '',
-                    //     'tooltip' => '',
-                    //     'css' => true,
-                    //     'responsive' => true,
-                    //     'selectors' => array(
-                    //         '.tatsu-{UUID}' => array(
-                    //             'property' => 'z-index',
-                    //         ),
-                    //     ),
-                    // ),
                     array (
                         'att_name' => 'hide_in',
                         'is_inline' => true,
                         'exclude' => array('tatsu_testimonial_carousel'),
                         'type' => 'screen_visibility',
-                        'label' => __( 'Hide in', 'tatsu' ),
+                        'label' => esc_html__( 'Hide in', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                     ),
@@ -93,7 +74,7 @@ class Tatsu_Config {
                         'att_name' => 'css_id',
                         'type' => 'text',
                         'exclude' => array( 'tatsu_section', 'tatsu_row', 'tatsu_column', 'tatsu_inner_column', 'tatsu_inner_row', 'tatsu_code', 'tatsu_empty_space', 'tatsu_header_logo', 'tatsu_header_column', 'tatsu_header_row' ),
-                        'label' => __( 'CSS ID', 'tatsu' ),
+                        'label' => esc_html__( 'CSS ID', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                     ),
@@ -101,7 +82,7 @@ class Tatsu_Config {
                         'att_name' => 'css_classes',
                         'exclude' => array( 'tatsu_section', 'tatsu_row', 'tatsu_column', 'tatsu_inner_column', 'tatsu_inner_row' , 'tatsu_code', 'tatsu_empty_space', 'tatsu_header_logo', 'tatsu_header_column', 'tatsu_header_row' ),
                         'type' => 'text',
-                        'label' => __( 'CSS Classes', 'tatsu' ),
+                        'label' => esc_html__( 'CSS Classes', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                     ),
@@ -110,7 +91,7 @@ class Tatsu_Config {
                         'type' => 'switch',
                         'exclude' => array('tatsu_empty_space'),
                         'default' => 1,
-                        'label' => __('Enable Css Animations', 'tatsu'),
+                        'label' => esc_html__('Enable Css Animations', 'tatsu'),
                         'tooltip' => ''
                     ),
                     array (
@@ -118,7 +99,7 @@ class Tatsu_Config {
                         'type' => 'select',
                         'exclude' => array( 'tatsu_testimonial_carousel', 'tatsu_empty_space', 'tatsu_svg_icon' ),
                         'options' => self::$css_animations,
-                        'label' => __( 'Animation Type', 'tatsu' ),
+                        'label' => esc_html__( 'Animation Type', 'tatsu' ),
                         'default' => 'none',
                         'tooltip' => '',
                     ),
@@ -133,7 +114,7 @@ class Tatsu_Config {
                            'unit' => 'ms',
                        ),
                        'default' => '0',	        		
-                       'label' => __( 'Animation Delay', 'tatsu' ),
+                       'label' => esc_html__( 'Animation Delay', 'tatsu' ),
                        'tooltip' => '',
                        'visible' => array( 'animation_type', '!=', 'none' ),
                     ),
@@ -148,7 +129,7 @@ class Tatsu_Config {
                             'step' => '1',
                             'unit' => 'ms',
                         ),
-                        'label' => __( 'Animation Duration', 'tatsu' ),
+                        'label' => esc_html__( 'Animation Duration', 'tatsu' ),
                         'visible' => array( 'animation_type', '!=', 'none' ),
                         'tooltip' => ''
                     ),
@@ -156,7 +137,7 @@ class Tatsu_Config {
                         'att_name' => 'padding',
                         'type' => 'input_group',
                         'exclude' => array('tatsu_empty_space', 'special_heading2'),
-                        'label' => __( 'Padding', 'tatsu' ),
+                        'label' => esc_html__( 'Padding', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                         'css' => true,
@@ -172,7 +153,7 @@ class Tatsu_Config {
                         'att_name' => 'margin',
                         'type' => 'input_group',
                         'exclude' => array('tatsu_empty_space', 'special_heading2', 'special_sub_title'),
-                        'label' => __( 'Margin', 'tatsu' ),
+                        'label' => esc_html__( 'Margin', 'tatsu' ),
                         'default' => '',
                         'tooltip' => '',
                         'css' => true,
@@ -187,7 +168,7 @@ class Tatsu_Config {
                     array (
                         'att_name' => 'border_style',
                         'type' => 'select',
-                        'label' => __( 'Border Style', 'tatsu' ),
+                        'label' => esc_html__( 'Border Style', 'tatsu' ),
                         'options' => array(
                             'none' => 'None',
                             'solid' => 'Solid',
@@ -216,7 +197,7 @@ class Tatsu_Config {
                     array (
                         'att_name' => 'border',
                         'type' => 'input_group',
-                        'label' => __( 'Border Width', 'tatsu' ),
+                        'label' => esc_html__( 'Border Width', 'tatsu' ),
                         'default' => '',
                         'exclude' => array( 'tatsu_image', 'tatsu_lists', 'tatsu_empty_space', 'special_heading2','menu_card' ),
                         'tooltip' => '',
@@ -238,7 +219,7 @@ class Tatsu_Config {
                     array (
                         'att_name' => 'border_color',
                         'type' => 'color',
-                        'label' => __( 'Border Color', 'tatsu' ),
+                        'label' => esc_html__( 'Border Color', 'tatsu' ),
                         'default' => '',
                         'exclude' => array( 'tatsu_image', 'tatsu_lists', 'tatsu_call_to_action', 'tatsu_icon', 'tatsu_tabs', 'tatsu_accordion', 'tatsu_empty_space', 'special_heading2','menu_card' ),
                         'tooltip' => '',
@@ -262,7 +243,7 @@ class Tatsu_Config {
                         'is_inline' => true,
                         'exclude' => array('tatsu_empty_space','menu_card', 'special_heading2'),
                         'is_inline' => true,
-                        'label'		=> __( 'Border Radius', 'tatsu' ),
+                        'label'		=> esc_html__( 'Border Radius', 'tatsu' ),
                         'options' 	=> array (
                             'unit'	=> array( 'px', '%' ),
                         ),
@@ -278,7 +259,7 @@ class Tatsu_Config {
                     array (
                         'att_name' => 'box_shadow',
                         'type' => 'input_box_shadow',
-                        'label' => __( 'Box Shadow', 'tatsu' ),
+                        'label' => esc_html__( 'Box Shadow', 'tatsu' ),
                         'exclude' => array( 'tatsu_column', 'tatsu_inner_column', 'tatsu_image', 'tatsu_icon_card', 'tatsu_title_icon', 'tatsu_button', 'tatsu_gradient_button', 'tatsu_empty_space', 'tatsu_multi_layer_image' ),
                         'tooltip' => '',
                         'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
@@ -298,19 +279,19 @@ class Tatsu_Config {
 						'group'		=> array(
 							array (
 								'type' => 'tab',
-								'title' => __( 'Content', 'tatsu' ),
+								'title' => esc_html__( 'Content', 'tatsu' ),
 								'group'	=> array (
                                 )
                             ),
                             array (
 								'type' => 'tab',
-								'title' => __( 'Style', 'tatsu' ),
+								'title' => esc_html__( 'Style', 'tatsu' ),
 								'group'	=> array (
                                 )
                             ),
                             array (
 								'type' => 'tab',
-								'title' => __( 'Advanced', 'tatsu' ),
+								'title' => esc_html__( 'Advanced', 'tatsu' ),
 								'group'	=> array (
                                     array (
 										'type' => 'accordion' ,
@@ -318,7 +299,7 @@ class Tatsu_Config {
 										'group' => array (
                                             array (
 												'type' => 'panel',
-												'title' => __( 'Spacing', 'tatsu' ),
+												'title' => esc_html__( 'Spacing', 'tatsu' ),
 												'group' => array (
                                                     'margin',
                                                     'padding',
@@ -326,7 +307,7 @@ class Tatsu_Config {
                                             ),
                                             array (
 												'type' => 'panel',
-												'title' => __( 'Border', 'tatsu' ),
+												'title' => esc_html__( 'Border', 'tatsu' ),
 												'group' => array (
                                                     'border_style',
                                                     'border',
@@ -336,14 +317,14 @@ class Tatsu_Config {
                                             ),
                                             array (
 												'type' => 'panel',
-												'title' => __( 'Shadow', 'tatsu' ),
+												'title' => esc_html__( 'Shadow', 'tatsu' ),
 												'group' => array (
                                                     'box_shadow',
                                                 ),
                                             ),
                                             array (
 												'type' => 'panel',
-                                                'title' => __( 'Animation', 'tatsu' ),
+                                                'title' => esc_html__( 'Animation', 'tatsu' ),
 												'group' => array (
                                                     'animation_type',
                                                     'animation_delay',
@@ -352,7 +333,7 @@ class Tatsu_Config {
                                             ),
 											array (
 												'type' => 'panel',
-												'title' => __( 'Identifiers', 'tatsu' ),
+												'title' => esc_html__( 'Identifiers', 'tatsu' ),
 												'group' => array (
                                                     'css_id',
                                                     'css_classes',
@@ -360,9 +341,8 @@ class Tatsu_Config {
                                             ),
 											array (
 												'type' => 'panel',
-												'title' => __( 'Visibility', 'tatsu' ),
+												'title' => esc_html__( 'Visibility', 'tatsu' ),
 												'group' => array (
-                                                   // 'z_index',
                                                     'hide_in'
                                                 ),
                                             ),

@@ -18,12 +18,12 @@ class Tatsu_Colors {
 	private function __construct() {
 		$this->colors = array();
 		$this->color_picker_defaults = array();
-		$this->register_tatsu_colors();
+		$this->tatsu_register_colors();
 	}
 
-	private function register_tatsu_colors() {
-		$this->register_color( 'tatsu_accent_color', 'Accent Color', '#000000' );
-		$this->register_color( 'tatsu_accent_twin_color', 'Accent\'s Complimentary Color', '#ffffff' );
+	private function tatsu_register_colors() {
+		$this->register_color( 'tatsu_accent_color', esc_html__('Accent Color', 'tatsu'), '#000000' );
+		$this->register_color( 'tatsu_accent_twin_color', esc_html__('Accent\'s Complimentary Color', 'tatsu'), '#ffffff' );
 	}
 
 

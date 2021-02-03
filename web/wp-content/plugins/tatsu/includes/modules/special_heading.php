@@ -56,7 +56,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 	{
 		$controls = array(
 			'icon' 				=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#special_title',
-			'title' 			=> __('Special Title', 'tatsu'),
+			'title' 			=> esc_html__('Special Title', 'tatsu'),
 			'is_js_dependant' 	=> false,
 			'type' 				=> 'single',
 			'is_built_in' 		=> true,
@@ -68,7 +68,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 					'group'		=> array(
 						array(
 							'type' => 'tab',
-							'title' => __('Style', 'tatsu'),
+							'title' => esc_html__('Style', 'tatsu'),
 							'group'	=> array(
 								'title_content',
 								'border_style',
@@ -80,7 +80,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 									'group' => array(
 										array(
 											'type' => 'panel',
-											'title' => __('Title Styling', 'tatsu'),
+											'title' => esc_html__('Title Styling', 'tatsu'),
 											'group' => array(
 												'title_color',
 												'title_hover_color',
@@ -90,7 +90,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 
 										array(
 											'type' => 'panel',
-											'title' => __('Border Styling', 'tatsu'),
+											'title' => esc_html__('Border Styling', 'tatsu'),
 											'group' => array(
 												'border_color',
 												'expand_border',
@@ -102,7 +102,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 						),
 						array(
 							'type' => 'tab',
-							'title' => __('Advanced', 'tatsu'),
+							'title' => esc_html__('Advanced', 'tatsu'),
 							'group'	=> array(
 								array(
 									'type' => 'accordion',
@@ -111,14 +111,14 @@ if (!function_exists('tatsu_register_special_heading')) {
 
 										array(
 											'type' => 'panel',
-											'title' => __('Spacing', 'tatsu'),
+											'title' => esc_html__('Spacing', 'tatsu'),
 											'group' => array(
 												'margin',
 											)
 										),
 										array(
 											'type' => 'panel',
-											'title' => __('Border', 'tatsu'),
+											'title' => esc_html__('Border', 'tatsu'),
 											'group' => array(
 												'outer_border_style',
 												'border',
@@ -139,7 +139,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'title_content',
 					'type'			=> 'text',
-					'label'			=> __('Title', 'tatsu'),
+					'label'			=> esc_html__('Title', 'tatsu'),
 					'default'		=> '',
 					'tooltip'		=> ''
 				),
@@ -147,7 +147,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 					'att_name'		=> 'border_style',
 					'type' 			=> 'select',
 					'is_inline'     => true,
-					'label'			=> __('Style', 'tatsu'),
+					'label'			=> esc_html__('Style', 'tatsu'),
 					'options'		=> array(
 						'style1'		=> 'Style 1',
 						'style2'		=> 'Style 2',
@@ -160,7 +160,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name' 		=> 'font_size',
 					'type'			=> 'slider',
-					'label'			=> __('Font Size', 'tatsu'),
+					'label'			=> esc_html__('Font Size', 'tatsu'),
 					'options'		=> array(
 						'min'				=> 8,
 						'max'				=> 100,
@@ -180,7 +180,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'letter_spacing',
 					'type'			=> 'slider',
-					'label'			=> __('Letter Spacing', 'tatsu'),
+					'label'			=> esc_html__('Letter Spacing', 'tatsu'),
 					'options'		=> array(
 						'min'				=> 0,
 						'max'				=> 10,
@@ -200,7 +200,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'margin',
 					'type'			=> 'input_group',
-					'label'			=> __('Margin', 'tatsu'),
+					'label'			=> esc_html__('Margin', 'tatsu'),
 					'default'		=> '0px 0px 20px 0px',
 					'tooltip'		=> '',
 					'css' => true,
@@ -213,7 +213,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'title_color',
 					'type' 			=> 'color',
-					'label'			=> __('Title Color', 'tatsu'),
+					'label'			=> esc_html__('Title Color', 'tatsu'),
 					'default'		=> '',
 					'tooltip'		=> '',
 					'css' => true,
@@ -226,7 +226,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'border_color',
 					'type'			=> 'color',
-					'label'			=> __('Border/Label Color', 'tatsu'),
+					'label'			=> esc_html__('Border/Label Color', 'tatsu'),
 					'default' 		=> '',
 					'tooltip'		=> '',
 					'css' => true,
@@ -239,14 +239,14 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array(
 					'att_name'		=> 'expand_border',
 					'type'			=> 'switch',
-					'label'			=> __('Expand on Hover', 'tatsu'),
+					'label'			=> esc_html__('Expand on Hover', 'tatsu'),
 					'default'		=> 0,
 					'tooltip'		=> ''
 				),
 				array(
 					'att_name'		=> 'title_hover_color',
 					'type'			=> 'color',
-					'label'			=> __('Title Hover Color', 'tatsu'),
+					'label'			=> esc_html__('Title Hover Color', 'tatsu'),
 					'default'		=> '',
 					'tooltip'		=> '',
 					'css' => true,
@@ -260,7 +260,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 					'att_name'		=> 'alignment',
 					'type'			=> 'button_group',
 					'is_inline'     => true,
-					'label'			=> __('Alignment', 'tatsu'),
+					'label'			=> esc_html__('Alignment', 'tatsu'),
 					'options'		=> array(
 						'left'		=> 'Left',
 						'center'	=> 'Center',
@@ -278,7 +278,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array (
 					'att_name' => 'outer_border_style',
 					'type' => 'select',
-					'label' => __( 'Border Style', 'tatsu' ),
+					'label' => esc_html__( 'Border Style', 'tatsu' ),
 					'options' => array(
 						'none' => 'None',
 						'solid' => 'Solid',
@@ -306,7 +306,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array (
 					'att_name' => 'border',
 					'type' => 'input_group',
-					'label' => __( 'Border Width', 'tatsu' ),
+					'label' => esc_html__( 'Border Width', 'tatsu' ),
 					'default' => '0px 0px 0px 0px',
 					'exclude' => array( 'tatsu_image', 'tatsu_lists' ),
 					'tooltip' => '',
@@ -322,7 +322,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 				array (
 					'att_name' => 'outer_border_color',
 					'type' => 'color',
-					'label' => __( 'Border Color', 'tatsu' ),
+					'label' => esc_html__( 'Border Color', 'tatsu' ),
 					'default' => '',
 					'exclude' => array( 'tatsu_image', 'tatsu_lists', 'tatsu_call_to_action', 'tatsu_tabs', 'tatsu_accordion' ),
 					'tooltip' => '',
@@ -340,7 +340,7 @@ if (!function_exists('tatsu_register_special_heading')) {
 					'title' => '',
 					'image' => '',
 					'preset' => array(
-						'title_content' => __('HEADING', 'tatsu'),
+						'title_content' => esc_html__('HEADING', 'tatsu'),
 						'border_style' => 'style2',
 						'border_color' => array('id' => 'palette:0', 'color' => tatsu_get_color('tatsu_accent_color')),
 						'expand_border' => '1',

@@ -130,10 +130,10 @@ class Tatsu_Frame {
 			  <div id = "tatsu-modulelist-drawer-overlay">
 			  	<div id = "tatsu-modulelist-drawer-overlay-inner-text">
 				  <span id = "tatsu-modulelist-drawer-maintext">
-				  	Click on a module to add it
+				  	'.esc_html__('Click on a module to add it', 'tatsu').'
 				  </span>
 				  <span id = "tatsu-modulelist-drawer-subtext">
-				  	or click anywhere here to close
+				  	'.esc_html__('or click anywhere here to close', 'tatsu').'
 				  </span>
 				</div>
 			  </div>';
@@ -149,10 +149,10 @@ class Tatsu_Frame {
 
 		$tatsu_theme = get_option('tatsu_ui_theme','dark');
 
-		wp_enqueue_script( 'tiny-mce-js', includes_url( 'js/tinymce/tinymce.min.js' ) );
-		wp_enqueue_style( 'tatsu-frame-css', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ) );
-		wp_enqueue_style( 'tatsu-context-menu-css', plugins_url( $tatsu_theme === 'dark' ? 'builder/css/dark-context-menu.css' : 'builder/css/light-context-menu.css', dirname(__FILE__) ) );
-		wp_enqueue_script( 'tatsu-frame-js', plugins_url( 'builder/js/tatsu-frame.js', dirname(__FILE__) ), array(), $this->version , true );
+		wp_enqueue_script( 'tiny-mce', includes_url( 'js/tinymce/tinymce.min.js' ) );
+		wp_enqueue_style( 'tatsu-frame', plugins_url( 'builder/css/tatsu-frame.css', dirname(__FILE__) ) );
+		wp_enqueue_style( 'tatsu-context-menu', plugins_url( $tatsu_theme === 'dark' ? 'builder/css/dark-context-menu.css' : 'builder/css/light-context-menu.css', dirname(__FILE__) ) );
+		wp_enqueue_script( 'tatsu-frame', plugins_url( 'builder/js/tatsu-frame.js', dirname(__FILE__) ), array(), $this->version , true );
 		wp_enqueue_style( 'tatsu-roboto-font', '//fonts.googleapis.com/css?family=Roboto:400,700', array(), null );
 		do_action('tatsu_frame_enqueue');
 	

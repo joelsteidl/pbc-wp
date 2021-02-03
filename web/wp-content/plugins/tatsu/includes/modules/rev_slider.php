@@ -47,7 +47,7 @@ if (!function_exists('tatsu_register_rev_slider')) {
 			}
 			$controls = array(
 				'icon' => '',
-				'title' => __('Slider Revolution', 'tatsu'),
+				'title' => esc_html__('Slider Revolution', 'tatsu'),
 				'is_js_dependant' => false,
 				'type' => 'single',
 				'is_built_in' => false,
@@ -55,7 +55,7 @@ if (!function_exists('tatsu_register_rev_slider')) {
 					array(
 						'att_name' => 'rev_slider_alias',
 						'type' => 'select',
-						'label' => __('Slider Name', 'tatsu'),
+						'label' => esc_html__('Slider Name', 'tatsu'),
 						'options' => $sliders_option,
 						'tooltip'	=> '',
 					),

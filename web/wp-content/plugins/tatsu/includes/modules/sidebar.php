@@ -47,7 +47,7 @@ function tatsu_register_sidebar() {
 	$sidebar_list = tatsu_get_sidebar_list();
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#sidebar',
-		'title' => __('Sidebar', 'tatsu'),
+		'title' => esc_html__('Sidebar', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -63,14 +63,14 @@ function tatsu_register_sidebar() {
 
 					array( //Tab1
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'sidebar_id',
 						),
 					),
 					array( //Tab2
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								"type" => "accordion",
@@ -88,7 +88,7 @@ function tatsu_register_sidebar() {
 			array(
 				'att_name' => 'sidebar_id',
 				'type' => 'select',
-				'label' => __('Sidebar', 'tatsu'),
+				'label' => esc_html__('Sidebar', 'tatsu'),
 				'options' => $sidebar_list,
 				'default' => key($sidebar_list),
 				'tooltip' => ''

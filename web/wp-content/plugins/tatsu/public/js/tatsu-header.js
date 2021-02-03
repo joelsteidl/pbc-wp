@@ -315,6 +315,12 @@ function tatsuToggle(speed, easing, callback) {
                     jQuery(this).siblings('.tatsu-sub-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
                 }
             });
+            //Close mobile menu in single page site e.g. v31
+            jQuery(document).on('click','.tatsu-mobile-menu li.menu-item-type-custom a' , function() {
+                if( jQuery(this).attr('href') != '#' && !jQuery(this).closest('li').hasClass('menu-item-has-children') ){ 
+                    closeMobileMenu();  
+                }
+            });
 
             
         },

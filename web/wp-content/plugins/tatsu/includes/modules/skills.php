@@ -81,7 +81,7 @@ function tatsu_register_skills()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#skills',
-		'title' => __('Skills', 'tatsu'),
+		'title' => esc_html__('Skills', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => 'tatsu_skill',
 		'type' => 'multi',
@@ -94,7 +94,7 @@ function tatsu_register_skills()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'direction',
 							'style',
@@ -106,7 +106,7 @@ function tatsu_register_skills()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 						)
 					)
@@ -118,7 +118,7 @@ function tatsu_register_skills()
 				'att_name' => 'direction',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Direction', 'tatsu'),
+				'label' => esc_html__('Direction', 'tatsu'),
 				'options' => array(
 					'horizontal' => 'Horizontal',
 					'vertical' => 'Vertical'
@@ -130,7 +130,7 @@ function tatsu_register_skills()
 				'att_name'		=> 'style',
 				'type'			=> 'button_group',
 				'is_inline'     => true,
-				'label'			=> __('Style', 'tatsu'),
+				'label'			=> esc_html__('Style', 'tatsu'),
 				'options'		=> array(
 					'rect'		=> 'Rectangular',
 					'pill'		=> 'Pill',
@@ -141,7 +141,7 @@ function tatsu_register_skills()
 			array(
 				'att_name' => 'height',
 				'type' => 'number',
-				'label' => __('Skill Height', 'tatsu'),
+				'label' => esc_html__('Skill Height', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -163,7 +163,7 @@ function tatsu_register_skills()
 				'options' => array(
 					'gradient' => true,
 				),
-				'label' => __('Title Color', 'tatsu'),
+				'label' => esc_html__('Title Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -179,7 +179,7 @@ function tatsu_register_skills()
 				'options' => array(
 					'gradient' => true,
 				),
-				'label' => __('Fill Color', 'tatsu'),
+				'label' => esc_html__('Fill Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'css' => true,
@@ -192,7 +192,7 @@ function tatsu_register_skills()
 			array(
 				'att_name' => 'bg_color',
 				'type' => 'color',
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -222,7 +222,7 @@ function tatsu_register_skill()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Skill', 'tatsu'),
+		'title' => esc_html__('Skill', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'sub_module',
@@ -235,7 +235,7 @@ function tatsu_register_skill()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'title',
 							'value',
@@ -246,7 +246,7 @@ function tatsu_register_skill()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -254,7 +254,7 @@ function tatsu_register_skill()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -270,7 +270,7 @@ function tatsu_register_skill()
 			array(
 				'att_name' => 'title',
 				'type' => 'text',
-				'label' => __('Title', 'tatsu'),
+				'label' => esc_html__('Title', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -280,7 +280,7 @@ function tatsu_register_skill()
 				'options' => array(
 					'gradient' => true,
 				),
-				'label' => __('Title Color', 'tatsu'),
+				'label' => esc_html__('Title Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -293,7 +293,7 @@ function tatsu_register_skill()
 			array(
 				'att_name' => 'value',
 				'type' => 'slider',
-				'label' => __('Percentage', 'tatsu'),
+				'label' => esc_html__('Percentage', 'tatsu'),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -309,7 +309,7 @@ function tatsu_register_skill()
 				'options' => array(
 					'gradient' => true,
 				),
-				'label' => __('Fill Color', 'tatsu'),
+				'label' => esc_html__('Fill Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'css' => true,
@@ -322,7 +322,7 @@ function tatsu_register_skill()
 			array(
 				'att_name' => 'bg_color',
 				'type' => 'color',
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '', //sec_color
 				'tooltip' => '',
 				'css' => true,
@@ -335,7 +335,7 @@ function tatsu_register_skill()
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'css' => true,

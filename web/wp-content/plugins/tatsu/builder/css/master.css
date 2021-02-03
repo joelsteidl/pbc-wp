@@ -1433,7 +1433,7 @@ li.be-pb-global-color-option:hover {
 }
 
 iframe#tatsu-preview{
-  height: 100vh;
+  height: calc(100vh - 35px);
 }
 
 .iframe-wrapper.mobile iframe#tatsu-preview,

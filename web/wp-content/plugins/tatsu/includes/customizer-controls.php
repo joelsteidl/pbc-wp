@@ -15,9 +15,9 @@ if ( class_exists( 'WP_Customize_Control' ) ) {
 		}
 
 		public function enqueue() {
-			wp_enqueue_script( 'tatsu-admin-semantic-js', TATSU_PLUGIN_URL . '/admin/js/semantic-dropdown.js', array( 'jquery' ), TATSU_VERSION, true );
-			wp_enqueue_script( 'tatsu-admin-customizer-controls', TATSU_PLUGIN_URL . '/admin/js/customizer.js', array( 'tatsu-admin-semantic-js' ), TATSU_VERSION, true );
-			wp_enqueue_style( 'tatsu-admin-semantic-css', TATSU_PLUGIN_URL . '/admin/css/semantic-dropdown.css', array(), TATSU_VERSION, 'all' );
+			wp_enqueue_script( 'tatsu-admin-semantic', TATSU_PLUGIN_URL . '/admin/js/semantic-dropdown.js', array( 'jquery' ), TATSU_VERSION, true );
+			wp_enqueue_script( 'tatsu-admin-customizer-controls', TATSU_PLUGIN_URL . '/admin/js/customizer.js', array( 'tatsu-admin-semantic' ), TATSU_VERSION, true );
+			wp_enqueue_style( 'tatsu-admin-semantic', TATSU_PLUGIN_URL . '/admin/css/semantic-dropdown.css', array(), TATSU_VERSION, 'all' );
 		}
 
 		public function render_content() {

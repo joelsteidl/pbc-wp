@@ -2,11 +2,22 @@
 BE SLIDER
 ************************************************/
 ;(function($) {
+	Number_or_zero = function(num){
+		num = Number(num);
+		if(typeof num == 'undefined' || isNaN(num) || num == null){
+			num = 0;
+		}
+		return num;
+	}
 	function set_slider_height() {
     	jQuery('.component').each(function() {
-    		var $this = jQuery(this), $width = parseInt($this.width()), $default_height = $this.attr('data-height'), $mobile_height = $this.attr('data-mobile-height');
-    		jQuery('.ps-container-wrap').height(jQuery(window).height()-(jQuery('#header').height()+(jQuery('.layout-box-top').height()*2+jQuery('#wpadminbar').height())));
-    		if($width < 767) {
+			var $this = jQuery(this), $width = parseInt($this.width()), $default_height = $this.attr('data-height'), $mobile_height = $this.attr('data-mobile-height');
+			var $screen_width = parseInt(window.screen.width);//Fixed for mobile responsive
+			//jQuery('.ps-container-wrap').height(jQuery(window).height()-(jQuery('#header').height()+(jQuery('.layout-box-top').height()*2+jQuery('#wpadminbar').height())));
+			var ps_container_wrap_height = jQuery(window).height()-( Number_or_zero(jQuery('#header').height())+(Number_or_zero(jQuery('.layout-box-top').height()*2)+Number_or_zero(jQuery('#wpadminbar').height())));
+			
+			jQuery('.ps-container-wrap').height(ps_container_wrap_height);
+    		if($screen_width < 767) {
     			$this.height($mobile_height);
     		} else {
     			$this.height($default_height);

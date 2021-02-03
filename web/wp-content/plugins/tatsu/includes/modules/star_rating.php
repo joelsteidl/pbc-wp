@@ -84,7 +84,7 @@
         {
             $controls = array(
                 'icon' 				=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#star_rating',
-                'title' 			=> __('Star Rating', 'tatsu'),
+                'title' 			=> esc_html__('Star Rating', 'tatsu'),
                 'is_js_dependant' 	=> false,
                 'type' 				=> 'single',
                 'is_built_in' 		=> true,
@@ -98,7 +98,7 @@
                             //Tab1
                             array(
                                 'type' => 'tab',
-                                'title' => __('Content', 'tatsu'),
+                                'title' => esc_html__('Content', 'tatsu'),
                                 'group'	=> array(
     
                                     'rating',
@@ -108,7 +108,7 @@
                             //Tab2
                             array(
                                 'type' => 'tab',
-                                'title' => __('Style', 'tatsu'),
+                                'title' => esc_html__('Style', 'tatsu'),
                                 'group'	=> array(
                                     array(
                                         'type' => 'accordion',
@@ -116,7 +116,7 @@
                                         'group' => array(
                                             array( //Colors Accordion
                                                 'type' => 'panel',
-                                                'title' => __('Colors', 'tatsu'),
+                                                'title' => esc_html__('Colors', 'tatsu'),
                                                 'group'		=> array(
                                                     'range_color',
                                                     'fill_color',
@@ -125,7 +125,7 @@
     
                                             array( //Shape and Size Accordion
                                                 'type' => 'panel',
-                                                'title' => __('Alignments', 'tatsu'),
+                                                'title' => esc_html__('Alignments', 'tatsu'),
                                                 'group'		=> array(
                                                     'alignment',
                                                 ),
@@ -139,7 +139,7 @@
                             //Tab3
                             array(
                                 'type' => 'tab',
-                                'title' => __('Advanced', 'tatsu'),
+                                'title' => esc_html__('Advanced', 'tatsu'),
                                 'group'	=> array(
                                     array( //spacing and styling accordion
                                         'type' => 'accordion',
@@ -147,7 +147,7 @@
                                         'group' => array(
                                             array(
                                                 'type' => 'panel',
-                                                'title' => __('Spacing', 'tatsu'),
+                                                'title' => esc_html__('Spacing', 'tatsu'),
                                                 'group' => array(
                                                     'margin',
                                                 )
@@ -164,7 +164,7 @@
                     array(
                         'att_name'		=> 'rating',
                         'type'			=> 'slider',
-                        'label'			=> __('Rating', 'tatsu'),
+                        'label'			=> esc_html__('Rating', 'tatsu'),
                         'options'		=> array(
                             'min'		=> '0.5',
                             'max'		=> '5',
@@ -177,7 +177,7 @@
                         'att_name'		=> 'alignment',
                         'type'			=> 'button_group',
                         'is_inline'     => true,
-                        'label'			=> __('Align', 'tatsu'),
+                        'label'			=> esc_html__('Align', 'tatsu'),
                         'options'		=> array(
                             'none'		=> 'None',
                             'left'		=> 'Left',
@@ -190,7 +190,7 @@
                     array(
                         'att_name'		=> 'range_color',
                         'type'			=> 'color',
-                        'label'			=> __('Range Color', 'tatsu'),
+                        'label'			=> esc_html__('Range Color', 'tatsu'),
                         'default'		=> '',
                         'tooltip'		=> '',
                         'css'			=> true,
@@ -203,7 +203,7 @@
                     array(
                         'att_name'		=> 'fill_color',
                         'type'			=> 'color',
-                        'label'			=> __('Fill Color', 'tatsu'),
+                        'label'			=> esc_html__('Fill Color', 'tatsu'),
                         'default'		=> '#F5C74D',
                         'tooltip'		=> '',
                         'options'		=> array(
@@ -219,7 +219,7 @@
                     array(
                         'att_name' => 'margin',
                         'type' => 'input_group',
-                        'label' => __('Margin', 'tatsu'),
+                        'label' => esc_html__('Margin', 'tatsu'),
                         'default' => '0 0 10px 0',
                         'tooltip' => '',
                         'css'	  => true,

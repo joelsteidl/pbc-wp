@@ -135,6 +135,9 @@ class Typehub_Store {
 
         $filename = $_FILES["file"]["name"];
         $filebasename = basename($filename, '.zip');
+        $temp_file = explode('(',$filebasename);
+        $filebasename = trim(array_shift($temp_file));
+        $filebasename = strtolower($filebasename);
         $upload_dir = wp_upload_dir();
         $typehub_font_dir = $upload_dir['basedir'] . '/'. 'typehub/custom/'. $filebasename .'/';
         $typehub_font_url = $upload_dir['baseurl'] . '/'. 'typehub/custom/'. $filebasename .'/styles.css';

@@ -44,7 +44,7 @@ function tatsu_register_dropcap()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#dropcap',
-		'title' => __('Dropcap', 'tatsu'),
+		'title' => esc_html__('Dropcap', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -58,7 +58,7 @@ function tatsu_register_dropcap()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'letter',
 							'icon',
@@ -69,7 +69,7 @@ function tatsu_register_dropcap()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'type',
 							'size',
@@ -81,7 +81,7 @@ function tatsu_register_dropcap()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //spacing and styling accordion
 								'type' => 'accordion',
@@ -101,7 +101,7 @@ function tatsu_register_dropcap()
 			array(
 				'att_name' => 'letter',
 				'type' => 'text',
-				'label' => __('Letter to be Dropcapped', 'tatsu'),
+				'label' => esc_html__('Letter to be Dropcapped', 'tatsu'),
 				'is_inline' => false,
 				'default' => '',
 				'tooltip' => '',
@@ -109,7 +109,7 @@ function tatsu_register_dropcap()
 			array(
 				'att_name' => 'icon',
 				'type' => 'icon_picker',
-				'label' => __('Icon to be Dropcapped', 'tatsu'),
+				'label' => esc_html__('Icon to be Dropcapped', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 			),
@@ -117,7 +117,7 @@ function tatsu_register_dropcap()
 				'att_name' => 'type',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'letter' => 'Plain',
 					'circle' => 'Circle',
@@ -130,7 +130,7 @@ function tatsu_register_dropcap()
 				'att_name' => 'size',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Size', ''),
+				'label' => esc_html__('Size', ''),
 				'options' => array(
 					'small' => 'Small',
 					'big' => 'Big',

@@ -13,6 +13,69 @@
  */
 
 
+if( !function_exists( 'tatsu_settings_page' ) ){
+    function tatsu_settings_page(){
+		$headers = get_posts(array('post_type' => TATSU_HEADER_CPT_NAME, 'post_status' => 'publish', 'numberposts' => -1));
+		$footers = get_posts(array('post_type' => TATSU_FOOTER_CPT_NAME, 'post_status' => 'publish', 'numberposts' => -1));
+		$headers_list[ 'none' ] = esc_html__( 'None', 'tatsu' );
+        foreach($headers as $header) {
+            $headers_list[$header->post_name] = $header->post_title;
+        }
+		$footers_list[ 'none' ] = esc_html__( 'None', 'tatsu' );
+		foreach($footers as $footer) {
+			$footers_list[$footer->post_name] = $footer->post_title;
+		}
+		$active_header = get_option('tatsu_active_header', 'none');
+		$active_footer = get_option('tatsu_active_footer', 'none');
+		?>
+		<div class="tatsu-settings_wrapper">
+			<h1><?php esc_html_e('Tatsu Settings', 'tatsu'); ?></h1>
+			<form method="post" id="tatsu_global_section_settings_form" action="options.php">
+				<?php if (current_theme_supports('tatsu-header-builder') || current_theme_supports('tatsu-footer-builder')): ?>
+					<div class="tatsu_active_headers_footers_settings">
+					<h3><?php esc_html_e('Headers & Footers Settings', 'tatsu'); ?></h3>
+					<div id="tatsu_active_headers_footers_settings_wrap" class="tatsu_settings_wrap">
+						<div class="tatsu_settings_panel">
+							<div class="be-settings-page-option">
+								<label class="be-settings-page-option-label"><?php esc_html_e('Active Header', 'tatsu'); ?></label>
+								<select name="tatsu_active_header">
+									<?php foreach ($headers_list as $key => $label) : ?>
+										<option value="<?php echo $key; ?>" <?php selected($key, $active_header) ?>><?php echo $label; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+							<div class="be-settings-page-option">
+								<label class="be-settings-page-option-label"><?php esc_html_e('Active Footer', 'tatsu'); ?></label>
+								<select name="tatsu_active_footer">
+									<?php foreach ($footers_list as $key => $label) : ?>
+										<option value="<?php echo $key; ?>" <?php selected($key, $active_footer) ?>><?php echo $label; ?></option>
+									<?php endforeach; ?>
+								</select>
+							</div>
+						</div>
+					</div>
+					</div>
+				<?php endif;?>
+				<textarea id="tatsu_global_Section_hidden_field" style="display:none;"  name="tatsu_global_section_data" ></textarea>
+				<?php
+				settings_fields('tatsu_settings');
+				do_settings_sections('tatsu_settings');
+				?>
+			</form>
+			<div class="clear"></div>
+			<div class="tatsu_global-section-settings">
+				<h3><?php esc_html_e('Global Section Settings', 'tatsu'); ?></h3>
+				<div id="tatsu_global_section_settings_wrap" class="tatsu_settings_wrap"></div>
+				<div id="tatsu_add-new-ruleset" > <?php esc_html_e('Add New Ruleset', 'tatsu'); ?> </div>
+				<div class="global-section-btn-wrap" >
+					<button id="tatsu_global_section_settings_submit" class="button button-primary" type="button"  > <?php esc_html_e('Save', 'tatsu'); ?> </button>
+					<a id="tatsu_global_section_settings_export" class="tatsu-global-section-export" > <?php esc_html_e('Export', 'tatsu'); ?> </a>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+}
 if( !function_exists( 'tatsu_global_section_settings_options' ) ){
     function tatsu_global_section_settings_options(){
 

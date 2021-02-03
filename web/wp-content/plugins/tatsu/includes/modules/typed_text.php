@@ -61,7 +61,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 	{
 		$controls = array(
 			'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#typed_text',
-			'title' => __('Typed text', 'tatsu'),
+			'title' => esc_html__('Typed text', 'tatsu'),
 			'is_js_dependant' => false,
 			'child_module' => '',
 			'type' => 'single',
@@ -74,7 +74,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 					'group'		=> array(
 						array(
 							'type' => 'tab',
-							'title' => __('Content', 'tatsu'),
+							'title' => esc_html__('Content', 'tatsu'),
 							'group'	=> array(
 								'rotated_text',
 								'prefix_text',
@@ -83,7 +83,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 						),
 						array(
 							'type' => 'tab',
-							'title' => __('Style', 'tatsu'),
+							'title' => esc_html__('Style', 'tatsu'),
 							'group'	=> array(
 								'tag_to_use',
 								'alignment',
@@ -96,14 +96,14 @@ if (!function_exists('tatsu_register_typed_text')) {
 						),
 						array(
 							'type' => 'tab',
-							'title' => __('Advanced', 'tatsu'),
+							'title' => esc_html__('Advanced', 'tatsu'),
 							'group'	=> array(
 								array(
 									'type' => 'accordion',
 									'group' => array(
 										array(
 											'type' => 'panel',
-											'title' => __('Spacing', 'tatsu'),
+											'title' => esc_html__('Spacing', 'tatsu'),
 											'group' => array(
 												'margin'
 											)
@@ -119,7 +119,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 				array(
 					'att_name' => 'prefix_text',
 					'type' => 'text_area',
-					'label' => __('Prefix Text', 'tatsu'),
+					'label' => esc_html__('Prefix Text', 'tatsu'),
 					'default' => 'Prefix text',
 					'tooltip' => ''
 				),
@@ -129,14 +129,14 @@ if (!function_exists('tatsu_register_typed_text')) {
 					'options' => array(
 						'placeholder' => 'Separate words by comma'
 					),
-					'label' => __('Rotating Text', 'tatsu'),
+					'label' => esc_html__('Rotating Text', 'tatsu'),
 					'default' => '',
 					'tooltip' => ''
 				),
 				array(
 					'att_name' => 'suffix_text',
 					'type' => 'text_area',
-					'label' => __('Suffix Text', 'tatsu'),
+					'label' => esc_html__('Suffix Text', 'tatsu'),
 					'default' => '',
 					'tooltip' => ''
 				),
@@ -144,7 +144,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 				array(
 					'att_name' => 'tag_to_use',
 					'type' => 'select',
-					'label' => __('Tag to use', 'tatsu'),
+					'label' => esc_html__('Tag to use', 'tatsu'),
 					'options' => array(
 						'h1' => 'h1',
 						'h2' => 'h2',
@@ -163,7 +163,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 				function_exists('typehub_get_exposed_selectors') ? array(
 					'att_name'	=> 'typed_text_font',
 					'type'		=> 'select',
-					'label'		=> __('Font', 'tatsu'),
+					'label'		=> esc_html__('Font', 'tatsu'),
 					'default'	=> 'h1',
 					'options'	=> typehub_get_exposed_selectors()
 				) : false,
@@ -173,7 +173,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 					'options' => array(
 						'gradient' => true
 					),
-					'label' => __('Rotated Text Color', 'tatsu'),
+					'label' => esc_html__('Rotated Text Color', 'tatsu'),
 					'default' => '',
 					'tooltip' => '',
 					'css' => true,
@@ -189,7 +189,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 					'options' => array(
 						'gradient' => true
 					),
-					'label' => __('Prefix and Suffix Color', 'tatsu'),
+					'label' => esc_html__('Prefix and Suffix Color', 'tatsu'),
 					'default' => '',
 					'tooltip' => '',
 					'css' => true,
@@ -205,7 +205,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 					'options' => array(
 						'gradient' => true
 					),
-					'label' => __('Cursor Color', 'tatsu'),
+					'label' => esc_html__('Cursor Color', 'tatsu'),
 					'default' => '',
 					'tooltip' => '',
 					'css' => true,
@@ -218,14 +218,14 @@ if (!function_exists('tatsu_register_typed_text')) {
 				array(
 					'att_name'		=> 'loop',
 					'type'			=> 'switch',
-					'label'			=> __('Loop', 'tatsu'),
+					'label'			=> esc_html__('Loop', 'tatsu'),
 					'default'		=> '1',
 					'tooltip'		=> '',
 				),
 				array(
 					'att_name' => 'margin',
 					'type' => 'input_group',
-					'label' => __('Margin', 'tatsu'),
+					'label' => esc_html__('Margin', 'tatsu'),
 					'default' => '0px 0px 30px 0px',
 					'tooltip' => '',
 					'css' => true,
@@ -238,7 +238,7 @@ if (!function_exists('tatsu_register_typed_text')) {
 				),
 				array (
 					'att_name'  => 'alignment',
-					'label' => __('Alignment', 'tatsu'),
+					'label' => esc_html__('Alignment', 'tatsu'),
 					'is_inline' => true,
 					'type'  => 'button_group',
 					'options'   => array (

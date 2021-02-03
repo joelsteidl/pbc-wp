@@ -34,7 +34,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_column' );
 function tatsu_register_header_column() {
     $controls = array (
         'icon' => '',
-        'title' => __( 'Column', 'tatsu' ),
+        'title' => esc_html__( 'Column', 'tatsu' ),
         'is_js_dependant' => false,
         'type' => 'core',
 		'builder_layout'=> 'list',
@@ -48,7 +48,7 @@ function tatsu_register_header_column() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -57,7 +57,7 @@ function tatsu_register_header_column() {
                                     'column_width',
                                     array(
 										'type' => 'panel',
-										'title' => __('Alignment', 'tatsu'),
+										'title' => esc_html__('Alignment', 'tatsu'),
 										'group' => array(
                                             'horizontal_alignment',
                                             'vertical_alignment',
@@ -71,7 +71,7 @@ function tatsu_register_header_column() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -79,7 +79,7 @@ function tatsu_register_header_column() {
 								'group' => array(
                                     array(
 										'type' => 'panel',
-										'title' => __('Identifiers', 'tatsu'),
+										'title' => esc_html__('Identifiers', 'tatsu'),
 										'group' => array(
                                             'id',
                                             'class'
@@ -96,7 +96,7 @@ function tatsu_register_header_column() {
             array (
                 'att_name' => 'column_width',
                 'type' => 'slider',
-                'label' => __( 'Width', 'tatsu' ),
+                'label' => esc_html__( 'Width', 'tatsu' ),
                 'options' => array(
                     'min' => '0',
                     'max' => '100',
@@ -119,7 +119,7 @@ function tatsu_register_header_column() {
                 'att_name' => 'horizontal_alignment',
                 'type' => 'button_group',
                 'is_inline' => true,
-                'label' => __( 'Horizontal', 'tatsu' ),
+                'label' => esc_html__( 'Horizontal', 'tatsu' ),
                 'options' => array (
                     'flex-start' => 'Left',
                     'center' => 'Center',	        			
@@ -140,7 +140,7 @@ function tatsu_register_header_column() {
                 'att_name' => 'vertical_alignment',
                 'type' => 'button_group',
                 'is_inline' => true,
-                'label' => __( 'Vertical', 'tatsu' ),
+                'label' => esc_html__( 'Vertical', 'tatsu' ),
                 'options' => array (
                     'flex-start' => 'Top',
                     'center' => 'Middle',	        			
@@ -161,7 +161,7 @@ function tatsu_register_header_column() {
                 'att_name' => 'sidebar_vertical_alignment',
                 'type' => 'button_group',
                 'is_inline' => true,
-                'label' => __( 'Vertical', 'tatsu' ),
+                'label' => esc_html__( 'Vertical', 'tatsu' ),
                 'options' => array (
                     'flex-start' => 'Top',
                     'center' => 'Middle',	        			
@@ -184,7 +184,7 @@ function tatsu_register_header_column() {
                 'att_name' => 'sidebar_horizontal_alignment',
                 'type' => 'button_group',
                 'is_inline' => true,
-                'label' => __( 'Horizontal', 'tatsu' ),
+                'label' => esc_html__( 'Horizontal', 'tatsu' ),
                 'options' => array (
                     'flex-start' => 'Left',
                     'center' => 'Center',	        			
@@ -203,14 +203,14 @@ function tatsu_register_header_column() {
             array (
                 'att_name' => 'id',
                 'type' => 'text',
-                'label' => __( 'CSS ID', 'tatsu' ),
+                'label' => esc_html__( 'CSS ID', 'tatsu' ),
                 'default' => '',
                 'tooltip' => '',
             ),
             array (
                 'att_name' => 'class',
                 'type' => 'text',
-                'label' => __( 'CSS Classes', 'tatsu' ),
+                'label' => esc_html__( 'CSS Classes', 'tatsu' ),
                 'default' => '',
                 'tooltip' => '',
             ),

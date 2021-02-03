@@ -3709,7 +3709,13 @@ Navigation Menu Widgets
     border-bottom-right-radius:  3px;
 }
 
-.tatsu-accordion-style1 .ui-corner-top.ui-state-default {
+/* .tatsu-accordion-style1 .ui-corner-top.ui-state-default {
+    border-bottom : 0;
+    border-bottom-left-radius : 0;
+    border-bottom-right-radius : 0;
+} */
+
+.tatsu-accordion-style1 .ui-state-default.ui-accordion-header-active {
     border-bottom : 0;
     border-bottom-left-radius : 0;
     border-bottom-right-radius : 0;

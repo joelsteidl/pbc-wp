@@ -218,9 +218,15 @@
             giants,
             normalWidth;
 
-        while ((curWidth % this.cols) != 0) {
-            curWidth = curWidth + 1;
-        }
+        // while ((curWidth % this.cols) != 0) {
+        //     curWidth = curWidth + 1;
+        // }
+
+        console.log(curWidth);
+        var remainder = Math.floor(curWidth / this.cols);
+        curWidth = remainder * this.cols + this.cols;
+        console.log(curWidth);
+
         this.ele.width(curWidth);
 
         normalWidth = curWidth / this.cols;

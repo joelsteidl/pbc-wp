@@ -56,7 +56,6 @@ if (!function_exists('tatsu_icon')) {
 		$data_animations = be_get_animation_data_atts( $atts );		
 		$mfp_class = '';
 		$output = '';
-		// $visibility_classes = '';
 		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '' ;
 		$new_tab = ( isset( $new_tab ) && 1 == $new_tab ) ? 'target="_blank"' : '' ;
 		$href = ( empty( $href ) ) ? '#' : $href ;
@@ -105,14 +104,6 @@ if (!function_exists('tatsu_icon')) {
 				}
 			}
 		}
-		//Handle Resposive Visibility controls
-		// if( !empty( $hide_in ) ) {
-		// 	$hide_in = explode(',', $hide_in);
-		// 	foreach ( $hide_in as $device ) {
-		// 		$visibility_classes .= ' tatsu-hide-'.$device;
-		// 	}
-		// }
-
 		//ripple effect
 		$ripple_class = '';
 		if( 'circle' === $style && !empty( $ripple_effect ) ) {
@@ -142,7 +133,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 				// Light Scheme Colors
 			$atts['light_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'css' => true,
@@ -155,7 +146,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['light_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -174,7 +165,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['light_border_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '#f5f5f5', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -193,7 +184,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['light_hover_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Icon Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -206,7 +197,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['light_hover_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -221,7 +212,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['light_hover_border_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Border Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -240,7 +231,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 				// Dark Scheme Colors
 			$atts['dark_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'css' => true,
@@ -253,7 +244,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['dark_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Background Color', 'tatsu' ),
 				'default' => 'rgba(255,255,255,0.2)', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -272,7 +263,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['dark_border_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '#232425', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -291,7 +282,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['dark_hover_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Icon Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'css' => true,
@@ -304,7 +295,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['dark_hover_bg_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Background Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -319,7 +310,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			
 			$atts['dark_hover_border_color'] = array (
 				'type' => 'color',
-				'label' => __( 'Hover Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Hover Border Color', 'tatsu' ),
 				'default' => '', 
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -338,7 +329,7 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 			// Modify Atts
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 15px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -346,7 +337,6 @@ if( !function_exists( 'tatsu_icon_header_atts' ) ) {
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-normal-icon' => array(
 						'property' => 'margin',
-						//'when' => array('margin', '!=',  '0px 15px 0px 0px'),
 					),
 				),
 			);
@@ -364,7 +354,7 @@ function tatsu_register_icon_module()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#icon',
-		'title' => __('Icon', 'tatsu'),
+		'title' => esc_html__('Icon', 'tatsu'),
 		'is_js_dependant' => false,
 		'inline' => true,
 		'type' => 'single',
@@ -377,7 +367,7 @@ function tatsu_register_icon_module()
 				'group'	=>	array(
 					array(
 						'type'	=>	'tab',
-						'title'	=>	__('Content', 'tatsu'),
+						'title'	=>	esc_html__('Content', 'tatsu'),
 						'group'	=>	array(
 							'name',
 							'href',
@@ -389,7 +379,7 @@ function tatsu_register_icon_module()
 					),
 					array(
 						'type'	=>	'tab',
-						'title'	=>	__('Style', 'tatsu'),
+						'title'	=>	esc_html__('Style', 'tatsu'),
 						'group'	=>	array(
 							array(
 								'type' => 'accordion',
@@ -397,7 +387,7 @@ function tatsu_register_icon_module()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Shape and Size', 'tatsu'),
+										'title' => esc_html__('Shape and Size', 'tatsu'),
 										'group' => array(
 											'size',
 											'style',
@@ -407,7 +397,7 @@ function tatsu_register_icon_module()
 									'border_width',
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'	=>	'tabs',
@@ -415,7 +405,7 @@ function tatsu_register_icon_module()
 												'group'	=>	array(
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Normal', 'tatsu'),
+														'title'	=>	esc_html__('Normal', 'tatsu'),
 														'group'	=>	array(
 															'bg_color',
 															'color',
@@ -424,7 +414,7 @@ function tatsu_register_icon_module()
 													),
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Hover', 'tatsu'),
+														'title'	=>	esc_html__('Hover', 'tatsu'),
 														'group'	=>	array(
 															'hover_bg_color',
 															'hover_color',													
@@ -437,7 +427,7 @@ function tatsu_register_icon_module()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Light Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Light Scheme Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'	=>	'tabs',
@@ -445,7 +435,7 @@ function tatsu_register_icon_module()
 												'group'	=>	array(
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Normal', 'tatsu'),
+														'title'	=>	esc_html__('Normal', 'tatsu'),
 														'group'	=>	array(
 															'light_bg_color',
 															'light_color',
@@ -454,7 +444,7 @@ function tatsu_register_icon_module()
 													),
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Hover', 'tatsu'),
+														'title'	=>	esc_html__('Hover', 'tatsu'),
 														'group'	=>	array(
 															'light_hover_bg_color',
 															'light_hover_color',
@@ -467,7 +457,7 @@ function tatsu_register_icon_module()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Dark Scheme Colors', 'tatsu'),
+										'title' => esc_html__('Dark Scheme Colors', 'tatsu'),
 										'group' => array(
 											array(
 												'type'	=>	'tabs',
@@ -475,7 +465,7 @@ function tatsu_register_icon_module()
 												'group'	=>	array(
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Normal', 'tatsu'),
+														'title'	=>	esc_html__('Normal', 'tatsu'),
 														'group'	=>	array(
 															'dark_bg_color',
 															'dark_color',
@@ -484,7 +474,7 @@ function tatsu_register_icon_module()
 													),
 													array(
 														'type'	=>	'tab',
-														'title'	=>	__('Hover', 'tatsu'),
+														'title'	=>	esc_html__('Hover', 'tatsu'),
 														'group'	=>	array(
 															'dark_hover_bg_color',
 															'dark_hover_color',
@@ -502,7 +492,7 @@ function tatsu_register_icon_module()
 
 					array(
 						'type'	=>	'tab',
-						'title'	=>	__('Advanced', 'tatsu'),
+						'title'	=>	esc_html__('Advanced', 'tatsu'),
 						'group'	=>	array(
 							array(
 								'type' => 'accordion',
@@ -510,14 +500,14 @@ function tatsu_register_icon_module()
 								'group' => array(
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Spacing', 'tatsu'),
+										'title'	=>	esc_html__('Spacing', 'tatsu'),
 										'group'	=>	array(
 											'margin',
 										)
 									),
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Shadow', 'tatsu'),
+										'title'	=>	esc_html__('Shadow', 'tatsu'),
 										'group'	=>	array(
 											'box_shadow',
 											'hover_box_shadow',
@@ -525,7 +515,7 @@ function tatsu_register_icon_module()
 									),
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Border', 'tatsu'),
+										'title'	=>	esc_html__('Border', 'tatsu'),
 										'group'	=>	array(
 											'border_style',
 											'border',
@@ -534,7 +524,7 @@ function tatsu_register_icon_module()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Animation', 'tatsu'),
+										'title' => esc_html__('Animation', 'tatsu'),
 										'group' => array(
 											'ripple_effect',
 											'ripple_color',
@@ -556,7 +546,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'name',
 				'type' => 'icon_picker',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -564,14 +554,13 @@ function tatsu_register_icon_module()
 				'att_name' => 'size',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Size', 'tatsu'),
+				'label' => esc_html__('Size', 'tatsu'),
 				'options' => array(
 					'tiny' => 'XS',
 					'small' => 'S',
 					'medium' => 'M',
 					'large' => 'L',
 					'xlarge' => 'XL',
-					// 'custom' => 'Custom',
 				),
 				'default' => 'small',
 				'tooltip' => ''
@@ -580,7 +569,7 @@ function tatsu_register_icon_module()
 				'att_name' => 'style',
 				'type' => 'select',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'circle' => 'Circle',
 					'plain' => 'Plain',
@@ -593,7 +582,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'bg_color',
 				'type' => 'color',
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -608,7 +597,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'hover_bg_color',
 				'type' => 'color',
-				'label' => __('Hover Background Color', 'tatsu'),
+				'label' => esc_html__('Hover Background Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -623,7 +612,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'color',
 				'type' => 'color',
-				'label' => __('Icon Color', 'tatsu'),
+				'label' => esc_html__('Icon Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -636,7 +625,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'hover_color',
 				'type' => 'color',
-				'label' => __('Hover Icon Color', 'tatsu'),
+				'label' => esc_html__('Hover Icon Color', 'tatsu'),
 				'default' => '', //alt_bg_text_color
 				'tooltip' => '',
 				'css' => true,
@@ -649,7 +638,7 @@ function tatsu_register_icon_module()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -678,7 +667,7 @@ function tatsu_register_icon_module()
 				'att_name' => 'border_width',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Border Width', 'tatsu'),
+				'label' => esc_html__('Border Width', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -697,10 +686,9 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'border_color',
 				'type' => 'color',
-				'label' => __('Border Color', 'tatsu'),
+				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
-				// 'visible' => array( 'border_width', '!=', '0px' ),
 				'visible' => array('style', '!=', 'plain'),
 				'css' => true,
 				'selectors' => array(
@@ -717,10 +705,9 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'hover_border_color',
 				'type' => 'color',
-				'label' => __('Hover Border Color', 'tatsu'),
+				'label' => esc_html__('Hover Border Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
-				// 'visible' => array( 'border_width', '!=', '0px' ),
 				'visible' => array('style', '!=', 'plain'),
 				'css' => true,
 				'selectors' => array(
@@ -736,7 +723,7 @@ function tatsu_register_icon_module()
 			),array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -751,7 +738,7 @@ function tatsu_register_icon_module()
 			array (
 				'att_name' => 'outer_border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -766,7 +753,7 @@ function tatsu_register_icon_module()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'left' => 'Left',
@@ -779,7 +766,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name'		=> 'ripple_effect',
 				'type'			=> 'switch',
-				'label'			=> __('Enable Ripple Effect', 'tatsu'),
+				'label'			=> esc_html__('Enable Ripple Effect', 'tatsu'),
 				'default'		=> '0',
 				'tooltip'		=> '',
 				'visible'		=> array('style', '=', 'circle'),
@@ -787,7 +774,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'ripple_color',
 				'type' => 'color',
-				'label' => __('Ripple Color', 'tatsu'),
+				'label' => esc_html__('Ripple Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array(
@@ -816,14 +803,14 @@ function tatsu_register_icon_module()
 				'options' => array(
 					'placeholder' => 'https://example.com',
 				),
-				'label' => __('Link URL', 'tatsu'),
+				'label' => esc_html__('Link URL', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'new_tab',
 				'type' => 'switch',
-				'label' => __('Open as new tab', 'tatsu'),
+				'label' => esc_html__('Open as new tab', 'tatsu'),
 				'default' => 0,
 				'tooltip' => '',
 				'visible' => array('href', '!=', ''),
@@ -832,20 +819,20 @@ function tatsu_register_icon_module()
 				'att_name' => 'lightbox',
 				'type' => 'switch',
 				'default' => 0,
-				'label' => __('Enable Lightbox Image / Video', 'tatsu'),
+				'label' => esc_html__('Enable Lightbox Image / Video', 'tatsu'),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'image',
 				'type' => 'single_image_picker',
-				'label' => __('Select Lightbox image / video', 'tatsu'),
+				'label' => esc_html__('Select Lightbox image / video', 'tatsu'),
 				'tooltip' => '',
 				'visible' => array('lightbox', '=', '1'),
 			),
 			array(
 				'att_name' => 'video_url',
 				'type' => 'text',
-				'label' => __('Youtube / Vimeo Url in lightbox', 'tatsu'),
+				'label' => esc_html__('Youtube / Vimeo Url in lightbox', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('lightbox', '=', '1'),
@@ -854,7 +841,7 @@ function tatsu_register_icon_module()
 				'att_name' => 'hover_effect',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Hover Effect', 'tatsu'),
+				'label' => esc_html__('Hover Effect', 'tatsu'),
 				'options' => array(
 					'none' => 'None',
 					'icon-transform' => 'Slide up',
@@ -866,7 +853,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'animation_type',
 				'type' => 'select',
-				'label' => __('Animation Type', 'tatsu'),
+				'label' => esc_html__('Animation Type', 'tatsu'),
 				'options' => tatsu_css_animations(),
 				'default' => 'fadeIn',
 				'tooltip' => '',
@@ -882,14 +869,14 @@ function tatsu_register_icon_module()
 					'unit' => 'ms',
 				),
 				'default' => '0',
-				'label' => __('Animation Delay', 'tatsu'),
+				'label' => esc_html__('Animation Delay', 'tatsu'),
 				'tooltip' => '',
 				'visible' => array('animate', '=', '1'),
 			),
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -897,7 +884,6 @@ function tatsu_register_icon_module()
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-normal-icon' => array(
 						'property' => 'margin',
-						// 'when' => array('margin', '!=', array( 'd' => '0px 0px 20px' ) ),
 						'when' => array('margin', '!=',  '0px 0px 20px 0px'),
 					),
 				),
@@ -905,7 +891,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Box Shadow', 'tatsu'),
+				'label' => esc_html__('Box Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),
@@ -924,7 +910,7 @@ function tatsu_register_icon_module()
 			array(
 				'att_name' => 'hover_box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Hover Box Shadow', 'tatsu'),
+				'label' => esc_html__('Hover Box Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'visible' => array('style', '!=', 'plain'),

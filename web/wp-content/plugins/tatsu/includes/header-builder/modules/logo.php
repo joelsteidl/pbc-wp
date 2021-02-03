@@ -57,7 +57,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_logo' );
 function tatsu_register_header_logo() {
     $controls = array (
         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_logo',
-        'title' => __( 'Logo', 'tatsu' ),
+        'title' => esc_html__( 'Logo', 'tatsu' ),
         'is_js_dependant' => false,
         'type' => 'single',
 		'is_built_in' => true,
@@ -70,7 +70,7 @@ function tatsu_register_header_logo() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             array(
 								'type' => 'accordion',
@@ -78,7 +78,7 @@ function tatsu_register_header_logo() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Images', 'tatsu'),
+										'title' => esc_html__('Images', 'tatsu'),
 										'group' => array(
                                             'default',
                                             'dark',
@@ -87,7 +87,7 @@ function tatsu_register_header_logo() {
                                     ),
 									array(
 										'type' => 'panel',
-										'title' => __('Height', 'tatsu'),
+										'title' => esc_html__('Height', 'tatsu'),
 										'group' => array(
                                             'height',
                                             'sticky_height',
@@ -99,7 +99,7 @@ function tatsu_register_header_logo() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -107,14 +107,14 @@ function tatsu_register_header_logo() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
                                     ),
 									array(
 										'type' => 'panel',
-										'title' => __('Identifiers', 'tatsu'),
+										'title' => esc_html__('Identifiers', 'tatsu'),
 										'group' => array(
                                             'id',
                                             'class',
@@ -131,7 +131,7 @@ function tatsu_register_header_logo() {
 			array (
 				'att_name' => 'height',
 				'type' => 'slider',
-				'label' => __( 'Logo Height', 'tatsu' ),
+				'label' => esc_html__( 'Logo Height', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '500',
@@ -152,7 +152,7 @@ function tatsu_register_header_logo() {
 			array (
 				'att_name' => 'sticky_height',
 				'type' => 'slider',
-				'label' => __( 'Sticky Header - Logo Height', 'tatsu' ),
+				'label' => esc_html__( 'Sticky Header - Logo Height', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '500',
@@ -173,28 +173,28 @@ function tatsu_register_header_logo() {
 			array (
 				'att_name' => 'default',
 				'type' => 'single_image_picker',
-				'label' => __( 'Default Logo', 'tatsu' ),
+				'label' => esc_html__( 'Default Logo', 'tatsu' ),
 				'default' => TATSU_PLUGIN_URL.'/img/exponent-dark-logo.svg',
 				'tooltip' => '',
 			),
 			array (
 				'att_name' => 'dark',
 				'type' => 'single_image_picker',
-				'label' => __( 'Dark Logo', 'tatsu' ),
+				'label' => esc_html__( 'Dark Logo', 'tatsu' ),
 				'default' => TATSU_PLUGIN_URL.'/img/exponent-dark-logo.svg',
 				'tooltip' => '',
 			),
 			array (
 				'att_name' => 'light',
 				'type' => 'single_image_picker',
-				'label' => __( 'Light Logo', 'tatsu' ),
+				'label' => esc_html__( 'Light Logo', 'tatsu' ),
 				'default' => TATSU_PLUGIN_URL.'/img/exponent-light-logo.svg',
 				'tooltip' => '',
 			),
 			array (
 			  'att_name' => 'margin',
 			  'type' => 'input_group',
-			  'label' => __( 'Margin', 'tatsu' ),
+			  'label' => esc_html__( 'Margin', 'tatsu' ),
 			  'default' => '0px 30px 0px 0px',
 			  'tooltip' => '',
 			  'css' => true,
@@ -205,24 +205,17 @@ function tatsu_register_header_logo() {
 					)
 				),
 			),
-			//  array (
-			//   'att_name' => 'hide_in',
-			//   'type' => 'screen_visibility',
-			//   'label' => __( 'Hide in', 'tatsu' ),
-			//   'default' => '',
-			//   'tooltip' => '',
-			// ),
             array (
                 'att_name' => 'id',
                 'type' => 'text',
-                'label' => __( 'CSS ID', 'tatsu' ),
+                'label' => esc_html__( 'CSS ID', 'tatsu' ),
                 'default' => '',
                 'tooltip' => '',
             ),
             array (
                 'att_name' => 'class',
                 'type' => 'text',
-                'label' => __( 'CSS Classes', 'tatsu' ),
+                'label' => esc_html__( 'CSS Classes', 'tatsu' ),
                 'default' => '',
                 'tooltip' => '',
             ),

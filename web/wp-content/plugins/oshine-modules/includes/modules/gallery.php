@@ -31,6 +31,7 @@ if (!function_exists('be_gallery')) {
 			'overlay_opacity' => '85',
 			'placeholder_color' => '',
 			'like_button' => 0,
+			'adaptive_image'    => 0,
 			'image_source' => 'selected',
 			'images' => '',
 			'account_name' => 'themeforest',
@@ -46,7 +47,7 @@ if (!function_exists('be_gallery')) {
 		extract( $atts );
 		$custom_style_tag = be_generate_css_from_atts( $atts, 'oshine_gallery', $key );
 		$unique_class_name = 'tatsu-'.$key;
-
+		
 		$css_id = be_get_id_from_atts( $atts );
 		$visibility_classes = be_get_visibility_classes_from_atts( $atts );
 
@@ -99,6 +100,7 @@ if (!function_exists('be_gallery')) {
 
 		//Condition if default WP gallery is used
 		$images = (isset($ids) && $images == '') ? $ids : $images;
+		
 		$masonry = ((!isset($masonry)) || empty($masonry)) ? 0 : $masonry;
 		$maintain_order = ( isset( $maintain_order ) && !empty( $maintain_order ) ) ? 1 : 0;
 		$initial_load_style = ((!isset($initial_load_style)) || empty($initial_load_style)) ? 'none' : $initial_load_style;
@@ -213,7 +215,7 @@ if (!function_exists('be_gallery')) {
 			$output .= '<div '.$css_id.' class="portfolio-all-wrap  oshine-gallery-module '.$disable_hover_icon.' '.$unique_class_name.' '.$css_classes.' '.$visibility_classes.'" '.$data_animations.'>';
 			$output .= '<div class="portfolio '. $delay_load_class . $two_col_mobile .' full-screen ' . $lazy_load_class . ' full-screen-gutter '.$gutter_style.'-gutter '.$col.'-col ' . ( 0 != $masonry ? 'masonry_enable ' : '' ) . '" '.$portfolio_wrap_style.' '. ( ( $lazy_load || $delay_load ) ? ( 'data-placeholder-color="'.$placeholder_color.'"' ) : '' ) .' data-action="get_be_gallery_with_pagination" ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-paged="1" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-aspect-ratio = "'.$aspect_ratio.'" data-source=\''.json_encode($source).'\' data-gutter-width="'.$gutter_width.'" data-images-array="'.$images_arr.'" data-col="'.$col.'" data-items-per-load="'.$items_per_load.'" data-hover-style="'.$hover_style.'" data-image-grayscale="'.$img_grayscale.'" data-lightbox-type="'.$lightbox_type.'" data-image-source="'.$image_source.'" data-image-effect="'.$image_effect.'" data-thumb-overlay-color="'.$thumb_overlay_color.'" data-grad-style-color="'.$gradient_style_color.'" data-like-button="'.$like_button.'" data-hover-content="'.$hover_content_option.'" data-hover-content-color="'.$hover_content_color.'" >';
 			$output .= '<div class="portfolio-container clickable clearfix portfolio-shortcode '.$element_class.' '.$initial_load_style.' '.$item_parallax.'">';
-			$output .= get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$enable_data_src,$delay_load,$placeholder_color); //1.9
+			$output .= get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$enable_data_src,$delay_load,$placeholder_color,$adaptive_image); //1.9
 			$output .= '</div>'; //end portfolio-container
 			if('' != $items_per_load && (isset($gallery_paginate)) && 'selected' == $image_source) {
 				if( $gallery_paginate == 'infinite' ) {
@@ -272,6 +274,7 @@ function oshine_register_gallery() {
 							'gallery_paginate',
 							'items_per_load',
 							'like_button',
+							'adaptive_image'
 						)
 					),
 					array (
@@ -637,6 +640,13 @@ function oshine_register_gallery() {
 				'default' => 0,
 				'tooltip' => '',
 			),
+			array(
+				'att_name' => 'adaptive_image',
+				'type' => 'switch',
+				'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
+				'default' => 0,
+				'tooltip' => '',
+			),
 
 		),
 		'presets' => array(
@@ -651,10 +661,18 @@ function oshine_register_gallery() {
 			)
 		),
 	);
-	if( function_exists( 'tatsu_remap_modules' ) ) {
-		tatsu_remap_modules( [ 'oshine_gallery', 'tatsu_gallery', 'gallery' ], $controls, 'be_gallery' );
-	}else {
-		tatsu_register_module( 'oshine_gallery', $controls );
-		tatsu_register_module( 'gallery', $controls );	
+	if ( ! in_array( 'wplr-sync/wplr-sync.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
+		if( function_exists( 'tatsu_remap_modules' ) ) {
+			tatsu_remap_modules( [ 'oshine_gallery', 'tatsu_gallery', 'gallery' ], $controls, 'be_gallery' );
+		}else {
+			tatsu_register_module( 'oshine_gallery', $controls );
+			tatsu_register_module( 'gallery', $controls );	
+		}
+	}else{
+		if( function_exists( 'tatsu_remap_modules' ) ) {
+			tatsu_remap_modules( [ 'oshine_gallery', 'tatsu_gallery' ], $controls, 'be_gallery' );
+		}else {
+			tatsu_register_module( 'oshine_gallery', $controls );
+		}
 	}
 }

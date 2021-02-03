@@ -3,7 +3,7 @@
  * Plugin Name:       Tatsu
  * Plugin URI:        http://www.brandexponents.com
  * Description:       A Powerful and Elegant Live Front End Page Builder for Wordpress.
- * Version:           3.2
+ * Version:           3.2.6
  * Author:            Brand Exponents
  * Author URI:        http://www.brandexponents.com
  * License:           GPL-2.0+
@@ -14,7 +14,7 @@
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
-	die;
+	wp_die();
 }
 
 if( !defined( 'TATSU_PLUGIN_URL' ) ) {
@@ -25,22 +25,22 @@ if( !defined( 'TATSU_PLUGIN_DIR' ) ) {
 }
 
 if( !defined( 'TATSU_VERSION' ) ) {
-	define( 'TATSU_VERSION', '3.2' );
+	define( 'TATSU_VERSION', '3.2.6' );
 }
 
-function activate_tatsu() {
+function tatsu_activate() {
 	require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-activator.php';
 	Tatsu_Activator::activate();
 }
 
 
-function deactivate_tatsu() {
+function tatsu_deactivate() {
 	require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-deactivator.php';
 	Tatsu_Deactivator::deactivate();
 }
 
-register_activation_hook( __FILE__, 'activate_tatsu' );
-register_deactivation_hook( __FILE__, 'deactivate_tatsu' );
+register_activation_hook( __FILE__, 'tatsu_activate' );
+register_deactivation_hook( __FILE__, 'tatsu_deactivate' );
 
 
 require TATSU_PLUGIN_DIR. 'plugin-update-checker/plugin-update-checker.php';
@@ -53,10 +53,10 @@ $tatsu_update_checker = new PluginUpdateChecker_3_1 (
 
 require TATSU_PLUGIN_DIR. 'includes/class-tatsu.php';
 
-function run_tatsu() {
+function tatsu_run() {
 
 	$plugin = new Tatsu();
 	$plugin->run();
 
 }
-run_tatsu();
+tatsu_run();

@@ -8,6 +8,7 @@
  * Licensed under the MIT license.
  */
 (function($) {
+	"use strict";
 
     var $event = $.event,
         $special,
@@ -48,6 +49,8 @@
  * Simple throttle function
  */
 (function($) {
+	"use strict";
+
     $.throttle = function(cb, threshold) {
         var last = null,
             threshold = threshold || 200;
@@ -71,6 +74,8 @@
  * Simple Debounce function
  */
 (function($) {
+	"use strict";
+
     $.debounce = function debounce(func, wait, immediate) {
         var timeout;
         return function() {
@@ -91,6 +96,8 @@
  * youtube player api
  */
 (function($) {
+	"use strict";
+	
     if( jQuery('.be-youtube-embed').length ){
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -129,6 +136,7 @@
  * Lazy load
  */
 (function( $ ){
+	"use strict";
     var imagesToLoad = $( '.be-lazy-load' ),
         add = function( images ) {
             if( null != images && 0 < images.length ) {

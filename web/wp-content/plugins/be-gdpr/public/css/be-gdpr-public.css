@@ -395,3 +395,7 @@
 .be-gdpr-message-hide {
     display: none;
 }
+
+body .mobx-holder {
+    z-index: 100002;
+}

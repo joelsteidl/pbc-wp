@@ -145,7 +145,7 @@ if (!function_exists('tatsu_register_multi_layer_images')) {
 	{
 		$controls = array(
 			'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#multi_layer_image',
-			'title' => __('Multi Layer Images', 'tatsu'),
+			'title' => esc_html__('Multi Layer Images', 'tatsu'),
 			'is_js_dependant' => false,
 			'child_module' => 'tatsu_multi_layer_image',
 			'type' => 'multi',
@@ -161,7 +161,7 @@ if (!function_exists('tatsu_register_multi_layer_images')) {
 	
 						array( //Tab1
 							'type' => 'tab',
-							'title' => __('Style', 'tatsu'),
+							'title' => esc_html__('Style', 'tatsu'),
 							'group'	=> array(
 								'lazy_load',
 								'placeholder_bg',
@@ -169,7 +169,7 @@ if (!function_exists('tatsu_register_multi_layer_images')) {
 						),
 						array( //Tab2
 							'type' => 'tab',
-							'title' => __('Advanced', 'tatsu'),
+							'title' => esc_html__('Advanced', 'tatsu'),
 							'group'	=> array(
 								array(
 									"type" => "accordion",
@@ -187,14 +187,14 @@ if (!function_exists('tatsu_register_multi_layer_images')) {
 				array(
 					'att_name' => 'lazy_load',
 					'type' => 'switch',
-					'label' => __('Lazy Load Images', 'tatsu'),
+					'label' => esc_html__('Lazy Load Images', 'tatsu'),
 					'default' => '0',
 					'tooltip' => ''
 				),
 				array(
 					'att_name' => 'placeholder_bg',
 					'type' => 'color',
-					'label' => __('Placeholder Background', 'tatsu'),
+					'label' => esc_html__('Placeholder Background', 'tatsu'),
 					'default' => '',
 					'tooltip' => '',
 					'visible' => array('lazy_load', '=', '1'),
@@ -218,7 +218,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 	{
 		$controls = array(
 			'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#image',
-			'title' => __('Multi Layer Image', 'tatsu'),
+			'title' => esc_html__('Multi Layer Image', 'tatsu'),
 			'is_js_dependant' => false,
 			'type' => 'sub_module',
 			'is_built_in' => true,
@@ -230,7 +230,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 	
 						array( //Tab1
 							'type' => 'tab',
-							'title' => __('Content', 'tatsu'),
+							'title' => esc_html__('Content', 'tatsu'),
 							'group'	=> array(
 								'image',
 							),
@@ -238,7 +238,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 
 						array( //Tab2
 							'type' => 'tab',
-							'title' => __('Style', 'tatsu'),
+							'title' => esc_html__('Style', 'tatsu'),
 							'group'	=> array(
 								'offset',
                                 'max_width',
@@ -252,7 +252,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 
 						array( //Tab3
 							'type' => 'tab',
-							'title' => __('Advanced', 'tatsu'),
+							'title' => esc_html__('Advanced', 'tatsu'),
 							'group'	=> array(
 								array(
 									"type" => "accordion",
@@ -260,7 +260,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 								  "group" => array(	
 									array( 
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group'		=> array(
 											'shadow_type',
 											'box_shadow',
@@ -280,14 +280,14 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'image',
 					'type' => 'single_image_picker',
-					'label' => __('Image', 'tatsu'),
+					'label' => esc_html__('Image', 'tatsu'),
 					'tooltip' => '',
 					'default' => TATSU_PLUGIN_URL . '/img/image-placeholder.jpg',
 				),
 				array(
 					'att_name'	=> 'shadow_type',
 					'type'	=> 'button_group',
-					'label'	=> __('Shadow Type', 'tatsu'),
+					'label'	=> esc_html__('Shadow Type', 'tatsu'),
 					'tooltip'	=> '',
 					'options'	=> array(
 						'box' => 'Box Shadow',
@@ -298,7 +298,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'box_shadow',
 					'type' => 'input_box_shadow',
-					'label' => __('Box Shadow', 'tatsu'),
+					'label' => esc_html__('Box Shadow', 'tatsu'),
 					'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 					'tooltip' => 'Box Shadow for your image',
 					'visible' => array('shadow_type', '=', 'box'),
@@ -313,7 +313,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'drop_shadow',
 					'type' => 'input_drop_shadow',
-					'label' => __('Drop Shadow', 'tatsu'),
+					'label' => esc_html__('Drop Shadow', 'tatsu'),
 					'default' => 'drop-shadow(0px 0px 0px rgba(0,0,0,0))',
 					'tooltip' => 'Box Shadow for your image',
 					'visible' => array('shadow_type', '=', 'drop'),
@@ -328,7 +328,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name'	=> 'offset',
 					'type'		=> 'negative_number',
-					'label'		=> __('Image Offsets', 'tatsu'),
+					'label'		=> esc_html__('Image Offsets', 'tatsu'),
 					'default'	=> '0px 0px',
 					'options' => array(
 						'labels' => array('X-axis', 'Y-axis'),
@@ -346,7 +346,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'max_width',
 					'type' => 'slider',
-					'label' => __('Width', 'tatsu'),
+					'label' => esc_html__('Width', 'tatsu'),
 					'options' => array(
 						'min' => '0',
 						'max' => '100',
@@ -369,7 +369,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
                 array(
                     'att_name' => 'alignment',
                     'type' => 'button_group',
-                    'label' => __('Align', 'tatsu'),
+                    'label' => esc_html__('Align', 'tatsu'),
                     'options' => array(
                         'none' => 'None',
                         'left' => 'Left',
@@ -382,14 +382,14 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
                 array(
                     'att_name'	=> 'image_overflow',
                     'type' 		=> 'switch',
-                    'label'		=> __('Enable Image Overflow', 'tatsu'),
+                    'label'		=> esc_html__('Enable Image Overflow', 'tatsu'),
                     'default'	=> 0,
                     'tooltip'	=> '',
                 ),
                 array(
                     'att_name' => 'width',
                     'type' => 'slider',
-                    'label' => __('Overflow Width', 'tatsu'),
+                    'label' => esc_html__('Overflow Width', 'tatsu'),
                     'options' => array(
                         'min' => 100,
                         'max' => 250,
@@ -423,7 +423,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
                 array(
 					'att_name' => 'placeholder_bg',
 					'type' => 'color',
-					'label' => __('Placeholder Background', 'tatsu'),
+					'label' => esc_html__('Placeholder Background', 'tatsu'),
 					'default' => '',
 					'tooltip' => "Works only when Lazy Load is enabled in parent module's settings",
 					'css' => true,
@@ -436,7 +436,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'stack_order',
 					'type' => 'slider',
-					'label' => __('Stack Order', 'tatsu'),
+					'label' => esc_html__('Stack Order', 'tatsu'),
 					'options' => array(
 						'min' => '1',
 						'max' => '20',
@@ -455,7 +455,7 @@ if (!function_exists('tatsu_register_multi_layer_image')) {
 				array(
 					'att_name' => 'id',
 					'type' => 'number',
-					'label' => __('Id', 'tatsu'),
+					'label' => esc_html__('Id', 'tatsu'),
 					'visible' => array('max_width', '=', '-1000')
 				),
 			),

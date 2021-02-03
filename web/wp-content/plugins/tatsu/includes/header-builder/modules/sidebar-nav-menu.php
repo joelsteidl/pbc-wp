@@ -70,7 +70,7 @@ function tatsu_register_sidebar_navigation_menu() {
 
 	$controls = array (
         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#vertical_nav_menu',
-        'title' => __( 'Vertical Menu', 'tatsu' ),
+        'title' => esc_html__( 'Vertical Menu', 'tatsu' ),
         'is_js_dependant' => true,
         'type' => 'single',
 		'is_built_in' => false,
@@ -83,14 +83,14 @@ function tatsu_register_sidebar_navigation_menu() {
                 'group'	=> array(
                     array(
                         'type' => 'tab',
-                        'title' => __('Content', 'tatsu'),
+                        'title' => esc_html__('Content', 'tatsu'),
                         'group'	=> array(
                             'menu_name',
                         )
                     ),
                     array(
                         'type' => 'tab',
-                        'title' => __('Style', 'tatsu'),
+                        'title' => esc_html__('Style', 'tatsu'),
                         'group'	=> array(
                             array(
                                 'type' => 'accordion',
@@ -99,7 +99,7 @@ function tatsu_register_sidebar_navigation_menu() {
                                     'links_margin',
                                     array (
                                         'type' => 'panel',
-                                        'title' => __( 'Colors', 'tatsu' ),
+                                        'title' => esc_html__( 'Colors', 'tatsu' ),
                                         'group' => array (
                                             'menu_color',
                                             'menu_hover_color',
@@ -107,7 +107,7 @@ function tatsu_register_sidebar_navigation_menu() {
                                     ),	
                                     array (
                                         'type' => 'panel',
-                                        'title' => __( 'Sub Menu', 'tatsu' ),
+                                        'title' => esc_html__( 'Sub Menu', 'tatsu' ),
                                         'group' => array (
                                             'sub_menu_text_color',
                                             'sub_menu_hover_color',
@@ -116,7 +116,7 @@ function tatsu_register_sidebar_navigation_menu() {
                                     ),
                                     array (
                                         'type' => 'panel',
-                                        'title' => __( 'Typography', 'tatsu' ),
+                                        'title' => esc_html__( 'Typography', 'tatsu' ),
                                         'group' => array (
                                             'menu_link',
                                             'sub_menu_link'
@@ -128,7 +128,7 @@ function tatsu_register_sidebar_navigation_menu() {
                     ),
                     array(
                         'type' => 'tab',
-                        'title' => __('Advanced', 'tatsu'),
+                        'title' => esc_html__('Advanced', 'tatsu'),
                         'group'	=> array(
                             array(
                                 'type' => 'accordion',
@@ -136,7 +136,7 @@ function tatsu_register_sidebar_navigation_menu() {
                                 'group' => array(
                                     array(
                                         'type' => 'panel',
-                                        'title' => __('Spacing', 'tatsu'),
+                                        'title' => esc_html__('Spacing', 'tatsu'),
                                         'group' => array(
                                             'margin',
                                         )
@@ -153,7 +153,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array (
 				'att_name' => 'menu_name',
 				'type' => 'select',
-				'label' => __( 'Menu Name', 'oshine-modules' ),
+				'label' => esc_html__( 'Menu Name', 'oshine-modules' ),
 				'options' => tatsu_header_get_menu_list()[0],
 				'tooltip' => '',
 				'default' =>  tatsu_header_get_menu_list()[1]
@@ -161,7 +161,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array (
 			'att_name' => 'links_margin',
 			'type' => 'input_group',
-			'label' => __( 'Spacing between Links', 'tatsu' ),
+			'label' => esc_html__( 'Spacing between Links', 'tatsu' ),
 			'default' => '0px 0px 5px 0px',
 			'tooltip' => '',
 			'css' => true,
@@ -175,7 +175,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -190,7 +190,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array (
 				'att_name' => 'menu_color',
 				'type' => 'color',
-				'label' => __( 'Menu Color', 'tatsu' ),
+				'label' => esc_html__( 'Menu Color', 'tatsu' ),
 				'default' => '#000000',
 				'tooltip' => '',
 				'css' => true,
@@ -206,7 +206,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array(
 				'att_name' => 'menu_link',
 				'type' => 'typography',
-				'label' => __( 'Menu', 'tatsu' ),
+				'label' => esc_html__( 'Menu', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',
@@ -224,7 +224,7 @@ function tatsu_register_sidebar_navigation_menu() {
 			array (
 				'att_name' => 'menu_hover_color',
 				'type' => 'color',
-				'label' => __( 'Menu Hover Color', 'tatsu' ),
+				'label' => esc_html__( 'Menu Hover Color', 'tatsu' ),
 				'default' => 'rgba(34,147,215,1)',
 				'tooltip' => '',
 				'css' => true,
@@ -256,7 +256,7 @@ function tatsu_register_sidebar_navigation_menu() {
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __( 'Link Color', 'tatsu' ),
+				'label' => esc_html__( 'Link Color', 'tatsu' ),
 				'default' => '#1c1c1c',
 				'tooltip' => '',
 				'css' => true,
@@ -275,7 +275,7 @@ function tatsu_register_sidebar_navigation_menu() {
 					'options' => array(
 						'gradient' => true
 					),
-					'label' => __( 'Link Hover Color', 'tatsu' ),
+					'label' => esc_html__( 'Link Hover Color', 'tatsu' ),
 					'default' => 'rgba(34,147,215,1)',
 					'tooltip' => '',
 					'css' => true,
@@ -306,7 +306,7 @@ function tatsu_register_sidebar_navigation_menu() {
 					'options' => array(
 						'gradient' => true
 					),
-					'label' => __( 'Link Hover BG Color', 'tatsu' ),
+					'label' => esc_html__( 'Link Hover BG Color', 'tatsu' ),
 					'default' => '',
 					'tooltip' => '',
 					'css' => true,
@@ -319,7 +319,7 @@ function tatsu_register_sidebar_navigation_menu() {
 				array(
 					'att_name' => 'sub_menu_link',
 					'type' => 'typography',
-					'label' => __( 'Sub Menu', 'tatsu' ),
+					'label' => esc_html__( 'Sub Menu', 'tatsu' ),
 					'responsive' => true,
 					'default' => '',
 					'tooltip' => '',

@@ -31,7 +31,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_header_divider' );
 function tatsu_register_header_divider() {
 	$controls = array (
 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#header_separator',
-		'title' => __( 'Separator', 'tatsu' ),
+		'title' => esc_html__( 'Separator', 'tatsu' ),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -44,7 +44,7 @@ function tatsu_register_header_divider() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             'width',
                             'height',
@@ -53,7 +53,7 @@ function tatsu_register_header_divider() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -61,7 +61,7 @@ function tatsu_register_header_divider() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -77,7 +77,7 @@ function tatsu_register_header_divider() {
 			array (
 				'att_name' => 'width',
 				'type' => 'slider',
-				'label' => __( 'Divider Width', 'tatsu' ),
+				'label' => esc_html__( 'Divider Width', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -98,7 +98,7 @@ function tatsu_register_header_divider() {
 			array (
 				'att_name' => 'height',
 				'type' => 'slider',
-				'label' => __( 'Divider Height', 'tatsu' ),
+				'label' => esc_html__( 'Divider Height', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -122,7 +122,7 @@ function tatsu_register_header_divider() {
 				'options' => array (
 						'gradient' => true
 				),
-				'label' => __( 'Divider Color', 'tatsu' ),
+				'label' => esc_html__( 'Divider Color', 'tatsu' ),
 				'default' => '#efefef', 
 				'tooltip' => '',
 				'css' => true,
@@ -135,7 +135,7 @@ function tatsu_register_header_divider() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 15px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,

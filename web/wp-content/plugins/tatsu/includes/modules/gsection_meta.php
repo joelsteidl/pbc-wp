@@ -85,7 +85,7 @@ function tatsu_register_gsection_meta()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Global Section Meta', 'tatsu'),
+		'title' => esc_html__('Global Section Meta', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -95,7 +95,7 @@ function tatsu_register_gsection_meta()
 				array(
 					'att_name' => 'post_type',
 					'type' => 'select',
-					'label' => __('Post Type', 'tatsu'),
+					'label' => esc_html__('Post Type', 'tatsu'),
 					'options' => tatsu_get_custom_post_types(),
 					'default' => 'post',
 					'tooltip' => ''
@@ -106,14 +106,14 @@ function tatsu_register_gsection_meta()
 				array(
 					'att_name' => 'meta_prefix',
 					'type' => 'text',
-					'label' => __('Meta Prefix', 'tatsu'),
+					'label' => esc_html__('Meta Prefix', 'tatsu'),
 					'default' => '',
 					'tooltip' => '',
 				),
 				array(
 					'att_name' => 'alignment',
 					'type' => 'button_group',
-					'label' => __('Alignment', 'tatsu'),
+					'label' => esc_html__('Alignment', 'tatsu'),
 					'options' => array(
 						'left' => 'Left',
 						'center' => 'Center',
@@ -125,7 +125,7 @@ function tatsu_register_gsection_meta()
 				(function_exists('typehub_get_exposed_selectors') ? array(
 					'att_name' => 'title_font',
 					'type' => 'select',
-					'label' => __('Font for Meta', 'tatsu'),
+					'label' => esc_html__('Font for Meta', 'tatsu'),
 					'options' => typehub_get_exposed_selectors(),
 					'default' => '',
 					'tooltip' => ''
@@ -133,7 +133,7 @@ function tatsu_register_gsection_meta()
 				array(
 					'att_name' => 'margin',
 					'type' => 'input_group',
-					'label' => __('Margin', 'tatsu'),
+					'label' => esc_html__('Margin', 'tatsu'),
 					'default' => '0px 0px 30px 0px',
 					'tooltip' => '',
 					'responsive' => true,

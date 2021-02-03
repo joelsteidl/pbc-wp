@@ -28,7 +28,6 @@ if ( !function_exists( 'tatsu_inline_text' ) ) {
 
 		$animate = ( isset( $animate ) && !empty( $animate ) && 'none' !== $animation_type ) ? 'tatsu-animate' : '';  //1 : 0;
 		$data_animations = be_get_animation_data_atts( $atts );
-		//$animation_type = ( isset( $animation_type ) && !empty( $animation_type ) && 1 == $animate ) ? $animation_type : '';
 		if( $max_width < 100 ){
 			if( $wrap_alignment == 'left' ){
 				$inner_margin = '';
@@ -67,7 +66,7 @@ if( !function_exists( 'tatsu_inline_text_header_atts' ) ) {
 			// Modify Atts
 			$atts['margin'] = 	array (
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -86,13 +85,12 @@ if( !function_exists( 'tatsu_inline_text_header_atts' ) ) {
 	add_filter( 'tatsu_header_modify_atts', 'tatsu_inline_text_header_atts', 10, 2 );
 }
 
-// add_action( 'tatsu_register_header_modules', 'tatsu_register_inline_text', 9 );
 add_action('tatsu_register_modules', 'tatsu_register_inline_text', 2);
 function tatsu_register_inline_text()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#inline_text',
-		'title' => __('Inline Text', 'tatsu'),
+		'title' => esc_html__('Inline Text', 'tatsu'),
 		'is_js_dependant' => false,
 		'type' => 'single',
 		'is_built_in' => true,
@@ -105,7 +103,7 @@ function tatsu_register_inline_text()
 				'group'	=>	array(
 					array(
 						'type'	=>	'tab',
-						'title'	=>	__('Style', 'tatsu'),
+						'title'	=>	esc_html__('Style', 'tatsu'),
 						'group'	=>	array(
 							array(
 								'type' => 'accordion',
@@ -113,7 +111,7 @@ function tatsu_register_inline_text()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Width and Alignment', 'tatsu'),
+										'title' => esc_html__('Width and Alignment', 'tatsu'),
 										'group' => array(
 											'max_width',
 											'wrap_alignment',
@@ -122,14 +120,14 @@ function tatsu_register_inline_text()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											'bg_color',
 										)
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Typography', 'tatsu'),
+										'title' => esc_html__('Typography', 'tatsu'),
 										'group' => array(
 											'typography'
 										)
@@ -140,7 +138,7 @@ function tatsu_register_inline_text()
 					),
 					array(
 						'type'	=>	'tab',
-						'title'	=>	__('Advanced', 'tatsu'),
+						'title'	=>	esc_html__('Advanced', 'tatsu'),
 						'group'	=>	array(
 							array(
 								'type' => 'accordion',
@@ -148,7 +146,7 @@ function tatsu_register_inline_text()
 								'group' => array(
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Spacing', 'tatsu'),
+										'title'	=>	esc_html__('Spacing', 'tatsu'),
 										'group'	=>	array(
 											'margin',
 											'padding'
@@ -156,7 +154,7 @@ function tatsu_register_inline_text()
 									),
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Border', 'tatsu'),
+										'title'	=>	esc_html__('Border', 'tatsu'),
 										'group'	=>	array(
 											'border_style',
 											'border',
@@ -166,7 +164,7 @@ function tatsu_register_inline_text()
 									),
 									array(
 										'type'	=>	'panel',
-										'title'	=>	__('Shadow', 'tatsu'),
+										'title'	=>	esc_html__('Shadow', 'tatsu'),
 										'group'	=>	array(
 											'box_shadow',
 										)
@@ -183,7 +181,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'max_width',
 				'type' => 'slider',
-				'label' => __('Content Width', 'tatsu'),
+				'label' => esc_html__('Content Width', 'tatsu'),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -213,7 +211,7 @@ function tatsu_register_inline_text()
 				'att_name' => 'wrap_alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Wrap Align', 'tatsu'),
+				'label' => esc_html__('Wrap Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -221,13 +219,12 @@ function tatsu_register_inline_text()
 				),
 				'default' => 'center',
 				'tooltip' => '',
-				//'visible' => array( 'max_width', '<', '100' ),
 			),
 			array(
 				'att_name' => 'text_alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Text Align', 'tatsu'),
+				'label' => esc_html__('Text Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -246,7 +243,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 30px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -264,7 +261,7 @@ function tatsu_register_inline_text()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Background Color', 'tatsu'),
+				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -277,7 +274,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'typography',
 				'type' => 'typography',
-				'label' => __( 'Typography', 'tatsu' ),
+				'label' => esc_html__( 'Typography', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',
@@ -292,7 +289,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Shadow Value', 'tatsu'),
+				'label' => esc_html__('Shadow Value', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -306,7 +303,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'padding',
 				'type' => 'input_group',
-				'label' => __('Padding', 'tatsu'),
+				'label' => esc_html__('Padding', 'tatsu'),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -321,7 +318,7 @@ function tatsu_register_inline_text()
 			array (
 				'att_name' => 'border_style',
 				'type' => 'select',
-				'label' => __( 'Border Style', 'tatsu' ),
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
 				'options' => array(
 					'none' => 'None',
 					'solid' => 'Solid',
@@ -348,7 +345,7 @@ function tatsu_register_inline_text()
 			array (
 				'att_name' => 'border',
 				'type' => 'input_group',
-				'label' => __( 'Border Width', 'tatsu' ),
+				'label' => esc_html__( 'Border Width', 'tatsu' ),
 				'default' => '0px 0px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,
@@ -363,7 +360,7 @@ function tatsu_register_inline_text()
 			array (
 				'att_name' => 'border_color',
 				'type' => 'color',
-				'label' => __( 'Border Color', 'tatsu' ),
+				'label' => esc_html__( 'Border Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -377,7 +374,7 @@ function tatsu_register_inline_text()
 			array(
 				'att_name' => 'border_radius',
 				'type' => 'number',
-				'label' => __('Border Radius', 'tatsu'),
+				'label' => esc_html__('Border Radius', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 					'add_unit_to_value' => true,
@@ -405,7 +402,6 @@ function tatsu_register_inline_text()
 		),
 	);
 	tatsu_register_module('tatsu_inline_text', $controls);
-	// tatsu_register_header_module( 'tatsu_inline_text', $controls, 'tatsu_header_inline_text' );
 }
 
 ?>

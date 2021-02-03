@@ -210,7 +210,7 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 		$media =  ( $attachment ) ? $attachment[0] : '';
 		if( !$stacked ) {
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
-			$output .= '<a href="https://twitter.com/home?status='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
+			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
 			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';
@@ -220,7 +220,7 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 			$output .= '<span class = "be-share-stack-mask">';
 			$output .= '<a href = "#" class = "be-share-trigger"><i class = "font-icon icon-share"></i></a>';
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
-			$output .= '<a href="https://twitter.com/home?status='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
+			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
 			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';			
@@ -429,6 +429,7 @@ if (!function_exists( 'be_get_the_slug' )) {
 if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 	function get_gallery_image_from_source($source, $images = false, $lightbox_type) {
 		$media = $return = array();
+		// print_r($media);
 		global $be_themes_data; 
 		switch ($source['source']) {
 			case 'instagram':
@@ -439,7 +440,8 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 				} else {
 					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
-						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url&access_token='.$instagram_access_token.'&count='.$source['count']);
+						// $instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
 						if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
 							delete_transient( $transient_var );
 							$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
@@ -451,29 +453,32 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 						}
 					}else{
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from http://instagram.pixelunion.net/', 'oshine-modules').'</div>';
+						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
 						return $return;
 					}					
 				}
-
-				if($media && isset($media) && !empty($media)) {
+                if(empty($media)) {
+                    $images = json_decode($media["body"]);
+                    if($images->meta->code != '200'){
+                        delete_transient( $transient_var );
+						$return['error'] = '<b>'.__('Instagram Error :', 'oshine-modules').'</b>'.$images->meta->error_message;
+                        return $return;
+                    }
+                }
+				// if($media && isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
 					foreach ($images as $key => $value) {
 						$temp_image_array = array();
 						$temp_image_array = array (
-							'thumbnail' => $value->images->standard_resolution->url,
-							'full_image_url' => $value->images->standard_resolution->url,
+							'thumbnail' => $value->media_url,
+							'full_image_url' => $value->media_url,
 							'mfp_class' => ($lightbox_type == 'photoswipe') ? '' : 'mfp-image',
-							'caption' => !empty($value->caption->text) ? $value->caption->text : '',
-							'description' => !empty($value->caption->text) ? $value->caption->text : '',
-							'width' => $value->images->standard_resolution->width,
-							'height' => $value->images->standard_resolution->height,
 							'id' => '',
 						);
-						array_push($return, $temp_image_array);
-					}
-				}
+						array_push($return, $temp_image_array);					
+					}				
+				// }
 				return $return;
 				break;
 			case 'flickr':
@@ -596,20 +601,22 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 							$attachment_full_url = $video_url;
 							$mfp_class = 'mfp-iframe';
 						}
-						$temp_image_array = array (
-							'thumbnail' => $attachment_thumb_url,
-							'full_image_url' => $attachment_full_url,
-							'mfp_class' => $mfp_class,
-							'caption' => $attachment_info['title'],
-							'description' => $attachment_info['description'],
-							'width' => $attachment_info['width'],
-							'height' => $attachment_info['height'],
-							'id' => $image,
-							'thumb_width' => $attachment_thumb[ 1 ],
-							'thumb_height' => $attachment_thumb[ 2 ]
-						);
-						array_push($return, $temp_image_array);
-					}
+                        if( $attachment_thumb_url !='' ){ // check if image exist then push to array otherwise leave.
+                            $temp_image_array = array (
+                                'thumbnail' => $attachment_thumb_url,
+                                'full_image_url' => $attachment_full_url,
+                                'mfp_class' => $mfp_class,
+                                'caption' => $attachment_info['title'],
+                                'description' => $attachment_info['description'],
+                                'width' => $attachment_info['width'],
+                                'height' => $attachment_info['height'],
+                                'id' => $image,
+                                'thumb_width' => $attachment_thumb[ 1 ],
+                                'thumb_height' => $attachment_thumb[ 2 ]
+                            );
+                            array_push($return, $temp_image_array);
+                        }
+					}					
 					return $return;
 				}
 				break;

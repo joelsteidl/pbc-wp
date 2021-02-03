@@ -5,8 +5,8 @@ Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io/?xyz=3167
 Tags: translate wordpress, translate, translator, translation, language, multi language
 Requires at least: 2.9
-Tested up to: 5.4
-Stable tag: 6.0.6
+Tested up to: 5.6
+Stable tag: 6.0.8
 
 Translate WordPress with Google Language Translator multilanguage plugin which allows to insert Google Translate widget anywhere on your website.
 
@@ -70,6 +70,9 @@ Please check our [FAQ](https://gtranslate.io/?xyz=3167#faq) to get quick answers
 6. Do not use the shortcode twice on a single page - it will not work.
 
 == Frequently Asked Questions ==
+= It doesn't translate, what to do? =
+Please check [Google Language Translator Support Forum](https://wordpress.org/support/plugin/google-language-translator/) and feel free to create a new topic if you cannot find answers.
+
 = Is it FREE? =
 Yes! We have free version and paid versions with [advanced features](https://gtranslate.io/?xyz=3167#pricing).
 
@@ -152,6 +155,19 @@ If you want us to translate your website professionally or provide you a proofre
 Yes! Add the "notranslate" class to the HTML element containing your text. For example, the following text will be excluded from translation: <span class="notranslate">Hello World!</span>
 
 == Changelog ==
+= 6.0.8 =
+* Tested with new WordPress 5.6 version
+* Ground up rebuild of our Translation Proxy cloud network for paid customers, now page translations are 3x faster on average.
+    - New proprietary spec-compliant HTML parser which is 8x faster than PHP SimpleHTMLDom library used by TranslatePress Multilingual and Weglot Translate plugins
+    - In case of invalid HTML, it will be fixed after page translation
+    - New caching layer to cache translated pages, previously only original pages were cached
+    - Optimized caching with option to clear all original and translated page caches
+    - Better error reporting
+    - New top of the line hardware with Intel Xeon multi-core processors with up to 5 Ghz clock speed
+
+= 6.0.7 =
+* Servers list updated, minor changes
+
 = 6.0.6 =
 * Added more servers into the list of our growing Translation Delivery Network
 

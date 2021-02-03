@@ -11,8 +11,10 @@ if (!function_exists('be_portfolio')) {
 			'gutter_width' => 40,
 	        'show_filters' => '1',
 	        'tax_name' => 'portfolio_categories',
-	        'filter' => 'categories',        
-            'category' => '',
+			'filter' => 'categories',   
+			'meta_to_show' => 'portfolio_categories',     
+			'category' => '',
+			'tags' => '',
 	        'items_per_page' => '-1',
 			'masonry' => '0',
 			'maintain_order' => '0',
@@ -192,13 +194,27 @@ if (!function_exists('be_portfolio')) {
         $output .= $custom_style_tag;
 		$output .= '<div class="portfolio '. $delay_load_class . $two_col_mobile .'full-screen '. ( ( 1 == $prebuilt_hover ) ? ( 'be-portfolio-prebuilt-hover-' . $prebuilt_hover_style . ' ' ) : ' ' ) . $lazy_load_class .'full-screen-gutter '.$masonry_enable.' '.$gutter_style.'-gutter '.$col.'-col " ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-action="get_ajax_full_screen_gutter_portfolio" data-category="'.$category.'" data-aspect-ratio = "'.$aspect_ratio.'" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-showposts="'.$items_per_page.'" data-paged="2" data-col="'.$col.'" data-gallery="'.$gallery.'" data-filter="'.$filter_to_use.'" data-show_filters="'.$show_filters.'" data-thumbnail-bg-color="'.$global_thumb_overlay_color.'" data-thumbnail-bg-gradient="'.$gradient_style_color.'"' . ( ( '' != $title_style ) ? ( ' data-title-style="'.$title_style.'"' ) : '' ) . ( ( $lazy_load || $delay_load ) ? ( ' data-placeholder-color="' . $placeholder_color . '"' ) : '' ) . ' data-cat-color="'.$cat_color.'" data-title-color="'.$title_color.'"' . ( ( 'none' != $title_animation_type ) ? ( ' data-title-animation-type="'.$title_animation_type.'"' ) : '' ) . ( ( 'none' != $cat_animation_type ) ? ( ' data-cat-animation-type="'.$cat_animation_type.'"' ) : '' ) . ( ( '' != $hover_style ) ? ( ' data-hover-style="'.$hover_style.'"' ) : '' ) . ' data-gutter-width="'.$gutter_width.'" data-img-grayscale="'.$img_grayscale.'"' . ( ( 'none' != $image_effect ) ? ( ' data-image-effect="'.$image_effect.'"' ) : '' ) . ( ( '' != $prebuilt_hover_style ) ? ( ' data-prebuilt-hover-style="' . $prebuilt_hover_style . '"' ) : '' ) . '" data-gradient-style-color="'.$global_gradient_style_color.'" data-cat-hide="'.$cat_hide.'" data-like-indicator="'.$like_button.'" '.$portfolio_wrap_style.'>';
 		$category = explode(',', $category);
+		$tags = explode(',',$tags);
 		
-		if($filter_to_use == 'portfolio_tags' || empty( $category ) ) {
+		if( empty( $category ) ) {
 			// $terms = get_terms( $filter_to_use , array( 'orderby' => 'count' , 'order' => 'DESC') );
 			$terms = get_terms( $filter_to_use );
+		} else if( $filter_to_use == 'portfolio_tags' ){
+			$args_tag = array( 'taxonomy' => 'portfolio_tags' ) ;
+			$stack = array();
+
+			foreach(get_categories( $args_tag ) as $single_tag ) {
+				
+				if ( in_array( $single_tag->slug, $tags ) ) {
+					array_push( $stack, $single_tag->cat_ID );
+				}
+
+			}
+			$terms = get_terms($filter_to_use, array( 'include' => $stack) );
+
 		} else {
 	 	 	$args_cat = array( 'taxonomy' => 'portfolio_categories' ) ;
-	 	 	
+			  
 			$stack = array();
 			foreach(get_categories( $args_cat ) as $single_category ) {
 				if ( in_array( $single_category->slug, $category ) ) {
@@ -209,6 +225,45 @@ if (!function_exists('be_portfolio')) {
 			// $terms = get_terms($filter_to_use, array( 'orderby' => 'count' , 'order' => 'DESC', 'include' => $stack) );
 			$terms = get_terms($filter_to_use, array( 'include' => $stack) );
 		} 
+
+		if (!( empty( $category[0] ) &&  empty( $tags[0] ))){
+			if ( !empty( $category[0] ) && !empty( $tags[0] ) ){
+				$tax_query = array (
+					'relation' => 'AND',
+					array (
+						'taxonomy' => 'portfolio_categories',
+						'field' => 'slug',
+						'terms' => $category,
+						'operator' => 'IN',
+					),
+					array (
+						'taxonomy' => 'portfolio_tags',
+						'field' => 'slug',
+						'terms' => $tags,
+						'operator' => 'IN',
+					),
+				);
+			}else if( empty( $category[0] ) ){
+				$tax_query = array (
+					array (
+						'taxonomy' => 'portfolio_tags',
+						'field' => 'slug',
+						'terms' => $tags,
+						'operator' => 'IN',
+					),
+				);
+			}else if( empty( $tags[0] ) ){
+				$tax_query = array (
+					array (
+						'taxonomy' => 'portfolio_categories',
+						'field' => 'slug',
+						'terms' => $category,
+						'operator' => 'IN',
+					),
+				);
+			}
+		}
+
 	    if(!empty( $terms ) && $show_filters == 'yes') {
 	    	if( 0 < $gutter_width ) {
 				$portfolio_filter_style = 'style="margin-left:'.$gutter_width.'px;"';
@@ -228,7 +283,7 @@ if (!function_exists('be_portfolio')) {
 	    	$output .= '</div>';
 		}
         $output .= '<div class="portfolio-container clickable clearfix portfolio-shortcode '.$show_overlay.' '.$initial_load_style.' '.$item_parallax.'">';
-        if( empty( $category[0] ) ) {
+        if( empty( $category[0] ) &&  empty( $tags[0] ) ) {
 			$args = array(
 				'post_type' => 'portfolio',
 				'posts_per_page' => $items_per_page,
@@ -243,14 +298,7 @@ if (!function_exists('be_portfolio')) {
 				'orderby'=> apply_filters('be_portfolio_order_by','date'),
 				'order'=> apply_filters('be_portfolio_order','DESC'),
 				'post_status'=> 'publish',
-				'tax_query' => array (
-					array (
-						'taxonomy' => $tax_name,
-						'field' => 'slug',
-						'terms' => $category,
-						'operator' => 'IN',
-					),
-				),
+				'tax_query' => $tax_query
 			);	
         }
 		$the_query = new WP_Query( $args );
@@ -445,7 +493,7 @@ if (!function_exists('be_portfolio')) {
 					$output .= ( 'style2' == $prebuilt_hover_style || 'style4' == $prebuilt_hover_style ) ? ( '<div class = "thumb-title-inner-wrap">' ) : '';
 					$output .= get_the_title();
 					$output .= ( 'style2' == $prebuilt_hover_style ) ? ( '</div><hr class = "be-portfolio-prebuilt-hover-separator"></hr></div>' ) :  ( ( 'style4' == $prebuilt_hover_style ) ? '</div></div>' : '</div>' );
-					$terms = be_themes_get_taxonomies_by_id(get_the_ID(), 'portfolio_categories');
+					$terms = be_themes_get_taxonomies_by_id(get_the_ID(), isset($meta_to_show) ? $meta_to_show : 'portfolio_categories' ) ;
 					if(!empty($terms) && (isset($cat_hide) && !($cat_hide) ) ) {	
 						$output .= '<div class="portfolio-item-cats '. ( ( 'style5' != $title_style && 'style6' != $title_style && 0 == $prebuilt_hover ) ? ( 'animated '. $trigger_animation .'"' ) : '"'  ) . ( ( 0 == $prebuilt_hover ) ? ( ' data-animation-type="'.$cat_animation_type.'"' ) : ' ' ) .$cat_style.'>';
 						$length = 1;
@@ -553,6 +601,14 @@ function oshine_register_portfolio() {
         if( is_object( $category ) ) {
             $options[$category->slug] = $category->name;
         }
+	}
+	
+	$portfolio_tags = get_terms('portfolio_tags');
+    $options_tags = array();
+    foreach ( $portfolio_tags as $tag ) {
+        if( is_object( $tag ) ) {
+            $options_tags[$tag->slug] = $tag->name;
+        }
     }
 
 		$controls = array (
@@ -570,9 +626,11 @@ function oshine_register_portfolio() {
 							'type'	=>	'tab',
 							'title'	=>	__( 'Content' , 'tatsu'),
 							'group'	=>	array (
-                                'category',
+								'category',
+								'tags',
                                 'show_filters',
 								'filter',
+								'meta_to_show',
 								'items_per_page',
 								'pagination',
 								'maintain_order',
@@ -735,10 +793,28 @@ function oshine_register_portfolio() {
                     'visible'   => array( 'show_filters', '=', '1' ),
 	        	),	
 	        	array (
+	        		'att_name' => 'meta_to_show',
+	        		'type' => 'button_group',
+	        		'label' => __( 'Meta To Show', 'oshine-modules' ),
+					'options'=> array(
+						'portfolio_categories' => 'Categories', 
+						'portfolio_tags' => 'Tags', 
+                    ),
+                    'is_inline' => true,
+	        		'default' => 'portfolio_categories',
+                    'tooltip' => '',
+	        	),	
+	        	array (
 	        		'att_name' => 'category',
 	        		'type' => 'grouped_checkbox',
                     'label' => __( 'Portfolio Categories', 'oshine-modules' ),
 	        		'options' => $options,
+				),	
+	        	array (
+	        		'att_name' => 'tags',
+	        		'type' => 'grouped_checkbox',
+                    'label' => __( 'Portfolio Tags', 'oshine-modules' ),
+	        		'options' => $options_tags,
                 ),	         	
 	        	array (
 	        		'att_name' => 'lazy_load',

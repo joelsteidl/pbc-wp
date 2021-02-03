@@ -46,7 +46,7 @@ function tatsu_register_title_icon()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#title_icon',
-		'title' => __('Title with Icon', 'tatsu'),
+		'title' => esc_html__('Title with Icon', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
@@ -60,7 +60,7 @@ function tatsu_register_title_icon()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'icon',
 							'content',
@@ -69,7 +69,7 @@ function tatsu_register_title_icon()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array( //Styling Details
 								'type' => 'accordion',
@@ -77,7 +77,7 @@ function tatsu_register_title_icon()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Style and Alignment', 'tatsu'),
+										'title' => esc_html__('Style and Alignment', 'tatsu'),
 										'group' => array(
 											'alignment',
 											'size',
@@ -86,7 +86,7 @@ function tatsu_register_title_icon()
 									),
 									array(
 										'type' => 'panel',
-										'title' => __('Colors', 'tatsu'),
+										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
 											'icon_color',
 											'icon_bg',
@@ -101,7 +101,7 @@ function tatsu_register_title_icon()
 					//Tab3
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array( //accordion
 								'type' => 'accordion',
@@ -109,7 +109,7 @@ function tatsu_register_title_icon()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Shadow', 'tatsu'),
+										'title' => esc_html__('Shadow', 'tatsu'),
 										'group' => array(
 											'outer_box_shadow',
 										)
@@ -125,7 +125,7 @@ function tatsu_register_title_icon()
 			array(
 				'att_name' => 'icon',
 				'type' => 'icon_picker',
-				'label' => __('Icon', 'tatsu'),
+				'label' => esc_html__('Icon', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -133,7 +133,7 @@ function tatsu_register_title_icon()
 				'att_name' => 'size',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Icon Size', 'tatsu'),
+				'label' => esc_html__('Icon Size', 'tatsu'),
 				'options' => array(
 					'small' => 'Small',
 					'medium' => 'Medium',
@@ -146,7 +146,7 @@ function tatsu_register_title_icon()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'right' => 'Right'
@@ -159,7 +159,7 @@ function tatsu_register_title_icon()
 				'att_name' => 'style',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Icon Style', 'tatsu'),
+				'label' => esc_html__('Icon Style', 'tatsu'),
 				'options' => array(
 					'plain' => 'Plain',
 					'circled' => 'Circled'
@@ -173,7 +173,7 @@ function tatsu_register_title_icon()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Icon Background', 'tatsu'),
+				'label' => esc_html__('Icon Background', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('style', '=', 'circled'),
@@ -191,7 +191,7 @@ function tatsu_register_title_icon()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Icon Color', 'tatsu'),
+				'label' => esc_html__('Icon Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -204,7 +204,7 @@ function tatsu_register_title_icon()
 			array(
 				'att_name' => 'box_shadow', // Icons Shadow
 				'type' => 'input_box_shadow',
-				'label' => __('Icon Shadow', 'tatsu'),
+				'label' => esc_html__('Icon Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'visible'	=> array('style', '=', 'circled'),
@@ -219,7 +219,7 @@ function tatsu_register_title_icon()
 			array(
 				'att_name' => 'outer_box_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Box Shadow', 'tatsu'),
+				'label' => esc_html__('Box Shadow', 'tatsu'),
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'tooltip' => '',
 				'css' => true,
@@ -233,7 +233,7 @@ function tatsu_register_title_icon()
 			array(
 				'att_name' => 'icon_border_color',
 				'type' => 'color',
-				'label' => __('Icon Border', 'tatsu'),
+				'label' => esc_html__('Icon Border', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible' => array('style', '=', 'circled'),
@@ -248,25 +248,10 @@ function tatsu_register_title_icon()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
-			// array(
-			// 	'att_name' => 'margin',
-			// 	'type' => 'input_group',
-			// 	'label' => __('Margin', 'tatsu'),
-			// 	'default' => '0px 0px 60px 0px',
-			// 	'tooltip' => '',
-			// 	'responsive' => true,
-			// 	'css' => true,
-			// 	'selectors' => array(
-			// 		'.tatsu-{UUID}.tatsu-title-icon' => array(
-			// 			'property' => 'margin',
-			// 			'when' => array('margin', '!=', array('d' => '0px 0px 60px 0px')),
-			// 		),
-			// 	),
-			// ),
 		),
 		'presets' => array(
 			'default' => array(

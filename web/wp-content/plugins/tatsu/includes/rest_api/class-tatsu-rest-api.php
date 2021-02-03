@@ -29,7 +29,6 @@ class Tatsu_Rest_Api {
 	    	array(
 		        'methods'  => 'POST',
 		        'callback' => array( $plugin_store, 'get_store'),
-		        //'permission_callback' => array( $this, 'verify_nonce' ) ,
 		        'permission_callback' => function( $request ) {
 			    	$nonce = $request->get_header( 'x-wp-nonce' );
 			    	if( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {
@@ -46,7 +45,6 @@ class Tatsu_Rest_Api {
 	    	array(
 		        'methods'  => 'POST',
 		        'callback' => array( $header_store, 'rest_get_store'),
-		        //'permission_callback' => array( $this, 'verify_nonce' ) ,
 		        'permission_callback' => function( $request ) {
 			    	$nonce = $request->get_header( 'x-wp-nonce' );
 			    	if( $nonce && wp_verify_nonce( $nonce, 'wp_rest' ) ) {

@@ -41,7 +41,7 @@ class PucDebugBarPlugin_3_1 {
 		);
 
 		wp_enqueue_script(
-			'puc-debug-bar-js',
+			'puc-debug-bar',
 			plugins_url( "/js/debug-bar.js", __FILE__ ),
 			array('jquery'),
 			'20121026'

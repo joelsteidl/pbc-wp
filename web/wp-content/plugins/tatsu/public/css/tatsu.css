@@ -43,6 +43,7 @@ body {
 .tatsu-section {
     position: relative;
     width:100%;
+	border-color: transparent;
     border-style: solid;
     box-sizing: border-box;
 }
@@ -227,6 +228,7 @@ body {
 /* Row */
 
 .tatsu-row-wrap {
+	border-color: transparent;
     border-style: solid;
 }
 
@@ -246,6 +248,8 @@ body {
     align-items: flex-start;
     flex-direction: row;
     flex-wrap: nowrap;
+    position:relative;
+    z-index:1;
 }
 
 .tatsu-eq-cols > .tatsu-row {

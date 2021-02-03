@@ -16,8 +16,6 @@ if ( ! function_exists( 'tatsu_divider' ) ) {
 			'key' => be_uniqid_base36(true),
 		),$atts , $tag );
 
-		// $animate = ( isset( $animate ) && 1 == $animate ) ? ' tatsu-animate' : '';
-		
 		extract($atts);
 
 		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_divider', $atts['key'] );
@@ -42,7 +40,7 @@ function tatsu_register_divider()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#divider',
-		'title' => __('Divider', 'tatsu'),
+		'title' => esc_html__('Divider', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'single',
@@ -55,7 +53,7 @@ function tatsu_register_divider()
 					//Tab1
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'width',
 							'height',
@@ -66,7 +64,7 @@ function tatsu_register_divider()
 					//Tab2
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -74,7 +72,7 @@ function tatsu_register_divider()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -91,11 +89,8 @@ function tatsu_register_divider()
 				'att_name' => 'height',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Thickness', 'tatsu'),
+				'label' => esc_html__('Thickness', 'tatsu'),
 				'options' => array(
-					// 'min' => '0',
-					// 'max' => '500',
-					// 'step' => '1',
 					'unit' => 'px',
 				),
 				'default' => '',
@@ -114,7 +109,7 @@ function tatsu_register_divider()
 				'att_name' => 'width',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Width', 'tatsu'),
+				'label' => esc_html__('Width', 'tatsu'),
 				'options' => array(
 					'unit' => array('%', 'px'),
 					'add_unit_to_value' => false,
@@ -135,14 +130,13 @@ function tatsu_register_divider()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
 					'right' => 'Right',
 				),
 				'default' => 'left',
-				//'visible' => array ( 'width', '<', '100' ),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-divider-wrap' => array(
@@ -156,7 +150,7 @@ function tatsu_register_divider()
 				'options' => array(
 					'gradient' => true
 				),
-				'label' => __('Divider Color', 'tatsu'),
+				'label' => esc_html__('Divider Color', 'tatsu'),
 				'default' => '', //sec_border
 				'tooltip' => '',
 				'css' => true,
@@ -169,7 +163,7 @@ function tatsu_register_divider()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'responsive' => true,

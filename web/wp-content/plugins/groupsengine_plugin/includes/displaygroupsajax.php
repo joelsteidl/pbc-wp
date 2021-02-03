@@ -975,7 +975,7 @@ $enmge_scl = 0;
 			<?php }; ?>
 	    	<div class="ge-group-description"><?php if ( $enmge_single->group_photo != null ) { ?><div class="ge-imagecontainer"><img src="<?php echo $enmge_single->group_photo; ?>" class="ge-image" alt="Photo of <?php echo stripslashes($enmge_single->group_title); ?>" /></div><?php } ?><p><?php echo stripslashes($enmge_single->group_description); ?></p></div>
 	    	<div class="ge-social">
-	    		<?php $enmge_sharelink = urlencode($enmge_thispage . '&enmge_gid=' . $enmge_gid); ?>
+	    		<?php $enmge_sharelink = $enmge_thispage . urlencode('&enmge_gid=' . $enmge_gid); ?>
 	    		<ul>
 	    			<li class="ge-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $enmge_sharelink; ?>">Facebook</a></li>
 	    			<li class="ge-twitter"><a href="https://twitter.com/intent/tweet?status=%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:%20<?php echo $enmge_sharelink; ?>">Twitter</a></li>

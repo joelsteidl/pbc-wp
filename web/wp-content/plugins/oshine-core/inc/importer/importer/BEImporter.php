@@ -139,6 +139,7 @@ class BEThemeImporter {
           'v49' => 'V49 Split Screen Portfolio',   
           'v50' => 'V50 Title Carousel Portfolio',  
           'v51' => 'V51 Modern Coworking Space',                                 
+          'v52' => 'V52 Writer / Author',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }

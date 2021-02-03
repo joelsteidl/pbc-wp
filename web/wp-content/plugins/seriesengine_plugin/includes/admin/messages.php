@@ -1455,14 +1455,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 <div class="wrap"> 
 <?php if ( isset($_GET['enmse_action']) && ( $enmse_single_created == null && !isset($_GET['enmse_did']) ) ) { if ( $_GET['enmse_action'] == 'new' ) { // If they're adding a new Message ?>
 		<link rel='stylesheet' href='<?php echo plugins_url() .'/seriesengine_plugin/css/jqueryui.css'; ?>' type='text/css' media='all' />
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/datepicker.js'; ?>" ></script>
+		
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
 				jQuery("#message_date").datepicker({ dateFormat: 'yy-mm-dd' });
 				jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 			});
 		</script>
-		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
+		<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options283.js'; ?>"></script>
 		<h2 class="enmse">Add a New <?php echo $enmsemessaget; ?></h2>
 		<?php include ('errorbox.php'); ?>
 		<p>Fill out the form fields below to enter a new <?php echo $enmsemessaget; ?> into the Series Engine. Remember that a <?php echo $enmsemessaget; ?> will not be publicly available unless you supply a video embed, audio file or alternate video embed. <a href="<?php echo admin_url() . "admin.php?page=seriesengine_plugin/seriesengine_plugin.php_userguide#se-messages"; ?>" class="enmse-learn-more">Learn more about <?php echo $enmsemessagetp; ?>...</a></p>
@@ -2130,14 +2130,14 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		<?php include ('secredits.php'); ?>
 <?php } elseif ( ($_GET['enmse_action'] == 'edit') && ( $enmse_singlecount == 1 ) ) { // Edit Message ?>
 	<link rel='stylesheet' href='<?php echo plugins_url() .'/seriesengine_plugin/css/jqueryui.css'; ?>' type='text/css' media='all' />
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/datepicker.js'; ?>" ></script>
+	
 	<script type="text/javascript">
 		jQuery(document).ready(function() {
 			jQuery("#message_date").datepicker({ dateFormat: 'yy-mm-dd' });
 			jQuery("#message_alternate_date").datepicker({ dateFormat: 'yy-mm-dd' });
 		});
 	</script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options283.js'; ?>"></script>
 
 	<h2 class="enmse">Edit <?php echo $enmsemessaget; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('errorbox.php'); ?>
@@ -2828,7 +2828,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 	<?php include ('secredits.php'); ?>
 <?php }} else { // Display the main listing of Messages ?>
 	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/deletemessage.js'; ?>"></script>
-	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options281.js'; ?>"></script>
+	<script type="text/javascript" src="<?php echo plugins_url() .'/seriesengine_plugin/js/message_options283.js'; ?>"></script>
 	<h2 class="enmse">Create and Edit <?php echo $enmsemessagetp; ?> <a href="<?php echo admin_url( '/admin.php?page=seriesengine_plugin/seriesengine_plugin.php&enmse_action=new', __FILE__ ) ?>" class="add-new-h2">Add New</a></h2>
 	<?php include ('messagebox.php'); ?>
 

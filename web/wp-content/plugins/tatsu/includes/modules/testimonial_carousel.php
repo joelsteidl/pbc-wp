@@ -151,7 +151,7 @@ function tatsu_register_testimonials_carousel()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#testimonial',
-		'title' => __('Testimonials Slider', 'tatsu'),
+		'title' => esc_html__('Testimonials Slider', 'tatsu'),
 		'is_js_dependant' => false, //custom js implementation
 		'child_module' => 'tatsu_testimonial_carousel',
 		'type' => 'multi',
@@ -164,7 +164,7 @@ function tatsu_register_testimonials_carousel()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -172,7 +172,7 @@ function tatsu_register_testimonials_carousel()
 								'group' => array(
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Style and Alignment', 'tatsu'),
+										'title'		=> esc_html__('Style and Alignment', 'tatsu'),
 										'group'		=> array(
 											'style',
 											'content_width',
@@ -181,7 +181,7 @@ function tatsu_register_testimonials_carousel()
 									),
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Typography', 'tatsu'),
+										'title'		=> esc_html__('Typography', 'tatsu'),
 										'group'		=> array(
 											'font_size',
 											'author_font',
@@ -190,7 +190,7 @@ function tatsu_register_testimonials_carousel()
 									),
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Colors', 'tatsu'),
+										'title'		=> esc_html__('Colors', 'tatsu'),
 										'group'		=> array(
 											'author_color',
 											'author_role_color',
@@ -199,7 +199,7 @@ function tatsu_register_testimonials_carousel()
 									),
 									array(
 										'type'		=> 'panel',
-										'title'		=> __('Others', 'tatsu'),
+										'title'		=> esc_html__('Others', 'tatsu'),
 										'group'		=> array(
 											'pagination',
 											'arrows',
@@ -214,7 +214,7 @@ function tatsu_register_testimonials_carousel()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 						)
 					)
@@ -226,7 +226,7 @@ function tatsu_register_testimonials_carousel()
 				'att_name' => 'style',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Style', 'tatsu'),
+				'label' => esc_html__('Style', 'tatsu'),
 				'options' => array(
 					'style1' => 'Style 1',
 					'style2' => 'Style 2',
@@ -239,7 +239,7 @@ function tatsu_register_testimonials_carousel()
 				'att_name' => 'font_size',
 				'type' => 'number',
 				'is_inline' => true,
-				'label' => __('Content Font Size', 'tatsu'),
+				'label' => esc_html__('Content Font Size', 'tatsu'),
 				'options' => array(
 					'unit' => 'px',
 				),
@@ -256,7 +256,7 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'content_width',
 				'type' => 'slider',
-				'label' => __('Content Width', 'tatsu'),
+				'label' => esc_html__('Content Width', 'tatsu'),
 				'options' => array(
 					'unit' => '%',
 					'min'  => '0',
@@ -276,7 +276,7 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'author_color',
 				'type' => 'color',
-				'label' => __('Author Text Color', 'tatsu'),
+				'label' => esc_html__('Author Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -289,7 +289,7 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'author_role_color',
 				'type' => 'color',
-				'label' => __('Designation Color', 'tatsu'),
+				'label' => esc_html__('Designation Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -302,7 +302,7 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'dots_color',
 				'type' => 'color',
-				'label' => __('Slider Dots Color', 'tatsu'),
+				'label' => esc_html__('Slider Dots Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'visible'	  => array('pagination', '=', '1'),
@@ -317,7 +317,7 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'author_image_shadow',
 				'type' => 'input_box_shadow',
-				'label' => __('Author Image Box Shadow', 'tatsu'),
+				'label' => esc_html__('Author Image Box Shadow', 'tatsu'),
 				'tooltip' => '',
 				'default' => '0px 0px 0px 0px rgba(0,0,0,0)',
 				'css' => true,
@@ -332,7 +332,7 @@ function tatsu_register_testimonials_carousel()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Alignment', 'tatsu'),
+				'label' => esc_html__('Alignment', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -344,7 +344,7 @@ function tatsu_register_testimonials_carousel()
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'author_font',
 				'type'		=> 'select',
-				'label'		=> __('Author Font', 'tatsu'),
+				'label'		=> esc_html__('Author Font', 'tatsu'),
 				'options'	=> typehub_get_exposed_selectors(),
 				'default'	=> 'h6',
 				'tooltip'	=> ''
@@ -352,7 +352,7 @@ function tatsu_register_testimonials_carousel()
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'author_role_font',
 				'type'		=> 'select',
-				'label'		=> __('Designation Font', 'tatsu'),
+				'label'		=> esc_html__('Designation Font', 'tatsu'),
 				'options'	=> typehub_get_exposed_selectors(),
 				'default'	=> 'h9',
 				'tooltip'	=> ''
@@ -360,21 +360,21 @@ function tatsu_register_testimonials_carousel()
 			array(
 				'att_name' => 'pagination',
 				'type' => 'switch',
-				'label' => __(' Enable Dots', 'tatsu'),
+				'label' => esc_html__(' Enable Dots', 'tatsu'),
 				'default' => 1,
 				'tooltip' => '',
 			),
 			array(
 				'att_name'		=> 'arrows',
 				'type'			=> 'switch',
-				'label'			=> __('Enable Arrows', 'tatsu'),
+				'label'			=> esc_html__('Enable Arrows', 'tatsu'),
 				'default'		=> '1',
 				'tooltip'		=> '',
 			),
 			array(
 				'att_name' => 'slide_show',
 				'type' => 'switch',
-				'label' => __('Enable Slide Show', 'tatsu'),
+				'label' => esc_html__('Enable Slide Show', 'tatsu'),
 				'default' => 0,
 				'tooltip' => ''
 			),
@@ -382,7 +382,7 @@ function tatsu_register_testimonials_carousel()
 				'att_name' => 'slide_show_speed',
 				'type' => 'slider',
 				'visible' => array('slide_show', '=', '1'),
-				'label' => __('Slide Show Speed', 'tatsu'),
+				'label' => esc_html__('Slide Show Speed', 'tatsu'),
 				'options' => array(
 					'min' => '0',
 					'max' => '5000',
@@ -415,7 +415,7 @@ function tatsu_register_testimonial_carousel()
 {
 	$controls = array(
 		'icon' => '',
-		'title' => __('Testimonial', 'tatsu'),
+		'title' => esc_html__('Testimonial', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => '',
 		'type' => 'sub_module',
@@ -428,7 +428,7 @@ function tatsu_register_testimonial_carousel()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
 							'author',
 							'author_role',
@@ -438,7 +438,7 @@ function tatsu_register_testimonial_carousel()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 				
 						)
@@ -450,14 +450,14 @@ function tatsu_register_testimonial_carousel()
 			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
-				'label' => __('Content', 'tatsu'),
+				'label' => esc_html__('Content', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'author',
 				'type' => 'text',
-				'label' => __('Author', 'tatsu'),
+				'label' => esc_html__('Author', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -468,13 +468,13 @@ function tatsu_register_testimonial_carousel()
 				'options' => array(
 					'size' => 'thumbnail',
 				),
-				'label' => __('Author Image', 'tatsu'),
+				'label' => esc_html__('Author Image', 'tatsu'),
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'author_role',
 				'type' => 'text',
-				'label' => __('Designation', 'tatsu'),
+				'label' => esc_html__('Designation', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),

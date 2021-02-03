@@ -39,7 +39,7 @@ add_action( 'tatsu_register_header_modules', 'tatsu_register_hamburger_menu' );
 function tatsu_register_hamburger_menu() {
     $controls = array (
         'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#hamburger_menu',
-        'title' => __( 'Hamburger Menu', 'tatsu' ),
+        'title' => esc_html__( 'Hamburger Menu', 'tatsu' ),
         'is_js_dependant' => true,
         'type' => 'multi',
 		'is_built_in' => true,
@@ -54,7 +54,7 @@ function tatsu_register_hamburger_menu() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -62,7 +62,7 @@ function tatsu_register_hamburger_menu() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Hamburger', 'tatsu'),
+										'title' => esc_html__('Hamburger', 'tatsu'),
 										'group' => array(
                                             'menu_icon_color',
                                             'menu_icon_hover_color',
@@ -73,7 +73,7 @@ function tatsu_register_hamburger_menu() {
                                     ),
 									array(
 										'type' => 'panel',
-										'title' => __('Panel', 'tatsu'),
+										'title' => esc_html__('Panel', 'tatsu'),
 										'group' => array(
                                             'panel_width',
                                             'panel_background_color',
@@ -85,7 +85,7 @@ function tatsu_register_hamburger_menu() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -93,7 +93,7 @@ function tatsu_register_hamburger_menu() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -113,7 +113,7 @@ function tatsu_register_hamburger_menu() {
 				'options' => array (
 					  'gradient' => true
 				),
-				'label' => __( 'Icon Color', 'tatsu' ),
+				'label' => esc_html__( 'Icon Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -129,7 +129,7 @@ function tatsu_register_hamburger_menu() {
 				'options' => array (
 						'gradient' => true
 				),
-				'label' => __( 'Icon Hover Color', 'tatsu' ),
+				'label' => esc_html__( 'Icon Hover Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -142,7 +142,7 @@ function tatsu_register_hamburger_menu() {
 			array (
 				'att_name' => 'icon_width',
 				'type' => 'slider',
-				'label' => __( 'Line Width', 'tatsu' ),
+				'label' => esc_html__( 'Line Width', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '100',
@@ -162,7 +162,7 @@ function tatsu_register_hamburger_menu() {
 			array (
 				'att_name' => 'icon_thickness',
 				'type' => 'slider',
-				'label' => __( 'Line Thickness', 'tatsu' ),
+				'label' => esc_html__( 'Line Thickness', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '10',
@@ -182,7 +182,7 @@ function tatsu_register_hamburger_menu() {
 			array (
 				'att_name' => 'icon_spacing',
 				'type' => 'slider',
-				'label' => __( 'Line Spacing', 'tatsu' ),
+				'label' => esc_html__( 'Line Spacing', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '30',
@@ -202,7 +202,7 @@ function tatsu_register_hamburger_menu() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'css' => true,
@@ -216,7 +216,7 @@ function tatsu_register_hamburger_menu() {
 			array (
 				'att_name' => 'panel_width',
 				'type' => 'slider',
-				'label' => __( 'Panel Width', 'tatsu' ),
+				'label' => esc_html__( 'Panel Width', 'tatsu' ),
 				'options' => array(
 					'min' => '0',
 					'max' => '600',
@@ -240,7 +240,7 @@ function tatsu_register_hamburger_menu() {
 				'options' => array (
 						'gradient' => true
 				),
-				'label' => __( 'Panel Background Color', 'tatsu' ),
+				'label' => esc_html__( 'Panel Background Color', 'tatsu' ),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,

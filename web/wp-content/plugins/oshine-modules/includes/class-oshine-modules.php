@@ -69,7 +69,7 @@ class Oshine_Modules {
 	public function __construct() {
 
 		$this->plugin_name = 'oshine-modules';
-		$this->version = '3.0.9';
+		$this->version = '3.2';
 
 		$this->load_dependencies();
 		$this->set_locale();
@@ -209,7 +209,7 @@ class Oshine_Modules {
         public function enqueue_module_components() {
 
             	$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';   
-                wp_register_script( 'oshine_module_components', OSHINE_MODULES_PLUGIN_URL.'/admin/js/oshine-bundle'.$suffix.'.js', array( 'jquery', 'tatsu' ), '1.0', true );
+                wp_register_script( 'oshine_module_components', OSHINE_MODULES_PLUGIN_URL.'/admin/js/oshine-bundle'.$suffix.'.js', array( 'jquery', 'tatsu' ), '1.2.2', true );
                 wp_enqueue_script( 'oshine_module_components' );
 
         }

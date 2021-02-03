@@ -33,7 +33,7 @@ function tatsu_register_button_group()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#button_group',
-		'title' => __('Button Group', 'tatsu'),
+		'title' => esc_html__('Button Group', 'tatsu'),
 		'is_js_dependant' => false,
 		'child_module' => 'tatsu_button',
 		'allowed_sub_modules' => array('tatsu_button'),
@@ -47,14 +47,14 @@ function tatsu_register_button_group()
 				'group'		=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
 							'alignment'
 						)
 					),
 					array(
 						'type'	=> 'tab',
-						'title'	=> __('Advanced', 'tatsu'),
+						'title'	=> esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -62,7 +62,7 @@ function tatsu_register_button_group()
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title'=> __('Spacing', 'tatsu'),
+										'title'=> esc_html__('Spacing', 'tatsu'),
 										'group'=> array(
 											'margin'
 										)
@@ -79,7 +79,7 @@ function tatsu_register_button_group()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -91,11 +91,10 @@ function tatsu_register_button_group()
 			array(
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __('Margin', 'tatsu'),
+				'label' => esc_html__('Margin', 'tatsu'),
 				'default' => '0px 0px 20px 0px',
 				'tooltip' => '',
 				'css' => true,
-				//'responsive' => true,    in js attsfromdisplay device is empty
 				'selectors' => array(
 					'.tatsu-{UUID}.tatsu-button-group' => array(
 						'property' => 'margin'

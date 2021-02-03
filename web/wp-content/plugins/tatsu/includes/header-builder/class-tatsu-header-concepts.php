@@ -40,7 +40,6 @@ class Tatsu_Header_Concepts {
 		}		
 
 		$concepts = array();
-		//var_dump( $this->concepts );
 		foreach ( $this->concepts as $concept => $options ) {
 			$new_concept = array();
 			$new_concept['name'] = $concept;

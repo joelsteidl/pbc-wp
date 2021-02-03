@@ -63,7 +63,7 @@ function tatsu_register_animated_heading()
 {
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '',
-		'title' => __('Animated Heading', 'tatsu'),
+		'title' => esc_html__('Animated Heading', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
@@ -75,7 +75,7 @@ function tatsu_register_animated_heading()
 				'group'		=> array(
                     array(
 						'type' => 'tab',
-						'title' => __('Content', 'tatsu'),
+						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
                             'text',
                             'tag_to_use'
@@ -83,7 +83,7 @@ function tatsu_register_animated_heading()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             'alignment',
 							'anime_type',
@@ -95,7 +95,7 @@ function tatsu_register_animated_heading()
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							
 						),
@@ -114,7 +114,7 @@ function tatsu_register_animated_heading()
             array(
                 'att_name' => 'tag_to_use',
                 'type' => 'select',
-                'label' => __('Tag to use', 'tatsu'),
+                'label' => esc_html__('Tag to use', 'tatsu'),
                 'options' => array(
                     'h1' => 'H1',
                     'h2' => 'H2',
@@ -132,7 +132,7 @@ function tatsu_register_animated_heading()
             array(
                 'att_name' => 'anime_type',
                 'type' => 'select',
-                'label' => __('Effect', 'tatsu'),
+                'label' => esc_html__('Effect', 'tatsu'),
                 'options' => array(
                     'anime_split_letter' => 'Split Letter',
 					'anime_split_word' => 'Split Word',
@@ -150,7 +150,7 @@ function tatsu_register_animated_heading()
 			array(
 				'att_name' => 'text_color',
 				'type' => 'color',
-				'label' => __('Text Color', 'tatsu'),
+				'label' => esc_html__('Text Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
 				'css' => true,
@@ -163,7 +163,7 @@ function tatsu_register_animated_heading()
 			array(
 				'att_name' => 'line_color',
 				'type' => 'color',
-				'label' => __('Line Color', 'tatsu'),
+				'label' => esc_html__('Line Color', 'tatsu'),
 				'default' => '',
 				'visible' => array(
 					'condition' => array(
@@ -185,7 +185,7 @@ function tatsu_register_animated_heading()
 				'att_name' => 'alignment',
 				'type' => 'button_group',
 				'is_inline' => true,
-				'label' => __('Align', 'tatsu'),
+				'label' => esc_html__('Align', 'tatsu'),
 				'options' => array(
 					'left' => 'Left',
 					'center' => 'Center',
@@ -208,13 +208,13 @@ function tatsu_register_animated_heading()
 					'max' => '100',
 					'step' => '1'
 				),
-				'label' => __( 'Duration', 'tatsu' ),
+				'label' => esc_html__( 'Duration', 'tatsu' ),
 				'tooltip' => ''
 			),
 			array(
 				'att_name' => 'typography',
 				'type' => 'typography',
-				'label' => __( 'Typography', 'tatsu' ),
+				'label' => esc_html__( 'Typography', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',

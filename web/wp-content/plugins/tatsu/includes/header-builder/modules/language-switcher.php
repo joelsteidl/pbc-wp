@@ -3,7 +3,6 @@ function tatsu_wpml_language_switcher( $atts, $content, $tag ) {
     $atts = shortcode_atts( array(
         'current_lang_color' => '',
         'flag_visibility' => '' ,
-        // 'native_language_visibility' => '',
         'language_name' => '',
         'lang_typography' => '',
         'margin' => '',
@@ -56,7 +55,7 @@ if ( in_array( 'sitepress-multilingual-cms/sitepress.php', apply_filters( 'activ
 function tatsu_register_wpml_language_switcher() {
 	$controls = array (
 		'icon' => TATSU_PLUGIN_URL.'/builder/svg/modules.svg#lang_selector',
-		'title' => __( 'WPML Language Switcher', 'tatsu' ),
+		'title' => esc_html__( 'WPML Language Switcher', 'tatsu' ),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
@@ -69,7 +68,7 @@ function tatsu_register_wpml_language_switcher() {
 				'group'	=> array(
 					array(
 						'type' => 'tab',
-						'title' => __('Style', 'tatsu'),
+						'title' => esc_html__('Style', 'tatsu'),
 						'group'	=> array(
                             'current_lang_color',
                             'flag_visibility',
@@ -79,7 +78,7 @@ function tatsu_register_wpml_language_switcher() {
 					),
 					array(
 						'type' => 'tab',
-						'title' => __('Advanced', 'tatsu'),
+						'title' => esc_html__('Advanced', 'tatsu'),
 						'group'	=> array(
 							array(
 								'type' => 'accordion',
@@ -87,7 +86,7 @@ function tatsu_register_wpml_language_switcher() {
 								'group' => array(
 									array(
 										'type' => 'panel',
-										'title' => __('Spacing', 'tatsu'),
+										'title' => esc_html__('Spacing', 'tatsu'),
 										'group' => array(
 											'margin',
 										)
@@ -103,7 +102,7 @@ function tatsu_register_wpml_language_switcher() {
 			array (
 				'att_name' => 'current_lang_color',
 				'type' => 'color',
-				'label' => __( 'Current Language Color', 'tatsu' ),
+				'label' => esc_html__( 'Current Language Color', 'tatsu' ),
 				'default' => '#212121', 
 				'tooltip' => '',
 				'css' => true,
@@ -119,28 +118,21 @@ function tatsu_register_wpml_language_switcher() {
 			array (
 				'att_name' => 'flag_visibility',
 				'type' => 'switch',
-				'label' => __( 'Flag', 'tatsu' ),
+				'label' => esc_html__( 'Flag', 'tatsu' ),
 				'default' => false,
 				'tooltip' => '',
 			),
-			// array (
-			// 	'att_name' => 'native_language_visibility',
-			// 	'type' => 'switch',
-			// 	'label' => __( 'Native language name', 'tatsu' ),
-			// 	'default' => true,
-			// 	'tooltip' => '',
-			// ),
 			array (
 				'att_name' => 'language_name',
 				'type' => 'switch',
-				'label' => __( 'Language name in current language', 'tatsu' ),
+				'label' => esc_html__( 'Language name in current language', 'tatsu' ),
 				'default' => false,
 				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'lang_typography',
 				'type' => 'typography',
-				'label' => __( 'Typography', 'tatsu' ),
+				'label' => esc_html__( 'Typography', 'tatsu' ),
 				'responsive' => true,
 				'default' => '',
 				'tooltip' => '',
@@ -158,7 +150,7 @@ function tatsu_register_wpml_language_switcher() {
 			array (
 				'att_name' => 'margin',
 				'type' => 'input_group',
-				'label' => __( 'Margin', 'tatsu' ),
+				'label' => esc_html__( 'Margin', 'tatsu' ),
 				'default' => '0px 30px 0px 0px',
 				'tooltip' => '',
 				'responsive' => true,

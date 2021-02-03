@@ -105,7 +105,7 @@ class Typehub_Public {
 		// echo '<pre>';
 		foreach( $options as $option => $config ) {
 			$selector = $config['selector'];
-			if( array_key_exists( 'expose', $config ) && !empty( $config[ 'expose' ] ) ) {
+			if( array_key_exists( 'expose', $config ) && !empty( $config[ 'expose' ] ) || ( ( array_key_exists( 'category', $config ) && $config[ 'category' ] == 'Custom' ) ) ) {
 				if( !empty( $selector ) ) {
 					$selector .= ', .' . $option;
 				}else {
