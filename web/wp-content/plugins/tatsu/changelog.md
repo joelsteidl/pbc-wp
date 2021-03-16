@@ -1,3 +1,15 @@
+v3.3.2
+=====
+* Added: Add link to svg icon
+* Added: Instagram access token for Tatsu standalone
+* Fixed: Instagram in gallery module
+* Fixed: Shape divider svg check
+
+v3.3.1
+=====
+* Tatsu Standalone release
+* Fixed: Image slider multiple images in tablet view
+
 v3.2.6
 =====
 * Added: New Shape Divider

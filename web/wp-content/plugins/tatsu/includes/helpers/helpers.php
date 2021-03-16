@@ -20,6 +20,33 @@ function tatsu_add_shortcode_content( $inner ) {
 	  return $new_content;
 }
 
+function if_tatsubuilder_premium( ) {
+	$check_theme = wp_get_theme();
+	$theme_name = trim($check_theme->get(('Name' )));
+	$theme_name = strtolower($theme_name);
+	$child_theme_name = trim($check_theme->get(('Template' )));
+	$child_theme_name = strtolower($child_theme_name);
+	$allowed_themes = ['oshin','exponent','spyro'];
+	if(in_array($theme_name,$allowed_themes)||(!empty($child_theme_name) && in_array($child_theme_name,$allowed_themes))){
+		return false;
+	}else{
+		return true;
+	}		
+}
+
+function if_tatsu_authorize( ) {
+	if(if_tatsubuilder_premium( )){
+		$tatsu_license = trim(get_option('tatsu_license_key'));
+		$tatsu_item_id = trim(get_option( 'tatsu_license_item_id' ));
+		if(empty($tatsu_license)|| empty($tatsu_item_id)){
+			return false;
+		}else{
+			return true;
+		}
+	}else{
+		return true;
+	}		
+}
 
 function tatsu_shortcodes_from_content( $inner ) {
 	$new_content = '';	
@@ -707,10 +734,18 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 				} else {
 					if ( get_theme_mod('instagram_token', false) ){
 						$instagram_access_token = get_theme_mod('instagram_token', '');
-						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
-						if(isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
+						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']);
+						//$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+						
+						$instagram_response = $instagram_media["response"];
+						if(isset($instagram_response['code']) && $instagram_response['code']!=200 ){
+							$instagram_media_body = json_decode($instagram_media["body"]);
 							delete_transient( $transient_var );
-							$return['error'] = '<b>'.esc_html__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
+							if(!empty($instagram_media_body->error) && !empty($instagram_media_body->error->message)) {
+								$return['error'] = '<b>'.esc_html__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media_body->error->message;	
+							}else{
+								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$instagram_response['message'];
+							}
 							return $return;
 						}
 						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
@@ -719,31 +754,38 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 						}
 					}else{
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
+						$check_theme = wp_get_theme();
+						$theme_name = trim($check_theme->get(('Name' )));
+						$theme_name = strtolower($theme_name);
+						$child_theme_name = trim($check_theme->get(('Template' )));
+						$child_theme_name = strtolower($child_theme_name);
+	
+						if($theme_name == 'exponent' || $child_theme_name == 'exponent'){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
+						}else if($theme_name == 'oshin' || $child_theme_name == 'oshin'){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
+						}else{
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token missing', 'oshine-modules').'</div>';
+						}
+						
 						return $return;
 					}					
 				}
-                if($media && isset($media) && !empty($media)) {
-                    $images = json_decode($media["body"]);
-                    if($images->meta->code != '200'){
-                        delete_transient( $transient_var );
-						$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$images->meta->error_message;
-                        return $return;
-                    }
-                }
+                
 
-				if($media && isset($media) && !empty($media)) {
+				if(isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
 					foreach ($images as $key => $value) {
+						list($width, $height) = getimagesize($value->media_url);
 						$temp_image_array = array();
 						$temp_image_array = array (
-							'thumbnail' => $value->images->standard_resolution->url,
-							'full_image_url' => $value->images->standard_resolution->url,
-							'caption' => !empty($value->caption->text) ? $value->caption->text : '',
-							'description' => !empty($value->caption->text) ? $value->caption->text : '',
-							'width' => $value->images->standard_resolution->width,
-							'height' => $value->images->standard_resolution->height,
+							'thumbnail' => $value->media_url,
+							'full_image_url' => $value->media_url,
+							'caption' => $value->caption,
+							'description' => $value->caption,
+							'width' => $width,
+							'height' => $height,
 							'id' => '',
 							'has_video' => false,
 							

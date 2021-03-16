@@ -1,6 +1,8 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 8 ) { 
+	if ( $enmse_language == 9 ) { 
+		include(ENMSE_PLUGIN_PATH . 'includes/lang/rus_bible_books.php');
+	} elseif ( $enmse_language == 8 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
 	} elseif ( $enmse_language == 7 ) { 
 		include(ENMSE_PLUGIN_PATH  . 'includes/lang/dut_bible_books.php');
@@ -356,8 +358,20 @@
 		$trans = " (CSP)";
 	} elseif ( $enmse_trans == 2367 ) {
 		$trans = " (NFC)";
-	} elseif ( $enmse_trans == 133 ) {
-		$trans = " (PDV2017)";
+	} elseif ( $enmse_trans == 400 ) {
+		$trans = " (SYNO)";
+	} elseif ( $enmse_trans == 143 ) {
+		$trans = " (НРП)";
+	} elseif ( $enmse_trans == 1999 ) {
+		$trans = " (СРП-2)";
+	} elseif ( $enmse_trans == 1276 ) {
+		$trans = " (BB)";
+	} elseif ( $enmse_trans == 1990 ) {
+		$trans = " (HSV)";
+	} elseif ( $enmse_trans == 75 ) {
+		$trans = " (HTB)";
+	} elseif ( $enmse_trans == 328 ) {
+		$trans = " (NBG51)";
 	}
 
  ?>

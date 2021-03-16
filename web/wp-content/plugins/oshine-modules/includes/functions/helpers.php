@@ -440,12 +440,27 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 				} else {
 					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
-						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url&access_token='.$instagram_access_token.'&count='.$source['count']);
+						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']); 
 						// $instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
-						if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
+						// if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
+						// 	delete_transient( $transient_var );
+						// 	$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
+						// 	return $return;
+						// }
+						$instagram_response = $instagram_media["response"];
+						if(isset($instagram_response['code']) && $instagram_response['code']!=200 ){
+							$instagram_media_body = json_decode($instagram_media["body"]);
 							delete_transient( $transient_var );
-							$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
+							if(!empty($instagram_media_body->error) && !empty($instagram_media_body->error->message)) {
+								$return['error'] = '<b>'.esc_html__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media_body->error->message;	
+							}else{
+								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$instagram_response['message'];
+							}
 							return $return;
+						}
+						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
+							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
+							$media = $instagram_media;
 						}
 						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
 							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
@@ -457,28 +472,27 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 						return $return;
 					}					
 				}
-                if(empty($media)) {
-                    $images = json_decode($media["body"]);
-                    if($images->meta->code != '200'){
-                        delete_transient( $transient_var );
-						$return['error'] = '<b>'.__('Instagram Error :', 'oshine-modules').'</b>'.$images->meta->error_message;
-                        return $return;
-                    }
-                }
-				// if($media && isset($media) && !empty($media)) {
+                
+				 if(isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
 					foreach ($images as $key => $value) {
+						list($width, $height) = getimagesize($value->media_url);
 						$temp_image_array = array();
 						$temp_image_array = array (
 							'thumbnail' => $value->media_url,
 							'full_image_url' => $value->media_url,
 							'mfp_class' => ($lightbox_type == 'photoswipe') ? '' : 'mfp-image',
+							'caption' => $value->caption,
+							'description' => $value->caption,
+							'width' => $width,
+							'height' => $height,
 							'id' => '',
+							'has_video' => false,
 						);
 						array_push($return, $temp_image_array);					
 					}				
-				// }
+				 }
 				return $return;
 				break;
 			case 'flickr':

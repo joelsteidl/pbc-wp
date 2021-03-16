@@ -479,6 +479,10 @@ class Tatsu {
 
 	private function define_ajax_hooks() {
 		$plugin_store = new Tatsu_Store();
+		$this->loader->add_action( 'wp_ajax_tatsu_check_license', $plugin_store, 'ajax_check_license' );
+
+		$this->loader->add_action( 'wp_ajax_tatsu_instagram_token_save', $plugin_store, 'ajax_instagram_token_save' );
+
 		$this->loader->add_action( 'wp_ajax_tatsu_save_store', $plugin_store, 'ajax_save_store' );
 
 		$this->loader->add_action( 'wp_ajax_get_revision_content', $plugin_store, 'ajax_get_revision_content' );

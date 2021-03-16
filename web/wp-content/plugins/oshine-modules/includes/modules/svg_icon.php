@@ -57,7 +57,7 @@ add_action( 'tatsu_register_modules', 'oshine_register_svg_icon');
 function oshine_register_svg_icon() {
 		$controls = array (
 	        'icon' => OSHINE_MODULES_PLUGIN_URL.'/img/modules.svg#svg_icon',
-	        'title' => __( 'SVG Icon', 'oshine_modules' ),
+	        'title' => __( 'SVG Icon Legacy', 'oshine_modules' ),
 	        'is_js_dependant' => true,
 	        'type' => 'single',
 	        'is_built_in' => true,

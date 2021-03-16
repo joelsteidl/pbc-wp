@@ -31,7 +31,9 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 8 ) { 
+		if ( $enmse_language == 9 ) { 
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/rus_bible_books.php');
+		} elseif ( $enmse_language == 8 ) { 
 			include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
 		} elseif ( $enmse_language == 7 ) { 
 			include(ENMSE_PLUGIN_PATH . 'includes/lang/dut_bible_books.php');
@@ -303,6 +305,10 @@
 						<option value="44"<?php if ( $deftrans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
 						<option value="509"<?php if ( $deftrans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 						<option value="<?php echo $deftrans; ?>">------ DUTCH ------</option>
+						<option value="1276"<?php if ( $deftrans == 1276 ) { echo " selected=\"selected\""; } ?>>BB - BasisBijbel</option>
+						<option value="1990"<?php if ( $deftrans == 1990 ) { echo " selected=\"selected\""; } ?>>HSV - Herziene Statenvertaling</option>
+						<option value="75"<?php if ( $deftrans == 75 ) { echo " selected=\"selected\""; } ?>>HTB - Het Boek</option>
+						<option value="328"<?php if ( $deftrans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 						<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
 						<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
@@ -318,6 +324,10 @@
 						<option value="83"<?php if ( $deftrans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
 						<option value="1819"<?php if ( $deftrans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
 						<option value="1820"<?php if ( $deftrans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
+						<option value="<?php echo $deftrans; ?>">------ RUSSIAN ------</option>
+						<option value="400"<?php if ( $deftrans == 400 ) { echo " selected=\"selected\""; } ?>>SYNO - Синодальный Перевод</option>
+						<option value="143"<?php if ( $deftrans == 143 ) { echo " selected=\"selected\""; } ?>>НРП - Новый Русский Перевод</option>
+						<option value="1999"<?php if ( $deftrans == 1999 ) { echo " selected=\"selected\""; } ?>>СРП-2 - Современный Русский Перевод</option>
 						<option value="<?php echo $deftrans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $deftrans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
@@ -522,6 +532,10 @@
 						<option value="44"<?php if ( $enmse_scripture->trans == 44 ) { echo " selected=\"selected\""; } ?>>BKR - Bible Kralica 1613</option>
 						<option value="509"<?php if ( $enmse_scripture->trans == 509 ) { echo " selected=\"selected\""; } ?>>CSP - Cesky studijni preklad</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ DUTCH ------</option>
+						<option value="1276"<?php if ( $enmse_scripture->trans == 1276 ) { echo " selected=\"selected\""; } ?>>BB - BasisBijbel</option>
+						<option value="1990"<?php if ( $enmse_scripture->trans == 1990 ) { echo " selected=\"selected\""; } ?>>HSV - Herziene Statenvertaling</option>
+						<option value="75"<?php if ( $enmse_scripture->trans == 75 ) { echo " selected=\"selected\""; } ?>>HTB - Het Boek</option>
+						<option value="328"<?php if ( $enmse_scripture->trans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 						<option value="165"<?php if ( $enmse_scripture->trans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ FRENCH ------</option>
 						<option value="2367"<?php if ( $enmse_scripture->trans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
@@ -537,6 +551,10 @@
 						<option value="83"<?php if ( $enmse_scripture->trans == 83 ) { echo " selected=\"selected\""; } ?>>JCB - リビングバイブル</option>
 						<option value="1819"<?php if ( $enmse_scripture->trans == 1819 ) { echo " selected=\"selected\""; } ?>>新共同訳 Seisho Shinkyoudoyaku 聖書 新共同訳</option>
 						<option value="1820"<?php if ( $enmse_scripture->trans == 1820 ) { echo " selected=\"selected\""; } ?>>口語訳 Japanese: 聖書　口語訳</option>
+						<option value="<?php echo $enmse_scripture->trans; ?>">------ RUSSIAN ------</option>
+						<option value="400"<?php if ( $enmse_scripture->trans == 400 ) { echo " selected=\"selected\""; } ?>>SYNO - Синодальный Перевод</option>
+						<option value="143"<?php if ( $enmse_scripture->trans == 143 ) { echo " selected=\"selected\""; } ?>>НРП - Новый Русский Перевод</option>
+						<option value="1999"<?php if ( $enmse_scripture->trans == 1999 ) { echo " selected=\"selected\""; } ?>>СРП-2 - Современный Русский Перевод</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ SPANISH ------</option>
 						<option value="149"<?php if ( $enmse_scripture->trans == 149 ) { echo " selected=\"selected\""; } ?>>RVR1960 - Biblia Reina Valera 1960</option>
 						<option value="128"<?php if ( $enmse_scripture->trans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>

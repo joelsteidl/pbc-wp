@@ -1340,7 +1340,7 @@
 		            	$contact_status = $contact_form.find(".contact_status"), 
 						$contact_loader = $contact_form.find(".contact_loader"),
 						consent_checkbox = $contact_form.find('.consent-checkbox'),
-						isConsentGiven = consent_checkbox.is(':checked');
+						isConsentGiven = !consent_checkbox.length || consent_checkbox.prop('checked') ? true: false;
 					if( !isConsentGiven ) {
 						$contact_status.removeClass("tatsu-success").addClass("tatsu-error");
 						$contact_status.html( $contact_form.attr('data-consent-error') ).slideDown();
@@ -1377,7 +1377,7 @@
                         $subscribe_status = $subscription_form.find(".subscribe_status"), 
 						$subscribe_loader = $subscription_form.find(".subscribe_loader"),
 						consent_checkbox = $subscription_form.find('.consent-checkbox'),
-						isConsentGiven = !consent_checkbox.length || consent_checkbox.attr('checked') ? true: false;
+						isConsentGiven = !consent_checkbox.length || consent_checkbox.prop('checked') ? true: false;
 					if( !isConsentGiven ) {
 						$subscribe_status.removeClass("tatsu-success").addClass("tatsu-error");
 						$subscribe_status.html( $subscription_form.attr('data-consent-error') ).slideDown();
@@ -2096,6 +2096,7 @@
 	                                    "&col=" + $this.attr("data-col") + 
 	                                    "&gallery=" + $this.attr("data-gallery") + 
 	                                    "&filter=" + $this.attr("data-filter") + 
+										"&meta_to_show=" + $this.attr("data-meta_to_show") + 
 										"&placeholder_color" + $this.attr("data-placeholder-color") +
 	                                    "&show_filters=" + $this.attr("data-show_filters") + 
 	                                    "&thumb_overlay_color=" + $this.attr("data-thumbnail-bg-color") + 

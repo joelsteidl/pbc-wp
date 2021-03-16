@@ -6,7 +6,6 @@ class WebfontGenerator extends React.Component{
         super(props);
         this.state = {
             ttfotfFile:'',
-            ttfotfName:'',
             ttfotfFildAdded:false,
             webkitGenerating:false
         }
@@ -16,11 +15,8 @@ class WebfontGenerator extends React.Component{
         var ttfotf_file = e.target.files[0]; // accesing file
         var ttfot_filename = ttfotf_file.name;
         let extension = ttfot_filename.split('.').pop();
-        var ttfotfName = ttfot_filename.split('.').shift();
-        ttfotfName = ttfotfName.toLowerCase();
-            //ttfotfName = ttfotfName.replace(/\W/g,'');//remove white spaces
         if(extension=='otf'||extension=='ttf'){
-            this.setState({ttfotfFile:ttfotf_file,ttfotfName:ttfotfName,ttfotfFildAdded:true});
+            this.setState({ttfotfFile:ttfotf_file,ttfotfFildAdded:true});
         }else{
              message.warn('Please select a ttf/otf file only');
         }
@@ -28,35 +24,47 @@ class WebfontGenerator extends React.Component{
     }
 
     getZipFromFontFile(e){
-        if( this.state.ttfotfFildAdded && this.state.ttfotfName != ''){
+        if( this.state.ttfotfFildAdded){
             message.info('Generating webfont kit. Please wait!');
             this.setState({webkitGenerating:true});
-            var zip_name = this.state.ttfotfName;
             var thisObj = this;
             const fd = new FormData();        
             fd.append('uploadedfile', this.state.ttfotfFile); // appending file
             var xhr = new XMLHttpRequest();
-            xhr.open('POST', 'https://brandexponents.com/webfont-generator-api/webfont-generator.php', true);
+            var xhrURL = 'https://brandexponents.com/webfont-generator-api/webfont-generator.php';
+            
+            xhr.open('POST', xhrURL, true);
             xhr.responseType = 'blob';
             xhr.onload = function(e) {
                 if (this.status == 200) {
+                    //getting zip file name from header
+                     var filename_header = xhr.getResponseHeader("Content-Disposition");
+                    //ex - attachment; filename=mnu-pom-uih-juy-gyu-bold.zip
+                    filename_header = filename_header.split("=");
+                    var webfont_zip_name = filename_header.pop();
+                    
+                    //preparing for download
                     var blob = new Blob([this.response], {type: 'application/zip'});
                     var downloadUrl = URL.createObjectURL(blob);
                     var a = document.createElement("a");
                     a.href = downloadUrl;
-                    a.download = zip_name+".zip";
+                    a.download = webfont_zip_name;
                     document.body.appendChild(a);
                     a.click();
                     message.info('Please upload the downloaded zip file below to start using your font in typehub.');
                 //Empty values
                  let Inputfontfile = document.getElementById('uploadFontFileInput');
                  Inputfontfile.value = '';
-                 thisObj.setState({ttfotfFile:'',ttfotfName:'',ttfotfFildAdded:false,webkitGenerating:false});
+                 thisObj.setState({ttfotfFile:'',ttfotfFildAdded:false,webkitGenerating:false});
                     if(typeof this.response.res !='undefined' && this.response.res === false){
                         message.warn(this.response.msg);
                         console.log(this.response.msg);
                     }
                 }else{
+                    if(typeof this.response.res !='undefined' && this.response.res === false){
+                        message.warn(this.response.msg);
+                        console.log(this.response.msg);
+                    }
                     console.log("Response fail");
                 }
             };

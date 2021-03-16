@@ -138,7 +138,7 @@ Parent Theme Author URI:  <?php echo $parent_theme->{'Author URI'} . "\n"; ?>
 <div><?php 
 if(class_exists('TGM_Plugin_Activation')):
 $muplugins = TGM_Plugin_Activation::get_instance();
-    if( sizeof( $muplugins ) > 0 ) {
+    if( sizeof( $muplugins->plugins ) > 0 ) {
         echo '-- Must-Use Plugins' . "\n\n";
         foreach( $muplugins->plugins as $plugin => $plugin_data ) {
         	

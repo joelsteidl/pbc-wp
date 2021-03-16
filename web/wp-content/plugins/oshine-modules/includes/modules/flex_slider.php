@@ -2,7 +2,7 @@
 /**************************************
 			BE IMAGE SLIDER
 **************************************/
-session_start();
+//session_start();
 if (!function_exists('be_flex_slider')) {
 	function be_flex_slider( $atts, $content, $tag ) {
 		$atts =  shortcode_atts( array(

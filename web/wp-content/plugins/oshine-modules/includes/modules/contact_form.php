@@ -50,12 +50,12 @@ if ( ! function_exists( 'be_contact_form' ) ) {
 		$output .= '<fieldset class="field_comment contact_fieldset">
 								<textarea name="contact_comment" class="txt_area autoclear" placeholder="'.__('Message','oshine-modules').'" '.$border_width.' ></textarea>
 							</fieldset>';
-
+		if( !empty( $be_themes_data['consent_checkboxes'] ) ) {
 			$output .= '<fieldset class="field_consent contact_fieldset">
 							<input type="checkbox" name="contact_consent" class="consent-checkbox" placeholder="'.__('Subject','oshine-modules').'" '.$border_width.' />
 							<span class="consent-message">'.sprintf( __('By checking this box, you consent to sending your details to us over email. For more info check our <a href="%s" target="_blank">privacy policy</a> where you will get more info on where, how and why we store your data.', 'oshine-modules'), esc_url( $privacy_policy_link) ).'</span>
 							</fieldset>';
-
+		}
 
 		$output .= '<fieldset class="contact_fieldset submit-fieldset">
 								<input type = "hidden" name = "contact_style" value = "'. $form_style .'"/> 

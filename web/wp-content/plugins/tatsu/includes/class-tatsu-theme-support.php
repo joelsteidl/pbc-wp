@@ -54,8 +54,10 @@ class Tatsu_Theme_Support {
 	}
 
 	public function tatsu_add_template_to_select($post_templates, $wp_theme, $post, $post_type) {
-		//$post_templates['tatsu-blank-page.php'] = esc_html__('Tatsu Blank Page', 'tatsu');
-		//$post_templates['tatsu-default.php'] = esc_html__('Tatsu Page with Headers & Footers', 'tatsu');
+		if(if_tatsubuilder_premium()){
+		$post_templates['tatsu-blank-page.php'] = esc_html__('Tatsu Blank Page', 'tatsu');
+		$post_templates['tatsu-default.php'] = esc_html__('Tatsu Page with Headers and Footers', 'tatsu');
+		}
 		return $post_templates;
 	}
 

@@ -10,7 +10,7 @@
 	
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.8.3.1";
+	$enmse_db_version = "2.8.4";
 	if( !defined(get_option( 'enmse_db_version' )) ) {
 		add_option("enmse_db_version", $enmse_db_version);
 	} else {

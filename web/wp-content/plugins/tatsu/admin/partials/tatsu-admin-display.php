@@ -27,9 +27,79 @@ if( !function_exists( 'tatsu_settings_page' ) ){
 		}
 		$active_header = get_option('tatsu_active_header', 'none');
 		$active_footer = get_option('tatsu_active_footer', 'none');
+		$tatsu_license_key = get_option( 'tatsu_license_key' );
+		if(empty( $tatsu_license_key ) ) {
+			$tatsu_license_key = '';
+		}
 		?>
 		<div class="tatsu-settings_wrapper">
 			<h1><?php esc_html_e('Tatsu Settings', 'tatsu'); ?></h1>
+			<?php 
+				if(if_tatsubuilder_premium()){
+			?>
+			<div class="tatsu_global-section-settings">
+				<table  class="form-table" role="presentation">
+					<tbody>
+						<tr>
+							<th scope="row">
+								<?php
+								esc_html_e( 'License Key', 'tatsu');
+								$tatsu_license_item_id = get_option( 'tatsu_license_item_id' );
+								if( ! empty( $tatsu_license_item_id ) ) {
+									echo '<span style="color:green;" class="tatsu-icon-license-mark dashicons dashicons-yes "></span>';
+								} else {
+									echo '<span style="color:red; "class="tatsu-icon-license-mark dashicons dashicons-no "></span>';
+								}  
+								?>
+							</th>
+							<td>
+								<fieldset>
+									<p>
+										<input type="password" autocomplete="off" name="tatsu_license_key" id="tatsu-license-key" class="medium-text" value="<?php echo $tatsu_license_key;?>"/>
+										<button id="tatsu-license-checker" class="button button-primary button-large"><?php esc_html_e( 'Validate', 'tatsu'); ?></button>
+									</p>
+									
+									<p class="description" id="tatsu_license_message">
+										<?php 
+											if(empty( $tatsu_license_item_id ) ) {
+												printf( '%s </br>',
+											   esc_html__( 'Please enter your tatsu purchase code to allow automatic updates', 'tatsu'));
+											} 
+											 //printf( '%s </br> %s <a href="%s" target="_blank">here</a>.',
+											 //esc_html__( 'Don\'t panic. The plugin will still function 100%, it is only automatic updates that will be affected.', 'tatsu'),
+											// esc_html__( 'You can read about troubleshooting license issues.','tatsu'),
+											// esc_url('https://tatsubuilder.com/knowledgebase/license-activation-issues/?utm_source=pro-plugin&utm_medium=page&utm_campaign=license-activation-issues')
+										//);
+										?>
+									</p>
+								</fieldset>
+							</td>
+						</tr>
+						<tr>
+							<th scope="row">
+								<?php
+								esc_html_e( 'Instagram Access Token', 'tatsu');
+								$instagram_access_token = get_theme_mod('instagram_token', '');  
+								?>
+								<a href="https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/" target="_blank">Generate Access Token</a>
+							</th>
+							<td>
+								<fieldset>
+									<p>
+										<input type="text" autocomplete="off" name="instagram_token" id="tatsu-instagram-token" class="medium-text" value="<?php echo $instagram_access_token;?>"  />
+										<button id="tatsu-instagram-token-save" class="button button-primary button-large"><?php esc_html_e( 'Save Token', 'tatsu'); ?></button>
+									</p>
+									
+									<p class="description" id="tatsu_instagram_message">
+										
+									</p>
+								</fieldset>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<?php } ?>
 			<form method="post" id="tatsu_global_section_settings_form" action="options.php">
 				<?php if (current_theme_supports('tatsu-header-builder') || current_theme_supports('tatsu-footer-builder')): ?>
 					<div class="tatsu_active_headers_footers_settings">

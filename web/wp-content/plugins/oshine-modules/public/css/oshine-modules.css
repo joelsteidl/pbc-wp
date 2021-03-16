@@ -4759,7 +4759,7 @@
   
   /* General */
   
-  .oshine-module *:last-child {
+  .pswp .oshine-module *:last-child {
     margin-bottom: 0 !important;
   }
   

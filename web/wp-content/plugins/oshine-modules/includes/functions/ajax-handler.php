@@ -228,7 +228,8 @@ if ( ! function_exists( 'be_themes_get_ajax_full_screen_gutter_portfolio' ) ) :
 					$trigger_animation  = 'animation-trigger';
 				}
 				$link_to_thumbnail = $attachment_full_url;
-				$terms = be_themes_get_taxonomies_by_id(get_the_ID(), 'portfolio_categories');
+				
+				$terms = be_themes_get_taxonomies_by_id(get_the_ID(), isset($meta_to_show) ? $meta_to_show : 'portfolio_categories' ) ;
 				$element_classes = '';
 				foreach ($terms as $term) {
 					$element_classes .= $term->slug.' ';
@@ -447,7 +448,7 @@ if ( ! function_exists( 'be_themes_get_be_gallery_with_pagination' ) ) :
 endif;
 
 if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
-	function get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$lazy_load,$delay_load,$placeholder_color,$adaptive_image){
+	function get_be_gallery_shortcode($images, $col, $masonry, $hover_style, $img_grayscale, $gutter_width, $lightbox_type, $image_source, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $hover_content_option, $hover_content_color,$lazy_load,$delay_load,$placeholder_color,$adaptive_image=null){
 		
 		global $be_themes_data;
 		$isdwdh = false;
@@ -463,7 +464,7 @@ if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
 			foreach($images as $image) {
 				$image_atts = get_portfolio_image($image['id'], $col, $masonry);
 				$attachment_info = be_wp_get_attachment( $image['id'] );
-				if( !$attachment_info || empty( $attachment_info ) ) {
+				if(('flickr' != $image_source && 'instagram' != $image_source ) && (!$attachment_info || empty( $attachment_info )) ) {
 					continue;
 				} 
 				if($hover_content_option == 'title'){
@@ -614,7 +615,7 @@ if ( ! function_exists( 'be_themes_get_be_justified_gallery_with_pagination' ) )
 endif;
 
 if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
-	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type,$adaptive_image){
+	function get_be_justified_gallery_shortcode($images, $hover_style, $img_grayscale, $image_effect, $thumb_overlay_color, $gradient_style_color, $like_button, $disable_overlay, $lazy_load, $caption_type,$adaptive_image=null){
 		
 		$output = '';
 

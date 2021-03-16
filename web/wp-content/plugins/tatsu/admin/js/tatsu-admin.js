@@ -4,6 +4,100 @@
 		var $doc = $(document),	
 			$win = $(window),
 			$body = $('body');
+		/**
+		 * Check to validate the license key in setting page.
+		 */
+		$( '#tatsu-license-checker' ).on( 'click', function( e ) {
+			e.preventDefault();
+
+			$.ajax( {
+				url: tatsuAdminConfig.ajaxurl,
+				data: {
+					'action': 'tatsu_check_license',
+					'nonce': tatsuAdminConfig.nonce,
+					'tatsu_license_key': $( '#tatsu-license-key' ).val()
+				},
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', tatsuAdminConfig.nonce);
+					$( '#tatsu-license-checker' ).prop( 'disabled', true );
+				},
+				error: function( error ) {
+					console.log( 'Internal Error !' + error );
+					$( '#tatsu-license-checker' ).prop( 'disabled', false );
+				},
+				success: function( response ) {
+
+					$( '#tatsu-license-checker' ).prop( 'disabled', false );
+
+					if ( response.data.alert.success ) {
+						$( '#tatsu_license_message' ).html(
+							'<div class="notice notice-success settings-error is-dismissible"> <p>' + response.data.alert.success + '</p></div>'
+						);
+						location.reload();
+					} else {
+						$('.tatsu-icon-license-mark').removeClass('dashicons-yes');
+						$( '#tatsu_license_message' ).html(
+							'<div class="notice notice-error settings-error is-dismissible"> <p>' + response.data.alert.danger + '</p></div>'
+						);
+					}
+
+				}
+			});
+
+		} );
+		
+		if(!tatsuAdminConfig.if_tatsu_authorize){
+			$doc.on( 'click', '#tatsu_edit_post_wrap, #tatsu-switch-builder-button, #wp-admin-bar-tatsu_edit_page, .edit_with_tatsu', function(e) {
+					e.preventDefault();
+					window.location.href = 	tatsuAdminConfig.redirectForLicense;
+			});
+	    }
+
+		/**
+		 * Save Instagram Access token.
+		 */
+		$( '#tatsu-instagram-token-save' ).on( 'click', function( e ) {
+			e.preventDefault();
+
+			$.ajax( {
+				url: tatsuAdminConfig.ajaxurl,
+				data: {
+					'action': 'tatsu_instagram_token_save',
+					'nonce': tatsuAdminConfig.nonce,
+					'instagram_token': $( '#tatsu-instagram-token' ).val()
+				},
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', tatsuAdminConfig.nonce);
+					$( '#tatsu-instagram-token-save' ).prop( 'disabled', true );
+				},
+				error: function( error ) {
+					console.log( 'Internal Error !' + error );
+					$( '#tatsu-instagram-token-save' ).prop( 'disabled', false );
+				},
+				success: function( response ) {
+
+					$( '#tatsu-instagram-token-save' ).prop( 'disabled', false );
+
+					if ( response.data.alert.success ) {
+						$( '#tatsu_instagram_message' ).html(
+							'<div class="notice notice-success settings-error is-dismissible"> <p>' + response.data.alert.success + '</p></div>'
+						);
+						location.reload();
+					} else {
+						$( '#tatsu_instagram_message' ).html(
+							'<div class="notice notice-error settings-error is-dismissible"> <p>' + response.data.alert.danger + '</p></div>'
+						);
+					}
+
+				}
+			});
+
+		} );
+
 		$doc.on( 'click', '#edit_with_tatsu_button', function(e) {
 			if($body.hasClass('post-new-php')) {
 				e.preventDefault();

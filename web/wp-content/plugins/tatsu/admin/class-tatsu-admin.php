@@ -98,6 +98,16 @@ class Tatsu_Admin {
 		 */
 
 		wp_enqueue_script( $this->plugin_name, plugin_dir_url( __FILE__ ) . 'js/tatsu-admin.js', array( 'jquery' ), $this->version, true );
+		wp_localize_script(
+			$this->plugin_name,
+			'tatsuAdminConfig',
+			array(
+				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+				'nonce' => wp_create_nonce( 'wp_rest' ),
+				'if_tatsu_authorize' => if_tatsu_authorize(),
+				'redirectForLicense'=>admin_url( '?page=tatsu_settings')
+			)
+		);
 		wp_enqueue_script( 'semantic-dropdown', plugin_dir_url( __FILE__ ) . 'js/semantic-dropdown.js', array( 'jquery' ), $this->version, true );
 
 		$temp_localized_array = tatsu_get_global_sections_localize_data(); 

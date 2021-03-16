@@ -2080,7 +2080,7 @@ body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
 }
 @media only screen and (min-width : 768px ) and (max-width : 1024px) {
     .tatsu-fixed-carousel .tatsu-carousel-col {
-        width : 50%;
+        width : 100%;
     }
 }
 @media only screen and (max-width : 767px) {

@@ -1,3 +1,15 @@
+v3.2.4
+======
+* Fixed: layout change on add custom css classes in tabs
+* Fixed: Show meta tags in portfolio
+* Fixed: Flickr in gallery 
+* Fixed: Instagram in gallery
+* Fixed: Fixed height animation for mobile
+* Fixed: Justified gallery infinite scroll
+* Fixed: Session in flex slider
+* Fixed: Consent checkbox in contact form
+* Fixed: Gallery load more function
+
 v3.2.3
 ======
 * Fixed: mobile responsive BE slider

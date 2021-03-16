@@ -184,7 +184,7 @@ if (!function_exists('tatsu_section')) {
 
 		//top shape divider
 		$top_divider_html = '';
-		if( !empty( $top_divider ) && 'none' !== $top_divider ) {
+		if( !empty( $top_divider ) &&  strpos($top_divider, "none") === false) {
 			$top_divider_location = TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/top/' . $top_divider .'.svg';
 			$top_divider_svg = @file_get_contents( $top_divider_location );
 			if( !empty( $top_divider_svg ) ) {
@@ -207,7 +207,7 @@ if (!function_exists('tatsu_section')) {
 
 		//bottom shape divider
 		$bottom_divider_html = '';
-		if( !empty( $bottom_divider ) && 'none' !== $bottom_divider ) {
+		if( !empty( $bottom_divider ) && strpos($bottom_divider, "none") === false ) {
 			$bottom_divider_location = TATSU_PLUGIN_DIR . 'includes/icons/shape_divider/bottom/' . $bottom_divider .'.svg';
 			$bottom_divider_svg = file_get_contents( $bottom_divider_location );
 			if( !empty( $bottom_divider_svg ) ) {

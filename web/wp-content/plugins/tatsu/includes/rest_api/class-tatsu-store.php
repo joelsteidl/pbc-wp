@@ -14,6 +14,99 @@ class Tatsu_Store {
         }
     }
 
+	/**
+	 * Function to validated the license key in setting page.
+	 * 
+	 * @return json
+	 */
+	public function ajax_check_license() {
+
+		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
+			echo 'false';
+			wp_die();
+		}
+
+		$tatsu_license_key = sanitize_text_field( $_POST['tatsu_license_key'] );
+
+		$this->license( $tatsu_license_key );
+	}
+	/** 
+	 * Check an entered license key and apply it.
+     *
+     * This route is called when the Add License Key button is pressed inside
+     * the admin area. It checks the provided license key for validity and
+     * updates the license status for the account.
+     *
+     *
+     *
+     * @param string     $license_key   Provided license key.
+     *
+     * @return string    Output HTML from rendered view.
+     */
+    public function license( $license_key ) {
+
+		$license_key = trim($license_key);
+		$alert       = [];
+
+        if ( empty( $license_key ) ) {
+            $alert = ['danger' => 'No license key added'];
+            update_option('tatsu_license_item_id', '');
+            update_option('tatsu_license_key', '');
+		} else {
+
+			$item_id = '5292'; // This product id.
+
+            // First product checking.
+            $response = wp_remote_get('https://tatsubuilder.com/?' . http_build_query(
+                    [
+                        'edd_action'=> 'activate_license',
+                        'license' 	=> $license_key,
+                        'item_id'   => $item_id,
+                        'url'       => home_url()
+                    ]
+				), ['decompress' => false]
+			);
+
+			if ( is_wp_error( $response ) ) {
+				$alert = ['danger' => $response->get_error_message()];
+			} else {
+				$response = json_decode($response['body']);
+			}
+
+            if ( ! empty( $response->success ) ) {
+                update_option('tatsu_license_item_id', $item_id );
+                $alert = ['success' => 'License key updated'];
+			} else {
+                update_option('tatsu_license_item_id', '');
+                if ( ! is_wp_error($response) ) {
+					$alert = ['danger' => 'License key invalid'];
+				}
+			}
+
+            update_option( 'tatsu_license_key', $license_key );
+		}
+
+        return wp_send_json_success( [ 'alert' => $alert ] );
+    }
+
+
+	public function ajax_instagram_token_save(){
+		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
+			echo 'false';
+			wp_die();
+		}
+
+		$instagram_token = sanitize_text_field( $_POST['instagram_token'] );
+		if(empty($instagram_token)){
+			$alert = ['danger' => 'Empty Token key'];
+		}else if(set_theme_mod('instagram_token', $instagram_token)){
+			$alert = ['success' => 'Token saved successfully'];
+		}else{
+			$alert = ['danger' => 'Failed to save token'];
+		}
+
+		return wp_send_json_success( [ 'alert' => $alert ] );
+	}
 
 	public function get_store( WP_REST_Request $request ) {
 		$this->post_id = $request->get_param('post_id');

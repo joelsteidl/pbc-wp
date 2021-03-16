@@ -345,9 +345,9 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 				'label'           => esc_html__( 'Style of Related ' . $enmsemessagetp, 'enmse-series-engine' ),
 				'type'            => 'select',
 				'options'       => array(
-                    '0'      => esc_html__('Classic List View', 'enmse-series-engine'),
-                    '1'      => esc_html__('Grid View', 'enmse-series-engine'),
-                    '2'      => esc_html__('Row View', 'enmse-series-engine'),
+                    'classic'      => esc_html__('Classic List View', 'enmse-series-engine'),
+                    'grid'      => esc_html__('Grid View', 'enmse-series-engine'),
+                    'row'      => esc_html__('Row View', 'enmse-series-engine'),
                 ),
 				'option_category' => 'basic_option',
 				'toggle_slug'     => 'serelatedmessages',
@@ -360,8 +360,8 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 				'label'           => esc_html__( 'Related ' . $enmsemessagetp . ' Sort Order', 'enmse-series-engine' ),
 				'type'            => 'select',
 				'options'       => array(
-                    '0'      => esc_html__('Oldest First', 'enmse-series-engine'),
-                    '1'      => esc_html__('Newest First', 'enmse-series-engine'),
+                    'oldest'      => esc_html__('Oldest First', 'enmse-series-engine'),
+                    'newest'      => esc_html__('Newest First', 'enmse-series-engine'),
                 ),
 				'option_category' => 'basic_option',
 				'toggle_slug'     => 'serelatedmessages',
@@ -651,8 +651,8 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_audiodownloade = "";
 		}
 
-		if ( $enmse_cardview != "0" ) { 
-			if ( $enmse_cardview != "1" ) {
+		if ( $enmse_cardview != "0" && $enmse_cardview != "classic"  ) { 
+			if ( $enmse_cardview != "1" && $enmse_cardview != "grid" ) {
 				$enmse_cardviewe = " enmse_cv=2"; 
 			} else {
 				$enmse_cardviewe = " enmse_cv=1"; 
@@ -722,7 +722,7 @@ class ENMSE_SeriesEngine extends ET_Builder_Module {
 			$enmse_relatede = ""; 
 		} 
 
-		if ( $enmse_related_sort == "1" ) { 
+		if ( $enmse_related_sort == "1" || $enmse_related_sort == "newest" ) { 
 			$enmse_related_sorte = " enmse_sort=1"; 
 		} else {
 			$enmse_related_sorte = ""; 

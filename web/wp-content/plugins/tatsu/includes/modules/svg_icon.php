@@ -24,6 +24,8 @@ if (!function_exists('tatsu_svg_icon')) {
 			'animation_type' => '',
 			'animation_delay' => '',
             'animate'               => '',
+			'href'=> '#',
+			'new_tab' => 0,
         	'key' => be_uniqid_base36(true),
 		),$atts, $tag );		
 
@@ -64,6 +66,7 @@ if (!function_exists('tatsu_svg_icon')) {
             $icon_type_class = 'tatsu-svg-icon-default';
         }
 
+		$new_tab = ( isset( $new_tab ) && 1 == $new_tab ) ? 'target="_blank"' : '' ;
         $output = '';
         if( !empty($svg_url) || !empty( $svg_icon ) ) {
             $output .= '<div '.$css_id.' class="tatsu-svg-icon tatsu-module align-'. $alignment . ' ' . $css_animate_class . ' '. $line_animate_class.' '.$size.' '.$unique_class_name . ' ' . $icon_type_class . ' ' . $svg_icon_style . ' '.$visibility_classes.' '.$css_classes.'" data-path-animation="'.$path_animation_type.'" data-svg-animation="'.$svg_animation_type.'" '.$data_module_animation_duration.'  ' . $data_animation_type . ' ' . $data_animation_delay . ' '. $data_animation_duration .' >';
@@ -71,12 +74,23 @@ if (!function_exists('tatsu_svg_icon')) {
             if( empty( $custom_icon ) ) {
                 $svg_icon_html = function_exists( 'tatsu_get_svg_icon' ) ? tatsu_get_svg_icon( $svg_icon ) : '';
                 if( !empty( $svg_icon_html ) ) {
-                    $output .= $svg_icon_html;
+					if(!empty($href)){
+						$output .= '<a href="'.$href.'" class="tatsu-icon-wrap" '.$new_tab.'>'.$svg_icon_html.'</a>';
+					}else{
+						$output .= $svg_icon_html;
+					}
+                    
                 }
             }else {
                 $site_url = get_site_url();
                 if( strpos( $svg_url, $site_url ) !== false ) { 
-                    $output .=  file_get_contents( $svg_url );
+					$svg_icon_from_url =  file_get_contents( $svg_url );
+					if(!empty($href)){
+						$output .= '<a href="'.$href.'" class="tatsu-icon-wrap" '.$new_tab.'>'.$svg_icon_from_url.'</a>';
+					}else{
+						$output .= $svg_icon_from_url;
+					}
+                    
                 } else {
                     $output .= '<div class="tatsu-notification tatsu-error">Cross Domain Access of SVG is not allowed. Please upload the SVG file to your site.</div>';
                 }
@@ -111,6 +125,8 @@ function tatsu_register_svg_icon()
 							'svg_icon',
 							'custom_icon',
 							'svg_url',
+							'href',
+							'new_tab',
 						),
 					),
 					array(
@@ -209,6 +225,25 @@ function tatsu_register_svg_icon()
 				'default' => '',
 				'tooltip' => 'Paste SVG Icon',
 				'visible'	=> array('custom_icon', '=', '1'),
+			),
+			array(
+				'att_name' => 'href',
+				'type' => 'text',
+				'is_inline' => false,
+				'options' => array(
+					'placeholder' => 'https://example.com',
+				),
+				'label' => esc_html__('Link URL', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'new_tab',
+				'type' => 'switch',
+				'label' => esc_html__('Open as new tab', 'tatsu'),
+				'default' => 0,
+				'tooltip' => '',
+				'visible' => array('href', '!=', ''),
 			),
 			array(
 				'att_name' => 'style',
