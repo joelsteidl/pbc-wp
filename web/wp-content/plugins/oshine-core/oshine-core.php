@@ -5,7 +5,7 @@
  * Plugin URI: http://brandexponents.com
  * Author: brandexponents team
  * Author URI: http://brandexponents.com
- * Version: 1.5.2
+ * Version: 1.5.4
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: be-functions
@@ -27,7 +27,7 @@ function be_init() {
     $BECore               = new BECore();
     $BECore['path']       = realpath( plugin_dir_path( __FILE__ ) ). DIRECTORY_SEPARATOR;
     $BECore['url']        = plugin_dir_url( __FILE__ );
-    $BECore['version']    = '1.0';
+    $BECore['version']    = '1.5.4';
     $BECore['BEThemeDemoImporter'] = new BEThemeDemoImporter();
     apply_filters( 'be/config', $BECore );
     $BECore->run();

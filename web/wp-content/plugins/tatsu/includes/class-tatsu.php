@@ -276,10 +276,22 @@ class Tatsu {
 		require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-content-parser.php';		
 
 		/**
+		 * The class responsible for showing tatsu forms data in a table to admin
+		 */		
+		require_once TATSU_PLUGIN_DIR. 'includes/rest_api/class-tatsu-forms-table.php';		
+
+		/**
 		 * The class that loads icon kits used by the plugin and also contains hooks for including additional icon kits
 		 */			
 
 		require_once TATSU_PLUGIN_DIR. 'admin/partials/tatsu-admin-display.php';
+
+		/**
+		 * The page that display tatsu forms data entries to admin
+		 */			
+
+		require_once TATSU_PLUGIN_DIR. 'admin/partials/tatsu-forms-entries-display.php';
+
 
 		/**
 		 * Handles compatibility with other plugins
@@ -325,6 +337,10 @@ class Tatsu {
 		 */
 
 		include_once TATSU_PLUGIN_DIR . 'includes/integrations/typehub.php';
+
+		if ( ! function_exists( 'is_plugin_active' ) ){
+			require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
+		}
 
 		$this->loader = new Tatsu_Loader();
 
@@ -374,7 +390,9 @@ class Tatsu {
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_global_section_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_header_register_post_type' );
 		$this->loader->add_action( 'init', $plugin_admin, 'tatsu_footer_register_post_type' );
-
+		if (is_plugin_active('spyro-modules/spyro-modules.php')) { 
+			$this->loader->add_action( 'init', $plugin_admin, 'tatsu_forms_post_type' );
+		}
 		$this->loader->add_action( 'admin_menu', $plugin_admin , 'tatsu_admin_menu' );
 		$this->loader->add_action( 'admin_init', $plugin_admin , 'tatsu_register_setting' );
 		/*
@@ -411,10 +429,21 @@ class Tatsu {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_filter( 'the_content', $this, 'content_filter' );
+		$this->loader->add_filter( 'the_content', $this, 'remove_inner_style_from_the_content',99 );
 		$this->loader->add_action( 'admin_bar_menu', $this, 'admin_bar_edit_link', 99 );
 		$this->loader->add_action( 'tatsu_typography_fonts_to_load', $this, 'fonts_to_load', 99 );
 
-		$this->loader->add_action( 'tatsu_print_header', $plugin_public, 'header_print' );
+		// Rank Math Seo Plugin Compatibility
+		if(class_exists('RankMath')){
+			$this->loader->add_filter( 'rank_math/sitemap/content_before_parse_html_images', $this,'rank_math_tatsu_compatibility', 10, 2 );
+		}
+
+		if(if_tatsubuilder_premium()){
+			$this->loader->add_action( 'get_header', $plugin_public, 'header_print' );
+		}else{
+			$this->loader->add_action( 'tatsu_print_header', $plugin_public, 'header_print' );
+		}
+		
 		$this->loader->add_action( 'tatsu_print_footer', $plugin_public, 'print_footer' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'sliding_menu' );
@@ -443,6 +472,10 @@ class Tatsu {
         //custom css and js
         $this->loader->add_action( 'wp_head', $plugin_public, 'tatsu_add_custom_style', 9999 );
         $this->loader->add_action( 'wp_footer', $plugin_public, 'tatsu_add_custom_scripts', 9999 );
+
+		//Ajax handler
+		$this->loader->add_action( 'wp_ajax_nopriv_tatsu_forms_save', $plugin_public, 'tatsu_forms_save' );
+		$this->loader->add_action( 'wp_ajax_tatsu_forms_save', $plugin_public, 'tatsu_forms_save' );
 	}
 
 	/**
@@ -581,6 +614,17 @@ class Tatsu {
 		return $rep;
     }
     
+	public function remove_inner_style_from_the_content( $content ) {
+		//remove inner <style></style> element from content
+		return be_remove_style_from_content($content);
+	}
+
+	// Rank Math Seo Plugin Compatibility
+	public function rank_math_tatsu_compatibility($content, $post_id){
+		$content = do_shortcode($content);
+		return str_ireplace("data-src","src",$content);
+	}
+		
     public function tatsu_add_common_atts_to_shortcodes() {
         $all_builder_modules = Tatsu_Module_Options::getInstance()->get_module_options();
         $remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();

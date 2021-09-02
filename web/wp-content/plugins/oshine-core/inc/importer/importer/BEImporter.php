@@ -363,6 +363,15 @@ class BEThemeImporter {
 
     }
 
+    public function replace_content_url_to_hosting_url($url){
+      if(stripos($url,"wp-content")!==false){
+        $url =explode('wp-content',$url);
+        $url = end($url);
+        $url = content_url() .''.$url;
+      }
+      return $url;
+    }
+
     public function set_demo_theme_options( $file = '' ) {
       if(empty($file)) {
         $file = $this->theme_options_file;
@@ -396,7 +405,14 @@ class BEThemeImporter {
         echo('');
         echo('Theme Options Imported successfully');
       }
-
+      //Replace header options url to hostinhg url
+      if(!empty($data['opt-header-style'])){
+        $data['opt-header-style'] = $this->replace_content_url_to_hosting_url($data['opt-header-style']);
+      }
+      if(!empty($data['top_header_hamburger_style'])){
+        $data['top_header_hamburger_style'] = $this->replace_content_url_to_hosting_url($data['top_header_hamburger_style']);
+      }
+      
   		// Hook before import
   		$data = apply_filters( 'radium_theme_import_theme_options', $data );
       update_option($this->theme_option_name, $data);

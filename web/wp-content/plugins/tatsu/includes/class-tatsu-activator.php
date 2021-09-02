@@ -30,7 +30,9 @@ class Tatsu_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-
+		if (is_plugin_active('spyro-modules/spyro-modules.php')){
+			check_and_make_tables_for_tatsu_forms();
+		}
 	}
-
+	
 }

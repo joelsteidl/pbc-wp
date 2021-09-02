@@ -39,7 +39,9 @@ function tatsu_header_logo( $atts, $content, $tag ) {
 	$default_logo_alt =  is_array( $default_logo_alt ) ? $default_logo_alt['alt'] : '';
     $dark_logo_alt = is_array( $dark_logo_alt ) ? $dark_logo_alt['alt'] : '';
 	$light_logo_alt = is_array( $light_logo_alt ) ? $light_logo_alt['alt'] : '';
-
+	
+	$dark = empty($dark)?$default:$dark;
+	$light = empty($light)?$default:$light;
     $output .= '<div class="tatsu-header-logo tatsu-header-module '.$unique_class.' '.$class.' '.$visibility_classes.'" '.$id.'>';
     $output .= '<a href="'.esc_url( home_url() ).'">';
     $output .= '<img src="'.esc_url( $default ).'" class="logo-img default-logo" alt="'.$default_logo_alt.'" />';

@@ -170,6 +170,13 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 				}
 				$checking_2 = !empty($checking[2]) ? $checking[2] : null ;
 			}
+			if(!empty($checking_0) && is_array($checking_0)){
+				if(!empty($device) && !empty($checking_0[$device])){
+					$checking_0 = $checking_0[$device];
+				}else{
+					$checking_0 = null;
+				}	
+			}
 			$checking_0 = trim( $checking_0 );   // trim coz responsive values vil have space in last
 				switch( $checking[1] ){
 					case 'empty':
@@ -336,6 +343,11 @@ if( !function_exists( 'be_compute_css' ) ) {
 			
 			return 'transform: translateY('.$prepend.$val.$append.');';
 		} else {
+			if(!empty($val) && is_array($val)){
+				foreach ($val as $key => $value) {
+					$val = $value; break;
+				}
+			}
 			return $property.': '.$prepend.$val.$append.';';
 		}
 	}
@@ -449,6 +461,104 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 
 			return $output;
 		}
+	}
+}
+
+if(!function_exists( 'be_theme_name' )){
+	function be_theme_name($check_be_theme=null){
+		$check_theme = wp_get_theme();
+		$theme_name = trim($check_theme->get(('Name' )));
+		$theme_name = strtolower($theme_name);
+		$child_theme_name = trim($check_theme->get(('Template' )));
+		$child_theme_name = strtolower($child_theme_name);
+		$be_theme = empty($theme_name)?$child_theme_name:$theme_name;
+		if($theme_name == 'exponent' || $child_theme_name == 'exponent'){
+			$be_theme = 'exponent';
+		}
+		if($theme_name == 'spyro' || $child_theme_name == 'spyro'){
+			$be_theme = 'spyro';
+		}
+		if($theme_name == 'oshin' || $child_theme_name == 'oshin'){
+			$be_theme = 'oshin';
+		}
+
+		if(!empty($check_be_theme)){
+			if($check_be_theme==$be_theme){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return $be_theme;
+		}
+	}
+}
+if( !function_exists( 'is_tatsu_not_edit_mode' ) ) {
+	function is_tatsu_not_edit_mode(){//return edit?false:true;
+		$post_edit_url = array('action=edit','id=','?tatsu','/moduleEditor/');
+		$current_url = $_SERVER['HTTP_HOST'].''.$_SERVER['REQUEST_URI'];
+		if(!empty($_SERVER['HTTP_REFERER'])){
+			$referer_url = $_SERVER['HTTP_REFERER'];
+			foreach ($post_edit_url as $key => $edit_url) {
+				if(strpos($referer_url,$edit_url) !== false || strpos($current_url,$edit_url) !== false){
+					return false;
+				}
+			}
+		}else{
+			foreach ($post_edit_url as $key => $edit_url) {
+				if(strpos($current_url,$edit_url) !== false){
+					return false;
+				}
+			}
+		}
+		//echo $current_url; exit; 
+		
+		return true;
+	}
+}
+if( !function_exists( 'be_get_style_from_content' ) ) {
+	function be_get_style_from_content($post_content=null, $post_id=null){
+		$post_style = '';
+		if(be_theme_name('spyro') && is_tatsu_not_edit_mode()){
+			if(empty($post_content) && !empty($post_id)){
+				$post_content =	get_post_field( 'post_content', $post_id );
+				$post_content = do_shortcode($post_content);
+			}
+			$style1 = explode('<style>',$post_content);
+			
+			if(!empty($style1)){
+				foreach ($style1 as $key => $s1) {
+					if($key){
+						$s2 = explode('</style>',$s1);
+						$post_style .= " ".$s2[0]." ";
+					}
+				}
+			}
+		}
+		return $post_style;
+	}
+}
+
+if( !function_exists( 'be_remove_style_from_content' ) ) {
+	function be_remove_style_from_content($post_content=null){
+		if(be_theme_name('spyro') && is_tatsu_not_edit_mode() && !empty($post_content)){
+			$new_content = '';
+			$style1 = explode('<style>',$post_content);
+			if(!empty($style1)){
+				foreach ($style1 as $key => $s1) {
+					if($key==0){
+						$new_content .= $s1;
+					}else{
+						$c1 = explode('</style>',$s1);
+						$new_content .= empty($c1[1])?'':$c1[1];
+					}
+				}
+				if($new_content != ''){
+					$post_content = $new_content;
+				}
+			}
+		}
+		return $post_content;
 	}
 }
 

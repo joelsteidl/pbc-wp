@@ -79,9 +79,22 @@ if (!function_exists('be_flex_slide')) {
 						$image_id = attachment_url_to_postid($image);
 						$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full');
 						//print_r($image)	;
-						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" />';
+						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" title="'.get_the_title($image_id).'" />';
 					}else{
-						$output .=  '<img src="'.$image.'" alt="" />';
+
+						//$output .=  '<img src="'.$image.'" alt="" />';
+						$image_id = attachment_url_to_postid($image);
+						if(0 == $image_id){
+							$output .=  '<img src="'.$image.'" alt="" />';
+						}else{
+					
+						$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full');
+						
+						
+						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" title="'.get_the_title($image_id).'" />';
+						}
+				
+
 					}
 				}
 			}
@@ -174,7 +187,7 @@ function oshine_register_flex_slide() {
 					'att_name' => 'image',
 					'type' => 'single_image_picker',
 					'label' => __( 'Slider image', 'oshine-modules' ),
-					'tooltip' => '',
+					'tooltip' => ''	
 				),
 				array (
 					'att_name' => 'video',

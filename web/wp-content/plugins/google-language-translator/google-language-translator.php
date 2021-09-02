@@ -2,7 +2,7 @@
 /*
 Plugin Name: Google Language Translator
 Plugin URI: https://gtranslate.io/?xyz=3167
-Version: 6.0.8
+Version: 6.0.11
 Description: The MOST SIMPLE Google Translator plugin.  This plugin adds Google Translator to your website by using a single shortcode, [google-translator]. Settings include: layout style, hide/show specific languages, hide/show Google toolbar, and hide/show Google branding. Add the shortcode to pages, posts, and widgets.
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io
@@ -295,7 +295,7 @@ class google_language_translator {
       "image" => 'no',
       "text" => 'yes',
       "image_size" => '24',
-      "label" => 'Espa&ntilde;ol'
+      "label" => html_entity_decode('Espa&ntilde;ol')
     ), $atts));
 
     $glt_url_structure = get_option('googlelanguagetranslator_url_structure');
@@ -337,7 +337,7 @@ class google_language_translator {
         }
     }
 
-    return "<a href='".$href."' class='nturl notranslate ".$language_code." ".$language_name_flag." single-language flag' title='".$language."'>".($image=='yes' ? "<span class='flag size".$image_size."'></span>" : '') .($text=='yes' ? $label : '')."</a>";
+    return "<a href='".esc_url($href)."' class='nturl notranslate ".esc_attr($language_code)." ".esc_attr($language_name_flag)." single-language flag' title='".esc_attr($language)."'>".($image=='yes' ? "<span class='flag size".esc_attr($image_size)."'></span>" : '') .($text=='yes' ? htmlspecialchars($label) : '')."</a>";
   }
 
   public function footer_script() {
@@ -411,7 +411,7 @@ class google_language_translator {
                 }
               }
 
-              $str .= '<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str .= '<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             } //empty
           }//foreach
         } else {
@@ -450,7 +450,7 @@ class google_language_translator {
                 }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             } //foreach
           else:
             foreach ($new_languages_array_codes as $value) {
@@ -487,7 +487,7 @@ class google_language_translator {
                 }
             }
 
-            $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+            $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
           }//foreach
         endif;
       }//endif
@@ -583,7 +583,7 @@ class google_language_translator {
                 }
             }
 
-            $str.="<li id='".$language_name."'><a href='".$href."' title='".$language_name."' class='nturl notranslate ".$language_code." flag ".$language_name_flag."'></a></li>";
+            $str.="<li id='".$language_name."'><a href='".esc_url($href)."' title='".$language_name."' class='nturl notranslate ".$language_code." flag ".$language_name_flag."'></a></li>";
           } //endif
         }//foreach
       else:
@@ -622,7 +622,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             } //foreach
           else:
             foreach ($new_languages_array_codes as $value) {
@@ -659,7 +659,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             }//foreach
           endif;
       endif;
@@ -762,7 +762,7 @@ class google_language_translator {
                 }
             }
 
-            $str.="<li id='".$language_name."'><a href='".$href."' title='".$language_name."' class='nturl notranslate ".$language_code." flag ".$language_name_flag."'></a></li>";
+            $str.="<li id='".$language_name."'><a href='".esc_url($href)."' title='".$language_name."' class='nturl notranslate ".$language_code." flag ".$language_name_flag."'></a></li>";
           } //endif
         }//foreach
       else:
@@ -801,7 +801,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             } //foreach
           else:
             foreach ($new_languages_array_codes as $value) {
@@ -838,7 +838,7 @@ class google_language_translator {
                   }
               }
 
-              $str.='<li id="'.$language_name.'"><a href="'.$href.'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
+              $str.='<li id="'.$language_name.'"><a href="'.esc_url($href).'" title="'.$language_name.'" class="nturl notranslate '.$language_code.' flag '.$language_name_flag.'"></a></li>';
             }//foreach
           endif;
       endif;

@@ -666,6 +666,7 @@ if ( ! function_exists( 'get_be_justified_gallery_shortcode' ) ) :
 				}else{
 					$caption = $attachment_info['alt'];
 				}
+				$laz_class = '';
 				if(empty($lazy_load)){
 					$laz_class = 'jg-entry-visible';	
 				}
@@ -704,7 +705,7 @@ if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) :
 		$result = array();
 		if( empty($_POST['api_key']) || empty( $_POST['list_id'] ) || empty( $_POST['email'] ) ) {
 			$result['status'] = 'error';
-			$result['data'] = __( 'Api Key / List Id / Email Address is missing', 'oshin-modules');
+			$result['data'] = __( 'Api Key / List Id / Email Address is missing', 'oshine-modules');
 			echo json_encode($result);
 			exit;
 		}

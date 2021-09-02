@@ -16,6 +16,7 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
             'border_style' => '',
             'box_shadow' => '',
             'destroy_slider'    => '',
+            'light_box'         => '0',
             'lazy_load'         => '0',
             'adaptive_images'   => '0',
             'slides_to_show'    => '1',
@@ -189,7 +190,13 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                             ?>
                                 <div class = "tatsu-media-slide tatsu-carousel-col">
                                     <div class = "tatsu-media-slide-inner tatsu-carousel-col-inner">
-                                        <img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> />
+                                        <?php  if( !empty( $light_box ) ) { ?>
+                                            <a href="<?php echo $url; ?>" class = "light_box">
+                                                <img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> />
+                                            </a>
+                                       <?php }else{ ?>
+                                                <img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> />
+                                       <?php } ?>
                                     </div>
                                 </div>
                         <?php endforeach; ?>
@@ -227,6 +234,7 @@ function tatsu_register_image_carousel()
 							'type',
 							'images',
                             'slides_to_show',
+                            'light_box',
                             'lazy_load',
                             'adaptive_images',
                             'destroy_in_mobile',
@@ -318,6 +326,12 @@ function tatsu_register_image_carousel()
 				'default'	=> '0',
 				'visible'	=> array('type', '=', 'fixed'),
 			),
+            array(
+                'att_name'  => 'light_box',
+                'type'      => 'switch',
+                'label'     => esc_html__('Open In Lightbox', 'tatsu'),
+                'default'   => '0',
+            ),
 			array(
 				'att_name'	=> 'lazy_load',
 				'type'		=> 'switch',

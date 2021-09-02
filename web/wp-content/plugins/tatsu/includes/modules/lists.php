@@ -102,9 +102,9 @@ if ( !function_exists( 'tatsu_list' ) ) {
 		} 
 		$output .= '<li '.$css_id.' class="tatsu-list-content '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>';
 		if( 'icon' === $tatsu_lists_style ) {
-			$output .= '<span class="tatsu-list-icon-wrap" >'.$icon_markup.'</span>';
+			$output .= '<div class="tatsu-list-icon-wrap" >'.$icon_markup.'</div>';
 		}
-		$output .= '<span class="tatsu-list-inner">'.$content.'</span>'.$custom_style_tag.'</li>';
+		$output .= '<div class="tatsu-list-inner">'.$content.'</div>'.$custom_style_tag.'</li>';
 		return $output;
 	}
 	add_shortcode( 'tatsu_list', 'tatsu_list' );

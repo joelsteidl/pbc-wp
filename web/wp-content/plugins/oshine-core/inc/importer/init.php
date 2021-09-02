@@ -165,12 +165,28 @@ class BEThemeDemoImporter extends BEThemeImporter {
     }
 
     public function ajax_set_demo_content() {
+		if($_POST['demo']=='v1' || $_POST['demo']=='v4'){
+			if(empty($_SESSION)) {
+				session_start();
+				$_SESSION['oshine_core_demo'] = $_POST['demo'];
+			}
+			if(!empty($_SESSION) && empty($_POST['attempt']) && !empty($_SESSION['oshine_core_import_data'])){
+				unset($_SESSION['oshine_core_import_data']);
+				$_SESSION['oshine_core_demo'] = $_POST['demo'];
+			}
+			
+		}
+		
 		$demo = $_POST['demo'];
 		if( isset( $_POST['data'] ) ) {
 			$data = $_POST['data'];
 		}
 	    parent::set_demo_data();
 	    $this->set_demo_menus($demo);
+		
+		if(isset($_SESSION)) {
+			session_destroy();
+		}
 	    wp_die();
     }
 
@@ -296,6 +312,83 @@ class BEThemeDemoImporter extends BEThemeImporter {
 			printf('Failed to set %s as home page however %s has been set as blog page', $page_title, $blog_page_title );
 		} else {
 			printf('%s page has been set as front page & %s has been set as blog page', $page_title, $blog_page_title);
+		}
+
+		//Set woocommerce shop page
+		$shop_page_title = self::get_settings($demo)['shop_page_title']; 
+		if(!empty($shop_page_title)){ 
+			$shop_page = get_page_by_title(esc_html( $shop_page_title ));
+			if(!empty($shop_page->ID)){
+				if(update_option( 'woocommerce_shop_page_id', $shop_page->ID )){
+					printf('%s page has been set as shop page', $shop_page_title);
+					$my_account_page_title = self::get_settings($demo)['my_account_page_title']; 
+					$cart_page_title = self::get_settings($demo)['cart_page_title']; 
+					$checkout_page_title = self::get_settings($demo)['checkout_page_title'];
+					//My account page
+					$myaccount_page = get_page_by_title(esc_html( $my_account_page_title ));
+					if(!empty($myaccount_page->ID)){
+						if(update_option( 'woocommerce_myaccount_page_id', $myaccount_page->ID )){
+							printf('%s page has been set as my account page', $my_account_page_title);
+						}else{
+							printf('Faild to set %s as my account page', $my_account_page_title);
+						}
+					}
+					///Cart page
+					$cart_page = get_page_by_title(esc_html( $cart_page_title ));
+					if(!empty($cart_page->ID)){
+						if(update_option( 'woocommerce_cart_page_id', $cart_page->ID )){
+							printf('%s page has been set as cart page', $cart_page_title);
+						}else{
+							printf('Faild to set %s as cart page', $cart_page_title);
+						}
+					}
+					//checkout page
+					$checkout_page = get_page_by_title(esc_html( $checkout_page_title ));
+					if(!empty($checkout_page->ID)){
+						if(update_option( 'woocommerce_checkout_page_id', $checkout_page->ID )){
+							printf('%s page has been set as checkout page', $checkout_page_title);
+						}else{
+							printf('Faild to set %s as checkout page', $checkout_page_title);
+						}
+					}
+				
+				//SET woocommerce_settings options if provided
+				$woocommerce_settings = self::get_settings($demo)['woocommerce_settings']; 
+				if(!empty($woocommerce_settings)){ 
+					foreach ($woocommerce_settings as $option_name => $option_value) {
+						update_option( $option_name, $option_value );
+					}
+				}
+
+				}else{
+					printf('Faild to set %s as shop page', $shop_page_title);
+				}
+			}
+		}
+
+		//Nav menu widget settings if provided
+		$widget_nav_menu_settings = self::get_settings($demo)['widget_nav_menu_settings'];
+		if(!empty($widget_nav_menu_settings)){
+			$widget_nav_menu = get_option('widget_nav_menu');
+			if(!empty($widget_nav_menu) && is_array($widget_nav_menu)){
+				$nav_menu = $widget_nav_menu_settings['nav_menu'];
+				$nav_title = $widget_nav_menu_settings['title'];
+				$term = get_term_by('name',$nav_menu, 'nav_menu');
+		
+				if(!empty($term) && !empty($term->term_id)){
+					foreach ($widget_nav_menu as $key => $widget_nav) {
+						if(is_array($widget_nav) && $widget_nav['title'] == $nav_title   && (empty($widget_nav['nav_menu']) || $widget_nav['nav_menu']!=$term->term_id)){
+							$widget_nav_menu[$key]['nav_menu']= $term->term_id;
+						}
+					}
+				}
+				if(update_option('widget_nav_menu', $widget_nav_menu )){
+					printf('%s navigation menu widget has been updated', $nav_title);
+				}else{
+					printf('Failed to update %s navigation menu widget', $nav_title);
+				}
+				
+			}
 		}
 		wp_die();
 	}

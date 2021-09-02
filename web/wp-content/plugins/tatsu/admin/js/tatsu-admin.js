@@ -98,6 +98,22 @@
 
 		} );
 
+		/**
+		 * TATSU FORMS DASHBOARD
+		 */
+		$(document).on('click','#tatsu-form-entries-table-form .delete-form',function(e){
+			var Deleteid = $(this).attr('submitid');
+			if(!confirm("Do you really wanna delete submitted form ID :"+Deleteid+"?")){
+				e.preventDefault();
+			}
+		});
+
+		$(document).on('click','#tatsu-form-entries-table-form #doaction',function(e){
+			if(!confirm("Do you really wanna delete submitted forms?")){
+				e.preventDefault();
+			}
+		});
+
 		$doc.on( 'click', '#edit_with_tatsu_button', function(e) {
 			if($body.hasClass('post-new-php')) {
 				e.preventDefault();

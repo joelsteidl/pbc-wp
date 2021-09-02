@@ -323,8 +323,8 @@ if (!function_exists('be_portfolio')) {
 					$image_atts = get_portfolio_image(get_the_ID(), $col, $masonry);
 					$attachment_thumb = wp_get_attachment_image_src( $attachment_id, $image_atts['size']);
 					$attachment_full = wp_get_attachment_image_src( $attachment_id, 'full');
-					$attachment_thumb_url = $attachment_thumb[0];
-					$attachment_full_url = $attachment_full[0];
+					$attachment_thumb_url = empty($attachment_thumb)?'':$attachment_thumb[0];
+					$attachment_full_url = empty($attachment_full)?'':$attachment_full[0];
 					if( !$attachment_thumb || empty( $attachment_thumb ) || ( 'masonry_enable' == $masonry_enable && ( !$attachment_full || empty( $attachment_full ) ) ) ) {
 						continue;
 					}
@@ -527,7 +527,7 @@ if (!function_exists('be_portfolio')) {
 								if($video_url) {
 									$url = $video_url;
 									$mfp_class = 'mfp-iframe';
-								} else {
+								} else if(!empty($attach_img)){
 									$url = $attach_img[0];
 									$mfp_class ='mfp-image';
 								}

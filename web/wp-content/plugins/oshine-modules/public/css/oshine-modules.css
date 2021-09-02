@@ -594,7 +594,9 @@
       display: none !important; 
   }*/
   
-  
+  .be-owl-carousel .owl-item li.carousel-item.element {
+    width: 100%;
+  }
   
   /*********************************************************************
               CONTACT FORM
@@ -1908,6 +1910,11 @@
   .full-screen.two-col .element {
       width: 50%;
   }
+  /***PORTFOLIO TWO COLUMN DOUBLE WIDTH : START ***/
+  .full-screen.two-col.masonry_disable .portfolio-shortcode .element.wide-width-height, .full-screen.two-col.masonry_disable .portfolio-shortcode .element.wide-width {
+    width: 100%;
+  }
+  /***PORTFOLIO TWO COLUMN DOUBLE WIDTH : END ***/
   .full-screen.two-col.masonry_disable .element.wide {
       width: 50%;
   }
@@ -2042,12 +2049,19 @@
       -webkit-transition: -webkit-filter 0.4s, -webkit-transform 0.4s, opacity .6s ease-in;   
   }
   
-  .element.wide-width-height img, 
+   .element.wide-width-height img, 
   .element.wide-height img, 
   .element.wide-width img {
       max-width: none;
       display: inline-block !important;
-  }
+  } 
+
+  /* portfolio width on desktop 
+  .full-screen .element.wide-width-height, 
+  .full-screen .element.wide-width{
+          width : 100% !important;
+  }*/
+
   .portfolio-archives .portfolio.full-screen {
       margin-bottom: 0px;
   }
@@ -3306,12 +3320,12 @@
       position: relative;
   }
   .be-service:nth-child(even) {
-      float: left;
+      /* float: left; */
       padding: 0px 58% 0 0;
   }
   
   .be-service {
-      float: right;
+      /* float: right; */
       margin: 0 0 30px;
       padding: 0 0 0 58%;
       position: relative;
@@ -3337,7 +3351,7 @@
       transition: background 500ms ease, color 500ms ease;
   }
   .be-service .service-wrap div.service-content{
-      padding: 6% 9%;
+      padding: 2% 9%;
   }
   .be-service .font-icon.icon-size-large {
       line-height: 84px;

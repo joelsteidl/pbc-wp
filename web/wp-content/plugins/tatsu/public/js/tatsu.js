@@ -1,5 +1,9 @@
 ;(function($) {
     'use strict';
+    $(document).on('click','a.tatsu_doc_link',function(){
+        var doc_link = $(this).attr('href');
+        window.open(doc_link,'_blank');
+    });
 	/**
    * Resize Background Video
    */
@@ -201,6 +205,44 @@
             }
         },
 
+        imgCarouselLightbox = function(){
+            if (jQuery('.light_box').length > 0) {
+                asyncloader.require( 'magnificpopup', function() {
+                        jQuery('.light_box').magnificPopup({ 
+                            type: 'image',
+                            closeBtnInside: false,
+                            closeOnContentClick: false,
+                      
+                            callbacks: {
+                              open: function() {
+                                var self = this;
+                                self.wrap.on('click.pinhandler', 'img', function() {
+                                  self.wrap.toggleClass('mfp-force-scrollbars');
+                                });
+                              },
+                              beforeClose: function() {
+                                    this.wrap.off('click.pinhandler');
+                                this.wrap.removeClass('mfp-force-scrollbars');
+                              }
+                            },
+                     
+                            image: {
+                                verticalFit: true
+                            },
+                            zoom: {
+                                enabled: true,
+                                duration: 800
+                            },
+                            gallery: {
+                                enabled: true
+                            }
+
+                        });
+  
+                });
+            }     
+        },
+
         lightbox = function() {
             if (jQuery('.mfp-image').length > 0) {
                 asyncloader.require( 'magnificpopup', function() {
@@ -326,14 +368,17 @@
                         loopVideo = null != curVideo.attr( 'data-loop' ) ? parseInt(curVideo.attr( 'data-loop' )) : null;
 
                     if( null != id ) {
+                        var playerVariables = { 
+                            'autoplay': autoplay,
+                            'loop' : loopVideo,
+                            'rel' : 0
+                        };
+                        if(loopVideo){
+                            playerVariables.playlist = id;
+                        }
                         curPlayer = new YT.Player( this, {
                             videoId : id,
-                            playerVars: { 
-                                'autoplay': autoplay,
-                                'loop' : loopVideo,
-                                'playlist' : loopVideo ? id : '',
-                                'rel' : 0
-                            },
+                            playerVars: playerVariables,
                             width : curVideo.width(),
                             height : curVideo.width()/1.7777,
                             events: {
@@ -1527,8 +1572,66 @@
             }
         },
 
+        save_tatsu_form = function() {
+            jQuery(document).on('submit', '.tatsu-forms-save .spyro-form', function (e) {
+                e.preventDefault(); 
+                var $this = jQuery(this);
+                
+                var formid = $this.parent('.tatsu-forms-save').attr('id');
+                    
+                var tatsu_form_status =  $this.parent('.tatsu-forms-save').find('.subscribe_status');
+                var tatsu_loader = $this.parent('.tatsu-forms-save').find(".exp-subscribe-loader");
+                if(typeof formid === 'undefined' || formid == null || formid == ''){
+                    tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
+                    tatsu_form_status.html("Invalid Form").slideDown();
+                    console.log('Form id missing');
+                }else{
+                    formid = formid.split('-');
+                    var form_id = formid[1];
+                    if(typeof form_id === 'undefined' || form_id == null || form_id == ''){
+                        tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
+                        tatsu_form_status.html("Invalid Form").slideDown();
+                        console.log('Form id missing');
+                    }else{
+                        var submit_button = $this.find( 'input[type="submit"]' );
+                        submit_button.prop( 'disabled', true );
+                        tatsu_loader.fadeIn();
+                        var action_after_submit = $this.attr('data-action');
+                        var tatsu_formData = new FormData(jQuery(this)[0]);
+                        tatsu_formData.append('action', 'tatsu_forms_save');
+                        tatsu_formData.append('form_id', form_id);
+                        tatsu_formData.append('action_after_submit', action_after_submit);
+                        jQuery.ajax({
+                            type: "POST",
+                            url: tatsuFrontendConfig.ajax_url,
+                            processData: false,
+                            contentType: false,
+                            dataType: 'json',
+                            data: tatsu_formData,
+                            success    : function (msg) {
+                                tatsu_loader.fadeOut();
+                                if (msg.status === "error") {
+                                    tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
+                                } else {
+                                    tatsu_form_status.addClass("tatsu-success").removeClass("tatsu-error");
+                                }
+                                tatsu_form_status.html(msg.data).slideDown();
+                                submit_button.prop( 'disabled', false );
+                                $this.trigger("reset");
+                            },
+                            error: function () {
+                                submit_button.prop( 'disabled', false );
+                                tatsu_form_status.html("Please Try Again Later").slideDown();
+                            }
+                        });
+                        return false;
+                    }
+               }
+            }); 			
+        },
         ready = function(){
 
+            imgCarouselLightbox();
             lazyLoadBgImages();
             animatedAnchor();
             progressBar();
@@ -1557,7 +1660,7 @@
             animatedHeading();
             // backgroundVideo();
             registerCallbacks();
-
+            save_tatsu_form();
             jQuery(window).on( 'tatsu_update.tatsu', function( e, data )  {
                 animate_wrapper = jQuery('.tatsu-animate, .be-animate');
                 skillsWrap = jQuery( '.be-skill' );

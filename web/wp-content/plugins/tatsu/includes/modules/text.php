@@ -37,20 +37,14 @@ if (!function_exists('tatsu_text')) {
 	    $output = '';
 		
 
-		
-		if($max_width < 100){
-			if($wrap_alignment == 'left'){
-				$margin = '';
-			}
+		$margin = '';
+		if(!is_numeric($max_width) || (is_numeric($max_width) &&  $max_width < 100)){
 			if($wrap_alignment == 'center'){
 				$margin = 'tatsu-align-center';
 			}
 			if($wrap_alignment == 'right'){
 				$margin = 'tatsu-align-right';
 			}
-		}
-		else{
-			$margin = ''; 
 		}
 		//rolling back Rinkesh's update. next update should be carefully checked.
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-text-block-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'"><div class="tatsu-text-inner '.$margin.' '.$animate.' clearfix" '.$data_animations.'>';
@@ -506,7 +500,7 @@ function tatsu_register_text()
 				'title' => '',
 				'image' => '',
 				'preset' => array(
-					'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+					'content' => '<p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>',
 				),
 			)
 		),

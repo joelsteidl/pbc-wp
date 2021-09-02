@@ -96,6 +96,8 @@ if (!function_exists('tatsu_image')) {
                     $image_width = $image_details[1];
                     $image_height = $image_details[2];
                     $image_atts[] = sprintf( 'alt = "%s"', get_post_meta( $id, '_wp_attachment_image_alt', true) );
+                    //image title attribute
+                    $image_atts[] = sprintf( 'title = "%s"', get_the_title($id) );
                     $padding = 'padding-bottom : '.( ( $image_height / $image_width ) * 100 ).'%;';
                     if( isset( $adaptive_image ) && $adaptive_image == 1 ) {
                         $img_srcset = wp_get_attachment_image_srcset( $id, $size );
@@ -175,7 +177,15 @@ if (!function_exists('tatsu_image')) {
             if( '' != $link ) {
                 $output .= '<a' . ( 1 == $lightbox ? ' class = "mfp-image"' : '' )  . $link . $new_tab_attribute . ' >';
             }
-            $output .= '<img class = "tatsu-gradient-border" ' . implode(  ' ', $image_atts ) . ' />';
+			$final_image_atrr = implode(  ' ', $image_atts );
+			if(strpos($final_image_atrr,'alt =')===false){
+				$final_image_atrr .=' alt =" " '; 	
+			}
+			if(strpos($final_image_atrr,'src =')===false || (strpos($final_image_atrr,'data-src =')!==false && substr_count($final_image_atrr,'src =')<2)){
+				$final_image_atrr .=' src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" '; 	
+			}
+
+            $output .= '<img class = "tatsu-gradient-border" ' . $final_image_atrr . ' />';
             if( '' != $link ) {
                 $output .= '</a>';
             }

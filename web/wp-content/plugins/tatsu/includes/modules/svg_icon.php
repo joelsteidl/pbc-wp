@@ -84,7 +84,7 @@ if (!function_exists('tatsu_svg_icon')) {
             }else {
                 $site_url = get_site_url();
                 if( strpos( $svg_url, $site_url ) !== false ) { 
-					$svg_icon_from_url =  file_get_contents( $svg_url );
+					$svg_icon_from_url = be_curl_file_get_contents($svg_url);
 					if(!empty($href)){
 						$output .= '<a href="'.$href.'" class="tatsu-icon-wrap" '.$new_tab.'>'.$svg_icon_from_url.'</a>';
 					}else{

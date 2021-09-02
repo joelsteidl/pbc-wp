@@ -368,6 +368,14 @@
             jQuery(document).find('.tatsu-slide-menu').removeClass('open');
             jQuery(document).find('#tatsu-fixed-overlay').removeClass('open');
         } );
+        if(jQuery(document).find('body').hasClass('tatsu_header-template-default')){
+            jQuery(document).on( 'click', '.line-wrapper', function(e) {
+                if(jQuery(document).find('.tatsu-slide-menu').length>1){
+                    /*****Remove duplicate sliding header for reflecting changes in Tatsu mobile menu typography******/
+                    jQuery(document).find('.tatsu-slide-menu')[1].remove();
+                }
+            });
+        }
         jQuery(document).on( 'click', '.tatsu-frame a, input[type = "submit"]',  function(e) {
             e.preventDefault();
         });

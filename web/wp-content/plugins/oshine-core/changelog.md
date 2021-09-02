@@ -1,3 +1,18 @@
+v1.5.4
+======
+* Fixed: V4 demo import
+* Fixed: Set home page on import
+* Fixed: Set WooCommerce pages on import
+* Fixed: Import product categories images
+* Fixed: Set Navigation menu widget select menu
+* Added: Import WooCommerce images size and thumbnail cropping settings
+* Fixed: V1 demo import
+* Fixed: V2 demo import
+
+v1.5.3
+======
+* Fixed: Top header style in demo import
+
 v1.5.2
 ======
 * Fixed: bugs

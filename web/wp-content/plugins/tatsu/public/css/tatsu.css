@@ -781,10 +781,19 @@ body {
 
 .tatsu-single-image-inner{
     overflow: hidden;
-    border-style: solid;
+    /* border-style: solid; */
 } 
 
 
 .entry-content {
     width: 100% !important;
+}
+
+/***** TATSU FORMS *************/
+.tatsu-forms-save .tatsu-form-status{
+    margin: 15px 0px;
+}
+.tatsu-forms-save .tatsu-form-status .tatsu-notification{
+    padding-left: 15px;
+    color: white;
 }

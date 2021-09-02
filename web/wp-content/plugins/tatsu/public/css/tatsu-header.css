@@ -21,6 +21,44 @@
     flex-wrap: wrap;
     align-items: center;
 }
+/** Lists */
+ul,ol {
+    padding-left: 1.3em;
+    line-height: inherit;
+    margin: 0px 0px 20px;
+}
+dl {
+    margin-bottom: 20px;
+}
+ul { 
+    list-style: disc; 
+}
+ol { 
+    list-style: decimal; 
+}
+ul li,ol li {
+    margin-bottom: 10px;
+}
+ul ul, ol ol, li ul, li ol {
+    margin-top: 10px;
+}
+dd { 
+    margin: 0 0 20px; 
+    line-height: inherit; 
+}
+dt { 
+    line-height: inherit; 
+}
+nav ul, nav ol { 
+    list-style: none !important; 
+    list-style-image: none; 
+    margin: 0; 
+    padding: 0; 
+}
+.widget ul{
+    margin-bottom: 0;
+}
+
 
 /* .tatsu-slide-menu-col .tatsu-header-module,
 .tatsu-slide-menu-col .tatsu-module {

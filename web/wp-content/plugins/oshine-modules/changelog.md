@@ -1,3 +1,26 @@
+v3.2.6
+======
+Fixed: Missing text translation and updated pot file
+Fixed: Portfolio grid double width function 
+Fixed: Gif images in gallery
+
+v3.2.5
+======
+* Fixed: Portfolio width double when checked
+* Fixed: Services module alignment
+* Fixed: Instagram access token doc link in tatsu
+* Fixed: Title text display on images slider
+* Fixed: g+ sharer removed from blog and portfolio
+* Fixed: Instagram images count 
+* Fixed: Page and oshine gallery freeze on import V1 demo 
+* Fixed: Portfolio Carousel navigation
+* Added: Portfolio Carousel number of column control
+* Added: Portfolio Carousel slide show control
+* Added: Portfolio Carousel slide show speed control
+* Fixed: Php8 warnings
+* Fixed: Refresh Instagram access token
+* Added: Important social icons in Team Module
+
 v3.2.4
 ======
 * Fixed: layout change on add custom css classes in tabs

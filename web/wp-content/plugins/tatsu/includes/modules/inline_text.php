@@ -28,10 +28,8 @@ if ( !function_exists( 'tatsu_inline_text' ) ) {
 
 		$animate = ( isset( $animate ) && !empty( $animate ) && 'none' !== $animation_type ) ? 'tatsu-animate' : '';  //1 : 0;
 		$data_animations = be_get_animation_data_atts( $atts );
-		if( $max_width < 100 ){
-			if( $wrap_alignment == 'left' ){
-				$inner_margin = '';
-			}
+		$inner_margin = ''; //'margin-right:auto; margin-left:auto;';
+		if(!is_numeric($max_width) || (is_numeric($max_width) &&  $max_width < 100)){
 			if( $wrap_alignment == 'center' ){
 				$inner_margin = 'tatsu-align-center';
 			}
@@ -39,9 +37,7 @@ if ( !function_exists( 'tatsu_inline_text' ) ) {
 				$inner_margin = 'tatsu-align-right';
 			}
 		}
-		else{
-			$inner_margin = ''; //'margin-right:auto; margin-left:auto;';
-		}	    
+			    
 
 	    $output = '';
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-inline-text clearfix '. $unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>';

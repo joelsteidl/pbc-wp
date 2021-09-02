@@ -7,6 +7,7 @@ function tatsu_navigation_menu( $atts, $content, $tag ) {
         'disable_in_mobile' => '',
         'links_margin' => '',
         'margin' => '',
+        'menu_level' => 3,
         'menu_color' => '',
         'menu_hover_color' => '',
         'transparent_menu_hover_color' => '',
@@ -41,12 +42,14 @@ function tatsu_navigation_menu( $atts, $content, $tag ) {
         $menu_name = '';
     }
 
+
+
     if($menu_name != ''){
         $defaults = array (
             'menu'=> $menu_name,
-            'depth'=> apply_filters('tatsu_horizontal_menu_depth',3),
+            'depth'=> apply_filters('tatsu_horizontal_menu_depth',$menu_level),
             'container_class'=>'tatsu-menu '.$unique_class,
-            'menu_id' => 'menu-'.$key, 
+            'menu_id' => 'normal-menu-'.$key, 
             'menu_class' => 'clearfix ',
             'echo' => false,
             'walker' => new Tatsu_Walker_Nav_Menu()
@@ -54,7 +57,7 @@ function tatsu_navigation_menu( $atts, $content, $tag ) {
         
         $mobile_defaults = array (
             'menu'=> $menu_name,
-            'depth'=> apply_filters('tatsu_horizontal_menu_depth',3),
+            'depth'=> apply_filters('tatsu_horizontal_menu_depth',$menu_level),
             'container_class'=>'tatsu-mobile-menu '.$unique_class,
             'menu_id' => 'menu-'.$key,
             'menu_class' => 'clearfix ',
@@ -133,6 +136,7 @@ function tatsu_register_navigation_menu() {
 						'group'	=> array(
                             'menu_name',
                             'mega_menu',
+                            'menu_level'
 						)
 					),
 					array(
@@ -228,6 +232,18 @@ function tatsu_register_navigation_menu() {
 				'options' => tatsu_header_get_menu_list()[0],
 				'tooltip' => '',
 				'default' => tatsu_header_get_menu_list()[1]
+			),
+			array (
+				'att_name' => 'menu_level',
+				'type' => 'slider',
+				'label' => esc_html__( 'Menu Level', 'tatsu' ),
+				'tooltip' => 'Sub menu level 1-10',
+				'options' => array(
+					'min' => '1',
+					'max' => '10',
+					'step' => '1',
+				),		        		
+				'default' => '3',
 			),
 			array (
 				'att_name' => 'margin',

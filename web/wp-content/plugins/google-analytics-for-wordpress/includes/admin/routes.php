@@ -161,6 +161,10 @@ class MonsterInsights_Rest_Routes {
 			if ( ! isset( $options['summaries_header_image'] ) ) {
 				$options['summaries_header_image'] = '';
 			}
+
+			if ( ! isset( $options['local_gtag_file_modified_at'] ) ) {
+				$options['local_gtag_file_modified_at'] = '';
+			}
 		}
 
 		wp_send_json( $options );
@@ -327,6 +331,18 @@ class MonsterInsights_Rest_Routes {
 		$parsed_addons['lifterlms'] = array(
 			'active' => function_exists( 'LLMS' ) && version_compare( LLMS()->version, '3.32.0', '>=' ),
 		);
+		// Restrict Content Pro.
+		$parsed_addons['rcp'] = array(
+			'active' => class_exists( 'Restrict_Content_Pro' ) && version_compare( RCP_PLUGIN_VERSION, '3.5.4', '>=' ),
+		);
+		// GiveWP.
+		$parsed_addons['givewp'] = array(
+			'active' => function_exists( 'Give' ),
+		);
+		// GiveWP Analytics.
+		$parsed_addons['givewp_google_analytics'] = array(
+			'active' => function_exists( 'Give_Google_Analytics' ),
+		);
 		// Cookiebot.
 		$parsed_addons['cookiebot'] = array(
 			'active' => function_exists( 'cookiebot_active' ) && cookiebot_active(),
@@ -342,6 +358,10 @@ class MonsterInsights_Rest_Routes {
 		// Google AMP.
 		$parsed_addons['google_amp'] = array(
 			'active' => defined( 'AMP__FILE__' ),
+		);
+		// Yoast SEO.
+		$parsed_addons['yoast_seo'] = array(
+			'active' => defined( 'WPSEO_VERSION' ),
 		);
 		// WPForms.
 		$parsed_addons['wpforms-lite'] = array(
@@ -360,7 +380,7 @@ class MonsterInsights_Rest_Routes {
 			'title'     => 'AIOSEO',
 			'excerpt'   => __( 'The original WordPress SEO plugin and toolkit that improves your website’s search rankings. Comes with all the SEO features like Local SEO, WooCommerce SEO, sitemaps, SEO optimizer, schema, and more.', 'google-analytics-for-wordpress' ),
 			'installed' => array_key_exists( 'all-in-one-seo-pack/all_in_one_seo_pack.php', $installed_plugins ),
-			'basename'  => 'all-in-one-seo-pack/all_in_one_seo_pack.php',
+			'basename'  => ( monsterinsights_is_installed_aioseo_pro() ) ? 'all-in-one-seo-pack-pro/all_in_one_seo_pack.php' : 'all-in-one-seo-pack/all_in_one_seo_pack.php',
 			'slug'      => 'all-in-one-seo-pack',
 		);
 		// OptinMonster.
@@ -479,10 +499,18 @@ class MonsterInsights_Rest_Routes {
 			$addon->url = '';
 		}
 
-		$addon->type      = $addons_type;
-		$addon->installed = $installed;
-		$addon->active    = $active;
-		$addon->basename  = $plugin_basename;
+		$active_version = false;
+		if ( $active ) {
+			if ( ! empty( $installed_plugins[ $plugin_basename ]['Version'] ) ) {
+				$active_version = $installed_plugins[ $plugin_basename ]['Version'];
+			}
+		}
+
+		$addon->type           = $addons_type;
+		$addon->installed      = $installed;
+		$addon->active_version = $active_version;
+		$addon->active         = $active;
+		$addon->basename       = $plugin_basename;
 
 		return $addon;
 	}

@@ -211,7 +211,7 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 		if( !$stacked ) {
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
 			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
-			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
+			/*$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';*/
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';
 		}else {
@@ -221,7 +221,7 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 			$output .= '<a href = "#" class = "be-share-trigger"><i class = "font-icon icon-share"></i></a>';
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
 			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
-			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
+			/*$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';*/
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';			
 			$output .= '</span>';
@@ -300,6 +300,8 @@ function be_wp_get_attachment( $attachment_id ) {
 	$attachment = get_post( $attachment_id );
 	if(isset($attachment) && !empty($attachment)) {
 		$image_attributes = wp_get_attachment_image_src( $attachment->ID, 'full' );
+		$img_width = empty($image_attributes)?'':$image_attributes[1];
+		$img_height = empty($image_attributes)?'':$image_attributes[2];
 		return array (
 			'alt' => get_post_meta( $attachment->ID, '_wp_attachment_image_alt', true ),
 			'caption' => $attachment->post_excerpt,
@@ -308,8 +310,8 @@ function be_wp_get_attachment( $attachment_id ) {
 			'src' => $attachment->guid,
 			'title' => $attachment->post_title,
 			//Changed for Photo Swipe Gallery
-			'width' => $image_attributes[1],
-			'height' => $image_attributes[2] 
+			'width' => $img_width,
+			'height' => $img_height 
 			//End
 		);
 	}
@@ -427,7 +429,7 @@ if (!function_exists( 'be_get_the_slug' )) {
 /* ---------------------------------------------------- */
 
 if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
-	function get_gallery_image_from_source($source, $images = false, $lightbox_type) {
+	function get_gallery_image_from_source($source, $images = false, $lightbox_type ='') {
 		$media = $return = array();
 		// print_r($media);
 		global $be_themes_data; 
@@ -441,7 +443,11 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
 						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']); 
-						// $instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+
+						//Refresh token : https://developers.facebook.com/docs/instagram-basic-display-api/guides/long-lived-access-tokens
+						$ig_refresh_token = wp_remote_get('https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token);
+						
+						
 						// if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
 						// 	delete_transient( $transient_var );
 						// 	$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
@@ -468,7 +474,7 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 						}
 					}else{
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
+						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://www.brandexponents.com/oshine-knowledgebase/knowledge-base/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
 						return $return;
 					}					
 				}
@@ -476,15 +482,19 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 				 if(isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
+					if(!empty($source['count']) && is_numeric($source['count'])){
+						$images = array_slice($images, 0, $source['count']);
+					}
 					foreach ($images as $key => $value) {
 						list($width, $height) = getimagesize($value->media_url);
+						$caption = empty($value->caption)?'':$value->caption;
 						$temp_image_array = array();
 						$temp_image_array = array (
 							'thumbnail' => $value->media_url,
 							'full_image_url' => $value->media_url,
 							'mfp_class' => ($lightbox_type == 'photoswipe') ? '' : 'mfp-image',
-							'caption' => $value->caption,
-							'description' => $value->caption,
+							'caption' => $caption,
+							'description' => $caption,
 							'width' => $width,
 							'height' => $height,
 							'id' => '',
@@ -606,8 +616,12 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 						$image_atts = get_portfolio_image($image, $source['col'], $source['masonry']);
 						$attachment_thumb = wp_get_attachment_image_src( $image, $image_atts['size']);
 						$attachment_full = wp_get_attachment_image_src( $image, 'full');
-						$attachment_thumb_url = $attachment_thumb[0];
-						$attachment_full_url = $attachment_full[0];
+						$attachment_thumb_url = empty($attachment_thumb)?'':$attachment_thumb[0];
+						$attachment_full_url = empty($attachment_full)?'':$attachment_full[0];
+						//For GIF Images
+						if(!empty($attachment_full_url) && !empty($attachment_thumb_url) && stripos($attachment_thumb_url,'.gif') !== false){
+							$attachment_thumb_url =$attachment_full_url;
+						}
 						$video_url = get_post_meta( $image, 'be_themes_featured_video_url', true );
 						$attachment_info = be_wp_get_attachment($image);
 						$mfp_class = ($lightbox_type == 'photoswipe') ? '' : 'mfp-image';

@@ -100,17 +100,22 @@ class WP_Import extends WP_Importer {
 	 * @param string $file Path to the WXR file for importing
 	 */
 	function import( $file ) {
+		set_time_limit(0);
+		$this->set_variable_from_session();
 		add_filter( 'import_post_meta_key', array( $this, 'is_valid_meta_key' ) );
 		add_filter( 'http_request_timeout', array( &$this, 'bump_request_timeout' ) );
+		if(empty($this->posts)){
+			$this->import_start( $file );
 
-		$this->import_start( $file );
+			$this->get_author_mapping();
 
-		$this->get_author_mapping();
-
-		wp_suspend_cache_invalidation( true );
-		$this->process_categories();
-		$this->process_tags();
-		$this->process_terms();
+			wp_suspend_cache_invalidation( true );
+			$this->process_categories();
+			$this->process_tags();
+			$this->process_terms();
+		}else{
+			wp_suspend_cache_invalidation( true );
+		}
 		$this->process_posts();
 		wp_suspend_cache_invalidation( false );
 
@@ -119,9 +124,61 @@ class WP_Import extends WP_Importer {
 		$this->backfill_attachment_urls();
 		$this->remap_featured_images();
 
+		$this->clear_session_variables();
 		$this->import_end();
 	}
 
+	function save_variables_in_session(){
+		if(!empty(session_id())){
+			$_SESSION['oshine_core_import_data']=array(
+				'id'=>$this->id,
+				'authors'=>$this->authors,
+				'posts'=>$this->posts,
+				'terms'=>$this->terms,
+				'categories'=>$this->categories,
+				'tags'=>$this->tags,
+				'base_url'=>$this->base_url,
+				'processed_authors'=>$this->processed_authors,
+				'author_mapping'=>$this->author_mapping,
+				'processed_terms'=>$this->processed_terms,
+				'processed_posts'=>$this->processed_posts,
+				'post_orphans'=>$this->post_orphans,
+				'processed_menu_items'=>$this->processed_menu_items,
+				'menu_item_orphans'=>$this->menu_item_orphans,
+				'missing_menu_items'=>$this->missing_menu_items,
+				'url_remap'=>$this->url_remap,
+				'featured_images'=>$this->featured_images,
+			);
+	    }
+	}
+
+	function set_variable_from_session(){
+		if(!empty(session_id()) && !empty($_SESSION['oshine_core_import_data'])){
+		$this->id= $_SESSION['oshine_core_import_data']['id'];
+		$this->authors= $_SESSION['oshine_core_import_data']['authors'];
+		$this->posts= $_SESSION['oshine_core_import_data']['posts'];
+		$this->terms= $_SESSION['oshine_core_import_data']['terms'];
+		$this->categories= $_SESSION['oshine_core_import_data']['categories'];
+		$this->tags= $_SESSION['oshine_core_import_data']['tags'];
+		$this->base_url= $_SESSION['oshine_core_import_data']['base_url'];
+		$this->processed_authors= $_SESSION['oshine_core_import_data']['processed_authors'];
+		$this->author_mapping= $_SESSION['oshine_core_import_data']['author_mapping'];
+		$this->processed_terms= $_SESSION['oshine_core_import_data']['processed_terms'];
+		$this->processed_posts= $_SESSION['oshine_core_import_data']['processed_posts'];
+		$this->post_orphans= $_SESSION['oshine_core_import_data']['post_orphans'];
+		$this->processed_menu_items= $_SESSION['oshine_core_import_data']['processed_menu_items'];
+		$this->menu_item_orphans= $_SESSION['oshine_core_import_data']['menu_item_orphans'];
+		$this->missing_menu_items= $_SESSION['oshine_core_import_data']['missing_menu_items'];
+		$this->url_remap= $_SESSION['oshine_core_import_data']['url_remap'];
+		$this->featured_images= $_SESSION['oshine_core_import_data']['featured_images'];
+		}
+	}
+
+	function clear_session_variables(){
+		if(!empty(session_id()) && !empty($_SESSION['oshine_core_import_data'])){
+			unset($_SESSION['oshine_core_import_data']);
+		}
+	}
 	/**
 	 * Parses the WXR file and prepares us for the task of processing parsed data
 	 *
@@ -597,9 +654,17 @@ class WP_Import extends WP_Importer {
 	 */
 	function process_posts() {
 		$this->posts = apply_filters( 'wp_import_posts', $this->posts );
-
+		
+		$time_start = microtime(true);
 		foreach ( $this->posts as $post ) {
 			$post = apply_filters( 'wp_import_post_data_raw', $post );
+			$this->save_variables_in_session();
+
+			$time_end = microtime(true);
+			$execution_time = ($time_end - $time_start)/60;
+			if(!empty($_SESSION) && !empty($_SESSION['oshine_core_import_data']) && $execution_time>5){
+				return wp_send_json( $_SESSION, 504 );
+			}
 
 			if ( ! post_type_exists( $post['post_type'] ) ) {
 				printf( __( 'Failed to import &#8220;%s&#8221;: Invalid post type %s', 'wordpress-importer' ),
@@ -614,12 +679,12 @@ class WP_Import extends WP_Importer {
 
 			if ( $post['status'] == 'auto-draft' )
 				continue;
-
+				
 			if ( 'nav_menu_item' == $post['post_type'] ) {
 				$this->process_menu_item( $post );
 				continue;
 			}
-
+			
 			$post_type_object = get_post_type_object( $post['post_type'] );
 
 			$post_exists = post_exists( $post['post_title'], '', $post['post_date'] );

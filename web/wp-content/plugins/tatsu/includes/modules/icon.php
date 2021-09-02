@@ -58,7 +58,7 @@ if (!function_exists('tatsu_icon')) {
 		$output = '';
 		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '' ;
 		$new_tab = ( isset( $new_tab ) && 1 == $new_tab ) ? 'target="_blank"' : '' ;
-		$href = ( empty( $href ) ) ? '#' : $href ;
+		
 		$hover_effect_parent = $alignment === 'none' && 'none' !== $hover_effect ? $hover_effect : '';
 		$hover_effect_child = $alignment !== 'none' && 'none' !== $hover_effect ? $hover_effect : '';
 
@@ -112,8 +112,15 @@ if (!function_exists('tatsu_icon')) {
 
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-normal-icon tatsu-icon-shortcode align-'.$alignment.' '.$unique_class_name.' '.$hover_effect_parent.' '.$visibility_classes.' '.$css_classes.'">';
 		$output .= $custom_style_tag; 
-		$output .= '<a href="'.$href.'" class="tatsu-icon-wrap '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector. ' ' . $ripple_class . '" '.$data_animations.' aria-label="'.$name.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>';
-		$output .= ( $style == 'plain' ) ? '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"></i></a>' : '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"  data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'"></i></a>' ;
+
+		$inner_attr = ' class="tatsu-icon-wrap '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector. ' ' . $ripple_class . '" '.$data_animations.' aria-label="'.$name.'" data-gdpr-atts='.$gdpr_atts.' ';
+
+		$inner_icon = ( $style == 'plain' ) ? '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"></i>' : '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"  data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'"></i>' ;
+		if(empty($href)){
+			$output .= '<span '.$inner_attr.'  >'.$inner_icon.'</span>';
+		}else{
+			$output .= '<a href="'.$href.'" '.$inner_attr.' '.$new_tab.' >'.$inner_icon.'</a>';
+		}
 		$output .= '</div>';
 		
 		return $output;

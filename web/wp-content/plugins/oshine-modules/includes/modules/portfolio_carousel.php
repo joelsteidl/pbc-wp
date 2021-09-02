@@ -8,6 +8,7 @@ if (!function_exists('be_portfolio_carousel')) {
 		$atts = shortcode_atts( array (
 	        'category'=> '',
 	        'items_per_page'=> '-1',
+			'number_of_cols'=>'2',
 	        'hover_style' => 'style1-hover',
 			'overlay_color' => '',
 			'gradient_color' => '',
@@ -99,10 +100,10 @@ if (!function_exists('be_portfolio_carousel')) {
 		if( !empty( $animation_type ) && 'none' !== $animation_type ) {
             $css_classes .= ' tatsu-animate ';
         }
-
+		$number_of_cols = empty($number_of_cols)?'2':$number_of_cols;
 		$output .= '<div '.$css_id.' class="carousel-wrap portfolio-carousel oshine-module '.$unique_class_name.' '.$css_classes.' '.$visibility_classes.'" '.$data_animations.'>';
 		// $output .= '<div class="caroufredsel_wrapper clearfix"><ul class="be-carousel portfolios-carousel">';
-		$output .= '<ul class="be-owl-carousel portfolio-carousel-module" data-slide-show="'.$slide_show.'" data-slide-show-speed="'.$slide_show_speed.'">';
+		$output .= '<ul class="be-owl-carousel portfolio-carousel-module" data-slide-show="'.$slide_show.'" data-cols="'.$number_of_cols.'" data-slide-show-speed="'.$slide_show_speed.'">';
 		$items_per_page = (empty($items_per_page)) ? -1 : $items_per_page ; 
 		if( empty( $category[0] ) ) {
 			$args = array(
@@ -262,11 +263,14 @@ if (!function_exists('be_portfolio_carousel')) {
 							if($video_url) {
 								$url = $video_url;
 								$mfp_class = 'mfp-iframe';
-							} else {
+							} else if(!empty($attach_img)) {
 								$url = $attach_img[0];
 								$mfp_class ='mfp-image';
 							}
-							$output .='<a href="'.$url.'" class="'.$mfp_class.'" title="'.$attachment_info['title'].'"></a>';
+							if(!empty($url)){
+								$output .='<a href="'.$url.'" class="'.$mfp_class.'" title="'.$attachment_info['title'].'"></a>';
+							}
+							
 						}
 					}
 					$output .= '</div>'; //End Gallery
@@ -315,6 +319,9 @@ function oshine_register_portfolio_carousel() {
 							'group'	=>	array (
 								'category',
 								'items_per_page',
+								'number_of_cols',
+								'slide_show',
+								'slide_show_speed',
 								'cat_hide',
 								'like_button',
 							)
@@ -391,8 +398,18 @@ function oshine_register_portfolio_carousel() {
 					'options' => array(
 	        			'unit' => '',
 	        		),
-	        		'label' => __( 'Number of Items Per Page', 'oshine-modules' ),
+	        		'label' => __( 'Number of Items', 'oshine-modules' ),
 	        		'default' => '8',
+	        		'tooltip' => ''
+	        	),
+				array (
+	        		'att_name' => 'number_of_cols',
+					'type' => 'number',
+					'options' => array(
+	        			'unit' => '',
+	        		),
+	        		'label' => __( 'Number of column(2-5)', 'oshine-modules' ),
+	        		'default' => '2',
 	        		'tooltip' => ''
 	        	),
 	        	array (
@@ -517,7 +534,25 @@ function oshine_register_portfolio_carousel() {
 	              	'label' => __( 'Categories Color', 'oshine-modules' ),
 	              	'default' => '',
 	              	'tooltip' => '',
-	            ),	
+	            ),
+				array (
+					'att_name' => 'slide_show',
+					'type' => 'switch',
+					'label' => __( 'Slide show', 'oshine-modules' ),
+					'default' => 0,
+					'tooltip' => '',
+			 	),	
+				 array (
+	        		'att_name' => 'slide_show_speed',
+					'type' => 'number',
+					'options' => array(
+	        			'unit' => '',
+	        		),
+	        		'label' => __( 'Slide show speed', 'oshine-modules' ),
+	        		'default' => '1000',
+	        		'tooltip' => '',
+					'visible'  => array('slide_show','=','1'),
+	        	), 
 	            array (
 	              	'att_name' => 'cat_hide',
 	              	'type' => 'switch',

@@ -29,7 +29,7 @@
 
             $rating = !empty( $rating ) && is_numeric( $rating ) ? (float)$rating : 5;
             $filled_width = ( $rating/5 ) * 100;
-            $filled_style = sprintf( 'style = "width : %s%%";', $filled_width );
+            $filled_style = sprintf( 'style = "width : %s%% ;"', $filled_width );
 
             ob_start();
             ?>

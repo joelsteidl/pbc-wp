@@ -3731,6 +3731,7 @@ Navigation Menu Widgets
 .tatsu-accordion-style2 .ui-accordion-header-active {
     border: 0;
 }
+
 .tatsu-accordion-style2 .ui-corner-top.ui-state-default {
     border : 0;
 }
@@ -4133,7 +4134,7 @@ Navigation Menu Widgets
 .tatsu-animated-heading-wrap.anime_split_word .tatsu-animated-heading-letter,
 .tatsu-animated-heading-wrap.anime_split_letter .tatsu-animated-heading-letter{
     display: inline-block;
-    overflow-y: hidden;
+    /* overflow-y: hidden; */
 }
 
 .tatsu-animated-heading-wrap.tatsu-anime-applied:not(.tatsu-animate) {

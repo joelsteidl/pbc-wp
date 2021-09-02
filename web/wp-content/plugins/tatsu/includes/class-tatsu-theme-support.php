@@ -28,6 +28,9 @@ class Tatsu_Theme_Support {
 		 * Add Theme Supports
 		 */
 		add_theme_support('tatsu-global-sections');
+		if (is_plugin_active('spyro-modules/spyro-modules.php')) { 
+		add_theme_support('tatsu-forms');
+		}
 		$theme = wp_get_theme();
 		$this->current_theme = strtolower($theme->get('Name'));
 		$this->theme_template = strtolower($theme->get('Template'));

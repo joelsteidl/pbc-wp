@@ -110,7 +110,7 @@ if( !function_exists( 'be_gdpr_maps_alt_content' ) ){
 						));
 
 		if( !is_wp_error( $response ) ){
-			$result .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-message '. join( $classes, ' ' ) .' " '.$data_animations.' style="background-position:center;background-size:cover;background-image:url(data:image/png;base64,'.base64_encode( $response['body']).');" >  
+			$result .= '<div class="tatsu-module tatsu-gmap-wrapper be-gdpr-consent-message '. join(' ',$classes) .' " '.$data_animations.' style="background-position:center;background-size:cover;background-image:url(data:image/png;base64,'.base64_encode( $response['body']).');" >  
 			'.$custom_style_tag.'
 			<div class="static-map-overlay">
 			<div class="static-map-content">' . do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="google maps"]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup] ' ))) .'</div>

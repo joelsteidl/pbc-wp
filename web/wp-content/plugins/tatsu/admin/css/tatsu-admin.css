@@ -198,3 +198,16 @@ body:not(.edited_with_tatsu) .tatsu-switch-builder-gutenburg {
 #tatsu-switch-to-gutenberg-modal .notification-dialog {
 	padding : 25px;
 }
+
+/***TATSU FORM CSS****/
+.form-details-heading{
+	font-size: 21px;
+}
+.form-details-field-name{
+	font-size: 15px;
+	padding: 10px;
+	font-weight: 500;
+}
+.form-details-field-value{
+	font-size: 14px;
+}

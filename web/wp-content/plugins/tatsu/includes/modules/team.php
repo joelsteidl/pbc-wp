@@ -18,7 +18,11 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 			'designation_font'			=> 'h9',
 			'facebook'					=> '',
 			'twitter'					=> '',
-			'google_plus'				=> '',
+			'behance'					=> '',
+			'yelp'						=> '',
+			'youtube'					=> '',
+			'vimeo'						=> '',
+			'dribbble'					=> '',
 			'instagram'					=> '',
 			'linkedin'					=> '',
 			'email'						=> '',
@@ -56,7 +60,7 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 		$padding = 100;
 		$classes[] = !empty( $style ) ? 'tatsu-team-' . $style : 'tatsu-team-style1';
 		$classes[] = !empty( $horizontal_alignment ) ? 'tatsu-team-align-' . $horizontal_alignment : 'tatsu-team-align-center';
-		if( !empty( $facebook ) || !empty( $twitter ) || !empty( $google_plus ) || !empty( $instagram ) ) {
+		if( !empty( $facebook ) || !empty( $twitter ) || !empty( $behance ) || !empty( $yelp ) || !empty( $youtube ) || !empty( $vimeo ) || !empty( $dribbble ) || !empty( $instagram ) ) {
 			$classes[] = 'tatsu-team-has-icons';
 		}
 
@@ -66,7 +70,7 @@ if ( ! function_exists( 'tatsu_team' ) ) {
         $data_attrs = be_get_animation_data_atts( $atts );
 
 
-		$has_social_icons = !empty( $facebook ) || !empty( $twitter ) || !empty( $google_plus ) || !empty( $instagram ) || !empty( $linkedin ) || !empty( $email );
+		$has_social_icons = !empty( $facebook ) || !empty( $twitter ) || !empty( $behance ) || !empty( $yelp ) || !empty( $youtube ) || !empty( $vimeo ) || !empty( $dribbble ) || !empty( $instagram ) || !empty( $linkedin ) || !empty( $email );
 
 		if( !empty( $lazy_load ) ) {
 			$image_classes[] = 'be-lazy-load';
@@ -122,9 +126,29 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 											<i class = "tatsu-icon-twitter"></i>
 										</a>
 									<?php endif; ?>
-									<?php if( !empty( $google_plus ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $google_plus; ?>" target = "_blank">
-											<i class = "tatsu-icon-gplus"></i>
+									<?php if( !empty( $behance ) ) : ?>
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo $behance; ?>" target = "_blank">
+											<i class = "tatsu-icon-behance"></i>
+										</a>
+									<?php endif; ?>
+									<?php if( !empty( $yelp ) ) : ?>
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo $yelp; ?>" target = "_blank">
+											<i class = "tatsu-icon-yelp"></i>
+										</a>
+									<?php endif; ?>
+									<?php if( !empty( $youtube ) ) : ?>
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo $youtube; ?>" target = "_blank">
+											<i class = "tatsu-icon-youtube-play"></i>
+										</a>
+									<?php endif; ?>
+									<?php if( !empty( $vimeo ) ) : ?>
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo $vimeo; ?>" target = "_blank">
+											<i class = "tatsu-icon-vimeo"></i>
+										</a>
+									<?php endif; ?>
+									<?php if( !empty( $dribbble ) ) : ?>
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo $dribbble; ?>" target = "_blank">
+											<i class = "tatsu-icon-dribbble"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $instagram ) ) : ?>
@@ -187,7 +211,11 @@ function tatsu_register_team() {
                                         'group'	=> array(
                                             'facebook',
                                             'twitter',
-                                            'google_plus',
+                                            'behance',
+                                            'yelp',
+                                            'youtube',
+                                            'vimeo',
+                                            'dribbble',
                                             'instagram',
                                             'linkedin',
                                             'email'
@@ -382,9 +410,37 @@ function tatsu_register_team() {
 				'tooltip' => ''
 			),
 			array(
-				'att_name' => 'google_plus',
+				'att_name' => 'behance',
 				'type' => 'text',
-				'label' => esc_html__('Google Plus', 'tatsu'),
+				'label' => esc_html__('Behance', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'yelp',
+				'type' => 'text',
+				'label' => esc_html__('Yelp', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'youtube',
+				'type' => 'text',
+				'label' => esc_html__('Youtube', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'vimeo',
+				'type' => 'text',
+				'label' => esc_html__('Vimeo', 'tatsu'),
+				'default' => '',
+				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'dribbble',
+				'type' => 'text',
+				'label' => esc_html__('Dribbble', 'tatsu'),
 				'default' => '',
 				'tooltip' => ''
 			),

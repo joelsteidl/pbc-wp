@@ -988,11 +988,14 @@
 					        jQuery('.portfolio-carousel-module').each(function () {
 					            var $this = jQuery(this),
 							        $slideshowspeed = Number( $this.attr('data-slide-show-speed') ) , 
-							        $slideshow = Number( $this.attr( 'data-slide-show' ) ),				            
+							        $slideshow = Number( $this.attr( 'data-slide-show' ) ),$number_of_cols = Number( $this.attr( 'data-cols' ) ),$mobile_cols = 2,			
+									$autoplaySpeed = Number( $this.attr('data-slide-show-speed')),            
 					            	$item_number = $this.children('.carousel-item').length;
-
-					            if($item_number > 5){
-					                $item_number = 5;
+								if(typeof $number_of_cols ==='undefined' || $number_of_cols == null || $number_of_cols == ''){
+									$number_of_cols = 2;
+								}
+					            if($number_of_cols > 5){
+					                $number_of_cols = 5;
 					            }
 
 					            if( 0 == $slideshow ) {
@@ -1000,6 +1003,9 @@
 					            } else {
 					                $slideshow = true;
 					            }				            
+								if($number_of_cols == 1){
+									$mobile_cols = 1;
+					            }
 
 					            if($item_number == 1){
 					                $this.fadeIn();
@@ -1007,19 +1013,20 @@
 					                $this.owlCarousel({
 					                    autoplay: $slideshow,
 					                    autoplayTimeout: $slideshowspeed,
-					                    autoplaySpeed: 1000, 
+					                    autoplaySpeed: $autoplaySpeed, 
 					                    autoplayHoverPause: true,
 					                    navRewind: false,
+										loop: true,
 					                    navText: ['<i class="font-icon icon-arrow_carrot-left"></i>','<i class="font-icon icon-arrow_carrot-right"></i>'],
 					                    responsiveRefreshRate: 0,
 					                    responsive: {
 					                        0:{
-					                            items:2,
+					                            items:$mobile_cols,
 					                            dots:true,
 					                            nav: false
 					                        },
 					                        767:{
-					                            items:$item_number,
+					                            items:$number_of_cols,
 					                            dots:false,
 					                            nav: true
 					                        }
@@ -1029,6 +1036,7 @@
 					                        $this.trigger('refresh.owl.carousel');
 					                    }
 					                });
+									
 					            }
 					        });
 					    });

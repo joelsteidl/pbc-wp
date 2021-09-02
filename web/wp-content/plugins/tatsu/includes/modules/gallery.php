@@ -221,7 +221,7 @@ if (!function_exists('tatsu_gallery')) {
 					$gdpr_lightbox_content .= be_gdpr_lightbox_for_video($gdpr_key,$video_details["thumb_url"],$video_details['source']);
 
 				}else{
-					$output .= '<a data-thumb = "' . $image_thumbnail_details[0] . '" href="'.$image['full_image_url'].'"  class="thumb-anchor '. $lightbox_image_class .'  " '. join( ' ',$data_atts ) .' title="'.$image['description'].'">';
+					$output .= '<a data-thumb = "' . (empty($image_thumbnail_details)?'':$image_thumbnail_details[0]) . '" href="'.$image['full_image_url'].'"  class="thumb-anchor '. $lightbox_image_class .'  " '. join( ' ',$data_atts ) .' title="'.$image['description'].'">';
 				}
                 
 				//End

@@ -1,3 +1,46 @@
+v3.3.6
+=====
+* Added: Light box in image carousel module
+* Fixed: Typography issue in text block module
+* Fixed: Tatsu header mobile menu typography in editing mode
+* Fixed: Youtube "This video is unavailable"
+* Fixed: Spyro form email to admin
+* Fixed: Spyro WooCommerce cart page header and product table
+
+v3.3.5
+=====
+* Fixed: Google Maps fatal error
+* Added: Horizontal navigation dynamic menu level in header-builder
+* Added: Rank Math SEO Plugin Compatibility
+* Fixed: Header disappear from page on save tatsu header after import demo
+* Fixed: Refresh Instagram access token
+* Fixed: Inline text alignment
+* Fixed: Text block text alignment
+* Added: More icons to team module and removed g+
+
+v3.3.4
+=====
+* Fixed: Instagram images count
+* Fixed: Animated heading cutoff from the bottom
+* Fixed: Showing borders on Front-end in standalone
+* Fixed: Remove link in Multi Purpose Card if url is empty
+* Fixed: Remove link in Icon if url is empty
+
+v3.3.3
+=====
+* Fixed: Instagram access token doc link in tatsu
+* Fixed: Page load in tatsu editor
+* Fixed: Title text display in single image module
+* Fixed: Get uploaded SVG Icons using curl
+* Added: Tatsu forms For Spyro
+* Added: Save form entries For Spyro
+* Added: Form entries table for admin
+* Fixed: Tatsu header builder for Standalone
+* Fixed: shift inner style element into head section - for spyro frontend
+* Fixed: tatsu global section custom css
+* Fixed: W3 validator compliance
+
+
 v3.3.2
 =====
 * Added: Add link to svg icon

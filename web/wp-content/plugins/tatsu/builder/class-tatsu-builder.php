@@ -108,6 +108,12 @@ class Tatsu_Builder {
 			return true;
 		}
 
+		// Tatsu Forms
+		if( current_theme_supports('tatsu-forms') && tatsu_is_valid_edit_action( 'tatsu-forms' ) ) {
+			$this->builder_mode = 'tatsu-page-builder';
+			return true;
+		}
+
 		return false;
 	}
 
@@ -218,6 +224,9 @@ class Tatsu_Builder {
         wp_enqueue_media();
 
 		wp_enqueue_script( 'tatsu' );	
+		if(be_theme_name('spyro')){
+		wp_enqueue_script( 'tatsu-builder-control', plugins_url( 'admin/js/tatsu-builder-control.js', dirname(__FILE__) ),array('jquery'), $this->version,true);
+		}
 		wp_enqueue_script( 'webfont-loader', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js',array(),$this->version );
 		wp_localize_script(
 			'tatsu',
@@ -230,7 +239,7 @@ class Tatsu_Builder {
 				'restapiurl' => esc_url( $rest_api_url ),
 				'wp_editor' => $this->get_wp_editor_config(),
 				'post_id' => $this->post_id,
-				'post_permalink' => esc_url( get_the_permalink( $this->post_id ) ),
+				'post_permalink' => correct_url_if_ssl(esc_url( get_the_permalink( $this->post_id ) )),
                 'home_url' => get_bloginfo( 'url' ),
                 'publishable' => $can_cur_user_publish,
 				'post_dashboard_link' => $dashboard_url,

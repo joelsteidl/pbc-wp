@@ -20,6 +20,63 @@ function tatsu_add_shortcode_content( $inner ) {
 	  return $new_content;
 }
 
+/***Replace file_get_contents with be_curl_file_get_contents*****/
+function be_curl_file_get_contents($url)
+{
+  $ch = curl_init();
+  $timeout = 5;
+  curl_setopt($ch,CURLOPT_URL,$url);
+  curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+  curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,$timeout);
+  $data = curl_exec($ch);
+  $httpcode = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+  curl_close($ch);
+  return ($httpcode>=200 && $httpcode<300) ? $data : 'Error : '.$httpcode;
+}
+
+function check_if_ssl_enabled(){
+	if(
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on')
+        || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)
+        || (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443)
+        || (isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] == 'https')
+    ){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function correct_url_if_ssl($url){
+	if(check_if_ssl_enabled() && stripos($url,'http://')!==false){
+			$url = str_ireplace('http://','https://',$url);
+	}
+	return $url;
+}
+
+function get_IP_address() {
+    $ipaddress = '';
+    if (isset($_SERVER['HTTP_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_X_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+    else if(isset($_SERVER['HTTP_X_CLUSTER_CLIENT_IP']))
+        $ipaddress = $_SERVER['HTTP_X_CLUSTER_CLIENT_IP'];
+    else if(isset($_SERVER['HTTP_FORWARDED_FOR']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+    else if(isset($_SERVER['HTTP_FORWARDED']))
+        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+    else if(isset($_SERVER['REMOTE_ADDR']))
+        $ipaddress = $_SERVER['REMOTE_ADDR'];
+    else
+        $ipaddress = 'UNKNOWN';
+    return $ipaddress;
+}
+
 function if_tatsubuilder_premium( ) {
 	$check_theme = wp_get_theme();
 	$theme_name = trim($check_theme->get(('Name' )));
@@ -77,7 +134,7 @@ function tatsu_shortcodes_from_content( $inner ) {
 		$new_content .= ']';
 		if( array_key_exists('inner', $module) && is_array( $module['inner'] ) && !empty( $module['inner'] ) ) {
 			$new_content .= tatsu_shortcodes_from_content( $module['inner'] );
-		} else {
+		} else if(!empty($module) && !empty($module['atts'])){
 			if( array_key_exists('content', $module['atts']) ) {
 				$new_content .=	shortcode_unautop( stripslashes_deep( $module['atts']['content'] ) );
 			}
@@ -87,6 +144,103 @@ function tatsu_shortcodes_from_content( $inner ) {
 	return $new_content;		
 }
 
+function extract_tatsu_forms_data_json( $inner,$post_id ) {
+	$new_content = '';	
+	if( !is_array( $inner ) || empty($post_id) ) {
+		return $new_content;
+	}
+	$tatsu_form = array();
+	$tatsu_form['form_id'] = $post_id;
+	$tatsu_form['form_name'] = get_the_title($post_id);
+	$tatsu_form['fields'] = extract_tatsu_forms_fields_from_content($inner);
+	return json_encode($tatsu_form);		
+}
+
+function extract_tatsu_forms_fields_from_content($inner){
+	$tatsu_form = array();
+	if(is_array( $inner )){
+		$data_required = array('field_type','label','name');
+		foreach ( $inner as $key => $module ) {
+			$module_name = $module['name'];
+			$remapped_modules = Tatsu_Module_Options::getInstance()->get_remapped_modules();
+			if( is_array( $remapped_modules ) && array_key_exists( $module_name, $remapped_modules ) ) {
+				$module_name = $remapped_modules[$module_name];
+			}
+			if($module_name=='spyro_form_field'){
+				if( is_array( $module['atts'] ) ) {
+					if( !array_key_exists( 'key', $module['atts'] ) || empty( $module['atts']['key'] )  ) {
+						$module['atts']['key'] = be_uniqid_base36(true);
+					}
+
+					foreach ($module['atts'] as $att => $value) {
+						$att = trim($att);
+						if( 'content' !== $att && in_array($att,$data_required) ) {
+							$tatsu_form[$key][$att] = $value;
+						}
+					}
+				}
+			}
+			
+			if( array_key_exists('inner', $module) && is_array( $module['inner'] ) && !empty( $module['inner'] ) ) {
+				$tatsu_form = extract_tatsu_forms_fields_from_content( $module['inner'] );
+			} 
+		}
+	}
+	return $tatsu_form;
+}
+
+function extract_tatsu_forms_field_name_list($tatsu_form_id){
+	$tatsu_form_fields = get_post_meta($tatsu_form_id,'_tatsu_forms');
+	if($tatsu_form_fields === false || empty($tatsu_form_fields)){
+		return false;
+	}else{
+		$tatsu_form_fields = json_decode($tatsu_form_fields[0]);
+		$tatsu_form_fields = $tatsu_form_fields->fields;
+		$tatsu_form_fields_name = array_column($tatsu_form_fields,'name');
+		return $tatsu_form_fields_name;
+	}
+	
+}
+
+function extract_spyro_form_module_shortcode($post_id){
+	$post = get_post($post_id);
+	$post_content =$post->post_content;
+	$spyro = explode('[spyro_form ',$post_content);
+	$spyro_partial = explode('[/spyro_form]',$spyro[1]);
+	$spyro_form_shortcode = '[spyro_form '.$spyro_partial[0].'[/spyro_form]';
+	return $spyro_form_shortcode;
+}
+
+function check_and_make_tables_for_tatsu_forms()
+{
+	if(is_admin() && current_user_can('manage_options')){
+		global $wpdb;
+		require_once ABSPATH.'wp-admin/includes/upgrade.php';
+		$charset_collate = $wpdb->get_charset_collate();
+		$tatsu_forms_submit_table = $wpdb->prefix.'tatsu_forms_submit';
+		$tatsu_forms_submit_sql = "CREATE TABLE $tatsu_forms_submit_table (
+		`submit_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+		`tatsu_form_id` bigint(20) unsigned NOT NULL,
+		`added` timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+		`ip` varchar(20),
+		`viewed` BOOLEAN DEFAULT '0',
+		`deleted` BOOLEAN DEFAULT '0',
+		PRIMARY KEY (`submit_id`)
+		) $charset_collate;";
+		
+		maybe_create_table($tatsu_forms_submit_table,$tatsu_forms_submit_sql);
+			
+		$tatsu_forms_data_table = $wpdb->prefix.'tatsu_forms_data';
+			$tatsu_forms_data_sql = "CREATE TABLE $tatsu_forms_data_table (
+			`id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+			`submit_id` int(11) unsigned NOT NULL,
+			`field_name` varchar(255),
+			`field_value` text,
+			PRIMARY KEY (`id`)
+			) $charset_collate;";
+		maybe_create_table($tatsu_forms_data_table,$tatsu_forms_data_sql);
+	}
+}
 
 function tatsu_validate_color( $color ) {
 	if( is_array( $color ) && array_key_exists( 'colorPositions', $color ) ) {
@@ -112,6 +266,8 @@ function tatsu_edit_url( $post_id ) {
             $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-header', 'post' => $post_id  ), admin_url( 'post.php' ) );
         }else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
             $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-footer', 'post' => $post_id  ), admin_url( 'post.php' ) );
+        }else if( 'tatsu_forms' === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu-forms', 'post' => $post_id  ), admin_url( 'post.php' ) );
         }else {
             $tatsu_edit_url = add_query_arg( array( 'action' => 'tatsu', 'post' => $post_id  ), admin_url( 'post.php' ) );
         }
@@ -122,6 +278,8 @@ function tatsu_edit_url( $post_id ) {
             $tatsu_edit_url = add_query_arg( array( 'tatsu-header' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
         }else if( TATSU_FOOTER_CPT_NAME === $post_type ) {
             $tatsu_edit_url = add_query_arg( array( 'tatsu-footer' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
+        }else if( 'tatsu_forms' === $post_type ) {
+            $tatsu_edit_url = add_query_arg( array( 'tatsu-forms' => '1', 'id' => $post_id ), get_permalink( $post_id ) );
         }else {
             $tatsu_edit_url = add_query_arg( array( 'tatsu' => '1', 'id' => $post_id  ), get_permalink( $post_id ) );
         }
@@ -267,6 +425,17 @@ function tatsu_check_if_global() {
 	if( is_object( $post ) ) {
 		$post_type = $post->post_type;
 		if( 'tatsu_gsections' === $post_type ) {
+			return true;
+		}
+	}
+	return false;
+}
+
+function tatsu_check_if_tatsu_forms() {
+	global $post;
+	if( is_object( $post ) ) {
+		$post_type = $post->post_type;
+		if( 'tatsu_forms' === $post_type ) {
 			return true;
 		}
 	}
@@ -427,6 +596,22 @@ function tatsu_get_slider_icons() {
 	return $slider_icons;
 }
 
+if( !function_exists( 'tatsu_get_tatsu_forms' ) ) {
+	function tatsu_get_tatsu_forms() {
+		$tatsu_forms_array = array();
+
+		$tatsu_forms_posts = get_posts(array( 'post_type' => 'tatsu_forms', 'numberposts' => '-1') );
+		if( $tatsu_forms_posts ) {
+			foreach( $tatsu_forms_posts as $section ) {
+				$tatsu_forms_array[ (string) $section->ID ] =  $section->post_title;
+			}
+			wp_reset_postdata();
+		}
+
+		return $tatsu_forms_array;
+	}
+}
+
 if( !function_exists( 'tatsu_get_global_sections' ) ) {
 	function tatsu_get_global_sections() {
 		$global_section_array = array();
@@ -453,6 +638,7 @@ if( !function_exists('tatsu_capitalize_post_name') ) {
 		return trim($capd_name);
 	}
 }
+
 
 if( !function_exists( 'tatsu_get_global_sections_localize_data' ) ) {
 
@@ -670,6 +856,7 @@ if( !function_exists( 'tatsu_parse_module_options' ) ) {
 	}
 }
 
+
 if( !function_exists( 'tatsu_register_global_section_meta' ) ){
     function tatsu_register_global_section_meta( $id, $args ){
         if( empty( $id ) || empty( $args ) || !is_array( $args ) ) {
@@ -727,7 +914,7 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 		switch ($source['source']) {
 			case 'instagram':
 				$transient_var = 'transient_instagram_user_data_'.$source['account_name'].'_'.$source['count'];
-				delete_transient( $transient_var );
+				//delete_transient( $transient_var );
 				$transient_media = get_transient( $transient_var );
 				if($transient_media && isset($transient_media) && !empty($transient_media)) {
 					$media = unserialize($transient_media);
@@ -735,7 +922,8 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 					if ( get_theme_mod('instagram_token', false) ){
 						$instagram_access_token = get_theme_mod('instagram_token', '');
 						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']);
-						//$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+						//Refresh token : https://developers.facebook.com/docs/instagram-basic-display-api/guides/long-lived-access-tokens
+						$ig_refresh_token = wp_remote_get('https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token);
 						
 						$instagram_response = $instagram_media["response"];
 						if(isset($instagram_response['code']) && $instagram_response['code']!=200 ){
@@ -754,18 +942,15 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 						}
 					}else{
 						delete_transient( $transient_var );
-						$check_theme = wp_get_theme();
-						$theme_name = trim($check_theme->get(('Name' )));
-						$theme_name = strtolower($theme_name);
-						$child_theme_name = trim($check_theme->get(('Template' )));
-						$child_theme_name = strtolower($child_theme_name);
-	
-						if($theme_name == 'exponent' || $child_theme_name == 'exponent'){
-							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
-						}else if($theme_name == 'oshin' || $child_theme_name == 'oshin'){
-							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshine-modules').'</div>';
+						$be_theme_name = be_theme_name();
+						if($be_theme_name=='exponent'){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://exponentwptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
+						}else if($be_theme_name=='spyro'){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://spyrowptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
+						}else if($be_theme_name=='oshin'){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://www.brandexponents.com/oshine-knowledgebase/knowledge-base/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
 						}else{
-							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token missing', 'oshine-modules').'</div>';
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Tatsu > Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://docs.tatsubuilder.com/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
 						}
 						
 						return $return;
@@ -776,14 +961,18 @@ if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
 				if(isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
+					if(!empty($source['count']) && is_numeric($source['count'])){
+						$images = array_slice($images, 0, $source['count']);
+					}
 					foreach ($images as $key => $value) {
 						list($width, $height) = getimagesize($value->media_url);
+						$caption = empty($value->caption)?'':$value->caption;
 						$temp_image_array = array();
 						$temp_image_array = array (
 							'thumbnail' => $value->media_url,
 							'full_image_url' => $value->media_url,
-							'caption' => $value->caption,
-							'description' => $value->caption,
+							'caption' => $caption,
+							'description' => $caption,
 							'width' => $width,
 							'height' => $height,
 							'id' => '',
@@ -1141,7 +1330,7 @@ if( !function_exists( 'tatsu_check_if_att_present' ) ) {
 
 //merge module's existing atts grouping with common atts grouping
 if( !function_exists( 'tatsu_smart_merge_group_atts_recursive' ) ) {
-    function tatsu_smart_merge_group_atts_recursive( &$merge_into, &$merge_from, $invert = false, $tag ) {
+    function tatsu_smart_merge_group_atts_recursive( &$merge_into, &$merge_from, $invert = false, $tag ='') {
         foreach( $merge_from as &$att_or_att_group_in_merge_from ) {
             if( is_array( $att_or_att_group_in_merge_from ) ) {
                 foreach( $att_or_att_group_in_merge_from['group'] as $merge_from_index => &$att_group_in_merge_from ) {
@@ -1283,6 +1472,8 @@ if( !function_exists( 'tatsu_is_valid_edit_action' ) ) {
                     return isset( $_REQUEST['action'] ) && 'tatsu-footer' === $_REQUEST['action'];
                 case 'tatsu-global' : 
                     return isset( $_REQUEST['action'] ) && 'tatsu-global' === $_REQUEST['action'];
+				case 'tatsu-forms' : 
+					return isset( $_REQUEST['action'] ) && 'tatsu-forms' === $_REQUEST['action'];
                 default : 
                     return false;
             }
@@ -1299,6 +1490,8 @@ if( !function_exists( 'tatsu_is_valid_edit_action' ) ) {
                     return isset( $_GET['tatsu-footer'] );
                 case 'tatsu-global' : 
                     return isset( $_GET['tatsu-global'] );
+				case 'tatsu-forms' : 
+					return isset( $_GET['tatsu-forms'] );
                 default : 
                     return false;
             }

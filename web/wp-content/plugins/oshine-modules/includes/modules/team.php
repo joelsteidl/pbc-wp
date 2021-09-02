@@ -18,7 +18,8 @@ if ( ! function_exists( 'be_team' ) ) {
 			'facebook'=>'',
 			'twitter'=>'',
 			'dribbble'=>'',
-			'google_plus'=>'',
+			'behance'=>'',
+			'yelp'=>'',
 			'linkedin'=>'',
 			'youtube'=>'',
 			'vimeo'=>'',
@@ -73,11 +74,13 @@ if ( ! function_exists( 'be_team' ) ) {
 		$thumb_img_overlay = ($title_style == 'style3') ? 'style="background: '.$thumb_overlay_color.'"' : '' ;
 		$icon_overlay_bg = ($smedia_icon_position == 'over' && $title_style != 'style3') ? 'style="background: '.$thumb_overlay_color.'"' : '';
 		$icon = '';
-		if( ! empty( $facebook ) || ! empty( $twitter ) || ! empty( $dribbble ) || ! empty( $google_plus ) || ! empty( $linkedin ) || ! empty( $youtube ) || ! empty( $vimeo ) || ! empty( $email ) || !empty( $instagram ) ){
+		if( ! empty( $facebook ) || ! empty( $twitter ) || ! empty( $dribbble ) || ! empty( $behance ) || ! empty( $yelp ) || ! empty( $linkedin ) || ! empty( $youtube ) || ! empty( $vimeo ) || ! empty( $email ) || !empty( $instagram ) ){
 			$icon ='<ul class="team-social clearfix '.$smedia_icon_position.'" '.$icon_overlay_bg.'>';
 			$icon .= ( ! empty( $facebook ) ) ? '<li class="icon-shortcode"><a href="'.$facebook.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-facebook"></i></a></li>' : '' ;
 			$icon .= ( ! empty( $twitter ) ) ? '<li class="icon-shortcode"><a href="'.$twitter.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-twitter"></i></a></li>' : '' ;
-			$icon .= ( ! empty( $google_plus ) ) ? '<li class="icon-shortcode"><a href="'.$google_plus.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-gplus"></i></a></li>' : '' ;
+			$icon .= ( ! empty( $behance ) ) ? '<li class="icon-shortcode"><a href="'.$behance.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-behance"></i></a></li>' : '' ;
+			$icon .= ( ! empty( $yelp ) ) ? '<li class="icon-shortcode"><a href="'.$yelp.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-yelp"></i></a></li>' : '' ;
+
 			$icon .= ( ! empty( $linkedin ) ) ? '<li class="icon-shortcode"><a href="'.$linkedin.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-linkedin"></i></a></li>' : '' ;
 			$icon .= ( ! empty( $youtube ) ) ? '<li class="icon-shortcode"><a href="'.$youtube.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-youtube"></i></a></li>' : '' ;
 			$icon .= ( ! empty( $dribbble ) ) ? '<li class="icon-shortcode"><a href="'.$dribbble.'" class="font-icon tatsu-icon team_icons" target="_blank"><i class="icon-dribbble"></i></a></li>' : '';
@@ -178,12 +181,14 @@ function oshine_register_team() {
                                             'group' => array (
                                                 'facebook',
                                                 'twitter',
-                                                'google_plus',
+                                                'behance',
+                                                'yelp',
                                                 'linkedin',
                                                 'youtube',
                                                 'vimeo',
                                                 'dribbble',
                                                 'email',
+                                                'instagram'
                                             )
                                         )
                                     )
@@ -371,9 +376,16 @@ function oshine_register_team() {
 					'tooltip' => '',
 	        	),
 	        	array (
-	        		'att_name' => 'google_plus',
+	        		'att_name' => 'behance',
 	        		'type' => 'text',
-	        		'label' => 'Google Plus',
+	        		'label' => 'Behance',
+	        		'default' => '',
+					'tooltip' => '',
+	        	),
+	        	array (
+	        		'att_name' => 'yelp',
+	        		'type' => 'text',
+	        		'label' => 'Yelp',
 	        		'default' => '',
 					'tooltip' => '',
 	        	),
@@ -409,6 +421,13 @@ function oshine_register_team() {
 	        		'att_name' => 'email',
 	        		'type' => 'text',
 	        		'label' => 'Email ID',
+	        		'default' => '',
+					'tooltip' => '',
+	        	),
+	        	array (
+	        		'att_name' => 'instagram',
+	        		'type' => 'text',
+	        		'label' => 'Instagram',
 	        		'default' => '',
 					'tooltip' => '',
 	        	),
@@ -607,7 +626,7 @@ function oshine_register_team() {
 						'title_alignment_static' => 'left',
 						'facebook' => '#',
 						'twitter' => '#',
-						'google_plus' => '#',
+						'instagram' => '#',
 						'linkedin' => '#',
 						'overlay_color' => 'rgba( 255, 255, 255, 0.8 )',
 

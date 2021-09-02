@@ -78,7 +78,7 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
         }
 
         $icon = !empty($icon) ? $icon : '';
-        $url = !empty($url) ? $url : '';
+        
 		$icon_label = ucfirst(str_replace(array('tatsu','icon'),' ',str_replace('-','',$icon)));
         
         $classes = implode( ' ', $classes );
@@ -100,9 +100,15 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
                     <div class = "tatsu-icon_card-title-caption">
                         <?php if( !empty( $title ) ) : ?>
                             <div class = "tatsu-icon_card-title <?php echo !empty($title_font) ? $title_font : ''; ?>">
+							<?php 
+								if(empty($url)){
+									echo $title;
+								}else{
+							?>
                                 <a href = "<?php echo $url; ?>">
                                     <?php echo $title; ?>
                                 </a>
+							<?php } ?>
                             </div>
                         <?php endif; ?>
                         <?php if( !empty( $content ) ) : ?>

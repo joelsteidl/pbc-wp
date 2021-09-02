@@ -75,7 +75,9 @@ class Tatsu_Header_Store {
                 'other' => $transparent_enable_list['other'],
                 'active_header' => $current_active_header === $this->post_id,
 			);
-        }
+        }else if($current_active_header == $this->post_id){
+			$header_settings['active_header'] = true;
+		}
         if( !array_key_exists('active_header', $header_settings) ) {
             $header_settings['active_header'] = $current_active_header === $this->post_id;
         }

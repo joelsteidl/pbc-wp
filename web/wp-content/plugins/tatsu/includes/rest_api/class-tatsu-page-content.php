@@ -38,6 +38,11 @@ class Tatsu_Page_Content {
 			if( !metadata_exists( 'post', $this->post_id, '_edited_once_with_tatsu' ) ) {
 				add_post_meta( $this->post_id, '_edited_once_with_tatsu', true );
 			}
+			
+			if('tatsu_forms'==get_post_type($this->post_id)){
+				$tatsu_form_json = extract_tatsu_forms_data_json( json_decode( $this->tatsu_content, true ),$this->post_id );
+				update_post_meta( $this->post_id, '_tatsu_forms', $tatsu_form_json );
+			}
 			return true;
 		} 
 		return false;

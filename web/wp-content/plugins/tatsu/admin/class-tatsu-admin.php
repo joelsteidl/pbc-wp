@@ -112,7 +112,7 @@ class Tatsu_Admin {
 
 		$temp_localized_array = tatsu_get_global_sections_localize_data(); 
 		wp_localize_script( $this->plugin_name, 'tatsu_global_section_data', $temp_localized_array  );
-	
+
 	}
 
 	public function add_body_class( $classes ) {
@@ -235,11 +235,54 @@ class Tatsu_Admin {
 		add_menu_page('Tatsu', 'Tatsu', 'manage_options', 'tatsu_settings', 'tatsu_settings_page', '');
 		add_submenu_page('tatsu_settings', 'Settings', 'Settings', 'manage_options', 'tatsu_settings', 'tatsu_settings_page');
 		add_submenu_page('tatsu_settings', 'Global Sections', 'Global Sections', 'manage_options', 'edit.php?post_type=tatsu_gsections');
+		if( current_theme_supports('tatsu-forms') ){
+		add_submenu_page('tatsu_settings', 'Tatsu Forms', 'Forms', 'manage_options', 'edit.php?post_type=tatsu_forms');
+		add_submenu_page('tatsu_settings', 'Tatsu Form Entries', 'Form Entries', 'manage_options', 'tatsu-forms-entries','tatsu_forms_entries_display_table');
+		}
 		if( current_theme_supports( 'tatsu-header-builder' ) ) {
 			add_submenu_page('tatsu_settings', 'Headers', 'Headers', 'manage_options', 'edit.php?post_type=' . TATSU_HEADER_CPT_NAME);
 		}
 		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
 			add_submenu_page('tatsu_settings', 'Footer', 'Footer', 'manage_options', 'edit.php?post_type=' . TATSU_FOOTER_CPT_NAME);
+		}
+	}
+
+	public function tatsu_forms_post_type(){
+		if( current_theme_supports('tatsu-forms') ){
+			$labels = array( 
+				'name' => esc_html__( 'Tatsu Forms', 'tatsu' ),
+				'singular_name' => esc_html__( 'Tatsu Forms', 'tatsu' ),
+				'add_new' => _x( 'Add New Form', 'Tatsu Forms', 'tatsu' ),
+				'all_items' => esc_html__( 'All Forms', 'tatsu' ),
+				'add_new_item' => esc_html__( 'Add New Form', 'tatsu' ),
+				'edit_item' => esc_html__( 'Edit Form', 'tatsu' ),
+				'new_item' => esc_html__( 'New Form', 'tatsu' ),
+				'view_item' => esc_html__( 'View Form', 'tatsu' ),
+				'search_item' => esc_html__( 'Search Form', 'tatsu' ),
+				'not_found' => esc_html__( 'No Form Found', 'tatsu' ),
+				'no_item_found_in_trash' => esc_html__( 'No Form Found In Trash', 'tatsu' ),
+				'parent_item_colon' => esc_html__( 'Parent Section:', 'tatsu' ),
+			);
+			$args = array( 
+				'labels' => $labels,
+				'public' => true,
+				'has_achive' => true,
+				'publicly_queryable' => true,
+				'query_var' => true,
+				'rewrite' => true,
+				'capability_type' => 'post',
+				'hierarchical' => false,
+				'supports' => array( 
+					'title',
+					'editor',
+					'thumbnail',
+					'revisions'
+				),
+				'menu_position' => 5,
+				'exclude_from_search' =>  false,
+				'show_in_menu' => false
+			);
+			register_post_type( 'tatsu_forms',$args );
 		}
 	}
 
