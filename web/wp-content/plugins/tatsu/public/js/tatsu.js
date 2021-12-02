@@ -376,7 +376,8 @@
                         if(loopVideo){
                             playerVariables.playlist = id;
                         }
-                        curPlayer = new YT.Player( this, {
+
+                        var ytPlayerSettings = {
                             videoId : id,
                             playerVars: playerVariables,
                             width : curVideo.width(),
@@ -388,7 +389,14 @@
                                     }
                                 }
                             }
-                        });
+                        };
+                        //fix - Revslider background video
+                        if(0< $('rs-bgvideo').length){
+                            ytPlayerSettings.host='https://www.youtube-nocookie.com';
+                            ytPlayerSettings.origin=window.location.hostname;
+                        }
+                        
+                        curPlayer = new YT.Player( this, ytPlayerSettings);
                         videoReadyCallback( $( curPlayer.getIframe() ) );
                     }
                 });
@@ -1581,7 +1589,13 @@
                     
                 var tatsu_form_status =  $this.parent('.tatsu-forms-save').find('.subscribe_status');
                 var tatsu_loader = $this.parent('.tatsu-forms-save').find(".exp-subscribe-loader");
-                if(typeof formid === 'undefined' || formid == null || formid == ''){
+                var spyro_required_checkbox = $this.find('.spyro-required-checkbox');
+                if(spyro_required_checkbox.length && spyro_required_checkbox.find('input[type="checkbox"]:checked').length<=0){
+                    spyro_required_checkbox.find('.error').text('Required field').show().fadeOut(9999);
+                    tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
+                    tatsu_form_status.html("Required field missing");
+                    return false;
+                }else if(typeof formid === 'undefined' || formid == null || formid == ''){
                     tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
                     tatsu_form_status.html("Invalid Form").slideDown();
                     console.log('Form id missing');
@@ -1594,6 +1608,7 @@
                         console.log('Form id missing');
                     }else{
                         var submit_button = $this.find( 'input[type="submit"]' );
+                        var is_recaptcha = $this.find( 'input[name="is_recaptcha"]' ).val();
                         submit_button.prop( 'disabled', true );
                         tatsu_loader.fadeIn();
                         var action_after_submit = $this.attr('data-action');
@@ -1601,33 +1616,63 @@
                         tatsu_formData.append('action', 'tatsu_forms_save');
                         tatsu_formData.append('form_id', form_id);
                         tatsu_formData.append('action_after_submit', action_after_submit);
-                        jQuery.ajax({
-                            type: "POST",
-                            url: tatsuFrontendConfig.ajax_url,
-                            processData: false,
-                            contentType: false,
-                            dataType: 'json',
-                            data: tatsu_formData,
-                            success    : function (msg) {
-                                tatsu_loader.fadeOut();
-                                if (msg.status === "error") {
-                                    tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
-                                } else {
-                                    tatsu_form_status.addClass("tatsu-success").removeClass("tatsu-error");
-                                }
-                                tatsu_form_status.html(msg.data).slideDown();
-                                submit_button.prop( 'disabled', false );
-                                $this.trigger("reset");
-                            },
-                            error: function () {
-                                submit_button.prop( 'disabled', false );
-                                tatsu_form_status.html("Please Try Again Later").slideDown();
+                        if(action_after_submit=='mailchimp'){
+                            var email_address = $this.find('input[data-map_field="email_address"]');
+                            if(email_address.length){
+                            tatsu_formData.append('email_address',email_address.val());
                             }
-                        });
+                            var fname = $this.find('input[data-map_field="FNAME"]');
+                            if(fname.length){
+                            tatsu_formData.append('fname',fname.val());
+                            }
+                            var lname = $this.find('input[data-map_field="LNAME"]');
+                            if(lname.length){
+                            tatsu_formData.append('lname',lname.val());
+                            }
+                            var phone = $this.find('input[data-map_field="PHONE"]');
+                            if(phone.length){
+                            tatsu_formData.append('phone',phone.val());
+                            }
+                        }
+                        if(tatsuFrontendConfig.recaptcha_type=='v3' && typeof is_recaptcha !=='undefined' && is_recaptcha == '1'){
+                            grecaptcha.ready(function() {
+                                grecaptcha.execute(tatsuFrontendConfig.recaptcha_site_key, {action: 'submit'}).then(function(token) {
+                                    tatsu_formData.append('g-recaptcha-response', token);
+                                    save_tatsu_form_ajax(tatsu_formData,tatsu_form_status,submit_button,tatsu_loader,$this);
+                                });
+                            });
+                        }else{
+                            save_tatsu_form_ajax(tatsu_formData,tatsu_form_status,submit_button,tatsu_loader,$this);
+                        }
                         return false;
                     }
                }
             }); 			
+        },
+        save_tatsu_form_ajax = function(tatsu_formData,tatsu_form_status,submit_button,tatsu_loader,$this){ 
+            jQuery.ajax({
+                type: "POST",
+                url: tatsuFrontendConfig.ajax_url,
+                processData: false,
+                contentType: false,
+                dataType: 'json',
+                data: tatsu_formData,
+                success    : function (msg) {
+                    tatsu_loader.fadeOut();
+                    if (msg.status === "error") {
+                        tatsu_form_status.removeClass("tatsu-success").addClass("tatsu-error");
+                    } else {
+                        tatsu_form_status.addClass("tatsu-success").removeClass("tatsu-error");
+                        $this.trigger("reset");
+                    }
+                    tatsu_form_status.html(msg.data).slideDown();
+                    submit_button.prop( 'disabled', false );
+                },
+                error: function () {
+                    submit_button.prop( 'disabled', false );
+                    tatsu_form_status.html("Please Try Again Later").slideDown();
+                }
+            });
         },
         ready = function(){
 

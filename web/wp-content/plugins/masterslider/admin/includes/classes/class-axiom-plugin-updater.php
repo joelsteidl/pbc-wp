@@ -261,15 +261,15 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
          *                        existing local file, it will be returned untouched.
          * @return string|WP_Error The full path to the downloaded package file, or a {@see WP_Error} object.
          */
-        public function download_package( $package ) {
-            // we will override package file with our own package
-            $package = $this->get_downloaded_package_url();
+        public function download_package( $package, $check_signatures = false, $hook_extra = array() ) {
+          // we will override package file with our own package
+          $package = $this->get_downloaded_package_url();
 
-            if( is_wp_error( $package ) )
-                return $package;
+          if( is_wp_error( $package ) )
+             return $package;
 
-            return parent::download_package( $package );
-        }
+          return parent::download_package( $package, $check_signatures = false, $hook_extra = array() );
+      }
 
         /**
          * Initialize the upgrade strings.

@@ -1617,4 +1617,11 @@ if( !function_exists( 'tatsu_print_custom_js' ) ) {
     }
 }
 
+//get minimum required captcha score for tatsu form
+if(!function_exists('tatsu_get_recaptcha_threshold_score')){
+	function tatsu_get_recaptcha_threshold_score(){
+	return apply_filters('tatsu_form_recaptcha_threshold_score',0.50);
+	}
+}
+
 ?>

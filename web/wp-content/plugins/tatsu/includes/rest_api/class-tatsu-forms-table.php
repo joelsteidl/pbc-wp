@@ -140,7 +140,7 @@ class Tatsu_forms_table extends WP_List_Table {
                     $array1 = array(
                         "submit_id" => $forms->submit_id,
                         "added" => wp_date('d-m-y',strtotime($forms->added)),
-                        "view" => $forms->view,
+                        "view" => $forms->viewed,
                         "ip"=>$forms->ip,
                         "json_data"=>json_encode($array_combine)
                     );

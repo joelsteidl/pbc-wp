@@ -1,3 +1,21 @@
+v3.3.8
+=====
+* Fixed: Spyro form mailchimp integration
+* Fixed: Save Spyro form multiple checkbox values
+* Fixed: Spyro Forms required field handling for checkbox
+
+v3.3.7
+=====
+* Fixed: Revslider background video with tatsu youtube video
+* Fixed: Spyro blog page css
+* Fixed: Plugin update checker url
+* Added: Tatsu Forms reCAPTCHA v3 and v2
+* Added: Reply-To, Bcc, Cc added in Tatsu Forms email notification 
+* Added: Tatsu Forms Autoresponder Email
+* Added: Customize message in Tatsu Forms email notification
+* Fixed: Spyro shop page banner
+* Fixed: Spyro global section styles
+
 v3.3.6
 =====
 * Added: Light box in image carousel module

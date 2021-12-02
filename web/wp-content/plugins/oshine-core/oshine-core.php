@@ -5,7 +5,7 @@
  * Plugin URI: http://brandexponents.com
  * Author: brandexponents team
  * Author URI: http://brandexponents.com
- * Version: 1.5.4
+ * Version: 1.5.5
  * License: GPL2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain: be-functions
@@ -27,7 +27,7 @@ function be_init() {
     $BECore               = new BECore();
     $BECore['path']       = realpath( plugin_dir_path( __FILE__ ) ). DIRECTORY_SEPARATOR;
     $BECore['url']        = plugin_dir_url( __FILE__ );
-    $BECore['version']    = '1.5.4';
+    $BECore['version']    = '1.5.5';
     $BECore['BEThemeDemoImporter'] = new BEThemeDemoImporter();
     apply_filters( 'be/config', $BECore );
     $BECore->run();
@@ -43,7 +43,7 @@ add_action( 'be_systatus_tpl', 'be_stat_display', 10, 1 );
 
 require BE_PATH. '/plugin-update-checker/plugin-update-checker.php';
 $oshine_modules_update_checker = new PluginUpdateChecker_3_1 (
-    'http://brandexponents.com/oshin-plugins/oshine-core.json',
+    'https://brandexponents.com/wp/wp-content/uploads/oshine-core.json',
     __FILE__,
     'oshine-core'
 );

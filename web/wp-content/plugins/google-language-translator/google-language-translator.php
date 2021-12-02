@@ -2,7 +2,7 @@
 /*
 Plugin Name: Google Language Translator
 Plugin URI: https://gtranslate.io/?xyz=3167
-Version: 6.0.11
+Version: 6.0.12
 Description: The MOST SIMPLE Google Translator plugin.  This plugin adds Google Translator to your website by using a single shortcode, [google-translator]. Settings include: layout style, hide/show specific languages, hide/show Google toolbar, and hide/show Google branding. Add the shortcode to pages, posts, and widgets.
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io
@@ -912,7 +912,11 @@ class google_language_translator {
 
     foreach ($settings_name_array as $setting) {
       add_settings_field( $setting,'',$setting.'_cb','google_language_translator','glt_settings');
-      register_setting( 'google_language_translator',$setting);
+
+      if ($setting == 'googlelanguagetranslator_floating_widget_text')
+          register_setting( 'google_language_translator', $setting, array('sanitize_callback' => 'wp_kses_post'));
+      else
+          register_setting( 'google_language_translator',$setting);
     }
   }
 
@@ -2540,3 +2544,19 @@ function glt_update_option($old_value, $value, $option_name) {
 add_action('update_option_googlelanguagetranslator_seo_active', 'glt_update_option', 10, 3);
 add_action('update_option_googlelanguagetranslator_url_structure', 'glt_update_option', 10, 3);
 add_action('update_option_googlelanguagetranslator_language', 'glt_update_option', 10, 3);
+
+// exclude javascript minification by cache plugins for free version
+if($glt_seo_active != '1') {
+    function cache_exclude_js_glt($excluded_js) {
+        if(is_array($excluded_js) or empty($excluded_js))
+            $excluded_js[] = 'translate.google.com/translate_a/element.js';
+
+        return $excluded_js;
+    }
+
+    // LiteSpeed Cache
+    add_filter('litespeed_optimize_js_excludes', 'cache_exclude_js_glt');
+
+    // WP Rocket
+    add_filter('rocket_exclude_js', 'cache_exclude_js_glt');
+}

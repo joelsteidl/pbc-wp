@@ -108,6 +108,34 @@ class Tatsu_Store {
 		return wp_send_json_success( [ 'alert' => $alert ] );
 	}
 
+	
+	public function tatsu_save_recaptcha_details(){
+		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
+			echo 'false';
+			wp_die();
+		}
+
+		$recaptcha_type = sanitize_text_field( $_POST['recaptcha_type'] );
+		$site_key = sanitize_text_field( $_POST['site_key'] );
+		$secret_key = sanitize_text_field( $_POST['secret_key'] );
+		$recaptcha_settings= array(
+            'recaptcha_type'=>$recaptcha_type,
+            'site_key'=>$site_key,
+            'secret_key'=>$secret_key
+        );
+		if(empty($recaptcha_type) || empty($site_key) || empty($secret_key)){
+			$alert = ['danger' => 'Required input field missing'];
+		}else if(!empty($recaptcha_type) && !in_array($recaptcha_type,array('v3','v2'))){
+			$alert = ['danger' => 'Wrong reCAPTCHA type'];
+		}else if(update_option('tatsu_form_recaptcha_settings',$recaptcha_settings)){
+			$alert = ['success' => 'reCAPTCHA details saved successfully'];
+		}else{
+			$alert = ['danger' => 'Failed to save reCAPTCHA details'];
+		}
+
+		return wp_send_json_success( [ 'alert' => $alert ] );
+	}
+	
 	public function get_store( WP_REST_Request $request ) {
 		$this->post_id = $request->get_param('post_id');
 		$this->store = array_merge( $this->get_module_options(), $this->get_page_content() );

@@ -75,7 +75,9 @@ if( !function_exists( 'be_compute_color' ) ) {
 					$color_data = $color_arr['color'];
 					if( $id_array[0] == 'swatch' && function_exists( 'colorhub_get_swatch' ) ){
 						$swatch = colorhub_get_swatch( $id_array[1] );
-						$color_data = $swatch['color'];
+						if(!empty($swatch['color'])){
+							$color_data = $swatch['color'];
+						}
 					}
 					if( $id_array[0] == 'palette' && function_exists( 'colorhub_get_palette' ) ){
 						$color_data = colorhub_get_palette( $id_array[1] );
@@ -538,10 +540,19 @@ if( !function_exists( 'be_get_style_from_content' ) ) {
 		return $post_style;
 	}
 }
+//check if page is blog/Posts page
+if( !function_exists( 'tatsu_is_blog_page' ) ) {
+	function tatsu_is_blog_page(){
+		if( !is_front_page() && is_home()){
+			return true;
+		}
+		return false;
+	}
+}
 
 if( !function_exists( 'be_remove_style_from_content' ) ) {
 	function be_remove_style_from_content($post_content=null){
-		if(be_theme_name('spyro') && is_tatsu_not_edit_mode() && !empty($post_content)){
+		if(!tatsu_is_blog_page() && be_theme_name('spyro') && !be_is_woocommerce_page() && is_tatsu_not_edit_mode() && !empty($post_content)){
 			$new_content = '';
 			$style1 = explode('<style>',$post_content);
 			if(!empty($style1)){
@@ -559,6 +570,13 @@ if( !function_exists( 'be_remove_style_from_content' ) ) {
 			}
 		}
 		return $post_content;
+	}
+}
+
+//Check if on a page which uses WooCommerce templates
+if( !function_exists( 'be_is_woocommerce_page' ) ) {
+	function be_is_woocommerce_page(){
+		return	(class_exists('woocommerce') && (is_woocommerce() || is_cart() || is_checkout() || is_account_page()));
 	}
 }
 

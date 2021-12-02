@@ -412,6 +412,14 @@ class BEThemeImporter {
       if(!empty($data['top_header_hamburger_style'])){
         $data['top_header_hamburger_style'] = $this->replace_content_url_to_hosting_url($data['top_header_hamburger_style']);
       }
+
+      if(!empty($data['left-header-style'])){
+        $data['left-header-style'] = $this->replace_content_url_to_hosting_url($data['left-header-style']);
+      }
+      if(!empty($data['left_header_hamburger_style'])){
+        $data['left_header_hamburger_style'] = $this->replace_content_url_to_hosting_url($data['left_header_hamburger_style']);
+      }
+      
       
   		// Hook before import
   		$data = apply_filters( 'radium_theme_import_theme_options', $data );

@@ -16,7 +16,7 @@
  * Plugin Name:       Color Hub
  * Plugin URI:        http://brandexponents.com
  * Description:       Helps you create swatches and palettes for managing colors used across your website. Integrated with Tatsu page builder. 
- * Version:           1.0.6
+ * Version:           1.0.7
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'COLORHUB_VERSION', '1.0.6' );
+define( 'COLORHUB_VERSION', '1.0.7' );
 
 if( !defined( 'COLORHUB_PLUGIN_URL' ) ) {
 	define( 'COLORHUB_PLUGIN_URL', plugins_url( '', __FILE__ ) );
@@ -67,7 +67,7 @@ register_deactivation_hook( __FILE__, 'deactivate_colorhub' );
 
 require COLORHUB_PLUGIN_DIR. 'plugin-update-checker/plugin-update-checker.php';
 $colorhub_update_checker = new PluginUpdateChecker_3_1 (
-    'https://brandexponents.com/oshin-plugins/colorhub.json',
+    'https://brandexponents.com/wp/wp-content/uploads/colorhub.json',
     __FILE__,
     'colorhub'
 );

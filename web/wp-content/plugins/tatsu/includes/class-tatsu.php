@@ -239,6 +239,11 @@ class Tatsu {
 		require_once TATSU_PLUGIN_DIR. 'includes/class-tatsu-i18n.php';
 
 		/**
+		 *  The class responsible for process submitted Tatsu forms
+		 */		
+		require_once TATSU_PLUGIN_DIR.'includes/class-tatsu-forms-process.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once TATSU_PLUGIN_DIR. 'admin/class-tatsu-admin.php';
@@ -291,6 +296,12 @@ class Tatsu {
 		 */			
 
 		require_once TATSU_PLUGIN_DIR. 'admin/partials/tatsu-forms-entries-display.php';
+
+		/**
+		 * The page that display tatsu form settings to admin
+		 */			
+
+		require_once TATSU_PLUGIN_DIR. 'admin/partials/tatsu-form-settings.php';
 
 
 		/**
@@ -474,8 +485,9 @@ class Tatsu {
         $this->loader->add_action( 'wp_footer', $plugin_public, 'tatsu_add_custom_scripts', 9999 );
 
 		//Ajax handler
-		$this->loader->add_action( 'wp_ajax_nopriv_tatsu_forms_save', $plugin_public, 'tatsu_forms_save' );
-		$this->loader->add_action( 'wp_ajax_tatsu_forms_save', $plugin_public, 'tatsu_forms_save' );
+		$plugin_forms_process = new Tatsu_Forms_Process( $this->get_plugin_name(), $this->get_version() );
+		$this->loader->add_action( 'wp_ajax_nopriv_tatsu_forms_save', $plugin_forms_process, 'tatsu_forms_save' );
+		$this->loader->add_action( 'wp_ajax_tatsu_forms_save', $plugin_forms_process, 'tatsu_forms_save' );
 	}
 
 	/**
@@ -515,6 +527,8 @@ class Tatsu {
 		$this->loader->add_action( 'wp_ajax_tatsu_check_license', $plugin_store, 'ajax_check_license' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_instagram_token_save', $plugin_store, 'ajax_instagram_token_save' );
+
+		$this->loader->add_action( 'wp_ajax_tatsu_save_recaptcha_details', $plugin_store, 'tatsu_save_recaptcha_details' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_save_store', $plugin_store, 'ajax_save_store' );
 

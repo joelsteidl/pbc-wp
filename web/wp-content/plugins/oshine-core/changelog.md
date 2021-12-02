@@ -1,3 +1,9 @@
+v1.5.5
+======
+* Fixed: V3 demo import
+* Fixed: Plugin update checker url
+* Fixed: left header and hamburger menu style in demo import
+
 v1.5.4
 ======
 * Fixed: V4 demo import

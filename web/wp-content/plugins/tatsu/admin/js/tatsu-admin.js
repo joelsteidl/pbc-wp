@@ -99,6 +99,50 @@
 		} );
 
 		/**
+		 * Save reCAPTCHA details 
+		 */
+		 $( '#recaptcha-integration-form' ).on( 'submit', function( e ) {
+			e.preventDefault();
+			var reCAPTCHA_formData = new FormData($(this)[0]);
+			reCAPTCHA_formData.append('action', 'tatsu_save_recaptcha_details');
+			reCAPTCHA_formData.append('nonce', tatsuAdminConfig.nonce);
+			var save_button = $(this).find('input[type="submit"]');
+			var response_div = $(this).find('.tatsu-form-response');
+			$.ajax( {
+				url: tatsuAdminConfig.ajaxurl,
+				data: reCAPTCHA_formData,
+				processData: false,
+        		contentType: false,
+				type: 'POST',
+				dataType: 'json',
+				beforeSend: function(xhr) {
+					xhr.setRequestHeader('X-WP-Nonce', tatsuAdminConfig.nonce);
+					save_button.prop( 'disabled', true );
+				},
+				error: function( error ) {
+					console.log( 'Internal Error !' + error );
+					save_button.prop( 'disabled', false );
+				},
+				success: function( response ) {
+
+					save_button.prop( 'disabled', false );
+
+					if ( response.data.alert.success ) {
+						response_div.html(
+							'<div class="notice notice-success settings-error is-dismissible"> <p>' + response.data.alert.success + '</p></div>'
+						);
+					} else {
+						response_div.html(
+							'<div class="notice notice-error settings-error is-dismissible"> <p>' + response.data.alert.danger + '</p></div>'
+						);
+					}
+
+				}
+			});
+
+		} );
+
+		/**
 		 * TATSU FORMS DASHBOARD
 		 */
 		$(document).on('click','#tatsu-form-entries-table-form .delete-form',function(e){

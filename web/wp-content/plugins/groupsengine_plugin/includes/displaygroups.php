@@ -1040,7 +1040,7 @@ $enmge_scl = 0;
 	    		<?php $enmge_sharelink = $enmge_thispage . urlencode('&enmge_gid=' . $enmge_gid); ?>
 	    		<ul>
 	    			<li class="ge-facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo $enmge_sharelink; ?>">Facebook</a></li>
-	    			<li class="ge-twitter"><a href="https://twitter.com/intent/tweet?status=%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:%20<?php echo $enmge_sharelink; ?>">Twitter</a></li>
+					<li class="ge-twitter"><a href="https://twitter.com/share?text=%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>:&url=<?php echo $enmge_sharelink; ?>" target="_blank">Twitter</a></li>	    			
 	    			<li class="ge-share"><a href="<?php echo rawurldecode($enmge_sharelink); ?>" class="enmge-copy-link">Copy Link</a></li>
 	    			<li class="ge-email"><a href="mailto:TypeEmailHere@address.com?subject=Check%20out%20%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>&body=Check%20out%20%22<?php echo stripslashes($enmge_single->group_title); ?>%22%20on%20<?php echo urlencode(bloginfo('name')); ?>%20at%20the%20link%20below:%0A%0A<?php echo $enmge_sharelink; ?>">Email Link</a></li>
 	    		</ul>
@@ -1634,7 +1634,7 @@ $enmge_scl = 0;
 	<input type="hidden" name="enmge-embed-options" value="<?php echo $enmge_mapoptions; ?>" class="enmge-embed-options">
 	<input type="hidden" name="enmge-group-id" value="<?php if ( isset($_GET['enmge_gid']) ) { echo $_GET['enmge_gid']; } ?>" class="enmge-group-id">
 	<input type="hidden" name="enmge-plugin-url" value="<?php echo plugins_url() . "/groupsengine_plugin"; ?>" class="enmge-plugin-url">
-	<input type="hidden" name="enmge-permalink" value="<?php echo rawurlencode($enmge_thispage); ?>" class="enmge-permalink">
+	<input type="hidden" name="enmge-permalink" value="<?php echo $enmge_thispage; ?>" class="enmge-permalink">
 	<input type="hidden" name="enmge-permalinknoajax" value="<?php echo $enmge_thispage; ?>" class="enmge-permalinknoajax">
 	<input type="hidden" name="xxge" value="<?php echo base64_encode(ABSPATH); ?>" class="xxge" />
 	<?php if ( $enmge_credits != "text" ) { ?>
@@ -1643,7 +1643,7 @@ $enmge_scl = 0;
 	<p class="enmge-poweredbytext">Powered by <a href="http://groupsengine.com" target="_blank">Groups Engine</a></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v1.3.3 081820 -->
+	<!-- v1.3.4 112521 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

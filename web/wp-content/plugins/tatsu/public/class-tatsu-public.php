@@ -52,142 +52,6 @@ class Tatsu_Public {
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
 	}
-
-
-	
-	public function tatsu_forms_save() {
-		$site_url = get_site_url();
-		$request_url = $_SERVER['HTTP_REFERER'];
-        if( stripos( $request_url, $site_url ) === false ){
-			$result['status']="error";
-			$result['data']=__('Cross Domain not allowed','tatsu');
-		}else if(!empty($_POST) && !empty($_POST['form_id'])) {
-			$tatsu_form_id = sanitize_text_field($_POST['form_id']);
-			$form_fields_name = extract_tatsu_forms_field_name_list($tatsu_form_id);
-			if($form_fields_name === false){
-				$result['status']="error";
-				$result['data']=__('Invalid Form','tatsu');
-			}else{
-				global $wpdb;
-				//Generate submit form id
-				$tatsu_forms_submit_table = $wpdb->prefix.'tatsu_forms_submit';
-				$ip = get_IP_address();
-				$query_submit = $wpdb->prepare(
-					"
-					INSERT INTO $tatsu_forms_submit_table
-					( tatsu_form_id, ip)
-					VALUES ( %d, %s )
-					",
-					$tatsu_form_id,
-					$ip
-				);
-				$wpdb->query($query_submit);
-				$submit_id = $wpdb->insert_id;
-
-				//Saving Form Data
-				$tatsu_forms_data_table = $wpdb->prefix.'tatsu_forms_data';
-				$form_data = array();
-				$email_html = '';
-				foreach ($_POST as $field_name => $field_value) {
-					if(!empty($field_name) && in_array(trim($field_name),$form_fields_name)){
-						$field_name = sanitize_text_field($field_name);
-						$field_value = sanitize_textarea_field($field_value);
-						$form_data[] = $wpdb->prepare("(%d,%s,%s)",$submit_id,$field_name,$field_value);
-						$email_html .= '<tr ><th style="padding-left:15px;background-color:#ffffff;">'.preg_replace(array('/_/','/-/'),' ', $field_name).'</th></tr><tr><td style="padding-left:15px;padding-bottom:15px;background-color:#ffffff;">'.$field_value.'</td></tr>';
-					}
-				}
-				$query_data = $wpdb->prepare(
-					"INSERT INTO $tatsu_forms_data_table (submit_id,field_name,field_value) VALUES "
-				);
-				$query_data .= implode(",\n",$form_data);
-				$wpdb->query($query_data);
-				
-				//Send Email
-				if(!empty($_POST['action_after_submit']) && 'email'==trim($_POST['action_after_submit'])  && !empty($_POST['to_email_options'])){
-					$to = empty($_POST['to_email'])?get_option('admin_email'):$_POST['to_email'];
-					$to =sanitize_email($to);
-					$formName = get_the_title($tatsu_form_id);
-					$blog_title = get_bloginfo( 'name' );
-					$subject = 'Form received - '.$blog_title;
-					$body='<!DOCTYPE html>
-					<html lang="en" >
-					<head>
-					  <meta charset="utf-8">
-					  <meta name="viewport" content="width=device-width,initial-scale=1">
-					  <title></title>
-					  <style>
-						table, td, div, h1, p {
-						  font-family: Arial, sans-serif;
-						}
-						@media screen and (max-width: 530px) {
-						  .unsub {
-							display: block;
-							padding: 8px;
-							margin-top: 14px;
-							border-radius: 6px;
-							background-color: #555555;
-							text-decoration: none !important;
-							font-weight: bold;
-						  }
-						  .col-lge {
-							max-width: 100% !important;
-						  }
-						}
-						@media screen and (min-width: 531px) {
-						  .col-sml {
-							max-width: 27% !important;
-						  }
-						  .col-lge {
-							max-width: 73% !important;
-						  }
-						}
-					  </style>
-					</head>
-					<body style="margin:0;padding:0;word-spacing:normal;background-color:#939297;">
-					  <div role="article" aria-roledescription="email" lang="en" style="text-size-adjust:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;background-color:#939297;">
-						<table role="presentation" style="width:100%;border:none;border-spacing:0;">
-						  <tr>
-							<td align="center" style="padding:0;">
-							  <table role="presentation" style="width:94%;max-width:600px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
-								<tr>
-								  <td style="padding:30px;background-color:#ffffff;text-align:center;">
-									<h1 style="margin-top:0;margin-bottom:16px;font-size:26px;line-height:32px;font-weight:bold;letter-spacing:-0.02em;">'.$blog_title.'</h1>
-									<h3 style="margin-top:0;margin-bottom:15px;font-size:20px;line-height:28px;font-weight:bold;letter-spacing:-0.02em;"> Form received! <br/>'.$formName.'</h3>
-									<p style="margin:0;"></p>
-								  </td>
-								</tr>
-								'.$email_html.'
-								<tr>
-								  <td style="padding:30px;text-align:center;font-size:12px;background-color:#404040;color:#cccccc;">
-									<p style="margin:0;font-size:14px;line-height:20px;">'.$blog_title.'<br></p>
-								  </td>
-								</tr>
-							  </table>
-							</td>
-						  </tr>
-						</table>
-					  </div>
-					</body>
-					</html>';
-					$headers = array('Content-Type: text/html; charset=UTF-8','From: '.$blog_title.' <'.$to.'>');
-					
-					$email_status = wp_mail( $to, $subject, $body, $headers );
-					
-				}
-
-				$result['status']="success";
-				$message = empty($_POST['success_text'])?'Thank You':$_POST['success_text'];
-				$result['data'] =__($message,'tatsu');
-		    }
-		} else {
-			$result['status']="error";
-			$result['data']=__('No input found','tatsu');
-		}
-		header('Content-type: application/json');
-		echo json_encode($result);
-		die();
-	}
-		
 	
 	public function load_header_template($template) {
 		if( current_theme_supports( 'tatsu-header-builder' ) ) {
@@ -264,6 +128,11 @@ class Tatsu_Public {
 		wp_enqueue_script( 'be-script-helpers', $assets_base_url . 'js/helpers' . $suffix . '.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( 'debouncedresize', $assets_base_url . 'js/vendor/debouncedresize' . $suffix . '.js', array( 'jquery' ), $this->version, true );
 		wp_enqueue_script( $this->plugin_name, $assets_base_url . 'js/tatsu' . $suffix . '.js', array( 'jquery','be-script-helpers', 'asyncloader','jquery-ui-core','jquery-ui-accordion','jquery-ui-tabs', 'debouncedresize' ), $this->version, true );
+		$recaptcha_settings = get_option('tatsu_form_recaptcha_settings');
+		if(!empty($recaptcha_settings)){
+			$recaptcha_query = ($recaptcha_settings['recaptcha_type']=='v3')?'?render='.$recaptcha_settings['site_key']:'';
+			wp_enqueue_script( 'tatsu-recaptcha','https://www.google.com/recaptcha/api.js'.$recaptcha_query, array( 'jquery' ), $this->version);
+		}
 
 		$needed_scripts = array();
 		foreach( glob( TATSU_PLUGIN_DIR.'public/js/vendor/*'. $suffix .'.js') as $dependency ) {
@@ -283,7 +152,10 @@ class Tatsu_Public {
 				'mapsApiKey' => Tatsu_Config::getInstance()->get_google_maps_api_key(),
 				'dependencies' => $needed_scripts,
 				'slider_icons' 	=> tatsu_get_slider_icons(),
-				'version'	=> $version
+				'version'	=> $version,
+				'recaptcha_type'=>empty($recaptcha_settings)?'':$recaptcha_settings['recaptcha_type'],
+				'recaptcha_site_key'=>empty($recaptcha_settings)?'':$recaptcha_settings['site_key']
+
 			) 
 		);
 		if( current_theme_supports('tatsu-header-builder') ) {
@@ -679,6 +551,93 @@ class Tatsu_Public {
 		}
     }
     
+	public function tatsu_get_all_global_sections_inner_styles($post_id,$only_custom_css = false){
+		$style_array = array();
+		$post_id = empty($post_id)?get_the_ID():$post_id;
+		$post_type = get_post_type( $post_id );
+		if( current_theme_supports( 'tatsu-global-sections' ) && 'tatsu_gsections' !== $post_type ) {
+			$section_positions = array();
+			if( empty( $post_type ) ){
+				$post_type = '';
+			} else {
+				global $wp_query;
+				if( is_home() ){
+					$post_type = 'archive-'.$post_type;
+				} else if( is_archive() ){	
+					if( array_key_exists( 'post_type', $wp_query->query ) ){
+						$post_type = $wp_query->query['post_type'];
+					}
+					$post_type = 'archive-'.$post_type;
+				}else {
+					if( array_key_exists( 'post_type', $wp_query->query ) ){
+						$post_type = $wp_query->query['post_type'];
+					}
+					$post_type = 'single-'.$post_type;
+				}
+			}
+			$is_others_pages = tatsu_is_others_page_type();
+			if( $is_others_pages[0] ){
+				$post_type = $is_others_pages[1];
+				$post_id = null;
+			}
+			
+			$section_positions = array( 'top','penultimate','bottom' );
+			foreach( $section_positions as $section_position ){
+				$content_to_be_added = 0;
+				$global_section_data = get_option( 'tatsu_global_section_data', array() );
+				if( gettype( $global_section_data ) === 'string' ){
+					$global_section_data = json_decode( $global_section_data,true );
+				}
+				if( array_key_exists('post_settings',$global_section_data) ){
+					$post_settings = $global_section_data['post_settings'];
+				}else{
+					$post_settings = array();
+				}
+
+				$temp_post_type = $post_type;
+
+				if( !( array_key_exists( $post_type, $post_settings ) &&
+					array_key_exists( $section_position, $post_settings[ $post_type ] ) ) ){
+
+					if( array_key_exists( 'all',$post_settings ) ){
+
+						if( array_key_exists( $section_position, $post_settings['all']) ){
+							$temp_post_type = 'all';
+						}
+						
+					}
+
+				}
+
+				if( array_key_exists( $temp_post_type,$post_settings ) ){
+					$value_for_post_type = $post_settings[ $temp_post_type ];
+					if( array_key_exists( $section_position, $value_for_post_type ) && $value_for_post_type[ $section_position ] !== 'none' ){
+						$content_to_be_added = (int) $value_for_post_type[ $section_position ];
+					}
+				}
+				$post_meta = get_post_meta( $post_id,'_tatsu_global_section_on_post' );
+				
+				if( !empty( $post_meta ) && $post_meta[0][$section_position] !== 'inherit' ){
+					if( $post_meta[0][$section_position] === 'none'  ){
+						$content_to_be_added = 0;
+					}else{
+						$content_to_be_added = (int) $post_meta[0][ $section_position ];
+					}
+				}
+				if(!empty($content_to_be_added)){
+					$global_sections_filtered = do_shortcode( get_post( (int) $content_to_be_added )->post_content);
+					$style_array[ 'tatsu-global-section-'.$section_position.'-style' ] = get_post_meta((int) $content_to_be_added, 'tatsu_custom_css', true );
+					
+					if(!$only_custom_css){
+					$style_array[ 'tatsu-global-section-'.$section_position.'-style' ] = empty($style_array[ 'tatsu-global-section-'.$section_position.'-style' ])?'':$style_array[ 'tatsu-global-section-'.$section_position.'-style' ];
+					$style_array[ 'tatsu-global-section-'.$section_position.'-style' ] .= be_get_style_from_content($global_sections_filtered);
+					}
+				}
+			}
+		}
+		return $style_array;
+    }
+
     public function tatsu_add_custom_style() {
         $style_array = array();
 		$be_theme_name = be_theme_name();
@@ -706,13 +665,13 @@ class Tatsu_Public {
 			
         }
 		
-		if($be_theme_name=='spyro' && is_tatsu_not_edit_mode()){
+		if($be_theme_name=='spyro' && is_tatsu_not_edit_mode() && !be_is_woocommerce_page()){
 			//MAIN POST OR PAGE INNER CSS
 			global $post;
 			if(!empty($post)){
 				$content = $post->post_content;
 				$edited_with = get_post_meta($post->ID,'_edited_with',true);
-				if(empty($edited_with) || $edited_with != 'tatsu' || (class_exists( 'woocommerce' ) && ( is_cart() || is_checkout() || is_account_page() ))){
+				if(empty($edited_with) || $edited_with != 'tatsu'){
 					$post_content = $content;
 				}else{
 					$post_content = do_shortcode($content);//Only for edit with tatsu
@@ -721,25 +680,9 @@ class Tatsu_Public {
 				$style_array[ 'tatsu-post-inner-styles' ] = be_get_style_from_content($post_content);
 				
 				//GLOBAL SECTION CSS INNER & CUSTOM CSS
-				$added_global_sections = get_post_meta($post->ID, '_tatsu_global_section_on_post', true );
-				if(!empty($added_global_sections)){
-					$top = $added_global_sections['top'];  
-					$penultimate = $added_global_sections['penultimate'];
-					$bottom = $added_global_sections['bottom'];
-					if(!empty($top)){
-						$style_array[ 'tatsu-global-section-top-style' ] = be_get_style_from_content(null,$top);
-						$style_array[ 'tatsu-global-section-top-style' ] .= get_post_meta($top, 'tatsu_custom_css', true );
-					}
-					
-					if(!empty($penultimate)){
-						$style_array[ 'tatsu-global-section-penultimate-style' ] = be_get_style_from_content(null,$penultimate);
-						$style_array[ 'tatsu-global-section-penultimate-style' ] .= get_post_meta($penultimate, 'tatsu_custom_css', true );
-					}
-					
-					if(!empty($bottom)){
-						$style_array[ 'tatsu-global-section-bottom-style' ] = be_get_style_from_content(null,$bottom);
-						$style_array[ 'tatsu-global-section-bottom-style' ] .= get_post_meta($bottom, 'tatsu_custom_css', true );
-					}
+				$tatsu_global_section_inner_styles = $this->tatsu_get_all_global_sections_inner_styles($post->ID);
+				if(!empty($tatsu_global_section_inner_styles)){
+					$style_array=array_merge($style_array,$tatsu_global_section_inner_styles);
 				}
 		    }
 	    }

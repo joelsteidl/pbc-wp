@@ -1,3 +1,8 @@
+v3.2.7
+======
+* Fixed : Plugin update checker url
+* Fixed : Portfolio details category alignment
+
 v3.2.6
 ======
 Fixed: Missing text translation and updated pot file

@@ -211,3 +211,35 @@ body:not(.edited_with_tatsu) .tatsu-switch-builder-gutenburg {
 .form-details-field-value{
 	font-size: 14px;
 }
+
+/***TATSU ADMIN AREA ***/
+.tatsu-col-6{
+	max-width: 45%;
+}
+.tatsu-admin-card{
+   background: white;
+   padding: 15px;
+   margin: 10px;
+}
+.tatsu-admin-card .be-heading{
+	font-weight: bolder;
+	font-size: 17px;
+}
+.tatsu-admin-card .form-fields{
+	padding-bottom: 15px;
+}
+.tatsu-admin-card .be-forms label{
+	margin-right: 15px;
+	font-size: 14px;
+}
+.tatsu-admin-card .be-forms .form-fields legend{
+	font-size: 15px;
+	font-weight: 500;
+	padding-bottom: 10px;
+}
+.tatsu-admin-card .be-forms .required-field{
+	color: red;
+}
+.tatsu-admin-card .be-forms .form-fields input[type="text"]{
+	min-width: 390px;
+}

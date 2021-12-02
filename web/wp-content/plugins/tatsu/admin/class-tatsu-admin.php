@@ -235,15 +235,22 @@ class Tatsu_Admin {
 		add_menu_page('Tatsu', 'Tatsu', 'manage_options', 'tatsu_settings', 'tatsu_settings_page', '');
 		add_submenu_page('tatsu_settings', 'Settings', 'Settings', 'manage_options', 'tatsu_settings', 'tatsu_settings_page');
 		add_submenu_page('tatsu_settings', 'Global Sections', 'Global Sections', 'manage_options', 'edit.php?post_type=tatsu_gsections');
-		if( current_theme_supports('tatsu-forms') ){
-		add_submenu_page('tatsu_settings', 'Tatsu Forms', 'Forms', 'manage_options', 'edit.php?post_type=tatsu_forms');
-		add_submenu_page('tatsu_settings', 'Tatsu Form Entries', 'Form Entries', 'manage_options', 'tatsu-forms-entries','tatsu_forms_entries_display_table');
-		}
+		
 		if( current_theme_supports( 'tatsu-header-builder' ) ) {
 			add_submenu_page('tatsu_settings', 'Headers', 'Headers', 'manage_options', 'edit.php?post_type=' . TATSU_HEADER_CPT_NAME);
 		}
 		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
 			add_submenu_page('tatsu_settings', 'Footer', 'Footer', 'manage_options', 'edit.php?post_type=' . TATSU_FOOTER_CPT_NAME);
+		}
+
+		if( current_theme_supports('tatsu-forms') ){
+			//Forms
+			add_submenu_page('tatsu_settings', 'Tatsu Forms', 'Forms', 'manage_options', 'edit.php?post_type=tatsu_forms');
+			//Submit form enteries 
+			add_submenu_page('tatsu_settings', 'Tatsu Form Entries', 'Form Entries', 'manage_options', 'tatsu-forms-entries','tatsu_forms_entries_display_table');
+			//Form Integrations 
+			add_submenu_page('tatsu_settings', 'Tatsu Form Settings', 'Form settings', 'manage_options', 'tatsu-forms-settings','tatsu_form_settings');
+			
 		}
 	}
 
