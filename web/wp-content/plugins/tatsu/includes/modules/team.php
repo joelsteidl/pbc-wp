@@ -41,9 +41,11 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 		$unique_class_name = 'tatsu-' . $key;
 
 		//oshine to exponent
-		$name = $title;
+		$name = tatsu_parse_custom_fields( $title );
 		$name_color = $title_color;
 		$horizontal_alignment = $title_alignment_static;
+
+		$designation = tatsu_parse_custom_fields( $designation );
         
         $css_id = be_get_id_from_atts( $atts );
         $visibility_classes = be_get_visibility_classes_from_atts( $atts );
@@ -117,42 +119,42 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 							<?php if( $has_social_icons ) : ?>
 								<div class = "tatsu-team-member-social-details">
 									<?php if( !empty( $facebook ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $facebook; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $facebook ); ?>" target = "_blank">
 											<i class = "tatsu-icon-facebook"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $twitter ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $twitter; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $twitter ); ?>" target = "_blank">
 											<i class = "tatsu-icon-twitter"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $behance ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $behance; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $behance ); ?>" target = "_blank">
 											<i class = "tatsu-icon-behance"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $yelp ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $yelp; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $yelp ); ?>" target = "_blank">
 											<i class = "tatsu-icon-yelp"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $youtube ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $youtube; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $youtube ); ?>" target = "_blank">
 											<i class = "tatsu-icon-youtube-play"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $vimeo ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $vimeo; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $vimeo ); ?>" target = "_blank">
 											<i class = "tatsu-icon-vimeo"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $dribbble ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $dribbble; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $dribbble ); ?>" target = "_blank">
 											<i class = "tatsu-icon-dribbble"></i>
 										</a>
 									<?php endif; ?>
 									<?php if( !empty( $instagram ) ) : ?>
-										<a class = "tatsu-team-member-social-icon" href = "<?php echo $instagram; ?>" target = "_blank">
+										<a class = "tatsu-team-member-social-icon" href = "<?php echo tatsu_parse_custom_fields( $instagram ); ?>" target = "_blank">
 											<i class = "tatsu-icon-instagram"></i>
 										</a>
 									<?php endif; ?>
@@ -177,7 +179,6 @@ if ( ! function_exists( 'tatsu_team' ) ) {
 	}
 }
 
-
 add_action('tatsu_register_modules', 'tatsu_register_team');
 function tatsu_register_team() {
 	$controls = array(
@@ -188,6 +189,7 @@ function tatsu_register_team() {
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'title',
+		'is_dynamic' => true,
         'group_atts' => array (
             array (
                 'type'  => 'tabs',
@@ -593,7 +595,7 @@ function tatsu_register_team() {
 					'title_color'	=> array('id' => 'palette:1', 'color' => tatsu_get_color('tatsu_accent_twin_color')),
 					'designation' => 'Designer',
 					'designation_color'	=> array('id' => 'palette:1', 'color' => tatsu_get_color('tatsu_accent_twin_color')),
-					'image' => 'http://placehold.it/400x400',
+					'image' => 'http://via.placeholder.com/400x400',
 					'facebook' => '#',
 					'twitter' => '#',
 					'linkedin' => '#',

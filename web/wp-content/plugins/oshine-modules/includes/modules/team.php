@@ -620,7 +620,7 @@ function oshine_register_team() {
 						'h_tag' => 'h6',
 						'designation' => 'Designer',
 						'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque.',
-						'image' => 'http://placehold.it/400x400',
+						'image' => 'https://via.placeholder.com/400x400',
 						'title_style' => 'style5',
 						'smedia_icon_position' => 'over',
 						'title_alignment_static' => 'left',

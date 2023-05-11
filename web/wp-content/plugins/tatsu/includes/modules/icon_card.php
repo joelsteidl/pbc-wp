@@ -14,15 +14,19 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
             'icon_style'        => '',
             'icon_bg'           => '',
             'icon_color'        => '',
+			'icon_hover_color'  => '',
             'size'              => 'medium',
             'line_animate'      => '0',
             'svg_icon_color'    => '',
+			'svg_icon_hover_color' => '',
 			'box_shadow'        => '', // Icon's Shadow
 			'outer_box_shadow' => '',
             'title'             => '',
             'url'               => '',
+			'new_tab'           => 0,
             'title_font'        => '',
             'title_color'       => '',
+			'title_hover_color' => '',
             'caption_font'      => '',
             'caption_color'     => '',
             'margin'            => '0 0 60px 0',
@@ -36,6 +40,8 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
 
         extract($atts);
 
+		$url = tatsu_parse_custom_fields( $url );
+		$content = do_shortcode( $content );
 
         $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $atts['key'], $builder_mode );
 		$unique_class_name = ' tatsu-'.$atts['key'];
@@ -80,7 +86,8 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
         $icon = !empty($icon) ? $icon : '';
         
 		$icon_label = ucfirst(str_replace(array('tatsu','icon'),' ',str_replace('-','',$icon)));
-        
+        $new_tab = $new_tab ? 'target="_blank"' : '';
+
         $classes = implode( ' ', $classes );
         ob_start();
     ?>
@@ -102,11 +109,11 @@ if( !function_exists( 'tatsu_icon_card' ) ) {
                             <div class = "tatsu-icon_card-title <?php echo !empty($title_font) ? $title_font : ''; ?>">
 							<?php 
 								if(empty($url)){
-									echo $title;
+									echo tatsu_parse_custom_fields( $title );
 								}else{
 							?>
-                                <a href = "<?php echo $url; ?>">
-                                    <?php echo $title; ?>
+                                <a href = "<?php echo $url; ?>" <?php echo $new_tab; ?> >
+                                    <?php echo tatsu_parse_custom_fields( $title ); ?>
                                 </a>
 							<?php } ?>
                             </div>
@@ -167,6 +174,7 @@ function tatsu_register_icon_card()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'title',
+		'is_dynamic' => true,
 		'group_atts' => array(
 			array(
 				'type'	=>	'tabs',
@@ -183,6 +191,7 @@ function tatsu_register_icon_card()
 							'bg_size',
 							'title',
 							'url',
+							'new_tab',
 							'content',
 						)
 					),
@@ -208,12 +217,33 @@ function tatsu_register_icon_card()
 										'type' => 'panel',
 										'title' => esc_html__('Colors', 'tatsu'),
 										'group' => array(
-											'icon_color',
-											'icon_bg',
-											'box_shadow',
-											'svg_icon_color',
-											'title_color',
-											'caption_color',
+											array(
+												'type'	=>	'tabs',
+												'style'	=>	'style1',
+												'group'	=>	array(
+													array(
+														'type'	=>	'tab',
+														'title'	=>	esc_html__('Normal', 'tatsu'),
+														'group'	=>	array(
+															'icon_color',
+															'svg_icon_color',
+															'title_color',
+															'caption_color',
+															'icon_bg',
+															'box_shadow',
+														)
+													),
+													array(
+														'type'	=>	'tab',
+														'title'	=>	esc_html__('Hover', 'tatsu'),
+														'group'	=>	array(
+															'icon_hover_color',
+															'svg_icon_hover_color',
+															'title_hover_color',
+														)
+													),
+												)
+											),
 										)
 									),
 									array(
@@ -341,7 +371,7 @@ function tatsu_register_icon_card()
 				'label' => esc_html__('Image', 'tatsu'),
 				'visible' => array('icon_type', '=', 'image'),
 				'tooltip' => '',
-				'default'	=> 'http://placehold.it/150x150',
+				'default'	=> 'http://via.placeholder.com/150x150',
 				'options' => array(
 					'size' => 'thumbnail',
 				),
@@ -459,6 +489,24 @@ function tatsu_register_icon_card()
 				)
 			),
 			array(
+				'att_name' => 'icon_hover_color',
+				'type' => 'color',
+				'visible'	=> array('icon_type', '=', 'icon'),
+				'options' => array(
+					'gradient' => true,
+				),
+				'label' => esc_html__('Icon Hover Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css'	  => true,
+				'selectors'	=> array(
+					'.tatsu-{UUID} .tatsu-icon:hover'	=> array(
+						'property'		=> 'color',
+						'when'			=> array('icon_type', '=', 'icon')
+					)
+				)
+			),
+			array(
 				'att_name'	=> 'svg_icon_color',
 				'type' => 'color',
 				'visible'	=> array('icon_type', '=', 'svg'),
@@ -468,6 +516,21 @@ function tatsu_register_icon_card()
 				'css'	  => true,
 				'selectors'	=> array(
 					'.tatsu-{UUID} .tatsu-icon_card-icon svg' => array(
+						'property'		=> 'color',
+						'when'			=> array('icon_type', '=', 'svg')
+					)
+				)
+			),
+			array(
+				'att_name'	=> 'svg_icon_hover_color',
+				'type' => 'color',
+				'visible'	=> array('icon_type', '=', 'svg'),
+				'label' => esc_html__('Icon Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'css'	  => true,
+				'selectors'	=> array(
+					'.tatsu-{UUID} .tatsu-icon_card-icon svg:hover' => array(
 						'property'		=> 'color',
 						'when'			=> array('icon_type', '=', 'svg')
 					)
@@ -520,6 +583,13 @@ function tatsu_register_icon_card()
 				'default' => '',
 				'tooltip' => ''
 			),
+			array(
+				'att_name'	 => 'new_tab',
+				'type' => 'switch',
+				'label' => esc_html__('Open Link in New Tab', 'tatsu'),
+				'default' => 0,
+				'tooltip' => ''
+			),
 			function_exists('typehub_get_exposed_selectors') ? array(
 				'att_name'	=> 'title_font',
 				'type'		=> 'select',
@@ -538,7 +608,23 @@ function tatsu_register_icon_card()
 				),
 				'css'	=> true,
 				'selectors'	=> array(
-					'.tatsu-{UUID} .tatsu-icon_card-title' => array(
+					'.tatsu-{UUID} .tatsu-icon_card-title, .tatsu-{UUID} .tatsu-icon_card-title a' => array(
+						'property'		=> 'color',
+					)
+				)
+			),
+			array(
+				'att_name' => 'title_hover_color',
+				'type' => 'color',
+				'label' => esc_html__('Title Hover Color', 'tatsu'),
+				'default' => '',
+				'tooltip' => '',
+				'options'	=> array(
+					'gradient'	=> true
+				),
+				'css'	=> true,
+				'selectors'	=> array(
+					'.tatsu-{UUID} .tatsu-icon_card-title:hover, .tatsu-{UUID} .tatsu-icon_card-title a:hover' => array(
 						'property'		=> 'color',
 					)
 				)

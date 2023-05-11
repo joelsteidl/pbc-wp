@@ -407,15 +407,17 @@
                     vimeoVideos.each( function() {
                         var curVideo = $(this),
                             curPlayer = null,
-                            id = !isNaN( Number( curVideo.attr( 'data-video-id' ) ) ) ? Number( curVideo.attr( 'data-video-id' ) ) : null,
+                            //id = !isNaN( Number( curVideo.attr( 'data-video-id' ) ) ) ? Number( curVideo.attr( 'data-video-id' ) ) : null,
+                            url = curVideo.attr( 'data-video-url' ) ? curVideo.attr( 'data-video-url' ) : null,
                             autoplay = null != curVideo.attr( 'data-autoplay' ) ? parseInt(curVideo.attr( 'data-autoplay' )) : false,
-                            loopVideo = null != curVideo.attr( 'data-loop' ) ? parseInt(curVideo.attr( 'data-loop' )) : false;
-                        if( null != id ) {
+                            loopVideo = null != curVideo.attr( 'data-loop' ) ? parseInt(curVideo.attr( 'data-loop' )) : false,
+                            muted = null != curVideo.attr( 'data-muted' ) ? parseInt(curVideo.attr( 'data-muted' )) : false;
+                        if( null != url ) {
                             var curPlayer = new Vimeo.Player( this, {
-                                id : id,
+                                url : url,
                                 autoplay : autoplay ? true : false,
                                 loop : loopVideo ? true : false,
-                                muted : autoplay ? true : false,
+                                muted : muted ? true : false,
                                 width : curVideo.width(),
                                 height : Math.ceil(curVideo.width()/1.7777),    
                             });
@@ -1165,8 +1167,12 @@
                             stickyTopOffset = 32;
                         }
                         jQuery.each(tatsuStickyColumn,function(key,element){
+                            var stickyWidth = 767;
                             var jQueryObj = jQuery(element);
-                            if(jQuery(window).width() > 767 && !jQueryObj.closest('.tatsu-eq-cols').length ){
+                            if ( jQueryObj.hasClass('tatsu-column-tablet-no-sticky') || jQueryObj.parent().hasClass('tatsu-column-tablet-no-sticky') ) {
+                                stickyWidth = 1024;
+                            }
+                            if(jQuery(window).width() > stickyWidth && !jQueryObj.closest('.tatsu-eq-cols').length ){
                                 jQueryObj.stick_in_parent({parent:'.tatsu-row', offset_top : stickyTopOffset})
                                 .on("sticky_kit:stick",function(e){
                                     jQuery(e.target).css( 'transition','none' );

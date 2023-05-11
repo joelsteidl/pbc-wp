@@ -30,9 +30,21 @@ class Tatsu_Activator {
 	 * @since    1.0.0
 	 */
 	public static function activate() {
-		if (is_plugin_active('spyro-modules/spyro-modules.php')){
-			check_and_make_tables_for_tatsu_forms();
+		if(function_exists('deactivate_plugins')){
+			$active_plugins =apply_filters( 'active_plugins', get_option( 'active_plugins' ) );
+			$plugin_dir_path = substr(TATSU_PLUGIN_DIR,0,-6);
+			$deactivate_plugins = ['typehub/typehub.php','colorhub/colorhub.php'];
+			foreach ($deactivate_plugins as $deactivate_plugin) {
+				if(in_array( $deactivate_plugin,$active_plugins)){
+					// Deactivate the plugin
+					deactivate_plugins($plugin_dir_path.''.$deactivate_plugin);
+				}
+			}
 		}
+		//Typehub Activated
+		do_action( 'typehub_activation' );
+		//Colorhub Activated
+		do_action( 'colorhub_activation' );
 	}
 	
 }

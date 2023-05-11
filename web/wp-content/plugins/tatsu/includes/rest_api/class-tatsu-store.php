@@ -14,81 +14,115 @@ class Tatsu_Store {
         }
     }
 
-	/**
-	 * Function to validated the license key in setting page.
-	 * 
-	 * @return json
-	 */
-	public function ajax_check_license() {
+	public static function ajax_save_license_key() {
+		$res = false; 
+		$msg = '';
+		
+		if ( ! check_ajax_referer( 'be_save_purchase_code', 'security' ) ) {
+			$msg .= '<div class="notic notic-warning ">Invalid Nonce</div>';
+		} else if ( empty( $_POST['tatsu_license_key'] ) ) {
+			$msg .= '<div class="notic notic-warning ">License key can not be empty</div>';
+		} else {	
+			//newsletter Email
+			$email = sanitize_email( $_POST['email'] );
+			if ( ! empty( $email ) ) {
+				if ( ! is_email( $email ) ) {
+					$msg .= '<div class="notic notic-error">Not a valid email</div>';
+				} else {
+					//$response = wp_remote_get( "https://www.brandexponents.com/subscribe/be-subscribe.php?email=$email&list_name=$list_name" );
+					$response = wp_remote_get( "https://brandexponents.com/api.php?email=$email" );
+					$body = wp_remote_retrieve_body( $response );
+					$response_data = json_decode( $body )->code;
+		
+					if ( $response_data == 'duplicate_parameter' ) {
+						$msg .= '<div class="notic notic-warning ">Unable to Save Email or Email Already in use</div>';
+					} else {
+						if ( update_option( 'exponent_newsletter_email', $email ) ) {
+							$msg .= '<div class="notic notic-success ">Email Saved Successfully</div>';
+						}
+					}
+				}
+			}
 
+			// License key verify
+			$tatsu_license_key = sanitize_text_field( $_POST['tatsu_license_key'] );
+			if ( empty( $tatsu_license_key ) ) {
+				$tatsu_license_key = get_option( 'tatsu_license_key', false );
+			}
+			$tatsu_license_key = trim( $tatsu_license_key );
+
+			if ( $tatsu_license_key && ! empty( $tatsu_license_key ) ) {
+				$item_id = '5292'; //product id.
+				$response = wp_remote_get( 'https://tatsubuilder.com/?' . http_build_query(
+						[
+							'edd_action'=> 'activate_license',
+							'license' 	=> $tatsu_license_key,
+							'item_id'   => $item_id,
+							'url'       => home_url()
+						]
+					), [ 'decompress' => false ]
+				);
+
+				if ( is_wp_error( $response ) ) {
+					$msg .= '<div class="notic notic-warning ">' . $response->get_error_message() . '</div>';
+				} else {
+					$response = json_decode( $response['body'] );
+				}
+
+				if ( ! empty( $response->success ) ) {
+					update_option( 'tatsu_license_item_id', $item_id );
+					update_option( 'tatsu_license_key', $tatsu_license_key );
+
+					// add new cron
+					wp_schedule_single_event( time() + 2, 'tatsu_pro_license_check' );
+
+					$res = true;
+					$msg .= '<div class="notic notic-success">License Key Saved Successfully!</div>';
+				} else {
+					update_option( 'tatsu_license_item_id', '' );
+					if ( ! is_wp_error( $response ) ) {
+						$msg .= '<div class="notic notic-warning">License Key Invalid!</div>';
+					}
+				}
+			} else {
+				$msg .= '<div class="notic notic-success">Please enter a License Key</div>';
+			}
+		}
+		wp_send_json( array(
+			'res' => $res,
+			'msg' => $msg
+		), 200 );
+	}
+
+	public function tatsu_admin_notices_dismiss(){
 		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {
 			echo 'false';
 			wp_die();
 		}
-
-		$tatsu_license_key = sanitize_text_field( $_POST['tatsu_license_key'] );
-
-		$this->license( $tatsu_license_key );
-	}
-	/** 
-	 * Check an entered license key and apply it.
-     *
-     * This route is called when the Add License Key button is pressed inside
-     * the admin area. It checks the provided license key for validity and
-     * updates the license status for the account.
-     *
-     *
-     *
-     * @param string     $license_key   Provided license key.
-     *
-     * @return string    Output HTML from rendered view.
-     */
-    public function license( $license_key ) {
-
-		$license_key = trim($license_key);
-		$alert       = [];
-
-        if ( empty( $license_key ) ) {
-            $alert = ['danger' => 'No license key added'];
-            update_option('tatsu_license_item_id', '');
-            update_option('tatsu_license_key', '');
-		} else {
-
-			$item_id = '5292'; // This product id.
-
-            // First product checking.
-            $response = wp_remote_get('https://tatsubuilder.com/?' . http_build_query(
-                    [
-                        'edd_action'=> 'activate_license',
-                        'license' 	=> $license_key,
-                        'item_id'   => $item_id,
-                        'url'       => home_url()
-                    ]
-				), ['decompress' => false]
-			);
-
-			if ( is_wp_error( $response ) ) {
-				$alert = ['danger' => $response->get_error_message()];
-			} else {
-				$response = json_decode($response['body']);
-			}
-
-            if ( ! empty( $response->success ) ) {
-                update_option('tatsu_license_item_id', $item_id );
-                $alert = ['success' => 'License key updated'];
-			} else {
-                update_option('tatsu_license_item_id', '');
-                if ( ! is_wp_error($response) ) {
-					$alert = ['danger' => 'License key invalid'];
+		if(!empty($_POST['notice_id'])){
+			$tatsu_admin_dismiss_notices = get_option('tatsu_admin_dismiss_notices', array());
+			if(is_array($tatsu_admin_dismiss_notices) && in_array($_POST['notice_id'], $tatsu_admin_dismiss_notices)){
+				wp_send_json(array(
+					'res'=>true,
+					'msg'=>'notice already dismissed'
+				),200);
+			}else{
+				$tatsu_admin_dismiss_notices[] = sanitize_text_field($_POST['notice_id']);
+				if(update_option('tatsu_admin_dismiss_notices', $tatsu_admin_dismiss_notices)){
+					wp_send_json(array(
+						'res'=>true,
+						'msg'=>'notice dismissed'
+					),200);
+				}else{
+					wp_send_json(array(
+						'res'=>true,
+						'msg'=>'Something went wrong'
+					),200);
 				}
 			}
-
-            update_option( 'tatsu_license_key', $license_key );
+			 
 		}
-
-        return wp_send_json_success( [ 'alert' => $alert ] );
-    }
-
+	}
 
 	public function ajax_instagram_token_save(){
 		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {

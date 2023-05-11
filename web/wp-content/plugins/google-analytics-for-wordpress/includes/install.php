@@ -35,8 +35,8 @@ class MonsterInsights_Install {
 	 * @since 6.0.0
 	 * @access public
 	 * @var array $new_settings When the init() function starts, initially
-	 *      					contains the original settings. At the end
-	 *      				 	of init() contains the settings to save.
+	 *                        contains the original settings. At the end
+	 *                        of init() contains the settings to save.
 	 */
 	public $new_settings = array();
 
@@ -47,10 +47,10 @@ class MonsterInsights_Install {
 	 * behind the scenes upgrades on MI upgrades. If this function contains a bug, the results
 	 * can be catastrophic. This function gets the highest priority in all of MI for unit tests.
 	 *
+	 * @return void
 	 * @since 6.0.0
 	 * @access public
 	 *
-	 * @return void
 	 */
 	public function init() {
 
@@ -63,7 +63,7 @@ class MonsterInsights_Install {
 		// if new install or Yoast Era instal
 		if ( ! $version ) {
 			// See if from Yoast
-			$yoast   = get_option( 'yst_ga', false );
+			$yoast = get_option( 'yst_ga', false );
 
 			// In case from Yoast, start from scratch
 			delete_option( 'yoast-ga-access_token' );
@@ -152,6 +152,10 @@ class MonsterInsights_Install {
 				$this->v7150_upgrades();
 			}
 
+            if ( version_compare( $version, '8.13.0', '<' ) ) {
+                $this->v8130_ga4_check();
+            }
+
 			// Do not use. See monsterinsights_after_install_routine comment below.
 			do_action( 'monsterinsights_after_existing_upgrade_routine', $version );
 			$version = get_option( 'monsterinsights_current_version', $version );
@@ -186,36 +190,36 @@ class MonsterInsights_Install {
 		 * Here's a basic rundown:
 		 *
 		 * mi_current_version:  This starts with the actual version MI was
-		 * 						installed on. We use this version to
-		 * 						determine whether or not a site needs
-		 * 						to run one of the behind the scenes
-		 * 						MI upgrade routines. This version is updated
-		 * 						every time a minor or major background upgrade
-		 * 						routine is run. Generally lags behind the
-		 * 						MONSTERINSIGHTS_VERSION constant by at most a couple minor
-		 * 						versions. Never lags behind by 1 major version
-		 * 						or more generally.
+		 *                        installed on. We use this version to
+		 *                        determine whether or not a site needs
+		 *                        to run one of the behind the scenes
+		 *                        MI upgrade routines. This version is updated
+		 *                        every time a minor or major background upgrade
+		 *                        routine is run. Generally lags behind the
+		 *                        MONSTERINSIGHTS_VERSION constant by at most a couple minor
+		 *                        versions. Never lags behind by 1 major version
+		 *                        or more generally.
 		 *
-		 * mi_db_version: 		This is different from mi_current_version.
-		 * 						Unlike the former, this is used to determine
-		 * 						if a site needs to run a *user* initiated
-		 * 						upgrade routine (incremented in MI_Upgrade class). This
-		 * 						value is only update when a user initiated
-		 * 						upgrade routine is done. Because we do very
-		 * 						few user initiated upgrades compared to
-		 * 						automatic ones, this version can lag behind by
-		 * 						2 or even 3 major versions. Generally contains
-		 * 						the current major version.
+		 * mi_db_version:        This is different from mi_current_version.
+		 *                        Unlike the former, this is used to determine
+		 *                        if a site needs to run a *user* initiated
+		 *                        upgrade routine (incremented in MI_Upgrade class). This
+		 *                        value is only update when a user initiated
+		 *                        upgrade routine is done. Because we do very
+		 *                        few user initiated upgrades compared to
+		 *                        automatic ones, this version can lag behind by
+		 *                        2 or even 3 major versions. Generally contains
+		 *                        the current major version.
 		 *
-		 * mi_settings:		    Returned by monsterinsights_get_option_name(), this
-		 * 						is actually "monsterinsights_settings" for both pro
-		 * 						and lite version. However we use a helper function to
-		 * 						retrieve the option name in case we ever decide down the
-		 * 						road to maintain seperate options for the Lite and Pro versions.
-		 * 					 	If you need to access MI's settings directly, (as opposed to our
-		 * 					 	monsterinsights_get_option helper which uses the option name helper
-		 * 					 	automatically), you should use this function to get the
-		 * 					 	name of the option to retrieve.
+		 * mi_settings:            Returned by monsterinsights_get_option_name(), this
+		 *                        is actually "monsterinsights_settings" for both pro
+		 *                        and lite version. However we use a helper function to
+		 *                        retrieve the option name in case we ever decide down the
+		 *                        road to maintain seperate options for the Lite and Pro versions.
+		 *                        If you need to access MI's settings directly, (as opposed to our
+		 *                        monsterinsights_get_option helper which uses the option name helper
+		 *                        automatically), you should use this function to get the
+		 *                        name of the option to retrieve.
 		 *
 		 * Therefore you should never increment mi_db_version in this file and always increment mi_current_version.
 		 */
@@ -230,10 +234,10 @@ class MonsterInsights_Install {
 	 * non-stop service to a whole world of
 	 * possibilities is now boarding.
 	 *
+	 * @return void
 	 * @since 6.0.0
 	 * @access public
 	 *
-	 * @return void
 	 */
 	public function new_install() {
 		$this->new_settings = $this->get_monsterinsights_default_values();
@@ -244,7 +248,7 @@ class MonsterInsights_Install {
 			'installed_version' => MONSTERINSIGHTS_VERSION,
 			'installed_date'    => time(),
 			'installed_pro'     => monsterinsights_is_pro_version() ? time() : false,
-			'installed_lite'     => monsterinsights_is_pro_version() ? false : time(),
+			'installed_lite'    => monsterinsights_is_pro_version() ? false : time(),
 		);
 
 		update_option( 'monsterinsights_over_time', $data, false );
@@ -359,33 +363,33 @@ class MonsterInsights_Install {
 	 * This function does the
 	 * upgrade routine from MonsterInsights 6.2->7.0.
 	 *
+	 * @return void
 	 * @since 7.0.0
 	 * @access public
 	 *
-	 * @return void
 	 */
 	public function v700_upgrades() {
 		// 1. Default all event tracking and tracking to GA + JS respectively
 		// 3a Set tracking_mode to use analytics.js
-		$this->new_settings['tracking_mode' ] = 'analytics';
+		$this->new_settings['tracking_mode'] = 'analytics';
 
 
 		// 3b Set events mode to use JS if the events mode is not set explicitly to none
-		if ( empty( $this->new_settings['events_mode' ] ) || $this->new_settings['events_mode' ] !== 'none' ) {
-			$this->new_settings['events_mode' ] = 'js';
+		if ( empty( $this->new_settings['events_mode'] ) || $this->new_settings['events_mode'] !== 'none' ) {
+			$this->new_settings['events_mode'] = 'js';
 		}
 
 		// 2. Migrate manual UA codes
 		// 2a Manual UA has the lowest priority
-		if ( ! empty( $this->new_settings['manual_ua_code' ] ) ) {
+		if ( ! empty( $this->new_settings['manual_ua_code'] ) ) {
 			// Set as manual UA code
-			is_network_admin() ? update_site_option( 'monsterinsights_network_profile', array( 'manual' => $this->new_settings['manual_ua_code' ] ) ) : update_option( 'monsterinsights_site_profile', array( 'manual' => $this->new_settings['manual_ua_code' ] ) );
+			is_network_admin() ? update_site_option( 'monsterinsights_network_profile', array( 'manual' => $this->new_settings['manual_ua_code'] ) ) : update_option( 'monsterinsights_site_profile', array( 'manual' => $this->new_settings['manual_ua_code'] ) );
 		}
 
 		// 2b Then try the oAuth UA code
-		if ( ! empty( $this->new_settings['analytics_profile_code' ] ) ) {
+		if ( ! empty( $this->new_settings['analytics_profile_code'] ) ) {
 			// Set as manual UA code
-			is_network_admin() ? update_site_option( 'monsterinsights_network_profile', array( 'manual' => $this->new_settings['analytics_profile_code' ] ) ) : update_option( 'monsterinsights_site_profile', array( 'manual' => $this->new_settings['analytics_profile_code' ] ) );
+			is_network_admin() ? update_site_option( 'monsterinsights_network_profile', array( 'manual' => $this->new_settings['analytics_profile_code'] ) ) : update_option( 'monsterinsights_site_profile', array( 'manual' => $this->new_settings['analytics_profile_code'] ) );
 		}
 
 		// 3. Migrate License keys
@@ -860,4 +864,62 @@ class MonsterInsights_Install {
 			$this->new_settings['gtagtracker_compatibility_mode'] = true;
 		}
 	}
+
+    /**
+     * Upgrade routine for 8.11 - GA4 automatic swap
+     *
+     * @return void
+     */
+    public function v8130_ga4_check() {
+        if ( false !== wp_next_scheduled( 'monsterinsights_v4_property_swap' ) ) {
+            //  If cron is scheduled, bail
+            return;
+        }
+
+        $auth = MonsterInsights()->auth;
+
+        if ( $auth->get_connected_type() === 'v4' ) {
+            //  If V4 is set as primary, bail
+            return;
+        }
+
+        if ( empty($auth->get_v4_id()) ) {
+            //  If there's no V4 id, bail
+            return;
+        }
+
+        $type = monsterinsights_is_pro_version() ? 'pro' : 'lite';
+
+        $route = str_replace( '{type}', $type, 'auth/{type}/v4-check/' );
+        $route = trailingslashit( $route );
+
+        $request = new MonsterInsights_API_Request( $route, [], 'GET' );
+
+        $result = $request->request([
+            'v4' => $auth->get_v4_id()
+        ]);
+
+        if ( !is_wp_error($result) && !empty( $result ) && $result['success'] === true ) {
+            if ( isset($result['swap_v4']) && $result['swap_v4'] === true ) {
+                // Create cron to run immediately
+                if ( false === wp_next_scheduled( 'monsterinsights_v4_property_swap' ) ) {
+                    wp_schedule_single_event( strtotime('now'), 'monsterinsights_v4_property_swap' );
+                }
+            } else {
+                // Create cron to run in 40 days or at ga cutoff
+
+                $ga_cutoff = strtotime('2023-07-01');
+                $time_in_40_days = strtotime(date('Y-m-d'). ' + 40 days');
+
+                /*
+                 * Choose the closer date between the 40 days limit we have and the GA3 cutoff
+                 */
+                $swap_date = min($time_in_40_days, $ga_cutoff);
+
+                if ( false === wp_next_scheduled( 'monsterinsights_v4_property_swap' ) ) {
+                    wp_schedule_single_event( $swap_date, 'monsterinsights_v4_property_swap' );
+                }
+            }
+        }
+    }
 }

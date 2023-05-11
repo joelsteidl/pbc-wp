@@ -8,6 +8,10 @@ if ( current_user_can( 'edit_pages' ) ) {
 		$enmse_deleted_id = strip_tags($_REQUEST['did']);
 		$enmse_message_id = strip_tags($_REQUEST['mid']);
 
+		$enmse_findthebooksql = "SELECT start_book FROM " . $wpdb->prefix . "se_scriptures" . " WHERE scripture_id = %d"; 
+		$enmse_findthebook = $wpdb->prepare( $enmse_findthebooksql, $enmse_deleted_id );
+		$enmse_foundbook = $wpdb->get_row( $enmse_findthebook, OBJECT );
+
 		$enmse_delete_query_preparred = "DELETE FROM " . $wpdb->prefix . "se_scriptures" . " WHERE scripture_id=%d";
 		$enmse_delete_query = $wpdb->prepare( $enmse_delete_query_preparred, $enmse_deleted_id ); 
 		$enmse_deleted = $wpdb->query( $enmse_delete_query ); 
@@ -16,14 +20,14 @@ if ( current_user_can( 'edit_pages' ) ) {
 		$enmse_sfdelete_query = $wpdb->prepare( $enmse_sfdelete_query_preparred, $enmse_deleted_id ); 
 		$enmse_sfdeleted = $wpdb->query( $enmse_sfdelete_query );
 
-		$enmse_preparreddscmsql = "SELECT scm_match_id FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND focus = 1 GROUP BY scm_match_id ORDER BY sort_id ASC"; 
-		$enmse_dscmsql = $wpdb->prepare( $enmse_preparreddscmsql, $enmse_message_id );
+		$enmse_preparreddscmsql = "SELECT scm_match_id FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND focus = 1 AND start_book=%d GROUP BY scm_match_id ORDER BY sort_id ASC"; 
+		$enmse_dscmsql = $wpdb->prepare( $enmse_preparreddscmsql, $enmse_message_id, $enmse_foundbook->start_book  );
 		$enmse_dmscriptures = $wpdb->get_results( $enmse_dscmsql );
 		$enmse_countrec = $wpdb->num_rows;
 
-		if ( empty($enmse_dmscriptures) ) {
-			$enmse_bdelete_query_preparred = "DELETE FROM " . $wpdb->prefix . "se_book_message_matches" . " WHERE message_id=%d";
-			$enmse_bdelete_query = $wpdb->prepare( $enmse_bdelete_query_preparred, $enmse_message_id ); 
+		if ( empty($enmse_dmscriptures) ) { // delete if there's no other focus messages from the same book and the book/message are matches?
+			$enmse_bdelete_query_preparred = "DELETE FROM " . $wpdb->prefix . "se_book_message_matches" . " WHERE message_id=%d AND book_id=%d";
+			$enmse_bdelete_query = $wpdb->prepare( $enmse_bdelete_query_preparred, $enmse_message_id, $enmse_foundbook->start_book ); 
 			$enmse_bdeleted = $wpdb->query( $enmse_bdelete_query );
 		}
 

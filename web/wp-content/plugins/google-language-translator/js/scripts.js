@@ -17,43 +17,34 @@ function GLTFireEvent(lang_pair, lang_dest) {
     } catch (e) {}
 }
 
-function doGoogleLanguageTranslator(lang_pair) {
-    if(window.glt_request_uri) return true;
+function GLTGetCurrentLang() {
+    var keyValue = document.cookie.match('(^|;) ?googtrans=([^;]*)(;|$)');
+    return keyValue ? keyValue[2].split('/')[2] : null;
+}
 
-    if (lang_pair.value) lang_pair = lang_pair.value;
-    if (lang_pair == '') return;
-    var lang_dest = lang_pair.split('|')[1];
-    var event;
-    var classic = jQuery('.goog-te-combo');
-    var simple = jQuery('.goog-te-menu-frame:first');
-    var simpleValue = simple.contents().find('.goog-te-menu2-item span.text:contains('+lang_text+')');
-    if (classic.length == 0) {
-      for (var i = 0; i < simple.length; i++) {
-        event = simple[i];
-        //alert('Simple is active.');
-      }
+function doGoogleLanguageTranslator(lang_pair) {
+    if(window.glt_request_uri)
+        return true;
+
+    if(lang_pair.value)
+        lang_pair = lang_pair.value;
+
+    if(lang_pair == '')
+        return;
+
+    var lang = lang_pair.split('|')[1];
+
+    if(GLTGetCurrentLang() == null && lang == lang_pair.split('|')[0])
+        return;
+
+    var teCombo = document.querySelector('select.goog-te-combo');
+    var teWrapper = document.getElementById('google_language_translator');
+
+    if(teWrapper == null || teWrapper.innerHTML.length == 0 || teCombo == null || teCombo.innerHTML.length == 0) {
+        setTimeout(function(){doGoogleLanguageTranslator(lang_pair)}, 500);
     } else {
-      for (var i = 0; i < classic.length; i++) {
-        event = classic[i];
-        //alert('Classic is active.');
-      }
-    }
-    if (document.getElementById('google_language_translator') != null) {
-      if (classic.length != 0) {
-        if (lang_prefix != default_lang) {
-          event.value = lang_dest;
-          GLTFireEvent(event, 'change');
-        } else {
-          jQuery('.goog-te-banner-frame:first').contents().find('.goog-close-link').get(0).click();
-        }
-      } else {
-        event.value = lang_dest;
-        if (lang_prefix != default_lang) {
-          simpleValue.click();
-        } else {
-          jQuery('.goog-te-banner-frame:first').contents().find('.goog-close-link').get(0).click();
-        }
-      }
+        teCombo.value = lang;
+        GLTFireEvent(teCombo,'change');GLTFireEvent(teCombo,'change');
     }
 }
 

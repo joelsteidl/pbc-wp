@@ -10,22 +10,29 @@ function new_button($output, $tag, $atts, $content) {
 /* ---------------------------------------------  */
 if (!function_exists('be_themes_hexa_to_rgb')) {
 	function be_themes_hexa_to_rgb( $color ) {
+		if ( strpos( $color, 'rgb' ) !== false ) {
+			$color = str_replace( array( 'rgb(', 'rgba(', ')' ), '', $color );
+			$color = explode( ',', $color );
+			return array( $color[0], $color[1], $color[2] );
+		}
 
-	  if ( isset( $color[0] ) && $color[0] == '#' ) {
-	      $color = substr($color, 1);
-	  }
+		if ( isset( $color[0] ) && $color[0] == '#' ) {
+			$color = substr( $color, 1 );
+		}
 
-	  if ( strlen( $color ) == 6 ) {
-	      list( $r, $g, $b ) = array( $color[0].$color[1], $color[2].$color[3], $color[4].$color[5] );
-	  } elseif (strlen($color) == 3) {
-	      list( $r, $g, $b ) = array( $color[0].$color[0], $color[1].$color[1], $color[2].$color[2] );
-	  } else {
-	      return false;
-	  }
+		if ( strlen( $color ) == 6 ) {
+			list( $r, $g, $b ) = array( $color[0].$color[1], $color[2].$color[3], $color[4].$color[5] );
+		} elseif (strlen($color) == 3) {
+			list( $r, $g, $b ) = array( $color[0].$color[0], $color[1].$color[1], $color[2].$color[2] );
+		} else {
+			return false;
+		}
 
-	  $r = hexdec( $r ); $g = hexdec( $g ); $b = hexdec( $b );
+		$r = hexdec( $r );
+		$g = hexdec( $g );
+		$b = hexdec( $b );
 
-	  return array( $r, $g, $b );
+		return array( $r, $g, $b );
 	}
 }
 
@@ -437,72 +444,79 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 			case 'instagram':
 				$transient_var = 'transient_instagram_user_data_'.$source['account_name'].'_'.$source['count'];
 				$transient_media = get_transient( $transient_var );
-				if($transient_media && isset($transient_media) && !empty($transient_media) && !is_wp_error($transient_media)) {
-					$media = unserialize($transient_media);
+				if ( $transient_media && isset( $transient_media ) && ! empty( $transient_media ) ) {
+					$media = maybe_unserialize( $transient_media );
 				} else {
-					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
+					if ( isset( $be_themes_data['instagram_access_token'] ) && ! empty( $be_themes_data['instagram_access_token'] ) ) {
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
-						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']); 
-
+						$instagram_media = wp_remote_get( 'https://graph.instagram.com/me/media?fields=username,id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token='.$instagram_access_token.'&count=200' );
 						//Refresh token : https://developers.facebook.com/docs/instagram-basic-display-api/guides/long-lived-access-tokens
-						$ig_refresh_token = wp_remote_get('https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token);
+						$ig_refresh_token = wp_remote_get( 'https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token );
 						
-						
-						// if(is_wp_error($instagram_media) || isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
-						// 	delete_transient( $transient_var );
-						// 	$return['error'] = '<b>'.__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media->error_message;
-						// 	return $return;
-						// }
 						$instagram_response = $instagram_media["response"];
-						if(isset($instagram_response['code']) && $instagram_response['code']!=200 ){
-							$instagram_media_body = json_decode($instagram_media["body"]);
+						if ( isset( $instagram_response['code'] ) && $instagram_response['code'] !=200 ) {
+							$instagram_media_body = json_decode( $instagram_media["body"] );
 							delete_transient( $transient_var );
-							if(!empty($instagram_media_body->error) && !empty($instagram_media_body->error->message)) {
-								$return['error'] = '<b>'.esc_html__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media_body->error->message;	
-							}else{
-								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$instagram_response['message'];
+							if ( ! empty( $instagram_media_body->error ) && ! empty( $instagram_media_body->error->message ) ) {
+								$return['error'] = '<b>'.esc_html__( 'Instagram Error : ', 'oshine-modules' ).'</b>' . $instagram_media_body->error->message;	
+							} else {
+								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>' . $instagram_response['message'];
 							}
 							return $return;
 						}
-						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
-							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
+						if ( $instagram_media && isset( $instagram_media ) && ! empty( $instagram_media ) ) {
+							set_transient( $transient_var, $instagram_media, DAY_IN_SECONDS );
 							$media = $instagram_media;
 						}
-						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
-							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
-							$media = $instagram_media;
-						}
-					}else{
+					} else {
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://www.brandexponents.com/oshine-knowledgebase/knowledge-base/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
+						$be_theme_name = be_theme_name();
+						if ( $be_theme_name == 'exponent' ) {
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://exponentwptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
+						} else if( $be_theme_name == 'spyro' ) {
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://spyrowptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
+						} else if( $be_theme_name == 'oshin' ){
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://www.brandexponents.com/oshine-knowledgebase/knowledge-base/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
+						} else {
+							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Tatsu > Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://docs.tatsubuilder.com/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
+						}
 						return $return;
 					}					
 				}
                 
-				 if(isset($media) && !empty($media)) {
-					$images = json_decode($media["body"]);
+				if ( isset( $media ) && ! empty( $media ) ) {
+					$images = json_decode( $media["body"] );
 					$images = $images->data;
-					if(!empty($source['count']) && is_numeric($source['count'])){
-						$images = array_slice($images, 0, $source['count']);
+					
+					if ( ! empty( $source['count'] ) && is_numeric( $source['count'] ) ) {
+						$images = array_slice( $images, 0, $source['count'] );
 					}
-					foreach ($images as $key => $value) {
-						list($width, $height) = getimagesize($value->media_url);
-						$caption = empty($value->caption)?'':$value->caption;
+
+					foreach ( $images as $key => $value ) {
+						$media_url = $value->media_url;
+						$has_video = false;
+
+						if ( 'VIDEO' === $value->media_type ) {
+							$media_url = isset( $value->thumbnail_url ) && ! empty( $value->thumbnail_url ) ? $value->thumbnail_url : $media_url;
+							$has_video = true;
+						}
+
+						list( $width, $height ) = getimagesize( $media_url );
+						$caption = empty( $value->caption ) ? '' : $value->caption;
 						$temp_image_array = array();
-						$temp_image_array = array (
-							'thumbnail' => $value->media_url,
+						$temp_image_array = array(
+							'thumbnail' => $media_url,
 							'full_image_url' => $value->media_url,
-							'mfp_class' => ($lightbox_type == 'photoswipe') ? '' : 'mfp-image',
 							'caption' => $caption,
 							'description' => $caption,
 							'width' => $width,
 							'height' => $height,
 							'id' => '',
-							'has_video' => false,
+							'has_video' => $has_video,
 						);
-						array_push($return, $temp_image_array);					
-					}				
-				 }
+						array_push( $return, $temp_image_array );
+					}
+				}
 				return $return;
 				break;
 			case 'flickr':

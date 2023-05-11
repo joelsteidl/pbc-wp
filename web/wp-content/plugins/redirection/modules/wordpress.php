@@ -149,7 +149,7 @@ class WordPress_Module extends Red_Module {
 	public function pre_handle_404( $result, WP_Query $query ) {
 		$options = red_get_options();
 
-		if ( is_404() && count( $options['permalinks'] ) > 0 ) {
+		if ( count( $options['permalinks'] ) > 0 ) {
 			include_once dirname( dirname( __FILE__ ) ) . '/models/permalinks.php';
 
 			$permalinks = new Red_Permalinks( $options['permalinks'] );
@@ -204,11 +204,7 @@ class WordPress_Module extends Red_Module {
 			return;
 		}
 
-		// We are on a 404. Check if we have a 'URL and page type' match in any of the matched redirects.
-		if ( $this->is_url_and_page_type() ) {
-			// Don't log an intentionally redirected 404 as part of the 'url and page type'
-			return;
-		}
+		$this->is_url_and_page_type();
 
 		$options = red_get_options();
 
@@ -415,9 +411,14 @@ class WordPress_Module extends Red_Module {
 	private function cgi_fix( $url, $status ) {
 		if ( $status === 301 && php_sapi_name() === 'cgi-fcgi' ) {
 			$servers_to_check = [ 'lighttpd', 'nginx' ];
+			$server = '';
+			if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && is_string( $_SERVER['SERVER_SOFTWARE'] ) ) {
+				$server = sanitize_text_field( $_SERVER['SERVER_SOFTWARE'] );
+			}
 
 			foreach ( $servers_to_check as $name ) {
-				if ( isset( $_SERVER['SERVER_SOFTWARE'] ) && stripos( $_SERVER['SERVER_SOFTWARE'], $name ) !== false ) {
+
+				if ( stripos( $server, $name ) !== false ) {
 					status_header( $status );
 					header( "Location: $url" );
 					exit( 0 );

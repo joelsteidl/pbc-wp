@@ -68,7 +68,7 @@ if (!function_exists('tatsu_gradient_button')) {
 		
 		$hover_bg_class =  empty( $hover_bg_color ) ? 'transparent_hover_bg' : '';
 
-		$url = ( empty( $url ) ) ? '#' : $url ;
+		$url = ( empty( $url ) ) ? '#' : $url;
 
 		$image_wrap_class = '';
 
@@ -82,6 +82,9 @@ if (!function_exists('tatsu_gradient_button')) {
 			}
 		}
 
+		$url = tatsu_parse_custom_fields( $url );
+		$button_text = tatsu_parse_custom_fields( $button_text );
+
 		$hover_effect = !empty( $hover_effect ) && 'none' !== $hover_effect ? $hover_effect : '';
 
 		//GDPR Privacy preference popup logic
@@ -89,7 +92,7 @@ if (!function_exists('tatsu_gradient_button')) {
 		$gdpr_concern_selector = '';
 		if( $mfp_class === 'mfp-iframe' ){
 			if( function_exists( 'be_gdpr_privacy_ok' ) ){
-				$video_details =  be_get_video_details($video_url);
+				$video_details =  be_get_video_details( tatsu_parse_custom_fields( $video_url ) );
 				if( !empty( $_COOKIE ) ){
 					if( !be_gdpr_privacy_ok($video_details['source'] ) ){
 						$mfp_class = 'mfp-popup';
@@ -367,6 +370,7 @@ function tatsu_register_gradient_button()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'button_text',
+		'is_dynamic' => true,
 		'group_atts'			=> array(
 			array(
 				'type'		=> 'tabs',

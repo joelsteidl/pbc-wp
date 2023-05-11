@@ -44,7 +44,8 @@ if (!function_exists('tatsu_gradient_icon')) {
 		$hover_effect_child = $alignment !== 'none' && 'none' !== $hover_effect ? $hover_effect : '';
 		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '' ;
 		$new_tab = ( isset( $new_tab ) && 1 == $new_tab ) ? 'target="_blank"' : '' ;
-		$href = ( empty( $href ) ) ? '#' : $href ;
+		$href = ( empty( $href ) ) ? '#' : tatsu_parse_custom_fields( $href );
+		$video_url = tatsu_parse_custom_fields( $video_url );
 
 		if( isset( $lightbox ) && 1 == $lightbox ) {
 			if( !empty( $video_url ) ) {
@@ -65,7 +66,7 @@ if (!function_exists('tatsu_gradient_icon')) {
 		$gdpr_concern_selector = '';
 		if( 1 == $lightbox && !empty( $video_url ) ){
 			if( function_exists( 'be_gdpr_privacy_ok' ) ){
-				$video_details =  be_get_video_details($video_url);
+				$video_details = be_get_video_details( $video_url );
 				if( !empty( $_COOKIE ) ){
 					if( !be_gdpr_privacy_ok($video_details['source'] ) ){
 						$mfp_class = 'mfp-popup';
@@ -122,6 +123,7 @@ function tatsu_register_gradient_icon_module()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'name',
+		'is_dynamic' => true,
 		'group_atts' => array(
 			array(
 				'type'	=>	'tabs',

@@ -5,13 +5,13 @@
 if (!function_exists('tatsu_code')) {
     function tatsu_code( $atts, $content ,$tag) {
         extract( shortcode_atts( array (
-                        'id' => '',
-												'class' => '',
-												'animate' => 0,
-												'animation_type' =>'fadeIn',
-												'animation_delay' => 0,
-												'key' => be_uniqid_base36(true),
-                ), $atts, $tag ) );
+			'id' => '',
+			'class' => '',
+			'animate' => 0,
+			'animation_type' => 'fadeIn',
+			'animation_delay' => 0,
+			'key' => be_uniqid_base36( true ),
+		), $atts, $tag ) );
 
 		$visibility_classes = be_get_visibility_classes_from_atts( $atts ); 		
 		$animate = ( isset( $animate ) && 1 == $animate && 'none' !== $animation_type ) ? ' tatsu-animate' : '';
@@ -29,7 +29,7 @@ if (!function_exists('tatsu_code')) {
 	add_shortcode( 'tatsu_code', 'tatsu_code' );
 }
 
-add_action('tatsu_register_modules', 'tatsu_register_code', 9);
+add_action( 'tatsu_register_modules', 'tatsu_register_code', 9 );
 add_action( 'tatsu_register_header_modules', 'tatsu_register_code' );
 
 function tatsu_register_code()
@@ -43,14 +43,12 @@ function tatsu_register_code()
 		'is_built_in' => true,
 		'hint' => 'content',
 		'should_autop' => false,
-
 		//Tab1
-		'group_atts'			=> array(
+		'group_atts' => array(
 			array(
 				'type'		=> 'tabs',
 				'style'		=> 'style1',
 				'group'		=> array(
-
 					array( //Tab1
 						'type' => 'tab',
 						'title' => esc_html__('Content', 'tatsu'),
@@ -66,24 +64,22 @@ function tatsu_register_code()
 							array(
 								"type" => "accordion",
 								"active" => "none",
-							  "group" => array(
-								array( 
-									'type' => 'panel',
-									'title' => esc_html__('Identifiers', 'tatsu'),
-									'group'		=> array(
-										'id',
-										'class',
+							  	"group" => array(
+									array( 
+										'type' => 'panel',
+										'title' => esc_html__('Identifiers', 'tatsu'),
+										'group'	=> array(
+											'id',
+											'class',
+										)
 									)
 								)
-							)
-					    )
-				 	 )  
-				  ),
-			   )
+					    	)
+				 	 	)  
+				  	),
+			   	)
 	        )
 		),
-
-
 		'atts' => array(
 			array(
 				'att_name' => 'content',

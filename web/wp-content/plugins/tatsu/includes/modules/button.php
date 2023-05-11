@@ -76,8 +76,9 @@ if (!function_exists('tatsu_button')) {
 
 		$hover_effect = !empty( $hover_effect ) && 'none' !== $hover_effect ? $hover_effect : '';
 		
-		$url = ( empty( $url ) ) ? '#' : $url ;
-
+		$url = ( empty( $url ) ) ? '#' : tatsu_parse_custom_fields( $url );
+		$video_url = tatsu_parse_custom_fields( $video_url );
+		
 		$image_wrap_class = '';
 
 		if( $lightbox && 1 == $lightbox ) {
@@ -141,8 +142,9 @@ if (!function_exists('tatsu_button')) {
 		
 		$icon = ( isset($icon) && !empty($icon) && ($icon != 'none') ) ? '<i class="tatsu-icon '.$icon.'"></i>' : '' ;
 		$icon_alignment = ( isset($icon_alignment) && !empty($icon_alignment) ) ? $icon_alignment : 'left' ;
-		$button_text_label = $button_text;
-		$button_text = ( $icon_alignment == 'right' ) ? $button_text.$icon : $icon.$button_text ;
+		$button_text_label = tatsu_parse_custom_fields( $button_text );
+		$button_text = tatsu_parse_custom_fields( $button_text );
+		$button_text = ( $icon_alignment == 'right' ) ? $button_text . $icon : $icon . $button_text;
 
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-normal-button tatsu-button-wrap '.$alignment.' '.$image_wrap_class.' '.$unique_class_name.' '.$hover_effect.' '.$visibility_classes.' '.$css_classes.'">';
 		$output .= '<a class="tatsu-shortcode '.$type.'btn tatsu-button '.$icon_alignment.'-icon '.$button_style.' '.$animate.' '.$mfp_class.' '.$background_animation.' ' . $gdpr_concern_selector .' " href="'.$url.'" style= "'.$bg_animation_css.'" '.$data_animations.' aria-label="'.$button_text_label.'" data-gdpr-atts='.$gdpr_atts.' '.$new_tab.'>'.$button_text.'</a>' ; 
@@ -379,7 +381,7 @@ function tatsu_register_button()
 		'inline' => true,
 		'type' => 'single',
 		'is_built_in' => true,
-		
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(

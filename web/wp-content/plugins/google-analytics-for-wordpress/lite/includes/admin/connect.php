@@ -39,7 +39,7 @@ class MonsterInsights_Connect {
 
 		// Check for permissions.
 		if ( ! monsterinsights_can_install_plugins() ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'You are not allowed to install plugins.', 'google-analytics-for-wordpress' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Oops! You are not allowed to install plugins. Please contact your site administrator.', 'google-analytics-for-wordpress' ) ) );
 		}
 
 		if ( monsterinsights_is_dev_url( home_url() ) ) {
@@ -64,13 +64,13 @@ class MonsterInsights_Connect {
 			// Deactivate plugin.
 			deactivate_plugins( plugin_basename( MONSTERINSIGHTS_PLUGIN_FILE ), false, false );
 			wp_send_json_error( array(
-				'message' => esc_html__( 'Pro version is already installed.', 'google-analytics-for-wordpress' ),
+				'message' => esc_html__( 'You already have MonsterInsights Pro installed.', 'google-analytics-for-wordpress' ),
 				'reload'  => true,
 			) );
 		}
 
 		// Network?
-		$network = ! empty( $_POST['network'] ) && $_POST['network'];
+		$network = ! empty( $_POST['network'] ) && $_POST['network']; // phpcs:ignore
 
 		// Redirect.
 		$oth = hash( 'sha512', wp_rand() );
@@ -105,11 +105,16 @@ class MonsterInsights_Connect {
 	 * Process MonsterInsights Connect.
 	 */
 	public function process() {
-		$error = esc_html__( 'Could not install upgrade. Please download from monsterinsights.com and install manually.', 'google-analytics-for-wordpress' );
+		// Translators: Link tag starts with url and link tag ends.
+		$error = sprintf(
+			esc_html__( 'Oops! We could not automatically install an upgrade. Please install manually by visiting %1$smonsterinsights.com%2$s.', 'google-analytics-for-wordpress' ),
+			'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'could-not-upgrade', 'https://www.monsterinsights.com/' ) . '">',
+			'</a>'
+		);
 
 		// verify params present (oth & download link).
 		$post_oth = ! empty( $_REQUEST['oth'] ) ? sanitize_text_field( $_REQUEST['oth'] ) : '';
-		$post_url = ! empty( $_REQUEST['file'] ) ? $_REQUEST['file'] : '';
+		$post_url = ! empty( $_REQUEST['file'] ) ? sanitize_text_field($_REQUEST['file']) : '';
 		$license  = get_option( 'monsterinsights_connect', false );
 		$network  = ! empty( $license['network'] ) ? (bool) $license['network'] : false;
 		if ( empty( $post_oth ) || empty( $post_url ) ) {
@@ -201,7 +206,7 @@ class MonsterInsights_Connect {
 			} else {
 				// Reactivate the lite plugin if pro activation failed.
 				activate_plugin( plugin_basename( MONSTERINSIGHTS_PLUGIN_FILE ), '', $network, true );
-				wp_send_json_error( esc_html__( 'Pro version installed but needs to be activated from the Plugins page inside your WordPress admin.', 'google-analytics-for-wordpress' ) );
+				wp_send_json_error( esc_html__( 'Please activate MonsterInsights Pro from your WordPress plugins page.', 'google-analytics-for-wordpress' ) );
 			}
 		}
 		wp_send_json_error( $error );

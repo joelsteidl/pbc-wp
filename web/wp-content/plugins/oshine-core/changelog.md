@@ -1,3 +1,7 @@
+v1.5.6
+======
+* Fixed: Remove spam content from demo
+
 v1.5.5
 ======
 * Fixed: V3 demo import

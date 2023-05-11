@@ -163,7 +163,9 @@ if ( isset($enmse_options['language']) ) { // Find the Language
 	$enmse_language = 1;
 }
 
-if ( $enmse_language == 9 ) { // Russian
+if ( $enmse_language == 10 ) { // French
+	include('lang/fre_bible_books.php');
+} elseif ( $enmse_language == 9 ) { // Russian
 	include('lang/rus_bible_books.php');
 } elseif ( $enmse_language == 8 ) { // Japanese
 	include('lang/jap_bible_books.php');
@@ -360,7 +362,7 @@ if ( !defined('ENMSE_FIND_PAGE') ) { // Find current page for building URLs
 	<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v2.8.4.030921 -->
+	<!-- v2.8.7.080422 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

@@ -1060,7 +1060,7 @@ a.tatsu-icon-shortcode.icon-plain{
   line-height: 0;
 }
 .tatsu-icon-group div.tatsu-icon-shortcode {
-    display: inline-block;
+    /* display: inline-block; */
     margin-right: 15px;
 }
 .tatsu-icon-group.align-right div.tatsu-icon-shortcode{
@@ -2064,7 +2064,7 @@ body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
 .tatsu-carousel-img-lazy-load {
     opacity: 0;
     transition : opacity 0.3s ease;
-    position: absolute;
+    /* position: absolute; */
     left : 0;
 }
 .tatsu-carousel-img-lazy-loaded {
@@ -2098,7 +2098,7 @@ body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
 .tatsu-variable-carousel .tatsu-carousel-img {
     height : 100%;
     width : auto;
-    max-width: none;
+    /* max-width: none; */
 }
 @media only screen and (max-width : 767px) {
     .tatsu-variable-carousel .tatsu-carousel-col {
@@ -2686,21 +2686,33 @@ body:not( .tatsu-frame ) .tatsu-single-image.tatsu-external-image img {
 .tatsu-icon_card-type-image .tatsu-img-plain {
     border-radius: 0;
 }
-.tatsu-icon_card-type-image.tatsu-icon_small .tatsu-icon_card-icon {
+.tatsu-icon_card-type-image.tatsu-icon_tiny .tatsu-icon_card-icon,
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.tiny {
+    width : 28px;
+    height : 28px;
+}
+.tatsu-icon_card-type-image.tatsu-icon_small .tatsu-icon_card-icon,
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.small {
     width : 38px;
     height : 38px;
 }
-.tatsu-icon_card-type-image.tatsu-icon_medium .tatsu-icon_card-icon {
+.tatsu-icon_card-type-image.tatsu-icon_medium .tatsu-icon_card-icon,
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.medium {
     width : 50px;
     height : 50px;
 }
-.tatsu-icon_card-type-image.tatsu-icon_large .tatsu-icon_card-icon {
+.tatsu-icon_card-type-image.tatsu-icon_large .tatsu-icon_card-icon,
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.large {
     width : 64px;
     height : 64px;
 }
-.tatsu-icon_card-type-image.tatsu-icon_x-large .tatsu-icon_card-icon {
+.tatsu-icon_card-type-image.tatsu-icon_x-large .tatsu-icon_card-icon,
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.xlarge {
     width : 86px;
     height : 86px;
+}
+.tatsu-normal-icon .tatsu-icon-wrap .tatsu-icon-image.tatsu-icon-image-circled {
+    border-radius: 50%;
 }
 
 .tatsu-icon_card-caption > *:last-child {

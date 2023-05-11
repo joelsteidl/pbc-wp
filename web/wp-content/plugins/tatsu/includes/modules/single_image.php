@@ -5,9 +5,11 @@
 if (!function_exists('tatsu_image')) {
 	function tatsu_image( $atts, $content, $tag ) {
         $atts = shortcode_atts( array (
+			'field_type'        => 'default',
             'enable_margin'     => 'null',
             'margin'            => '0 0 0 0',
             'alignment'         => '',
+            'border_style'      => 'solid',
             'border_width'      => 0,
             'border_color'      => 'transparent',
             'image'             => '',
@@ -35,8 +37,13 @@ if (!function_exists('tatsu_image')) {
 			'key'               => be_uniqid_base36(true),
         ), $atts, $tag );
 
-        
         extract( $atts );
+
+		if ( 'default' !== $field_type && '' !== $field_type ) {
+			$image = tatsu_parse_custom_fields( $field_type );
+			$id = attachment_url_to_postid( $image );
+		}
+
         $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $atts['key'], $builder_mode );
         $unique_class_name = ' tatsu-'.$atts['key'];
 		$css_id = be_get_id_from_atts( $atts );
@@ -99,7 +106,8 @@ if (!function_exists('tatsu_image')) {
                     //image title attribute
                     $image_atts[] = sprintf( 'title = "%s"', get_the_title($id) );
                     $padding = 'padding-bottom : '.( ( $image_height / $image_width ) * 100 ).'%;';
-                    if( isset( $adaptive_image ) && $adaptive_image == 1 ) {
+                    $ext = strrchr($image_src,".");
+                    if( isset( $adaptive_image ) && $adaptive_image == 1 && $ext != '.gif' ) {
                         $img_srcset = wp_get_attachment_image_srcset( $id, $size );
                         $sizes = wp_calculate_image_sizes( $size, null, null, $id );
                         if( !empty( $img_srcset ) ) {
@@ -143,7 +151,6 @@ if (!function_exists('tatsu_image')) {
             $box_shadow_class = '';
         }
 
-
         $lightbox = isset( $lightbox ) && !empty( $lightbox ) ? 1 : 0;
         $new_tab = isset( $new_tab ) && !empty( $new_tab ) ? 1 : 0;
         $new_tab_attribute = '';
@@ -152,7 +159,7 @@ if (!function_exists('tatsu_image')) {
             $new_tab_attribute = '';
         }else {
             if( isset( $link ) && !empty( $link ) ) {
-                $link = ' href = "' . $link . '"';
+                $link = ' href = "' . tatsu_parse_custom_fields( $link ) . '"';
                 if( isset( $new_tab ) && !empty( $new_tab ) ) {
                     $new_tab_attribute = ' target = "_blank"';
                 }
@@ -167,7 +174,6 @@ if (!function_exists('tatsu_image')) {
                 $maxWidth = 'width : '.$image_width. 'px;';
             } 
         }
-
 
         $output = '';
         if( !empty( $image_atts ) ) {
@@ -184,7 +190,6 @@ if (!function_exists('tatsu_image')) {
 			if(strpos($final_image_atrr,'src =')===false || (strpos($final_image_atrr,'data-src =')!==false && substr_count($final_image_atrr,'src =')<2)){
 				$final_image_atrr .=' src ="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=" '; 	
 			}
-
             $output .= '<img class = "tatsu-gradient-border" ' . $final_image_atrr . ' />';
             if( '' != $link ) {
                 $output .= '</a>';
@@ -289,7 +294,7 @@ function tatsu_register_image()
 		'type' => 'single',
 		'is_built_in' => true,
 		'drag_handle' => false,
-
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(
@@ -300,6 +305,7 @@ function tatsu_register_image()
 						'type' => 'tab',
 						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
+							'field_type',
 							'image',
 							'image_varying_size_src',
 							'link',
@@ -354,6 +360,7 @@ function tatsu_register_image()
 										'type' => 'panel',
 										'title' => esc_html__('Border', 'tatsu'),
 										'group'		=> array(
+											'border_style',
 											'border_width',
 											'border_color',
 											'border_radius',
@@ -374,7 +381,23 @@ function tatsu_register_image()
 				'post_frame' => true,
 				'label' => esc_html__('Image', 'tatsu'),
 				'tooltip' => '',
-				'default' => TATSU_PLUGIN_URL . '/img/image-placeholder.jpg'
+				'default' => TATSU_PLUGIN_URL . '/img/image-placeholder.jpg',
+				'visible'		=> array(
+					'condition' => array(
+						array( 'field_type', '=', '' ),
+						array( 'field_type', '=', 'default' )
+					),
+					'relation'	=> 'or',
+				),
+			),
+			array(
+				'att_name' => 'field_type',
+				'type' => 'select',
+				'label' => esc_html__('Field Type', 'tatsu'),
+				'options' => tatsu_get_custom_fields_dropdown(),
+				'default' => 'default',
+				'tooltip' => '',
+				'is_inline' => !is_tatsu_pro_active()
 			),
 			array(
 				'att_name' => 'image_varying_size_src',
@@ -412,6 +435,27 @@ function tatsu_register_image()
 					'.tatsu-{UUID} .tatsu-single-image-inner' => array(
 						'property' => 'border-width',
 						'append' => 'px',
+					),
+				),
+			),
+			array(
+				'att_name' => 'border_style',
+				'type' => 'select',
+				'label' => esc_html__( 'Border Style', 'tatsu' ),
+				'options' => array(
+					'none' => 'None',
+					'solid' => 'Solid',
+					'dashed' => 'Dashed',
+					'double' => 'Double',
+					'dotted' => 'Dotted',
+				),
+				'default' => 'solid',
+				'tooltip' => '',
+				'css' => true,
+				'responsive' => true,
+				'selectors' => array(
+					'.tatsu-{UUID} .tatsu-single-image-inner' => array(
+						'property' => 'border-style',        
 					),
 				),
 			),

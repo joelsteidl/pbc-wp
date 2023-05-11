@@ -312,12 +312,11 @@ if (!function_exists('be_portfolio')) {
 					$filter_classes = $permalink = '';
 					$mfp_class = 'mfp-image';
                     $post_terms = get_the_terms( get_the_ID(), $filter_to_use );
+					$filter_classes = '';
 					if( $show_filters == 'yes' && is_array( $post_terms ) ) {
 						foreach ( $post_terms as  $term ) {
-							$filter_classes .=$term->slug." ";
+							$filter_classes .= $term->slug . " ";
 						}
-					} else{
-						$filter_classes='';
 					}
 					$attachment_id = get_post_thumbnail_id(get_the_ID());
 					$image_atts = get_portfolio_image(get_the_ID(), $col, $masonry);
@@ -348,29 +347,33 @@ if (!function_exists('be_portfolio')) {
 						$overlay_opacity = 85;
 					}
 					if( 'masonry_disable' == $masonry_enable ) {
-						if(  'wide-width-height' == $image_atts[ 'alt_class' ] ) {
+						if( 'wide-width-height' == $image_atts[ 'alt_class' ] ) {
 							$wide_width = ( 1300 ) + $gutter_width;
 							$wide_height = ( ( 650 / $aspect_ratio ) * 2 ) + $gutter_width;
 							$new_aspect_ratio = $wide_width/$wide_height;
 							$placeholder_padding = ( 1/$new_aspect_ratio ) * 100;
 							$current_dwdh_aspect_ratio = round( $attachment_thumb[ 1 ]/$attachment_thumb[ 2 ], 2 );
 							$isdwdh = true;
-						}else if( 'wide-width' == $image_atts[ 'alt_class' ] ){
+						} else if( 'wide-width' == $image_atts[ 'alt_class' ] ) {
 							$wide_width = ( 1300 ) + $gutter_width;
 							$normal_height = ( 650 / $aspect_ratio );
 							$new_aspect_ratio = $wide_width/$normal_height;
-
 							$placeholder_padding = ( 1/$new_aspect_ratio ) * 100;
-						}else if( 'wide-height' == $image_atts[ 'alt_class' ] ) {
+						} else if( 'wide-height' == $image_atts[ 'alt_class' ] ) {
 							$wide_height = ( ( 650 / $aspect_ratio ) * 2 ) + $gutter_width;
 							$new_aspect_ratio = 650/$wide_height;
 							$placeholder_padding = ( 1/$new_aspect_ratio ) * 100;
-						}else{
+						} else {
 							$placeholder_padding = ( 1/$aspect_ratio ) * 100;
 						}						
-					}else{						
-						$masonry_aspect_ratio = round( $attachment_full[ 1 ]/$attachment_full[ 2 ], 2 );
-						$placeholder_padding = ( $attachment_full[ 2 ]/$attachment_full[ 1 ] ) * 100;
+					} else {			
+						if ( $attachment_full[ 1 ] && $attachment_full[ 2 ] ) {
+							$masonry_aspect_ratio = round( $attachment_full[ 1 ]/$attachment_full[ 2 ], 2 );
+							$placeholder_padding = ( $attachment_full[ 2 ]/$attachment_full[ 1 ] ) * 100;
+						} else {
+							$masonry_aspect_ratio = '1.6';
+							$placeholder_padding = 0;
+						}
 					}
 					$current_flip_wrap_style = 'style = "padding-bottom:'.$placeholder_padding.'%;'.( ( $enable_data_src || $delay_load ) ?  ( 'background-color:'. $placeholder_color .';"' ) : '"' );
 
@@ -378,7 +381,7 @@ if (!function_exists('be_portfolio')) {
 						$single_overlay_color = be_themes_hexa_to_rgb( $single_overlay_color );
 						$gradient_style_color = 'background:rgba('.$single_overlay_color[0].','.$single_overlay_color[1].','.$single_overlay_color[2].','.(intval($overlay_opacity) / 100 ).')';
 						//$gradient_style_color = '';
-					}  else {
+					} else {
 					 	$gradient_style_color = $global_gradient_style_color;
 					}
 					if(isset($single_title_color) && !empty($single_title_color)) {

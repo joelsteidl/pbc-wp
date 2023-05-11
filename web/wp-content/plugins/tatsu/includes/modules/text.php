@@ -2,7 +2,7 @@
 
 if (!function_exists('tatsu_text')) {
 	function tatsu_text( $atts, $content, $tag ) {
-		$atts = shortcode_atts( array (
+		$atts = shortcode_atts( array(
 			'typography' => '',
 			'max_width' => 100,
 			'wrap_alignment' => 'center',
@@ -23,10 +23,10 @@ if (!function_exists('tatsu_text')) {
 			'dark_color' => '',
 			'hide_in' => '',
 			'text_typography' => '',
-			'key' => be_uniqid_base36(true),
-		),$atts, $tag );
+			'key' => be_uniqid_base36( true ),
+		), $atts, $tag );
 		
-		extract($atts);
+		extract( $atts );
 		
 		$custom_style_tag = be_generate_css_from_atts( $atts, 'tatsu_text', $key, $builder_mode );
 		$unique_class_name = 'tatsu-'.$key;
@@ -49,7 +49,7 @@ if (!function_exists('tatsu_text')) {
 		//rolling back Rinkesh's update. next update should be carefully checked.
 		$output .= '<div '.$css_id.' class="tatsu-module tatsu-text-block-wrap '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'"><div class="tatsu-text-inner '.$margin.' '.$animate.' clearfix" '.$data_animations.'>';
 		$output .= $custom_style_tag;
-		$output .= do_shortcode(  $content );
+		$output .= do_shortcode( $content );
 		$output .= '</div></div>';
 		
 	    return $output;
@@ -142,6 +142,7 @@ function tatsu_register_text()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'content',
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(

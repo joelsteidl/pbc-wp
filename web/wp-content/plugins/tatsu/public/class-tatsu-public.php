@@ -56,7 +56,7 @@ class Tatsu_Public {
 	public function load_header_template($template) {
 		if( current_theme_supports( 'tatsu-header-builder' ) ) {
 			global $post;
-			if ( TATSU_HEADER_CPT_NAME === $post->post_type && $template !== locate_template(array("single-tatsu_header.php"))){
+			if ( TATSU_HEADER_CPT_NAME === $post->post_type && ($template !== locate_template(array("single-tatsu_header.php")) || (function_exists('is_tatsu_standalone') && is_tatsu_standalone() && empty($template)))){
 				return TATSU_PLUGIN_DIR . "includes/header-builder/single-tatsu_header.php";
 			}
 		}
@@ -66,7 +66,7 @@ class Tatsu_Public {
 	public function load_footer_template($template) {
 		if( current_theme_supports( 'tatsu-footer-builder' ) ) {
 			global $post;
-			if ( TATSU_FOOTER_CPT_NAME === $post->post_type && $template !== locate_template(array("single-tatsu_footer.php"))){
+			if ( TATSU_FOOTER_CPT_NAME === $post->post_type && ($template !== locate_template(array("single-tatsu_footer.php")) || (function_exists('is_tatsu_standalone') && is_tatsu_standalone() && empty($template)))){
 				return TATSU_PLUGIN_DIR . "includes/footer-builder/single-tatsu_footer.php";
 			}
 		}
@@ -91,6 +91,10 @@ class Tatsu_Public {
 		}
 		if( !empty( $suffix ) ) {
 			wp_enqueue_style( 'tatsu-main', $assets_base_url . 'css/tatsu.min.css', array(), $this->version, 'all' );
+			if(is_tatsu_standalone()){
+				//spyro theme css
+				wp_enqueue_style( 'tatsu-theme-main', $assets_base_url . 'theme-assets/theme-main.min.css', array(), $this->version, 'all' );
+			}
 		}else{
 			wp_enqueue_style( 'tatsu-vendor', $assets_base_url . 'css/vendor.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'tatsu-main', $assets_base_url . 'css/tatsu.css', array('tatsu-vendor'), $this->version, 'all' );
@@ -99,7 +103,12 @@ class Tatsu_Public {
 			if( current_theme_supports('tatsu-header-builder') ) {
 				wp_enqueue_style( 'tatsu-header', $assets_base_url . 'css/tatsu-header.css', array(), $this->version, 'all' );
 			}
+			if(is_tatsu_standalone()){
+				//spyro theme css
+				wp_enqueue_style( 'tatsu-theme-main', $assets_base_url . 'theme-assets/theme-main.css', array(), $this->version, 'all' );
+			}
 		}
+		
 		Tatsu_Icons::getInstance()->enqueue_styles();
 
 	}
@@ -320,7 +329,8 @@ class Tatsu_Public {
 
 			//echo do_shortcode( $header_content );
 			$header_content = do_shortcode( $header_content );
-			echo be_remove_style_from_content($header_content);
+			//echo be_remove_style_from_content($header_content);
+			echo $header_content;
 			echo '</div>';
 			echo '<div id="tatsu-header-placeholder"></div>';
 			echo '</div>';
@@ -348,7 +358,8 @@ class Tatsu_Public {
 				<div id = "tatsu-footer-container">
 					<?php //echo do_shortcode( $footer_content ); 
 					$footer_content = do_shortcode( $footer_content );
-					echo be_remove_style_from_content($footer_content);
+					//echo be_remove_style_from_content($footer_content);
+					echo $footer_content;
 					?>
 				</div>
 			<?php
@@ -405,8 +416,7 @@ class Tatsu_Public {
 							if( 'tatsu_hamburger_menu' === $module['name'] ) {
 								$output .= '<div id="tatsu-'.$module['id'].'" class="tatsu-slide-menu">
 												<div class="tatsu-slide-menu-inner">';
-								$sliding_menu = do_shortcode( tatsu_shortcodes_from_content( $module['inner'] ) );
-								$output .= be_remove_style_from_content($sliding_menu);
+								$output .= do_shortcode( tatsu_shortcodes_from_content( $module['inner'] ) );
 										
 								$output .= 		'</div>'; // Menu Inner
 								$output .= '</div>'; // Menu 
@@ -541,9 +551,7 @@ class Tatsu_Public {
 					}
 				}
 				if( $content_to_be_added ){
-					//echo do_shortcode( get_post( (int) $content_to_be_added )->post_content);
-					$global_sections_filtered = do_shortcode( get_post( (int) $content_to_be_added )->post_content);
-					echo be_remove_style_from_content($global_sections_filtered);
+					echo do_shortcode( get_post( (int) $content_to_be_added )->post_content);
 				}
 				
 				do_action( "tatsu_global_section_after_output", $section_position );
@@ -640,7 +648,6 @@ class Tatsu_Public {
 
     public function tatsu_add_custom_style() {
         $style_array = array();
-		$be_theme_name = be_theme_name();
         $style_array[ 'tatsu-post-style' ] = get_post_meta(get_the_ID(), 'tatsu_custom_css', true );
         if( current_theme_supports('tatsu-header-builder') ) {
             $post_type = get_post_type();
@@ -649,44 +656,24 @@ class Tatsu_Public {
 				//HEADER SECTION CSS INNER & CUSTOM CSS
                 $active_header_id = tatsu_get_active_header_id();
                 $style_array[ 'tatsu-header-style' ] = get_post_meta($active_header_id, 'tatsu_custom_css', true );
-				$style_array[ 'tatsu-header-style' ] .= ($be_theme_name=='spyro')?be_get_style_from_content(null,$active_header_id):'';
             }
             if( TATSU_FOOTER_CPT_NAME !== $post_type ) {
 				//FOOTER SECTION CSS INNER & CUSTOM CSS
                 $active_footer_id = tatsu_get_active_footer_id();
                 $style_array[ 'tatsu-footer-style' ] = get_post_meta($active_footer_id, 'tatsu_custom_css', true );
-				$style_array[ 'tatsu-footer-style' ] .= ($be_theme_name=='spyro')?be_get_style_from_content(null,$active_footer_id):'';
             }
-			
-			if($be_theme_name=='spyro'){
-				//SLIDING OR MOBILE MENU INNER CSS 
-				$style_array[ 'tatsu-sliding-menu-style' ] = $this->get_sliding_menu_inner_style();
-			}
 			
         }
 		
-		if($be_theme_name=='spyro' && is_tatsu_not_edit_mode() && !be_is_woocommerce_page()){
-			//MAIN POST OR PAGE INNER CSS
-			global $post;
-			if(!empty($post)){
-				$content = $post->post_content;
-				$edited_with = get_post_meta($post->ID,'_edited_with',true);
-				if(empty($edited_with) || $edited_with != 'tatsu'){
-					$post_content = $content;
-				}else{
-					$post_content = do_shortcode($content);//Only for edit with tatsu
-				}
-				
-				$style_array[ 'tatsu-post-inner-styles' ] = be_get_style_from_content($post_content);
-				
-				//GLOBAL SECTION CSS INNER & CUSTOM CSS
-				$tatsu_global_section_inner_styles = $this->tatsu_get_all_global_sections_inner_styles($post->ID);
-				if(!empty($tatsu_global_section_inner_styles)){
-					$style_array=array_merge($style_array,$tatsu_global_section_inner_styles);
-				}
-		    }
-	    }
-
+		global $post;
+		if(!empty($post)){
+			//GLOBAL SECTION CSS INNER & CUSTOM CSS
+			$tatsu_global_section_inner_styles = $this->tatsu_get_all_global_sections_inner_styles($post->ID,true);
+			if(!empty($tatsu_global_section_inner_styles)){
+				$style_array=array_merge($style_array,$tatsu_global_section_inner_styles);
+			}
+		}
+	
         tatsu_print_custom_css( $style_array );
     }
 

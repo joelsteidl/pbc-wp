@@ -21,6 +21,7 @@ if (!function_exists('tatsu_column')) {
 			'border_color'	=> '',
 			'enable_box_shadow' => 'null',
 			'box_shadow_custom' => '',
+			'video_preload' => 'auto',
 	        'bg_video_mp4_src' => '',
 	        'bg_video_ogg_src' => '',
 	        'bg_video_webm_src' => '',
@@ -113,7 +114,7 @@ if (!function_exists('tatsu_column')) {
 	    // Handle BG Video
 		if( !empty($bg_video_mp4_src) || !empty($bg_video_ogg_src) || !empty($bg_video_webm_src)  ) {
 			$classes .= ' tatsu-video-section';
-			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto"  playsinline webkit-playsinline>';
+			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="'.$video_preload.'"  playsinline webkit-playsinline>';
 			$bg_video_markup .=  ( !empty( $bg_video_mp4_src ) ) ? '<source src="'.$bg_video_mp4_src.'" type="video/mp4">' : '' ;
 			$bg_video_markup .=  ( !empty( $bg_video_ogg_src ) ) ? '<source src="'.$bg_video_ogg_src.'" type="video/ogg">' : '' ;
 			$bg_video_markup .=  ( !empty( $bg_video_webm_src ) ) ? '<source src="'.$bg_video_webm_src.'" type="video/webm">' : '' ;
@@ -431,6 +432,7 @@ function tatsu_register_column()
 														'title' => esc_html__('Video', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_video',
 														'group'	=> array(
+															'video_preload',
 															'bg_video_mp4_src',
 															'bg_video_ogg_src',
 															'bg_video_webm_src'
@@ -888,6 +890,19 @@ function tatsu_register_column()
 						'when' => array('box_shadow_custom', '!=', '0px 0px 0px 0px rgba(0,0,0,0)'),
 					),
 				),
+			),
+			array(
+				'att_name' => 'video_preload',
+				'type' => 'select',
+				'label' => esc_html__('Video Preload', 'tatsu'),
+				'options' => array(
+					'auto' => 'Auto',
+					'metadata' => 'Metadata',
+					'none' => 'None',
+				),
+				'is_inline' => true,
+				'default' => 'auto',
+				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'bg_video_mp4_src',
@@ -1505,6 +1520,7 @@ function tatsu_register_inner_column()
 														'title' => esc_html__('Video', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_video',
 														'group'	=> array(
+															'video_preload',
 															'bg_video_mp4_src',
 															'bg_video_ogg_src',
 															'bg_video_webm_src'
@@ -1841,6 +1857,19 @@ function tatsu_register_inner_column()
 						'relation' => 'and',
 					),
 				),
+			),
+			array(
+				'att_name' => 'video_preload',
+				'type' => 'select',
+				'label' => esc_html__('Video Preload', 'tatsu'),
+				'options' => array(
+					'auto' => 'Auto',
+					'metadata' => 'Metadata',
+					'none' => 'None',
+				),
+				'is_inline' => true,
+				'default' => 'auto',
+				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'bg_video_mp4_src',

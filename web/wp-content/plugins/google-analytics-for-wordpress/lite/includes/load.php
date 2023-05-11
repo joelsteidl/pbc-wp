@@ -1,6 +1,7 @@
 <?php
 if ( is_admin() ) {
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/tools.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/metaboxes.php';
 
 	//require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/tab-support.php';
 }
@@ -53,11 +54,17 @@ if ( is_admin() ) {
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/onboarding-wizard.php';
 	}
 
-	// Site Health logic.
+	//  Common Site Health logic
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/wp-site-health.php';
+
+	//  Lite-only Site Health logic.
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/wp-site-health.php';
 
 	// Helper functions specific to this version of the plugin.
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/helpers.php';
+
+	// Initialize User Journey.
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/user-journey/init.php';
 }
 
 if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
@@ -76,4 +83,3 @@ require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-pop
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-ajax.php';
 // Lite Gutenberg blocks.
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/gutenberg/frontend.php';
-

@@ -1,6 +1,8 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 9 ) { 
+	if ( $enmse_language == 10 ) { 
+		include(ENMSE_PLUGIN_PATH . 'includes/lang/fre_bible_books.php');
+	} elseif ( $enmse_language == 9 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/rus_bible_books.php');
 	} elseif ( $enmse_language == 8 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');

@@ -34,8 +34,8 @@ if (!function_exists('tatsu_animated_link')) {
 		
 		$new_tab = !empty( $new_tab ) ? 'target = "_blank"' : '';
 		
-		$output .= '<div '.$css_id.' class="tatsu-animated-link tatsu-animated-link-'. $link_style . ' ' .$unique_class_name. ' tatsu-module tatsu-animated-link-align-'. $alignment .' '.$css_classes.' '.$visibility_classes.'"><a class = "tatsu-animated-link-inner '. $animate . $link_text_font . '" href = "'. $url .'" ' . $new_tab . ' '.$data_animations.' aria-label = "'.$link_text.'">';
-		$output .= '<span class = "tatsu-animated-link-text"  >'.$link_text.'</span>';
+		$output .= '<div '.$css_id.' class="tatsu-animated-link tatsu-animated-link-'. $link_style . ' ' .$unique_class_name. ' tatsu-module tatsu-animated-link-align-'. $alignment .' '.$css_classes.' '.$visibility_classes.'"><a class = "tatsu-animated-link-inner '. $animate . $link_text_font . '" href = "'. tatsu_parse_custom_fields( $url ) .'" ' . $new_tab . ' '.$data_animations.' aria-label = "'.$link_text.'">';
+		$output .= '<span class = "tatsu-animated-link-text"  >'.tatsu_parse_custom_fields( $link_text ) .'</span>';
         if( $link_style == 'style4' ){
 			$output .= '<span class = "tatsu-animated-link-arrow"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="25px" height="15px" viewBox="0 0 30 18" enable-background="new 0 0 30 18" xml:space="preserve">
 			<path class="tatsu-svg-arrow-head" d="M20.305,16.212c-0.407,0.409-0.407,1.071,0,1.479s1.068,0.408,1.476,0l7.914-7.952c0.408-0.409,0.408-1.071,0-1.481
@@ -76,6 +76,7 @@ function tatsu_register_animated_link()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'link_text',
+		'is_dynamic' => true,
 		'group_atts' => array(
 			array(
 				'type'		=> 'tabs',

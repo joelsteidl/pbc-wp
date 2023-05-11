@@ -10,7 +10,10 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
 			'categories' => '',
 			'tags' => '',
             'hide_excerpt' => '',
-			'adaptive_image'    => 0,
+			'hide_thubnail' => 0,
+			'adaptive_image' => 0,
+			'social_icons' => 0,
+			'show_tags' => 0,
             'key' => be_uniqid_base36(true),
         ), $atts , $tag);
         extract( $atts );
@@ -79,7 +82,10 @@ if ( ! function_exists( 'be_recent_posts' ) ) {
             $output .= $custom_style_tag;
 			$blog_attr['style'] = 'shortcodes';
 			$blog_attr['gutter_width'] = 0;
+			$blog_attr['hide_thubnail'] = $hide_thubnail;
 			$blog_attr['adaptive_image'] = $adaptive_image;
+			$blog_attr['social_icons'] = $social_icons;
+			$blog_attr['show_tags'] = $show_tags;
 			while ( $my_query->have_posts() ) : $my_query->the_post(); 
 				$output .= '<div class="'.$column.'-col recent-posts-col be-hoverlay">';
 				ob_start();
@@ -132,7 +138,10 @@ function oshine_register_recent_posts() {
 								'categories',
 								'tags',
 								'hide_excerpt',
+								'hide_thubnail',
 								'adaptive_image',
+								'social_icons',
+								'show_tags',
 							)
 						),
 						array (
@@ -193,9 +202,31 @@ function oshine_register_recent_posts() {
 	              	'tooltip' => '',
 	            ),
 				array(
+					'att_name' => 'hide_thubnail',
+					'type' => 'switch',
+					'label' => __('Hide Thumbnail', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
+				array(
 					'att_name' => 'adaptive_image',
 					'type' => 'switch',
 					'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+					'visible' => array( 'hide_thubnail', '=', '0' )
+				),
+				array(
+					'att_name' => 'social_icons',
+					'type' => 'switch',
+					'label' => __('Show Social Icons', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
+				array(
+					'att_name' => 'show_tags',
+					'type' => 'switch',
+					'label' => __('Show Available Tags', 'oshine-modules'),
 					'default' => 0,
 					'tooltip' => '',
 				),

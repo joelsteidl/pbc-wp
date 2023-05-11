@@ -855,7 +855,7 @@ function oshine_modules_register_icons() {
 } 
 
 
-add_action( 'tatsu_deregister_icons', 'oshine_modules_deregister_font_awesome' );
+//add_action( 'tatsu_deregister_icons', 'oshine_modules_deregister_font_awesome' );
 function oshine_modules_deregister_font_awesome() {
 	tatsu_deregister_icon_kit( 'font_awesome' );
 	tatsu_deregister_icon_kit( 'tatsu_icons' );

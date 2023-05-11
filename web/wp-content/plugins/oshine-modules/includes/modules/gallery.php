@@ -409,7 +409,8 @@ function oshine_register_gallery() {
 					'magnific' => 'Magnific Popup (Supports Video)',
 				),
 				'default' => 'photoswipe',
-				'tooltip' => ''
+				'tooltip' => '',
+				'is_inline' => false,
 			),
 			array (
 				'att_name' => 'lazy_load',
@@ -444,7 +445,7 @@ function oshine_register_gallery() {
 				'default' => 'none',
 				'tooltip' => '',
 				'visible' => array( 'image_source', '=', 'selected' ),
-				'is_inline' => true,
+				'is_inline' => false,
 			),	
 			array (
 				'att_name' => 'items_per_load',
@@ -452,7 +453,14 @@ function oshine_register_gallery() {
 				'label' => __( 'Items Per Load', 'oshine-modules' ),
 				'default' => '9',
 				'tooltip' => '',
-				'hidden' => array( 'gallery_paginate', '=', 'none' ),
+				//'hidden' => array( 'gallery_paginate', '=', 'none' ),
+				'visible' => array (
+					'condition' =>	array(
+						array( 'image_source', '=', 'selected' ),
+						array( 'gallery_paginate', '!=', 'none' ),
+					),
+					'relation' => 'and',
+				)
             ),
             array (
                 'att_name'  => 'two_col_mobile',
@@ -489,6 +497,7 @@ function oshine_register_gallery() {
 				'label' => __( 'Enable Masonry Layout', 'oshine-modules' ),
 				'default' => 0,
 				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
 			),
 			array (
 				'att_name' => 'maintain_order',
@@ -517,7 +526,7 @@ function oshine_register_gallery() {
 			array (
 				'att_name' => 'item_parallax',
 				'type' => 'switch',
-				'label' => __( 'Enable Parallax Effect to Portfolio Items', 'oshine-modules' ),
+				'label' => __( 'Portfolio Items Parallax Effect', 'oshine-modules' ),
 				'default' => 0,
 				'tooltip' => '',
 			),
@@ -639,6 +648,7 @@ function oshine_register_gallery() {
 				'label' => __( 'Disable Like Button', 'oshine-modules' ),
 				'default' => 0,
 				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
 			),
 			array(
 				'att_name' => 'adaptive_image',
@@ -646,6 +656,7 @@ function oshine_register_gallery() {
 				'label' => __('Use Adaptive Image sizes', 'oshine-modules'),
 				'default' => 0,
 				'tooltip' => '',
+				'visible' => array( 'image_source', '=', 'selected' ),
 			),
 
 		),

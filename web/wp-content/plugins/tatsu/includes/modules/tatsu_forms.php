@@ -94,7 +94,8 @@ if( !function_exists( 'tatsu_validate_tatsuforms' ) ) {
                 }
             }
         } 
-        return $valid_form->ID;
+        return !empty($valid_form)?$valid_form->ID:'';
+        //return $valid_form->ID;
 
     }
 }

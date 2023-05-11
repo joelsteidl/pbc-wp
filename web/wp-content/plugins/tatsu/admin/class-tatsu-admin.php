@@ -104,8 +104,11 @@ class Tatsu_Admin {
 			array(
 				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
 				'nonce' => wp_create_nonce( 'wp_rest' ),
-				'if_tatsu_authorize' => if_tatsu_authorize(),
-				'redirectForLicense'=>admin_url( '?page=tatsu_settings')
+				'is_tatsu_authorized' => is_tatsu_authorized(),
+				'is_tatsu_standalone'=> is_tatsu_standalone(),
+				'redirectForLicense'=>admin_url( '?page=tatsu_settings'),
+				'pro_icon'=> TATSU_PLUGIN_URL . '/builder/svg/pro_icon.svg',
+				'tatsu_pro_url'=>TATSU_PRO_URL
 			)
 		);
 		wp_enqueue_script( 'semantic-dropdown', plugin_dir_url( __FILE__ ) . 'js/semantic-dropdown.js', array( 'jquery' ), $this->version, true );
@@ -232,10 +235,21 @@ class Tatsu_Admin {
 	}
 
 	public function tatsu_admin_menu() {
-		add_menu_page('Tatsu', 'Tatsu', 'manage_options', 'tatsu_settings', 'tatsu_settings_page', '');
-		add_submenu_page('tatsu_settings', 'Settings', 'Settings', 'manage_options', 'tatsu_settings', 'tatsu_settings_page');
+		add_menu_page('Tatsu', 'Tatsu', 'manage_options', 'tatsu_settings',array($this,'tatsuwelcome_dashboard'),'data:image/svg+xml;base64,'.base64_encode('<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+		<path d="M19 6.93027H15.4194V2.72261H12.0129V16.292H16.0194V19H4.01935V16.292H8.00645V2.72261H4.56129V6.93027H1V0H19V6.93027Z" fill="#9DA1A7"/></svg>'));
+		
+		add_submenu_page('tatsu_settings', 'Dashboard', 'Dashboard', 'manage_options', 'tatsu_settings',array($this,'tatsuwelcome_dashboard'));
+		add_submenu_page('tatsu_settings', 'Settings', 'Settings', 'manage_options', 'tatsu_global_settings', 'tatsu_settings_page');
 		add_submenu_page('tatsu_settings', 'Global Sections', 'Global Sections', 'manage_options', 'edit.php?post_type=tatsu_gsections');
 		
+		//Add colorhub Menu
+		remove_menu_page('colorhub');
+		add_submenu_page('tatsu_settings', 'Color Hub', 'Color Hub', 'manage_options', 'colorhub',array($this,'colorhub_dashboard'));
+
+		//Add typehub Menu
+		remove_menu_page('typehub');
+		add_submenu_page('tatsu_settings', 'Type Hub', 'Type Hub', 'manage_options', 'typehub',array($this,'typehub_dashboard'));
+
 		if( current_theme_supports( 'tatsu-header-builder' ) ) {
 			add_submenu_page('tatsu_settings', 'Headers', 'Headers', 'manage_options', 'edit.php?post_type=' . TATSU_HEADER_CPT_NAME);
 		}
@@ -252,6 +266,27 @@ class Tatsu_Admin {
 			add_submenu_page('tatsu_settings', 'Tatsu Form Settings', 'Form settings', 'manage_options', 'tatsu-forms-settings','tatsu_form_settings');
 			
 		}
+		
+		//Demo Import
+		if(is_tatsu_standalone()){
+		add_submenu_page('tatsu_settings', 'Demo Import', 'Demo Import', 'manage_options', 'tatsu_demo_import',array($this,'tatsu_demo_import_dashboard'));
+		}
+	}
+
+	public function colorhub_dashboard(){
+		echo '<div id="color-hub"></div>';
+	}
+
+	public function typehub_dashboard(){
+		echo '<div id="root"></div>';
+	}
+
+	public function tatsuwelcome_dashboard(){
+		require_once TATSU_PLUGIN_DIR. 'includes/demo-import/admin-tpl/start-page.php';
+	}
+
+	public function tatsu_demo_import_dashboard(){
+		require_once TATSU_PLUGIN_DIR. 'includes/demo-import/admin-tpl/demo-import-page.php';
 	}
 
 	public function tatsu_forms_post_type(){
@@ -779,9 +814,64 @@ class Tatsu_Admin {
 		$my_data['tatsu_page_header_style'] = be_sanitize_text_field($_POST['tatsu_page_header_style']);
 		$my_data['tatsu_page_header_scheme'] = be_sanitize_text_field($_POST['tatsu_page_header_scheme']);
 		$my_data[ 'tatsu_header_auto_pad' ] = be_sanitize_text_field($_POST['tatsu_header_auto_pad']);
-		$my_data[ 'tatsu_header_single_page_site' ] = be_sanitize_text_field($_POST['tatsu_header_single_page_site']);
+		$my_data[ 'tatsu_header_single_page_site' ] = array_key_exists( 'tatsu_header_single_page_site', $_POST ) ? be_sanitize_text_field( $_POST['tatsu_header_single_page_site'] ) : 0;
 
 		update_post_meta( $post_id, '_tatsu_header_options', $my_data );
 	}
 
+	public function tatsu_admin_notice(){
+		if ( ! function_exists( 'get_current_screen' ) ) { 
+			require_once ABSPATH . '/wp-admin/includes/screen.php'; 
+		} 
+ 		$current_screen = get_current_screen();
+		if ( ! in_array( $current_screen->parent_file, [ 'index.php', 'themes.php', 'plugins.php', 'tatsu_settings' ] ) ) {
+			return;
+		}
+
+		$tatsu_admin_dismiss_notices = get_option( 'tatsu_admin_dismiss_notices', array() );
+		if ( ! is_array( $tatsu_admin_dismiss_notices ) ) {
+			return;
+		}
+
+		if ( ! in_array( 'tatsu-typehub-colorhub-info-notice', $tatsu_admin_dismiss_notices ) ) { ?>
+			<div id="tatsu-typehub-colorhub-info-notice" class="notice tatsu-admin-notice notice-info is-dismissible">
+				<h3><?php esc_html_e( 'Typehub and Colorhub are now included in Tatsu', 'tatsu' ); ?></h3>
+				<p><?php esc_html_e( 'Typehub and Colorhub settings are avilable inside Tatsu menu. Please deactivate Typehub and Colorhub plugins.', 'tatsu' ); ?></p>
+			</div>
+		<?php }
+
+		if ( ! in_array( 'tatsu-spyro-info-notice', $tatsu_admin_dismiss_notices ) && 'tatsu_settings' === $current_screen->parent_file ) {
+			echo '<div id="tatsu-spyro-info-notice" class="notice tatsu-admin-notice notice-info is-dismissible">
+				<h3>'.esc_html__( 'Newly Launched - Spyro WordPress Theme - A BrandExponents Product', 'tatsu' ).'</h3>
+				<p>'.esc_html__( 'Introducing powerful landing pages builder, Spyro. A Front-end & Fully Responsive WP Builder that comes with 15+ Premade Demos, Premium Plugins, and High-Quality Templates. Dedicated to new-age businesses with a strong emphasis on conversions.', 'tatsu' ).'</p>
+				<p><strong>'.esc_html__("What's More?", 'tatsu' ).'</strong></p>
+				<ul style="padding-left:20px;list-style-type:disc">
+				<li>'.esc_html__( "Modern and 100% Responsive Designs", 'tatsu' ).'</li>
+				<li>'.esc_html__( "Tatsu Builder (New Module - Spyro Forms is bundled)
+				", 'tatsu' ).'</li>
+				<li>'.esc_html__( "GDPR Compliant Design + WPML Compatible", 'tatsu' ).'</li>
+				<li>'.esc_html__( "WooCommerce Ready", 'tatsu' ).'</li>
+				<li>'.esc_html__( "24x7 Quick Customer support, and much more.", 'tatsu' ).'</li>
+				</ul>
+				<p><strong>'.esc_html__("Sneak peek of our popular pre-built demos:", 'tatsu' ).'</strong></p>
+				<div class="notice-spyro-demos-list" style="display:flex;gap:15px">
+				<a href="'.esc_url('https://spyrowptheme.com/saas-clickthrough-new/').'" title="SaaS – Clickthrough" target="_blank">
+				<img src="'.esc_url('https://spyrowptheme.com/wp-content/uploads/2021/05/spyro-demos-saas-click-thumbnail.png').'" alt="SaaS – Clickthrough" width="100" height="100" /></a>
+				<a href="'.esc_url('https://spyrowptheme.com/shop/').'" title="Shop" target="_blank">
+				<img src="'.esc_url('https://spyrowptheme.com/wp-content/uploads/2021/10/shop.png').'" alt="Shop" width="100" height="100" /></a>
+				<a href="'.esc_url('https://spyrowptheme.com/seo-agency/').'" title="SEO Agency" target="_blank">
+				<img src="'.esc_url('https://spyrowptheme.com/wp-content/uploads/2021/10/seo-agency.png').'" alt="SEO Agency" width="100" height="100" /></a>
+				<a href="'.esc_url('https://spyrowptheme.com/finance-advisor/').'" title="Finance Advisor" target="_blank">
+				<img src="'.esc_url('https://spyrowptheme.com/wp-content/uploads/2021/10/finance.png').'" alt="Finance Advisor" width="100" height="100" /></a>
+				<a href="'.esc_url('https://spyrowptheme.com/hair-treatment/').'" title="Hair Treatment" target="_blank">
+				<img src="'.esc_url('https://spyrowptheme1.wpengine.com/wp-content/uploads/2021/05/Mask-Group.png').'" alt="Hair Treatment" width="100" height="100" /></a>
+				</div>
+
+				<div class="notice-button" style="display:flex;gap:15px; padding:10px 0px;">
+				<a href="'.esc_url('https://themeforest.net/item/spyro-marketing-landing-page-theme-for-wordpress/31694851').'" target="_blank" class="button-primary">'.esc_html__("Buy Now", 'tatsu' ).'</a>
+				<a href="'.esc_url('https://preview.themeforest.net/item/spyro-marketing-landing-page-theme-for-wordpress/full_screen_preview/31694851').'" target="_blank" class="button-primary">'.esc_html__("View all Demos", 'tatsu' ).'</a>
+				</div>
+			</div>';
+		}
+	}
 }

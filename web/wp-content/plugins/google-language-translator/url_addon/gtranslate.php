@@ -27,7 +27,7 @@ if(isset($get_params['gurl']))
     unset($get_params['gurl']);
 
 if(count($get_params)) {
-    $page_url .= '?' . rtrim(str_replace('=&', '&', http_build_query($get_params)), '=');
+    $page_url .= '?' . rtrim(str_replace('=&', '&', http_build_query($get_params, '', '&', PHP_QUERY_RFC3986)), '=');
 }
 
 $main_lang = isset($data['default_language']) ? $data['default_language'] : $main_lang;
@@ -75,7 +75,7 @@ $request_headers['Host'] = $host;
 if(isset($request_headers['HOST'])) unset($request_headers['HOST']);
 if(isset($request_headers['host'])) unset($request_headers['host']);
 
-if(!function_exists('gzdecode'))
+if(!function_exists('zlib_decode'))
     $request_headers['Accept-Encoding'] = '';
 else
     $request_headers['Accept-Encoding'] = 'gzip';
@@ -183,7 +183,7 @@ switch($_SERVER['REQUEST_METHOD']) {
 }
 
 // Debug
-if($debug or isset($_GET['enable_debug'])) {
+if($debug) {
     $fh = fopen(dirname(__FILE__).'/debug.txt', 'a');
     curl_setopt($ch, CURLOPT_VERBOSE, true);
     curl_setopt($ch, CURLOPT_STDERR, $fh);
@@ -199,9 +199,9 @@ $header_size = $response_info['header_size'];
 $header = substr($response, 0, $header_size);
 $html = substr($response, $header_size);
 
-if(function_exists('gzdecode')) {
+if(function_exists('zlib_decode')) {
     $return_gz = false;
-    $html_gunzip = @gzdecode($html);
+    $html_gunzip = @zlib_decode($html);
 
     if($html_gunzip !== false) {
         $html = $html_gunzip;

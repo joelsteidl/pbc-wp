@@ -201,7 +201,7 @@ function tatsu_register_svg_icon()
 			array(
 				'att_name'	=> 'svg_icon',
 				'type'		=> 'svg_icon_picker',
-				'label'		=> esc_html__('Svg Icon', 'tatsu'),
+				'label'		=> esc_html__('SVG Icon', 'tatsu'),
 				'default'	=> 'linea:basic_paperplane',
 				'tooltip'	=> '',
 				'visible'	=> array('custom_icon', '=', '0'),
@@ -217,8 +217,8 @@ function tatsu_register_svg_icon()
 				'att_name' => 'svg_url',
 				'type' => 'single_image_picker',
 				'options' => array(
-					'modal_title'	=> 'Select a Svg',
-					'button_text'	=> 'Add Svg',
+					'modal_title'	=> 'Select a SVG',
+					'button_text'	=> 'Add SVG',
 					'mime_type'		=> 'image/svg+xml',
 				),
 				'label' => 'SVG Icon File URL',

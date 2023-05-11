@@ -23,6 +23,9 @@ if ( ! function_exists( 'tatsu_gmaps' ) ) {
 		$data_animations = be_get_animation_data_atts( $atts );
 		$output = '';
 		
+		$address = tatsu_parse_custom_fields( $address );
+		$latitude = tatsu_parse_custom_fields( $latitude );
+		$longitude = tatsu_parse_custom_fields( $longitude );
 		
 		$maps_api_key = Tatsu_Config::getInstance()->get_google_maps_api_key();
 		if( !empty( $maps_api_key ) ) {
@@ -132,6 +135,7 @@ function tatsu_register_gmaps()
 		'is_js_dependant' => true,
 		'type' => 'single',
 		'is_built_in' => false,
+		'is_dynamic' => true,
 		'group_atts'			=> array(
 			array(
 				'type'		=> 'tabs',

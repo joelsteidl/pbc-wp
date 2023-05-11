@@ -47,13 +47,98 @@
 			});
 
 		} );
-		
-		if(!tatsuAdminConfig.if_tatsu_authorize){
-			$doc.on( 'click', '#tatsu_edit_post_wrap, #tatsu-switch-builder-button, #wp-admin-bar-tatsu_edit_page, .edit_with_tatsu', function(e) {
-					e.preventDefault();
-					window.location.href = 	tatsuAdminConfig.redirectForLicense;
+		/**
+		 * Remove Custom fonts and import export - Typehub & colorhub
+		 */
+		if(tatsuAdminConfig.is_tatsu_standalone && !tatsuAdminConfig.is_tatsu_authorized){
+			$(document).ready(function(){
+				//Typehub Custom fonts
+				var font_tab = $('.typehub-body .ant-tabs-tab').eq(4);
+				if($(font_tab).length){
+					var font_tab_text = $(font_tab).text();
+					
+					if(typeof font_tab_text !== 'undefined' && font_tab_text == 'Custom Fonts'){
+						font_tab.html(font_tab_text+' <img alt="Tatsu PRO" src="'+tatsuAdminConfig.pro_icon+'" class="tatsu-pro-icon" />');
+					}
+					font_tab.on('click',function(){
+						var font_tabpanel = $('.typehub-body .ant-tabs-tabpane').eq(4);
+						if(font_tabpanel.length){
+							var font_tab_html = '<div style="margin:10px 40px; background: rgb(255, 255, 255); padding: 15px;"><h3>Generate webfont kit by TTF or OTF files and start using your custom font in typehub. <a href="'+tatsuAdminConfig.tatsu_pro_url+'" target="_blank"><button type="button" class="ant-btn ant-btn-primary" style="margin-right: 10px;"><span>Go Pro</span></button></a></h3></div>';
+							setTimeout(function(){font_tabpanel.html(font_tab_html)},150);
+						}
+					});
+				}
+				
+				//Typehub import export
+				font_tab = $('.typehub-body .ant-tabs-tab').eq(3);
+				if($(font_tab).length){
+					font_tab_text = $(font_tab).text();
+					
+					if(typeof font_tab_text !== 'undefined' && font_tab_text.indexOf('Import Export')>=0){
+						font_tab.html(font_tab_text+' <img alt="Tatsu PRO" src="'+tatsuAdminConfig.pro_icon+'" class="tatsu-pro-icon" />');
+					}
+					font_tab.on('click',function(){
+						var font_tabpanel = $('.typehub-body .ant-tabs-tabpane').eq(3);
+						if(font_tabpanel.length){
+							var font_tab_html = '<div style="margin:10px 40px; background: rgb(255, 255, 255); padding: 15px;"><h3>Download a backup of your settings OR Import settings from a backup file. <a href="'+tatsuAdminConfig.tatsu_pro_url+'" target="_blank"><button type="button" class="ant-btn ant-btn-primary" style="margin-right: 10px;"><span>Go Pro</span></button></a></h3></div>';
+							setTimeout(function(){font_tabpanel.html(font_tab_html)},150);
+						}
+					});
+				}
+
+				//Colorhub import export
+				font_tab = $('#color-hub .ant-tabs-tab').eq(2);
+				if($(font_tab).length){
+					font_tab_text = $(font_tab).text();
+					
+					if(typeof font_tab_text !== 'undefined' && font_tab_text.indexOf('Import/Export')>=0){
+						font_tab.html(font_tab_text+' <img alt="Tatsu PRO" src="'+tatsuAdminConfig.pro_icon+'" class="tatsu-pro-icon" />');
+					}
+					font_tab.on('click',function(){
+						var font_tabpanel = $('#color-hub .ant-tabs-tabpane').eq(2);
+						if(font_tabpanel.length){
+							var font_tab_html = '<div style="margin:10px 40px; background: rgb(255, 255, 255); padding: 15px;"><h3>Download a backup of your settings OR Import settings from a backup file. <a href="'+tatsuAdminConfig.tatsu_pro_url+'" target="_blank"><button type="button" class="ant-btn ant-btn-primary" style="margin-right: 10px;"><span>Go Pro</span></button></a></h3></div>';
+							setTimeout(function(){font_tabpanel.html(font_tab_html)},150);
+						}
+					});
+				}
+
 			});
-	    }
+		}
+
+		//Remove install plugin links from admin notice
+		// if($('#setting-error-tgmpa').length){
+		// 	$('#setting-error-tgmpa p span').last().remove();
+		// }
+		
+
+		/**
+		 * Dismiss notices.
+		 */
+		 $(document).on( 'click','.tatsu-admin-notice .notice-dismiss', function( e ) {
+			var notice_id = $(this).parents('.tatsu-admin-notice').attr('id');
+			if(typeof notice_id !== 'undefined'){
+				$.ajax( {
+					url: tatsuAdminConfig.ajaxurl,
+					data: {
+						'action': 'tatsu_admin_notices_dismiss',
+						'nonce': tatsuAdminConfig.nonce,
+						'notice_id': notice_id
+					},
+					type: 'POST',
+					dataType: 'json',
+					beforeSend: function(xhr) {
+						xhr.setRequestHeader('X-WP-Nonce', tatsuAdminConfig.nonce);
+					},
+					error: function( error ) {
+						console.log( 'Internal Error !' + error );
+					},
+					success: function( response ) {
+						console.log(response);
+					}
+				});
+			}
+		} );
 
 		/**
 		 * Save Instagram Access token.
@@ -248,7 +333,7 @@
 				content += '<div class="tatsu_remove-ruleset" data-id="'+ ruleset.id +'" >x</div><div class="be-settings-page-option global-section-include-box" ><label class="be-settings-page-option-label" > Include </label><select id="post_types' + ruleset.id + '" class="tatsu_myselectclass" multiple="" >' + getPostTypeCheckBoxes(window.tatsu_global_section_data.all_post_types, ruleset.data.types,'include') + '</select></div><div class="be-settings-page-option global-section-exclude-box global-section-hide-exclusion " ><label class="be-settings-page-option-label" > Exclude </label><select id="excl_post_types' + ruleset.id + '" class="tatsu_myselectclass" multiple="" >' + getPostTypeCheckBoxes(window.tatsu_global_section_data.all_post_types, ruleset.data.exclTypes,'exclude') + '</select></div>';
 
 				content += '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Top</label><select id="position_top' + ruleset.id + '" >' + getSelectBoxContent(globalSectionList, ruleset.data.top) + '</select></div>';
-				content += '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Penultimate</label><select id="position_penultimate' + ruleset.id + '"  >' + getSelectBoxContent(globalSectionList, ruleset.data.penultimate) + '</select></div>';
+				content += '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" title="Penultimate Section appears after page content and just before Bottom Global Section.">Penultimate</label><select id="position_penultimate' + ruleset.id + '"  >' + getSelectBoxContent(globalSectionList, ruleset.data.penultimate) + '</select></div>';
 				content += '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Bottom</label><select id="position_bottom' + ruleset.id + '"  >' + getSelectBoxContent(globalSectionList, ruleset.data.bottom) + '</select></div>';
 
 				content += '</div>';

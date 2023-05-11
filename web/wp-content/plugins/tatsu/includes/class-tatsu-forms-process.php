@@ -248,10 +248,10 @@ class Tatsu_Forms_Process{
         $patterns = array();
         $replacements = array();
         foreach ($tags_array as $tag => $tag_value) {
-            $patterns[] = "/$tag/";
+            $patterns[] = $tag;
             $replacements[] = $tag_value;
         }
-        $content = preg_replace($patterns, $replacements, $content);
+        $content = str_replace($patterns, $replacements, $content);
         return wpautop($content,true);
     }
 

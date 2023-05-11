@@ -2,8 +2,8 @@
 ;(function($) {
 	var ua = window.navigator.userAgent;
     var msie = ua.indexOf("NET4");
-    console.log(ua);
-    console.log(msie);
+    //console.log(ua);
+    //console.log(msie);
     if(msie > -1){
     	$('body').addClass('internet_expoler');
     }
@@ -927,6 +927,7 @@
                                     var $this = jQuery(this),
                                         $slideshowspeed = Number( $this.attr('data-slide-show-speed') ) , 
                                         $slideshow = Number( $this.attr( 'data-slide-show' ) ),
+                                        $nav_dots = Number( $this.attr( 'data-slide-navigation-dots' ) ),
                                         $item_number = $this.children('.client-carousel-item').length,
                                         $wrap = $this.closest('.carousel-wrap');
 
@@ -936,8 +937,14 @@
 
                                     if( 0 == $slideshow ){
                                         $slideshow = false;
-                                    }else {
+                                    } else {
                                         $slideshow = true;
+                                    }
+
+									if( 0 == $nav_dots ){
+                                        $nav_dots = false;
+                                    } else {
+                                        $nav_dots = true;
                                     }
 
                                     if($item_number == 1){
@@ -956,11 +963,11 @@
                                             responsive: {
                                                 0:{
                                                     items:2,
-                                                    dots:true
+                                                    dots:$nav_dots
                                                 },
                                                 768:{
                                                     items:$item_number,
-                                                    dots:false
+                                                    dots:$nav_dots
                                                 }
                                             },
                                             onInitialize: function() {
@@ -1837,7 +1844,7 @@
 
                         var windowTotalWidth = jQuery(window).width() + jQuery.getScrollbarWidth() ,
 							$isBlog = jQuery( 'body' ).hasClass( 'blog' ) ;
-						console.log(jQuery.getScrollbarWidth())
+						//console.log(jQuery.getScrollbarWidth())
                         if( windowTotalWidth < 1280 && windowTotalWidth >= 768 ) {
 							if( ( $isBlog && windowTotalWidth > 960 ) || !$isBlog ) {
 								switch(this.closest_portfolio.attr('data-col')){

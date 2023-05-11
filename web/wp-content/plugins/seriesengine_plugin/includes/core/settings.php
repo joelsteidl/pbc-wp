@@ -969,7 +969,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1027,7 +1027,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1085,7 +1085,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1143,7 +1143,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165' selected='selected'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1201,7 +1201,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1259,7 +1259,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1317,7 +1317,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1375,7 +1375,7 @@
 						<option value='328' selected='selected'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1433,7 +1433,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1491,7 +1491,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1549,7 +1549,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1606,7 +1606,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1664,7 +1664,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1722,7 +1722,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1780,7 +1780,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1838,7 +1838,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1896,7 +1896,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -1954,7 +1954,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2012,7 +2012,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2070,7 +2070,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2128,7 +2128,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2185,7 +2185,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2243,7 +2243,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2301,7 +2301,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2359,7 +2359,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57' selected='selected'>ELB - Elberfelder 1905</option>
@@ -2417,7 +2417,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2475,7 +2475,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2533,7 +2533,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2591,7 +2591,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2649,7 +2649,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2707,7 +2707,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2765,7 +2765,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2823,7 +2823,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2881,7 +2881,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2939,7 +2939,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -2997,7 +2997,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3055,7 +3055,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3113,7 +3113,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3171,7 +3171,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3229,7 +3229,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3287,7 +3287,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3345,7 +3345,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3403,7 +3403,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367' selected='selected'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367' selected='selected'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3461,7 +3461,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133' selected='selected'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3519,7 +3519,7 @@
 						<option value='328'>NBG51 - NBG-vertaling 1951</option>
 						<option value='165'>SV-RJ - Statenvertaling</option>
 						<option value='" . $deftrans . "'>------ FRENCH ------</option>
-						<option value='2367'>NFC - Nouvelle Fraçais courant</option>
+						<option value='2367'>NFC - Nouvelle Français Courant</option>
 						<option value='133'>PDV2017 - Parole de Vie 2017</option>
 						<option value='" . $deftrans . "'>------- GERMAN ------</option>
 						<option value='57'>ELB - Elberfelder 1905</option>
@@ -3953,24 +3953,26 @@
 	function enm_seriesengine_language_input() {
 		$se_options = get_option( 'enm_seriesengine_options' );
 		$language = $se_options['language'];
-		if ($language == "9") { //Russian
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\" selected='selected'>Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		if ($language == "10") { //French
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\" selected='selected'>French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+		} elseif ($language == "9") { //Russian
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\" selected='selected'>Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "8") { //Japanese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\" selected='selected'>Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\" selected='selected'>Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "7") { //Dutch
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\" selected='selected'>Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\" selected='selected'>Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "6") { //Traditional Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\" selected='selected'>Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "5") { //Simplified Chinese
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\" selected='selected'>Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "4") { //Turkish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\" selected='selected'>Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "3") { //German
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\" selected='selected'>German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\" selected='selected'>German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} elseif ($language == "2") { //Spanish
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\">English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\" selected='selected'>Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		} else { // English
-			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\" selected='selected'>English</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
+			echo "<select id='language' name='enm_seriesengine_options[language]'><option value=\"5\">Chinese (Simplified)</option><option value=\"6\">Chinese (Traditional)</option><option value=\"7\">Dutch</option><option value=\"1\" selected='selected'>English</option><option value=\"10\">French</option><option value=\"3\">German</option><option value=\"8\">Japanese</option><option value=\"9\">Russian</option><option value=\"2\">Spanish</option><option value=\"4\">Turkish</option></select><br /><br /> <input id='languageprev' name='enm_seriesengine_options[languageprev]' type='hidden' value=\"" . $se_options['language'] . "\" />";
 		}
 	};
 
@@ -5913,7 +5915,9 @@
 			$valid['pagenumberselectedtext'] = 'D4D4D4';
 		}
 
-		if ( $input['language'] == 9 ) { //Russian
+		if ( $input['language'] == 10 ) { //French
+			include(dirname(__FILE__) . '/../lang/fre_default_values.php');
+		} elseif ( $input['language'] == 9 ) { //Russian
 			include(dirname(__FILE__) . '/../lang/rus_default_values.php');
 		} elseif ( $input['language'] == 8 ) { //Japanese
 			include(dirname(__FILE__) . '/../lang/jap_default_values.php');
@@ -5934,7 +5938,9 @@
 		}
 
 		if ( $input['languageprev'] == "" || ( $input['languageprev'] >= 1 && ( $input['languageprev'] != $input['language'] ) ) ) {
-			if ( $input['language'] == 9 ) { //Russian
+			if ( $input['language'] == 10 ) { //French
+				include(dirname(__FILE__) . '/../lang/fre_trans.php');
+			} elseif ( $input['language'] == 9 ) { //Russian
 				include(dirname(__FILE__) . '/../lang/rus_trans.php');
 			} elseif ( $input['language'] == 8 ) { //Japanese
 				include(dirname(__FILE__) . '/../lang/jap_trans.php');

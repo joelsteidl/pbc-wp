@@ -3,6 +3,9 @@ if (!function_exists('tatsu_icon')) {
 	function tatsu_icon( $atts, $content, $tag ) {
 		$atts = shortcode_atts(array(
 			'name' => '',
+			'icon_type' => '',
+			'icon_style' => 'plain',
+			'icon_image' => '',
 			'size'=> 'medium',
 			'custom_bg_size' => '',
 			'custom_icon_size' => '',
@@ -62,9 +65,9 @@ if (!function_exists('tatsu_icon')) {
 		$hover_effect_parent = $alignment === 'none' && 'none' !== $hover_effect ? $hover_effect : '';
 		$hover_effect_child = $alignment !== 'none' && 'none' !== $hover_effect ? $hover_effect : '';
 
-
-
-
+		$href = ( empty( $href ) ) ? '#' : tatsu_parse_custom_fields( $href );
+		$video_url = tatsu_parse_custom_fields( $video_url );
+		
 		if( isset( $lightbox ) && 1 == $lightbox ) {
 			if( !empty( $video_url ) ) {
 				$mfp_class = 'mfp-iframe';
@@ -78,29 +81,31 @@ if (!function_exists('tatsu_icon')) {
 		//GDPR Privacy preference popup logic
 		$gdpr_atts = '{}';
 		$gdpr_concern_selector = '';
-		if( $mfp_class === 'mfp-iframe' ){
-			if( function_exists( 'be_gdpr_privacy_ok' ) ){
-				$video_details =  be_get_video_details($video_url);
-				if( !empty( $_COOKIE ) ){
-					if( !be_gdpr_privacy_ok($video_details['source'] ) ){
-						$mfp_class = 'mfp-popup';
-						$href = '#gdpr-alt-lightbox-'.$key;
-						$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
+		if ( $mfp_class === 'mfp-iframe' ) {
+			if ( function_exists( 'be_gdpr_privacy_ok' ) ) {
+				$video_details = be_get_video_details( $video_url );
+				if ( ! empty( $video_details ) ) {
+					if ( ! empty( $_COOKIE ) ) {
+						if ( ! be_gdpr_privacy_ok( $video_details['source'] ) ) {
+							$mfp_class = 'mfp-popup';
+							$href = '#gdpr-alt-lightbox-'.$key;
+							$output .= be_gdpr_lightbox_for_video( $key, $video_details["thumb_url"], $video_details['source'] );
+						}
+					} else {
+						$gdpr_atts = array(
+							'concern' => $video_details[ 'source' ],
+							'add' => array( 
+								'class' => array( 'mfp-popup' ),
+								'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
+							),
+							'remove' => array( 
+								'class' => array( $mfp_class )
+							)
+						);
+						$gdpr_concern_selector = 'be-gdpr-consent-required';
+						$gdpr_atts = json_encode( $gdpr_atts );
+						$output .= be_gdpr_lightbox_for_video( $key, $video_details["thumb_url"], $video_details['source'] );
 					}
-				} else {
-					$gdpr_atts = array(
-						'concern' => $video_details[ 'source' ],
-						'add' => array( 
-							'class' => array( 'mfp-popup' ),
-							'atts'	=> array( 'href' => '#gdpr-alt-lightbox-'.$key ),
-						),
-						'remove' => array( 
-							'class' => array( $mfp_class )
-						)
-					);
-					$gdpr_concern_selector = 'be-gdpr-consent-required';
-					$gdpr_atts = json_encode( $gdpr_atts );
-					$output .= be_gdpr_lightbox_for_video($key,$video_details["thumb_url"],$video_details['source']);
 				}
 			}
 		}
@@ -115,9 +120,14 @@ if (!function_exists('tatsu_icon')) {
 
 		$inner_attr = ' class="tatsu-icon-wrap '.$style.' '.$animate.' '.$mfp_class.' '.$hover_effect_child.' '.$gdpr_concern_selector. ' ' . $ripple_class . '" '.$data_animations.' aria-label="'.$name.'" data-gdpr-atts='.$gdpr_atts.' ';
 
-		$inner_icon = ( $style == 'plain' ) ? '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"></i>' : '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"  data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'"></i>' ;
+		if( 'image' == $icon_type ) {
+			$inner_icon = ( $icon_style == 'plain' ) ? '<img src="'.$icon_image.'" class="tatsu-icon-image '.$size.' '.$style.'">' : '<img src="'.$icon_image.'" class="tatsu-icon-image tatsu-icon-image-circled '.$size.' '.$style.'" data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'">' ;
+		} else {
+			$inner_icon = ( $style == 'plain' ) ? '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"></i>' : '<i class="tatsu-icon tatsu-custom-icon tatsu-custom-icon-class '.$name.' '.$size.' '.$style.'"  data-animation="'.$animation_type.'" data-animation-delay="'.$animation_delay.'"></i>' ;
+		}
+			
 		if(empty($href)){
-			$output .= '<span '.$inner_attr.'  >'.$inner_icon.'</span>';
+			$output .= '<div '.$inner_attr.'  >'.$inner_icon.'</div>';
 		}else{
 			$output .= '<a href="'.$href.'" '.$inner_attr.' '.$new_tab.' >'.$inner_icon.'</a>';
 		}
@@ -363,10 +373,11 @@ function tatsu_register_icon_module()
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#icon',
 		'title' => esc_html__('Icon', 'tatsu'),
 		'is_js_dependant' => false,
-		'inline' => true,
+		'inline' => false,
 		'type' => 'single',
-		'is_built_in' => true,
+		'is_built_in' => false,
 		'hint' => 'name',
+		'is_dynamic' => true,
 		'group_atts' => array(
 			array(
 				'type'	=>	'tabs',
@@ -376,7 +387,9 @@ function tatsu_register_icon_module()
 						'type'	=>	'tab',
 						'title'	=>	esc_html__('Content', 'tatsu'),
 						'group'	=>	array(
-							'name',
+							'icon_type',
+ 							'name',
+							'icon_image',
 							'href',
 							'new_tab',
 							'lightbox',
@@ -398,6 +411,7 @@ function tatsu_register_icon_module()
 										'group' => array(
 											'size',
 											'style',
+											'icon_style',
 											'alignment',
 										)
 									),
@@ -417,7 +431,8 @@ function tatsu_register_icon_module()
 															'bg_color',
 															'color',
 															'border_color',
-														)
+														),
+														'visible' => array('icon_type', '=', 'icon'),
 													),
 													array(
 														'type'	=>	'tab',
@@ -426,11 +441,13 @@ function tatsu_register_icon_module()
 															'hover_bg_color',
 															'hover_color',													
 															'hover_border_color'
-														)
+														),
+														'visible' => array('icon_type', '=', 'icon'),
 													),
 												)
 											),
-										)
+										),
+										'visible' => array('icon_type', '=', 'icon'),
 									),
 									array(
 										'type' => 'panel',
@@ -551,11 +568,35 @@ function tatsu_register_icon_module()
 
 		'atts' => array(
 			array(
+				'att_name' => 'icon_type',
+				'type' => 'button_group',
+				'is_inline' => true,
+				'label' => esc_html__('Type', 'tatsu'),
+				'options' => array(
+					'icon' => 'Icon',
+					'image' => 'Image',
+				),
+				'default' => 'icon',
+				'tooltip' => ''
+			),
+			array(
 				'att_name' => 'name',
 				'type' => 'icon_picker',
 				'label' => esc_html__('Icon', 'tatsu'),
-				'default' => '',
+				'default' => 'icon-monitor',
+				'visible' => array('icon_type', '=', 'icon'),
 				'tooltip' => ''
+			),
+			array(
+				'att_name' => 'icon_image',
+				'type' => 'single_image_picker',
+				'label' => esc_html__('Image', 'tatsu'),
+				'visible' => array('icon_type', '=', 'image'),
+				'tooltip' => '',
+				'default'	=> 'http://via.placeholder.com/150x150',
+				'options' => array(
+					'size' => 'thumbnail',
+				),
 			),
 			array(
 				'att_name' => 'size',
@@ -584,7 +625,21 @@ function tatsu_register_icon_module()
 					'diamond' => 'Diamond'
 				),
 				'default' => 'circle',
-				'tooltip' => ''
+				'tooltip' => '',
+				'visible' => array('icon_type', '=', 'icon')
+			),
+			array(
+				'att_name' => 'icon_style',
+				'type' => 'button_group',
+				'is_inline' => true,
+				'label' => esc_html__('Icon Style', 'tatsu'),
+				'options' => array(
+					'plain' => 'Plain',
+					'circled' => 'Circled'
+				),
+				'default' => 'plain',
+				'tooltip' => '',
+				'visible' => array('icon_type', '=', 'image'),
 			),
 			array(
 				'att_name' => 'bg_color',
@@ -592,7 +647,13 @@ function tatsu_register_icon_module()
 				'label' => esc_html__('Background Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
-				'visible' => array('style', '!=', 'plain'),
+				'visible' => array(
+					'condition'	=> array(
+						array('style', '!=', 'plain'),
+						array('icon_type', '=', 'icon')
+					),
+					'relation'	=> 'and',
+				),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-icon' => array(
@@ -607,7 +668,13 @@ function tatsu_register_icon_module()
 				'label' => esc_html__('Hover Background Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
-				'visible' => array('style', '!=', 'plain'),
+				'visible' => array(
+					'condition'	=> array(
+						array('style', '!=', 'plain'),
+						array('icon_type', '=', 'icon')
+					),
+					'relation'	=> 'and',
+				),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-icon:hover' => array(
@@ -628,6 +695,7 @@ function tatsu_register_icon_module()
 						'property' => 'color',
 					),
 				),
+				'visible' => array('icon_type', '=', 'icon'),
 			),
 			array(
 				'att_name' => 'hover_color',
@@ -641,6 +709,7 @@ function tatsu_register_icon_module()
 						'property' => 'color',
 					),
 				),
+				'visible' => array('icon_type', '=', 'icon'),
 			),
 			array (
 				'att_name' => 'border_style',
@@ -680,7 +749,13 @@ function tatsu_register_icon_module()
 				),
 				'default' => '',
 				'tooltip' => '',
-				'visible' => array('style', '!=', 'plain'),
+				'visible' => array(
+					'condition'	=> array(
+						array('style', '!=', 'plain'),
+						array('icon_type', '=', 'icon')
+					),
+					'relation'	=> 'and',
+				),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-icon' => array(
@@ -696,7 +771,13 @@ function tatsu_register_icon_module()
 				'label' => esc_html__('Border Color', 'tatsu'),
 				'default' => '',
 				'tooltip' => '',
-				'visible' => array('style', '!=', 'plain'),
+				'visible' => array(
+					'condition'	=> array(
+						array('style', '!=', 'plain'),
+						array('icon_type', '=', 'icon')
+					),
+					'relation'	=> 'and',
+				),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-icon' => array(
@@ -715,7 +796,13 @@ function tatsu_register_icon_module()
 				'label' => esc_html__('Hover Border Color', 'tatsu'),
 				'default' => '', //color_scheme
 				'tooltip' => '',
-				'visible' => array('style', '!=', 'plain'),
+				'visible' => array(
+					'condition'	=> array(
+						array('style', '!=', 'plain'),
+						array('icon_type', '=', 'icon')
+					),
+					'relation'	=> 'and',
+				),
 				'css' => true,
 				'selectors' => array(
 					'.tatsu-{UUID} .tatsu-icon:hover' => array(

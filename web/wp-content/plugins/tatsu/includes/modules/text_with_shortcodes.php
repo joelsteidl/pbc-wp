@@ -3,8 +3,8 @@ if ( !function_exists( 'tatsu_text_with_shortcodes' ) ) {
 	function tatsu_text_with_shortcodes( $atts, $content, $tag ) {
 		extract( shortcode_atts( array(
 			'builder_mode' => '',
-	    'animate'=>0,
-			'animation_type'=>'fadeIn',
+	    	'animate' => 0,
+			'animation_type' => 'fadeIn',
 			'hide_in' => '',
 			'key' => be_uniqid_base36(true),
 	    ),$atts, $tag ) );
@@ -65,7 +65,7 @@ function tatsu_register_text_with_shortcodes()
 		'child_module' => '',
 		'type' => 'single',
 		'is_built_in' => false,
-
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(

@@ -26,7 +26,7 @@ if ( ! function_exists( 'tatsu_animated_heading' ) ) {
 				$effect_markup  = '<div class="tatsu-animated-heading-inner-wrap" >';
 				$effect_markup .= '<span class="tatsu-animated-heading-line tatsu-animated-heading-line1"></span>';
 				$effect_markup .= '<'.$tag_to_use.' class="tatsu-animated-heading-inner">';
-				$effect_markup .= $text;
+				$effect_markup .= tatsu_parse_custom_fields( $text );
 				$effect_markup .= '</'.$tag_to_use.'>';
 				$effect_markup .= '<span class="tatsu-animated-heading-line tatsu-animated-heading-line2"></span>';
 				$effect_markup .= '</div>';
@@ -35,14 +35,14 @@ if ( ! function_exists( 'tatsu_animated_heading' ) ) {
 			case 'anime_slide_underline' :
 				$effect_markup  = '<div class="tatsu-animated-heading-inner-wrap" >';
 				$effect_markup  .= '<'.$tag_to_use.' class="tatsu-animated-heading-inner">';
-				$effect_markup .= $text;
+				$effect_markup .= tatsu_parse_custom_fields( $text );
 				$effect_markup .= '</'.$tag_to_use.'>';
 				$effect_markup .= '<span class="tatsu-animated-heading-line tatsu-animated-heading-line2"></span>';
 				$effect_markup .= '</div>';
 				break;
 			default :
 				$effect_markup  = '<'.$tag_to_use.' class="tatsu-animated-heading-inner">';
-				$effect_markup .= $text;
+				$effect_markup .= tatsu_parse_custom_fields( $text );
 				$effect_markup .= '</'.$tag_to_use.'>';
 				break;
 		}
@@ -62,12 +62,13 @@ add_action('tatsu_register_modules', 'tatsu_register_animated_heading', 7);
 function tatsu_register_animated_heading()
 {
 	$controls = array(
-		'icon' => TATSU_PLUGIN_URL . '',
+		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#text',
 		'title' => esc_html__('Animated Heading', 'tatsu'),
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',
 		'is_built_in' => true,
+		'is_dynamic' => true,
 		'group_atts'			=> array(
 			array(
 				'type'		=> 'tabs',

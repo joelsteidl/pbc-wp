@@ -133,7 +133,9 @@
 		$enmse_language = 1;
 	}
 
-	if ( $enmse_language == 9 ) { // Russian
+	if ( $enmse_language == 10 ) { // French
+		include('lang/fre_bible_books.php');
+	} elseif ( $enmse_language == 9 ) { // Russian
 		include('lang/rus_bible_books.php');
 	} elseif ( $enmse_language == 8 ) { // Japanese
 		include('lang/jap_bible_books.php');

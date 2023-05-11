@@ -840,7 +840,8 @@ class PluginUpdateChecker_3_1 {
 			$muPluginDir = realpath(WPMU_PLUGIN_DIR);
 			$pluginPath  = realpath($this->pluginAbsolutePath);
 
-			$cachedResult = (strpos($pluginPath, $muPluginDir) === 0);
+			//$cachedResult = (strpos($pluginPath, $muPluginDir) === 0);
+			$cachedResult = !empty($muPluginDir)?(strpos($pluginPath, $muPluginDir) === 0):FALSE;
 		}
 
 		return $cachedResult;

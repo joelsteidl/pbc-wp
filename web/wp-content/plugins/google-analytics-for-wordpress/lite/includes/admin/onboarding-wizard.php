@@ -38,6 +38,10 @@ class MonsterInsights_Onboarding_Wizard {
 			'get_install_errors',
 		) );
 
+		add_action( 'monsterinsights_after_ajax_activate_addon', array( $this, 'disable_aioseo_onboarding_wizard' ) );
+		add_action( 'monsterinsights_after_ajax_activate_addon', array( $this, 'disable_wpforms_onboarding_wizard' ) );
+		add_action( 'monsterinsights_after_ajax_activate_addon', array( $this, 'disable_optin_monster_onboarding_wizard' ) );
+
 		// This will only be called in the Onboarding Wizard context because of previous checks.
 		add_filter( 'monsterinsights_maybe_authenticate_siteurl', array( $this, 'change_return_url' ) );
 		add_filter( 'monsterinsights_auth_success_redirect_url', array( $this, 'change_success_url' ) );
@@ -241,7 +245,7 @@ class MonsterInsights_Onboarding_Wizard {
 
 		if ( ! monsterinsights_can_install_plugins() ) {
 			wp_send_json( array(
-				'message' => esc_html__( 'You are not allowed to install plugins', 'google-analytics-for-wordpress' ),
+				'message' => esc_html__( 'Oops! You are not allowed to install plugins. Please contact your site administrator for assistance.', 'google-analytics-for-wordpress' ),
 			) );
 		}
 
@@ -436,6 +440,50 @@ class MonsterInsights_Onboarding_Wizard {
 
 		wp_send_json( monsterinsights_is_code_installed_frontend() );
 
+	}
+
+	public function disable_aioseo_onboarding_wizard( $plugin ) {
+		if ( empty( $plugin ) ) {
+			return;
+		}
+
+		if ( 'all-in-one-seo-pack/all_in_one_seo_pack.php' !== $plugin ) {
+			return;
+		}
+
+		update_option( 'aioseo_activation_redirect', true );
+	}
+
+	public function disable_wpforms_onboarding_wizard( $plugin ) {
+		if ( empty( $plugin ) ) {
+			return;
+		}
+
+		if ( 'wpforms-lite/wpforms.php' !== $plugin ) {
+			return;
+		}
+
+		if ( false === get_transient( 'wpforms_activation_redirect' ) ) {
+			return;
+		}
+
+		delete_transient( 'wpforms_activation_redirect' );
+	}
+
+	public function disable_optin_monster_onboarding_wizard( $plugin ) {
+		if ( empty( $plugin ) ) {
+			return;
+		}
+
+		if ( 'optinmonster/optin-monster-wp-api.php' !== $plugin ) {
+			return;
+		}
+
+		if ( false === get_transient( 'optin_monster_api_activation_redirect' ) ){
+			return;
+		}
+
+		delete_transient( 'optin_monster_api_activation_redirect' );
 	}
 
 }

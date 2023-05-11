@@ -47,6 +47,9 @@ function tatsu_register_title_icon()
 	$controls = array(
 		'icon' => TATSU_PLUGIN_URL . '/builder/svg/modules.svg#title_icon',
 		'title' => esc_html__('Title with Icon', 'tatsu'),
+		'is_tatsu_pro'=>false,
+		'preview_image'=>TATSU_PLUGIN_URL . '/builder/img/modules/title_with_icon.png',
+		'description'=>'Create beautiful sections with an icon in left, title in top with description',
 		'is_js_dependant' => true,
 		'child_module' => '',
 		'type' => 'single',

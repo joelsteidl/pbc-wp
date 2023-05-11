@@ -1,6 +1,6 @@
 <?php /* ----- Groups Engine - Edit a file straight from the Groups admin page ----- */
 
-	if ( current_user_can( 'edit_pages' ) ) { 
+	if ( current_user_can( 'edit_posts' ) ) { 
 
 		global $wpdb;
 

@@ -35,6 +35,9 @@ class Akismet {
 		add_filter( 'preprocess_comment', array( 'Akismet', 'auto_check_comment' ), 1 );
 		add_filter( 'rest_pre_insert_comment', array( 'Akismet', 'rest_auto_check_comment' ), 1 );
 
+		add_action( 'comment_form', array( 'Akismet', 'load_form_js' ) );
+		add_action( 'do_shortcode_tag', array( 'Akismet', 'load_form_js_via_filter' ), 10, 4 );
+
 		add_action( 'akismet_scheduled_delete', array( 'Akismet', 'delete_old_comments' ) );
 		add_action( 'akismet_scheduled_delete', array( 'Akismet', 'delete_old_comments_meta' ) );
 		add_action( 'akismet_scheduled_delete', array( 'Akismet', 'delete_orphaned_commentmeta' ) );
@@ -42,6 +45,7 @@ class Akismet {
 
 		add_action( 'comment_form',  array( 'Akismet',  'add_comment_nonce' ), 1 );
 		add_action( 'comment_form', array( 'Akismet', 'output_custom_form_fields' ) );
+		add_filter( 'script_loader_tag', array( 'Akismet', 'set_form_js_async' ), 10, 3 );
 
 		add_filter( 'comment_moderation_recipients', array( 'Akismet', 'disable_moderation_emails_if_unreachable' ), 1000, 2 );
 		add_filter( 'pre_comment_approved', array( 'Akismet', 'last_comment_status' ), 10, 2 );
@@ -64,6 +68,14 @@ class Akismet {
 		add_filter( 'wpcf7_form_elements', array( 'Akismet', 'append_custom_form_fields' ) );
 		add_filter( 'wpcf7_akismet_parameters', array( 'Akismet', 'prepare_custom_form_values' ) );
 
+		// Formidable Forms
+		add_filter( 'frm_filter_final_form', array( 'Akismet', 'inject_custom_form_fields' ) );
+		add_filter( 'frm_akismet_values', array( 'Akismet', 'prepare_custom_form_values' ) );
+
+		// Fluent Forms
+		add_filter( 'fluentform_form_element_start', array( 'Akismet', 'output_custom_form_fields' ) );
+		add_filter( 'fluentform_akismet_fields', array( 'Akismet', 'prepare_custom_form_values' ), 10, 2 );
+
 		add_action( 'update_option_wordpress_api_key', array( 'Akismet', 'updated_option' ), 10, 2 );
 		add_action( 'add_option_wordpress_api_key', array( 'Akismet', 'added_option' ), 10, 2 );
 
@@ -72,6 +84,23 @@ class Akismet {
 
 	public static function get_api_key() {
 		return apply_filters( 'akismet_get_api_key', defined('WPCOM_API_KEY') ? constant('WPCOM_API_KEY') : get_option('wordpress_api_key') );
+	}
+
+	/**
+	 * Exchange the API key for a token that can only be used to access stats pages.
+	 *
+	 * @return string
+	 */
+	public static function get_access_token() {
+		static $access_token = null;
+
+		if ( is_null( $access_token ) ) {
+			$response = self::http_post( self::build_query( array( 'api_key' => self::get_api_key() ) ), 'token' );
+
+			$access_token = $response[1];
+		}
+
+		return $access_token;
 	}
 
 	public static function check_key_status( $key, $ip = null ) {
@@ -220,6 +249,25 @@ class Akismet {
 		if ( ! is_null( $post ) ) {
 			// $post can technically be null, although in the past, it's always been an indicator of another plugin interfering.
 			$comment[ 'comment_post_modified_gmt' ] = $post->post_modified_gmt;
+
+			// Tags and categories are important context in which to consider the comment.
+			$comment['comment_context'] = array();
+
+			$tag_names = wp_get_post_tags( $post->ID, array( 'fields' => 'names' ) );
+
+			if ( $tag_names && ! is_wp_error( $tag_names ) ) {
+				foreach ( $tag_names as $tag_name ) {
+					$comment['comment_context'][] = $tag_name;
+				}
+			}
+
+			$category_names = wp_get_post_categories( $post->ID, array( 'fields' => 'names' ) );
+
+			if ( $category_names && ! is_wp_error( $category_names ) ) {
+				foreach ( $category_names as $category_name ) {
+					$comment['comment_context'][] = $category_name;
+				}
+			}
 		}
 
 		$response = self::http_post( Akismet::build_query( $comment ), 'comment-check' );
@@ -410,8 +458,12 @@ class Akismet {
 
 			$wpdb->queries = array();
 
+			$comments = array();
+
 			foreach ( $comment_ids as $comment_id ) {
-				do_action( 'delete_comment', $comment_id );
+				$comments[ $comment_id ] = get_comment( $comment_id );
+
+				do_action( 'delete_comment', $comment_id, $comments[ $comment_id ] );
 				do_action( 'akismet_batch_delete_count', __FUNCTION__ );
 			}
 
@@ -421,12 +473,13 @@ class Akismet {
 			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->comments} WHERE comment_id IN ( " . $format_string . " )", $comment_ids ) );
 			$wpdb->query( $wpdb->prepare( "DELETE FROM {$wpdb->commentmeta} WHERE comment_id IN ( " . $format_string . " )", $comment_ids ) );
 
+			foreach ( $comment_ids as $comment_id ) {
+				do_action( 'deleted_comment', $comment_id, $comments[ $comment_id ] );
+				unset( $comments[ $comment_id ] );
+			}
+
 			clean_comment_cache( $comment_ids );
 			do_action( 'akismet_delete_comment_batch', count( $comment_ids ) );
-
-			foreach ( $comment_ids as $comment_id ) {
-				do_action( 'deleted_comment', $comment_id );
-			}
 		}
 
 		if ( apply_filters( 'akismet_optimize_table', ( mt_rand(1, 5000) == 11), $wpdb->comments ) ) // lucky number
@@ -504,11 +557,38 @@ class Akismet {
 	public static function get_user_comments_approved( $user_id, $comment_author_email, $comment_author, $comment_author_url ) {
 		global $wpdb;
 
-		if ( !empty( $user_id ) )
-			return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE user_id = %d AND comment_approved = 1", $user_id ) );
+		/**
+		 * Which comment types should be ignored when counting a user's approved comments?
+		 *
+		 * Some plugins add entries to the comments table that are not actual
+		 * comments that could have been checked by Akismet. Allow these comments
+		 * to be excluded from the "approved comment count" query in order to
+		 * avoid artificially inflating the approved comment count.
+		 *
+		 * @param array $comment_types An array of comment types that won't be considered
+		 *                             when counting a user's approved comments.
+		 *
+		 * @since 4.2.2
+		 */
+		$excluded_comment_types = apply_filters( 'akismet_excluded_comment_types', array() );
 
-		if ( !empty( $comment_author_email ) )
-			return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE comment_author_email = %s AND comment_author = %s AND comment_author_url = %s AND comment_approved = 1", $comment_author_email, $comment_author, $comment_author_url ) );
+		$comment_type_where = '';
+
+		if ( is_array( $excluded_comment_types ) && ! empty( $excluded_comment_types ) ) {
+			$excluded_comment_types = array_unique( $excluded_comment_types );
+
+			foreach ( $excluded_comment_types as $excluded_comment_type ) {
+				$comment_type_where .= $wpdb->prepare( ' AND comment_type <> %s ', $excluded_comment_type );
+			}
+		}
+
+		if ( ! empty( $user_id ) ) {
+			return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE user_id = %d AND comment_approved = 1" . $comment_type_where, $user_id ) );
+		}
+
+		if ( ! empty( $comment_author_email ) ) {
+			return (int) $wpdb->get_var( $wpdb->prepare( "SELECT COUNT(*) FROM {$wpdb->comments} WHERE comment_author_email = %s AND comment_author = %s AND comment_author_url = %s AND comment_approved = 1" . $comment_type_where, $comment_author_email, $comment_author, $comment_author_url ) );
+		}
 
 		return 0;
 	}
@@ -632,8 +712,6 @@ class Akismet {
 		
 		$api_response = self::check_db_comment( $id, $recheck_reason );
 
-		delete_comment_meta( $id, 'akismet_rechecking' );
-
 		if ( is_wp_error( $api_response ) ) {
 			// Invalid comment ID.
 		}
@@ -660,6 +738,8 @@ class Akismet {
 				array( 'response' => substr( $api_response, 0, 50 ) )
 			);
 		}
+
+		delete_comment_meta( $id, 'akismet_rechecking' );
 
 		return $api_response;
 	}
@@ -1174,13 +1254,12 @@ class Akismet {
 		$akismet_ua = sprintf( 'WordPress/%s | Akismet/%s', $GLOBALS['wp_version'], constant( 'AKISMET_VERSION' ) );
 		$akismet_ua = apply_filters( 'akismet_ua', $akismet_ua );
 
-		$content_length = strlen( $request );
-
-		$api_key   = self::get_api_key();
 		$host      = self::API_HOST;
+		$api_key   = self::get_api_key();
 
-		if ( !empty( $api_key ) )
-			$host = $api_key.'.'.$host;
+		if ( $api_key ) {
+			$request = add_query_arg( 'api_key', $api_key, $request );
+		}
 
 		$http_host = $host;
 		// use a specific IP if provided
@@ -1304,13 +1383,17 @@ class Akismet {
 		}
 	}
 
-	public static function load_form_js() {
-		/* deprecated */
-	}
-
+	/**
+	 * Mark akismet-frontend.js as deferred. Because nothing depends on it, it can run at any time
+	 * after it's loaded, and the browser won't have to wait for it to load to continue
+	 * parsing the rest of the page.
+	 */
 	public static function set_form_js_async( $tag, $handle, $src ) {
-		/* deprecated */
-		return $tag;
+		if ( 'akismet-frontend' !== $handle ) {
+			return $tag;
+		}
+
+		return preg_replace( '/^<script /i', '<script defer ', $tag );
 	}
 
 	public static function get_akismet_form_fields() {
@@ -1327,8 +1410,14 @@ class Akismet {
 		$fields .= '<label>&#916;<textarea name="' . $prefix . 'hp_textarea" cols="45" rows="8" maxlength="100"></textarea></label>';
 
 		if ( ! function_exists( 'amp_is_request' ) || ! amp_is_request() ) {
-			$fields .= '<input type="hidden" id="ak_js" name="' . $prefix . 'js" value="' . mt_rand( 0, 250 ) . '"/>';
-			$fields .= '<script>document.getElementById( "ak_js" ).setAttribute( "value", ( new Date() ).getTime() );</script>';
+			// Keep track of how many ak_js fields are in this page so that we don't re-use
+			// the same ID.
+			static $field_count = 0;
+
+			$field_count++;
+
+			$fields .= '<input type="hidden" id="ak_js_' . $field_count . '" name="' . $prefix . 'js" value="' . mt_rand( 0, 250 ) . '"/>';
+			$fields .= '<script>document.getElementById( "ak_js_' . $field_count . '" ).setAttribute( "value", ( new Date() ).getTime() );</script>';
 		}
 
 		$fields .= '</p>';
@@ -1357,9 +1446,16 @@ class Akismet {
 	 * Ensure that any Akismet-added form fields are included in the comment-check call.
 	 *
 	 * @param array $form
+	 * @param array $data Some plugins will supply the POST data via the filter, since they don't
+	 *                    read it directly from $_POST.
 	 * @return array $form
 	 */
-	public static function prepare_custom_form_values( $form ) {
+	public static function prepare_custom_form_values( $form, $data = null ) {
+		if ( is_null( $data ) ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$data = $_POST;
+		}
+
 		$prefix = 'ak_';
 
 		// Contact Form 7 uses _wpcf7 as a prefix to know which fields to exclude from comment_content.
@@ -1367,8 +1463,7 @@ class Akismet {
 			$prefix = '_wpcf7_ak_';
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification.Missing
-		foreach ( $_POST as $key => $val ) {
+		foreach ( $data as $key => $val ) {
 			if ( 0 === strpos( $key, $prefix ) ) {
 				$form[ 'POST_ak_' . substr( $key, strlen( $prefix ) ) ] = $val;
 			}
@@ -1686,5 +1781,27 @@ p {
 				'https://akismet.com/privacy/'
 			) . '</p>'
 		);
+	}
+
+	public static function load_form_js() {
+		if (
+			! is_admin()
+			&& ( ! function_exists( 'amp_is_request' ) || ! amp_is_request() )
+			&& self::get_api_key()
+			) {
+			wp_register_script( 'akismet-frontend', plugin_dir_url( __FILE__ ) . '_inc/akismet-frontend.js', array(), filemtime( plugin_dir_path( __FILE__ ) . '_inc/akismet-frontend.js' ), true );
+			wp_enqueue_script( 'akismet-frontend' );
+		}
+	}
+
+	/**
+	 * Add the form JavaScript when we detect that a supported form shortcode is being parsed.
+	 */
+	public static function load_form_js_via_filter( $return_value, $tag, $attr, $m ) {
+		if ( in_array( $tag, array( 'contact-form', 'gravityform', 'contact-form-7', 'formidable', 'fluentform' ) ) ) {
+			self::load_form_js();
+		}
+
+		return $return_value;
 	}
 }

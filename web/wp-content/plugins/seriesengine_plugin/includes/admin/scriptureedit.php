@@ -31,7 +31,9 @@
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 9 ) { 
+		if ( $enmse_language == 10 ) { 
+			include(ENMSE_PLUGIN_PATH . 'includes/lang/fre_bible_books.php');
+		}  elseif ( $enmse_language == 9 ) { 
 			include(ENMSE_PLUGIN_PATH . 'includes/lang/rus_bible_books.php');
 		} elseif ( $enmse_language == 8 ) { 
 			include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
@@ -109,6 +111,36 @@
 					); 
 					$wpdb->insert( $wpdb->prefix . "se_book_message_matches", $enmse_newbmm );
 				}
+			} else {
+				$enmse_preparreddscmsql = "SELECT scm_match_id FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND focus = 1 AND start_book=%d GROUP BY scm_match_id ORDER BY sort_id ASC"; 
+				$enmse_dscmsql = $wpdb->prepare( $enmse_preparreddscmsql, $enmse_message_id, $enmse_start_book  );
+				$enmse_dmscriptures = $wpdb->get_results( $enmse_dscmsql );
+				$enmse_countrec = $wpdb->num_rows;
+
+				if ( empty($enmse_dmscriptures) ) {
+					$enmse_bdelete_query_preparred = "DELETE FROM " . $wpdb->prefix . "se_book_message_matches" . " WHERE message_id=%d AND book_id=%d";
+					$enmse_bdelete_query = $wpdb->prepare( $enmse_bdelete_query_preparred, $enmse_message_id, $enmse_start_book  ); 
+					$enmse_bdeleted = $wpdb->query( $enmse_bdelete_query );
+				}
+
+				$enmse_preparredscmsql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " LEFT JOIN " . $wpdb->prefix . "se_scripture_message_matches" . " USING (scripture_id) WHERE message_id = %d AND focus = 1 GROUP BY scm_match_id ORDER BY sort_id ASC"; 
+				$enmse_scmsql = $wpdb->prepare( $enmse_preparredscmsql, $enmse_message_id );
+				$enmse_mscriptures = $wpdb->get_results( $enmse_scmsql );
+
+				$scomma = 0;
+				$scripturetext = "";
+				foreach ( $enmse_mscriptures as $s ) {
+					if ( $scomma == 0 ) {
+						$scripturetext = $s->text;
+					} else {
+						$scripturetext = $scripturetext . ", " . $s->text;
+					}
+					$scomma = $scomma + 1;
+				}
+
+				$enmse_new_mvalues = array( 'focus_scripture' => $scripturetext ); 
+				$enmse_mwhere = array( 'message_id' => $enmse_message_id ); 
+				$wpdb->update( $wpdb->prefix . "se_messages", $enmse_new_mvalues, $enmse_mwhere );
 			}
 
 			$enmse_findthescripturesql = "SELECT * FROM " . $wpdb->prefix . "se_scriptures" . " WHERE scripture_id = %d"; 
@@ -311,7 +343,7 @@
 						<option value="328"<?php if ( $deftrans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 						<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
-						<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+						<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Français Courant</option>
 						<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 						<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 						<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -538,7 +570,7 @@
 						<option value="328"<?php if ( $enmse_scripture->trans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 						<option value="165"<?php if ( $enmse_scripture->trans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ FRENCH ------</option>
-						<option value="2367"<?php if ( $enmse_scripture->trans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+						<option value="2367"<?php if ( $enmse_scripture->trans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Français Courant</option>
 						<option value="133"<?php if ( $enmse_scripture->trans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 						<option value="<?php echo $enmse_scripture->trans; ?>">------ GERMAN ------</option>
 						<option value="57"<?php if ( $enmse_scripture->trans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>

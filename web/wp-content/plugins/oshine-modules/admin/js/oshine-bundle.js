@@ -759,16 +759,23 @@ var Clients = React.createClass({
 		    children = clients.get('inner'),
 		    slideShow,
 		    slideShowSpeed,
+		    slideNavDots,
 		    cssObject = this.props.cssObject.style,
 		    visibilityClass = generateVisibilityClasses(atts),
 		    cssUtilClasses = ' ' + visibilityClass;
 		if (!isEmpty(atts)) {
 			slideShow = atts.get('slide_show');
+			slideNavDots = atts.get('show_dots');
 			slideShowSpeed = parseValue(clients.get('name'), 'slide_show_speed', atts.get('slide_show_speed'), moduleOptions);
 			if (!isEmpty(slideShow)) {
 				slideShow = '1';
 			} else {
 				slideShow = '0';
+			}
+			if (!isEmpty(slideNavDots)) {
+				slideNavDots = '1';
+			} else {
+				slideNavDots = '0';
 			}
 			if ('string' === typeof slideShowSpeed && !isNaN(slideShowSpeed.replace(/\D+/, '')) && '' != slideShowSpeed.replace(/\D+/, '')) {
 				slideShowSpeed = slideShowSpeed.replace(/\D+/, '');
@@ -781,7 +788,7 @@ var Clients = React.createClass({
 			_extends({}, generateIdentifierId(atts), { className: "carousel-wrap clearfix " + cssUtilClasses + " " + atts.get('css_classes'), style: cssObject['root'] }),
 			React.createElement(
 				'ul',
-				{ className: 'be-owl-carousel client-carousel-module', 'data-slide-show': slideShow, 'data-slide-show-speed': slideShowSpeed },
+				{ className: 'be-owl-carousel client-carousel-module', 'data-slide-show': slideShow, 'data-slide-navigation-dots': slideNavDots, 'data-slide-show-speed': slideShowSpeed },
 				children.map(function (client) {
 					return React.createElement(Client, { key: client.get('id'), moduleOptions: moduleOptions, module: client, cssObject: this.props.cssObject });
 				}.bind(this))

@@ -348,7 +348,7 @@ function oshine_register_testimonial() {
 				'image' => '',
 				'preset' => array(
 					'content' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s.',
-					'author_image' => 'http://placehold.it/100x100',
+					'author_image' => 'https://via.placeholder.com/100x100',
 					'author' => 'Swami',
 					'author_role' => 'Designer',
 				),

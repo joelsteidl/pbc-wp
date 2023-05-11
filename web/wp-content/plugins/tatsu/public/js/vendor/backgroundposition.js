@@ -1,4 +1,4 @@
-/**Background Positon**/
+﻿/**Background Positon**/
 
 /* http://keith-wood.name/backgroundPos.html
    Background position animation for jQuery v1.1.1.

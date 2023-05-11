@@ -33,18 +33,19 @@ if (!function_exists('tatsu_animated_numbers')) {
 		$output .= '<div class = "tatsu-an-prefix-suffix-wrap">';
 		if( '' !== $prefix ) {
 			$output .= '<div class = "tatsu-an-prefix">';
-			$output .= $prefix;
+			$output .= tatsu_parse_custom_fields( $prefix );
 			$output .= '</div>';
 		}
-		$output .= '<div class="tatsu-an animate" data-number="'.$number.'"></div>';
+
+		$output .= '<div class="tatsu-an animate" data-number="' . tatsu_parse_custom_fields( $number ) . '"></div>';
 		if( '' !== $suffix ) {
 			$output .= '<div class = "tatsu-an-suffix">';
-			$output .= $suffix;
+			$output .= tatsu_parse_custom_fields( $suffix );
 			$output .= '</div>';
 		}
 		$output .= '</div>';
 		if( '' !== $caption ) {
-			$output .= '<h6><span class="tatsu-an-caption" >'.$caption.'</span></h6>';
+			$output .= '<h6><span class="tatsu-an-caption" >' . tatsu_parse_custom_fields( $caption ) . '</span></h6>';
 		}
 		$output .= '</div>';
 		
@@ -66,8 +67,7 @@ function tatsu_register_animated_numbers()
 		'is_built_in' => true,
 		'hint' => 'caption',
 		'should_destroy' => true,
-
-
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(

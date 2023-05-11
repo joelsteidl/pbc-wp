@@ -1643,7 +1643,7 @@ $enmge_scl = 0;
 	<p class="enmge-poweredbytext">Powered by <a href="http://groupsengine.com" target="_blank">Groups Engine</a></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v1.3.4 112521 -->
+	<!-- v1.3.5 031322 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

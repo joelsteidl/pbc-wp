@@ -1,6 +1,6 @@
 <?php /* ----- Groups Engine - Delete a leader ----- */
 
-if ( current_user_can( 'edit_pages' ) ) { 
+if ( current_user_can( 'edit_posts' ) ) { 
 
 	global $wpdb;
 	

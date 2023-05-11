@@ -30,7 +30,8 @@ class Tatsu_Deactivator {
 	 * @since    1.0.0
 	 */
 	public static function deactivate() {
-
+		//Typehub Deactivated
+		do_action( 'typehub_deactivation' );
 	}
 
 }

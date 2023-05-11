@@ -3,7 +3,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
-function monsterinsights_get_mp_api_url( ) {
+function monsterinsights_get_mp_api_url() {
 	return 'https://www.google-analytics.com/collect';
 }
 
@@ -12,6 +12,9 @@ function monsterinsights_mp_api_call( $args = array() ) {
 	if ( ! empty( $args['user-agent'] ) ) {
 		$user_agent = $args['user-agent'];
 		unset( $args['user-agent'] );
+	}
+	if(empty($user_agent)){
+		$user_agent = (isset($_SERVER['HTTP_USER_AGENT'])) ? sanitize_text_field($_SERVER['HTTP_USER_AGENT']) : '';
 	}
 
 	$payment_id = 0;
@@ -23,27 +26,27 @@ function monsterinsights_mp_api_call( $args = array() ) {
 	$defaults = array(
 		't'  => 'event', // Required: Hit type
 		'ec' => '',      // Optional: Event category
-		'ea' => '', 	 // Optional: Event Action
-		'el' => '', 	 // Optional: Event Label
-		'ev' => null, 	 // Optional: Event Value
+		'ea' => '',     // Optional: Event Action
+		'el' => '',     // Optional: Event Label
+		'ev' => null,     // Optional: Event Value
 	);
 
-	$body  = array_merge( $defaults , $args );
+	$body = array_merge( $defaults, $args );
 
 	// We want to get the user's IP address when possible
-	$ip     = '';
+	$ip = '';
 	if ( ! empty( $_SERVER['HTTP_CLIENT_IP'] ) && ! filter_var( $_SERVER['HTTP_CLIENT_IP'], FILTER_VALIDATE_IP ) === false ) {
-		$ip = $_SERVER['HTTP_CLIENT_IP'];
+		$ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_CLIENT_IP']));
 	} elseif ( ! empty( $_SERVER['HTTP_X_FORWARDED_FOR'] ) && ! filter_var( $_SERVER['HTTP_X_FORWARDED_FOR'], FILTER_VALIDATE_IP ) === false ) {
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		$ip = sanitize_text_field(wp_unslash($_SERVER['HTTP_X_FORWARDED_FOR']));
 	} else {
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = (isset($_SERVER['REMOTE_ADDR'])) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : NULL;
 	}
 
 	$ip = apply_filters( 'monsterinsights_mp_api_call_ip', $ip );
 
 	// If possible, let's get the user's language
-	$user_language = isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? explode( ',', $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) : array();
+	$user_language = isset( $_SERVER['HTTP_ACCEPT_LANGUAGE'] ) ? explode( ',', sanitize_text_field($_SERVER['HTTP_ACCEPT_LANGUAGE']) ) : array();
 	$user_language = reset( $user_language );
 	$user_language = sanitize_text_field( $user_language );
 
@@ -67,7 +70,7 @@ function monsterinsights_mp_api_call( $args = array() ) {
 		'dh'  => str_replace( array( 'http://', 'https://' ), '', site_url() ),
 
 		// Optional: Requested URI
-		'dp'  => $_SERVER['REQUEST_URI'],
+		'dp'  => (isset($_SERVER['REQUEST_URI'])) ? sanitize_text_field($_SERVER['REQUEST_URI']) : '',
 
 		// Optional: Page Title
 		'dt'  => get_the_title(),
@@ -79,7 +82,7 @@ function monsterinsights_mp_api_call( $args = array() ) {
 		'uip' => $ip,
 
 		// Optional: User Agent
-		'ua'  => ! empty( $user_agent ) ?  $user_agent : $_SERVER['HTTP_USER_AGENT'],
+		'ua'  => $user_agent,
 
 		// Optional: Time of the event
 		'z'   => time(),
@@ -105,7 +108,7 @@ function monsterinsights_mp_api_call( $args = array() ) {
 	}
 
 	$debug_mode = monsterinsights_is_debug_mode();
-	$args = array(
+	$args       = array(
 		'method'   => 'POST',
 		'timeout'  => '5',
 		'blocking' => ( $debug_mode ) ? true : false,
@@ -129,8 +132,8 @@ function monsterinsights_mp_track_event_call( $args = array() ) {
 	}
 
 	// Detect if browser request is a prefetch
-	if ( ( isset( $_SERVER["HTTP_X_PURPOSE"] ) && ( 'prefetch' === strtolower( $_SERVER["HTTP_X_PURPOSE"] ) ) ) ||
-	     ( isset( $_SERVER["HTTP_X_MOZ"] ) && ( 'prefetch' === strtolower( $_SERVER["HTTP_X_MOZ"] ) ) ) ) {
+	if ( ( isset( $_SERVER["HTTP_X_PURPOSE"] ) && ( 'prefetch' === strtolower( sanitize_text_field($_SERVER["HTTP_X_PURPOSE"]) ) ) ) ||
+	     ( isset( $_SERVER["HTTP_X_MOZ"] ) && ( 'prefetch' === strtolower( sanitize_text_field($_SERVER["HTTP_X_MOZ"]) ) ) ) ) {
 		return;
 	}
 
@@ -151,7 +154,7 @@ function monsterinsights_mp_track_event_call( $args = array() ) {
 		'ev' => null,
 	);
 
-	$args         = wp_parse_args( $args, $default_args );
+	$args = wp_parse_args( $args, $default_args );
 
 	//$args = apply_filters( 'monsterinsights_mp_track_event_call', $args );
 

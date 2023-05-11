@@ -14,6 +14,14 @@ function monsterinsights_gutenberg_editor_assets() {
 		return;
 	}
 
+	if ( function_exists( 'get_current_screen' ) ) {
+		$current_screen = get_current_screen();
+
+		if ( is_object( $current_screen ) && 'widgets' === $current_screen->id ) {
+			return;
+		}
+	}
+
 	$plugins_js_path    = '/assets/gutenberg/js/editor.min.js';
 	$plugins_style_path = '/assets/gutenberg/css/editor.css';
 	$version_path       = monsterinsights_is_pro_version() ? 'pro' : 'lite';
@@ -68,6 +76,8 @@ function monsterinsights_gutenberg_editor_assets() {
 		}
 	}
 
+	$posttype = monsterinsights_get_current_post_type();
+
 	// Localize script for sidebar plugins.
 	wp_localize_script(
 		'monsterinsights-gutenberg-editor-js',
@@ -76,15 +86,21 @@ function monsterinsights_gutenberg_editor_assets() {
 			'ajaxurl'                      => admin_url( 'admin-ajax.php' ),
 			'nonce'                        => wp_create_nonce( 'monsterinsights_gutenberg_headline_nonce' ),
 			'allowed_post_types'           => apply_filters( 'monsterinsights_headline_analyzer_post_types', array( 'post' ) ),
-			'current_post_type'            => monsterinsights_get_current_post_type(),
+			'current_post_type'            => $posttype,
 			'translations'                 => wp_get_jed_locale_data( monsterinsights_is_pro_version() ? 'ga-premium' : 'google-analytics-for-wordpress' ),
 			'is_headline_analyzer_enabled' => apply_filters( 'monsterinsights_headline_analyzer_enabled', true ) && 'true' !== monsterinsights_get_option( 'disable_headline_analyzer' ),
 			'reports_url'                  => add_query_arg( 'page', 'monsterinsights_reports', admin_url( 'admin.php' ) ),
 			'vue_assets_path'              => plugins_url( $version_path . '/assets/vue/', MONSTERINSIGHTS_PLUGIN_FILE ),
 			'is_woocommerce_installed'     => class_exists( 'WooCommerce' ),
 			'license_type'                 => MonsterInsights()->license->get_license_type(),
-			'upgrade_url'                  => monsterinsights_get_upgrade_link( 'gutenberg', 'products' ),
+			'upgrade_url'                  => monsterinsights_get_upgrade_link( 'pageinsights-meta', 'products' ),
 			'install_woocommerce_url'      => $install_woocommerce_url,
+			'supports_custom_fields'       => post_type_supports( $posttype, 'custom-fields' ),
+			'public_post_type'             => $posttype ? is_post_type_viewable( $posttype ) : 0,
+			'page_insights_addon_active'   => class_exists( 'MonsterInsights_Page_Insights' ),
+			'page_insights_nonce'          => wp_create_nonce( 'mi-admin-nonce' ),
+			'isnetwork'                    => is_network_admin(),
+			'is_v4'                        => 'ua' !== MonsterInsights()->auth->get_connected_type(),
 		)
 	);
 }

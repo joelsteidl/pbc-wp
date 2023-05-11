@@ -290,7 +290,10 @@ function tatsu_register_navigation_menu() {
 						),
 						'.tatsu-{UUID}.tatsu-menu li svg polyline' => array(
 							'property' => 'stroke',
-						)
+						),
+						'.tatsu-{UUID}.tatsu-mobile-menu a' => array(
+							'property' => 'color',
+						),
 					)
 				),	
 			array (

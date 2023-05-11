@@ -2,13 +2,13 @@
 Contributors: johnny5
 Donate link: https://redirection.me/donation/
 Tags: redirect, htaccess, 301, 404, seo, permalink, apache, nginx, post, admin
-Requires at least: 5.2
-Tested up to: 5.8
-Stable tag: trunk
+Requires at least: 5.7
+Tested up to: 6.2
+Stable tag: 5.3.10
 Requires PHP: 5.6
 License: GPLv3
 
-Manage 301 redirections, keep track of 404 errors, and improve your site, with no knowledge of Apache or Nginx needed.
+Manage 301 redirects, track 404 errors, and improve your site. No knowledge of Apache or Nginx required.
 
 == Description ==
 
@@ -20,7 +20,7 @@ It has been a WordPress plugin for over 10 years and has been recommended countl
 
 Full documentation can be found at [https://redirection.me](https://redirection.me)
 
-Redirection is compatible with PHP from 5.6 and upwards (including 8.0).
+Redirection is compatible with PHP from 5.6 to 8.1.
 
 = Redirect manager =
 
@@ -180,6 +180,72 @@ The plugin works in a similar manner to how WordPress handles permalinks and sho
 == Changelog ==
 
 A x.1 version increase introduces new or updated features and can be considered to contain 'breaking' changes. A x.x.1 increase is purely a bug fix and introduces no new features, and can be considered as containing no breaking changes.
+
+= 5.3.10 - 2nd April 2023 =
+* Fix associated redirect setting not saving properly
+
+= 5.3.9 - 25th January 2023 =
+* Fix incorrect sanitization applied to target URLs
+
+= 5.3.8 - 22nd January 2023 =
+* Fix app rendering twice causing problems with upgrades
+* Fix CSV header being detected as an error
+
+= 5.3.7 - 8th January 2023 =
+* Fix problem with locales in certain directories
+* Fix incorrect import of empty CSV lines
+* Don't encode regex for Nginx
+
+= 5.3.6 - 12th November 2022 =
+* Fix for sites with a version of +OK
+* Another fix for CZ locale
+
+= 5.3.5 - 6th November 2022 =
+* Fix crash on options page for Czech language
+
+= 5.3.4 - 14th September 2022 =
+* Fix query parameter name with a + not matching
+
+= 5.3.3 - 7th September 2022 =
+* Fix default HTTP header not being set when first used
+* Fix incorrect column heading in CSV
+* Fix passing of mixed case parameters
+
+= 5.3.2 - 6th August 2022 =
+* Fix missing props error
+* Fix missing value for .htaccess location display
+
+= 5.3.1 - 29th July 2022 =
+* Fix crash caused by bad translations in locale files
+* Fix query match not working when it contained mixed case
+* Fix missing flag in .htaccess export
+
+= 5.3.0 - 21st July 2022 =
+* Improve installation process
+* Improve permalink migration so it works with more permalinks
+* Prevent ordering columns by HTTP code
+* Better encode URLs in Nginx export
+* Allow escaped characters to work in the redirect checker
+* Reduce CSV import time
+
+= 5.2.3 - 6th February 2022 =
+* Fix error when grouping by URL, adding redirect, and then adding another redirect
+* Add a warning for unescaped ? regex
+
+= 5.2.2 - 22nd January 2022 =
+* Further improve URL checker response to clarify responsibility
+* Fix WordPress and pagetype match preventing the logging of 404s
+* Fix title field being inactive
+* Fix CSV export having duplicate column
+
+= 5.2.1 - 16th January 2022 =
+* Include path with inline URL checker
+
+= 5.2 - 15th January 2022 =
+* Improve URL checker and show more details
+* Retain query parameter case when passing to target URL
+* Remove unnecessary database stage option check
+* PHP 8.1 compatibility
 
 = 5.1.3 - 24th July 2021 =
 * Fix geo IP on log pages showing an API redirected error
@@ -758,34 +824,14 @@ A x.1 version increase introduces new or updated features and can be considered 
 * WP 3.5 compatibility
 * Fix export
 
-= 2.3.0 =
+= 2.3.0 and earlier =
 * Remove 404 module and move 404 logs into a separate option
-* Add Danish translation, thanks to Rasmus Himmelstrup
-
-= 2.2.14 =
 * Clean up log code, using WP_List_Table to power it
-* Update Hungarian translation
-
-= 2.2.13 =
 * Fix some broken links in admin pages
-
-= 2.2.12 =
-* Cleanup some XSS issues
-
-= 2.2.11 =
-* Add Lithuanian
-* Add Belarusian
-* Add Czech
 * Fix order of redirects, thanks to Nicolas Hatier
-
-= 2.2.10 =
 * Fix XSS in admin menu & referrers log
-* Update Russian translation, thanks to Alexey Pazdnikov
-* Add Romanian translation, thanks to Alina
-* Add Greek, thanks to Stefanos Kofopoulos
 * Better database compatibility
 * Remove warning from VaultPress
-* Add Turkish translation, thanks to Fatih Cevik
 * Remove debug from htaccess module
 * Fix encoding of JS strings
 * Use fgetcsv for CSV importer - better handling

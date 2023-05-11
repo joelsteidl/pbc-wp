@@ -447,6 +447,9 @@ SVG Icons - svgicons.sparkk.fr
     flex: 0 0 auto;
 }
 
+.tatsu-tabs-menu-cols-1 > * {
+  width: 100%;
+}
 .tatsu-tabs-menu-cols-2 > * {
   width: 50%;
 }
@@ -1460,4 +1463,41 @@ iframe#tatsu-preview{
 
 .tatsu-code-editor-css  .react-codemirror2 {
     margin-top: 10px;
+}
+/***Tatsu builder preview css**************/
+#tatsu_builder_preview_modal.display_none{
+	display: none;
+	z-index: 0;
+}
+#tatsu_builder_preview_modal.display_none{
+	display: none;
+  z-index: 0;
+}
+#tatsu_builder_preview_modal{
+	position: fixed;
+  top: 25px;
+  left: 325px;
+  width: 300px;
+  max-height: 70vh;
+	background: white;
+  z-index: 2;
+}
+#tatsu_builder_preview_modal .preview_image{
+  max-width: 300px;
+  height: auto;
+}
+#tatsu_builder_preview_modal .left-icon{
+  font-size: 25px;
+  margin-right: 10px;
+}
+#tatsu_builder_preview_modal .modal-container{
+  padding: 15px;
+  display: flex;
+}
+#tatsu_builder_preview_modal .title-wrap{
+  display: flex;
+}
+#tatsu_builder_preview_modal .pro_icon .tatsu-pro-icon{
+margin-left: 10px;
+height:17px;
 }

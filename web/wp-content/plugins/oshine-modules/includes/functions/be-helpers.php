@@ -530,7 +530,7 @@ if( !function_exists( 'be_get_video_details' ) ){
 				} else {
 					return array(
 						'source' => 'vimeo',
-						'thumb_url' => 'https://placehold.it/1280x720',
+						'thumb_url' => 'https://via.placeholder.com/1280x720',
 						'video_id' => $vimeo_id
 					);
 				}
@@ -538,7 +538,7 @@ if( !function_exists( 'be_get_video_details' ) ){
 			}else{
 				return array(
 					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720',
+					'thumb_url' => 'https://via.placeholder.com/1280x720',
 					'video_id' => ''
 				);
 			}

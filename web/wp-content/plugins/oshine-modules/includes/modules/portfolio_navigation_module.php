@@ -5,6 +5,8 @@
 if (!function_exists('portfolio_navigation_module')) {
 	function portfolio_navigation_module( $atts, $content, $tag ) {
 		$atts = shortcode_atts( array (
+			'url_type' => 'default',
+			'link_url' => '',
 			'style' => 'style1',
 			'title_align' => 'center',
 		    'nav_links_color' => '',
@@ -38,6 +40,8 @@ if (!function_exists('portfolio_navigation_module')) {
         } else {
             $url = be_get_posts_page_url();
         }
+
+		$url = ( $url_type == 'custom' && ! empty( $link_url ) ) ? $link_url : $url;
 		if((!is_page_template( 'gallery.php' )) || (!is_page_template( 'portfolio.php' ))) {
 			if($style == 'style1') {
 				$output .= '<div '.$css_id.' class="portfolio-nav-wrap style1-navigation oshine-module '.$animate.' align-'.$title_align.' '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.'" '.$data_animations.'>';
@@ -99,6 +103,14 @@ function oshine_register_portfolio_navigation_module() {
 					'type'	=>	'tabs',
 					'style'	=>	'style1',
 					'group'	=>	array (
+						array(
+							'type'	=>	'tab',
+							'title'	=>	esc_html__('Content', 'tatsu'),
+							'group'	=>	array(
+								'url_type',
+								'link_url',
+							)
+						),
 						array (
 							'type'	=>	'tab',
 							'title'	=>	__( 'Style' , 'tatsu'),
@@ -148,6 +160,30 @@ function oshine_register_portfolio_navigation_module() {
 				),
 			),
 	        'atts' => array (
+				array (
+	        		'att_name' => 'url_type',
+					'type' => 'button_group',
+					'is_inline' => true,
+	        		'label' => __( 'Type', 'oshine-modules' ),
+					'options'=> array(
+						'default' => __( 'Default URL', 'oshine-modules' ), 
+						'custom' => __( 'Custom URL', 'oshine-modules' )
+					),
+					'default'=> 'default',
+	        		'tooltip' => ''
+	        	),
+				array(
+					'att_name' => 'link_url',
+					'type' => 'text',
+					'is_inline' => false,
+					'options' => array(
+						'placeholder' => 'https://example.com',
+					),
+					'label' => esc_html__('Custom Home URL', 'oshine-modules'),
+					'default' => '',
+					'tooltip' => '',
+					'visible' => array('url_type', '=', 'custom'),
+				),
 	        	array (
 	        		'att_name' => 'style',
 					'type' => 'button_group',

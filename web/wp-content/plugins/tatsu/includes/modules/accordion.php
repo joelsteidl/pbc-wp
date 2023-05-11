@@ -48,7 +48,7 @@ if ( !function_exists('tatsu_accordion') ) {
 
         $style = !empty( $style ) ? $style : 'style1';
         $classes = array( 'tatsu-module', 'tatsu-accordion', 'tatsu-accordion-' . $style, $unique_class_name, $animate, $visibility_classes, $css_classes );
-		return '<div '.$css_id.' class="' . implode( ' ', $classes ) . '" '.$data_animations.' >'. $custom_style_tag . '<div data-collapsed="'.$collapsed.'" class = "tatsu-accordion-inner">'. do_shortcode($content).'</div></div>';
+		return '<div '.$css_id.' class="' . implode( ' ', $classes ) . '" '.$data_animations.' >'. $custom_style_tag . '<div data-collapsed="'.$collapsed.'" class = "tatsu-accordion-inner">'. do_shortcode( tatsu_parse_custom_fields( $content ) ).'</div></div>';
 	}
 	add_shortcode( 'tatsu_accordion', 'tatsu_accordion' );
 }
@@ -57,11 +57,18 @@ if ( !function_exists('tatsu_toggle') ) {
 	function tatsu_toggle( $atts, $content ){
 		$atts = shortcode_atts ( array ( 
 				'title' => '',
+				'field_type' => 'default'
 			), $atts	
 		);
         extract ( $atts );
         global $tatsu_accordion_title_font, $tatsu_accordion_content_font, $tatsu_accordion_content_bg;
-		return '<h3 class="accordion-head ' . ( !empty( $tatsu_accordion_title_font ) ? $tatsu_accordion_title_font : '' ) . '">'.$title.'<span class = "tatsu-accordion-expand"></span></h3><div class = "accordion-content ' . ( !empty( $tatsu_accordion_content_font ) ? $tatsu_accordion_content_font : '' ) . '" ><div class = "accordion-content-inner ' . ( !empty( $tatsu_accordion_content_bg ) ? 'accordion-with-bg' : '' ) . '">'.do_shortcode($content) . '</div></div>';
+
+		// if ( 'default' !== $field_type ) {
+		// 	$image = tatsu_parse_custom_fields( $field_type );
+		// 	$id = attachment_url_to_postid( $image );
+		// }
+
+		return '<h3 class="accordion-head ' . ( !empty( $tatsu_accordion_title_font ) ? $tatsu_accordion_title_font : '' ) . '">'. tatsu_parse_custom_fields( $title ) .'<span class = "tatsu-accordion-expand"></span></h3><div class = "accordion-content ' . ( !empty( $tatsu_accordion_content_font ) ? $tatsu_accordion_content_font : '' ) . '" ><div class = "accordion-content-inner ' . ( !empty( $tatsu_accordion_content_bg ) ? 'accordion-with-bg' : '' ) . '">'.do_shortcode( tatsu_parse_custom_fields( $content ) ) . '</div></div>';
 	}
 	add_shortcode( 'tatsu_toggle', 'tatsu_toggle' );
 }
@@ -78,6 +85,7 @@ function tatsu_register_accordion()
 		'type' => 'multi',
 		'initial_children' => 3,
 		'is_built_in' => true,
+		'is_dynamic' => true,
 		'group_atts' => array(
 			array(
 				'type'		=> 'tabs',
@@ -341,9 +349,25 @@ function tatsu_register_toggle()
 				'tooltip' => ''
 			),
 			array(
+				'att_name' => 'field_type',
+				'type' => 'select',
+				'label' => esc_html__('Field Type', 'tatsu'),
+				'options' => tatsu_get_custom_fields_dropdown(),
+				'default' => 'default',
+				'tooltip' => '',
+				'is_inline' => !is_tatsu_pro_active()
+			),
+			array(
 				'att_name' => 'content',
 				'type' => 'tinymce',
 				'label' => esc_html__('Content', 'tatsu'),
+				'visible'		=> array(
+					'condition' => array(
+						array( 'field_type', '=', '' ),
+						array( 'field_type', '=', 'default' )
+					),
+					'relation'	=> 'or',
+				),
 				'default' => '',
 				'tooltip' => ''
 			),

@@ -1,0 +1,4 @@
+name: prov
+recipe: wordpress
+config:
+  php: '8.1'

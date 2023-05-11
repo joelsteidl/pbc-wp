@@ -2,7 +2,7 @@
 /*
 Plugin Name: Google Language Translator
 Plugin URI: https://gtranslate.io/?xyz=3167
-Version: 6.0.12
+Version: 6.0.19
 Description: The MOST SIMPLE Google Translator plugin.  This plugin adds Google Translator to your website by using a single shortcode, [google-translator]. Settings include: layout style, hide/show specific languages, hide/show Google toolbar, and hide/show Google branding. Add the shortcode to pages, posts, and widgets.
 Author: Translate AI Multilingual Solutions
 Author URI: https://gtranslate.io
@@ -156,10 +156,13 @@ class google_language_translator {
         $default_language = get_option('googlelanguagetranslator_language');
         if($main_lang != $default_language) { // update main_lang in config.php
             $config_file = dirname(__FILE__) . '/url_addon/config.php';
-            if(is_writable($config_file)) {
+            if(is_readable($config_file) and is_writable($config_file)) {
                 $config = file_get_contents($config_file);
-                $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.$default_language.'\'', $config);
-                file_put_contents($config_file, $config);
+                if(strpos($config, 'main_lang') !== false) {
+                    $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.$default_language.'\'', $config);
+                    if(is_string($config) and strlen($config) > 10)
+                        file_put_contents($config_file, $config);
+                }
             }
         }
     }
@@ -510,7 +513,7 @@ class google_language_translator {
       if($glt_seo_active != '1')
           $str.="<div id='glt-footer'>".(!isset($vertical) && !isset($horizontal) ? '<div id="google_language_translator" class="default-language-'.$default_language.'"></div>' : '')."</div><script>function GoogleLanguageTranslatorInit() { new google.translate.TranslateElement({pageLanguage: '".$default_language."'".$language_choices . ($layout=='Horizontal' ? $horizontal_layout : ($layout=='SIMPLE' ? $simple_layout : '')) . $auto_display . $multilanguagePage . $this->analytics()."}, 'google_language_translator');}</script>";
       echo $str;
-    elseif ($is_multilanguage == 0):
+    else:
       if($glt_seo_active != '1')
           $str.="<div id='glt-footer'>".(!isset($vertical) && !isset($horizontal) ? '<div id="google_language_translator" class="default-language-'.$default_language.'"></div>' : '')."</div><script>function GoogleLanguageTranslatorInit() { new google.translate.TranslateElement({pageLanguage: '".$default_language."'".$language_choices . ($layout=='Horizontal' ? $horizontal_layout : ($layout=='SIMPLE' ? $simple_layout : '')) . $auto_display . $this->analytics()."}, 'google_language_translator');}</script>";
       echo $str;
@@ -1808,7 +1811,7 @@ $('.languages').find('input:checkbox').prop('checked', false); }); }); </script>
                         <li style="list-style:square outside"><?php _e('Priority Live Chat support', 'glt'); ?></li>
                       </ul>
 
-                      <p><?php _e('Prices starting from <b>$7.99/month</b>!', 'glt'); ?></p>
+                      <p><?php _e('Prices starting from <b>$9.99/month</b>!', 'glt'); ?></p>
 
                       <a href="https://gtranslate.io/?xyz=3167#pricing" target="_blank" class="button-primary"><?php _e('Try Now (15 days free)', 'glt'); ?></a> <a href="https://gtranslate.io/?xyz=3167#faq" target="_blank" class="button-primary"><?php _e('FAQ', 'glt'); ?></a> <a href="https://gtranslate.io/?xyz=3167#contact" target="_blank" class="button-primary"><?php _e('Live Chat', 'glt'); ?></a>
                   </div> <!-- .inside -->
@@ -2054,7 +2057,7 @@ class GLT_Notices {
 
     public function glt_admin_notices() {
 
-        $deactivate_plugins= array('WP Translator' => 'wptranslator/WPTranslator.php', 'TranslatePress' => 'translatepress-multilingual/index.php', 'Google Website Translator' => 'google-website-translator/google-website-translator.php', 'Weglot' => 'weglot/weglot.php', 'TransPosh' => 'transposh-translation-filter-for-wordpress/transposh.php');
+        $deactivate_plugins= array('WP Translator' => 'wptranslator/WPTranslator.php', 'TranslatePress' => 'translatepress-multilingual/index.php', 'Google Website Translator' => 'google-website-translator/google-website-translator.php', 'Weglot' => 'weglot/weglot.php', 'TransPosh' => 'transposh-translation-filter-for-wordpress/transposh.php', 'Advanced Google Translate' => 'advanced-google-translate/advanced-google-translate.php', 'My WP Translate' => 'my-wp-translate/my-wp-translate.php', 'WPML Multilingual CMS' => 'sitepress-multilingual-cms/sitepress.php');
         foreach($deactivate_plugins as $name => $plugin_file) {
             if(is_plugin_active($plugin_file)) {
                 $deactivate_link = wp_nonce_url('plugins.php?action=deactivate&amp;plugin='.urlencode($plugin_file ).'&amp;plugin_status=all&amp;paged=1&amp;s=', 'deactivate-plugin_' . $plugin_file);
@@ -2066,6 +2069,21 @@ class GLT_Notices {
                     'int' => 0
                 );
             }
+        }
+
+        // check if translation debug is on and add a notice
+        include dirname(__FILE__) . '/url_addon/config.php';
+        if($debug) {
+            $edit_file_link = admin_url('plugin-editor.php?file=google-language-translator%2Furl_addon%2Fconfig.php&plugin=google-language-translator%2Fgoogle-language-translator.php');
+            $view_debug_link = admin_url('plugin-editor.php?file=google-language-translator%2Furl_addon%2Fdebug.txt&plugin=google-language-translator%2Fgoogle-language-translator.php');
+            $notices['glt_debug_notice'] = array(
+                'title' => __('Translation debug mode is ON.', 'glt'),
+                'msg' => __('Please note that sensitive information can be written into google-language-translator/url_addon/debug.txt file, which can be accessed publicly. It is your responsibility to deny public access to it and clean debug information after you are done.', 'glt'),
+                'link' => '<li><span class="dashicons dashicons-edit"></span><a href="'.$edit_file_link.'">' . __('Edit config.php', 'glt') . '</a></li>' .
+                          '<li><span class="dashicons dashicons-visibility"></span><a href="'.$view_debug_link.'">' . __('View debug.txt', 'glt') . '</a></li>',
+                'dismissible' => false,
+                'int' => 0
+            );
         }
 
         $glt_announcement_ignore = esc_url(add_query_arg(array($this->prefix . '_admin_notice_ignore' => 'glt_announcement')));
@@ -2523,10 +2541,13 @@ function glt_update_option($old_value, $value, $option_name) {
 
         // update main_lang in config.php
         $config_file = dirname(__FILE__) . '/url_addon/config.php';
-        if(is_writable($config_file)) {
+        if(is_readable($config_file) and is_writable($config_file)) {
             $config = file_get_contents($config_file);
-            $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.get_option('googlelanguagetranslator_language').'\'', $config);
-            file_put_contents($config_file, $config);
+            if(strpos($config, 'main_lang') !== false) {
+                $config = preg_replace('/\$main_lang = \'[a-z-]{2,5}\'/i', '$main_lang = \''.get_option('googlelanguagetranslator_language').'\'', $config);
+                if(is_string($config) and strlen($config) > 10)
+                    file_put_contents($config_file, $config);
+            }
         } else {
             add_settings_error(
                 'glt_settings_notices',
@@ -2559,4 +2580,5 @@ if($glt_seo_active != '1') {
 
     // WP Rocket
     add_filter('rocket_exclude_js', 'cache_exclude_js_glt');
+    add_filter('rocket_minify_excluded_external_js', 'cache_exclude_js_glt');
 }

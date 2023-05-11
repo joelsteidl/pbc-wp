@@ -260,7 +260,7 @@ function tatsu_register_row()
 				'css' => true,
 				'responsive' => true,
 				'selectors' => array(
-					'.tatsu-{UUID}' => array(
+					'.tatsu-{UUID}.tatsu-row-wrap > .tatsu-row' => array(
 						'property' => 'border-style',
 						'when' => array(
 							array( 'border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
@@ -281,7 +281,7 @@ function tatsu_register_row()
 				'responsive' => true,
 				'css' => true,
 				'selectors' => array(
-					'.tatsu-{UUID}.tatsu-row-wrap' => array(
+					'.tatsu-{UUID}.tatsu-row-wrap > .tatsu-row' => array(
 						'property' => 'border-width',
                         'when' => array(
                             array('border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),
@@ -304,7 +304,7 @@ function tatsu_register_row()
 				'tooltip' => '',
 				'css' => true,
 				'selectors' => array(
-					'.tatsu-{UUID}.tatsu-row-wrap' => array(
+					'.tatsu-{UUID}.tatsu-row-wrap > .tatsu-row' => array(
 						'property' => 'border-color',
                         'when' => array(
                             array('border', '!=', array( 'd' => '0px 0px 0px 0px' ) ),

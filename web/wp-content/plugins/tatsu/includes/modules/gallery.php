@@ -105,7 +105,6 @@ if (!function_exists('tatsu_gallery')) {
             $images_subset = explode(',', $images);
         }
         $images = tatsu_get_gallery_image_from_source($source, implode(",",$images_subset));
-        
 		
 		if($images && is_array($images) && !isset($images['error']) && empty($images['error'])) {
 			$output .= '<div '.$css_id.' class="tatsu-gallery-wrap tatsu-gallery-module tatsu-module '.$disable_hover_icon.' '.$unique_class_name.' '.$visibility_classes.' '.$css_classes.' '.$animate.'" '.$data_animations.'>';
@@ -113,135 +112,132 @@ if (!function_exists('tatsu_gallery')) {
             
 			$output .= '<div class="gallery-container be-grid be-row be-cols-'.$columns_as_number.' clickable clearfix  " data-aspect-ratio="1.6" data-animation-target = ".gallery-thumb-img-wrap" data-cols="'.$columns_as_number.'" data-scroll-reveal = "'.$delay_load .'" data-animation = "'.$initial_load_style.'" data-gutter="'.$gutter_width.'" ' . ( empty( $masonry ) ? 'data-layout="metro"' : 'data-layout = "masonry"' ) . ' ' . ( !empty( $two_col_mobile ) ? 'data-mobile-cols="2"' : '' ) . '>';
 
-        
-		$masonry_enable = ((!isset($masonry)) || empty($masonry)) ? 'masonry_disable' : 'masonry_enable';
-		if( 'instagram' == $image_source ) {
-			$aspect_ratio = 1;
-		}
-		if(!empty($images)){
-			foreach($images as $image) {
-				$image_atts = array();
-				$attachment_info = array();
-				if( $image['id'] ){
-					$image_atts = be_get_gallery_image($image['id'], $columns, $masonry);
-					$attachment_info = be_wp_get_attachment( $image['id'] );
-					if( !$attachment_info || empty( $attachment_info ) ) {
-						continue;
-					}
-				}
-				$image_thumbnail_details = wp_get_attachment_image_src( $image['id'], 'thumbnail' );
-				$output_hover_content = '';
-				if($hover_show_title == '1'){
-					$output_hover_content = '<div class="thumb-title" >'.$image['caption'].'</div>';
-				}
-				$masonry_aspect_ratio = 1;
-				if( $masonry && 'flickr' !== $image_source ){
-					if( 'instagram' == $image_source ) {
-						$placeholder_padding = 100;
-					}else{
-						$masonry_aspect_ratio = round( $attachment_info[ 'width' ]/$attachment_info[ 'height' ], 2 );
-						$placeholder_padding = ( $attachment_info[ 'height' ]/$attachment_info[ 'width' ] ) * 100;
-					}
-				}else{
-					$placeholder_padding = (1/$aspect_ratio)*100;
-				}
-				
-				if( 'flickr' == $image_source ) {
-					$masonry_aspect_ratio = round( $image[ 'width' ]/$image[ 'height' ], 2 );
-					$placeholder_padding = ( $image[ 'height' ]/$image[ 'width' ] ) * 100;
-				}
-
-				$is_double_height = empty($masonry) && ("1" == get_post_meta($image['id'], 'be_themes_height_wide', true ));
-				$is_double_width = empty($masonry) && ("1" == get_post_meta($image['id'], 'be_themes_width_wide', true ));
-		
-				$double_prop_class = (   $is_double_width &&  $is_double_height ? 'be-double-width-height-cell' :  ($is_double_width ? 'be-double-width-cell' : ($is_double_height ? "be-double-height-cell" : '') ) );
-	
-				$output .= '<div class="gallery-cell be-col be-hoverlay '. $double_prop_class .' '. ( !empty( $image_atts ) ? $image_atts['class'].' '.$image_atts['alt_class'] : '' ).' '.$hover_style.' " >';
-				$output .= '<div class="gallery-cell-inner"">';
-					
-				$gdpr_lightbox_content = '';
-
-				$lightbox_image_class = 'mfp-image';
-				$lightbox_video_class = 'mfp-iframe';
-				$lightbox_html_class = 'mfp-popup';
-
-				$lightbox_atts = apply_filters('tatsu_gallery_lightbox_atts', $image, $key );
-				$data_atts = array();
-				$html_att = array();
-				if( !empty( $lightbox_atts['class'] ) ){
-					
-					$lightbox_image_class = $lightbox_atts['class']['image'];
-					$lightbox_video_class = !empty( $lightbox_atts['class']['video'] ) ? $lightbox_atts['class']['video'] : $lightbox_atts['class']['image'];
-					$lightbox_html_class  = (!empty( $lightbox_atts['class']['html'] ) ? $lightbox_atts['class']['html'] : $lightbox_atts['class']['image']); 
-
-					$data_atts = $lightbox_atts['data'];
-					$html_att = !empty( $lightbox_atts['html_att'] ) ? $lightbox_atts['html_att'] : array();
-				}
-				if( $image['has_video'] ){
-					$gdpr_atts = '{}';
-					$gdpr_concern_selector = '';
-					$href = $image['full_image_url'];
-					$gdpr_data_atts = '';
-					$gdpr_key = be_uniqid_base36(true);
-					if( function_exists( 'be_gdpr_privacy_ok' ) ){
-						$video_details = be_get_video_details($image['full_image_url'],'large');
-						if( !empty($_COOKIE) ){
-							if( !be_gdpr_privacy_ok($video_details['source'])  ){
-
-								$href = '#gdpr-alt-lightbox-'.$gdpr_key;
-								$lightbox_video_class = $lightbox_html_class;
-
-								foreach( $html_att as $att_name => $value ){
-									$gdpr_data_atts .= $att_name .'="'. $value .'" '; 
-								}
-
-							}
-						}else{
-
-							$gdpr_atts = array(
-								'concern' => $video_details[ 'source' ],
-								'add' => array( 
-									'class' => array( $lightbox_html_class ),
-									'atts'	=> array_merge (
-										array( 'href' => '#gdpr-alt-lightbox-'.$gdpr_key ),
-										$html_att
-									),
-								),
-								'remove' => array( 
-									'class' => array( $lightbox_video_class  )
-								)
-							);
-							$gdpr_concern_selector = 'be-gdpr-consent-required';
-							$gdpr_atts = json_encode( $gdpr_atts );
+			$masonry_enable = ((!isset($masonry)) || empty($masonry)) ? 'masonry_disable' : 'masonry_enable';
+			if( 'instagram' == $image_source ) {
+				$aspect_ratio = 1;
+			}
+			if(!empty($images)){
+				foreach($images as $image) {
+					$image_atts = array();
+					$attachment_info = array();
+					if( $image['id'] ){
+						$image_atts = be_get_gallery_image($image['id'], $columns, $masonry);
+						$attachment_info = be_wp_get_attachment( $image['id'] );
+						if( !$attachment_info || empty( $attachment_info ) ) {
+							continue;
 						}
 					}
+					$image_thumbnail_details = wp_get_attachment_image_src( $image['id'], 'thumbnail' );
+					$output_hover_content = '';
+					if($hover_show_title == '1'){
+						$output_hover_content = '<div class="thumb-title" >'.$image['caption'].'</div>';
+					}
+					$masonry_aspect_ratio = 1;
+					if( $masonry && 'flickr' !== $image_source ){
+						if( 'instagram' == $image_source ) {
+							$placeholder_padding = 100;
+						}else{
+							$masonry_aspect_ratio = round( $attachment_info[ 'width' ]/$attachment_info[ 'height' ], 2 );
+							$placeholder_padding = ( $attachment_info[ 'height' ]/$attachment_info[ 'width' ] ) * 100;
+						}
+					}else{
+						$placeholder_padding = (1/$aspect_ratio)*100;
+					}
+					
+					if( 'flickr' == $image_source ) {
+						$masonry_aspect_ratio = round( $image[ 'width' ]/$image[ 'height' ], 2 );
+						$placeholder_padding = ( $image[ 'height' ]/$image[ 'width' ] ) * 100;
+					}
 
-					$output .= '<a href="'.$href.'" '. join( ' ', $data_atts ) .' class="thumb-anchor  '. $lightbox_video_class . ' ' .$gdpr_concern_selector.' " '. $gdpr_data_atts .' data-gdpr-atts='.$gdpr_atts.' title="'.$image['description'].'">';
+					$is_double_height = empty($masonry) && ("1" == get_post_meta($image['id'], 'be_themes_height_wide', true ));
+					$is_double_width = empty($masonry) && ("1" == get_post_meta($image['id'], 'be_themes_width_wide', true ));
+			
+					$double_prop_class = (   $is_double_width &&  $is_double_height ? 'be-double-width-height-cell' :  ($is_double_width ? 'be-double-width-cell' : ($is_double_height ? "be-double-height-cell" : '') ) );
+		
+					$output .= '<div class="gallery-cell be-col be-hoverlay '. $double_prop_class .' '. ( !empty( $image_atts ) ? $image_atts['class'].' '.$image_atts['alt_class'] : '' ).' '.$hover_style.' " >';
+					$output .= '<div class="gallery-cell-inner"">';
+						
+					$gdpr_lightbox_content = '';
 
-					$gdpr_lightbox_content .= be_gdpr_lightbox_for_video($gdpr_key,$video_details["thumb_url"],$video_details['source']);
+					$lightbox_image_class = 'mfp-image';
+					$lightbox_video_class = 'mfp-iframe';
+					$lightbox_html_class = 'mfp-popup';
 
-				}else{
-					$output .= '<a data-thumb = "' . (empty($image_thumbnail_details)?'':$image_thumbnail_details[0]) . '" href="'.$image['full_image_url'].'"  class="thumb-anchor '. $lightbox_image_class .'  " '. join( ' ',$data_atts ) .' title="'.$image['description'].'">';
+					$lightbox_atts = apply_filters('tatsu_gallery_lightbox_atts', $image, $key );
+					$data_atts = array();
+					$html_att = array();
+					if( !empty( $lightbox_atts['class'] ) ){
+						
+						$lightbox_image_class = $lightbox_atts['class']['image'];
+						$lightbox_video_class = !empty( $lightbox_atts['class']['video'] ) ? $lightbox_atts['class']['video'] : $lightbox_atts['class']['image'];
+						$lightbox_html_class  = (!empty( $lightbox_atts['class']['html'] ) ? $lightbox_atts['class']['html'] : $lightbox_atts['class']['image']); 
+
+						$data_atts = $lightbox_atts['data'];
+						$html_att = !empty( $lightbox_atts['html_att'] ) ? $lightbox_atts['html_att'] : array();
+					}
+					if( $image['has_video'] ){
+						$gdpr_atts = '{}';
+						$gdpr_concern_selector = '';
+						$href = $image['full_image_url'];
+						$gdpr_data_atts = '';
+						$gdpr_key = be_uniqid_base36(true);
+						if( function_exists( 'be_gdpr_privacy_ok' ) ){
+							$video_details = be_get_video_details($image['full_image_url'],'large');
+							if( !empty($_COOKIE) ){
+								if( !be_gdpr_privacy_ok($video_details['source'])  ){
+
+									$href = '#gdpr-alt-lightbox-'.$gdpr_key;
+									$lightbox_video_class = $lightbox_html_class;
+
+									foreach( $html_att as $att_name => $value ){
+										$gdpr_data_atts .= $att_name .'="'. $value .'" '; 
+									}
+
+								}
+							}else{
+
+								$gdpr_atts = array(
+									'concern' => $video_details[ 'source' ],
+									'add' => array( 
+										'class' => array( $lightbox_html_class ),
+										'atts'	=> array_merge (
+											array( 'href' => '#gdpr-alt-lightbox-'.$gdpr_key ),
+											$html_att
+										),
+									),
+									'remove' => array( 
+										'class' => array( $lightbox_video_class  )
+									)
+								);
+								$gdpr_concern_selector = 'be-gdpr-consent-required';
+								$gdpr_atts = json_encode( $gdpr_atts );
+							}
+						}
+
+						$output .= '<a href="'.$href.'" '. join( ' ', $data_atts ) .' class="thumb-anchor  '. $lightbox_video_class . ' ' .$gdpr_concern_selector.' " '. $gdpr_data_atts .' data-gdpr-atts='.$gdpr_atts.' title="'.$image['description'].'">';
+
+						$gdpr_lightbox_content .= be_gdpr_lightbox_for_video($gdpr_key,$video_details["thumb_url"],$video_details['source']);
+
+					} else {
+						$output .= '<a data-thumb = "' . (empty($image_thumbnail_details)?'':$image_thumbnail_details[0]) . '" href="'.$image['full_image_url'].'"  class="thumb-anchor '. $lightbox_image_class .'  " '. join( ' ',$data_atts ) .' title="'.$image['description'].'">';
+					}
+					
+					//End
+					$output .= '<div class="thumb-wrap"><div style = "padding-bottom : '. $placeholder_padding .'%;'.'" class="gallery-thumb-img-wrap be-grid-placeholder '.$image_effect.'-effect" ' . ( ( "masonry_enable" == $masonry_enable || 'flickr' == $image_source ) ? ( 'data-aspect-ratio="'.$masonry_aspect_ratio.'"' )  : '' ) . ' ><img class="'.$lazy_load_class.'"  '. ( $enable_data_src ? 'data-src="'.$image['thumbnail'] : 'src="'.$image['thumbnail'] ) .'" alt="'.( !empty( $attachment_info['alt'] ) ? $attachment_info['alt'] : ''  ).'" /></div></div>';
+					$output .= '<div class="thumb-overlay"><div class="thumb-bg">';
+					$output .= '<div class="thumb-title-wrap display-table-cell vertical-align-middle align-center fadeIn animated">';
+					$output .= $output_hover_content;
+					$output .= '</div>';
+					$output .= '</div></div>'; //End Thumb Bg & Thumb Overlay
+					$output .= '</a>'; //End Thumb Wrap
+					$output .= $gdpr_lightbox_content;
+					$output .= '</div>'; //End Element Inner
+					$output .= '</div>'; //End Element
 				}
-                
-				//End
-				$output .= '<div class="thumb-wrap"><div style = "padding-bottom : '. $placeholder_padding .'%;'.'" class="gallery-thumb-img-wrap be-grid-placeholder '.$image_effect.'-effect" ' . ( ( "masonry_enable" == $masonry_enable || 'flickr' == $image_source ) ? ( 'data-aspect-ratio="'.$masonry_aspect_ratio.'"' )  : '' ) . ' ><img class="'.$lazy_load_class.'"  '. ( $enable_data_src ? 'data-src="'.$image['thumbnail'] : 'src="'.$image['thumbnail'] ) .'" alt="'.( !empty( $attachment_info['alt'] ) ? $attachment_info['alt'] : ''  ).'" /></div></div>';
-				$output .= '<div class="thumb-overlay"><div class="thumb-bg">';
-				$output .= '<div class="thumb-title-wrap display-table-cell vertical-align-middle align-center fadeIn animated">';
-				$output .= $output_hover_content;
-				$output .= '</div>';
-				$output .= '</div></div>'; //End Thumb Bg & Thumb Overlay
-				$output .= '</a>'; //End Thumb Wrap
-				$output .= $gdpr_lightbox_content;
-				$output .= '</div>'; //End Element Inner
-				$output .= '</div>'; //End Element
-
-            }
-			$output .= '</div>'; //end gallery-container
-
-			$output .= '</div>'; //end galery
-            $output .= $custom_style_tag . '</div>'; //end gallery-wrap
-        }
+				$output .= '</div>'; //end gallery-container
+				$output .= '</div>'; //end galery
+				$output .= $custom_style_tag . '</div>'; //end gallery-wrap
+			}
 		} else {
 			if(is_array($images) && !empty($images['error'])) {
 				$output .= '<p class="element-empty-message">'.$images['error'].'</p>';
@@ -438,7 +434,8 @@ function tatsu_register_gallery()
 				'type' => 'text',
 				'label' => esc_html__('Items To Load', 'tatsu'),
 				'default' => '9',
-				'tooltip' => ''
+				'tooltip' => '',
+				'visible' => array('image_source', '=', 'selected'),
 			),
 			array(
 				'att_name' => 'gutter_style',

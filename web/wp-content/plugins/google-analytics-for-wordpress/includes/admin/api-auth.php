@@ -28,66 +28,76 @@ final class MonsterInsights_API_Auth {
 	public function __construct() {
 
 		// Authentication Actions
-		add_action( 'wp_ajax_monsterinsights_maybe_authenticate',    array( $this, 'maybe_authenticate' ) );
-		add_action( 'wp_ajax_monsterinsights_maybe_reauthenticate',  array( $this, 'maybe_reauthenticate' ) );
-		add_action( 'wp_ajax_monsterinsights_maybe_verify',          array( $this, 'maybe_verify' ) );
-		add_action( 'wp_ajax_monsterinsights_maybe_delete',          array( $this, 'maybe_delete' ) );
+		add_action( 'wp_ajax_monsterinsights_maybe_authenticate', array( $this, 'maybe_authenticate' ) );
+		add_action( 'wp_ajax_monsterinsights_maybe_reauthenticate', array( $this, 'maybe_reauthenticate' ) );
+		add_action( 'wp_ajax_monsterinsights_maybe_verify', array( $this, 'maybe_verify' ) );
+		add_action( 'wp_ajax_monsterinsights_maybe_delete', array( $this, 'maybe_delete' ) );
 
-		add_action( 'admin_init',          							 array( $this, 'authenticate_listener' ) );
-		add_action( 'admin_init',          							 array( $this, 'reauthenticate_listener' ) );
+		add_action( 'admin_init', array( $this, 'authenticate_listener' ) );
+		add_action( 'admin_init', array( $this, 'reauthenticate_listener' ) );
 
-		add_action( 'wp_ajax_nopriv_monsterinsights_is_installed',    array( $this, 'is_installed' ) );
-		add_action( 'wp_ajax_nopriv_monsterinsights_rauthenticate',   array( $this, 'rauthenticate' ) );
+		add_action( 'wp_ajax_nopriv_monsterinsights_is_installed', array( $this, 'is_installed' ) );
+		add_action( 'wp_ajax_nopriv_monsterinsights_rauthenticate', array( $this, 'rauthenticate' ) );
 
 		add_filter( 'monsterinsights_maybe_authenticate_siteurl', array( $this, 'before_redirect' ) );
 
 		add_action( 'wp_ajax_nopriv_monsterinsights_push_mp_token', array( $this, 'handle_relay_mp_token_push' ) );
+        //  GA property swap action cron
+        add_action( 'monsterinsights_v4_property_swap', array( $this, 'property_swap_cron_action' ) );
 	}
 
-	public function get_tt(){
+	public function get_tt() {
 		$tt = is_network_admin() ? get_site_option( 'monsterinsights_network_tt', '' ) : get_option( 'monsterinsights_site_tt', '' );
 		if ( empty( $tt ) ) {
 			// if TT is empty, generate a new one, save it and then return it
 			$tt = $this->generate_tt();
 			$this->is_network_admin() ? update_site_option( 'monsterinsights_network_tt', $tt ) : update_option( 'monsterinsights_site_tt', $tt );
 		}
+
 		return $tt;
 	}
 
-	public function rotate_tt(){
+	public function rotate_tt() {
 		$tt = $this->generate_tt();
 		is_network_admin() ? update_site_option( 'monsterinsights_network_tt', $tt ) : update_option( 'monsterinsights_site_tt', $tt );
 	}
 
-	public function generate_tt(){
-		return hash( 'sha512', wp_generate_password( 128, true, true ) . AUTH_SALT . uniqid( "", true ) );
+	public function generate_tt() {
+		return defined( 'AUTH_SALT' ) ? hash( 'sha512', wp_generate_password( 128, true, true ) . AUTH_SALT . uniqid( "", true ) ) : hash( 'sha512', wp_generate_password( 128, true, true ) . uniqid( "", true ) );
 	}
 
 	public function validate_tt( $passed_tt = '' ) {
 		$tt = $this->get_tt();
+
 		return hash_equals( $tt, $passed_tt );
 	}
 
 	public function is_installed() {
 		wp_send_json_success(
 			array(
-				'version'   => MONSTERINSIGHTS_VERSION,
-				'pro'   	=> monsterinsights_is_pro_version(),
+				'version' => MONSTERINSIGHTS_VERSION,
+				'pro'     => monsterinsights_is_pro_version(),
 			)
 		);
 	}
 
-	public function maybe_authenticate(){
+	public function maybe_authenticate() {
 
 		// Check nonce
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
 		// current user can authenticate
 		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			wp_send_json_error( array(	'message' => __( "You don't have permission to authenticate MonsterInsights.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: link tag starts with url, link tag ends.
+			$message = sprintf(
+				__( 'You don\'t have the correct WordPress user permissions to authenticate into MonsterInsights. Please check with your site administrator that your role is included in the MonsterInsights permissions settings. %1$sClick here for more information%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-save-settings', 'https://www.monsterinsights.com/docs/how-to-allow-user-roles-to-access-the-monsterinsights-reports-and-settings/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
-		if ( ! empty( $_REQUEST['isnetwork'] ) && $_REQUEST['isnetwork'] ) {
+		if ( ! empty( $_REQUEST['isnetwork'] ) && $_REQUEST['isnetwork'] ) { // phpcs:ignore
 			define( 'WP_NETWORK_ADMIN', true );
 		}
 
@@ -95,19 +105,30 @@ final class MonsterInsights_API_Auth {
 		if ( monsterinsights_is_pro_version() ) {
 			$valid = is_network_admin() ? MonsterInsights()->license->is_network_licensed() : MonsterInsights()->license->is_site_licensed();
 			if ( ! $valid ) {
-				wp_send_json_error( array( 'message' => __( "Cannot authenticate. Please enter a valid, active license key for MonsterInsights Pro into the settings.", 'google-analytics-for-wordpress' ) ) );
+				wp_send_json_error( array( 'message' => __( "Cannot authenticate. Please enter a valid, active license key for MonsterInsights Pro into the settings page.", 'google-analytics-for-wordpress' ) ) );
 			}
 		}
 
 		// we do not have a current auth
 		if ( ! $this->is_network_admin() && MonsterInsights()->auth->is_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot authenticate. Please re-authenticate.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support link tag starts with url, Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There has been an error authenticating. Please try again in a few minutes. If the problem persists, please %1$scontact our support%2$s team.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'error-authenticating', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		} else if ( $this->is_network_admin() && MonsterInsights()->auth->is_network_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot network authenticate. Please re-authenticate on the network settings panel.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support link tag starts with url, Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There has been an error authenticating. Please try again in a few minutes. If the problem persists, please %1$scontact our support%2$s team.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank href="' . monsterinsights_get_url( 'notice', 'error-authenticating', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		$sitei = $this->get_sitei();
-		//update_network_option(  get_current_network_id(), 'monsterinsights_network_sitei', $sitei );
 
 		$siteurl = add_query_arg( array(
 			'tt'        => $this->get_tt(),
@@ -118,7 +139,7 @@ final class MonsterInsights_API_Auth {
 			'siteurl'   => is_network_admin() ? network_admin_url() : site_url(),
 			'return'    => is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' ),
 			'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/',
-		 ), $this->get_route( 'https://' . monsterinsights_get_api_url() . 'auth/new/{type}' ) );
+		), $this->get_route( 'https://' . monsterinsights_get_api_url() . 'auth/new/{type}' ) );
 
 		if ( monsterinsights_is_pro_version() ) {
 			$key     = is_network_admin() ? MonsterInsights()->license->get_network_license_key() : MonsterInsights()->license->get_site_license_key();
@@ -134,8 +155,8 @@ final class MonsterInsights_API_Auth {
 			array(
 				'error'   => 'authenticate_missing_arg',
 				'message' => 'Authenticate missing parameter: ' . $arg,
-				'version'   => MONSTERINSIGHTS_VERSION,
-				'pro'   	=> monsterinsights_is_pro_version(),
+				'version' => MONSTERINSIGHTS_VERSION,
+				'pro'     => monsterinsights_is_pro_version(),
 			)
 		);
 	}
@@ -149,7 +170,7 @@ final class MonsterInsights_API_Auth {
 		}
 
 		foreach ( $reqd_args as $arg ) {
-			if ( empty( $_REQUEST[$arg] ) ) {
+			if ( empty( $_REQUEST[ $arg ] ) ) {
 				$this->send_missing_args_error( $arg );
 			}
 		}
@@ -158,13 +179,13 @@ final class MonsterInsights_API_Auth {
 			define( 'WP_NETWORK_ADMIN', true );
 		}
 
-		if ( ! $this->validate_tt( $_REQUEST['tt'] ) ) {
+		if ( ! $this->validate_tt( $_REQUEST['tt'] ) ) { // phpcs:ignore
 			wp_send_json_error(
 				array(
 					'error'   => 'authenticate_invalid_tt',
 					'message' => 'Invalid TT sent',
-					'version'   => MONSTERINSIGHTS_VERSION,
-					'pro'   	=> monsterinsights_is_pro_version(),
+					'version' => MONSTERINSIGHTS_VERSION,
+					'pro'     => monsterinsights_is_pro_version(),
 				)
 			);
 		}
@@ -173,7 +194,7 @@ final class MonsterInsights_API_Auth {
 		wp_send_json_success();
 	}
 
-	public function authenticate_listener(){
+	public function authenticate_listener() {
 		// Make sure it's for us
 		if ( empty( $_REQUEST['mi-oauth-action'] ) || $_REQUEST['mi-oauth-action'] !== 'auth' ) {
 			return;
@@ -191,23 +212,23 @@ final class MonsterInsights_API_Auth {
 
 		// Make sure has required params
 		if (
-			empty( $_REQUEST['key'] )    ||
-			empty( $_REQUEST['token'] )  ||
+			empty( $_REQUEST['key'] ) ||
+			empty( $_REQUEST['token'] ) ||
 			empty( $_REQUEST['miview'] ) ||
-			empty( $_REQUEST['a'] )      ||
-			empty( $_REQUEST['w'] )      ||
-			empty( $_REQUEST['p'] )      ||
+			empty( $_REQUEST['a'] ) ||
+			empty( $_REQUEST['w'] ) ||
+			empty( $_REQUEST['p'] ) ||
 			( empty( $_REQUEST['ua'] ) && empty( $_REQUEST['v4'] ) )
 		) {
 			return;
 		}
 
 		if ( ! empty( $_REQUEST['ua'] ) ) {
-			$code_key = 'ua';
-			$code_value = monsterinsights_is_valid_ua( $_REQUEST['ua'] );
+			$code_key   = 'ua';
+			$code_value = monsterinsights_is_valid_ua( $_REQUEST['ua'] ); // phpcs:ignore
 		} else if ( ! empty( $_REQUEST['v4'] ) ) {
-			$code_key = 'v4';
-			$code_value = monsterinsights_is_valid_v4_id( $_REQUEST['v4'] );
+			$code_key   = 'v4';
+			$code_value = monsterinsights_is_valid_v4_id( $_REQUEST['v4'] ); // phpcs:ignore
 		}
 
 		if ( empty( $code_value ) ) {
@@ -244,27 +265,35 @@ final class MonsterInsights_API_Auth {
 		$where = $this->is_network_admin() ? 'network' : 'site';
 		MonsterInsights()->reporting->delete_aggregate_data( $where );
 
-		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' )  : admin_url( 'admin.php?page=monsterinsights_settings' ) ;
+		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' );
 		$url = add_query_arg( array(
-			 'mi_action' => 'auth',
-			 'success'   => 'true',
-			), $url );
+			'mi_action' => 'auth',
+			'success'   => 'true',
+		), $url );
 		$url = apply_filters( 'monsterinsights_auth_success_redirect_url', $url );
 		wp_safe_redirect( $url );
 		exit;
 	}
 
-	public function maybe_reauthenticate(){
+	public function maybe_reauthenticate() {
 
 		// Check nonce
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
+		$url = admin_url( 'admin.php?page=monsterinsights-onboarding' );
+
 		// current user can authenticate
 		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			wp_send_json_error( array(	'message' => __( "You don't have permission to re-authenticate MonsterInsights.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Link tag starts with url and link tag ends.
+			$message = sprintf(
+				__( 'You don\'t have the correct WordPress user permissions to re-authenticate into MonsterInsights. Please check with your site administrator that your role is included in the MonsterInsights permissions settings. %1$sClick here for more information%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-save-settings', 'https://www.monsterinsights.com/docs/how-to-allow-user-roles-to-access-the-monsterinsights-reports-and-settings/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
-		if ( ! empty( $_REQUEST['isnetwork'] ) && $_REQUEST['isnetwork'] ) {
+		if ( ! empty( $_REQUEST['isnetwork'] ) && filter_var($_REQUEST['isnetwork'], FILTER_VALIDATE_BOOLEAN) ) {
 			define( 'WP_NETWORK_ADMIN', true );
 		}
 
@@ -272,15 +301,31 @@ final class MonsterInsights_API_Auth {
 		if ( monsterinsights_is_pro_version() ) {
 			$valid = is_network_admin() ? MonsterInsights()->license->is_network_licensed() : MonsterInsights()->license->is_site_licensed();
 			if ( monsterinsights_is_pro_version() && ! $valid ) {
-				wp_send_json_error( array( 'message' => __( "Cannot re-authenticate. Please enter a valid, active license key for MonsterInsights Pro into the settings.", 'google-analytics-for-wordpress' ) ) );
+				wp_send_json_error( array( 'message' => __( "Your license key for MonsterInsights is invalid. The key no longer exists or the user associated with the key has been deleted. Please use a different key.", 'google-analytics-for-wordpress' ) ) );
 			}
 		}
 
 		// we do have a current auth
 		if ( ! $this->is_network_admin() && ! MonsterInsights()->auth->is_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot re-authenticate. Please authenticate.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Wizard Link tag starts with url, Wizard link tag ends, Support link tag starts, Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There was a problem while re-authenticating. Please try to complete the MonsterInsights %1$ssetup wizard%2$s again. If the problem persists, please %3$scontact our support%4$s team.', 'google-analytics-for-wordpress' ),
+				'<a href="' . esc_url( $url ) . '">',
+				'</a>',
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-re-authenticate', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		} else if ( $this->is_network_admin() && ! MonsterInsights()->auth->is_network_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot re-authenticate the network. Please authenticate on the network settings panel.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Wizard Link tag starts with url, Wizard link tag ends, Support link tag starts, Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There was a problem while re-authenticating. Please try to complete the MonsterInsights %1$ssetup wizard%2$s again. If the problem persists, please %3$scontact our support%4$s team.', 'google-analytics-for-wordpress' ),
+				'<a href="' . esc_url( $url ) . '">',
+				'</a>',
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-re-authenticate', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		$siteurl = add_query_arg( array(
@@ -294,7 +339,7 @@ final class MonsterInsights_API_Auth {
 			'token'     => is_network_admin() ? MonsterInsights()->auth->get_network_token() : MonsterInsights()->auth->get_token(),
 			'return'    => is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' ),
 			'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/',
-		 ), $this->get_route( 'https://' . monsterinsights_get_api_url() . 'auth/reauth/{type}' ) );
+		), $this->get_route( 'https://' . monsterinsights_get_api_url() . 'auth/reauth/{type}' ) );
 
 		if ( monsterinsights_is_pro_version() ) {
 			$key     = is_network_admin() ? MonsterInsights()->license->get_network_license_key() : MonsterInsights()->license->get_site_license_key();
@@ -306,7 +351,7 @@ final class MonsterInsights_API_Auth {
 		wp_send_json_success( array( 'redirect' => $siteurl ) );
 	}
 
-	public function reauthenticate_listener(){
+	public function reauthenticate_listener() {
 		// Make sure it's for us
 		if ( empty( $_REQUEST['mi-oauth-action'] ) || $_REQUEST['mi-oauth-action'] !== 'reauth' ) {
 			return;
@@ -318,7 +363,7 @@ final class MonsterInsights_API_Auth {
 		}
 
 		// Invalid request
-		if ( empty( $_REQUEST['tt'] ) || ! $this->validate_tt( $_REQUEST['tt'] ) ) {
+		if ( empty( $_REQUEST['tt'] ) || ! $this->validate_tt( $_REQUEST['tt'] ) ) { // phpcs:ignore
 			return;
 		}
 
@@ -334,11 +379,11 @@ final class MonsterInsights_API_Auth {
 		}
 
 		if ( ! empty( $_REQUEST['ua'] ) ) {
-			$code_key = 'ua';
-			$code_value = monsterinsights_is_valid_ua( $_REQUEST['ua'] );
+			$code_key   = 'ua';
+			$code_value = monsterinsights_is_valid_ua( $_REQUEST['ua'] ); // phpcs:ignore
 		} else if ( ! empty( $_REQUEST['v4'] ) ) {
-			$code_key = 'v4';
-			$code_value = monsterinsights_is_valid_v4_id( $_REQUEST['v4'] );
+			$code_key   = 'v4';
+			$code_value = monsterinsights_is_valid_v4_id( $_REQUEST['v4'] ); // phpcs:ignore
 		}
 
 		if ( empty( $code_value ) ) {
@@ -352,16 +397,16 @@ final class MonsterInsights_API_Auth {
 		}
 
 		$profile = array(
-			'key'      => $existing['key'],
-			'token'    => $existing['token'],
-			'viewname' => sanitize_text_field( $_REQUEST['miview'] ),
-			'a'        => sanitize_text_field( $_REQUEST['a'] ),
-			'w'        => sanitize_text_field( $_REQUEST['w'] ),
-			'p'        => sanitize_text_field( $_REQUEST['p'] ),
-			'ua'       => $existing['ua'],
-			'v4'       => $existing['v4'],
-			'siteurl'  => site_url(),
-			'neturl'   => network_admin_url(),
+			'key'           => $existing['key'],
+			'token'         => $existing['token'],
+			'viewname'      => sanitize_text_field( $_REQUEST['miview'] ),
+			'a'             => sanitize_text_field( $_REQUEST['a'] ),
+			'w'             => sanitize_text_field( $_REQUEST['w'] ),
+			'p'             => sanitize_text_field( $_REQUEST['p'] ),
+			'ua'            => $existing['ua'],
+			'v4'            => $existing['v4'],
+			'siteurl'       => site_url(),
+			'neturl'        => network_admin_url(),
 			'connectedtype' => $code_key,
 		);
 
@@ -378,63 +423,106 @@ final class MonsterInsights_API_Auth {
 		$where = $this->is_network_admin() ? 'network' : 'site';
 		MonsterInsights()->reporting->delete_aggregate_data( $where );
 
-		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' )  : admin_url( 'admin.php?page=monsterinsights_settings' ) ;
+		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' );
 		$url = add_query_arg( array(
-			 'mi_action' => 'reauth',
-			 'success'   => 'true',
-			), $url );
+			'mi_action' => 'reauth',
+			'success'   => 'true',
+		), $url );
 		$url = apply_filters( 'monsterinsights_reauth_success_redirect_url', $url );
 
 		wp_safe_redirect( $url );
 		exit;
 	}
 
-	public function maybe_verify(){
+	public function maybe_verify() {
 
 		// Check nonce
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
 		// current user can verify
 		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			wp_send_json_error( array(	'message' => __( "You don't have permission to verify MonsterInsights.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Link tag starts with url and link tag ends.
+			$message = sprintf(
+				__( 'You don\'t have the correct user permissions to verify the MonsterInsights license you are trying to use. Please check with your site administrator that your role is included in the MonsterInsights permissions settings. %1$sClick here for more information%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" rel="noopener" href="' . monsterinsights_get_url( 'notice', 'cannot-save-settings', 'https://www.monsterinsights.com/docs/how-to-allow-user-roles-to-access-the-monsterinsights-reports-and-settings/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
-		if ( ! empty( $_REQUEST['isnetwork'] ) && $_REQUEST['isnetwork'] ) {
+		if ( ! empty( $_REQUEST['isnetwork'] ) && filter_var($_REQUEST['isnetwork'], FILTER_VALIDATE_BOOL) ) {
 			define( 'WP_NETWORK_ADMIN', true );
 		}
 
 		// we have an auth to verify
 		if ( $this->is_network_admin() && ! MonsterInsights()->auth->is_network_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot verify. Please authenticate.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support Link tag starts with url and Support link tag ends.
+			$message = sprintf(
+				__( 'Please enter a valid license within the MonsterInsights settings panel. You can check your license by logging into your MonsterInsights account by %1$sclicking here%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" rel="noopener" href="' . monsterinsights_get_url( 'notice', 'cannot-verify-license', 'https://www.monsterinsights.com/my-account/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		} else if ( ! $this->is_network_admin() && ! MonsterInsights()->auth->is_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot verify. Please authenticate.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support Link tag starts with url and Support link tag ends.
+			$message = sprintf(
+				__( 'Please enter a valid license within the MonsterInsights settings panel. You can check your license by logging into your MonsterInsights account by %1$sclicking here%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" rel="noopener" href="' . monsterinsights_get_url( 'notice', 'cannot-verify-license', 'https://www.monsterinsights.com/my-account/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		if ( monsterinsights_is_pro_version() ) {
 			$valid = is_network_admin() ? MonsterInsights()->license->is_network_licensed() : MonsterInsights()->license->is_site_licensed();
 			if ( ! $valid ) {
-				wp_send_json_error( array( 'message' => __( "Cannot verify. Please enter a valid, active license key for MonsterInsights Pro into the settings.", 'google-analytics-for-wordpress' ) ) );
+				// Translators: Support Link tag starts with url and Support link tag ends.
+				$message = sprintf(
+					__( 'Please enter a valid license within the MonsterInsights settings panel. You can check your license by logging into your MonsterInsights account by %1$sclicking here%2$s.', 'google-analytics-for-wordpress' ),
+					'<a target="_blank" rel="noopener" href="' . monsterinsights_get_url( 'notice', 'cannot-verify-license', 'https://www.monsterinsights.com/my-account/' ) . '">',
+					'</a>'
+				);
+				wp_send_json_error( array( 'message' => $message ) );
 			}
 		}
 
 		$worked = $this->verify_auth();
-		if ( $worked && ! is_wp_error(  $worked ) ) {
+		if ( $worked && ! is_wp_error( $worked ) ) {
 			wp_send_json_success( array( 'message' => __( "Successfully verified.", 'google-analytics-for-wordpress' ) ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( "Could not verify.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support Link tag starts with url and Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There has been an error while trying to verify your license. Please try again or contact our support team by %1$sclicking here%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-verify-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 	}
 
-	public function verify_auth( $credentials = array() ){
+	public function verify_auth( $credentials = array() ) {
 		$creds = ! empty( $credentials ) ? $credentials : ( $this->is_network_admin() ? MonsterInsights()->auth->get_network_analytics_profile( true ) : MonsterInsights()->auth->get_analytics_profile( true ) );
 
 		if ( empty( $creds['key'] ) ) {
-			return new WP_Error( 'validation-error', sprintf( __( 'Verify auth key not passed', 'google-analytics-for-wordpress' ) ) );
+			// Translators: Support Link tag starts with url and Support link tag ends.
+			$message = sprintf(
+				__( 'Oops! There has been an error while trying to verify your license. Please try again or contact our support team by %1$sclicking here%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-verify-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+
+			return new WP_Error( 'validation-error', $message );
 		}
 
 		$network = ! empty( $_REQUEST['network'] ) ? $_REQUEST['network'] === 'network' : $this->is_network_admin();
-		$api   = new MonsterInsights_API_Request( $this->get_route( 'auth/verify/{type}/' ), array( 'network' => $network, 'tt' => $this->get_tt(), 'key' => $creds['key'], 'token' => $creds['token'], 'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/' ) );
-		$ret   = $api->request();
+		$api     = new MonsterInsights_API_Request( $this->get_route( 'auth/verify/{type}/' ), array(
+			'network' => $network,
+			'tt'      => $this->get_tt(),
+			'key'     => $creds['key'],
+			'token'   => $creds['token'],
+			'testurl' => 'https://' . monsterinsights_get_api_url() . 'test/'
+		) );
+		$ret     = $api->request();
 
 		$this->rotate_tt();
 		if ( is_wp_error( $ret ) ) {
@@ -444,49 +532,87 @@ final class MonsterInsights_API_Auth {
 		}
 	}
 
-	public function maybe_delete(){
+	public function maybe_delete() {
 
 		// Check nonce
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
 
+		$url = network_admin_url( 'admin.php?page=monsterinsights-onboarding' );
+
 		// current user can delete
 		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			wp_send_json_error( array(	'message' => __( "You don't have permission to deauthenticate MonsterInsights.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Link tag starts with url and link tag ends.
+			$message = sprintf(
+				__( 'You don\'t have the correct WordPress user permissions to deauthenticate into MonsterInsights. Please check with your site administrator that your role is included in the MonsterInsights permissions settings. %1$sClick here for more information%2$s.', 'google-analytics-for-wordpress' ),
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-save-settings', 'https://www.monsterinsights.com/docs/how-to-allow-user-roles-to-access-the-monsterinsights-reports-and-settings/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
-		if ( ! empty( $_REQUEST['isnetwork'] ) && $_REQUEST['isnetwork'] ) {
+		if ( ! empty( $_REQUEST['isnetwork'] ) && filter_var($_REQUEST['isnetwork'], FILTER_VALIDATE_BOOL) ) {
 			define( 'WP_NETWORK_ADMIN', true );
 		}
 
 		// we have an auth to delete
 		if ( $this->is_network_admin() && ! MonsterInsights()->auth->is_network_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot deauthenticate. You are not currently authed.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Setup Wizard link tag starts, Setup Wizard link tag end, Support link tag starts with url and support link tag ends.
+			$message = sprintf(
+				__( 'Could not disconnect as you are not currently authenticated properly. Please try to authenticate again with our MonsterInsights %1$ssetup wizard%2$s.  If you are still having problems, please %3$scontact our support%4$s team.', 'google-analytics-for-wordpress' ),
+				'<a href="' . esc_url( $url ) . '">',
+				'</a>',
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-de-authenticate-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		} else if ( ! $this->is_network_admin() && ! MonsterInsights()->auth->is_authed() ) {
-			wp_send_json_error( array(	'message' => __( "Cannot deauthenticate. You are not currently authed.", 'google-analytics-for-wordpress' ) ) );
+			// Translators: Setup Wizard link tag starts, Setup Wizard link tag end, Support link tag starts with url and support link tag ends.
+			$message = sprintf(
+				__( 'Could not disconnect as you are not currently authenticated properly. Please try to authenticate again with our MonsterInsights %1$ssetup wizard%2$s.  If you are still having problems, please %3$scontact our support%4$s team.', 'google-analytics-for-wordpress' ),
+				'<a href="' . esc_url( $url ) . '">',
+				'</a>',
+				'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-de-authenticate-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+				'</a>'
+			);
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 
 		if ( monsterinsights_is_pro_version() ) {
 			$valid = is_network_admin() ? MonsterInsights()->license->is_network_licensed() : MonsterInsights()->license->is_site_licensed();
 			if ( ! $valid ) {
-				wp_send_json_error( array( 'message' => __( "Cannot deauthenticate. Please enter a valid, active license key for MonsterInsights Pro into the settings.", 'google-analytics-for-wordpress' ) ) );
+				// Translators: Setup Wizard link tag starts, Setup Wizard link tag end, Support link tag starts with url and support link tag ends.
+				$message = sprintf(
+					__( 'Could not disconnect your account, as you are not currently authenticated properly. Please try to authenticate again with our %1$sMonsterInsights setup wizard%2$s.  If you are still having problems, please %3$scontact our support%4$s team.', 'google-analytics-for-wordpress' ),
+					'<a href="' . esc_url( $url ) . '">',
+					'</a>',
+					'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-de-authenticate-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+					'</a>'
+				);
+				wp_send_json_error( array( 'message' => $message ) );
 			}
 		}
 
 		$force = ! empty( $_REQUEST['forcedelete'] ) && $_REQUEST['forcedelete'] === 'true';
 
 		$worked = $this->delete_auth( $force );
-		if ( $worked && ! is_wp_error(  $worked ) ) {
+		if ( $worked && ! is_wp_error( $worked ) ) {
 			wp_send_json_success( array( 'message' => __( "Successfully deauthenticated.", 'google-analytics-for-wordpress' ) ) );
 		} else {
 			if ( $force ) {
 				wp_send_json_success( array( 'message' => __( "Successfully force deauthenticated.", 'google-analytics-for-wordpress' ) ) );
 			} else {
-				wp_send_json_error( array( 'message' => __( "Could not deauthenticate.", 'google-analytics-for-wordpress' ) ) );
+				// Translators: Support link tag starts with url and support link tag ends.
+				$message = sprintf(
+					__( 'Oops! There has been an error while trying to deauthenticate. Please try again. If the issue persists, please %1$scontact our support%2$s team.', 'google-analytics-for-wordpress' ),
+					'<a target="_blank" href="' . monsterinsights_get_url( 'notice', 'cannot-de-authenticate-license', 'https://www.monsterinsights.com/my-account/support/' ) . '">',
+					'</a>'
+				);
+				wp_send_json_error( array( 'message' => $message ) );
 			}
 		}
 	}
 
-	public function delete_auth( $force = false ){
+	public function delete_auth( $force = false ) {
 		if ( $this->is_network_admin() && ! MonsterInsights()->auth->is_network_authed() ) {
 			return false;
 		} else if ( ! $this->is_network_admin() && ! MonsterInsights()->auth->is_authed() ) {
@@ -502,31 +628,40 @@ final class MonsterInsights_API_Auth {
 		// If we have a new siteurl enabled option and the profile site doesn't match the current site, deactivate anyways
 		if ( is_network_admin() ) {
 			$siteurl = network_admin_url();
-			if ( ! empty( $creds['neturl' ] ) && $creds['neturl'] !== $siteurl ) {
+			if ( ! empty( $creds['neturl'] ) && $creds['neturl'] !== $siteurl ) {
 				MonsterInsights()->auth->delete_network_analytics_profile( true );
+
 				return true;
 			}
 		} else {
 			$siteurl = site_url();
-			if ( ! empty( $creds['siteurl' ] ) && $creds['siteurl'] !== $siteurl ) {
+			if ( ! empty( $creds['siteurl'] ) && $creds['siteurl'] !== $siteurl ) {
 				MonsterInsights()->auth->delete_analytics_profile( true );
+
 				return true;
 			}
 		}
 
-		$api   = new MonsterInsights_API_Request( $this->get_route( 'auth/delete/{type}/' ), array( 'network' => $this->is_network_admin(), 'tt' => $this->get_tt(), 'key' => $creds['key'], 'token' => $creds['token'], 'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/' ) );
-		$ret   = $api->request();
+		$api = new MonsterInsights_API_Request( $this->get_route( 'auth/delete/{type}/' ), array(
+			'network' => $this->is_network_admin(),
+			'tt'      => $this->get_tt(),
+			'key'     => $creds['key'],
+			'token'   => $creds['token'],
+			'testurl' => 'https://' . monsterinsights_get_api_url() . 'test/'
+		) );
+		$ret = $api->request();
 
 		$this->rotate_tt();
 		if ( is_wp_error( $ret ) && ! $force ) {
 			return false;
 		} else {
 			if ( $this->is_network_admin() ) {
-				MonsterInsights()->auth->delete_network_analytics_profile( true );
+				MonsterInsights()->auth->delete_network_analytics_profile( false );
 			} else {
-				MonsterInsights()->auth->delete_analytics_profile( true );
+				MonsterInsights()->auth->delete_analytics_profile( false );
 
 			}
+
 			return true;
 		}
 	}
@@ -549,29 +684,32 @@ final class MonsterInsights_API_Auth {
 			'tt'      => $this->get_tt(),
 			'key'     => $creds['key'],
 			'token'   => $creds['token'],
-			'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/'
+			'testurl' => 'https://' . monsterinsights_get_api_url() . 'test/'
 		) );
 		// Force the network admin url otherwise this will fail not finding the url in relay.
 		$api->site_url = network_admin_url();
-		$ret = $api->request();
+		$ret           = $api->request();
 
 		$this->rotate_tt();
 		if ( is_wp_error( $ret ) ) {
 			return false;
 		} else {
 			MonsterInsights()->auth->delete_network_analytics_profile( true );
+
 			return true;
 		}
 	}
 
 	public function get_type() {
 		$base = monsterinsights_is_pro_version() ? 'pro' : 'lite';
+
 		return apply_filters( 'monsterinsights_api_auth_get_type', $base );
 	}
 
 	public function get_route( $route = '' ) {
 		$route = str_replace( '{type}', $this->get_type(), $route );
 		$route = trailingslashit( $route );
+
 		return $route;
 	}
 
@@ -585,16 +723,7 @@ final class MonsterInsights_API_Auth {
 		// 	return $sitei;
 		// }
 
-		$auth_key        = defined( 'AUTH_KEY' )        ? AUTH_KEY 		  : '';
-		$secure_auth_key = defined( 'SECURE_AUTH_KEY' ) ? SECURE_AUTH_KEY : '';
-		$logged_in_key   = defined( 'LOGGED_IN_KEY' )   ? LOGGED_IN_KEY   : '';
-
-		$sitei = $auth_key . $secure_auth_key . $logged_in_key;
-		$sitei = preg_replace('/[^a-zA-Z0-9]/', '', $sitei );
-		$sitei = sanitize_text_field( $sitei );
-		$sitei = trim( $sitei );
-		$sitei = ( strlen($sitei) > 30 ) ? substr($sitei, 0, 30 ) : $sitei;
-		return $sitei;
+		return monsterinsights_get_sitei();
 	}
 
 	/**
@@ -631,9 +760,9 @@ final class MonsterInsights_API_Auth {
 	 * Save the measurement protocol that Relay pushes to this site
 	 */
 	public function handle_relay_mp_token_push() {
-		$mp_token = sanitize_text_field( $_POST['mp_token'] );
-		$timestamp = (int) sanitize_text_field( $_POST['timestamp'] );
-		$signature = sanitize_text_field( $_POST['signature'] );
+		$mp_token  = sanitize_text_field( $_POST['mp_token'] ); // phpcs:ignore
+		$timestamp = (int) sanitize_text_field( $_POST['timestamp'] ); // phpcs:ignore
+		$signature = sanitize_text_field( $_POST['signature'] ); // phpcs:ignore
 
 		// check if expired
 		if ( time() > $timestamp + 1000 ) {
@@ -649,7 +778,7 @@ final class MonsterInsights_API_Auth {
 			: $auth->get_key();
 
 		$hashed_data = array(
-			'mp_token' => $_POST['mp_token'],
+			'mp_token'  => sanitize_text_field($_POST['mp_token']),
 			'timestamp' => $timestamp,
 		);
 
@@ -667,4 +796,29 @@ final class MonsterInsights_API_Auth {
 		}
 		wp_send_json_success();
 	}
+
+    /**
+     * @return void
+     */
+    public function property_swap_cron_action() {
+        $auth = MonsterInsights()->auth;
+        $profile = is_network_admin() ? $auth->get_network_analytics_profile() : $auth->get_analytics_profile();
+
+        if ( $profile['connectedtype'] === 'v4' ) {
+            //  Bail if main property is v4 already.
+            return;
+        }
+
+        if ( $auth->get_network_v4_id() !== '' || $auth->get_v4_id() !== '' ) {
+            $profile['connectedtype'] = 'v4';
+
+            if ( $this->is_network_admin() ) {
+                $profile['network_viewname'] = $auth->get_network_v4_id();
+            } else {
+                $profile['viewname'] = $auth->get_v4_id();
+            }
+        }
+
+        $this->is_network_admin() ? $auth->set_network_analytics_profile( $profile ) : $auth->set_analytics_profile( $profile );
+    }
 }

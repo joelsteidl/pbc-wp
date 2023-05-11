@@ -77,29 +77,110 @@ function get_IP_address() {
     return $ipaddress;
 }
 
-function if_tatsubuilder_premium( ) {
-	$check_theme = wp_get_theme();
-	$theme_name = trim($check_theme->get(('Name' )));
-	$theme_name = strtolower($theme_name);
-	$child_theme_name = trim($check_theme->get(('Template' )));
-	$child_theme_name = strtolower($child_theme_name);
-	$allowed_themes = ['oshin','exponent','spyro'];
-	if(in_array($theme_name,$allowed_themes)||(!empty($child_theme_name) && in_array($child_theme_name,$allowed_themes))){
-		return false;
-	}else{
-		return true;
-	}		
+if(!function_exists( 'be_theme_name' )){
+	function be_theme_name($check_be_theme=null){
+		if(!defined('TATSU_THEME_NAME')){
+			$check_theme = wp_get_theme();
+			$theme_name = trim($check_theme->get(('Name' )));
+			$theme_name = strtolower($theme_name);
+			$child_theme_name = trim($check_theme->get(('Template' )));
+			$child_theme_name = strtolower($child_theme_name);
+			$be_theme = empty($theme_name)?$child_theme_name:$theme_name;
+			if($theme_name == 'exponent' || $child_theme_name == 'exponent'){
+				$be_theme = 'exponent';
+			}
+			if($theme_name == 'spyro' || $child_theme_name == 'spyro'){
+				$be_theme = 'spyro';
+			}
+			if($theme_name == 'oshin' || $child_theme_name == 'oshin'){
+				$be_theme = 'oshin';
+			}
+			define('TATSU_THEME_NAME',$be_theme);
+		}else{
+			$be_theme = TATSU_THEME_NAME;
+		}
+
+		if(!empty($check_be_theme)){
+			if($check_be_theme==$be_theme){
+				return true;
+			}else{
+				return false;
+			}
+		}else{
+			return $be_theme;
+		}
+	}
 }
 
-function if_tatsu_authorize( ) {
-	if(if_tatsubuilder_premium( )){
-		$tatsu_license = trim(get_option('tatsu_license_key'));
-		$tatsu_item_id = trim(get_option( 'tatsu_license_item_id' ));
-		if(empty($tatsu_license)|| empty($tatsu_item_id)){
-			return false;
-		}else{
+if(!function_exists('is_tatsu_standalone')){
+	function is_tatsu_standalone(){
+		if( !defined( 'TATSU_IS_STANDALONE' ) ) {
+			$check_theme = be_theme_name();
+			$allowed_themes = ['oshin','exponent','spyro'];
+			$result = true;
+			if(in_array($check_theme,$allowed_themes)){
+				$result =  false;
+			}
+			define( 'TATSU_IS_STANDALONE',$result);
+		}	
+		return TATSU_IS_STANDALONE;		
+	}
+}
+
+if(!function_exists('is_tatsu_page_template')){
+	function is_tatsu_page_template(){
+		$template = get_page_template_slug();
+		$allowed_template = ['tatsu-default.php','tatsu-blank-page.php'];
+		if(in_array($template,$allowed_template)){
 			return true;
+		}else{
+			return false;
+		}		
+	}
+}
+
+if(!function_exists('tatsu_pro_ouput')){
+	function tatsu_pro_ouput(){
+		return '<a class="tatsu_doc_link" href="'.TATSU_PRO_URL.'" target="_blank" title="Go for tatsu PRO"><img src="'.TATSU_PLUGIN_URL . '/builder/img/tatsu_pro.png" width="1000" height="250"></a>';	
+	}
+}
+
+if(!function_exists('tatsu_module_preview_options')){
+	function tatsu_module_preview_options($options){
+		if(empty($options) || !is_array($options)){
+			return $options;
 		}
+		$preview_module = array();
+		foreach ($options as $option_tag => $option) {
+			if(!empty($option['title'])){
+			$preview_module[$option['title']]=array(
+				'icon'=>$option['icon'],
+				'preview_image'=>empty($option['preview_image'])?TATSU_PLUGIN_URL . '/builder/img/preview_not_available.png':$option['preview_image'],
+				'description'=>empty($option['description'])?'':$option['description'],
+				'is_tatsu_pro'=>empty($option['is_tatsu_pro'])?'0':'1',
+			);
+			}
+		}
+		return $preview_module;
+	}
+}
+
+function is_tatsu_pro_active() {
+	if ( ! function_exists( 'is_plugin_active' ) ) {
+		include_once ABSPATH . 'wp-admin/includes/plugin.php';
+	}
+	
+	if ( is_plugin_active( 'tatsu-pro/tatsu-pro.php' ) ) {
+		return true;
+	} 
+	return false;
+}
+
+function is_tatsu_authorized() {
+	$tatsu_license = trim(get_option('tatsu_license_key'));
+	$tatsu_item_id = trim(get_option( 'tatsu_license_item_id' ));
+	if(empty($tatsu_license)|| empty($tatsu_item_id) || !is_tatsu_pro_active()){
+		return false;
 	}else{
 		return true;
 	}		
@@ -126,7 +207,11 @@ function tatsu_shortcodes_from_content( $inner ) {
 					if( is_array( $value ) ) {
 						$new_content .= " ".$att."= '".json_encode($value)."'";
 					} else {
-						$new_content .= ' '.$att.'= "'.$value.'"';
+						if("text"==$att){
+							$new_content .= ' '.$att.'= "'.htmlspecialchars($value).'"';
+						}else{
+							$new_content .= ' '.$att.'= "'.$value.'"';
+						}
 					}
 				}
 			}
@@ -907,79 +992,89 @@ if( !function_exists( 'tatsu_gsection_get_archive_title' ) ){
 	add_filter( 'get_the_archive_title', 'tatsu_gsection_get_archive_title' );
 }
 
-if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ){
-	function tatsu_get_gallery_image_from_source($source, $images = false) {
+if ( ! function_exists( 'tatsu_get_gallery_image_from_source' ) ) {
+	function tatsu_get_gallery_image_from_source( $source, $images = false ) {
 		$media = $return = array();
 		global $be_themes_data; 
-		switch ($source['source']) {
+		switch ( $source['source'] ) {
 			case 'instagram':
 				$transient_var = 'transient_instagram_user_data_'.$source['account_name'].'_'.$source['count'];
-				//delete_transient( $transient_var );
 				$transient_media = get_transient( $transient_var );
-				if($transient_media && isset($transient_media) && !empty($transient_media)) {
-					$media = unserialize($transient_media);
+				if ( $transient_media && isset( $transient_media ) && ! empty( $transient_media ) ) {
+					$media = maybe_unserialize( $transient_media );
 				} else {
-					if ( get_theme_mod('instagram_token', false) ){
-						$instagram_access_token = get_theme_mod('instagram_token', '');
-						$instagram_media = wp_remote_get('https://graph.instagram.com/me/media?fields=media_url,caption&access_token='.$instagram_access_token.'&count='.$source['count']);
+					$instagram_access_token = get_theme_mod( 'instagram_token', false );
+					if ( $instagram_access_token ) {
+						$instagram_media = wp_remote_get( 'https://graph.instagram.com/me/media?fields=username,id,caption,media_type,media_url,permalink,thumbnail_url,timestamp&access_token='.$instagram_access_token.'&count=200' );
 						//Refresh token : https://developers.facebook.com/docs/instagram-basic-display-api/guides/long-lived-access-tokens
-						$ig_refresh_token = wp_remote_get('https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token);
+						$ig_refresh_token = wp_remote_get( 'https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token='.$instagram_access_token );
 						
 						$instagram_response = $instagram_media["response"];
-						if(isset($instagram_response['code']) && $instagram_response['code']!=200 ){
-							$instagram_media_body = json_decode($instagram_media["body"]);
+						if ( isset( $instagram_response['code'] ) && $instagram_response['code'] !=200 ) {
+							$instagram_media_body = json_decode( $instagram_media["body"] );
 							delete_transient( $transient_var );
-							if(!empty($instagram_media_body->error) && !empty($instagram_media_body->error->message)) {
-								$return['error'] = '<b>'.esc_html__('Instagram Error : ', 'oshine-modules').'</b>'.$instagram_media_body->error->message;	
-							}else{
-								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>'.$instagram_response['message'];
+							if ( ! empty( $instagram_media_body->error ) && ! empty( $instagram_media_body->error->message ) ) {
+								$return['error'] = '<b>'.esc_html__( 'Instagram Error : ', 'oshine-modules' ).'</b>' . $instagram_media_body->error->message;	
+							} else {
+								$return['error'] = '<b>'.esc_html__('Instagram Error :', 'oshine-modules').'</b>' . $instagram_response['message'];
 							}
 							return $return;
 						}
-						if($instagram_media && isset($instagram_media) && !empty($instagram_media)) {
-							set_transient( $transient_var , serialize($instagram_media), 60 * 60 * 24 * 2 );
+						if ( $instagram_media && isset( $instagram_media ) && ! empty( $instagram_media ) ) {
+							set_transient( $transient_var, $instagram_media, DAY_IN_SECONDS );
 							$media = $instagram_media;
 						}
-					}else{
+					} else {
 						delete_transient( $transient_var );
 						$be_theme_name = be_theme_name();
-						if($be_theme_name=='exponent'){
+						if( $be_theme_name == 'exponent' ) {
 							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://exponentwptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
-						}else if($be_theme_name=='spyro'){
+						} else if( $be_theme_name == 'spyro' ) {
 							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Appearance > Customize > Global Site Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://spyrowptheme.com/documentation/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'tatsu').'</div>';
-						}else if($be_theme_name=='oshin'){
+						} else if( $be_theme_name == 'oshin' ){
 							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://www.brandexponents.com/oshine-knowledgebase/knowledge-base/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
-						}else{
+						} else {
 							$return['error'] = '<div class="be-notification error">'.esc_html__('Instagram Error : Access Token is not entered under Tatsu > Settings > Instagram Access Token. <a class="tatsu_doc_link" title="How to use Instagram in Tatsu Gallery Module"  href="https://docs.tatsubuilder.com/how-to-use-instagram-in-tatsu-gallery-module/" target="_blank">Know more</a>', 'oshine-modules').'</div>';
 						}
-						
 						return $return;
 					}					
 				}
                 
-
-				if(isset($media) && !empty($media)) {
-					$images = json_decode($media["body"]);
+				if ( isset( $media ) && ! empty( $media ) ) {
+					$images = json_decode( $media["body"] );
 					$images = $images->data;
-					if(!empty($source['count']) && is_numeric($source['count'])){
-						$images = array_slice($images, 0, $source['count']);
+					
+					if( ! empty( $source['count'] ) && is_numeric( $source['count'] ) ) {
+						$images = array_slice( $images, 0, $source['count'] );
 					}
-					foreach ($images as $key => $value) {
-						list($width, $height) = getimagesize($value->media_url);
-						$caption = empty($value->caption)?'':$value->caption;
+
+					foreach ( $images as $key => $value ) {
+						// if ( 'IMAGE' !== $value->media_type ) {
+						// 	continue;
+						// }
+
+						$media_url = $value->media_url;
+						$has_video = false;
+
+						if ( 'VIDEO' === $value->media_type ) {
+							$media_url = isset( $value->thumbnail_url ) && ! empty( $value->thumbnail_url ) ? $value->thumbnail_url : $media_url;
+							$has_video = true;
+						}
+
+						list( $width, $height ) = getimagesize( $media_url );
+						$caption = empty( $value->caption ) ? '' : $value->caption;
 						$temp_image_array = array();
-						$temp_image_array = array (
-							'thumbnail' => $value->media_url,
+						$temp_image_array = array(
+							'thumbnail' => $media_url,
 							'full_image_url' => $value->media_url,
 							'caption' => $caption,
 							'description' => $caption,
 							'width' => $width,
 							'height' => $height,
 							'id' => '',
-							'has_video' => false,
-							
+							'has_video' => $has_video,
 						);
-						array_push($return, $temp_image_array);
+						array_push( $return, $temp_image_array );
 					}
 				}
 				return $return;
@@ -1320,7 +1415,7 @@ if( !function_exists( 'tatsu_check_if_att_present' ) ) {
             return false;
         }
         foreach( $atts as $att ) {
-            if( $att['att_name'] === $att_name ) {
+            if(isset($att['att_name']) && $att['att_name'] === $att_name ) {
                 return true;
             }
         }
@@ -1623,5 +1718,86 @@ if(!function_exists('tatsu_get_recaptcha_threshold_score')){
 	return apply_filters('tatsu_form_recaptcha_threshold_score',0.50);
 	}
 }
+
+// Get Tatsu Module Categories
+if ( ! function_exists( 'tatsu_module_categories' ) ) {
+	function tatsu_module_categories() {
+		$categories = [
+			'basic' => __( 'Basic', 'tatsu' ),
+		];
+		return apply_filters( 'tatsu_module_categories', $categories );
+	}
+}
+
+/**
+ * List ACF Fields and WP Functions values.
+ *
+ * @author Sayan Datta (@im_sayaan)
+ * @since  1.0.3
+ * 
+ * @return array
+ */
+if ( ! function_exists( 'tatsu_get_dynamic_values' ) ) {
+	function tatsu_get_dynamic_values() {
+		$values = [];
+
+		if( function_exists( 'tatsu_get_custom_fields' ) ) {
+			$values = array_merge( tatsu_get_custom_fields( true ), $values );
+		}
+
+		if( function_exists( 'tatsu_get_wp_functions' ) ) {
+			$values = array_merge( tatsu_get_wp_functions( true ), $values );
+		}
+
+		return apply_filters( 'tatsu_get_dynamic_values', $values );
+	}
+}
+
+/**
+ * List ACF Fields and WP Functions and prepare a group.
+ *
+ * @author Sayan Datta (@im_sayaan)
+ * @since  1.0.3
+ * 
+ * @return array
+ */
+if ( ! function_exists( 'tatsu_get_custom_fields_dropdown' ) ) {
+	function tatsu_get_custom_fields_dropdown() {
+		$fields = [
+			'default' => __( 'Custom', 'tatsu' ),
+			'pro' => __( 'Dynamic Fields (Pro)', 'tatsu' ),
+		];
+
+		return apply_filters( 'tatsu_get_custom_fields_dropdown', $fields );
+	}
+}
+
+/**
+ * Parse ACF and WP's custom fields and functions.
+ *
+ * @author Sayan Datta (@im_sayaan)
+ * @since  1.0.3
+ *
+ * @param string $content
+ * 
+ * @return string
+ */
+if ( ! function_exists( 'tatsu_parse_custom_fields' ) ) {
+	function tatsu_parse_custom_fields( $content ) {
+		if ( strpos( $content, 'acf/' ) === false && strpos( $content, 'wp/' ) === false ) {
+			return $content;
+		}
+
+		return apply_filters( 'tatsu_parse_custom_fields', $content );
+	}
+}
+
+add_filter( 'tatsu_register_module_filter_options', function ( $options ) {
+	if ( ! array_key_exists( 'is_dynamic', $options ) ) {
+		$options['is_dynamic'] = false;
+	}
+
+	return $options;
+} );
 
 ?>

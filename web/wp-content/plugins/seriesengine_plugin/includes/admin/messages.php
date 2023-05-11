@@ -127,24 +127,36 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 9 ) { 
+		if ( $enmse_language == 10 ) { 
+			include(dirname(__FILE__) . '/../lang/fre_bible_books.php');
+			$enmse_from =  "de";
+		} elseif ( $enmse_language == 9 ) { 
 			include(dirname(__FILE__) . '/../lang/rus_bible_books.php');
+			$enmse_from =  "когда";
 		} elseif ( $enmse_language == 8 ) { 
 			include(dirname(__FILE__) . '/../lang/jap_bible_books.php');
+			$enmse_from =  "いつ";
 		} elseif ( $enmse_language == 7 ) { 
 			include(dirname(__FILE__) . '/../lang/dut_bible_books.php');
+			$enmse_from =  "wanneer";
 		} elseif ( $enmse_language == 6 ) { 
 			include(dirname(__FILE__) . '/../lang/chint_bible_books.php');
+			$enmse_from =  "來自";
 		} elseif ( $enmse_language == 5 ) { 
 			include(dirname(__FILE__) . '/../lang/chins_bible_books.php');
+			$enmse_from =  "什么时候";
 		} elseif ( $enmse_language == 4 ) { 
 			include(dirname(__FILE__) . '/../lang/turk_bible_books.php');
+			$enmse_from =  "itibaren";
 		} elseif ( $enmse_language == 3 ) { 
 			include(dirname(__FILE__) . '/../lang/ger_bible_books.php');
+			$enmse_from =  "von";
 		} elseif ( $enmse_language == 2 ) { 
 			include(dirname(__FILE__) . '/../lang/spa_bible_books.php');
+			$enmse_from =  "de";
 		} else {
 			include(dirname(__FILE__) . '/../lang/eng_bible_books.php');
+			$enmse_from =  "from";
 		}
 
 		function enmse_vimeo($link){
@@ -451,7 +463,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_embed_code']) < 1 ) { //here
 						$enmse_embed_code = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
+						if (preg_match('/(iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
 							$enmse_embed_code = $_POST['message_embed_code'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
 							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
@@ -483,7 +495,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
+						if (preg_match('/(iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
 							$enmse_alternate_embed = $_POST['message_alternate_embed'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
 							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
@@ -634,11 +646,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 
 							$cptgettitle = str_replace("\"", "", $enmse_cpt_title);
 							if ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 1 ) {
-								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 							} elseif ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 0 ) {
 								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\"";
 							} elseif ( $enmse_permalink_prefix == 0 && $enmse_permalink_speaker == 1 ) {
-								$cpttitle = "\"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+								$cpttitle = "\"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 							} else {
 								$cpttitle = $cptgettitle;
 							}
@@ -680,11 +692,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 							// CPT - Insert
 							$cptgettitle = str_replace("\"", "", $enmse_cpt_title);
 							if ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 1 ) {
-								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 							} elseif ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 0 ) {
 								$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\"";
 							} elseif ( $enmse_permalink_prefix == 0 && $enmse_permalink_speaker == 1 ) {
-								$cpttitle = "\"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+								$cpttitle = "\"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 							} else {
 								$cpttitle = $cptgettitle;
 							}
@@ -994,7 +1006,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_embed_code']) < 1 ) {
 						$enmse_embed_code = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
+						if (preg_match('/(iframe)+/i', $_POST['message_embed_code']) || preg_match('/(fb-roo)\w+/', $_POST['message_embed_code'])) {
 							$enmse_embed_code = $_POST['message_embed_code'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_embed_code'])) { // Facebook 
 							$enmse_embed_code = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_embed_code'] . '"></div>';
@@ -1026,7 +1038,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 					if ( strlen($_POST['message_alternate_embed']) < 1 ) {
 						$enmse_alternate_embed = 0;
 					} else {
-						if (preg_match('/(\iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
+						if (preg_match('/(iframe)+/i', $_POST['message_alternate_embed']) || preg_match('/(fb-roo)\w+/', $_POST['message_alternate_embed'])) {
 							$enmse_alternate_embed = $_POST['message_alternate_embed'];
 						} elseif (preg_match('/(faceboo)\w+/', $_POST['message_alternate_embed'])) { // Facebook 
 							$enmse_alternate_embed = '<div id="fb-root"></div><script async="1" defer="0" crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.3"></script><div class="fb-video" data-href="' . $_POST['message_alternate_embed'] . '"></div>';
@@ -1258,11 +1270,11 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						// CPT - Insert
 						$cptgettitle = str_replace("\"", "", $enmse_cpt_title);
 						if ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 1 ) {
-							$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+							$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 						} elseif ( $enmse_permalink_prefix == 1 && $enmse_permalink_speaker == 0 ) {
 							$cpttitle = $enmsemessaget . ": \"" . $cptgettitle . "\"";
 						} elseif ( $enmse_permalink_prefix == 0 && $enmse_permalink_speaker == 1 ) {
-							$cpttitle = "\"" . $cptgettitle . "\" from " . $enmse_speaker_name;
+							$cpttitle = "\"" . $cptgettitle . "\" " . $enmse_from . " " . $enmse_speaker_name;
 						} else {
 							$cpttitle = $cptgettitle;
 						}
@@ -1368,30 +1380,35 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 		}
 		
 		include ('paginated_messages.php'); // Get all series
-		
-		if ( isset($_GET['enmse_sid']) ) { // If results are sorted by Series
-			$enmse_findtheseriessql = "SELECT s_title FROM " . $wpdb->prefix . "se_series" . " WHERE series_id = %d"; 
-			$enmse_findtheseries = $wpdb->prepare( $enmse_findtheseriessql, $enmse_sid );
-			$enmse_series = $wpdb->get_row( $enmse_findtheseries, OBJECT );
-		}
-		
-		if ( isset($_GET['enmse_tid']) ) { // If results are sorted by topic
-			$enmse_findthetopicsql = "SELECT name FROM " . $wpdb->prefix . "se_topics" . " WHERE topic_id = %d"; 
-			$enmse_findthetopic = $wpdb->prepare( $enmse_findthetopicsql, $enmse_tid );
-			$enmse_topic = $wpdb->get_row( $enmse_findthetopic, OBJECT );
-		}
-		
-		if ( isset($_GET['enmse_spid']) ) { // If results are sorted by speaker
-			$enmse_findthespeakersql = "SELECT * FROM " . $wpdb->prefix . "se_speakers" . " WHERE speaker_id = %d"; 
-			$enmse_findthespeaker = $wpdb->prepare( $enmse_findthespeakersql, $enmse_spid );
-			$enmse_speaker = $wpdb->get_row( $enmse_findthespeaker, OBJECT );
-		}
 
-		if ( isset($_GET['enmse_bid']) ) { // If results are sorted by book
-			$enmse_findthebooksql = "SELECT * FROM " . $wpdb->prefix . "se_books" . " WHERE book_id = %d"; 
-			$enmse_findthebook = $wpdb->prepare( $enmse_findthebooksql, $enmse_bid );
-			$enmse_book = $wpdb->get_row( $enmse_findthebook, OBJECT );
+		if ( isset($_GET['enmse_action']) && $_GET['enmse_action'] == "edit"  ) {
+		} else {
+			if ( isset($_GET['enmse_sid']) ) { // If results are sorted by Series
+				$enmse_findtheseriessql = "SELECT s_title FROM " . $wpdb->prefix . "se_series" . " WHERE series_id = %d"; 
+				$enmse_findtheseries = $wpdb->prepare( $enmse_findtheseriessql, $enmse_sid );
+				$enmse_series = $wpdb->get_row( $enmse_findtheseries, OBJECT );
+			}
+			
+			if ( isset($_GET['enmse_tid']) ) { // If results are sorted by topic
+				$enmse_findthetopicsql = "SELECT name FROM " . $wpdb->prefix . "se_topics" . " WHERE topic_id = %d"; 
+				$enmse_findthetopic = $wpdb->prepare( $enmse_findthetopicsql, $enmse_tid );
+				$enmse_topic = $wpdb->get_row( $enmse_findthetopic, OBJECT );
+			}
+			
+			if ( isset($_GET['enmse_spid']) ) { // If results are sorted by speaker
+				$enmse_findthespeakersql = "SELECT * FROM " . $wpdb->prefix . "se_speakers" . " WHERE speaker_id = %d"; 
+				$enmse_findthespeaker = $wpdb->prepare( $enmse_findthespeakersql, $enmse_spid );
+				$enmse_speaker = $wpdb->get_row( $enmse_findthespeaker, OBJECT );
+			}
+
+			if ( isset($_GET['enmse_bid']) ) { // If results are sorted by book
+				$enmse_findthebooksql = "SELECT * FROM " . $wpdb->prefix . "se_books" . " WHERE book_id = %d"; 
+				$enmse_findthebook = $wpdb->prepare( $enmse_findthebooksql, $enmse_bid );
+				$enmse_book = $wpdb->get_row( $enmse_findthebook, OBJECT );
+			}
 		}
+		
+		
 		
 		
 		// Get All Series
@@ -1926,7 +1943,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="328"<?php if ( $deftrans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 									<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 									<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
-									<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+									<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Français Courant</option>
 									<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 									<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 									<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>
@@ -2631,7 +2648,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="328"<?php if ( $deftrans == 328 ) { echo " selected=\"selected\""; } ?>>NBG51 - NBG-vertaling 1951</option>
 								<option value="165"<?php if ( $deftrans == 165 ) { echo " selected=\"selected\""; } ?>>SV-RJ - Statenvertaling</option>
 								<option value="<?php echo $deftrans; ?>">------ FRENCH ------</option>
-								<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Fraçais courant</option>
+								<option value="2367"<?php if ( $deftrans == 2367 ) { echo " selected=\"selected\""; } ?>>NFC - Nouvelle Français Courant</option>
 								<option value="133"<?php if ( $deftrans == 133 ) { echo " selected=\"selected\""; } ?>>PDV2017 - Parole de Vie 2017</option>
 								<option value="<?php echo $deftrans; ?>">------ GERMAN ------</option>
 								<option value="57"<?php if ( $deftrans == 57 ) { echo " selected=\"selected\""; } ?>>ELB - Elberfelder 1905</option>

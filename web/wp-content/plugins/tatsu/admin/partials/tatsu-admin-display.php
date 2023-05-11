@@ -35,46 +35,11 @@ if( !function_exists( 'tatsu_settings_page' ) ){
 		<div class="tatsu-settings_wrapper">
 			<h1><?php esc_html_e('Tatsu Settings', 'tatsu'); ?></h1>
 			<?php 
-				if(if_tatsubuilder_premium()){
+				if(is_tatsu_standalone()){
 			?>
 			<div class="tatsu_global-section-settings">
 				<table  class="form-table" role="presentation">
 					<tbody>
-						<tr>
-							<th scope="row">
-								<?php
-								esc_html_e( 'License Key', 'tatsu');
-								$tatsu_license_item_id = get_option( 'tatsu_license_item_id' );
-								if( ! empty( $tatsu_license_item_id ) ) {
-									echo '<span style="color:green;" class="tatsu-icon-license-mark dashicons dashicons-yes "></span>';
-								} else {
-									echo '<span style="color:red; "class="tatsu-icon-license-mark dashicons dashicons-no "></span>';
-								}  
-								?>
-							</th>
-							<td>
-								<fieldset>
-									<p>
-										<input type="password" autocomplete="off" name="tatsu_license_key" id="tatsu-license-key" class="medium-text" value="<?php echo $tatsu_license_key;?>"/>
-										<button id="tatsu-license-checker" class="button button-primary button-large"><?php esc_html_e( 'Validate', 'tatsu'); ?></button>
-									</p>
-									
-									<p class="description" id="tatsu_license_message">
-										<?php 
-											if(empty( $tatsu_license_item_id ) ) {
-												printf( '%s </br>',
-											   esc_html__( 'Please enter your tatsu purchase code to allow automatic updates', 'tatsu'));
-											} 
-											 //printf( '%s </br> %s <a href="%s" target="_blank">here</a>.',
-											 //esc_html__( 'Don\'t panic. The plugin will still function 100%, it is only automatic updates that will be affected.', 'tatsu'),
-											// esc_html__( 'You can read about troubleshooting license issues.','tatsu'),
-											// esc_url('https://tatsubuilder.com/knowledgebase/license-activation-issues/?utm_source=pro-plugin&utm_medium=page&utm_campaign=license-activation-issues')
-										//);
-										?>
-									</p>
-								</fieldset>
-							</td>
-						</tr>
 						<tr>
 							<th scope="row">
 								<?php
@@ -203,7 +168,7 @@ if( !function_exists( 'tatsu_global_section_settings_on_posts_callback' ) ) {
         $title_content = '<h1> Tatsu Global Section Settings </h1>';
         
         $top_content = '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Top</label><select name="position_top"  >'.$global_section_list_for_top.'</select></div>';
-        $penultimate_content = '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Penultimate</label><select  name="position_penultimate"  >'.$global_section_list_for_penultimate.'</select></div>';
+        $penultimate_content = '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" title="' . esc_attr__( 'Penultimate Section appears after page content and just before Bottom Global Section.', 'tatsu' ) . '">Penultimate</label><select  name="position_penultimate"  >'.$global_section_list_for_penultimate.'</select></div>';
         $bottom_content = '<div class="be-settings-page-option" ><label class="be-settings-page-option-label" >Bottom</label><select name="position_bottom"  >'.$global_section_list_for_bottom.'</select></div>';
 
         echo $top_content . $penultimate_content . $bottom_content;

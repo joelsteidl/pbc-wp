@@ -1,3 +1,83 @@
+v3.4.3 (28 April 2023)
+======
+* Added: Private Vimeo Video Support.
+* Fixed: Tatsu Header image CSS.
+* Fixed: PHP warnings.
+
+v3.4.2 (21 December 2022)
+======
+* Added: Option to change video preload option for Column and Section Module.
+* Added: Tiktok Icon in the icon library.
+* Fixed: Instagram Video display issue in Gallery Module.
+* Fixed: Submenu width conditional display.
+* Fixed: Wrong license status issue.
+* Fixed: PHP warnings.
+
+v3.4.1 (10 August 2022)
+=====
+* Fixed: Tatsu Editor Settings icon can't be clicked.
+* Fixed: Textarea field rendering.
+* Fixed: Row Border settings.
+
+v3.4.0 (12 July 2022)
+=====
+* Added: ACF and WordPress Dynamic Fields Support on 30 Modules.
+* Fixed: CSS issue on Tatsu Editor light mode.
+
+v3.3.14 (2 June 2022)
+=====
+* Added: Module Categories
+* Fixed: TGMPA notice dismiss
+* Fixed: Placeholder URL
+* Fixed: Hamburger Menu CSS issue on mobile
+* Fixed: Interactive Box CSS issue
+* Fixed: Template Import issue
+* Fixed: Wrong conditional tag
+
+v3.3.13 (30 March 2022)
+=====
+* Fixed: Form Submission email
+* Fixed: Typehub Custom font upload conditional logic
+* Added: Tooltip for penultimate settings
+
+v3.3.12 (16 March 2022)
+=====
+* Fixed: Tatsu header logo for non SVG images
+* Fixed: Typehub download Google Fonts
+* Fixed: Typehub load Google Fonts from local server
+* Fixed: Typehub and Colorhub activation and deactivation action
+* Fixed: Php deprecation
+* Fixed: Pro modules list
+* Fixed: Typehub file upload check for add custom font 
+* Fixed: Tatsu header mobile sliding menu styles
+
+v3.3.11 (9 March 2022)
+=====
+* Added: Sidebar in Tatsu Welcome page.
+* Fixed: Spyro Notice will be visible on only Tatsu welcome page
+* Fixed: Prevent Tatsu admin dashboard files load on other admin pages.
+* Fixed: Separate standalone tatsu theme css
+* Fixed: Standalone Tatsu header and footer builder template
+* Fixed: Standalone Tatsu replace theme header and footer with active Tatsu header and footer respectively
+
+v3.3.10 (24 February 2022)
+=====
+* Fixed: Tatsu header logo for SVG images
+
+v3.3.9 (22 February 2022)
+=====
+* Added: Multi Purpose Card Hover Color
+* Added: Multi Purpose Card Link Open in New Tab
+* Added: Custom Image can be set in Icon Module and Icon Group Module
+* Fixed: Autoplay audio with video for vimeo and self-hosted video
+* Fixed: Image carousel image alignment on lazyload option
+* Fixed: Image carousel module ribbon and ribbon center type layout
+* Fixed: GIF image display in single image module
+* Fixed: Border on Single Image module
+* Fixed: Mobile submenu
+* Fixed: Quoted text in Animated Heading
+* Fixed: Icon Module CSS issues
+
 v3.3.8
 =====
 * Fixed: Spyro form mailchimp integration

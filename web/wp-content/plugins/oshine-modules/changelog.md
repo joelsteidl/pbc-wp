@@ -1,3 +1,26 @@
+v3.3.0 (24 November 2022)
+======
+* Added: Option to show/hide navigation dots in clients module
+* Fixed: Instagram Video display issue in Gallery Module
+* Fixed: Conditional display bugs in Gallery Module
+* Fixed: Console warnings on frontend
+
+v3.2.9 (19 October 2022)
+======
+* Fixed: Placeholder URL
+* Fixed: Image Slider display issue
+
+v3.2.8 (22 February 2022)
+======
+* Added: Content Marquee module
+* Added: Option to add Custom URL to the Navigation Module
+* Added: Recent Posts Hide Thumbnail control
+* Added: Recent Posts Show/Hide Social Icons control
+* Added: Recent Posts Show/Hide Tags control
+* Fixed: Gallery Hover color not working.=
+* Fixed: PHP error notice
+* Fixed: Font Awesome and Tatsu Icons
+
 v3.2.7
 ======
 * Fixed : Plugin update checker url

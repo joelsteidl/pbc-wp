@@ -71,30 +71,19 @@ if (!function_exists('be_flex_slide')) {
 					$output.='<iframe src="https://player.vimeo.com/video/'.$video_id.'" width="500" height="281" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 				}
 			} else {
-				if ( !empty( $image ) ) { // check if the post has a Post Thumbnail assigned to it.
-					//$attachment_info = wp_get_attachment_image_src( $image, $size );
-					//$attachment_url = $attachment_info[0];
-					//print_r($attachment_info);
-					if(!empty($_SESSION['adaptive_image']) && $_SESSION['adaptive_image'] == 1){
-						$image_id = attachment_url_to_postid($image);
-						$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full');
-						//print_r($image)	;
-						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" title="'.get_the_title($image_id).'" />';
-					}else{
+				if ( ! empty( $image ) ) { // check if the post has a Post Thumbnail assigned to it.
+					$image_id = attachment_url_to_postid( $image );
+					$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full' );
+					$img_srcset = ( $img_srcset ) ? $img_srcset : $image;
 
-						//$output .=  '<img src="'.$image.'" alt="" />';
-						$image_id = attachment_url_to_postid($image);
-						if(0 == $image_id){
-							$output .=  '<img src="'.$image.'" alt="" />';
-						}else{
-					
-						$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full');
-						
-						
-						$output .=  '<img data-srcset="'.$img_srcset.'" srcset="'.$img_srcset.'" alt="" title="'.get_the_title($image_id).'" />';
+					if ( ! empty( $_SESSION['adaptive_image'] ) && $_SESSION['adaptive_image'] == 1 ) {
+						$output .= '<img data-srcset="' . esc_attr( $img_srcset ) . '" srcset="' . esc_attr( $img_srcset ) . '" alt="" title="' . esc_attr( get_the_title( $image_id ) ) . '" />';
+					} else {
+						if ( 0 == $image_id ) {
+							$output .= '<img src="' . esc_url( $image ) . '" alt="" title="' . get_the_title( $image_id ) . '" />';
+						} else {
+							$output .= '<img data-srcset="' . esc_attr( $img_srcset ) . '" srcset="' . esc_attr( $img_srcset ) . '" alt="" title="' . esc_attr( get_the_title( $image_id ) ) . '" />';
 						}
-				
-
 					}
 				}
 			}
@@ -202,7 +191,7 @@ function oshine_register_flex_slide() {
 	        		'title' => '',
 	        		'image' => '',
 	        		'preset' => array(
-	        			'image' => 'http://placehold.it/1160x600',
+	        			'image' => 'https://via.placeholder.com/1160x600',
 	        		),
 	        	)
 	        ),	        

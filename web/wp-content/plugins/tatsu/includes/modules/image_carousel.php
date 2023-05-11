@@ -191,9 +191,7 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
                                 <div class = "tatsu-media-slide tatsu-carousel-col">
                                     <div class = "tatsu-media-slide-inner tatsu-carousel-col-inner">
                                         <?php  if( !empty( $light_box ) ) { ?>
-                                            <a href="<?php echo $url; ?>" class = "light_box">
-                                                <img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> />
-                                            </a>
+                                            <a href="<?php echo $url; ?>" class = "light_box"><img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> /></a>
                                        <?php }else{ ?>
                                                 <img class = "<?php echo implode( ' ', $img_class ) ?>" <?php echo implode( ' ', $img_attr ); ?> />
                                        <?php } ?>
@@ -605,7 +603,7 @@ function tatsu_register_image_carousel()
 				'title' => '',
 				'image' => '',
 				'preset' => array(
-					'images'			=> '::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150,::http://placehold.it/220x150',
+					'images'			=> '::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150,::http://via.placeholder.com/220x150',
 					'height'			=> '150',
 					'style'				=> 'client_carousel',
 					'slide_gutter'		=> '20',

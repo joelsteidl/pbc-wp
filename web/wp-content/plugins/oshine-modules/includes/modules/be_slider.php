@@ -374,7 +374,7 @@ function oshine_register_be_slide() {
 	        		'title' => '',
 	        		'image' => '',
 	        		'preset' => array(
-	        			'image' => 'http://placehold.it/1160x600',
+	        			'image' => 'https://via.placeholder.com/1160x600',
 	        			'content' => '<h5>Here is a Title</h5>Proin facilisis varius nunc. Curabitur eros risus, ultrices et dui ut, luctus accumsan nibh.',
 	        			'content_width' => '80'
 	        		),

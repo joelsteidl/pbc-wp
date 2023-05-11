@@ -2,6 +2,7 @@
 if ( ! function_exists( 'tatsu_call_to_action' ) ) {
 	function tatsu_call_to_action( $atts, $content, $tag ) {
 		$atts = shortcode_atts( array(
+			'field_type' => 'default',
 			'bg_color'=> '',
 			'title' => '',
 			'h_tag' => 'h5',
@@ -32,6 +33,14 @@ if ( ! function_exists( 'tatsu_call_to_action' ) ) {
 		$mfp_class = '';
 
 		extract( $atts );
+
+		if ( 'default' !== $field_type && '' !== $field_type ) {
+			$title = tatsu_parse_custom_fields( $field_type );
+		}
+		$button_text = tatsu_parse_custom_fields( $button_text );
+		$button_link = tatsu_parse_custom_fields( $button_link );
+		$video_url = tatsu_parse_custom_fields( $video_url );
+
 		$custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key );
 		$unique_class_name = 'tatsu-'.$key;
 		$css_id = be_get_id_from_atts( $atts );
@@ -113,7 +122,7 @@ function tatsu_register_call_to_action()
 		'type' => 'single',
 		'is_built_in' => true,
 		'hint' => 'title',
-
+		'is_dynamic' => true,
 		//Tab1
 		'group_atts'			=> array(
 			array(
@@ -124,6 +133,7 @@ function tatsu_register_call_to_action()
 						'type' => 'tab',
 						'title' => esc_html__('Content', 'tatsu'),
 						'group'	=> array(
+							'field_type',
 							'title',
 							'button_text',
 							'button_link',
@@ -228,11 +238,27 @@ function tatsu_register_call_to_action()
 				),
 			),
 			array(
+				'att_name' => 'field_type',
+				'type' => 'select',
+				'label' => esc_html__('Field Type', 'tatsu'),
+				'options' => tatsu_get_custom_fields_dropdown(),
+				'default' => 'default',
+				'tooltip' => '',
+				'is_inline' => !is_tatsu_pro_active()
+			),
+			array(
 				'att_name' => 'title',
 				'type' => 'text_area',
 				'label' => esc_html__('Title', 'tatsu'),
 				'default' => '',
-				'tooltip' => ''
+				'tooltip' => '',
+				'visible'		=> array(
+					'condition' => array(
+						array( 'field_type', '=', '' ),
+						array( 'field_type', '=', 'default' )
+					),
+					'relation'	=> 'or',
+				),
 			),
 			array(
 				'att_name' => 'h_tag',
@@ -271,7 +297,8 @@ function tatsu_register_call_to_action()
 				'type' => 'text',
 				'label' => esc_html__('Button Text', 'tatsu'),
 				'default' => '',
-				'tooltip' => ''
+				'tooltip' => '',
+				'is_inline' => false,
 			),
 			array(
 				'att_name' => 'button_link',
@@ -280,7 +307,7 @@ function tatsu_register_call_to_action()
 				'options' => array(
 					'placeholder' => 'https://example.com',
 				),
-				'is_inline' => true,
+				'is_inline' => false,
 				'default' => '',
 				'tooltip' => ''
 			),
@@ -397,6 +424,7 @@ function tatsu_register_call_to_action()
 						'append' => 'px'
 					),
 				),
+				'is_inline' => true,
 			),
 			array(
 				'att_name' => 'border_color',

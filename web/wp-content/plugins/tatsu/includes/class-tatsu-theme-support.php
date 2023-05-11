@@ -28,7 +28,7 @@ class Tatsu_Theme_Support {
 		 * Add Theme Supports
 		 */
 		add_theme_support('tatsu-global-sections');
-		if (is_plugin_active('spyro-modules/spyro-modules.php')) { 
+		if (class_exists('Spyro_Modules')) { 
 		add_theme_support('tatsu-forms');
 		}
 		$theme = wp_get_theme();
@@ -57,7 +57,7 @@ class Tatsu_Theme_Support {
 	}
 
 	public function tatsu_add_template_to_select($post_templates, $wp_theme, $post, $post_type) {
-		if(if_tatsubuilder_premium()){
+		if(is_tatsu_standalone()){
 		$post_templates['tatsu-blank-page.php'] = esc_html__('Tatsu Blank Page', 'tatsu');
 		$post_templates['tatsu-default.php'] = esc_html__('Tatsu Page with Headers and Footers', 'tatsu');
 		}

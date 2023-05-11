@@ -2,7 +2,7 @@
 /* Plugin Name: Groups Engine 
 Plugin URI: http://groupsengine.com
 Description: Groups Engine is powerful group search that actually works. To get started, activate the plugin and open the new "Groups Engine" menu. Follow the instructions on the <a href="admin.php?page=groupsengine_plugin/groupsengine_plugin.php_userguide">User Guide page</a> to embed a groups page, change the color scheme and more.
-Version: 1.3.4
+Version: 1.3.5
 Author: Eric Murrell (Volacious) 
 Author URI: http://groupsengine.com */ 
 
@@ -17,7 +17,7 @@ $ENMGEUpdateChecker = Puc_v4_Factory::buildUpdateChecker(
 	'groupsengine_plugin'
 );
 /* ----- Install the Plugin ----- */
-define ( 'ENMGE_CURRENT_VERSION', '1.3.4' );
+define ( 'ENMGE_CURRENT_VERSION', '1.3.5' );
 
 $enmge_options = get_option( 'enm_groupsengine_options' );
 
@@ -681,7 +681,7 @@ function groupsengine_ajaxcontactfindgroup() { // Sort Files
 add_action( 'wp_ajax_groupsengine_ajaxcontactfindgroup', 'groupsengine_ajaxcontactfindgroup' );
 
 /* Refresh styles and options on plugin update */
-if ( get_option( 'enmge_db_version' ) && get_option( 'enmge_db_version' ) < "1.3.4" ) {
+if ( get_option( 'enmge_db_version' ) && get_option( 'enmge_db_version' ) < "1.3.5" ) {
 	include('includes/core/updates.php');
 }
 

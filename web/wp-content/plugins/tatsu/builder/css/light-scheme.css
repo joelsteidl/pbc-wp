@@ -3628,6 +3628,217 @@ a.ant-btn-lg {
 a.ant-btn-sm {
   line-height: 22px;
 }
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-modal {
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  position: relative;
+  width: auto;
+  margin: 0 auto;
+  top: 100px;
+  padding-bottom: 24px;
+}
+.ant-modal-wrap {
+  position: fixed;
+  overflow: auto;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+.ant-modal-title {
+  margin: 0;
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.85);
+}
+.ant-modal-content {
+  position: relative;
+  background-color: #fff;
+  border: 0;
+  border-radius: 4px;
+  background-clip: padding-box;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+.ant-modal-close {
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 10;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.3s;
+  color: rgba(0, 0, 0, 0.45);
+  outline: 0;
+  padding: 0;
+}
+.ant-modal-close-x {
+  display: block;
+  font-style: normal;
+  vertical-align: baseline;
+  text-align: center;
+  text-transform: none;
+  text-rendering: auto;
+  width: 56px;
+  height: 56px;
+  line-height: 56px;
+  font-size: 16px;
+}
+.ant-modal-close:focus,
+.ant-modal-close:hover {
+  color: #444;
+  text-decoration: none;
+}
+.ant-modal-header {
+  padding: 16px 24px;
+  border-radius: 4px 4px 0 0;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.65);
+  border-bottom: 1px solid #e8e8e8;
+}
+.ant-modal-body {
+  padding: 24px;
+  font-size: 14px;
+  line-height: 1.5;
+  word-wrap: break-word;
+}
+.ant-modal-footer {
+  border-top: 1px solid #e8e8e8;
+  padding: 10px 16px;
+  text-align: right;
+  border-radius: 0 0 4px 4px;
+}
+.ant-modal-footer button + button {
+  margin-left: 8px;
+  margin-bottom: 0;
+}
+.ant-modal.zoom-enter,
+.ant-modal.zoom-appear {
+  animation-duration: 0.3s;
+  transform: none;
+  opacity: 0;
+  user-select: none;
+}
+.ant-modal-mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+  height: 100%;
+  z-index: 1000;
+  filter: alpha(opacity=50);
+}
+.ant-modal-mask-hidden {
+  display: none;
+}
+.ant-modal-open {
+  overflow: hidden;
+}
+.ant-modal-centered {
+  text-align: center;
+}
+.ant-modal-centered:before {
+  content: '';
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+  width: 0;
+}
+.ant-modal-centered .ant-modal {
+  display: inline-block;
+  vertical-align: middle;
+  top: 0;
+  text-align: left;
+}
+@media (max-width: 767px) {
+  .ant-modal {
+    width: auto !important;
+    margin: 10px;
+  }
+  .ant-modal-centered .ant-modal {
+    flex: 1;
+  }
+}
+.ant-modal-confirm .ant-modal-header {
+  display: none;
+}
+.ant-modal-confirm .ant-modal-close {
+  display: none;
+}
+.ant-modal-confirm .ant-modal-body {
+  padding: 32px 32px 24px;
+}
+.ant-modal-confirm-body-wrapper {
+  zoom: 1;
+}
+.ant-modal-confirm-body-wrapper:before,
+.ant-modal-confirm-body-wrapper:after {
+  content: '';
+  display: table;
+}
+.ant-modal-confirm-body-wrapper:after {
+  clear: both;
+}
+.ant-modal-confirm-body .ant-modal-confirm-title {
+  color: rgba(0, 0, 0, 0.85);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.4;
+  display: block;
+  overflow: hidden;
+}
+.ant-modal-confirm-body .ant-modal-confirm-content {
+  margin-left: 38px;
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.65);
+  margin-top: 8px;
+}
+.ant-modal-confirm-body > .anticon {
+  font-size: 22px;
+  margin-right: 16px;
+  float: left;
+}
+.ant-modal-confirm .ant-modal-confirm-btns {
+  margin-top: 24px;
+  float: right;
+}
+.ant-modal-confirm .ant-modal-confirm-btns button + button {
+  margin-left: 8px;
+  margin-bottom: 0;
+}
+.ant-modal-confirm-error .ant-modal-confirm-body > .anticon {
+  color: #f5222d;
+}
+.ant-modal-confirm-warning .ant-modal-confirm-body > .anticon,
+.ant-modal-confirm-confirm .ant-modal-confirm-body > .anticon {
+  color: #faad14;
+}
+.ant-modal-confirm-info .ant-modal-confirm-body > .anticon {
+  color: #1890ff;
+}
+.ant-modal-confirm-success .ant-modal-confirm-body > .anticon {
+  color: #52c41a;
+}
 .be-field select {
   background: #F4F5F7;
 }
@@ -3669,6 +3880,86 @@ a.ant-btn-sm {
 }
 .ant-select.ant-select-disabled .ant-select-selection-selected-value {
   color: rgba(0, 0, 0, 0.3);
+}
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
+/* stylelint-disable no-duplicate-selectors */
+/* stylelint-disable */
+/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
+.ant-select-auto-complete {
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 14px;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.65);
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.ant-select-auto-complete.ant-select .ant-select-selection {
+  border: 0;
+  box-shadow: none;
+}
+.ant-select-auto-complete.ant-select .ant-select-selection__rendered {
+  margin-left: 0;
+  margin-right: 0;
+  height: 100%;
+  line-height: 32px;
+}
+.ant-select-auto-complete.ant-select .ant-select-selection__placeholder {
+  margin-left: 12px;
+  margin-right: 12px;
+}
+.ant-select-auto-complete.ant-select .ant-select-selection--single {
+  height: auto;
+}
+.ant-select-auto-complete.ant-select .ant-select-search--inline {
+  position: static;
+  float: left;
+}
+.ant-select-auto-complete.ant-select-allow-clear .ant-select-selection:hover .ant-select-selection__rendered {
+  margin-right: 0 !important;
+}
+.ant-select-auto-complete.ant-select .ant-input {
+  background: transparent;
+  border-width: 1px;
+  line-height: 1.5;
+  height: 32px;
+}
+.ant-select-auto-complete.ant-select .ant-input:focus,
+.ant-select-auto-complete.ant-select .ant-input:hover {
+  border-color: #40a9ff;
+  border-right-width: 1px !important;
+}
+.ant-select-auto-complete.ant-select .ant-input[disabled] {
+  background-color: #f5f5f5;
+  opacity: 1;
+  cursor: not-allowed;
+  color: rgba(0, 0, 0, 0.25);
+}
+.ant-select-auto-complete.ant-select .ant-input[disabled]:hover {
+  border-color: #e6d8d8;
+  border-right-width: 1px !important;
+}
+.ant-select-auto-complete.ant-select-lg .ant-select-selection__rendered {
+  line-height: 40px;
+}
+.ant-select-auto-complete.ant-select-lg .ant-input {
+  padding-top: 6px;
+  padding-bottom: 6px;
+  height: 40px;
+}
+.ant-select-auto-complete.ant-select-sm .ant-select-selection__rendered {
+  line-height: 24px;
+}
+.ant-select-auto-complete.ant-select-sm .ant-input {
+  padding-top: 1px;
+  padding-bottom: 1px;
+  height: 24px;
 }
 .be-text-field .ant-input-group-wrapper .ant-input-wrapper .ant-input {
   height: 30px;
@@ -4675,10 +4966,6 @@ a.ant-btn-sm {
 .ant-menu-dark .ant-menu-submenu-disabled > .ant-menu-submenu-title > .ant-menu-submenu-arrow:after {
   background: rgba(255, 255, 255, 0.35) !important;
 }
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
 .be-popover-menu {
   cursor: pointer;
 }
@@ -4825,7 +5112,42 @@ a.ant-btn-sm {
 .be-pb-module-list-area {
   display: flex;
   flex-wrap: wrap;
+}
+.be-pb-module-list-section.list-hidden .be-pb-module-list-area.hidden {
+  display: none;
+}
+.be-pb-module-list-section.list-visible .tatsu-panel-icon-vert {
+  display: none;
+}
+.be-pb-module-section-container {
   padding-bottom: 200px;
+}
+.be-pb-module-list-section .be-pb-module-categories {
+  line-height: 1;
+  margin: 0;
+  padding: 13px 20px;
+  font-size: 12px;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tatsu-theme-light .be-pb-module-list-section .be-pb-module-categories {
+  color: rgba(24, 25, 26, 0.8);
+  border-bottom: 1px solid #EAEBEC;
+}
+.tatsu-theme-dark .be-pb-module-list-section .be-pb-module-categories {
+  color: rgba(255, 255, 255, 0.7);
+  border-bottom: 1px solid #3E4041;
+}
+.be-pb-module-list-section .be-pb-module-icon {
+  float: right;
+  margin-top: 1px;
+}
+.tatsu-theme-dark .ant-input-suffix i.anticon {
+  color: rgba(255, 255, 255, 0.7);
+}
+.tatsu-theme-dark .be-optgroup-title {
+  color: rgba(255, 255, 255, 0.7);
 }
 .be-pb-modulelist-card {
   width: 50%;
@@ -6479,9 +6801,6 @@ input.be-color-picker-gradient-angle {
 .be-drop-shadow .be-number-input-group {
   width: 80%;
 }
-.be-field-wrap-text_area .be-text-field {
-  height: auto;
-}
 .be-field-wrap {
   display: flex;
   align-items: center;
@@ -6676,6 +6995,21 @@ li.be-editor-field-set.icon_picker {
 .be-pb-single-image-adder {
   background: #eaebec;
 }
+.be-textarea-container {
+  position: relative;
+}
+.be-textarea-container .tatsu-editor-dynamic {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  z-index: 99999;
+  border: 1px solid #3E4041;
+  background-color: #2b2c2e;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 6px 8px 4px;
+}
 /******* tatsu editor ********/
 #tatsu-parent-tinymce-helper {
   position: fixed;
@@ -6851,6 +7185,15 @@ div.wp-link-input input {
 div.mce-container.mce-panel {
   background: #F4F5F7;
 }
+#tatsu_editor-dynamic svg {
+  vertical-align: middle;
+}
+#tatsu_editor-dynamic {
+  opacity: 0.8 !important;
+}
+#tatsu_editor-dynamic:hover {
+  opacity: 1;
+}
 .be-pb-single-image-picker {
   height: 90px;
   display: flex;
@@ -6881,11 +7224,24 @@ div.mce-container.mce-panel {
   cursor: pointer;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
 }
 .be-pb-single-image-picker .icon-tatsu-close {
   fill: red;
   width: 2em;
   height: 2em;
+}
+.be-pb-single-image-picker-add {
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+.be-pb-single-image-picker-add #tatsu_editor-dynamic {
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 .be-pb-ff-drop-down-top input {
   width: 100%;
@@ -7556,217 +7912,6 @@ span.tatsu-editor-component-label {
 .tatsu-concepts-title-wrapper {
   color: rgba(24, 25, 26, 0.8);
 }
-/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */
-/* stylelint-disable no-duplicate-selectors */
-/* stylelint-disable */
-/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */
-.ant-modal {
-  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 14px;
-  font-variant: tabular-nums;
-  line-height: 1.5;
-  color: rgba(0, 0, 0, 0.65);
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-  position: relative;
-  width: auto;
-  margin: 0 auto;
-  top: 100px;
-  padding-bottom: 24px;
-}
-.ant-modal-wrap {
-  position: fixed;
-  overflow: auto;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1000;
-  -webkit-overflow-scrolling: touch;
-  outline: 0;
-}
-.ant-modal-title {
-  margin: 0;
-  font-size: 16px;
-  line-height: 22px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.85);
-}
-.ant-modal-content {
-  position: relative;
-  background-color: #fff;
-  border: 0;
-  border-radius: 4px;
-  background-clip: padding-box;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-.ant-modal-close {
-  cursor: pointer;
-  border: 0;
-  background: transparent;
-  position: absolute;
-  right: 0;
-  top: 0;
-  z-index: 10;
-  font-weight: 700;
-  line-height: 1;
-  text-decoration: none;
-  transition: color 0.3s;
-  color: rgba(0, 0, 0, 0.45);
-  outline: 0;
-  padding: 0;
-}
-.ant-modal-close-x {
-  display: block;
-  font-style: normal;
-  vertical-align: baseline;
-  text-align: center;
-  text-transform: none;
-  text-rendering: auto;
-  width: 56px;
-  height: 56px;
-  line-height: 56px;
-  font-size: 16px;
-}
-.ant-modal-close:focus,
-.ant-modal-close:hover {
-  color: #444;
-  text-decoration: none;
-}
-.ant-modal-header {
-  padding: 16px 24px;
-  border-radius: 4px 4px 0 0;
-  background: #fff;
-  color: rgba(0, 0, 0, 0.65);
-  border-bottom: 1px solid #e8e8e8;
-}
-.ant-modal-body {
-  padding: 24px;
-  font-size: 14px;
-  line-height: 1.5;
-  word-wrap: break-word;
-}
-.ant-modal-footer {
-  border-top: 1px solid #e8e8e8;
-  padding: 10px 16px;
-  text-align: right;
-  border-radius: 0 0 4px 4px;
-}
-.ant-modal-footer button + button {
-  margin-left: 8px;
-  margin-bottom: 0;
-}
-.ant-modal.zoom-enter,
-.ant-modal.zoom-appear {
-  animation-duration: 0.3s;
-  transform: none;
-  opacity: 0;
-  user-select: none;
-}
-.ant-modal-mask {
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.65);
-  height: 100%;
-  z-index: 1000;
-  filter: alpha(opacity=50);
-}
-.ant-modal-mask-hidden {
-  display: none;
-}
-.ant-modal-open {
-  overflow: hidden;
-}
-.ant-modal-centered {
-  text-align: center;
-}
-.ant-modal-centered:before {
-  content: '';
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-  width: 0;
-}
-.ant-modal-centered .ant-modal {
-  display: inline-block;
-  vertical-align: middle;
-  top: 0;
-  text-align: left;
-}
-@media (max-width: 767px) {
-  .ant-modal {
-    width: auto !important;
-    margin: 10px;
-  }
-  .ant-modal-centered .ant-modal {
-    flex: 1;
-  }
-}
-.ant-modal-confirm .ant-modal-header {
-  display: none;
-}
-.ant-modal-confirm .ant-modal-close {
-  display: none;
-}
-.ant-modal-confirm .ant-modal-body {
-  padding: 32px 32px 24px;
-}
-.ant-modal-confirm-body-wrapper {
-  zoom: 1;
-}
-.ant-modal-confirm-body-wrapper:before,
-.ant-modal-confirm-body-wrapper:after {
-  content: '';
-  display: table;
-}
-.ant-modal-confirm-body-wrapper:after {
-  clear: both;
-}
-.ant-modal-confirm-body .ant-modal-confirm-title {
-  color: rgba(0, 0, 0, 0.85);
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.4;
-  display: block;
-  overflow: hidden;
-}
-.ant-modal-confirm-body .ant-modal-confirm-content {
-  margin-left: 38px;
-  font-size: 14px;
-  color: rgba(0, 0, 0, 0.65);
-  margin-top: 8px;
-}
-.ant-modal-confirm-body > .anticon {
-  font-size: 22px;
-  margin-right: 16px;
-  float: left;
-}
-.ant-modal-confirm .ant-modal-confirm-btns {
-  margin-top: 24px;
-  float: right;
-}
-.ant-modal-confirm .ant-modal-confirm-btns button + button {
-  margin-left: 8px;
-  margin-bottom: 0;
-}
-.ant-modal-confirm-error .ant-modal-confirm-body > .anticon {
-  color: #f5222d;
-}
-.ant-modal-confirm-warning .ant-modal-confirm-body > .anticon,
-.ant-modal-confirm-confirm .ant-modal-confirm-body > .anticon {
-  color: #faad14;
-}
-.ant-modal-confirm-info .ant-modal-confirm-body > .anticon {
-  color: #1890ff;
-}
-.ant-modal-confirm-success .ant-modal-confirm-body > .anticon {
-  color: #52c41a;
-}
 .tatsu-templates-modal .ant-modal-content {
   background: #fff;
 }
@@ -8017,6 +8162,10 @@ span.tatsu-editor-component-label {
 }
 .tatsu-templates-modal .ant-modal-footer {
   text-align: center;
+}
+.ant-modal.tatsu-pro-upsell .ant-modal-confirm-title,
+.ant-modal.tatsu-pro-upsell .ant-modal-confirm-content {
+  color: rgba(24, 25, 26, 0.8);
 }
 .tatsu-top-toolbar-wrapper {
   background: #fff;

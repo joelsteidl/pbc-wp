@@ -29,6 +29,7 @@ if (!function_exists('tatsu_section')) {
 			'bottom_divider_position'	=> 'over',
 			'bottom_divider_zindex'	=> '9999',
 			'top_divider_zindex' => '9999',
+			'video_preload' => 'auto',
 	        'bg_video_mp4_src' => '',
 	        'bg_video_ogg_src' => '',
 	        'bg_video_webm_src' => '',
@@ -156,7 +157,7 @@ if (!function_exists('tatsu_section')) {
 	    // Handle BG Video
 		if( !empty($bg_video_mp4_src) || !empty($bg_video_ogg_src) || !empty($bg_video_webm_src)  ) {
 			$classes .= ' tatsu-video-section';
-			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto" playsinline webkit-playsinline>';
+			$bg_video_markup .= '<video class="tatsu-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="'.$video_preload.'" playsinline webkit-playsinline>';
 			$bg_video_markup .=  ($bg_video_mp4_src) ? '<source src="'.$bg_video_mp4_src.'" type="video/mp4">' : '' ;
 			$bg_video_markup .=  ($bg_video_ogg_src) ? '<source src="'.$bg_video_ogg_src.'" type="video/ogg">' : '' ;
 			$bg_video_markup .=  ($bg_video_webm_src) ? '<source src="'.$bg_video_webm_src.'" type="video/webm">' : '' ;
@@ -354,6 +355,7 @@ function tatsu_register_section()
 														'title' => esc_html__('Video', 'tatsu'),
 														'icon'		=> TATSU_PLUGIN_URL . '/builder/svg/modules.svg#modules_background_video',
 														'group'	=> array(
+															'video_preload',
 															'bg_video_mp4_src',
 															'bg_video_ogg_src',
 															'bg_video_webm_src',
@@ -658,6 +660,19 @@ function tatsu_register_section()
 						'when' => array('margin', '!=', array('d' => '0px 0px 0px 0px')),
 					),
 				),
+			),
+			array(
+				'att_name' => 'video_preload',
+				'type' => 'select',
+				'label' => esc_html__('Video Preload', 'tatsu'),
+				'options' => array(
+					'auto' => 'Auto',
+					'metadata' => 'Metadata',
+					'none' => 'None',
+				),
+				'is_inline' => true,
+				'default' => 'auto',
+				'tooltip' => '',
 			),
 			array(
 				'att_name' => 'bg_video_mp4_src',

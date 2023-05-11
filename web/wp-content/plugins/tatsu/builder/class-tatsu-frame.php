@@ -146,7 +146,6 @@ class Tatsu_Frame {
 	 * @return void
 	 */
 	public function enqueue_scripts() {
-
 		$tatsu_theme = get_option('tatsu_ui_theme','dark');
 
 		wp_enqueue_script( 'tiny-mce', includes_url( 'js/tinymce/tinymce.min.js' ) );
@@ -155,6 +154,5 @@ class Tatsu_Frame {
 		wp_enqueue_script( 'tatsu-frame', plugins_url( 'builder/js/tatsu-frame.js', dirname(__FILE__) ), array(), $this->version , true );
 		wp_enqueue_style( 'tatsu-roboto-font', '//fonts.googleapis.com/css?family=Roboto:400,700', array(), null );
 		do_action('tatsu_frame_enqueue');
-	
 	}	
 }

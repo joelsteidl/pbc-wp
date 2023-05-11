@@ -6,7 +6,7 @@
  * @subpackage  Admin
  * @copyright   Copyright (c) 2018, Chris Christoff
  * @since       7.0.0
-*/
+ */
 
 // Exit if accessed directly
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,8 +17,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * Usage tracking
  *
  * @access public
- * @since  7.0.0
  * @return void
+ * @since  7.0.0
  */
 class MonsterInsights_Tracking {
 
@@ -36,12 +36,12 @@ class MonsterInsights_Tracking {
 
 		// Retrieve current theme info
 		$theme_data    = wp_get_theme();
-		$tracking_mode = monsterinsights_get_option( 'tracking_mode', 'analytics' );
+		$tracking_mode = monsterinsights_get_option( 'tracking_mode', 'gtag' );
 		$events_mode   = monsterinsights_get_option( 'events_mode', 'none' );
 		$update_mode   = monsterinsights_get_option( 'automatic_updates', false );
 
 		if ( $tracking_mode === false ) {
-			$tracking_mode = 'analytics';
+			$tracking_mode = 'gtag';
 		}
 		if ( $events_mode === false ) {
 			$events_mode = 'none';
@@ -72,31 +72,55 @@ class MonsterInsights_Tracking {
 			$usesauth = 'Network';
 		}
 
-		$data['php_version']   = phpversion();
-		$data['mi_version']    = MONSTERINSIGHTS_VERSION;
-		$data['wp_version']    = get_bloginfo( 'version' );
-		$data['server']        = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : '';
-		$data['over_time']     = get_option( 'monsterinsights_over_time', array() );
-		$data['multisite']     = is_multisite();
-		$data['url']           = home_url();
-		$data['themename']     = $theme_data->Name;
-		$data['themeversion']  = $theme_data->Version;
-		$data['email']         = get_bloginfo( 'admin_email' );
-		$data['key']           = monsterinsights_get_license_key();
-		$data['sas']           = monsterinsights_get_shareasale_id();
-		$data['settings']      = monsterinsights_get_options();
-		$data['tracking_mode'] = $tracking_mode;
-		$data['events_mode']   = $events_mode;
-		$data['autoupdate']    = $update_mode;
-		$data['pro']           = (int) monsterinsights_is_pro_version();
-		$data['sites']         = $count_b;
-		$data['usagetracking'] = get_option( 'monsterinsights_usage_tracking_config', false );
-		$data['usercount']     = function_exists( 'get_user_count' ) ? get_user_count() : 'Not Set';
-		$data['usesauth']      = $usesauth;
-		$data['timezoneoffset']= date('P');
+        //  Get auth connection type
+        $auth = MonsterInsights()->auth;
+        $connection_type = $auth->get_connected_type();
+
+        $ua = $auth->get_ua();
+        $v4 = $auth->get_v4_id();
+
+        $auth_mode = '';
+
+        if ( $connection_type === 'ua' ) {
+            if ( empty( $v4 ) ) {
+                $auth_mode = 'v3';
+            } else {
+                $auth_mode = 'v3/v4';
+            }
+        } elseif ( $connection_type === 'v4' ) {
+            if ( empty( $ua ) ) {
+                $auth_mode = 'v4';
+            } else {
+                $auth_mode = 'v4/v3';
+            }
+        }
+
+		$data['php_version']    = phpversion();
+		$data['mi_version']     = MONSTERINSIGHTS_VERSION;
+		$data['wp_version']     = get_bloginfo( 'version' );
+		$data['server']         = isset( $_SERVER['SERVER_SOFTWARE'] ) ? $_SERVER['SERVER_SOFTWARE'] : ''; // phpcs:ignore
+		$data['over_time']      = get_option( 'monsterinsights_over_time', array() );
+		$data['multisite']      = is_multisite();
+		$data['url']            = home_url();
+		$data['themename']      = $theme_data->Name;
+		$data['themeversion']   = $theme_data->Version;
+		$data['email']          = get_bloginfo( 'admin_email' );
+		$data['key']            = monsterinsights_get_license_key();
+		$data['sas']            = monsterinsights_get_shareasale_id();
+		$data['settings']       = monsterinsights_get_options();
+		$data['tracking_mode']  = $tracking_mode;
+		$data['events_mode']    = $events_mode;
+		$data['autoupdate']     = $update_mode;
+		$data['pro']            = (int) monsterinsights_is_pro_version();
+		$data['sites']          = $count_b;
+		$data['usagetracking']  = get_option( 'monsterinsights_usage_tracking_config', false );
+		$data['usercount']      = function_exists( 'get_user_count' ) ? get_user_count() : 'Not Set';
+		$data['usesauth']       = $usesauth;
+		$data['timezoneoffset'] = date( 'P' );
+        $data['ga_auth_mode']   = $auth_mode;
 
 		// Retrieve current plugin information
-		if( ! function_exists( 'get_plugins' ) ) {
+		if ( ! function_exists( 'get_plugins' ) ) {
 			include ABSPATH . '/wp-admin/includes/plugin.php';
 		}
 
@@ -124,7 +148,7 @@ class MonsterInsights_Tracking {
 			return false;
 		}
 
-		if( ! $this->tracking_allowed() && ! $override ) {
+		if ( ! $this->tracking_allowed() && ! $override ) {
 			return false;
 		}
 
@@ -146,6 +170,7 @@ class MonsterInsights_Tracking {
 
 		// If we have completed successfully, recheck in 1 week
 		update_option( 'monsterinsights_usage_tracking_last_checkin', time() );
+
 		return true;
 	}
 
@@ -156,15 +181,15 @@ class MonsterInsights_Tracking {
 	public function schedule_send() {
 		if ( ! wp_next_scheduled( 'monsterinsights_usage_tracking_cron' ) ) {
 			$tracking             = array();
-			$tracking['day']      = rand( 0, 6  );
+			$tracking['day']      = rand( 0, 6 );
 			$tracking['hour']     = rand( 0, 23 );
 			$tracking['minute']   = rand( 0, 59 );
 			$tracking['second']   = rand( 0, 59 );
-			$tracking['offset']   = ( $tracking['day']    * DAY_IN_SECONDS    ) +
-									( $tracking['hour']   * HOUR_IN_SECONDS   ) +
-									( $tracking['minute'] * MINUTE_IN_SECONDS ) +
-									 $tracking['second'];
-			$tracking['initsend'] = strtotime("next sunday") + $tracking['offset'];
+			$tracking['offset']   = ( $tracking['day'] * DAY_IN_SECONDS ) +
+			                        ( $tracking['hour'] * HOUR_IN_SECONDS ) +
+			                        ( $tracking['minute'] * MINUTE_IN_SECONDS ) +
+			                        $tracking['second'];
+			$tracking['initsend'] = strtotime( "next sunday" ) + $tracking['offset'];
 
 			wp_schedule_event( $tracking['initsend'], 'weekly', 'monsterinsights_usage_tracking_cron' );
 			update_option( 'monsterinsights_usage_tracking_config', $tracking );
@@ -237,7 +262,9 @@ class MonsterInsights_Tracking {
 			'interval' => 604800,
 			'display'  => __( 'Once Weekly', 'google-analytics-for-wordpress' )
 		);
+
 		return $schedules;
 	}
 }
+
 new MonsterInsights_Tracking();

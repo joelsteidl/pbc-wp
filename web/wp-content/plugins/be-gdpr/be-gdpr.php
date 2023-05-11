@@ -16,7 +16,7 @@
  * Plugin Name:       BE GDPR Compliance
  * Plugin URI:        brandexponents.com
  * Description:       Plugin to assist you in making some of the features ( such as Youtube, Vimeo and Google Map embeds ) available in the themes and plugins created by Brand Exponents, compatible with GDPR.
- * Version:           1.1.4
+ * Version:           1.1.5
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+
@@ -35,7 +35,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'BE_GDPR', '1.1.4' );
+define( 'BE_GDPR', '1.1.5' );
 
 if( !defined( 'BE_GDPR_PLUGIN_URL' ) ) {
 	define( 'BE_GDPR_PLUGIN_URL', plugins_url( '', __FILE__ ) );

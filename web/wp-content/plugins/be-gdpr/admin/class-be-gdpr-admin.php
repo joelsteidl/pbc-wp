@@ -101,7 +101,7 @@ class Be_Gdpr_Admin {
 	}
 	public function add_submenu_GDPR() {
 		
-		add_submenu_page("options-general.php", "BE GDPR Settings", "BE GDPR", "manage_options", "be_gdpr",'show_settings'); 
+		add_submenu_page("options-general.php", __( "BE GDPR Settings", "be-gdpr"), "BE GDPR", "manage_options", "be_gdpr",'show_settings'); 
 	
 		function show_settings(){
 			?>
@@ -113,42 +113,42 @@ class Be_Gdpr_Admin {
 				<?php settings_fields( 'be_gdpr' ); ?>
 				<?php do_settings_sections( 'be_gdpr' ); ?>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Show Cookie Notice Bar")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Show Cookie Notice Bar", "be-gdpr"); ?></label>
 						<div class="gdpr-settings" ><label class="switch be-modal-switch">
 								<input class="be-gdpr-switch-input" name="be_gdpr_show_cookie_notice_bar" <?php echo get_option( 'be_gdpr_show_cookie_notice_bar' ) === 'on' ? "checked" : ''; ?> type="checkbox"> 
 								<span class="slider round"></span>
 					  		</div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Cookie Notice Bar Content")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Cookie Notice Bar Content", "be-gdpr"); ?></label>
 						<div><textarea name="be_gdpr_cookie_privacy_content" rows="4" cols="50" ><?php echo get_option( 'be_gdpr_cookie_privacy_content' ) ; ?></textarea></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Accept Button Text")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Accept Button Text", "be-gdpr"); ?></label>
 						<div><input type="text" name="be_gdpr_accept_btn_text" value="<?php echo get_option( 'be_gdpr_accept_btn_text' ) ; ?>" /></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Popup Title Text")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Popup Title Text", "be-gdpr"); ?></label>
 						<div><input type="text" name="be_gdpr_popup_title_text" value="<?php echo get_option( 'be_gdpr_popup_title_text' ) ; ?>" /></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Popup Intro Content")?> </label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Popup Intro Content", "be-gdpr"); ?> </label>
 						<div><textarea name="be_gdpr_popup_intro_content"  rows="4" cols="50" ><?php echo get_option( 'be_gdpr_popup_intro_content' ) ; ?></textarea></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Privacy Policy Link Text")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Privacy Policy Link Text", "be-gdpr"); ?></label>
 						<div><input type="text" name="be_gdpr_privacy_policy_link_text" value="<?php echo get_option( 'be_gdpr_privacy_policy_link_text' ) ; ?>" /></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Popup Save Button Text")?></label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Popup Save Button Text", "be-gdpr"); ?></label>
 						<div><input type="text" name="be_gdpr_popup_save_btn_text" value="<?php echo get_option( 'be_gdpr_popup_save_btn_text' ) ; ?>" /></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Consent Description")?> </label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Consent Description", "be-gdpr"); ?> </label>
 						<div><textarea name="be_gdpr_consent_desc" rows="4" cols="50"  ><?php echo get_option( 'be_gdpr_consent_desc' ) ; ?></textarea></div>
 					</div>
 					<div class="be-settings-page-option" >
-						<label class="be-settings-page-option-label" ><?php _e("Text on overlay over blocked content")?> </label>
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Text on overlay over blocked content", "be-gdpr"); ?> </label>
 						<div><textarea name="be_gdpr_text_on_overlay" rows="4" cols="50" ><?php echo get_option( 'be_gdpr_text_on_overlay' ) ; ?></textarea></div>
 					</div>
 				<?php submit_button(); ?>

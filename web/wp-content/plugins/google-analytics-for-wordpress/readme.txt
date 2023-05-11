@@ -3,9 +3,9 @@ Contributors: chriscct7, smub
 Donate link: http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: WordPress analytics, google analytics, google analytics dashboard, google analytics widget, WooCommerce stats, analytics dashboard, universal google analytics, statistics, tracking, stats, google, google analytics by yoast, ga, monster insights, monsterinsights, universal analytics, web stats, ecommerce, ecommerce tracking
 Requires at least: 4.8.0
-Tested up to: 5.8
-Stable tag: 8.2.0
-Requires PHP: 5.5
+Tested up to: 6.2
+Stable tag: 8.14.1
+Requires PHP: 5.6
 License: GPL v3
 
 The best free Google Analytics plugin for WordPress. See how visitors find and use your website, so you can grow your business.
@@ -20,7 +20,7 @@ We believe that it's easy to double your traffic and sales when you know exactly
 
 At MonsterInsights, we make it "effortless" to properly connect your WordPress site with Google Analytics, so you can start making data-driven decisions to grow your business.
 
-Unlike other Google Analytics plugins, MonsterInsights allow you to enable all advanced Google Analytics tracking features with just a few clicks (no need to hire a developer).
+Unlike other Google Analytics plugins, MonsterInsights allows you to enable all advanced Google Analytics tracking features with just a few clicks (no need to hire a developer).
 
 The best part is that MonsterInsights comes with an analytics dashboard for WordPress that shows you actionable analytics reports right inside your WordPress dashboard. We have created customized reports that eliminate the fluff and only show you the stats that matter, so you can see exactly what's working and what's not!
 
@@ -29,11 +29,11 @@ Simply put, MonsterInsights is the most complete Google Analytics plugin for Wor
 That's why millions of small businesses and top companies like Microsoft, Bloomberg, FedEx, Yelp, Subway, etc. use MonsterInsights to setup Google Analytics on their WordPress sites.
 
 > <strong>MonsterInsights Pro</strong><br />
-> This plugin is the lite version of MonsterInsights Pro plugin that comes with all the tracking features you will ever need including events tracking, ecommerce tracking, custom dimensions tracking, page speed reports, popular post tracking, custom dimensions, affiliate link tracking, and tons more. <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion" rel="friend" title="MonsterInsights">Click here to purchase the best premium Google Analytics plugin for WordPress now!</a>
+> This plugin is the lite version of MonsterInsights Pro plugin that comes with all the tracking features you will ever need including events tracking, ecommerce tracking, custom dimensions tracking, page speed reports, popular post tracking, custom dimensions, affiliate link tracking, video tracking and tons more. <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion" rel="friend" title="MonsterInsights">Click here to purchase the best premium Google Analytics plugin for WordPress now!</a>
 
 We took the pain out of installing Google Analytics in WordPress and made it easy. Here's why over 3 million smart business owners, designers, and developers love MonsterInsights, and you will too!
 
-https://www.youtube.com/watch?v=IbdKpSygp2U
+https://www.youtube.com/watch?v=4Y8TGGkdcGY
 
 = Quick & Easy Google Analytics Setup =
 
@@ -43,7 +43,7 @@ With MonsterInsights, we made it "effortless" to properly setup Google Analytics
 
 If you can point-and-click, then you can set up Google Analytics inside WordPress and start seeing insights in under 15 minutes (no code necessary).
 
-We keep up with all Google Analytics updates, so you can sleep well at night knowing that your website will always stay up to date with the newest features.
+We keep up with all Google Analytics updates, including the new Google Analytics 4 (GA4), so you can sleep well at night knowing that your website will always stay up to date with the newest features.
 
 See what one business owner is saying about MonsterInsights:
 
@@ -61,7 +61,7 @@ We have even created customized reports to help you filter through the noise and
 
 * **Audience Report** helps you get to know your visitors in a whole new way. It shows you detailed insights like which country your visitors are coming from, what are they most interested in, which device are they using, their age, gender, and a whole lot more. You can use this demographics report and audience clues to tweak your website design and content accordingly.
 
-* **Publishers Report ** helps you understand which pages your visitors are arriving, and which pages they are leaving from. Designed specifically for blogs and other resource sites, this powerful report will show you which outbound links are getting clicked so you can easily optimize for higher conversions.
+* **Publishers Report** helps you understand which pages your visitors are arriving, and which pages they are leaving from. Designed specifically for blogs and other resource sites, this powerful report will show you which outbound links are getting clicked so you can easily optimize for higher conversions.
 
 * **Behavior Report** shows you exactly how people find your website, which keywords did they search for, who referred them, what did they click on your site, and more. You can use these useful stats to identify low-hanging fruits, new partnership opportunities, and promotional areas to focus on.
 
@@ -102,6 +102,10 @@ Aside from WooCommerce Google Analytics integration, MonsterInsights' eCommerce 
 
 Our Easy Digital Downloads Google Analytics integration allows you to set up Enhanced Ecommerce Tracking on your store with just 1-click.
 
+Our eCommerce tracking works with other popular ecommerce plugins such as MemberPress, GiveWP, LifterLMS, Restrict Content Pro, and more.
+
+Each integration works automatically with Google Analytics Universal (GA3) and Google Analytics 4 (GA4), so that your site can be prepared for future changes.
+
 Simply put, MonsterInsights' Enhanced Ecommerce for WordPress feature is by far the easiest and most powerful in the market.
 
 = Google Analytics + GDPR Compliance =
@@ -137,9 +141,7 @@ At MonsterInsights, we always stay ahead of the curve in helping you integrate W
 >Analytics for PROs! This plugin brings it all, great features and helpful info to easily see what you are doing.<br>
 > Frank van der Sluijs
 
-= Google AdSense Tracking and Affiliate Link Tracking =
-
-With MonsterInsights Ads tracking addon, publishers can easily track the performance of their Google AdSense Ads inside their Google Analytics dashboard.
+= Google Affiliate Link Tracking =
 
 Our affiliate link tracking makes it easy for bloggers and affiliate marketers to track their affiliate links with Google Analytics.
 
@@ -178,6 +180,9 @@ Simply put, MonsterInsights allow you to take full advantage of all the powerful
 >I like how simple it is for client users and how I can turn on the advanced features for myself to get all the details right.<br>
 > Skip Shean
 
+= Track Both Google Analytics 3 and Google Analytics 4 =
+Help future-proof your website's analytics with MonsterInsights Dual Tracking. With our dual analytics tracking, you can easily use both Google Analytics 3 and Google Analytics 4 without any special coding or configuration.
+
 = Google Analytics Dashboard Plugin for WordPress Multisite Networks =
 
 MonsterInsights is the most popular analytics plugin for adding Google Analytics to WordPress multisite.
@@ -200,18 +205,23 @@ We understand Google Analytics better than any other analytics plugin for WordPr
 * Real Time Stats - See real time stats inside your Google Analytics dashboard.
 * Universal Tracking - Get better insights with Google Analytics' universal tracking.
 * Google Analytics Dashboard - See the stats that matter from right inside your WordPress dashboard with custom Publisher Report, Ecommerce report, and Search Console report.
-* Google Analytics 4 Support -  Easily set up and send proper website tracking data to Google Analytics 4
+* Google Analytics 4 Support -  Easily set up and send proper website tracking data to Google Analytics 4 (GA4)
 * eCommerce Tracking - Add Google Analytics Ecommerce tracking to WordPress.
 * WooCommerce Google Analytics - Add Enhanced Ecommerce Tracking to your WooCommerce store.
+* User Journeys - See exactly which pages a customer visited before before purchasing from your WooCommerce, Easy Digital Downloads, MemberPress, LifterLMS, Restrict Content Pro, or GiveWP website.
 * Easy Digital Downloads Google Analytics - Add Enhanced Ecommerce Tracking to your EDD store.
-* Ads Tracking - Track your Google Adsense ads with Google Analytics.
 * Affiliate Link Tracking - Track your affiliate links and get stats that matter.
+* Google Ads Conversion Tracking - Automatically track Google Ads conversions for WooCommerce, Easy Digital Downloads, and MemberPress.
 * File Download Tracking - Enable file download stats with just a click.
 * Custom Link Tracking - Track your outbound link clicks with Google Analytics.
 * Events Tracking - Track custom button and banner clicks with Google Analytics.
 * Custom Dimensions Tracking - Enable Google analytics custom dimensions tracking for WordPress.
 * Author Tracking - See author stats and discover who's the most popular author on your site.
 * Popular Post Tracking - See which blog post and section is the most popular.
+* YouTube Google Analytics - Easily and automatically track embedded YouTube video starts, stops, and progression of your YouTube videos.
+* Vimeo Google Analytics - Easily and automatically track embedded Vimeo video starts, stops, and progression of your YouTube videos.
+* HTML5 Video Google Analytics - Easily and automatically track embedded HTML5 video starts, stops, and progression of your YouTube videos.
+* Exclude from Tracking - Disable the loading of the Google Analytics tracking on specific pages or posts.
 * Contextual Insights - Get actionable tips on how to improve engagement and get more visitors based on your site's traffic.
 * Headline Analyzer - Get more clicks and improve SEO following suggestions from our Headline Analyzer directly in the WordPress editor
 * Custom Post Type Tracking - Track the performance of your custom post types.
@@ -231,7 +241,7 @@ After reading this exhaustive feature list, you can probably imagine why Monster
 
 Give MonsterInsights a try.
 
-Want to unlock even more features? <a href="?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion" rel="friend">Upgrade to our Pro version</a>.
+Want to unlock even more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion" rel="friend">Upgrade to our Pro version</a>.
 
 >Simple, yet powerful. Amazing piece of plugin, does exactly what expected and even more.<br>
 > Matt Jaworski
@@ -288,6 +298,156 @@ You can also learn about other <a href="http://www.wpbeginner.com/category/plugi
 4. Want more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion">Purchase MonsterInsights Pro</a>!
 
 == Changelog ==
+= 8.14.1: Apr 11, 2023 =
+- Fixed: We fixed a PHP warning error and added additional security hardening.
+
+= 8.14.0: Mar 29, 2023 =
+- New: Our New PPC Tracking addon allows you to effortlessly track sales inside Google Ads, Microsoft Ads, and Meta.
+- Enhancement: We updated and tweaked lots elements to make our dashboard easier to use
+
+
+= 8.13.1: Mar 14, 2023 =
+- Fixed: We fixed a bug that could cause an issue if Google's API endpoint returned a non-200 response.
+
+= 8.13.0: Mar 13, 2023 =
+- Enhancement: We enhanced the notifications user experience.
+- Fixed: We fixed the PDF reports header.
+- Update: We applied additional security hardening.
+
+= 8.12.1: Jan 12, 2023 =
+- Fix: We made updates to authentication
+
+= 8.12.0: Jan 12, 2023 =
+- Enhancement: We updated and fixed some UI/UX elements to make MonsterInsights easier to use
+- Enhancement: We optimized our Javascript code to work better with minification plugins
+- Enhancement: We optimized our Javascript code to work better with minification plugins
+- Enhancement: We optimized the Javascript code to work nicely with minification plugins
+- Enhancement: We optimized our code to work better with PHP8
+
+= 8.11.0: Dec 12, 2022 =
+- New: With our limited-time-only Year in Review report you’ll be able to see how your site performed in 2022 and how to improve in 2023. This report will be automatically available from January 1 to January 14, 2023, inside the Reports section of MonsterInsights.
+- Enhancement: We optimized our media addon events.
+
+= 8.10.1: Nov 09, 2022 =
+- Fix: We fixed a bug in our auto-update logic when it encounters double digit version numbers. 
+
+= 8.10.0: Nov 07, 2022 =
+- New: We created a new Media report available right inside WordPress Admin dashboard to view video plays and engagement
+- New: We added file download support for Pretty Links
+- Enhancement: We enhanced some UI elements within the plugin
+- Fix: We updated User Journey to work with older versions of Easy Digital Downloads
+
+= 8.9.1: Oct 11, 2022 =
+- Enhancement: Our UserJourney addon works with sequential orders
+- Enhancement: We updated some language inside the WordPress Admin area for GA4 reporting
+- Fix: Headline analyzer now understands queries better
+- Fix: We updated our Ads addon to work with Easy Digital Downloads 3.0 
+
+= 8.9.0: Sep 20, 2022 =
+- New: You can now show an MonsterInsights badge on your website!
+- Enhancement: We updated and tweaked many UI elements to better help with onboarding and plugin usage.
+- Enhancement: We now include our dashboard fonts locally.
+- Fix: We updated support for PHP 8 with our headline analyzer tool.
+
+= 8.8.2: Aug 26, 2022 =
+- Fix: We fixed the headline analyzer issues reported by our lite users.
+- Fix: We fixed the PHP errors reported by WordPress 4.8 users.
+
+= 8.8.1: Aug 24, 2022 =
+- Fix: We fixed the Javascript error reported by lite users.
+
+= 8.8.0: Aug 24, 2022 =
+- New: We added UserJourney for Easy Digital Downloads, MemberPress, LifterLMS, Restrict Content Pro, and GiveWP.
+- Enhancement: We enhanced the PageInsights addon to better support query strings
+- Enhancement: We optimized the reports cache.
+- Enhancement: We optimized the LearnDash integration.
+- Enhancement: We optimized reports data for eCommerce integrations.
+- Enhancement: We optimized report queries for certain timezones.
+- Enhancement: We updated some of our error messages to provide better direction.
+- Enhancement: We optimized the code for PHP 8.1.
+- Enhancement: We optimized our onboarding wizard to include all GA properties.
+- Enhancement: License validation now checks to ensure active license exists.
+- Fix: We fixed non zero data in eCommerce reports.
+- Fix: We fixed the purchase events for LifterLMS.
+- Fix: We updated the report URL for all downloads button inside the WordPress dashboard.
+- Fix: Updated eCommerce session tracking for GA4 properties.
+
+= 8.7.0: Jul 11, 2022 =
+- Fix: We fixed the logged-in sessions data in our dimensions report.
+- Fix: We fixed the test mode detection PayPal Express Payment method when Smart Button is used.
+- Enhancement: We optimized our plugin's backend javascript.
+- Enhancement: We optimized the membership levels tracking for Restrict Content Pro integration.
+- Enhancement: We optimized the integration with EDD latest versions.
+
+= 8.6.0: Jun 13, 2022 =
+- Enhancement: We updated the User Journey display
+- Enhancement: We optimized the plugin activation process, popular posts, userID tracking, and onboarding
+
+= 8.5.3: May 18, 2022 =
+- Fix: We optimized the user ID custom dimension for GAv4
+- Fix: We optimized the affiliate events for GAv4
+- Fix: We optimized the Easy Digital Downloads purchase events for GAv4
+
+= 8.5.2: May 06, 2022 =
+Fix: We fixed an error reported by users using older versions of PHP.
+
+= 8.5.1: May 04, 2022 =
+- New: We launched a new User Journey addon to easily see which pages and for how long each customer visited before making a purchase from your WooCommerce store.
+- Enhancement: We enhanced Page Insights to show stats right in the WordPress sidebar while editing public post types.
+- Enhancement: We enhanced our Headline Analyzer tool.
+- Fixed: We fixed the URL query string parameters in reports.
+- Fixed: We fixed anchor tag targets to enhance user experience.
+- Fixed: We restricted excluding page tracking only for public post_types.
+- Fixed: We fixed console errors reported by a few customers on the admin homepage.
+
+
+= 8.5.0: March 31, 2022 =
+- Tweak: We enhanced and optimized the backend styles.
+- Fixed: We fixed a few PHP warnings when no add-ons are installed.
+- Fixed: We optimized the filters to add dynamic attributes in all frontend script tags.
+
+= 8.4.0: February 28, 2022 =
+- Fixed: We fixed the plugin requirements for Forms Addons version 2.2.1+
+- Fixed: We optimized the popular posts widgets display in edit screens
+- Fixed: We fixed console errors for users who have CookieYes enabled
+- Fixed: We fixed custom dimensions for all single post types.
+
+= 8.3.4: February 10, 2022 =
+- Fixed: Resolved a PHP Notice message some users received after upgrading to 8.3.3
+
+= 8.3.3: February 09, 2022 =
+- Fixed: We fixed the PDF reports format.
+- Tweak: We optimized the Ajax requests for notifications.
+
+= 8.3.2: January 25, 2022 =
+- Fixed: We fixed the fatal error that occurred due to a generic class name conflict.
+- Fixed: Fixed errors some users were having with our Exclude from Tracking feature.
+
+= 8.3.1: January 24, 2022 =
+- New: With our new Exclude from Tracking Feature admins can now exclude any page or post from tracking.
+- Fixed: We fixed the local gtag.js where it didn’t work with only the GAv4 connection.
+- Fixed: We fixed the messages in the plugin settings based on the Media Addon activation status.
+- Tweak: We categorized and enhanced the plugin notifications.
+- Fixed: We fixed Javascript errors when the CookieBot plugin is active and the Forms addon is not.
+- Fixed: We fixed UTM parameters in tracking links.
+- Fixed: We remove the type attribute from the script tag if the current theme supports html5.
+- Fixed: We fixed GA4 eCommerce missing events.
+- Fixed: We fixed the incorrect numbers for Year In Review average page views.
+- Fixed: We fixed the integration with Enfold theme Ajax forms where conversions were not being tracked.
+- Fixed: We fixed the backward compatibility for AffiliateWP versions below 2.7.
+
+= 8.3.0: December 14, 2021 =
+- New: With our limited-time only Year in Review report you’ll be able to see how your site performed in 2020 and how to improve in 2021. This report will be automatically available from January 1 to January 14, 2022 inside the Reports section of MonsterInsights.
+- New In Pro: Introducing the MonsterInsights Media addon which allows for impression and video watch time tracking for videos uploaded to WordPress, embedded from YouTube or embedded from Vimeo automatically!
+- New In Pro: We've added a new integration with AffiliateWP allowing you to more effectively track your affiliate impact on conversions!
+- Tweak: External links to our documentation now will always open in a new tab to make it easier to perform the action listed in the docs.
+- Fixed: A bug that caused some reports to show a blank numbers.
+- Fixed: The Headline Analyzer feature will no longer unpin when another plugin's tab is unpinned.
+- Fixed: Legacy analytics.js code has been removed which increases performance by removing unnecessary switches and database lookups.
+- Fixed: An issue that caused the dashboard widget to sometimes show the bounce rate box twice for GAv3 properties.
+- Fixed: An issue with Cookie Notice when used in Cookie Notice's legacy mode.
+- Fixed: An issue that could prevent auth for networks on the multisite panel has been fixed.
+
 = 8.2.0: November 3, 2021 =
 - Tweak: The GA Compatibility layer feature has had it's output cleaned up.
 - Bugfix: Updated events when dual-tracking mode is enabled to not alter bounce rate on GAv3 properties.
@@ -357,11 +517,11 @@ Google Analytics is the #1 analytics solution in the world. It comes with all th
 
 = Why choose Google Analytics by MonsterInsights vs Google Site Kit? =
 
-The MonsterInsights Google Analytics plugin is built for all types of websites, large or small, to get up and running quickly with Google Analytics.
+The MonsterInsights Google Analytics plugin is built for all types of websites, large or small, to get up and running quickly with Google Analytics and Google Analytics 4.
 
 Beyond simply providing a Google Analytics dashboard, our plugin makes configuring advanced features as easy as point-and-click that would otherwise still require a developer to implement.
 
-Our Google Analytics plugin also includes many features such as AdSense tracking, Google Optimize support, form conversion reporting, goal tracking, Search Console integration, Pagespeed insights, advanced eCommerce tracking, and more.
+Our Google Analytics plugin also includes many features such as Google Ads tracking, Google Optimize support, form conversion reporting, goal tracking, Search Console integration, Pagespeed insights, advanced eCommerce tracking, and more.
 
 There's a reason over 3 million users have trusted MonsterInsights to provide Google Analytics data to their website.
 

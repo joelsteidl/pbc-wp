@@ -466,35 +466,7 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 	}
 }
 
-if(!function_exists( 'be_theme_name' )){
-	function be_theme_name($check_be_theme=null){
-		$check_theme = wp_get_theme();
-		$theme_name = trim($check_theme->get(('Name' )));
-		$theme_name = strtolower($theme_name);
-		$child_theme_name = trim($check_theme->get(('Template' )));
-		$child_theme_name = strtolower($child_theme_name);
-		$be_theme = empty($theme_name)?$child_theme_name:$theme_name;
-		if($theme_name == 'exponent' || $child_theme_name == 'exponent'){
-			$be_theme = 'exponent';
-		}
-		if($theme_name == 'spyro' || $child_theme_name == 'spyro'){
-			$be_theme = 'spyro';
-		}
-		if($theme_name == 'oshin' || $child_theme_name == 'oshin'){
-			$be_theme = 'oshin';
-		}
 
-		if(!empty($check_be_theme)){
-			if($check_be_theme==$be_theme){
-				return true;
-			}else{
-				return false;
-			}
-		}else{
-			return $be_theme;
-		}
-	}
-}
 if( !function_exists( 'is_tatsu_not_edit_mode' ) ) {
 	function is_tatsu_not_edit_mode(){//return edit?false:true;
 		$post_edit_url = array('action=edit','id=','?tatsu','/moduleEditor/');
@@ -619,62 +591,47 @@ if( !function_exists( 'be_minify_css' ) ) {
 	}
 }
 
-if( !function_exists( 'be_get_video_details' ) ){
-	function be_get_video_details($url,$size = 'large'){
+if ( ! function_exists( 'be_get_video_details' ) ) {
+	function be_get_video_details( $url, $size = 'large' ) {
 		$pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 		$details = array();
 
-		if( $result = preg_match($pattern, $url, $matches) ){
-			
-			if( $size  === 'small'){
-				$size = 'mqdefault';
-			}elseif( $size === 'large' ){
-				$size = 'maxresdefault';
-			}
+		if ( $result = preg_match( $pattern, $url, $matches ) ) {
+			$size = ( $size === 'large' ) ? 'maxresdefault' : 'mqdefault';
 	
 			$video_id = $matches[1];
-			$youtube_url = "https://img.youtube.com/vi/".$video_id."/".$size.".jpg";
+			$youtube_url = "https://img.youtube.com/vi/" . $video_id . "/". $size . ".jpg";
 
 			return array(
 				'source' => 'youtube',
 				'thumb_url' => $youtube_url,
 				'video_id' => $video_id
 			);
+		} else if ( strpos( $url, 'vimeo' ) !== false ) {
+			$size = ( $size === 'large' ) ? '_1280x720' : '_320x180';
 
-		}else if( strpos( $url,'vimeo' ) !== false ) {
-
-			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-			$response = wp_remote_get( "https://vimeo.com/api/v2/video/$vimeo_id.php" );
-
-			if( $size  === 'small'){
-				$size = '_320x180';
-			}elseif( $size === 'large' ){
-				$size = '_1280x720';
-			}
-
-			if( !is_wp_error( $response ) ){
-				if( $response['response']['code'] === 200){
-					$hash = unserialize( $response['body']);
-					$vimeo_url = $hash[0]['thumbnail_large'];
-					$vimeo_url = str_replace( '_640',$size,$vimeo_url );
-					return array(
-						'source' => 'vimeo',
-						'thumb_url' => $vimeo_url,
-						'video_id' => $vimeo_id
-					);
-				} else {
-					return array(
-						'source' => 'vimeo',
-						'thumb_url' => 'https://placehold.it/1280x720',
-						'video_id' => $vimeo_id
-					);
-				}
+			$vimeo_id = substr( parse_url( $url, PHP_URL_PATH ), 1 );
+			$vimeo_id = explode( '/', $vimeo_id );
 				
-			}else{
+			$response = wp_remote_get( 'https://vimeo.com/api/oembed.json?url=' . $url );
+
+			if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+				$response_body = wp_remote_retrieve_body( $response );
+    			$data = json_decode( $response_body );
+				
+				$thumbnail_url = explode( '_', $data->thumbnail_url );
+				$thumbnail_url = $thumbnail_url[0] . $size;
+
 				return array(
 					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720',
-					'video_id' => ''
+					'thumb_url' => $thumbnail_url,
+					'video_id' => $data->video_id
+				);
+			} else {
+				return array(
+					'source' => 'vimeo',
+					'thumb_url' => 'https://via.placeholder.com/1280x720',
+					'video_id' => $vimeo_id
 				);
 			}
 		}

@@ -42,7 +42,7 @@ class UsageTracking {
 
 		return (bool) apply_filters(
 			'wp_mail_smtp_usage_tracking_is_enabled',
-			( new Options() )->get( 'general', self::SETTINGS_SLUG )
+			Options::init()->get( 'general', self::SETTINGS_SLUG )
 		);
 	}
 
@@ -142,6 +142,7 @@ class UsageTracking {
 				'wp_mail_smtp_setup_wizard_launched_time'  => isset( $setup_wizard_stats['launched_time'] ) ? (int) $setup_wizard_stats['launched_time'] : 0,
 				'wp_mail_smtp_setup_wizard_completed_time' => isset( $setup_wizard_stats['completed_time'] ) ? (int) $setup_wizard_stats['completed_time'] : 0,
 				'wp_mail_smtp_setup_wizard_completed_successfully' => ! empty( $setup_wizard_stats['was_successful'] ),
+				'wp_mail_smtp_source'                      => sanitize_title( get_option( 'wp_mail_smtp_source', '' ) ),
 			]
 		);
 

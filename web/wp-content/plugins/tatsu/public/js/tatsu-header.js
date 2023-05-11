@@ -239,6 +239,7 @@ function tatsuToggle(speed, easing, callback) {
                     onBeforeShow : function() {
                         
                         if( this.parent('li').hasClass('mega-menu') ){
+                            this.css('display', 'flex');
                             this.css('visibility','hidden');
                             this.fadeIn();
                             this.css( 'left', '' ); 
@@ -299,18 +300,17 @@ function tatsuToggle(speed, easing, callback) {
         },
 
         tatsu_mobile_menu = function() {
-            
-
             jQuery(document).on('click', '.tatsu-mobile-navigation .tatsu-mobile-menu-icon', function () {
                 jQuery(this).find('.line-wrapper').toggleClass('open');
                 jQuery(this).siblings('.tatsu-mobile-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
             });
-            jQuery(document).on('click','.tatsu-mobile-menu .sub-menu-indicator , .tatsu-slide-menu-col .sub-menu-indicator' , function() {
+            jQuery(document).on('click', '.tatsu-mobile-menu .sub-menu-indicator, .tatsu-slide-menu-col .sub-menu-indicator' , function() {
                 jQuery(this).toggleClass('menu-open');
                 jQuery(this).siblings('.tatsu-sub-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
             });
-            jQuery(document).on('click','.tatsu-mobile-menu li.menu-item-has-children a , .tatsu-slide-menu-col li.menu-item-has-children a' , function() {
-                if(jQuery(this).attr('href') == '#'){
+            jQuery(document).on('click', '.tatsu-mobile-menu li.menu-item-has-children a, .tatsu-slide-menu-col li.menu-item-has-children a' , function() {
+                var attr = jQuery(this).attr('href');
+                if(typeof attr === 'undefined' || attr === false || attr == '#') {
                     jQuery(this).toggleClass('menu-open');     
                     jQuery(this).siblings('.tatsu-sub-menu').animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'}, 200, 'linear', '');
                 }
@@ -321,8 +321,6 @@ function tatsuToggle(speed, easing, callback) {
                     closeMobileMenu();  
                 }
             });
-
-            
         },
 
         megaMenu = function () {

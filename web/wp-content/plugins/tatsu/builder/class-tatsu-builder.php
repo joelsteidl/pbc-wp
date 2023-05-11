@@ -179,8 +179,10 @@ class Tatsu_Builder {
 		$current_user = wp_get_current_user();
 		$display_name = $current_user->display_name;
 
-        $store;
-		$suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
+		$suffix = '.min';
+		if ( ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) || ( defined( 'TATSU_DEBUG' ) && TATSU_DEBUG ) ) {
+			$suffix = '';
+		}
 
         $post = get_post( $this->post_id );
         $post_type_object = get_post_type_object( $post->post_type );
@@ -224,9 +226,21 @@ class Tatsu_Builder {
         wp_enqueue_media();
 
 		wp_enqueue_script( 'tatsu' );	
-		if(be_theme_name('spyro')){
+		//Builder control js for spyro form clean area and preview of tatsu modules on hover
 		wp_enqueue_script( 'tatsu-builder-control', plugins_url( 'admin/js/tatsu-builder-control.js', dirname(__FILE__) ),array('jquery'), $this->version,true);
-		}
+		wp_localize_script(
+			'tatsu-builder-control',
+			'tatsuBuilderConfig',
+			array(
+				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+				'pro_icon'=> TATSU_PLUGIN_URL . '/builder/svg/pro_icon.svg',
+				'module_preview'=>tatsu_module_preview_options($module_options),
+				'be_theme_name'=>be_theme_name(),
+				'is_tatsu_authorized'=>is_tatsu_authorized(),
+				'is_tatsu_standalone'=>is_tatsu_standalone()
+			)
+		);
+		
 		wp_enqueue_script( 'webfont-loader', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js',array(),$this->version );
 		wp_localize_script(
 			'tatsu',
@@ -259,6 +273,11 @@ class Tatsu_Builder {
                 'custom_css'  => get_post_meta( $this->post_id, 'tatsu_custom_css', true ),
                 'custom_js'  => get_post_meta( $this->post_id, 'tatsu_custom_js', true ),
                 'mode'  => $this->builder_mode,
+				'default_category' => 'basic',
+				'categories' => tatsu_module_categories(),
+				'fields' => function_exists( 'tatsu_get_custom_fields_group' ) ? tatsu_get_custom_fields_group() : [],
+				'dynamic_values' => tatsu_get_dynamic_values(),
+				'is_pro' => is_tatsu_pro_active(),
 			)
 		);
 		wp_localize_script (
@@ -277,8 +296,6 @@ class Tatsu_Builder {
 	}
 
 	public function enqueue_styles() {
-
-
 		$tatsu_theme = get_option('tatsu_ui_theme','dark');
 
 		wp_enqueue_style( 'tatsu_wp_editor' );		
@@ -318,9 +335,9 @@ class Tatsu_Builder {
 				'height' => 200,
 				'textarea_rows' => 15,
 				'drag_drop_upload' => true,
-				 'tinymce' => array(
+				'tinymce' => array(
 					'content_css' => $tatsu_theme === 'dark' ? plugins_url( 'builder/css/editor-content-dark.css', dirname(__FILE__) ) : plugins_url( 'builder/css/editor-content-light.css', dirname(__FILE__) ),
-                 ),
+                ),
 			)
         );
 		return ob_get_clean();

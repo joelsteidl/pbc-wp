@@ -189,7 +189,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 		
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			add_option("enmse_db_version", $enmse_db_version);
 		
 // Upgrade 1.1 users to 1.7	
@@ -341,7 +341,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 			
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 // Upgrade 1.2 users to 1.7		
 } elseif ( get_option('enmse_db_version') == "1.2" ) {
@@ -466,7 +466,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 	// Define DB version
 	global $enmse_db_version;
-	$enmse_db_version = "2.8.4";
+	$enmse_db_version = "2.8.7";
 	update_option("enmse_db_version", $enmse_db_version);
 // Upgrade 1.3 users to 1.7	
 } elseif ( get_option('enmse_db_version') == "1.3" ) {
@@ -593,7 +593,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -725,7 +725,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -860,7 +860,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -991,7 +991,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1119,7 +1119,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1249,7 +1249,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1378,7 +1378,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1508,7 +1508,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1637,7 +1637,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -1766,7 +1766,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -1895,7 +1895,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2025,7 +2025,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2154,7 +2154,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2284,7 +2284,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2412,7 +2412,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2542,7 +2542,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2671,7 +2671,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -2802,7 +2802,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -2929,7 +2929,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3057,7 +3057,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3184,7 +3184,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3313,7 +3313,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3440,7 +3440,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3568,7 +3568,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3694,7 +3694,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -3822,7 +3822,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -3946,7 +3946,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4072,7 +4072,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4194,7 +4194,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4318,7 +4318,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4355,7 +4355,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4394,7 +4394,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4431,7 +4431,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4470,7 +4470,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4505,7 +4505,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4542,7 +4542,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4577,7 +4577,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4614,7 +4614,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4648,7 +4648,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4684,7 +4684,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4709,7 +4709,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4736,7 +4736,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
@@ -4744,7 +4744,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 		 enmse_twofiveone();
 	}
 	
-}  elseif ( get_option('enmse_db_version') == "2.7.9.3" || get_option('enmse_db_version') == "2.7.9.4" || get_option('enmse_db_version') == "2.7.9.5" || get_option('enmse_db_version') == "2.8.0" || get_option('enmse_db_version') == "2.8.1" || get_option('enmse_db_version') == "2.8.1.1" || get_option('enmse_db_version') == "2.8.2" || get_option('enmse_db_version') == "2.8.3" || get_option('enmse_db_version') == "2.8.3.1" || get_option('enmse_db_version') == "2.8.3.2" ) { 
+}  elseif ( get_option('enmse_db_version') == "2.7.9.3" || get_option('enmse_db_version') == "2.7.9.4" || get_option('enmse_db_version') == "2.7.9.5" || get_option('enmse_db_version') == "2.8.0" || get_option('enmse_db_version') == "2.8.1" || get_option('enmse_db_version') == "2.8.1.1" || get_option('enmse_db_version') == "2.8.2" || get_option('enmse_db_version') == "2.8.3" || get_option('enmse_db_version') == "2.8.3.1" || get_option('enmse_db_version') == "2.8.3.2" || get_option('enmse_db_version') == "2.8.4" || get_option('enmse_db_version') == "2.8.5" || get_option('enmse_db_version') == "2.8.5.1" || get_option('enmse_db_version') == "2.8.6" ) { 
 
 	function enmse_twosevennine() {
 		global $wpdb;
@@ -4754,7 +4754,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 		// Define DB version
 		global $enmse_db_version;
-		$enmse_db_version = "2.8.4";
+		$enmse_db_version = "2.8.7";
 		update_option("enmse_db_version", $enmse_db_version);
 	}
 
@@ -4774,7 +4774,7 @@ if ( !get_option( 'enmse_db_version' ) ) {
 
 			// Define DB version
 			global $enmse_db_version;
-			$enmse_db_version = "2.8.4";
+			$enmse_db_version = "2.8.7";
 			update_option("enmse_db_version", $enmse_db_version);
 		}
 		switch_to_blog($wpdb->blogid);
