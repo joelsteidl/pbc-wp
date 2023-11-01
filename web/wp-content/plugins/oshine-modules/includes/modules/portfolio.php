@@ -311,7 +311,7 @@ if (!function_exists('be_portfolio')) {
 					$isdwdh = false;
 					$filter_classes = $permalink = '';
 					$mfp_class = 'mfp-image';
-                    $post_terms = get_the_terms( get_the_ID(), $filter_to_use );
+                    $post_terms = wp_get_post_terms( get_the_ID(), $filter_to_use );
 					$filter_classes = '';
 					if( $show_filters == 'yes' && is_array( $post_terms ) ) {
 						foreach ( $post_terms as  $term ) {

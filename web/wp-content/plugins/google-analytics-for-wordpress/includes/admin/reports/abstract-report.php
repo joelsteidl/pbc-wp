@@ -23,6 +23,15 @@ class MonsterInsights_Report {
 	public $name;
 	public $version = '1.0.0';
 	public $source = 'reports';
+	public $start_date;
+	public $end_date;
+
+	/**
+	 * We will use this value if we are not using the same value for report store and relay path.
+	 *
+	 * @var string
+	 */
+	protected $api_path;
 
 	/**
 	 * Primary class constructor.
@@ -199,6 +208,10 @@ class MonsterInsights_Report {
 			) );
 		}
 
+		// These values are going to use on child classes.
+		$this->start_date = $start;
+		$this->end_date   = $end;
+
 		$check_cache       = ( $start === $this->default_start_date() && $end === $this->default_end_date() ) || apply_filters( 'monsterinsights_report_use_cache', false, $this->name );
 		$site_auth         = MonsterInsights()->auth->get_viewname();
 		$ms_auth           = is_multisite() && MonsterInsights()->auth->get_network_viewname();
@@ -241,7 +254,10 @@ class MonsterInsights_Report {
 				$api_options['network'] = true;
 			}
 
-			$api = new MonsterInsights_API_Request( 'analytics/reports/' . $this->name . '/', $api_options, 'GET' );
+			// Get the path of the relay.
+			$api_path = empty( $this->api_path ) ? $this->name : $this->api_path;
+
+			$api = new MonsterInsights_API_Request( 'analytics/reports/' . $api_path . '/', $api_options, 'GET' );
 
 			// Use a report source indicator for requests.
 			if ( ! empty( $this->source ) ) {
@@ -351,27 +367,20 @@ class MonsterInsights_Report {
 		return array();
 	}
 
-	protected function get_ga_report_url( $ua_name, $v4_name, $data, $ua_extra_params = '', $v4_extra_params = '', $v4_endpoint = 'explorer', $is_real_time = false ) {
+	protected function get_ga_report_url( $v4_name, $data, $v4_extra_params = '', $v4_endpoint = 'explorer', $is_real_time = false ) {
 		$auth = MonsterInsights()->auth;
 
 		$params = $this->get_ga_report_range( $data );
 
-		if ( $auth->get_connected_type() === 'v4' ) {
-			$format = 'https://analytics.google.com/analytics/web/#/%1$s/' . ( $is_real_time ? 'realtime' : 'reports' ) . '/%5$s?params=%3$s%4$s&r=%2$s';
+        $format = 'https://analytics.google.com/analytics/web/#/%1$s/' . ( $is_real_time ? 'realtime' : 'reports' ) . '/%5$s?params=%3$s%4$s&r=%2$s';
 
-			if ( empty( $v4_name ) ) {
-				$report_name = '';
-			} else {
-				$report_name = $v4_name;
-			}
-			$extra_params = '&' . $v4_extra_params;
-			$endpoint     = $v4_endpoint;
-		} else {
-			$format       = 'https://analytics.google.com/analytics/web/#' . ( $is_real_time ? '/realtime' : 'report' ) . '/%2$s/%1$s%3$s%4$s/';
-			$report_name  = $ua_name;
-			$extra_params = '?' . $ua_extra_params;
-			$endpoint     = '';
-		}
+        if ( empty( $v4_name ) ) {
+            $report_name = '';
+        } else {
+            $report_name = $v4_name;
+        }
+        $extra_params = '&' . $v4_extra_params;
+        $endpoint     = $v4_endpoint;
 
 		return sprintf(
 			$format,

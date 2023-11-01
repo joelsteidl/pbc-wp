@@ -63,6 +63,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 	 */
 	public $widget_import_results;
 	
+	public $demo_files_path;
     /**
      * Constructor. Hooks all interactions to initialize the class.
      *
@@ -293,8 +294,8 @@ class BEThemeDemoImporter extends BEThemeImporter {
 		$demo = $_POST['demo'];
 		$page_title = self::get_settings($demo)['home_page_title'];
 		$blog_page_title = self::get_settings($demo)['blog_page_title'];
-		$page = get_page_by_title(esc_html( $page_title ));
-		$blog_page = get_page_by_title( $blog_page_title );
+		$page = be_get_page_by_title(esc_html( $page_title ));
+		$blog_page = be_get_page_by_title( $blog_page_title );
 		if($page->ID) {
 			update_option( 'show_on_front', 'page', true);
 			$is_home_page_updated = update_option( 'page_on_front', $page->ID );
@@ -317,7 +318,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 		//Set woocommerce shop page
 		$shop_page_title = self::get_settings($demo)['shop_page_title']; 
 		if(!empty($shop_page_title)){ 
-			$shop_page = get_page_by_title(esc_html( $shop_page_title ));
+			$shop_page = be_get_page_by_title(esc_html( $shop_page_title ));
 			if(!empty($shop_page->ID)){
 				if(update_option( 'woocommerce_shop_page_id', $shop_page->ID )){
 					printf('%s page has been set as shop page', $shop_page_title);
@@ -325,7 +326,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 					$cart_page_title = self::get_settings($demo)['cart_page_title']; 
 					$checkout_page_title = self::get_settings($demo)['checkout_page_title'];
 					//My account page
-					$myaccount_page = get_page_by_title(esc_html( $my_account_page_title ));
+					$myaccount_page = be_get_page_by_title(esc_html( $my_account_page_title ));
 					if(!empty($myaccount_page->ID)){
 						if(update_option( 'woocommerce_myaccount_page_id', $myaccount_page->ID )){
 							printf('%s page has been set as my account page', $my_account_page_title);
@@ -334,7 +335,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 						}
 					}
 					///Cart page
-					$cart_page = get_page_by_title(esc_html( $cart_page_title ));
+					$cart_page = be_get_page_by_title(esc_html( $cart_page_title ));
 					if(!empty($cart_page->ID)){
 						if(update_option( 'woocommerce_cart_page_id', $cart_page->ID )){
 							printf('%s page has been set as cart page', $cart_page_title);
@@ -343,7 +344,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 						}
 					}
 					//checkout page
-					$checkout_page = get_page_by_title(esc_html( $checkout_page_title ));
+					$checkout_page = be_get_page_by_title(esc_html( $checkout_page_title ));
 					if(!empty($checkout_page->ID)){
 						if(update_option( 'woocommerce_checkout_page_id', $checkout_page->ID )){
 							printf('%s page has been set as checkout page', $checkout_page_title);

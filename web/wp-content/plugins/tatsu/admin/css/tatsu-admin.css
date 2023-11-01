@@ -121,6 +121,12 @@ body.edited_with_editor #tatsu_edit_post_wrap {
 	width: 100%;
 	box-sizing: border-box;
 }
+
+.tatsu_global-section-settings.tatsu-individual-form{
+	display: block;
+	margin-bottom: 1.5rem;
+}
+
 .tatsu_active_headers_footers_settings, .tatsu_global-section-settings{
 	display:inline-block;
 	width: 600px;

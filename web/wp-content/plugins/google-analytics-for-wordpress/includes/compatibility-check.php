@@ -40,9 +40,9 @@ if ( ! class_exists( 'MonsterInsights_Compatibility_Check' ) ) {
 		 * }
 		 */
 		private $compatible_php_version = array(
-			'required'    => '5.5',
+			'required'    => '7.2',
 			'warning'     => '7.0',
-			'recommended' => '7.2',
+			'recommended' => false,
 		);
 
 		/**
@@ -56,8 +56,8 @@ if ( ! class_exists( 'MonsterInsights_Compatibility_Check' ) ) {
 		 * }
 		 */
 		private $compatible_wp_version = array(
-			'required'    => '4.8',
-			'warning'     => '4.9',
+			'required'    => '5.6',
+			'warning'     => '6.0',
 			'recommended' => false,
 		);
 

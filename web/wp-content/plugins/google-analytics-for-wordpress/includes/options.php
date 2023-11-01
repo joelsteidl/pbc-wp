@@ -56,110 +56,6 @@ function monsterinsights_get_option( $key = '', $default = false ) {
 }
 
 /**
- * Helper method for getting the UA string.
- *
- * @return string The UA to use.
- * @since 6.0.0
- * @access public
- *
- */
-function monsterinsights_get_ua() {
-	// Allow short circuiting (for staging sites)
-	if ( defined( 'MONSTERINSIGHTS_DISABLE_TRACKING' ) && MONSTERINSIGHTS_DISABLE_TRACKING ) {
-		return '';
-	}
-
-	// Try getting it from the auth UA
-	$ua = MonsterInsights()->auth->get_ua();
-
-	// If that didn't work, try the manual UA at the site level
-	if ( empty( $ua ) ) {
-		$ua = MonsterInsights()->auth->get_manual_ua();
-		// If that didn't work try getting it from the network
-		if ( empty( $ua ) ) {
-			$ua = monsterinsights_get_network_ua();
-			// If that didn't work, try getting it from the overall constant. If it's not there, leave it blank
-			if ( empty( $ua ) ) {
-				$ua = defined( 'MONSTERINSIGHTS_GA_UA' ) && MONSTERINSIGHTS_GA_UA ? monsterinsights_is_valid_ua( MONSTERINSIGHTS_GA_UA ) : '';
-			}
-		}
-	}
-
-	// Feed through the filter
-	$pre_filter = $ua;
-	$ua         = apply_filters( 'monsterinsights_get_ua', $ua );
-
-	// Only run through monsterinsights_is_valid_ua if it's different than pre-filter
-	return $pre_filter === $ua ? $ua : monsterinsights_is_valid_ua( $ua );
-}
-
-function monsterinsights_get_tracking_ids() {
-	$ids = array();
-
-	$ua = monsterinsights_get_ua_to_output();
-	if ( $ua ) {
-		$ids[] = $ua;
-	}
-
-	$v4 = monsterinsights_get_v4_id_to_output();
-	if ( $v4 ) {
-		$ids[] = $v4;
-	}
-
-	return $ids;
-}
-
-/**
- * Helper method for getting the network UA string.
- *
- * @return string The UA to use.
- * @since 6.0.0
- * @access public
- *
- */
-function monsterinsights_get_network_ua() {
-	if ( ! is_multisite() ) {
-		return '';
-	}
-
-	// First try network auth UA
-	$ua = MonsterInsights()->auth->get_network_ua();
-	if ( ! empty( $ua ) ) {
-		return $ua;
-	}
-
-	// Then try manual network UA
-	$ua = MonsterInsights()->auth->get_network_manual_ua();
-	if ( ! empty( $ua ) ) {
-		return $ua;
-	}
-
-	// See if the constant is defined
-	if ( defined( 'MONSTERINSIGHTS_MS_GA_UA' ) && monsterinsights_is_valid_ua( MONSTERINSIGHTS_MS_GA_UA ) ) {
-		return MONSTERINSIGHTS_MS_GA_UA;
-	}
-
-	return '';
-}
-
-/**
- * Helper method for getting the UA string that's output on the frontend.
- *
- * @param array $args Allow calling functions to give args to use in future applications.
- *
- * @return string The UA to use on frontend.
- * @since 6.0.0
- * @access public
- *
- */
-function monsterinsights_get_ua_to_output( $args = array() ) {
-	$ua = monsterinsights_get_ua();
-	$ua = apply_filters( 'monsterinsights_get_ua_to_output', $ua, $args );
-
-	return monsterinsights_is_valid_ua( $ua );
-}
-
-/**
  * Helper method for getting the V4 string.
  *
  * @return string The V4 ID to use.
@@ -210,13 +106,13 @@ function monsterinsights_get_network_v4_id() {
 		return '';
 	}
 
-	// First try network auth UA
+	// First try network auth V4
 	$v4_id = MonsterInsights()->auth->get_network_v4_id();
 	if ( ! empty( $v4_id ) ) {
 		return $v4_id;
 	}
 
-	// Then try manual network UA
+	// Then try manual network V4
 	$v4_id = MonsterInsights()->auth->get_network_manual_v4_id();
 	if ( ! empty( $v4_id ) ) {
 		return $v4_id;
@@ -437,30 +333,6 @@ function monsterinsights_sanitize_tracking_id( $id ) {
  */
 function monsterinsights_is_valid_gt( $gt_code = '' ) {
 	return (bool) preg_match( '/^GT-[a-zA-Z0-9]{5,}$/', $gt_code );
-}
-
-/**
- * Is valid ua code.
- *
- * @access public
- *
- * @param string $ua_code UA code to check validity for.
- *
- * @return string|false Return cleaned ua string if valid, else returns false.
- * @since 6.0.0
- *
- */
-function monsterinsights_is_valid_ua( $ua_code = '' ) {
-	$ua_code = monsterinsights_sanitize_tracking_id( $ua_code );
-
-	if (
-		preg_match( "/^(UA|YT|MO)-\d{4,}-\d+$/", $ua_code ) ||
-		monsterinsights_is_valid_gt( $ua_code )
-	) {
-		return $ua_code;
-	}
-
-	return '';
 }
 
 function monsterinsights_is_valid_v4_id( $v4_code = '' ) {

@@ -9,24 +9,32 @@
  * @package be
  * @subpackage be-functions
  */
+
+/** deprecation : Return type of BECore::offsetExists($offset) should either be compatible with ArrayAccess::offsetExists(mixed $offset): bool, or the #[ReturnTypeWillChange] attribute should be used to temporarily suppress the notice in ***/
+
 Class BECore implements ArrayAccess {
 	protected $contents;
 
 	function __construct() {
 		$this->contents = array();
 	}
+
+    #[ReturnTypeWillChange]
 	public function offsetSet( $offset, $value ) {
         $this->contents[$offset] = $value;
     }
 
+    #[ReturnTypeWillChange]
     public function offsetExists($offset) {
         return isset( $this->contents[$offset] );
     }
 
+    #[ReturnTypeWillChange]
     public function offsetUnset($offset) {
         unset( $this->contents[$offset] );
     }
 
+    #[ReturnTypeWillChange]
     public function offsetGet($offset) {
         if( is_callable($this->contents[$offset]) ){
             return call_user_func( $this->contents[$offset], $this );

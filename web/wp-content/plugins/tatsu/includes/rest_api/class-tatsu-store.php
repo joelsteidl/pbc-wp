@@ -142,6 +142,29 @@ class Tatsu_Store {
 		return wp_send_json_success( [ 'alert' => $alert ] );
 	}
 
+	//save ui settings tatsu like responsive media screen width
+	public function ajax_ui_settings_save(){
+		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' )  ) {
+			wp_send_json_error();
+		}
+
+		$tatsu_ui_settings = array();
+
+		//responsive media query
+		if ( isset( $_POST['tablet_max_width'] ) ) {
+			$tatsu_ui_settings['tablet_max_width'] = empty( $_POST['tablet_max_width'] ) ? 0 : sanitize_key( wp_unslash( $_POST['tablet_max_width'] ) );
+		}
+
+		if ( isset( $_POST['laptop_max_width'] ) ) {
+			$tatsu_ui_settings['laptop_max_width'] = empty( $_POST['laptop_max_width'] ) ? 0 : sanitize_key( wp_unslash( $_POST['laptop_max_width'] ) );
+		}
+
+		if ( 0 < count( $tatsu_ui_settings ) ) {
+			update_option( 'tatsu_ui_settings', $tatsu_ui_settings );
+		}
+
+		return wp_send_json_success();
+	}
 	
 	public function tatsu_save_recaptcha_details(){
 		if( !array_key_exists( 'nonce', $_POST ) || !wp_verify_nonce( $_POST['nonce'], 'wp_rest' ) ) {

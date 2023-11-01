@@ -139,7 +139,8 @@ function monsterinsights_ajax_activate_addon() {
 		} else {
 			$activate = activate_plugin( $_POST['plugin'] );
 		}
-
+		/* Restrict thirt-party redirections on activation */
+		delete_transient( '_userfeedback_activation_redirect' );
 		if ( is_wp_error( $activate ) ) {
 			echo json_encode( array( 'error' => $activate->get_error_message() ) );
 			wp_die();
@@ -262,62 +263,6 @@ function monsterinsights_get_sem_rush_cta_status() {
 
 add_action( 'wp_ajax_monsterinsights_get_sem_rush_cta_status', 'monsterinsights_get_sem_rush_cta_status' );
 
-function monsterinsights_handle_ga_queue_response() {
-
-    $auth = MonsterInsights()->auth;
-
-    //  Authenticate with public key
-    $key = sanitize_text_field($_REQUEST['key']);
-
-    $site_key = is_network_admin() ? $auth->get_network_key() : $auth->get_key();
-
-    if ( !hash_equals( $site_key, $key ) ) {
-        wp_send_json_error([
-            'error'     => __( 'Invalid site key.', 'google-analytics-for-wordpress' )
-        ], 401);
-    }
-
-    //  Check if credentials have already been saved - prevent override
-    $local_queue_status = monsterinsights_get_option( 'ga4_upgrade_queue_status' );
-
-    if ( $local_queue_status === 'fulfilled' ) {
-        wp_send_json_error([
-            'error'     => __( 'Site has already been processed.', 'google-analytics-for-wordpress' )
-        ], 400);
-    }
-
-    if ( empty($_REQUEST['profile']) || empty($_REQUEST['mp_secret']) ) {
-        wp_send_json_error([
-            'error'     => __( 'Profile or secret key missing.', 'google-analytics-for-wordpress' )
-        ], 400);
-    }
-
-    $v4_id = sanitize_text_field($_REQUEST['profile']);
-    $mp_secret = sanitize_text_field($_REQUEST['mp_secret']);
-
-    //  Update dual tracking
-    if ( is_network_admin() ) {
-        $auth->set_network_dual_tracking_id( $v4_id );
-        $auth->set_network_measurement_protocol_secret( $mp_secret );
-    } else {
-        $auth->set_dual_tracking_id( $v4_id );
-        $auth->set_measurement_protocol_secret( $mp_secret );
-    }
-
-    //  Create automatic swap cron
-    if ( false === wp_next_scheduled( 'monsterinsights_v4_property_swap' ) ) {
-        wp_schedule_single_event( strtotime( "+31 days" ), 'monsterinsights_v4_property_swap' );
-    }
-
-    //  Update queue status option
-    monsterinsights_update_option( 'ga4_upgrade_queue_status', 'fulfilled' );
-    monsterinsights_delete_option( 'ga4_upgrade_queue_job_id' );
-
-    wp_send_json_success();
-}
-
-add_action( 'wp_ajax_nopriv_monsterinsights_handle_ga_queue_response', 'monsterinsights_handle_ga_queue_response' );
-
 function monsterinsights_handle_get_plugin_info() {
 
     $auth = MonsterInsights()->auth;
@@ -333,14 +278,12 @@ function monsterinsights_handle_get_plugin_info() {
         ], 401);
     }
 
-    $ua = is_network_admin() ? $auth->get_network_ua() : $auth->get_ua();
     $v4 = is_network_admin() ? $auth->get_network_v4_id() :  $auth->get_v4_id();
     $has_secret = is_network_admin() ?
         !empty( $auth->get_network_measurement_protocol_secret() ) :
         !empty( $auth->get_measurement_protocol_secret() );
 
     wp_send_json([
-        'ua'                => $ua,
         'v4'                => $v4,
         'has_mp_secret'     => $has_secret,
         'plugin_version'    => MonsterInsights()->version
@@ -348,3 +291,41 @@ function monsterinsights_handle_get_plugin_info() {
 }
 
 add_action( 'wp_ajax_nopriv_monsterinsights_get_plugin_info', 'monsterinsights_handle_get_plugin_info' );
+
+/**
+ * User journey report show demo report for not licensed.
+ *
+ * @return void
+ * @since 8.16
+ */
+function monsterinsights_user_journey_demo_report_ajax() {
+	$report = array();
+
+	$sources   = array( 'google', 'newsletter', 'billboard' );
+	$mediums   = array( 'cpc', 'banner', 'email' );
+	$campaigns = array( 'campaign-name', 'slogan', 'promo-code' );
+
+	for ( $i = 1; $i <= 13; $i ++ ) {
+		$rand_key = array_rand( $sources );
+
+		$report[] = array(
+			'transaction_id' => wp_rand( 12, 30 ),
+			'steps'          => wp_rand( 3, 8 ),
+			'order_total'    => wp_rand( 10, 50 ),
+			'utm_source'     => $sources[ $rand_key ],
+			'utm_medium'     => $mediums[ $rand_key ],
+			'utm_campaign'   => $campaigns[ $rand_key ],
+			'purchase_date'  => '--',
+		);
+	}
+
+	wp_send_json( array( 'items' => $report, 'demo'  => true ) );
+}
+
+$license_type = MonsterInsights()->license->get_license_type();
+
+// If it is not a pro licensed.
+if ( ! ( $license_type === 'master' || $license_type === 'pro' ) ) {
+	add_action( 'wp_ajax_monsterinsights_user_journey_report', 'monsterinsights_user_journey_demo_report_ajax' );
+	add_action( 'wp_ajax_monsterinsights_user_journey_report_filter_params', '__return_false' );
+}

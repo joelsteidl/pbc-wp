@@ -552,6 +552,8 @@ class Tatsu {
 
 		$this->loader->add_action( 'wp_ajax_tatsu_instagram_token_save', $plugin_store, 'ajax_instagram_token_save' );
 
+		$this->loader->add_action( 'wp_ajax_tatsu_ui_settings_save', $plugin_store, 'ajax_ui_settings_save' );
+
 		$this->loader->add_action( 'wp_ajax_tatsu_save_recaptcha_details', $plugin_store, 'tatsu_save_recaptcha_details' );
 
 		$this->loader->add_action( 'wp_ajax_tatsu_save_store', $plugin_store, 'ajax_save_store' );

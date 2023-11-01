@@ -1,8 +1,10 @@
 <?php // For formatting scripture links in various parts of the plugin
 
-	if ( $enmse_language == 10 ) { 
+	if ( $enmse_language == 11 ) { 
+		include(ENMSE_PLUGIN_PATH . 'includes/lang/viet_bible_books.php');
+	} elseif ( $enmse_language == 10 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/fre_bible_books.php');
-	} elseif ( $enmse_language == 9 ) { 
+	}  elseif ( $enmse_language == 9 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/rus_bible_books.php');
 	} elseif ( $enmse_language == 8 ) { 
 		include(ENMSE_PLUGIN_PATH . 'includes/lang/jap_bible_books.php');
@@ -374,6 +376,10 @@
 		$trans = " (HTB)";
 	} elseif ( $enmse_trans == 328 ) {
 		$trans = " (NBG51)";
+	} elseif ( $enmse_trans == 151 ) {
+		$trans = " (VIE2010)";
+	} elseif ( $enmse_trans == 1638 ) {
+		$trans = " (KTHD)";
 	}
 
  ?>

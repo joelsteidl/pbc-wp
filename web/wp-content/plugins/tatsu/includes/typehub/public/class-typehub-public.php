@@ -142,14 +142,25 @@ class Typehub_Public {
 
 			}
 		}
+
+		//tatsu ui settings
+		$tatsu_ui_settings = get_option( 'tatsu_ui_settings', array() );
+
 		$output .= '<style rel="stylesheet" id="typehub-output">';
 		$output .= $css['desktop'];
-		$output .= '@media only screen and (max-width:1377px) {';
+		//laptop
+		$screen_width = empty( $tatsu_ui_settings['laptop_max_width'] ) ? '1377px' : $tatsu_ui_settings['laptop_max_width'].'px';
+
+		$output .= '@media only screen and (max-width:'. esc_attr( $screen_width ) .') {';
 		$output .= $css['laptop'];
 		$output .= '}';
-		$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
+		//tablet
+		$screen_width = empty( $tatsu_ui_settings['tablet_max_width'] ) ? '1024px' : $tatsu_ui_settings['tablet_max_width'].'px';
+
+		$output .= '@media only screen and (min-width:768px) and (max-width: '. esc_attr( $screen_width ) .') {';
 		$output .= $css['tablet'];
 		$output .= '}';
+		//mobile
 		$output .= '@media only screen and (max-width: 767px) {';
 		$output .= $css['mobile'];
 		$output .= '}';

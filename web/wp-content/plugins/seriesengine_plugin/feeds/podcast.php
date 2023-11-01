@@ -55,7 +55,9 @@ if ( isset($enmse_options['lang_podcastmessagefrom']) ) {
 if ( $enmse_podcast->custom_lang == NULL ) {
 	if ( isset($enmse_options['language']) ) { 
 		$langval = $enmse_options['language'];
-		if ( $langval == 10 ) { // French
+		if ( $langval == 11 ) { // Vietnamese
+			$enmse_podcastlanguage =  "vi";
+		} elseif ( $langval == 10 ) { // French
 			$enmse_podcastlanguage =  "fr";
 		} elseif ( $langval == 9 ) { // Russian
 			$enmse_podcastlanguage =  "ru";

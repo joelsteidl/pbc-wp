@@ -8,19 +8,27 @@ if (!function_exists('be_flex_slider')) {
 		$atts =  shortcode_atts( array(
 			'slide_show' => '0',
             'slide_show_speed' => 1000,
-			'adaptive_image'    => 0,
+			'pause_on_hover' => 0,
+			'navigation_buttons' => 0,
+			'navigation_dots' => 0,
+			'loop' => 0,
+			'adaptive_image' => 0,
             'key' => be_uniqid_base36(true),
         ), $atts, $tag );
         extract( $atts );
-	    global $be_themes_data;
+	    
+		global $be_themes_data;
+		
 		$_SESSION['adaptive_image'] = $adaptive_image;
+		
 		if(!isset($be_themes_data['slider_navigation_style']) || empty($be_themes_data['slider_navigation_style'])) {
 			$arrow_style = 'style1-arrow';
 		} else {
 			$arrow_style = $be_themes_data['slider_navigation_style'];
 		}
-	    $slide_show = ( !empty( $slide_show ) ) ? 1 : 0 ;
-        $slide_show_speed = ( !empty( $slide_show_speed ) ) ? $slide_show_speed : 4000 ;
+
+	    $slide_show = ( !empty( $slide_show ) ) ? 1 : 0;
+        $slide_show_speed = ( !empty( $slide_show_speed ) ) ? $slide_show_speed : 4000;
         
         $custom_style_tag = be_generate_css_from_atts( $atts, $tag, $key );
         $css_id = be_get_id_from_atts( $atts );
@@ -39,9 +47,8 @@ if (!function_exists('be_flex_slider')) {
         }
         $classes[] = $arrow_style;
 
-		
 	    $output = "";
-	    $output .= '<div ' . $css_id . ' class="' . implode( ' ', $classes ) . '" ' . $data_animations . ' >' . $custom_style_tag . '<div class="image_slider_module slides" data-slide-show="'.$slide_show.'" data-slide-show-speed="'.$slide_show_speed.'">';
+	    $output .= '<div ' . $css_id . ' class="' . implode( ' ', $classes ) . '" ' . $data_animations . ' >' . $custom_style_tag . '<div class="image_slider_module slides" data-slide-show="'.$slide_show.'" data-navigation-dots="'.$navigation_dots.'" data-navigation-buttons="'.$navigation_buttons.'"  data-pause-hover="'.$pause_on_hover.'" data-loop="'.$loop.'" data-slide-show-speed="'.$slide_show_speed.'">';
 		$output .= do_shortcode( $content );
 	    // $output .= '</ul><div class="font-icon loader-style4-wrap loader-icon"></div>';
 	    $output .= '</div></div>';
@@ -114,7 +121,11 @@ function oshine_register_flex_slider() {
 							'title'	=>	__( 'Style' , 'oshine-modules'),
 							'group'	=>	array (								
                                 'slide_show',
-                                'slide_show_speed',		
+                                'slide_show_speed',
+								'pause_on_hover',
+								'navigation_buttons',
+								'navigation_dots',
+								'loop',
 								'adaptive_image'									
 							)
                         ),
@@ -146,8 +157,38 @@ function oshine_register_flex_slider() {
 						'unit' => 'ms',
 					),	        		
                     'default' => '2000',
-                    'visible' => array ( 'slide_show', '=', '1' ),
+                    'visible' => array( 'slide_show', '=', '1' ),
 					'tooltip' => ''
+				),
+				array(
+					'att_name' => 'pause_on_hover',
+					'type' => 'switch',
+					'label' => __('Pause on Hover', 'oshine-modules'),
+					'default' => 0,
+					'visible' => array( 'slide_show', '=', '1' ),
+					'tooltip' => '',
+				),
+				array(
+					'att_name' => 'navigation_buttons',
+					'type' => 'switch',
+					'label' => __('Show Navigation Buttons', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
+				array(
+					'att_name' => 'navigation_dots',
+					'type' => 'switch',
+					'label' => __('Show Navigation Dots', 'oshine-modules'),
+					'default' => 0,
+					'tooltip' => '',
+				),
+				array(
+					'att_name' => 'loop',
+					'type' => 'switch',
+					'label' => __('Enable Loop', 'oshine-modules'),
+					'default' => 0,
+					'visible' => array( 'slide_show', '=', '1' ),
+					'tooltip' => '',
 				),
 				array(
 					'att_name' => 'adaptive_image',

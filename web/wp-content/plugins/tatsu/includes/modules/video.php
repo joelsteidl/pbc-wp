@@ -54,6 +54,17 @@ if ( !function_exists('tatsu_youtube') ) {
 		$result = '';
 		if( ! empty( $url ) ) {
 			$video_id = ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) ? $match[1] : '' ;
+
+			/**show consent if cookie not available : START **/
+			if(  function_exists( 'be_gdpr_privacy_ok' ) && ( empty( $_COOKIE ) || ! be_gdpr_privacy_ok( 'youtube' ) ) ){
+				$video_details = be_get_video_details($url);
+				$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'youtube', false );
+			} else {
+				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-youtube-embed" data-video-id = "' . $video_id . '" data-autoplay = "' . $autoplay . '" data-loop = "' . $loop_video . '"></div></div>';
+			}
+			/**show consent if cookie not available : END **/
+
+			/*****OLD 
 			if( !function_exists( 'be_gdpr_privacy_ok' ) ){
 				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-youtube-embed" data-video-id = "' . $video_id . '" data-autoplay = "' . $autoplay . '" data-loop = "' . $loop_video . '"></div></div>';
 			} else {
@@ -70,6 +81,7 @@ if ( !function_exists('tatsu_youtube') ) {
 					$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'youtube', true );
 				}
 			}
+			 ***/
 		} else {
 			return '';
 		}
@@ -108,11 +120,21 @@ if ( !function_exists( 'tatsu_vimeo' ) ) {
 				}
 			}
 
+			/**show consent if cookie not available : START **/
+			if( function_exists( 'be_gdpr_privacy_ok' ) && ( empty( $_COOKIE ) || ! be_gdpr_privacy_ok( 'vimeo' ) ) ) {
+				$video_details = be_get_video_details($url);
+				$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'vimeo', false );
+			} else {
+				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-url = "' . $video_url . '" data-autoplay = "' . $autoplay . '" data-loop = "' . $loop_video . '" data-muted = "' . $mute . '" ></div></div>';
+			}
+			/**show consent if cookie not available : END **/
+
+			/*****OLD 
 			if( !function_exists( 'be_gdpr_privacy_ok' ) ){
 				$result .= '<div class = "be-video-embed be-embed-placeholder"><div class = "be-vimeo-embed" data-video-url = "' . $video_url . '" data-autoplay = "' . $autoplay . '" data-loop = "' . $loop_video . '" data-muted = "' . $mute . '" ></div></div>';
 			} else {
 				if( !empty( $_COOKIE ) ){
-					if( be_gdpr_privacy_ok( 'vimeo' ) ) {
+					if( ! be_gdpr_privacy_ok( 'vimeo' ) ) {
 						$video_details = be_get_video_details($url);
 						$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'vimeo', false );
 					} else {
@@ -124,6 +146,7 @@ if ( !function_exists( 'tatsu_vimeo' ) ) {
 					$result .= be_gdpr_get_video_alt_content( $video_details['thumb_url'], 'vimeo', true );
 				}
 			}
+			***/
 		} else {
 			$result = '';
 		}

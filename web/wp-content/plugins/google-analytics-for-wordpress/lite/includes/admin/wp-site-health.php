@@ -76,13 +76,6 @@ class MonsterInsights_WP_Site_Health_Lite {
 			);
 		}
 
-		if ( $this->uses_fbia() ) {
-			$tests['direct']['monsterinsights_fbia'] = array(
-				'label' => __( 'MonsterInsights FBIA', 'google-analytics-for-wordpress' ),
-				'test'  => array( $this, 'test_check_fbia' ),
-			);
-		}
-
 		$tests['async']['monsterinsights_connection'] = array(
 			'label' => __( 'MonsterInsights Connection', 'google-analytics-for-wordpress' ),
 			'test'  => 'monsterinsights_test_connection',
@@ -106,8 +99,8 @@ class MonsterInsights_WP_Site_Health_Lite {
 	public function is_tracking() {
 
 		if ( ! isset( $this->is_tracking ) ) {
-			$ua                = monsterinsights_get_ua();
-			$this->is_tracking = ! empty( $ua );
+			$tracking_id                = monsterinsights_get_v4_id();
+			$this->is_tracking = ! empty( $tracking_id );
 		}
 
 		return $this->is_tracking;
@@ -148,17 +141,6 @@ class MonsterInsights_WP_Site_Health_Lite {
 	public function uses_amp() {
 
 		return class_exists( 'MonsterInsights_AMP' ) || defined( 'AMP__FILE__' );
-
-	}
-
-	/**
-	 * Is the site using FB Instant Articles or has the FBIA addon installed?
-	 *
-	 * @return bool
-	 */
-	public function uses_fbia() {
-
-		return class_exists( 'MonsterInsights_FB_Instant_Articles' ) || defined( 'IA_PLUGIN_VERSION' ) && version_compare( IA_PLUGIN_VERSION, '3.3.4', '>' );
 
 	}
 
@@ -261,10 +243,10 @@ class MonsterInsights_WP_Site_Health_Lite {
 		$this->is_authed = MonsterInsights()->auth->is_authed() || MonsterInsights()->auth->is_network_authed();
 
 		if ( ! $this->is_authed ) {
-			if ( '' !== monsterinsights_get_ua() ) {
-				// Using Manual UA.
+			if ( '' !== monsterinsights_get_v4_id() ) {
+				// Using Manual V4.
 				$result['status']      = 'recommended';
-				$result['label']       = __( 'You are using Manual UA code output', 'google-analytics-for-wordpress' );
+				$result['label']       = __( 'You are using Manual GA4 Measurement ID output', 'google-analytics-for-wordpress' );
 				$result['description'] = __( 'We highly recommend authenticating with MonsterInsights so that you can access our new reporting area and take advantage of new MonsterInsights features.', 'google-analytics-for-wordpress' );
 				$result['actions']     = sprintf(
 					'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>',
@@ -395,33 +377,6 @@ class MonsterInsights_WP_Site_Health_Lite {
 			),
 			'description' => __( 'Your website has Google AMP-enabled pages enabled but they are not tracked by Google Analytics at the moment. You need to install and activate the MonsterInsights AMP Addon to track AMP pages.', 'google-analytics-for-wordpress' ),
 			'test'        => 'monsterinsights_amp',
-			'actions'     => sprintf(
-				'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>',
-				add_query_arg( 'page', 'monsterinsights_settings#/addons', admin_url( 'admin.php' ) ),
-				__( 'View Addons', 'google-analytics-for-wordpress' )
-			),
-		);
-
-		return $result;
-
-	}
-
-	/**
-	 * Tests for the FBIA cases.
-	 *
-	 * @return array
-	 */
-	public function test_check_fbia() {
-
-		$result = array(
-			'label'       => __( 'Facebook Instant Articles pages are not being tracked', 'google-analytics-for-wordpress' ),
-			'status'      => 'recommended',
-			'badge'       => array(
-				'label' => __( 'MonsterInsights', 'google-analytics-for-wordpress' ),
-				'color' => 'blue',
-			),
-			'description' => __( 'Your website has Facebook Instant Articles pages set up, but they are not tracked by Google Analytics at the moment. You need to install and activate the MonsterInsights Facebook Instant Articles addon.', 'google-analytics-for-wordpress' ),
-			'test'        => 'monsterinsights_fbia',
 			'actions'     => sprintf(
 				'<p><a href="%s" target="_blank" rel="noopener noreferrer">%s</a></p>',
 				add_query_arg( 'page', 'monsterinsights_settings#/addons', admin_url( 'admin.php' ) ),

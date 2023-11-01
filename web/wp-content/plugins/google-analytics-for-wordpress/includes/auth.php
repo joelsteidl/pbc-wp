@@ -32,48 +32,22 @@ final class MonsterInsights_Auth {
 		$this->network = $this->get_network_analytics_profile();
 	}
 
-	public function is_manual( $type = false ) {
-		$result = ! empty( $this->profile['manual'] );
-
-		if ( ! $result || empty( $type ) ) {
-			return $result;
-		}
-
-		return $type === 'ua'
-			? monsterinsights_is_valid_ua( $this->profile['manual'] )
-			: monsterinsights_is_valid_v4_id( $this->profile['manual'] );
+	public function is_manual() {
+        $manual_code = $this->profile['manual'];
+        return monsterinsights_is_valid_v4_id( $manual_code );
 	}
 
 	public function is_network_manual( $type = false ) {
-		$result = ! empty( $this->network['manual'] );
-
-		if ( ! $result || empty( $type ) ) {
-			return $result;
-		}
-
-		return $type === 'ua'
-			? monsterinsights_is_valid_ua( $this->network['manual'] )
-			: monsterinsights_is_valid_v4_id( $this->network['manual'] );
+		$manual_code = $this->network['manual'];
+        return monsterinsights_is_valid_v4_id( $manual_code );
 	}
 
-	public function is_authed( $type = false ) {
-		$result = ! empty( $this->profile['key'] );
-
-		if ( ! $result || empty( $type ) ) {
-			return $result;
-		}
-
-		return $this->get_connected_type() === $type && ! empty( $this->profile[ $type ] );
+	public function is_authed() {
+		return ! empty( $this->profile['key'] ) && ! empty( $this->profile[ 'v4' ] );
 	}
 
-	public function is_network_authed( $type = false ) {
-		$result = ! empty( $this->network['key'] );
-
-		if ( ! $result || empty( $type ) ) {
-			return $result;
-		}
-
-		return $this->get_connected_type() === $type && ! empty( $this->network[ $type ] );
+	public function is_network_authed() {
+        return ! empty( $this->network['key'] ) && ! empty( $this->network[ 'v4' ] );
 	}
 
 	public function get_analytics_profile( $force = false ) {
@@ -99,6 +73,10 @@ final class MonsterInsights_Auth {
 	}
 
 	public function set_analytics_profile( $data = array() ) {
+		if ( ! empty( $data ) ) {
+			$data['connection_time'] = time();
+		}
+
 		update_option( 'monsterinsights_site_profile', $data );
 		$this->profile = $data;
 
@@ -126,11 +104,9 @@ final class MonsterInsights_Auth {
 	public function delete_analytics_profile( $migrate = true ) {
 		if ( $migrate ) {
 			$newdata = array();
-			if ( isset( $this->profile['ua'] ) ) {
-				$newdata['manual'] = $this->profile['ua'];
-			}
 			if ( isset( $this->profile['v4'] ) ) {
 				$newdata['manual_v4'] = $this->profile['v4'];
+                $newdata['measurement_protocol_secret'] = $this->profile['measurement_protocol_secret'];
 			}
 			$this->profile = $newdata;
 			$this->set_analytics_profile( $newdata );
@@ -143,11 +119,9 @@ final class MonsterInsights_Auth {
 	public function delete_network_analytics_profile( $migrate = true ) {
 		if ( $migrate ) {
 			$newdata = array();
-			if ( isset( $this->network['ua'] ) ) {
-				$newdata['manual'] = $this->network['ua'];
-			}
 			if ( isset( $this->network['v4'] ) ) {
 				$newdata['manual_v4'] = $this->network['v4'];
+                $newdata['measurement_protocol_secret'] = $this->profile['measurement_protocol_secret'];
 			}
 			$this->network = $newdata;
 			$this->set_network_analytics_profile( $newdata );
@@ -155,109 +129,6 @@ final class MonsterInsights_Auth {
 			$this->network = array();
 			delete_site_option( 'monsterinsights_network_profile' );
 		}
-	}
-
-	public function set_manual_ua( $ua = '' ) {
-		if ( empty( $ua ) ) {
-			return;
-		}
-
-		if ( $this->is_authed() ) {
-			MonsterInsights()->api_auth->delete_auth();
-		}
-
-		$data = array();
-		if ( empty( $this->profile ) ) {
-			$data['manual'] = $ua;
-		} else {
-			$data           = $this->profile;
-			$data['manual'] = $ua;
-		}
-
-		do_action( 'monsterinsights_reports_delete_aggregate_data' );
-
-		$this->profile = $data;
-		$this->set_analytics_profile( $data );
-	}
-
-	/**
-	 * @param string $id
-	 * @param array $data
-	 * @param bool $is_manual_ua
-	 * @param bool $is_manual_v4
-	 * @param bool $is_authed_ua
-	 * @param bool $is_authed_v4
-	 *
-	 * @return false|array
-	 */
-	private function prepare_dual_tracking_data( $id, $data, $is_manual_ua, $is_manual_v4, $is_authed_ua, $is_authed_v4 ) {
-		if ( empty( $id ) ) {
-			$key = false;
-
-			if ( $is_manual_ua || $is_manual_v4 ) {
-				$key = $is_manual_ua ? 'manual_v4' : 'manual';
-			} elseif ( $is_authed_ua || $is_authed_v4 ) {
-				$key = $is_authed_ua ? 'v4' : 'ua';
-			}
-
-			if ( $key && ! empty( $data[ $key ] ) ) {
-				unset( $data[ $key ] );
-			}
-		} else {
-			$is_dual_tracking_id_v4 = ( $is_authed_ua || $is_manual_ua ) && monsterinsights_is_valid_v4_id( $id );
-			$is_dual_tracking_id_ua = ( $is_authed_v4 || $is_manual_v4 ) && monsterinsights_is_valid_ua( $id );
-
-			$is_valid_dual_tracking_id = $is_dual_tracking_id_ua ||
-			                             $is_dual_tracking_id_v4;
-
-			if ( ! $is_valid_dual_tracking_id ) {
-				return false;
-			}
-
-			if ( $is_manual_ua || $is_manual_v4 ) {
-				$key = $is_dual_tracking_id_v4 ? 'manual_v4' : 'manual';
-			} else {
-				$key = $is_dual_tracking_id_v4 ? 'v4' : 'ua';
-			}
-
-			$data[ $key ] = $id;
-		}
-
-		return $data;
-	}
-
-	public function set_dual_tracking_id( $id = '' ) {
-		$data = empty( $this->profile ) ? array() : $this->profile;
-
-		$is_manual_ua = $this->is_manual( 'ua' );
-		$is_manual_v4 = $this->is_manual( 'v4' );
-		$is_authed_ua = $this->is_authed( 'ua' );
-		$is_authed_v4 = $this->is_authed( 'v4' );
-
-		$prepared_data = $this->prepare_dual_tracking_data( $id, $data, $is_manual_ua, $is_manual_v4, $is_authed_ua, $is_authed_v4 );
-		if ( $prepared_data === false ) {
-			return;
-		}
-
-		$this->profile = $prepared_data;
-		$this->set_analytics_profile( $prepared_data );
-	}
-
-	public function set_network_dual_tracking_id( $id = '' ) {
-		$data = empty( $this->network ) ? array() : $this->network;
-
-		$is_manual_ua = $this->is_network_manual( 'ua' );
-		$is_manual_v4 = $this->is_network_manual( 'v4' );
-		$is_authed_ua = $this->is_network_authed( 'ua' );
-		$is_authed_v4 = $this->is_network_authed( 'v4' );
-
-		$prepared_data = $this->prepare_dual_tracking_data( $id, $data, $is_manual_ua, $is_manual_v4, $is_authed_ua, $is_authed_v4 );
-		if ( $prepared_data === false ) {
-			return;
-		}
-
-		$this->network = $prepared_data;
-		$this->set_network_analytics_profile( $prepared_data );
 	}
 
 	public function set_manual_v4_id( $v4 = '' ) {
@@ -281,30 +152,6 @@ final class MonsterInsights_Auth {
 
 		$this->profile = $data;
 		$this->set_analytics_profile( $data );
-	}
-
-	public function set_network_manual_ua( $ua = '' ) {
-		if ( empty( $ua ) ) {
-			return;
-		}
-
-		if ( $this->is_network_authed() ) {
-			MonsterInsights()->api_auth->delete_auth();
-		}
-
-		$data = array();
-		if ( empty( $this->network ) ) {
-			$data['manual'] = $ua;
-		} else {
-			$data                      = $this->network;
-			$data['manual']            = $ua;
-			$data['network_manual_ua'] = $ua;
-		}
-
-		do_action( 'monsterinsights_reports_delete_network_aggregate_data' );
-
-		$this->network = $data;
-		$this->set_network_analytics_profile( $data );
 	}
 
 	public function set_network_manual_v4_id( $v4 = '' ) {
@@ -365,20 +212,6 @@ final class MonsterInsights_Auth {
 		$this->set_network_analytics_profile( $data );
 	}
 
-	public function delete_manual_ua() {
-		if ( ! empty( $this->profile ) && ! empty( $this->profile['manual'] ) ) {
-			unset( $this->profile['manual'] );
-			$this->set_analytics_profile( $this->profile );
-		}
-	}
-
-	public function delete_network_manual_ua() {
-		if ( ! empty( $this->network ) && ! empty( $this->network['manual'] ) ) {
-			unset( $this->network['manual'] );
-			$this->set_network_analytics_profile( $this->network );
-		}
-	}
-
 	public function delete_manual_v4_id() {
 		if ( ! empty( $this->profile ) && ! empty( $this->profile['manual_v4'] ) ) {
 			unset( $this->profile['manual_v4'] );
@@ -393,36 +226,16 @@ final class MonsterInsights_Auth {
 		}
 	}
 
-	public function get_connected_type() {
-		return empty( $this->profile['connectedtype'] ) ? 'ua' : $this->profile['connectedtype'];
-	}
-
-	public function get_manual_ua() {
-		return ! empty( $this->profile['manual'] ) ? monsterinsights_is_valid_ua( $this->profile['manual'] ) : '';
-	}
-
 	public function get_manual_v4_id() {
 		return ! empty( $this->profile['manual_v4'] ) ? monsterinsights_is_valid_v4_id( $this->profile['manual_v4'] ) : '';
-	}
-
-	public function get_network_manual_ua() {
-		return ! empty( $this->network['network_manual_ua'] ) ? monsterinsights_is_valid_ua( $this->network['network_manual_ua'] ) : '';
 	}
 
 	public function get_network_manual_v4_id() {
 		return ! empty( $this->network['manual_v4'] ) ? monsterinsights_is_valid_v4_id( $this->network['manual_v4'] ) : '';
 	}
 
-	public function get_ua() {
-		return ! empty( $this->profile['ua'] ) ? monsterinsights_is_valid_ua( $this->profile['ua'] ) : '';
-	}
-
 	public function get_v4_id() {
 		return ! empty( $this->profile['v4'] ) ? monsterinsights_is_valid_v4_id( $this->profile['v4'] ) : '';
-	}
-
-	public function get_network_ua() {
-		return ! empty( $this->network['ua'] ) ? monsterinsights_is_valid_ua( $this->network['ua'] ) : '';
 	}
 
 	public function get_network_v4_id() {
@@ -491,9 +304,7 @@ final class MonsterInsights_Auth {
 		}
 
 		if ( ! empty( $acc_id ) && ! empty( $view_id ) && ! empty( $property_id ) ) {
-			$format = $auth->get_connected_type() === 'ua'
-				? 'a%sw%sp%s/'
-				: 'p%2$s';
+			$format = 'p%2$s';
 
 			return sprintf( $format, $acc_id, $property_id, $view_id );
 		}

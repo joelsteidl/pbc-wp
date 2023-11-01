@@ -102,30 +102,12 @@ var MonsterInsights = function () {
     __gtagTracker(type, hitType, fields);
   }
 
-  function __gtagMaybeTrackerUA(type, action, fieldsArray) {
-    if (!monsterinsights_frontend.ua) {
-      return;
-    }
-
-    var allowedFields = [
-      'event_category',
-      'event_label',
-      'value',
-    ];
-
-    var uaFields = cloneFields(fieldsArray, allowedFields);
-    uaFields.send_to = monsterinsights_frontend.ua;
-
-    __gtagTracker(type, action, uaFields);
-  }
-
   function __gtagTrackerSendDual(type, action, fieldsArray, valuesArray) {
     type = typeof type !== 'undefined' ? type : 'event';
     action = typeof action !== 'undefined' ? action : '';
     valuesArray = typeof valuesArray !== 'undefined' ? valuesArray : [];
     fieldsArray = typeof fieldsArray !== 'undefined' ? fieldsArray : {};
 
-    __gtagMaybeTrackerUA(type, action, fieldsArray);
     __gtagMaybeTrackerV4(type, action, fieldsArray);
 
     lastClicked.valuesArray = valuesArray;
@@ -447,7 +429,15 @@ var MonsterInsights = function () {
           }
           maybePreventBeforeUnload();
           __gtagTrackerHitBackRun = true;
-          window.location.href = link;
+
+          if ( el.attributes.download ) {
+            var linkTag = document.createElement('a');
+            linkTag.href = el.href;
+            linkTag.download = el.download;
+            linkTag.click();
+          } else {
+            window.location.href = link;
+          }
         };
 
         var __gtagTrackerNoRedirectExternal = function () {
@@ -718,19 +708,13 @@ var MonsterInsights = function () {
 
   function __gtagTrackerHashChangeEvent() {
     /* Todo: Ready this section for JS unit testing */
-    if (monsterinsights_frontend.hash_tracking === "true" && prevHash != window.location.hash && (monsterinsights_frontend.ua || monsterinsights_frontend.v4_id)) {
+    if (monsterinsights_frontend.hash_tracking === "true" && prevHash != window.location.hash && monsterinsights_frontend.v4_id) {
       prevHash = window.location.hash;
-      if (monsterinsights_frontend.ua) {
-        __gtagTracker('config', monsterinsights_frontend.ua, {
-          page_path: location.pathname + location.search + location.hash,
-        });
-      }
 
-      if (monsterinsights_frontend.v4_id) {
-        __gtagTracker('config', monsterinsights_frontend.v4_id, {
-          page_path: location.pathname + location.search + location.hash,
-        });
-      }
+      __gtagTracker('config', monsterinsights_frontend.v4_id, {
+        page_path: location.pathname + location.search + location.hash,
+      });
+
       __gtagTrackerLog("Hash change to: " + location.pathname + location.search + location.hash);
     } else {
       __gtagTrackerLog("Hash change to (untracked): " + location.pathname + location.search + location.hash);

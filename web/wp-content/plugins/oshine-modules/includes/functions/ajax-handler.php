@@ -698,40 +698,83 @@ endif;
 // Mail Chimp 
 /* ---------------------------------------------  */
 
-
-if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) :
+/**
+ * AJAX Mailchimp subscription.
+ */
+if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) {
 	function be_themes_mailchimp_subscription() {
-		global $be_themes_data;
-		$result = array();
-		if( empty($_POST['api_key']) || empty( $_POST['list_id'] ) || empty( $_POST['email'] ) ) {
-			$result['status'] = 'error';
-			$result['data'] = __( 'Api Key / List Id / Email Address is missing', 'oshine-modules');
-			echo json_encode($result);
-			exit;
+		if( empty( $_POST['email'] ) ) {
+			wp_send_json( array(
+				'status'  => 'error',
+				'data' => __( 'Email Address is missing.', 'oshine-modules'),
+			 ) );
 		}
-		$MailChimp = new MailChimp($_POST['api_key']);
-		$result = $MailChimp->call('lists/subscribe', array (
-	        'id'                => $_POST['list_id'],
-	        'email'             => array('email'=> $_POST['email']),
-	        'merge_vars'        => array('FNAME'=>'', 'LNAME'=>''),
-	        'double_optin'      => false,
-	        'update_existing'   => true,
-	        'replace_interests' => false,
-	        'send_welcome'      => false,
-	    ));
-	    if( !isset($result['status']) ) {
-	    	$result['status'] = 'success';
-	    	$result['data'] = __('Thank you, you have been added to our mailing list.','oshine-modules');
-	    } else {
-	    	$result['data'] =  $result['error'];
-	    }
-		header('Content-type: application/json');
-		echo json_encode($result);
-		die();
+		if( empty($_POST['api_key']) || empty( $_POST['list_id'] ) ) {
+			wp_send_json( array(
+				'status'  => 'error',
+				'data' => __( 'Api Key or List Id is missing.', 'oshine-modules'),
+			 ) );
+		}
+
+		$email = sanitize_email( $_POST['email'] );
+		$api_key = $_POST['api_key'];
+		$list_id = $_POST['list_id'];
+
+		$success = empty( $_POST['success_text'] ) ? __( 'Thank you, you have been added to our mailing list.','oshine-modules' ) : sanitize_text_field( $_POST['success_text'] );
+
+		$phone = $fname = $lname = '';
+		$api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
+		list( , $datacentre ) = explode( '-', $api_key );
+		$api_endpoint = str_replace( '<dc>', $datacentre, $api_endpoint );
+
+		$body = apply_filters( 'exponent_mailchimp_data', [
+			'email_address'     => $email,
+			'merge_fields'      => [
+				'FNAME' => $fname,
+				'LNAME' => $lname,
+				'PHONE' => $phone,
+			],
+			'email_type'        => 'html',
+			'status'            => 'subscribed',
+			'double_optin'      => false,
+			'update_existing'   => true,
+			'replace_interests' => false,
+			'send_welcome'      => false,
+		] );
+
+		$response = wp_remote_post( $api_endpoint . '/lists/' . $list_id . '/members', [
+			'headers'   => [
+				'Content-Type'  => 'application/json',
+				'Authorization' => 'Basic '. base64_encode( 'user:' . $api_key ),
+			],
+			'body'      => wp_json_encode( $body ),
+			'sslverify' => false,
+		] );
+
+		if ( is_wp_error( $response ) ) {
+			wp_send_json( [
+				'status'  => 'error',
+				'data' => $response->get_error_message(),
+			] );
+		} else {
+			$result = json_decode( wp_remote_retrieve_body( $response ), true );
+			$response = [];
+			
+			if ( isset( $result['status'] ) && ! isset( $result['errors'] ) && ( $result['status'] == 'subscribed'  ||  $result['status'] == 400 ) ) {
+				$response['status'] = 'success';
+				$response['data'] = $success;
+			} else {
+				$response['status'] = 'error';
+				$response['data'] = empty( $result['title'] ) ? __( 'Something went wrong. Please try again later.', 'oshine-modules' ) : $result['title'];
+			}
+
+			wp_send_json( $response );
+		}
 	}
+
 	add_action( 'wp_ajax_nopriv_mailchimp_subscription', 'be_themes_mailchimp_subscription' );
 	add_action( 'wp_ajax_mailchimp_subscription', 'be_themes_mailchimp_subscription' );
-endif;
+}
 
 /* ---------------------------------------------  */
 // Mail Chimp API Class

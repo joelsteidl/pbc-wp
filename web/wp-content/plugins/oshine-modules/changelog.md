@@ -1,3 +1,20 @@
+v3.3.3 ( 09 October 2023 )
+======
+* Fixed: Newsletter error - Invalid Form Fields
+
+v3.3.2 (23 June 2023)
+======
+* Fixed: Portfolio module with WPML
+* Fixed: Internet Explorer detection
+* Fixed: Blog module pagination for home page
+
+v3.3.1 (27 December 2022)
+======
+* Added: Option to show/hide navigation dots in Image Slider module
+* Added: Option to show/hide navigation buttons in Image Slider module
+* Added: Option to enable/disable pause on hover in Image Slider module
+* Added: Option to enable/disable loop in Image Slider module
+
 v3.3.0 (24 November 2022)
 ======
 * Added: Option to show/hide navigation dots in clients module

@@ -1,3 +1,7 @@
+v1.5.7 ( 09 October 2023 )
+======
+* Fixed: php deprecations
+
 v1.5.6
 ======
 * Fixed: Remove spam content from demo

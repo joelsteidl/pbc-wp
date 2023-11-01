@@ -1159,16 +1159,44 @@ var ImageSlider = React.createClass({
 		    atts = imageSlider.get('atts'),
 		    visibilityClass,
 		    slideShow,
+		    pauseOnHover,
+		    navigationButtons,
+		    navigationDots,
+		    loop,
 		    slideShowSpeed;
 
 		if (!isEmpty(atts)) {
 			visibilityClass = generateVisibilityClasses(atts);
 			slideShowSpeed = parseValue(imageSlider.get('name'), 'slide_show_speed', atts.get('slide_show_speed'), moduleOptions);
 			slideShow = atts.get('slide_show');
+			pauseOnHover = atts.get('pause_on_hover');
+			navigationButtons = atts.get('navigation_buttons');
+			navigationDots = atts.get('navigation_dots');
+			loop = atts.get('loop');
 			if ('yes' === slideShow || '1' === slideShow) {
 				slideShow = '1';
 			} else {
 				slideShow = '0';
+			}
+			if (!isEmpty(pauseOnHover)) {
+				pauseOnHover = '1';
+			} else {
+				pauseOnHover = '0';
+			}
+			if (!isEmpty(navigationButtons)) {
+				navigationButtons = '1';
+			} else {
+				navigationButtons = '0';
+			}
+			if (!isEmpty(navigationDots)) {
+				navigationDots = '1';
+			} else {
+				navigationDots = '0';
+			}
+			if (!isEmpty(loop)) {
+				loop = '1';
+			} else {
+				loop = '0';
 			}
 			if ('string' === typeof slideShowSpeed && !isNaN(slideShowSpeed.replace(/\D+/, '')) && '' != slideShowSpeed.replace(/\D+/, '')) {
 				slideShowSpeed = slideShowSpeed.replace(/\D+/, '');
@@ -1181,7 +1209,7 @@ var ImageSlider = React.createClass({
 			_extends({}, generateIdentifierId(atts), { className: "be_image_slider oshine-module style1-arrow " + visibilityClass + ' ' + atts.get('css_classes'), style: cssObject['root'] }),
 			React.createElement(
 				'div',
-				{ className: 'image_slider_module slides', 'data-animation': 'fade', 'data-slide-show': slideShow, 'data-slide-show-speed': slideShowSpeed },
+				{ className: 'image_slider_module slides', 'data-animation': 'fade', 'data-slide-show': slideShow, 'data-slide-show-speed': slideShowSpeed, 'data-navigation-dots': navigationDots, 'data-navigation-buttons': navigationButtons, 'data-pause-hover': pauseOnHover, 'data-loop': loop },
 				children.map(function (image) {
 					return React.createElement(ImageSlide, { key: image.get('id'), module: image, moduleOptions: moduleOptions });
 				})

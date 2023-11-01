@@ -15,6 +15,7 @@
 
 .monsterinsights-metabox-pro-badge {
 	margin-top: 15px;
+	margin-bottom: 15px;
 	padding: 15px;
 	background: #EAFAEE;
 	border: 1px solid #46BF40;
@@ -57,6 +58,7 @@
 
 #monsterinsights-metabox-page-insights {
 	margin-top: 24px;
+	margin-bottom: 24px;
 }
 
 #monsterinsights_hide_page_insights {

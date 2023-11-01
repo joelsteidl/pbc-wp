@@ -344,6 +344,9 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 			if( !empty( $tatsu_registered_modules[$module] ) ){
 				$config = be_reformat_module_options($tatsu_registered_modules[$module]['atts']);
 			}
+
+			//tatsu ui settings
+			$tatsu_ui_settings = get_option( 'tatsu_ui_settings', array() );
 			
 			if( is_array( $atts ) ) {
 				foreach( $atts as $att => $value ){
@@ -394,12 +397,14 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 			}
 
 			if( !empty( $css['l'] ) ) {
-				$output .= '@media only screen and (max-width:1377px) {';
+				$screen_width = empty( $tatsu_ui_settings['laptop_max_width'] ) ? '1377px' : $tatsu_ui_settings['laptop_max_width'].'px';
+				$output .= '@media only screen and (max-width:'. esc_attr( $screen_width ) .') {';
 				$output .= $css['l'];
 				$output .= '}';
 			}
 			if( !empty( $css['t'] ) ) {
-				$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
+				$screen_width = empty( $tatsu_ui_settings['tablet_max_width'] ) ? '1024px' : $tatsu_ui_settings['tablet_max_width'].'px';
+				$output .= '@media only screen and (min-width:768px) and (max-width: '. esc_attr( $screen_width ) .') {';
 				$output .= $css['t'];
 				$output .= '}';
 			}

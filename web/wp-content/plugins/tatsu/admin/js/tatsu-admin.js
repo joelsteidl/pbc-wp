@@ -184,6 +184,53 @@
 		} );
 
 		/**
+		 * save tatsu_ui_settings like responsive media query
+		 */
+		$( '#tatsu_ui_settings' ).on( 'submit', function( e ) {
+			e.preventDefault();
+			var uiForm  = document.getElementById('tatsu_ui_settings'); 
+
+			//form data
+			var formData = new FormData( uiForm );
+
+			//at least one field should have value to be a valid form
+			var invalid_form = true;
+			for (var [fkey, fvalue] of formData) {
+				console.log(" input ",fvalue.length);
+				if ( 'undefined' !== typeof fvalue && null !== fvalue && 0 < fvalue.length  ) {
+					invalid_form = false;
+				}
+			}
+
+			if ( invalid_form ) {
+				console.log("missing input");
+				return false;
+			}
+			//form action
+			formData.append("action", "tatsu_ui_settings_save");
+			//nonce
+			formData.append("nonce", tatsuAdminConfig.nonce);
+
+			var submitBtn = uiForm.querySelector('.tatsu-submit-btn');
+			var noticeDiv = uiForm.querySelector('.tatsu-saved-notice');
+			
+			//disabled submit button
+			submitBtn.disabled = true;
+
+			fetch( tatsuAdminConfig.ajaxurl, {
+				method: 'POST',
+				credentials: 'same-origin', // <-- make sure to include credentials
+				body: formData,
+			} )
+			.then( ( response ) => response.json() )
+			.then( ( response ) => {
+				submitBtn.disabled = false;
+				noticeDiv.style.display='block';
+			});
+
+		} );
+
+		/**
 		 * Save reCAPTCHA details 
 		 */
 		 $( '#recaptcha-integration-form' ).on( 'submit', function( e ) {

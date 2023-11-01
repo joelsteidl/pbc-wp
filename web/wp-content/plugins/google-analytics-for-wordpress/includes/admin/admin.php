@@ -42,21 +42,35 @@ function monsterinsights_admin_menu()
 		// if dashboards enabled, first dashboard
 		add_menu_page(__('General:', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress') . MonsterInsights()->notifications->get_menu_count(), 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page', $menu_icon_inline, '100.00013467543');
 
-		add_submenu_page($hook, __('General Reports:', 'google-analytics-for-wordpress'), __('Reports', 'google-analytics-for-wordpress'), 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page');
+        if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
+	        add_submenu_page( $hook, __( 'Setup Checklist', 'google-analytics-for-wordpress' ), __( 'Setup Checklist', 'google-analytics-for-wordpress' ) . MonsterInsights()->setup_checklist->get_menu_count(), 'monsterinsights_save_settings', 'monsterinsights_settings#/setup-checklist', 'monsterinsights_settings_page' );
+        }
+
+		add_submenu_page( $hook, __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Reports', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page' );
 
 		// then settings page
 		add_submenu_page($hook, __('MonsterInsights', 'google-analytics-for-wordpress'), __('Settings', 'google-analytics-for-wordpress'), 'monsterinsights_save_settings', 'monsterinsights_settings', 'monsterinsights_settings_page');
 
 		// Add dashboard submenu.
-		add_submenu_page('index.php', __('General Reports:', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress'), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports');
+		add_submenu_page( 'index.php', __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Insights', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports' );
+
+		if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
+			// Remove own submenu of `Insights` main menu.
+			remove_submenu_page( 'monsterinsights_reports', 'monsterinsights_reports' );
+		}
 	}
 
 	$submenu_base = add_query_arg('page', 'monsterinsights_settings', admin_url('admin.php'));
 
+	add_submenu_page( $hook, __( 'Site Notes:', 'google-analytics-for-wordpress' ), __( 'Site Notes', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', $submenu_base . '#/site-notes' );
+
 	// Add Popular Posts menu item.
 	add_submenu_page($hook, __('Popular Posts:', 'google-analytics-for-wordpress'), __('Popular Posts', 'google-analytics-for-wordpress'), 'monsterinsights_save_settings', $submenu_base . '#/popular-posts');
 
-	if (function_exists('aioseo')) {
+	// Add submenu under `Insights` main menu for user journey report.
+	add_submenu_page( $hook, __( 'User Journey:', 'google-analytics-for-wordpress' ), __( 'User Journey', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports#/user-journey-report' );
+
+	if ( function_exists( 'aioseo' ) ) {
 		$seo_url = monsterinsights_aioseo_dashboard_url();
 	} else {
 		$seo_url = $submenu_base . '#/seo';
@@ -84,7 +98,7 @@ function monsterinsights_admin_menu()
 	// Add About us page.
 	add_submenu_page($hook, __('About Us:', 'google-analytics-for-wordpress'), __('About Us', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/about');
 
-	if (!monsterinsights_is_pro_version()) {
+	if (!monsterinsights_is_pro_version() && !strstr(plugin_basename(__FILE__), 'dashboard-for')) {
 		// automated promotion
 		monsterinsights_automated_menu($hook);
 	}
@@ -413,6 +427,7 @@ function monsterinsights_admin_setup_notices()
 	}
 
 	// Priority:
+    // 0. UA sunset
 	// 1. Google Analytics not authenticated
 	// 2. License key not entered for pro
 	// 3. License key not valid/okay for pro
@@ -423,10 +438,36 @@ function monsterinsights_admin_setup_notices()
 	// 8. Woo upsell
 	// 9. EDD upsell
 
+    //  0. UA sunset supported alert
+    $profile = is_network_admin() ? MonsterInsights()->auth->get_network_analytics_profile() : MonsterInsights()->auth->get_analytics_profile();
+
+    if ( !empty($profile['ua']) && empty($profile['v4']) && !monsterinsights_is_own_admin_page() ) {
+        $title = __('Urgent: Your Website is Not Tracking Any Google Analytics Data!', 'google-analytics-for-wordpress');
+        $message = __('Google Analytics 3 (UA) and support was sunset on July 1, 2023. Your website is currently NOT tracking any analytics. </br>Create or connect a new Google Analytics 4 property immediately to start tracking.', 'google-analytics-for-wordpress');
+
+        $wizard_url     = admin_url('admin.php?page=monsterinsights-onboarding');
+
+        echo '<div class="notice notice-error is-dismissible monsterinsights-notice" data-notice="monsterinsights_ua_sunset">';
+        echo '<p><strong>' . $title . '</strong></p>';
+        echo '<p>' . $message . '</p>';
+        echo '<p>';
+        echo '<a href="https://www.monsterinsights.com/docs/connect-google-analytics/"
+                   target="_blank" rel="noopener noreferrer">' .
+            __( 'Learn How to Create a GA4 Property', 'google-analytics-for-wordpress' ) .
+            '</a><br>';
+        echo '<a href="' . $wizard_url . '">' .
+            __( 'Connect a Property', 'google-analytics-for-wordpress' ) .
+            '</a><br>';
+        echo '</p>';
+        echo '</div>';
+
+        return;
+    }
+
 	$is_plugins_page = 'plugins' === get_current_screen()->id;
 
 	// 1. Google Analytics not authenticated
-	if ( ! is_network_admin() && ! monsterinsights_get_ua() && ! monsterinsights_get_v4_id() && ! defined( 'MONSTERINSIGHTS_DISABLE_TRACKING' ) && ! monsterinsights_is_own_admin_page() ) {
+	if ( ! is_network_admin() && ! monsterinsights_get_v4_id() && ! defined( 'MONSTERINSIGHTS_DISABLE_TRACKING' ) && ! monsterinsights_is_own_admin_page() ) {
 
 		$submenu_base = is_network_admin() ? add_query_arg( 'page', 'monsterinsights_network', network_admin_url( 'admin.php' ) ) : add_query_arg( 'page', 'monsterinsights_settings', admin_url( 'admin.php' ) );
 		$title        = esc_html__( 'Please Setup Website Analytics to See Audience Insights', 'google-analytics-for-wordpress' );
@@ -434,7 +475,7 @@ function monsterinsights_admin_setup_notices()
 		$urlone       = is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights-onboarding' ) : admin_url( 'admin.php?page=monsterinsights-onboarding' );
 		$secondary    = esc_html__( 'Learn More', 'google-analytics-for-wordpress' );
 		$urltwo       = $submenu_base . '#/about/getting-started';
-		$message      = esc_html__( 'MonsterInsights, the #1 Wordpress Analytics Plugin, helps you easily connect your website to Google Analytics, so that you can see how people find and use your website. Over 3 million website owners use MonsterInsights to see the stats that matter and grow their business.', 'google-analytics-for-wordpress' );
+		$message      = esc_html__( 'MonsterInsights, the #1 WordPress Analytics Plugin, helps you easily connect your website to Google Analytics, so that you can see how people find and use your website. Over 3 million website owners use MonsterInsights to see the stats that matter and grow their business.', 'google-analytics-for-wordpress' );
 		echo '<div class="notice notice-info"><p style="font-weight:700">' . $title . '</p><p>' . $message . '</p><p><a href="' . $urlone . '" class="button-primary">' . $primary . '</a>&nbsp;&nbsp;&nbsp;<a href="' . $urltwo . '" class="button-secondary">' . $secondary . '</a></p></div>';
 
 		return;
@@ -574,9 +615,9 @@ function monsterinsights_admin_setup_notices()
 	// 6. Authenticate, not manual
 	$authed  = MonsterInsights()->auth->is_authed() || MonsterInsights()->auth->is_network_authed();
 	$url     = is_network_admin() ? network_admin_url('admin.php?page=monsterinsights_network') : admin_url('admin.php?page=monsterinsights_settings');
-	$ua_code = monsterinsights_get_ua_to_output();
+	$tracking_code = monsterinsights_get_v4_id_to_output();
 	// Translators: Placeholders add links to the settings panel.
-	$manual_text = sprintf(esc_html__('Important: You are currently using manual UA code output. We highly recommend %1$sauthenticating with MonsterInsights%2$s so that you can access our new reporting area and take advantage of new MonsterInsights features.', 'google-analytics-for-wordpress'), '<a href="' . $url . '">', '</a>');
+	$manual_text = sprintf(esc_html__('Important: You are currently using manual GA4 Measurement ID output. We highly recommend %1$sauthenticating with MonsterInsights%2$s so that you can access our new reporting area and take advantage of new MonsterInsights features.', 'google-analytics-for-wordpress'), '<a href="' . $url . '">', '</a>');
 	$migrated    = monsterinsights_get_option('gadwp_migrated', 0);
 	if ($migrated > 0) {
 		$url = admin_url('admin.php?page=monsterinsights-getting-started&monsterinsights-migration=1');
@@ -585,7 +626,7 @@ function monsterinsights_admin_setup_notices()
 		$manual_text = sprintf($text, '<a href="' . esc_url($url) . '">', '</a>', '<a href="' . monsterinsights_get_url('notice', 'manual-ua', 'https://www.exactmetrics.com/why-did-we-implement-the-new-google-analytics-authentication-flow-challenges-explained/') . '" target="_blank">', '</a>');
 	}
 
-	if (empty($authed) && !isset($notices['monsterinsights_auth_not_manual']) && !empty($ua_code)) {
+	if (empty($authed) && !isset($notices['monsterinsights_auth_not_manual']) && !empty($tracking_code)) {
 		echo '<div class="notice notice-info is-dismissible monsterinsights-notice" data-notice="monsterinsights_auth_not_manual">';
 		echo '<p>';
 		echo $manual_text; // phpcs:ignore
@@ -676,6 +717,7 @@ function monsterinsights_admin_setup_notices()
 		}
 	}
 
+
 	if (isset($notices['monsterinsights_cross_domains_extracted']) && false === $notices['monsterinsights_cross_domains_extracted']) {
 		$page = is_network_admin() ? network_admin_url('admin.php?page=monsterinsights_network') : admin_url('admin.php?page=monsterinsights_settings');
 		$page = $page . '#/advanced';
@@ -757,5 +799,14 @@ function monsterinsights_empty_measurement_protocol_token()
 	echo '<div class="error"><p>' . $message . '</p></div>'; // phpcs:ignore
 }
 
-add_action('admin_notices', 'monsterinsights_empty_measurement_protocol_token');
-add_action('network_admin_notices', 'monsterinsights_admin_setup_notices');
+add_action( 'admin_notices', 'monsterinsights_empty_measurement_protocol_token' );
+add_action( 'network_admin_notices', 'monsterinsights_admin_setup_notices' );
+
+/**
+ * Check if the plugin is MI Lite.
+ *
+ * @return bool
+ */
+function check_is_it_monsterinsights_lite() {
+    return 'googleanalytics.php' == basename( MONSTERINSIGHTS_PLUGIN_FILE );
+}

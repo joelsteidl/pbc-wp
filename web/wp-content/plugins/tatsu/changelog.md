@@ -1,3 +1,13 @@
+v3.4.5 ( 09 October 2023 )
+======
+* Fixed: BE GDPR consent.
+* Fixed: php deprecations.
+* Fixed: single image module open in lightbox
+
+v3.4.4 (23 August 2023)
+======
+* Added: Responsive media query screen width settings.
+
 v3.4.3 (28 April 2023)
 ======
 * Added: Private Vimeo Video Support.

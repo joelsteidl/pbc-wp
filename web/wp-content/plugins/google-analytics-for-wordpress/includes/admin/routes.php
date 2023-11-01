@@ -21,9 +21,7 @@ class MonsterInsights_Rest_Routes {
 		add_action( 'wp_ajax_monsterinsights_vue_update_settings', array( $this, 'update_settings' ) );
 		add_action( 'wp_ajax_monsterinsights_vue_update_settings_bulk', array( $this, 'update_settings_bulk' ) );
 		add_action( 'wp_ajax_monsterinsights_vue_get_addons', array( $this, 'get_addons' ) );
-		add_action( 'wp_ajax_monsterinsights_update_manual_ua', array( $this, 'update_manual_ua' ) );
 		add_action( 'wp_ajax_monsterinsights_update_manual_v4', array( $this, 'update_manual_v4' ) );
-		add_action( 'wp_ajax_monsterinsights_update_dual_tracking_id', array( $this, 'update_dual_tracking_id' ) );
 		add_action( 'wp_ajax_monsterinsights_update_measurement_protocol_secret', array(
 			$this,
 			'update_measurement_protocol_secret'
@@ -41,7 +39,6 @@ class MonsterInsights_Rest_Routes {
 			'update_popular_posts_theme_setting'
 		) );
 
-		// TODO: remove function from Google Optimize Addon.
 		add_action( 'wp_ajax_monsterinsights_get_posts', array( $this, 'get_posts' ) );
 
 		// Search for taxonomies.
@@ -107,19 +104,14 @@ class MonsterInsights_Rest_Routes {
 		$auth = MonsterInsights()->auth;
 
 		wp_send_json( array(
-			'ua'                                  => $auth->get_ua(),
 			'v4'                                  => $auth->get_v4_id(),
 			'viewname'                            => $auth->get_viewname(),
-			'manual_ua'                           => $auth->get_manual_ua(),
 			'manual_v4'                           => $auth->get_manual_v4_id(),
 			'measurement_protocol_secret'         => $auth->get_measurement_protocol_secret(),
-			'network_ua'                          => $auth->get_network_ua(),
 			'network_v4'                          => $auth->get_network_v4_id(),
 			'network_viewname'                    => $auth->get_network_viewname(),
-			'network_manual_ua'                   => $auth->get_network_manual_ua(),
 			'network_manual_v4'                   => $auth->get_network_manual_v4_id(),
 			'network_measurement_protocol_secret' => $auth->get_network_measurement_protocol_secret(),
-			'connected_type'                      => $auth->get_connected_type(),
 		) );
 
 	}
@@ -290,10 +282,10 @@ class MonsterInsights_Rest_Routes {
 	 * Return the state of the addons ( installed, activated )
 	 */
 	public function get_addons() {
-
+		global $current_user;
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
-
-		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+		
+		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) ) {
 			return;
 		}
 
@@ -336,14 +328,18 @@ class MonsterInsights_Rest_Routes {
 			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugin-edd.png',
 			'title'     => 'Easy Digital Downloads',
 			'excerpt'   => __( 'Easy digital downloads plugin.', 'google-analytics-for-wordpress' ),
-			'installed' => array_key_exists( 'easy-digital-downloads/easy-digital-downloads.php', $installed_plugins ),
-			'basename'  => 'easy-digital-downloads/easy-digital-downloads.php',
+			'installed' => array_key_exists( 'easy-digital-downloads/easy-digital-downloads.php', $installed_plugins ) || array_key_exists( 'easy-digital-downloads-pro/easy-digital-downloads.php', $installed_plugins ),
+			'basename'  => array_key_exists( 'easy-digital-downloads-pro/easy-digital-downloads.php', $installed_plugins ) ? 'easy-digital-downloads-pro/easy-digital-downloads.php' : 'easy-digital-downloads/easy-digital-downloads.php',
 			'slug'      => 'easy-digital-downloads',
 			'settings'  => admin_url( 'edit.php?post_type=download' ),
 		);
 		// MemberPress.
 		$parsed_addons['memberpress'] = array(
 			'active' => defined( 'MEPR_VERSION' ) && version_compare( MEPR_VERSION, '1.3.43', '>' ),
+		);
+		// MemberMouse.
+		$parsed_addons['membermouse'] = array(
+			'active' => class_exists( 'MemberMouse' ),
 		);
 		// LifterLMS.
 		$parsed_addons['lifterlms'] = array(
@@ -356,6 +352,14 @@ class MonsterInsights_Rest_Routes {
 		// GiveWP.
 		$parsed_addons['givewp'] = array(
 			'active' => function_exists( 'Give' ),
+		);
+		// Charitable WP.
+		$parsed_addons['charitable'] = array(
+			'active' => class_exists( 'Charitable' ),
+		);
+		// WishList Member.
+		$parsed_addons['wishlist_member'] = array(
+			'active' => function_exists( 'wishlistmember_instance' ),
 		);
 		// GiveWP Analytics.
 		$parsed_addons['givewp_google_analytics'] = array(
@@ -376,10 +380,6 @@ class MonsterInsights_Rest_Routes {
 		// Cookie Yes
 		$parsed_addons['cookie_yes'] = array(
 			'active' => defined( 'CLI_SETTINGS_FIELD' ),
-		);
-		// Fb Instant Articles.
-		$parsed_addons['instant_articles'] = array(
-			'active' => defined( 'IA_PLUGIN_VERSION' ) && version_compare( IA_PLUGIN_VERSION, '3.3.4', '>' ),
 		);
 		// Google AMP.
 		$parsed_addons['google_amp'] = array(
@@ -407,6 +407,18 @@ class MonsterInsights_Rest_Routes {
 			'basename'  => 'wpforms-lite/wpforms.php',
 			'slug'      => 'wpforms-lite',
 			'settings'  => admin_url( 'admin.php?page=wpforms-overview' ),
+		);
+
+		// UserFeedback.
+		$parsed_addons['userfeedback-lite'] = array(
+			'active'    => function_exists( 'userfeedback' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugin-userfeedback.png',
+			'title'     => 'UserFeedback',
+			'excerpt'   => __( 'Ask visitors questions about how they use your website or what features can make you more money.', 'google-analytics-for-wordpress' ),
+			'installed' => array_key_exists( 'userfeedback-lite/userfeedback.php', $installed_plugins ) || array_key_exists( 'userfeedback/userfeedback.php', $installed_plugins ),
+			'basename'  => 'userfeedback-lite/userfeedback.php',
+			'slug'      => 'userfeedback-lite',
+			'settings'  => admin_url( 'admin.php?page=userfeedback_settings' ),
 		);
 
 		// AIOSEO.
@@ -648,59 +660,6 @@ class MonsterInsights_Rest_Routes {
 	}
 
 	/**
-	 * Update manual ua.
-	 */
-	public function update_manual_ua() {
-
-		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
-
-		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			return;
-		}
-
-		$manual_ua_code = isset( $_POST['manual_ua_code'] ) ? sanitize_text_field( wp_unslash( $_POST['manual_ua_code'] ) ) : '';
-		$manual_ua_code = monsterinsights_is_valid_ua( $manual_ua_code ); // Also sanitizes the string.
-		if ( ! empty( $_REQUEST['isnetwork'] ) && sanitize_text_field( wp_unslash( $_REQUEST['isnetwork'] ) ) ) {
-			define( 'WP_NETWORK_ADMIN', true );
-		}
-		$manual_ua_code_old = is_network_admin() ? MonsterInsights()->auth->get_network_manual_ua() : MonsterInsights()->auth->get_manual_ua();
-
-		if ( $manual_ua_code && $manual_ua_code_old && $manual_ua_code_old === $manual_ua_code ) {
-			// Same code we had before
-			// Do nothing.
-			wp_send_json_success();
-		} else if ( $manual_ua_code && $manual_ua_code_old && $manual_ua_code_old !== $manual_ua_code ) {
-			// Different UA code.
-			if ( is_network_admin() ) {
-				MonsterInsights()->auth->set_network_manual_ua( $manual_ua_code );
-			} else {
-				MonsterInsights()->auth->set_manual_ua( $manual_ua_code );
-			}
-		} else if ( $manual_ua_code && empty( $manual_ua_code_old ) ) {
-			// Move to manual.
-			if ( is_network_admin() ) {
-				MonsterInsights()->auth->set_network_manual_ua( $manual_ua_code );
-			} else {
-				MonsterInsights()->auth->set_manual_ua( $manual_ua_code );
-			}
-		} else if ( empty( $manual_ua_code ) && $manual_ua_code_old ) {
-			// Deleted manual.
-			if ( is_network_admin() ) {
-				MonsterInsights()->auth->delete_network_manual_ua();
-			} else {
-				MonsterInsights()->auth->delete_manual_ua();
-			}
-		} else if ( isset( $_POST['manual_ua_code'] ) && empty( $manual_ua_code ) ) {
-			wp_send_json_error( array(
-				'ua_error' => 1,
-				'error'    => __( 'Invalid UA code', 'google-analytics-for-wordpress' ),
-			) );
-		}
-
-		wp_send_json_success();
-	}
-
-	/**
 	 * Update manual v4.
 	 */
 	public function update_manual_v4() {
@@ -754,44 +713,6 @@ class MonsterInsights_Rest_Routes {
 					'</a>'
 				),
 			) );
-		}
-
-		wp_send_json_success();
-	}
-
-	public function update_dual_tracking_id() {
-		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
-
-		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
-			return;
-		}
-
-		if ( ! empty( $_REQUEST['isnetwork'] ) && sanitize_text_field( wp_unslash( $_REQUEST['isnetwork'] ) ) ) {
-			define( 'WP_NETWORK_ADMIN', true );
-		}
-
-		$value              = empty( $_REQUEST['value'] ) ? '' : sanitize_text_field( wp_unslash( $_REQUEST['value'] ) );
-		$sanitized_ua_value = monsterinsights_is_valid_ua( $value );
-		$sanitized_v4_value = monsterinsights_is_valid_v4_id( $value );
-
-		if ( $sanitized_v4_value ) {
-			$value = $sanitized_v4_value;
-		} elseif ( $sanitized_ua_value ) {
-			$value = $sanitized_ua_value;
-		} elseif ( ! empty( $value ) ) {
-			$url = monsterinsights_get_url( 'notice', 'invalid-dual-code', 'https://www.monsterinsights.com/docs/how-to-set-up-dual-tracking/' );
-			// Translators: Link to help article.
-			wp_send_json_error( array(
-				'error' => sprintf( __( 'Oops! We detected an invalid tracking code. Please verify that both your %1$sUniversal Analytics Tracking ID%2$s and %3$sGoogle Analytics 4 Measurement ID%4$s are valid.', 'google-analytics-for-wordpress' ), '<a target="_blank" href="' . $url . '">', '</a>', '<a target="_blank" href="' . $url . '">', '</a>' ),
-			) );
-		}
-
-		$auth = MonsterInsights()->auth;
-
-		if ( is_network_admin() ) {
-			$auth->set_network_dual_tracking_id( $value );
-		} else {
-			$auth->set_dual_tracking_id( $value );
 		}
 
 		wp_send_json_success();
@@ -1194,11 +1115,23 @@ class MonsterInsights_Rest_Routes {
 
 		$post_type = isset( $_POST['post_type'] ) ? sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) : 'any';
 
+		$already_added = monsterinsights_get_option('popular_posts_inline_curated', []);
+		$exclude = array();
+		if( is_array( $already_added ) && !empty( $already_added ) ){
+			foreach ( $already_added as $key => $value ) {
+				$exclude[$value['id']] = $value['id'];
+			}
+		}
+		
+		$exclude = array_unique(array_values($exclude));
+
 		$args = array(
 			's'              => isset( $_POST['keyword'] ) ? sanitize_text_field( wp_unslash( $_POST['keyword'] ) ) : '',
 			'post_type'      => $post_type,
-			'posts_per_page' => isset( $_POST['numberposts'] ) ? sanitize_text_field( wp_unslash( $_POST['numberposts'] ) ) : 10,
-			'orderby'        => 'relevance',
+			'posts_per_page' => isset( $_POST['numberposts'] ) ? sanitize_text_field( wp_unslash( $_POST['numberposts'] ) ) : 25,
+			'orderby'        => 'post_title',
+			'order'          => 'ASC',
+			'post__not_in'   => $exclude,
 		);
 
 		$array = array();

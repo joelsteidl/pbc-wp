@@ -240,11 +240,124 @@ function _monsterinsights_deprecated( $message ) {
 	}
 }
 
+/**
+ * Check installed deprecated addons.
+ *
+ * @return void
+ * @since 8.19.0
+ */
+function _monsterinsights_check_deprecated_addons() {
+	// Check facebook-instant-articles
+	if (
+		in_array(
+			'monsterinsights-facebook-instant-articles/monsterinsights-facebook-instant-articles.php',
+			apply_filters(
+				'active_plugins',
+				get_option( 'active_plugins' )
+			)
+		)
+	) {
+		// Deprecated addon is activated, add a notice.
+		add_action( 'admin_notices', '_monsterinsights_notice_deprecated_facebook_instant_articles' );
+	}
+
+	// Check google-optimize
+	if (
+		in_array(
+			'monsterinsights-google-optimize/monsterinsights-google-optimize.php',
+			apply_filters(
+				'active_plugins',
+				get_option( 'active_plugins' )
+			)
+		)
+	) {
+		// Deprecated addon is activated, add a notice.
+		add_action( 'admin_notices', '_monsterinsights_notice_deprecated_google_optimize' );
+	}
+}
 
 /**
- * Start Deprecated Actions & Filters.
+ * Admin notice for deprecated Facebook Instant Articles addon
  *
- * These backwards compatibility fixes may be removed at any time.
- * Users/Developers are encouraged to update their code as soon as possible.
+ * @access public
+ * @return void
+ * @since 8.19.0
+ *
  */
+function _monsterinsights_notice_deprecated_facebook_instant_articles()
+{
+	?>
+	<div data-dismissible="deprecated-addon-facebook-instant-articles" class="notice notice-error is-dismissible">
+		<p>
+			<?php echo __( 'Facebook Instant Article support ended in April 2023. You may deactivate and delete the MonsterInsights addon at your earliest convenience.', 'ga-premium' ); ?>
+		</p>
+	</div>
+	<?php
+}
 
+/**
+ * Admin notice for deprecated Google Optimize addon
+ *
+ * @access public
+ * @return void
+ * @since 8.20.0
+ *
+ */
+function _monsterinsights_notice_deprecated_google_optimize()
+{
+	?>
+	<div data-dismissible="deprecated-addon-facebook-instant-articles" class="notice notice-error is-dismissible">
+		<p>
+			<?php echo __( 'Google Optimize and Optimize 360 support ended in September 2023. You may deactivate and delete the MonsterInsights addon at your earliest convenience.', 'ga-premium' ); ?>
+		</p>
+	</div>
+	<?php
+}
+
+if (!function_exists('monsterinsights_get_ua')) {
+    function monsterinsights_get_ua() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_get_network_ua')) {
+    function monsterinsights_get_network_ua() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_mp_track_event_call')) {
+    function monsterinsights_mp_track_event_call() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_mp_api_call')) {
+    function monsterinsights_mp_api_call() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_get_mp_api_url')) {
+    function monsterinsights_get_mp_api_url() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_get_tracking_ids')) {
+    function monsterinsights_get_tracking_ids() {
+        return '';
+    }
+}
+
+if (!function_exists('monsterinsights_is_valid_ua')) {
+    function monsterinsights_is_valid_ua() {
+        return false;
+    }
+}
+
+if (!function_exists('monsterinsights_get_ua_to_output')) {
+    function monsterinsights_get_ua_to_output() {
+        return '';
+    }
+}

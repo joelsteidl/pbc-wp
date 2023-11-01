@@ -179,7 +179,7 @@ if( !function_exists( 'be_should_compute_css' ) ) {
 					$checking_0 = null;
 				}	
 			}
-			$checking_0 = trim( $checking_0 );   // trim coz responsive values vil have space in last
+			$checking_0 = empty( $checking_0 ) ? $checking_0 : trim( $checking_0 );   // trim coz responsive values vil have space in last
 				switch( $checking[1] ){
 					case 'empty':
 						if( empty( $checking_0 ) ){
@@ -390,6 +390,9 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
                     $config = be_reformat_module_options($tatsu_registered_modules[$tatsu_remapped_modules[$module]]['atts']);
                 }
             }
+
+			//tatsu ui settings
+			$tatsu_ui_settings = get_option( 'tatsu_ui_settings', array() );
 			
 			if( is_array( $atts ) ) {
 				foreach( $atts as $att => $value ){
@@ -442,12 +445,14 @@ if( !function_exists( 'be_generate_css_from_atts' ) ) {
 			}
 
 			if( !empty( $css['l'] ) ) {
-				$output .= '@media only screen and (max-width:1377px) {';
+				$screen_width = empty( $tatsu_ui_settings['laptop_max_width'] ) ? '1377px' : $tatsu_ui_settings['laptop_max_width'].'px';
+				$output .= '@media only screen and (max-width:'. esc_attr( $screen_width ) .') {';
 				$output .= $css['l'];
 				$output .= '}';
 			}
 			if( !empty( $css['t'] ) ) {
-				$output .= '@media only screen and (min-width:768px) and (max-width: 1024px) {';
+				$screen_width = empty( $tatsu_ui_settings['tablet_max_width'] ) ? '1024px' : $tatsu_ui_settings['tablet_max_width'].'px';
+				$output .= '@media only screen and (min-width:768px) and (max-width: '. esc_attr( $screen_width ) .') {';
 				$output .= $css['t'];
 				$output .= '}';
 			}
@@ -619,21 +624,24 @@ if ( ! function_exists( 'be_get_video_details' ) ) {
 				$response_body = wp_remote_retrieve_body( $response );
     			$data = json_decode( $response_body );
 				
-				$thumbnail_url = explode( '_', $data->thumbnail_url );
-				$thumbnail_url = $thumbnail_url[0] . $size;
+				if ( ! empty( $data ) && ! empty( $data->thumbnail_url ) ) {
+					$thumbnail_url = explode( '_', $data->thumbnail_url );
+					$thumbnail_url = $thumbnail_url[0] . $size;
 
-				return array(
-					'source' => 'vimeo',
-					'thumb_url' => $thumbnail_url,
-					'video_id' => $data->video_id
-				);
-			} else {
-				return array(
-					'source' => 'vimeo',
-					'thumb_url' => 'https://via.placeholder.com/1280x720',
-					'video_id' => $vimeo_id
-				);
-			}
+					return array(
+						'source' => 'vimeo',
+						'thumb_url' => $thumbnail_url,
+						'video_id' => $data->video_id
+					);
+				}
+			} 
+
+			return array(
+				'source' => 'vimeo',
+				'thumb_url' => 'https://via.placeholder.com/1280x720',
+				'video_id' => $vimeo_id
+			);
+		
 		}
 	}
 }
@@ -679,7 +687,7 @@ if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
 			$hide_class = ' be-gdpr-message-hide ';
 		}
 
-		return '<div class="gdpr-alt-image '.$hide_class.' be-gdpr-consent-message"><img style="opacity:1;" src="'.$img_src.'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="'.$concern.'" ]', get_option( 'be_gdpr_text_on_overlay', 'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>';
+		return '<div class="gdpr-alt-image '.$hide_class.' be-gdpr-consent-message"><img style="opacity:1;" src="'.$img_src.'"/><div class="gdpr-video-alternate-image-content" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api="'.$concern.'" ]', function_exists( 'be_gdpr_get_cookie_privacy_content' ) ? be_gdpr_get_cookie_privacy_content( 'be_gdpr_text_on_overlay' ) : get_option( 'be_gdpr_text_on_overlay', esc_html__( 'Your consent is required to display this content from ', 'tatsu' ) . ' [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ))  ) .'</div></div>';
 	}
 }
 

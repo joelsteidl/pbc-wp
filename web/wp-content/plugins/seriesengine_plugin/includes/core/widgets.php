@@ -61,7 +61,9 @@ class enmse_seriesengine_widget_lists extends WP_Widget {
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 10 ) { // French
+		if ( $enmse_language == 11 ) { // Vietnamese
+			$enmse_from =  "từ";
+		} elseif ( $enmse_language == 10 ) { // French
 			$enmse_from =  "de";
 		} elseif ( $enmse_language == 9 ) { // Russian
 			$enmse_from =  "когда";

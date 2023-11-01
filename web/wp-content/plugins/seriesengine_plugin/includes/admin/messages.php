@@ -127,7 +127,10 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 			$enmse_language = 1;
 		}
 
-		if ( $enmse_language == 10 ) { 
+		if ( $enmse_language == 11 ) { 
+			include(dirname(__FILE__) . '/../lang/viet_bible_books.php');
+			$enmse_from =  "từ";
+		} elseif ( $enmse_language == 10 ) { 
 			include(dirname(__FILE__) . '/../lang/fre_bible_books.php');
 			$enmse_from =  "de";
 		} elseif ( $enmse_language == 9 ) { 
@@ -1965,6 +1968,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 									<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
 									<option value="<?php echo $deftrans; ?>">------ TURKISH ------</option>
 									<option value="170"<?php if ( $deftrans == 170 ) { echo " selected=\"selected\""; } ?>>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+									<option value="<?php echo $deftrans; ?>">------- VIETNAMESE ------</option>
+									<option value="151"<?php if ( $deftrans == 151 ) { echo " selected=\"selected\""; } ?>>VIE2010 - Kinh Thánh Tiếng Việt Bản Hiệu Đính 2010</option>
+									<option value="1638"<?php if ( $deftrans == 1638 ) { echo " selected=\"selected\""; } ?>>KTHD - Kinh Thánh Hiện Đại</option>
 									<option value="<?php echo $deftrans; ?>">------ OTHER ------</option>
 									<option value="6"<?php if ( $deftrans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 								</select>
@@ -2670,6 +2676,9 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 								<option value="128"<?php if ( $deftrans == 128 ) { echo " selected=\"selected\""; } ?>>NVI - La Santa Biblia, Nueva Version Internacional</option>
 								<option value="<?php echo $deftrans; ?>">------ TURKISH ------</option>
 								<option value="170"<?php if ( $deftrans == 170 ) { echo " selected=\"selected\""; } ?>>TCL02 - Kutsal Kitap Yeni Ceviri</option>
+								<option value="<?php echo $deftrans; ?>">------- VIETNAMESE ------</option>
+								<option value="151"<?php if ( $deftrans == 151 ) { echo " selected=\"selected\""; } ?>>VIE2010 - Kinh Thánh Tiếng Việt Bản Hiệu Đính 2010</option>
+								<option value="1638"<?php if ( $deftrans == 1638 ) { echo " selected=\"selected\""; } ?>>KTHD - Kinh Thánh Hiện Đại</option>
 								<option value="<?php echo $deftrans; ?>">------ OTHER ------</option>
 								<option value="6"<?php if ( $deftrans == 6 ) { echo " selected=\"selected\""; } ?>>AFR83 - Afrikaans 1983</option>
 							</select>

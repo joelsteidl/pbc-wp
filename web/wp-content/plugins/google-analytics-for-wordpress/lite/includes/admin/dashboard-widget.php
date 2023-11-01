@@ -212,7 +212,6 @@ class MonsterInsights_Dashboard_Widget {
 					'wpforms_installed'   => $wpforms_installed,
 					'wpforms_url'         => $wp_forms_url,
 					'authed'              => $is_authed,
-					'auth_connected_type' => $auth->get_connected_type(),
 					// Used to add notices for future deprecations.
 					'versions'            => monsterinsights_get_php_wp_version_warning_data(),
 					'plugin_version'      => MONSTERINSIGHTS_VERSION,
@@ -319,8 +318,8 @@ class MonsterInsights_Dashboard_Widget {
 	public function load_notice() {
 
 		$screen = get_current_screen();
-		$ua     = monsterinsights_get_ua();
-		if ( isset( $screen->id ) && 'dashboard' === $screen->id && ! empty( $ua ) ) {
+		$tracking_id     = monsterinsights_get_v4_id();
+		if ( isset( $screen->id ) && 'dashboard' === $screen->id && ! empty( $tracking_id ) ) {
 			?>
 			<div id="monsterinsights-reminder-notice"></div>
 			<?php

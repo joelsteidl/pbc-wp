@@ -1,16 +1,15 @@
 /**OS SCROLLBAR**/
 ;(function($) {
-	var ua = window.navigator.userAgent;
-    var msie = ua.indexOf("NET4");
-    //console.log(ua);
-    //console.log(msie);
-    if(msie > -1){
-    	$('body').addClass('internet_expoler');
-    }
+	var isMsie = false;
+	if ( navigator.userAgent.match(/MSIE ([0-9]+)\./) ) {
+		isMsie = true;
+		$('body').addClass('internet-explorer');
+	}
+
 	var scrollbarWidth = 0;
 	$.getScrollbarWidth = function() {
 		if ( !scrollbarWidth ) {
-			if ( $.browser.msie ) {
+			if ( isMsie ) {
 				var $textarea1 = $('<textarea cols="10" rows="2"></textarea>')
 						.css({ position: 'absolute', top: -1000, left: -1000 }).appendTo('body'),
 					$textarea2 = $('<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
@@ -1068,6 +1067,10 @@
 										closestPortfolio = $this.closest( '.portfolio' ),
                                         $slideshowspeed = Number( $this.attr('data-slide-show-speed') ) , 
                                         $slideshow = Number( $this.attr( 'data-slide-show' ) ),
+                                        $loop = Number( $this.attr( 'data-loop' ) ),
+                                        $navdots = Number( $this.attr( 'data-navigation-dots' ) ),
+                                        $navbuttons = Number( $this.attr( 'data-navigation-buttons' ) ),
+                                        $pause = Number( $this.attr( 'data-pause-hover' ) ),
                                         $number = $this.find('.be_image_slide').length,
                                         $wrap = $this.closest('.be_image_slider');  
 
@@ -1097,12 +1100,12 @@
                                             autoplay: $slideshow,
                                             autoplayTimeout: $slideshowspeed, 
                                             autoplaySpeed: 1000,
-                                            autoplayHoverPause: true,
+                                            autoplayHoverPause: 0 == $pause ? false : true,
                                             navRewind: false,
-                                            nav: true,
-                                            loop: true,
+                                            nav: 0 == $navbuttons ? false : true,
+                                            loop: 0 == $loop ? false : true,
                                             navText: ['<i class="font-icon icon-arrow_carrot-left"></i>','<i class="font-icon icon-arrow_carrot-right"></i>'],
-                                            dots: ( 0 < closestPortfolio.length ) ? false : true,
+                                            dots: ( ( 0 < closestPortfolio.length ) || 0 == $navdots ) ? false : true,
                                             onInitialize: function() {
                                                 $this.fadeIn(500);
                                                 $this.trigger('refresh.owl.carousel');

@@ -31,13 +31,17 @@ if( !function_exists( 'tatsu_settings_page' ) ){
 		if(empty( $tatsu_license_key ) ) {
 			$tatsu_license_key = '';
 		}
+
+		//tatsu ui setings
+		$tatsu_ui_settings = get_option( 'tatsu_ui_settings', array() );
+		
 		?>
 		<div class="tatsu-settings_wrapper">
 			<h1><?php esc_html_e('Tatsu Settings', 'tatsu'); ?></h1>
 			<?php 
 				if(is_tatsu_standalone()){
 			?>
-			<div class="tatsu_global-section-settings">
+			<div class="tatsu_global-section-settings tatsu-individual-form">
 				<table  class="form-table" role="presentation">
 					<tbody>
 						<tr>
@@ -65,6 +69,27 @@ if( !function_exists( 'tatsu_settings_page' ) ){
 				</table>
 			</div>
 			<?php } ?>
+
+			<form method="post" id="tatsu_ui_settings" action="<?php echo esc_html( admin_url( 'admin.php?page=tatsu_global_settings' ) ); ?>" class="tatsu_global-section-settings tatsu-individual-form">
+				<h3><?php esc_html_e('Responsive Media Query', 'tatsu'); ?></h3>
+				<div class="tatsu_settings_wrap">
+					<div class="tatsu_settings_panel">
+						<div class="be-settings-page-option">
+							<label class="be-settings-page-option-label"><?php esc_html_e('Tablet screen max width', 'tatsu'); ?> (in px)</label>
+							<input type="number" autocomplete="off" name="tablet_max_width" class="medium-text" value="<?php echo empty( $tatsu_ui_settings['tablet_max_width'] ) ? '' : $tatsu_ui_settings['tablet_max_width'];?>"  />
+						</div>
+						<div class="be-settings-page-option">
+							<label class="be-settings-page-option-label"><?php esc_html_e('Laptop screen max width', 'tatsu'); ?> (in px) </label>
+							<input type="number" autocomplete="off" name="laptop_max_width" class="medium-text" value="<?php echo empty( $tatsu_ui_settings['laptop_max_width'] ) ? '' : $tatsu_ui_settings['laptop_max_width'];?>"  />
+						</div>
+						<div class="be-settings-page-option">
+							<input type="submit" class="tatsu-submit-btn button button-primary button-large" value="<?php esc_html_e( 'Save', 'tatsu'); ?>">
+						</div>
+						<div class="notice notice-success is-dismissible tatsu-saved-notice" style="display:none;margin:0;" > <p><?php esc_html_e( 'Saved successfully!', 'tatsu'); ?></p></div>
+					</div>
+				</div>
+			</form>
+
 			<form method="post" id="tatsu_global_section_settings_form" action="options.php">
 				<?php if (current_theme_supports('tatsu-header-builder') || current_theme_supports('tatsu-footer-builder')): ?>
 					<div class="tatsu_active_headers_footers_settings">

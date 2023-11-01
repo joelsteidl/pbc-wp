@@ -134,7 +134,7 @@ function wpcf7_array_flatten( $input ) {
  */
 function wpcf7_exclude_blank( $input ) {
 	$output = array_filter( $input,
-		function ( $i ) {
+		static function ( $i ) {
 			return isset( $i ) && '' !== $i;
 		}
 	);
@@ -210,7 +210,7 @@ function wpcf7_validate_configuration() {
 
 
 /**
- * Returns true if wpcf7_autop() is applied to form content.
+ * Returns true if wpcf7_autop() is applied.
  */
 function wpcf7_autop_or_not() {
 	return (bool) apply_filters( 'wpcf7_autop_or_not', WPCF7_AUTOP );

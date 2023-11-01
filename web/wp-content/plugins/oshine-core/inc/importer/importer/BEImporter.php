@@ -66,6 +66,10 @@ class BEThemeImporter {
      */
     private static $instance;
 
+    public $colorhub_options_file;
+    public $typehub_options_file;
+    public $tatsu_global_sections_file;
+
     /**
      * Constructor. Hooks all interactions to initialize the class.
      *
@@ -216,7 +220,7 @@ class BEThemeImporter {
               </li>
             </ul>
             <input name="reset" class="panel-save button-primary" type="submit" value="<?php esc_html_e( 'Import data', 'be-functions' ); ?>" />
-            <?php $page = get_page_by_title( "Home - v1" );
+            <?php $page = be_get_page_by_title( "Home - v1" );
             
              ?>
             </div>

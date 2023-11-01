@@ -8,7 +8,8 @@ if( !class_exists('Tatsu_Parser')) {
 		private $tatsu_page_content;
 		private $post_id; 
 		private $type;
-		
+		public $tatsu_registered_modules;
+		public $tatsu_remapped_modules;
 
 		public function __construct( $content = '', $post_id = false, $type = 'content' ) {
 			$this->content = $content;

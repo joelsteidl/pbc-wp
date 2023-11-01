@@ -74,26 +74,8 @@ class MonsterInsights_Tracking {
 
         //  Get auth connection type
         $auth = MonsterInsights()->auth;
-        $connection_type = $auth->get_connected_type();
 
-        $ua = $auth->get_ua();
-        $v4 = $auth->get_v4_id();
-
-        $auth_mode = '';
-
-        if ( $connection_type === 'ua' ) {
-            if ( empty( $v4 ) ) {
-                $auth_mode = 'v3';
-            } else {
-                $auth_mode = 'v3/v4';
-            }
-        } elseif ( $connection_type === 'v4' ) {
-            if ( empty( $ua ) ) {
-                $auth_mode = 'v4';
-            } else {
-                $auth_mode = 'v4/v3';
-            }
-        }
+        $auth_mode = 'v4';
 
 		$data['php_version']    = phpversion();
 		$data['mi_version']     = MONSTERINSIGHTS_VERSION;

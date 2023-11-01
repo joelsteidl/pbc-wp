@@ -155,7 +155,8 @@ if (!function_exists('tatsu_image')) {
         $new_tab = isset( $new_tab ) && !empty( $new_tab ) ? 1 : 0;
         $new_tab_attribute = '';
         if( 1 == $lightbox ) {
-            $link = ' href = "' . $image_full_src . '"';
+			$image_full_src = empty( $image_full_src ) ? $image : $image_full_src;
+            $link = ' href = "' . esc_url( $image_full_src ) . '"';
             $new_tab_attribute = '';
         }else {
             if( isset( $link ) && !empty( $link ) ) {

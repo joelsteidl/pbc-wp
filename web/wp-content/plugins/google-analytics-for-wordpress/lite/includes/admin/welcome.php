@@ -93,7 +93,6 @@ class MonsterInsights_Welcome {
 
 		$upgrade = get_option( 'monsterinsights_version_upgraded_from', false );
 		if ( apply_filters( 'monsterinsights_enable_onboarding_wizard', false === $upgrade ) ) {
-			$redirect = admin_url( 'index.php?page=monsterinsights-getting-started&monsterinsights-redirect=1' );
 			$path     = 'index.php?page=monsterinsights-getting-started&monsterinsights-redirect=1';
 			$redirect = is_network_admin() ? network_admin_url( $path ) : admin_url( $path );
 			wp_safe_redirect( $redirect );

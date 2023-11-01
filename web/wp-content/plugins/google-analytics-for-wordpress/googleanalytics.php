@@ -7,9 +7,9 @@
  * Author:              MonsterInsights
  * Author URI:          https://www.monsterinsights.com/lite/?utm_source=liteplugin&utm_medium=pluginheader&utm_campaign=authoruri&utm_content=7%2E0%2E0
  *
- * Version:             8.14.1
- * Requires at least:   4.8.0
- * Requires PHP:        5.6
+ * Version:             8.20.1
+ * Requires at least:   5.6.0
+ * Requires PHP:        7.2
  *
  * License:             GPL v3
  *
@@ -71,7 +71,7 @@ final class MonsterInsights_Lite
 	 * @access public
 	 * @var string $version Plugin version.
 	 */
-	public $version = '8.14.1';
+	public $version = '8.20.1';
 
 	/**
 	 * Plugin file.
@@ -183,6 +183,13 @@ final class MonsterInsights_Lite
 	public $tracking_mode;
 
 	/**
+	 * Setup checklist class property.
+	 *
+	 * @var MonsterInsights_Setup_Checklist
+	 */
+	public $setup_checklist;
+
+	/**
 	 * Primary class constructor.
 	 *
 	 * @since 6.0.0
@@ -215,15 +222,16 @@ final class MonsterInsights_Lite
 				return self::$instance;
 			}
 
-			if (!self::$instance->check_compatibility()) {
-				return self::$instance;
-			}
-
 			// Define constants
 			self::$instance->define_globals();
 
 			// Load in settings
 			self::$instance->load_settings();
+
+			// Compatibility check
+			if (!self::$instance->check_compatibility()) {
+				return self::$instance;
+			}
 
 			// Load in Licensing
 			self::$instance->load_licensing();
@@ -255,6 +263,7 @@ final class MonsterInsights_Lite
 				self::$instance->routes             = new MonsterInsights_Rest_Routes();
 				self::$instance->notifications      = new MonsterInsights_Notifications();
 				self::$instance->notification_event = new MonsterInsights_Notification_Event();
+				self::$instance->setup_checklist    = new MonsterInsights_Setup_Checklist();
 			}
 
 			if (monsterinsights_is_pro_version()) {
@@ -535,6 +544,7 @@ final class MonsterInsights_Lite
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/notice.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/licensing/autoupdate.php';
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/review.php';
+			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/setup-checklist.php';
 
 			// Pages
 			require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/pages/settings.php';
@@ -570,6 +580,7 @@ final class MonsterInsights_Lite
 
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/exclude-page-metabox.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/verified-badge/Controller.php';
+		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/site-notes/Controller.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/api-request.php';
 
 		if (is_admin() || (defined('DOING_CRON') && DOING_CRON)) {
@@ -579,7 +590,6 @@ final class MonsterInsights_Lite
 
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/frontend.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/frontend/seedprod.php';
-		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/measurement-protocol.php';
 		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/measurement-protocol-v4.php';
 	}
 

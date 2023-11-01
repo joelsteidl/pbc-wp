@@ -266,7 +266,7 @@ class MonsterInsights_Popular_Posts_Widget extends MonsterInsights_Popular_Posts
 	 * @return mixed
 	 */
 	public function remove_widget_from_legacy_widgets( $widgets ) {
-		$widgets[] = 'monsterinsights-popular-posts-widget';
+		// $widgets[] = 'monsterinsights-popular-posts-widget';
 
 		return $widgets;
 	}

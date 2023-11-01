@@ -3,10 +3,17 @@ if ( is_admin() ) {
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/tools.php';
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/metaboxes.php';
 
-	//require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/tab-support.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/woocommerce-marketing.php';
 }
 
 if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
+	
+	
+	// Email summaries related classes
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/emails/summaries-infoblocks.php';
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/emails/summaries.php';
+	new MonsterInsights_Email_Summaries();
+	
 	$overview_report = new MonsterInsights_Report_Overview();
 	MonsterInsights()->reporting->add_report( $overview_report );
 
@@ -37,6 +44,11 @@ if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/reports/report-year-in-review.php';
 	$year_in_review = new MonsterInsights_Lite_Report_YearInReview();
 	MonsterInsights()->reporting->add_report( $year_in_review );
+
+	require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/admin/reports/report-summaries.php';
+	$summaries = new MonsterInsights_Report_Summaries();
+	MonsterInsights()->reporting->add_report( $summaries );
+
 }
 
 if ( is_admin() ) {

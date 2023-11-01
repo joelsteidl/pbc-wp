@@ -100,7 +100,8 @@ class MonsterInsights_Gtag_Events {
 			$suffix = '';
 		}
 		wp_enqueue_script( 'monsterinsights-frontend-script', plugins_url( 'assets/js/frontend-gtag' . $suffix . '.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), false );
-		monsterinsights_localize_script(
+
+        monsterinsights_localize_script(
 			'monsterinsights-frontend-script',
 			'monsterinsights_frontend',
 			array(
@@ -109,7 +110,6 @@ class MonsterInsights_Gtag_Events {
 				'inbound_paths'       => $inbound_paths, /* Let's get the internal paths to track */
 				'home_url'            => home_url(), /* Let's get the url to compare for external/internal use */
 				'hash_tracking'       => $hash_tracking, /* Should hash track */
-				'ua'                  => monsterinsights_get_ua(), /* UA code used for tracking */
 				'v4_id'               => monsterinsights_get_v4_id(), /* V4 ID used for tracking */
 			)
 		);

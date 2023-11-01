@@ -18,7 +18,21 @@ if (!function_exists('be_blog')) {
         ) , $atts, $tag );
         extract( $atts );
 		$output = '';
-		global $paged, $blog_attr;
+		global $paged, $blog_attr, $wp;
+		
+		//set page number if not set. i.e. In case blog module is used in home page 
+		if ( empty( $paged ) && ! empty( $wp ) && ! empty( $wp->request ) && function_exists('home_url') ) {
+			// get current url with query string.
+			$current_url = home_url( $wp->request );
+			if ( false !== stripos( $current_url,"/page/") ) {
+				$current_url = explode("/page/", $current_url );
+				$current_url = intval( end( $current_url ) );
+				if ( $current_url > 0) {
+					$paged = $current_url; 
+				}
+			}
+		}
+
 		$col = ((!isset($col)) || empty($col)) ? 'three' : $col;
 		$blog_attr['gutter_style'] = ((!isset($gutter_style)) || empty($gutter_style)) ? 'style1' : $gutter_style;
 		$blog_attr['gutter_width'] = ((!isset($gutter_width)) || empty($gutter_width)) ? intval(40) : intval( $gutter_width );

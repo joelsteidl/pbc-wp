@@ -142,46 +142,58 @@ $generated_i18n_strings = array(
 	// Reference: src/blocks/popular-posts-widget/index.js:477
 	__( 'Display Comments', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:21
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:20
 	__( 'Last 30 days', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:22
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:21
 	__( 'Yesterday', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:23
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:22
 	__( 'Bounce Rate', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:24
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:23
 	__( 'Time On Page', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:25
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:24
 	__( 'Load Time', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:26
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:25
 	__( 'Entrances', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:27
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:26
 	__( 'Page Views', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-Lite.js:28
+	// Reference: src/plugins/metabox/components/page-insights-Lite.js:27
 	__( 'Exits', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-hide-btn.js:8
+	// Reference: src/plugins/metabox/components/page-insights-hide-btn.js:8
 	__( 'Hide Page Insights', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/page-insights-show-btn.js:8
+	// Reference: src/plugins/metabox/components/page-insights-show-btn.js:8
 	__( 'Show Page Insights', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/pro-badge.js:11
+	// Reference: src/plugins/metabox/components/pro-badge.js:11
 	__( 'This is a PRO feature.', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/components/pro-badge.js:12
+	// Reference: src/plugins/metabox/components/pro-badge.js:12
 	__( 'Upgrade', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/index.js:36
+	// Reference: src/plugins/metabox/components/site-notes.js:23
+	__( 'Add a Site Note when publishing this post', 'google-analytics-for-wordpress' ),
+
+	// Reference: src/plugins/metabox/components/site-notes.js:24
+	__( 'Add a Site Note', 'google-analytics-for-wordpress' ),
+
+	// Reference: src/plugins/metabox/components/site-notes.js:27
+	__( 'Category', 'google-analytics-for-wordpress' ),
+
+	// Reference: src/plugins/metabox/components/site-notes.js:29
+	__( 'Published: %s', 'google-analytics-for-wordpress' ),
+
+	// Reference: src/plugins/metabox/index.js:49
 	__( 'Toggle to prevent Google Analytics from tracking this page.', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/exclude-page-tracking/index.js:37
+	// Reference: src/plugins/metabox/index.js:50
 	__( 'Exclude page from Google Analytics Tracking', 'google-analytics-for-wordpress' ),
 
 	// Reference: src/plugins/monsterinsights-Headline-Analyzer/components/HeadlinePanelCharacterCount.js:10

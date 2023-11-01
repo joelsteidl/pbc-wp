@@ -57,13 +57,13 @@ function monsterinsights_modify_wordpress_autoupdater_setting( $html, $plugin_fi
 			),
 			__( 'Enable the MonsterInsights PRO plugin to manage auto-updates', 'google-analytics-for-wordpress' )
 		);
-		add_filter( "monsterinsights_is_autoupdate_setting_html_filtered_${plugin_file}", '__return_true' );
+		add_filter( "monsterinsights_is_autoupdate_setting_html_filtered_" . $plugin_file, '__return_true' );
 	} elseif ( $has_permission &&
 	           ( $is_main_free || $is_main_pro || ( $is_addon && $is_pro ) )
 	) {
 		$text = __( 'Manage auto-updates', 'google-analytics-for-wordpress' );
 		$html .= '<br>' . sprintf( '<a href="%s"">%s</a>', admin_url( 'admin.php?page=monsterinsights_settings#/advanced' ), $text );
-		add_filter( "monsterinsights_is_autoupdate_setting_html_filtered_${plugin_file}", '__return_true' );
+		add_filter( "monsterinsights_is_autoupdate_setting_html_filtered_" . $plugin_file, '__return_true' );
 	}
 
 	return $html;
