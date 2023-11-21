@@ -1,6 +1,10 @@
 <?php
+global $be_themes_data;
+// Tatsu Footer Builder
 do_action( 'tatsu_footer' );
-	global $be_themes_data;
+if( isset( $be_themes_data['enable_footer_builder'] ) && $be_themes_data['enable_footer_builder'] == 1 ){
+	do_action( 'tatsu_print_footer' );
+}else{
 	$post_id = be_get_page_id();
 	$fixed_footer = ( isset( $be_themes_data['fixed-footer'] ) && !empty( $be_themes_data['fixed-footer'] ) && be_is_fixed_footer_possible() ) ? true : false;
 	$show_bottom_widgets = get_post_meta($post_id, 'be_themes_bottom_widgets', true);
@@ -86,6 +90,7 @@ do_action( 'tatsu_footer' );
 	<?php
 	}
 	?>
+<?php } ?>
 	<?php do_action('be_themes_after_footer'); ?>
 	</div>
 	<?php get_template_part( 'page', 'loader' ); ?>
@@ -117,12 +122,16 @@ do_action( 'tatsu_footer' );
 			</div>
 		</div>
 	<?php endif; ?>
-</div>
+	</div>
+
+
 
 <input type="hidden" id="ajax_url" value="<?php echo admin_url( 'admin-ajax.php' ); ?>" />
-<?php if( array_key_exists('all_ajax_exclude_links', $be_themes_data) ) : ?>
-	<input type="hidden" id="all_ajax_exclude_links" value="<?php echo esc_attr( $be_themes_data['all_ajax_exclude_links'] ); ?>" />
-<?php endif; ?>
+<?php 
+    if(is_array($be_themes_data)) :
+        if( array_key_exists('all_ajax_exclude_links', $be_themes_data) ) : ?>
+            <input type="hidden" id="all_ajax_exclude_links" value="<?php echo esc_attr( $be_themes_data['all_ajax_exclude_links'] ); ?>" />
+<?php endif; endif; ?>
 <?php wp_footer(); ?>
 <!-- Option Panel Custom JavaScript -->
 <script>

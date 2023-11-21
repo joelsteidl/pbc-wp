@@ -1291,11 +1291,30 @@ function be_themes_register_meta_boxes( $meta_boxes )
 					// 'be-ribbon-carousel' => 'Ribbon Carousel Slider',
 					// 'be-center-carousel' => 'Center Slide Carousel Slider',
 					'style2' => 'Vertical Screen Slider',
-					'style3' => 'Dual Carousel Slider'
+                    'style3' => 'Dual Carousel Slider',
+                    'style4' => 'Split Screen',
+                    'style5' => 'Title Carousel',   
 				),
 				'std'  => 'style1',
 				'tab' => 'general'
-			),
+            ),
+            array (
+                'name'  => __( 'Start from center', 'oshin' ),
+                'id' => "{$prefix}title_carousel_start_from_center",
+                'desc'  => __( 'Title Carousel will start from the middle slide', 'oshin' ),
+                'type' => 'checkbox',
+                'tab' => 'general',
+                'std' => '1',
+                'visible' => array('be_themes_portfolio_template_style', '=' , 'style5'),
+            ),
+            array (
+                'name'  => __( 'Enable Mouse wheel Navigation', 'oshin' ),
+                'id' => "{$prefix}title_carousel_mousewheel_nav",
+                'type' => 'checkbox',
+                'tab' => 'general',
+                'std' => '0',
+                'visible' => array('be_themes_portfolio_template_style', '=' , 'style5'),
+            ),
 			array (
 				'name'	=>	__('Gutter Width','oshin'),
 				'id'	=>	"{$prefix}portfolio_carousel_slider_gutter_width",
@@ -1305,7 +1324,50 @@ function be_themes_register_meta_boxes( $meta_boxes )
 				'visible' => array('be_themes_portfolio_template_style', 'in' , array('style1', 'be-ribbon-carousel', 'be-center-carousel')),
 				'tab' => 'general'
 			),
-			array (
+			// array (
+			// 	'name'	=>	__('Image Container Width','oshin'),
+			// 	'id'	=>	"{$prefix}hover_fade_image_width",
+			// 	'desc'	=>	'In Percentage (0-100)',
+            //     'type' => 'number',
+            //     'min'  => 0,
+            //     'max'  => 100,
+            //     'step' => 1,
+			// 	'std'  	=>	60,
+			// 	'visible' => array('be_themes_portfolio_template_style', '=' , 'style4'),
+			// 	'tab' => 'general'
+            // ),
+            array (
+				'name'	=>	__('Portfolio Title Horizontal Alignment','oshin'),
+				'id'	=>	"{$prefix}hover_fade_title_alignment",
+				'type' 	=> 'select',
+				'options'	=> array (
+					'left' => 'Left',
+                    'center' => 'Center',
+                    'right' => 'Right',
+				),
+				'std'  => 'left',
+				'visible' => array('be_themes_portfolio_template_style', '=' , 'style4'),
+				'tab' => 'general'
+            ),
+            // array (
+			// 	'name'	=>	__('Portfolio Title Top/Bottom Padding','oshin'),
+			// 	'id'	=>	"{$prefix}hover_fade_title_top_pad",
+            //     'type' => 'number',
+            //     'min'  => 0,
+            //     'step' => 1,
+			// 	'visible' => array('be_themes_portfolio_template_style', '=' , 'style4'),
+			// 	'tab' => 'general'
+            // ),
+            // array (
+			// 	'name'	=>	__('Portfolio Title Left/Right Padding','oshin'),
+			// 	'id'	=>	"{$prefix}hover_fade_title_left_pad",
+            //     'type' => 'number',
+            //     'min'  => 0,
+            //     'step' => 1,
+			// 	'visible' => array('be_themes_portfolio_template_style', '=' , 'style4'),
+			// 	'tab' => 'general'
+            // ),
+            array (
 				'name'	=>	__('Slider Height','oshin'),
 				'id'	=>	"{$prefix}portfolio_carousel_slider_height",
 				'desc'	=>	'In Percentage (0-100)',
@@ -1401,7 +1463,25 @@ function be_themes_register_meta_boxes( $meta_boxes )
 				'visible' => array('be_themes_portfolio_horizontal_slider_enable_overlay' , true)
 			),
 		)
-	);
+    );
+    //Hide portfolio template other settings tab
+    if( !function_exists( 'be_themes_hide_portfolio_template_other_settings' ) ) {
+        function be_themes_hide_portfolio_template_other_settings( $conditions ) {
+            $conditions['.rwmb-tab-other_settings'] = array(
+                'hidden' => array (
+                    'when' => array (
+                        array( 'be_themes_portfolio_template_style', '=', 'style4' ),
+                        array( 'be_themes_portfolio_template_style', '=', 'style5' ),
+                    ),
+                    'relation' => 'or'
+                )
+            );
+            return $conditions;
+        }
+        add_filter( 'rwmb_outside_conditions', 'be_themes_hide_portfolio_template_other_settings' );
+    }
+
+
 	// Oshine Page Sidebar Options
 	$meta_boxes[] = array (
 		'id' => 'page_portfolio',

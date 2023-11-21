@@ -2425,6 +2425,287 @@ TABLE OF CONTENTS
        height: 41px;
        bottom: 0px;
    }
+
+   /**
+    * Portfolio Zoro
+    */
+    .ps-fade {
+        transition : background 500ms cubic-bezier(.694,0,.335,1);
+    }
+    .ps-fade.ps-fade-initialized {
+        background : #fff;
+    }
+    .ps-fade .flickity-viewport {
+        transition: height 0.2s;
+     }
+    
+    .ps-fade-inner {
+        margin: 0 auto;
+        display: flex;
+        align-items: flex-start;
+    }
+    .ps-fade-mobile .ps-fade-inner {
+        display: block;
+    }
+    
+    .ps-fade-nav {
+        width: 50%;
+        padding: 100px 70px;
+        flex: 0 0 auto;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+    @media only screen and ( max-width:960px ) {
+        .ps-fade-nav {
+            padding: 50px 50px 80px;
+        }
+    }
+    .ps-fade-mobile .ps-fade-nav {
+        width : 100%;
+    }
+    .ps-fade-mobile .flickity-page-dots .dot {
+            width : 6px;
+            height : 6px;
+            margin : 0 6px;
+    }
+    @media only screen and (min-width : 1025px) {
+        .ps-fade-nav-vert-center {
+            align-self: center;
+        }
+        .ps-fade-nav-vert-center .ps-fade-nav-inner {
+            width : 100%;
+        }
+    }
+    .ps-fade-mobile .ps-fade-nav-item-inner::after {
+        display: none;
+    }
+    .ps-fade-nav-align-center {
+        text-align: center;
+    }
+    .ps-fade-nav-align-left {
+        text-align : left;
+    }
+    .ps-fade-nav-align-right {
+        text-align: right;
+    }
+
+    .ps-fade-slide-video-youtube,
+    .ps-fade-slide-video-vimeo {
+        display: flex;
+        align-items : center;
+    }
+    .ps-fade-slide-video-inner {
+        width: 100%;
+    }
+    .ps-fade-slide-video-outer {
+        display : flex;
+    }
+    .ps-fade-gallery {
+        flex: 0 0 auto;
+        width: 50%;
+        transition : opacity 500ms cubic-bezier(.694,0,.335,1);
+        opacity: 0;
+    }
+    .ps-fade-mobile .ps-fade-gallery {
+        width: 100%;
+    }
+    .ps-fade-gallery-inner {
+        position: relative;
+        overflow: hidden;
+        height : 100vh;
+    }
+    @media only screen and ( max-width:960px ) {
+        .ps-fade-gallery-inner {
+            height: auto;
+        }
+    }
+    
+    .ps-fade-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
+        transition: transform .35s ease-out,opacity .35s ease-out;
+        opacity: 0;
+        transform: scale(1.05);
+    }
+    .ps-fade-mobile .ps-fade-slide {
+        opacity: 1;
+        transform: none;
+        height: auto;
+    }
+    
+    .ps-fade-slide-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        opacity: 0;
+        transition : opacity 0.3s;
+    }
+    .ps-fade-mobile .ps-fade-slide-img {
+        height: auto;
+    }
+    .ps-fade-slide-img.ps-fade-slide-img-lazyloaded {
+        opacity: 1;
+    }
+    
+    .ps-fade-nav-inner {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        position: relative;
+    }
+    
+    .ps-fade-nav-item-inner {
+        font-size: 60px;
+        line-height: 1.3em;
+        transition : color 0.5s cubic-bezier(.694,0,.335,1), font-weight 0.4s ease;
+        display: inline-block;
+        position: relative;
+    }
+    
+    .ps-fade-nav-item-inner::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        transform: scaleX(0);
+        transform-origin: left center;
+        background-color: currentColor;
+        transition: transform 0.5s cubic-bezier(.694,0,.335,1);
+    }
+    
+    .ps-fade-nav-item-inner.is-active:after {
+        transform: scale(1);
+    }
+    
+    .ps-fade-slide.is-active {
+        z-index: 1;
+        opacity: 1;
+        transform: scale(1);
+    }
+    .ps-fade-nav-item {
+        transition : opacity 500ms cubic-bezier(.694,0,.335,1);
+        opacity: 0;
+    }
+    .ps-fade-mobile .ps-fade-nav-item {
+        width : 100%;
+        text-align: center;
+    }
+
+    .ps-fade-initialized .ps-fade-nav-item,
+    .ps-fade-initialized .ps-fade-gallery {
+        opacity: 1;
+    }
+
+    .ps-fade-slide-video video {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /**
+     * Zoro template style 2
+     */
+    .ps-fade-horizontal {
+        visibility: hidden;
+    }
+    .ps-fade-horizontal-initialized {
+        visibility: visible;
+    }
+    .ps-fade-horizontal-nav-item-inner {
+        white-space: nowrap;
+        font-size: 80px;
+        font-weight: 600;
+        color: transparent;
+        -webkit-text-stroke: 1px #fff;
+        opacity: 0;
+        transform: translate3d(0, 50%, 0);
+        transition: transform 0.3s linear, opacity 0.3s linear, color 0.3s linear;
+        display: inline-block;
+    }
+    .ps-fade-horizontal-initialized .ps-fade-horizontal-nav-item-inner {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+
+    .ps-fade-horizontal-nav-item-inner.is-active {
+        color: #fff;
+    }
+
+    .ps-fade-horizontal-inner {
+        position: relative;
+    }
+    
+    .ps-fade-horizontal-nav {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        height: 100%;
+        z-index: 2;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .ps-fade-horizontal-gallery {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        height: 100%;
+        overflow: hidden;
+        background: #0f1010;
+        transition : opacity 0.5s linear;
+    }
+    .ps-fade-horizontal-initialized .ps-fade-horizontal-gallery {
+        opacity: 1;
+    }
+
+    .ps-fade-horizontal-gallery::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: rgba(0,0,0,0.25);
+        z-index: 1;
+    }
+    
+    li.ps-fade-horizontal-nav-item {
+        height: 100%;
+        align-items: center;
+        display: inline-flex;
+        padding: 0 60px;
+        margin: 0;
+    }
+    
+    .ps-fade-horizontal-gallery-inner {
+        margin: 0 0 0 auto;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+    @media only screen and (max-width : 767px){
+        .ps-fade-horizontal-nav-item-inner {
+            font-size: 40px;
+        }
+        li.ps-fade-horizontal-nav-item {
+            padding : 0 20px;
+        }
+    }
+        
+    .ps-fade-horizontal-initialized .ps-fade-horizontal-nav-item-inner:hover {
+        color: transparent;
+    }
+    .ps-fade-horizontal-nav-item-inner.is-active:hover {
+        color: #fff;
+    }
    
    /* ======================
        Footer
@@ -2578,11 +2859,11 @@ TABLE OF CONTENTS
        text-align: center;
    }
    .pagination a, .pagination span, .pages_list a {
-       width: 35px;
+       width: 48px;
        height: 35px;
        line-height: 35px;
        text-align: center;
-       margin: 0 16px 0px 0px;
+       margin: 0 12px 0px 0px;
        display: inline-block;
    }
    .portfolio.full-screen.full-screen-gutter .pagination {
@@ -2903,6 +3184,17 @@ TABLE OF CONTENTS
    }
    .blog .element .post-content p {
        margin-bottom: 20px;
+   }
+
+   /******************************
+        Blog remove extra space 
+   ******************************/
+   .blog .element .post-content p:empty, .blog .element .post-content .tatsu-section-pad:empty, .blog .element .post-content .tatsu-column-empty{
+    margin: 0px;
+    padding: 0px;
+   }
+   .blog .element .post-content .tatsu-text-block-wrap{
+    margin-bottom: 0px;
    }
    /******************************
        Blog Style4
@@ -4707,7 +4999,7 @@ TABLE OF CONTENTS
    }
    
    /*For page stack top no need to worry about the admin bar in be-sidemenu-content*/
-   .admin-bar:not(.page-stack-top) #be-sidemenu-content{
+   .admin-bar:not(.page-stack-top):not(.left-static-menu) #be-sidemenu-content{
        padding-bottom: 32px;
    }
    .overlay-left-align-menu #be-sidemenu-content{
@@ -4813,10 +5105,10 @@ TABLE OF CONTENTS
        overflow: auto;
    }
    
-   .left-static-menu .special-header-bottom-text,
+   /* .left-static-menu .special-header-bottom-text,
    .left-static-menu .special-header-logo{
        visibility: hidden;
-   }
+   } */
    
    .special-header-menu .menu-container{
        display: -ms-flexbox;
@@ -5345,6 +5637,13 @@ TABLE OF CONTENTS
        .gallery_content_slide .simplebar-content {
            position: static;
        }
+
+        #footer-wrap.style1 .footer-center-area{
+            flex: 0 0 33.33%
+        }
+        #footer-wrap {
+            padding: 10px 40px;
+        }
    
    }
    
@@ -5826,3 +6125,11 @@ TABLE OF CONTENTS
            page-break-after: avoid;
        }
    }
+
+.oshine-maintenance-mode-default {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+}

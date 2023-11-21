@@ -19,12 +19,15 @@ if ( ! defined('ABSPATH') ) {
  */
 class MSP_Admin_Assets {
 
+	protected $panel_js_handler  = '';
+	protected $global_js_handler = '';
 
 	/**
 	 * __construct
 	 */
 	function __construct() {
-
+		$this->panel_js_handler  = MSWP_SLUG .'-admin-scripts';
+		$this->global_js_handler = MSWP_SLUG .'-admin-global';
 	}
 
 
@@ -34,9 +37,9 @@ class MSP_Admin_Assets {
 		$this->load_panel_general_styles();
 		$this->load_panel_styles();
 
+		$this->load_panel_general_scripts();
 		$this->add_panel_general_variables();
 		$this->add_panel_general_script_localizations();
-		$this->load_panel_general_scripts();
 
 		// panel spesific assets
 		if( isset( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], array( 'edit', 'add' ) ) ) {
@@ -50,6 +53,8 @@ class MSP_Admin_Assets {
 
 
 	public function enqueue_global_assets(){
+
+		wp_enqueue_script( $this->global_js_handler, MSWP_AVERTA_ADMIN_URL . '/assets/js/global.js', array('jquery'), MSWP_AVERTA_VERSION, false );
 
 		$this->load_global_styles();
 		$this->add_global_variables();
@@ -65,7 +70,7 @@ class MSP_Admin_Assets {
 
 	public function add_global_variables(){
 		// load global variables about Master Slider
-		wp_localize_script( 'jquery', '__MS_GLOBAL', array(
+		wp_localize_script( $this->global_js_handler, '__MS_GLOBAL', array(
 			'ajax_url'       => admin_url( 'admin-ajax.php' ),
 			'admin_url'      => admin_url(),
 			'menu_page_url'  => menu_page_url( MSWP_SLUG, false ),
@@ -90,18 +95,18 @@ class MSP_Admin_Assets {
 		wp_enqueue_media();
 
 		// Master Slider Panel Scripts
-		wp_enqueue_script( MSWP_SLUG . '-handlebars'	 ,	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/handlebars.min.js',  			array( 'jquery' ), MSWP_AVERTA_VERSION, true );
-		wp_enqueue_script( MSWP_SLUG . '-ember-js'		 , 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/ember.min.js',  				array( 'jquery' ), MSWP_AVERTA_VERSION, true );
-		wp_enqueue_script( MSWP_SLUG . '-ember-model'	 , 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/ember-model.min.js',  			array( 'jquery' ), MSWP_AVERTA_VERSION, true );
+		wp_enqueue_script( MSWP_SLUG . '-handlebars'	 ,	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/handlebars.min.js', array( 'jquery-core', 'jquery-migrate' ), MSWP_AVERTA_VERSION, true );
+		wp_enqueue_script( MSWP_SLUG . '-ember-js'		 , 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/ember.min.js',  				array( MSWP_SLUG . '-handlebars' ), MSWP_AVERTA_VERSION, true );
+		wp_enqueue_script( MSWP_SLUG . '-ember-model'	 , 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/ember-model.min.js',  			array( MSWP_SLUG . '-ember-js' ), MSWP_AVERTA_VERSION, true );
 		wp_enqueue_script( MSWP_SLUG . '-msp-required'	 , 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/msp.required.js',
 			array(
-				'jquery', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-draggable',
+				MSWP_SLUG . '-ember-model', 'jquery-ui-core', 'jquery-ui-dialog', 'jquery-ui-draggable',
 				'jquery-ui-sortable', 'jquery-ui-slider', 'jquery-ui-spinner'
 			),
 			MSWP_AVERTA_VERSION, true
 		);
 
-		wp_enqueue_script( MSWP_SLUG . '-masterslider-wp-init', 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/masterslider.wp.init.js',  		array( 'jquery' ), MSWP_AVERTA_VERSION, false);
+		wp_enqueue_script( MSWP_SLUG . '-masterslider-wp-init', 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/masterslider.wp.init.js',  		array( MSWP_SLUG . '-msp-required' ), MSWP_AVERTA_VERSION, false);
 		wp_enqueue_script( MSWP_SLUG . '-masterslider-wp', 	MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/js/masterslider.wp.js',  			array( MSWP_SLUG . '-msp-required' ), MSWP_AVERTA_VERSION, true );
 	}
 
@@ -111,7 +116,7 @@ class MSP_Admin_Assets {
 	 */
 	public function add_panel_variables() {
 
-		wp_localize_script( 'jquery', '__MSP_SKINS', msp_get_skins() );
+		wp_localize_script( $this->panel_js_handler, '__MSP_SKINS', msp_get_skins() );
         global $mspdb;
 
         $slider_alias = '';
@@ -119,7 +124,7 @@ class MSP_Admin_Assets {
 		// get and print slider id
 		if ( isset( $_REQUEST['slider_id'] ) ) {
 
-			$slider_id  = $_REQUEST['slider_id'];
+			$slider_id  = sanitize_text_field( $_REQUEST['slider_id'] );
 
         } else {
 
@@ -127,10 +132,10 @@ class MSP_Admin_Assets {
 
             if ( isset( $_REQUEST['action'] ) && 'add' == $_REQUEST['action'] ) {
                 $slider_id = $mspdb->add_slider( array( 'status' => 'draft' ) );
-                wp_localize_script( 'jquery', '__MSP_SLIDER_ID', (string) $slider_id );
+                wp_add_inline_script( $this->panel_js_handler, 'var __MSP_SLIDER_ID = ' . (string) $slider_id . ';' );
 
                 $slider_alias = $mspdb->generate_slider_alias( $slider_id );
-                wp_localize_script( 'jquery', '__MSP_SLIDER_ALIAS', $slider_alias );
+				wp_add_inline_script( $this->panel_js_handler, 'var __MSP_SLIDER_ALIAS = "' . $slider_alias . '";' );
             }
         }
 
@@ -142,26 +147,27 @@ class MSP_Admin_Assets {
 			$slider_type = isset( $slider_data[ 'type' ] ) ? $slider_data[ 'type' ] : 'custom';
 			$slider_type = empty( $slider_type ) ? 'custom' : $slider_type;
 
-			$msp_data = isset( $slider_data[ 'params' ] ) ? $slider_data[ 'params' ] : NULL;
-			$msp_data = empty( $slider_data[ 'params' ] ) ? NULL : $slider_data[ 'params' ];
+			$msp_data = isset( $slider_data[ 'params' ] ) ? $slider_data[ 'params' ] : '';
+			$msp_data = empty( $slider_data[ 'params' ] ) ? '' : $slider_data[ 'params' ];
 
-			$msp_preset_style  = msp_get_option( 'preset_style' , NULL );
-			$msp_preset_effect = msp_get_option( 'preset_effect', NULL );
-			$msp_buttons_style = msp_get_option( 'buttons_style', NULL );
+			$msp_preset_style  = msp_get_option( 'preset_style' , '' );
+			$msp_preset_effect = msp_get_option( 'preset_effect', '' );
+			$msp_buttons_style = msp_get_option( 'buttons_style', '' );
 
-			$msp_preset_style  = empty( $msp_preset_style  ) ? NULL : $msp_preset_style;
-			$msp_preset_effect = empty( $msp_preset_effect ) ? NULL : $msp_preset_effect;
-			$msp_buttons_style = empty( $msp_buttons_style ) ? NULL : $msp_buttons_style;
+			$msp_preset_style  = empty( $msp_preset_style  ) ? '' : $msp_preset_style;
+			$msp_preset_effect = empty( $msp_preset_effect ) ? '' : $msp_preset_effect;
+			$msp_buttons_style = empty( $msp_buttons_style ) ? '' : $msp_buttons_style;
 
             if( empty( $slider_alias ) ){
                 $slider_alias  = isset( $slider_data[ 'alias' ] ) && ! empty( $slider_data[ 'alias' ] ) ? $slider_data[ 'alias' ] : $mspdb->generate_slider_alias( $slider_id );
-                wp_localize_script( 'jquery', '__MSP_SLIDER_ALIAS'  , $slider_alias );
+                wp_add_inline_script( $this->panel_js_handler, 'var __MSP_SLIDER_ALIAS = "' . $slider_alias . '";' );
             }
-			wp_localize_script( 'jquery', '__MSP_DATA'			, $msp_data          );
-			wp_localize_script( 'jquery', '__MSP_PRESET_STYLE'  , $msp_preset_style  );
-			wp_localize_script( 'jquery', '__MSP_PRESET_EFFECT' , $msp_preset_effect );
-			wp_localize_script( 'jquery', '__MSP_TYPE'			, $slider_type       );
-			wp_localize_script( 'jquery', '__MSP_PRESET_BUTTON'	, $msp_buttons_style );
+
+			wp_add_inline_script( $this->panel_js_handler, 'var __MSP_DATA = "' . $msp_data . '";');
+			wp_add_inline_script( $this->panel_js_handler, 'var __MSP_PRESET_STYLE = "' . $msp_preset_style . '";');
+			wp_add_inline_script( $this->panel_js_handler, 'var __MSP_PRESET_EFFECT = "' . $msp_preset_effect . '";');
+			wp_add_inline_script( $this->panel_js_handler, 'var __MSP_TYPE = "' . $slider_type . '";' );
+			wp_add_inline_script( $this->panel_js_handler, 'var __MSP_PRESET_BUTTON = "' . $msp_buttons_style . '";');
 		}
 
 
@@ -194,7 +200,7 @@ class MSP_Admin_Assets {
 				'content_tags' 		=> $tags
 			);
 
-			wp_localize_script( 'jquery', '__MSP_POST', apply_filters( 'masterslider_post_slider_init_data', $js_data ) );
+			wp_localize_script( $this->panel_js_handler, '__MSP_POST', apply_filters( 'masterslider_post_slider_init_data', $js_data ) );
 		}
 
 
@@ -240,14 +246,14 @@ class MSP_Admin_Assets {
 			} else {
 				$js_data = null;
 				$wc_installation_url = admin_url( 'plugin-install.php?tab=plugin-information&plugin=woocommerce&TB_iframe=true&width=600&height=550' );
-				wp_localize_script( 'jquery', '__WC_INSTALL_URL', $wc_installation_url );
+				wp_add_inline_script( $this->panel_js_handler, 'var __WC_INSTALL_URL = "' . $wc_installation_url . '";' );
 			}
 
-			wp_localize_script( 'jquery', '__MSP_POST', apply_filters( 'masterslider_wc_product_slider_init_data', $js_data ) );
+			wp_localize_script( $this->panel_js_handler, '__MSP_POST', apply_filters( 'masterslider_wc_product_slider_init_data', $js_data ) );
 		}
 
 		// define panel directory path
-		wp_localize_script( 'jquery', '__MSP_PATH', MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/' );
+		wp_add_inline_script( $this->panel_js_handler, 'var __MSP_PATH = "' . MSWP_AVERTA_ADMIN_URL . '/views/slider-panel/";' );
 
 
 
@@ -297,7 +303,7 @@ class MSP_Admin_Assets {
 	        'layerContent'  => 'Lorem Ipsum'
 	    );
 
-		wp_localize_script( 'jquery', '__MSP_DEF_OPTIONS', apply_filters( 'masterslider_panel_default_setting', $slider_panel_default_setting ) );
+		wp_localize_script( $this->panel_js_handler, '__MSP_DEF_OPTIONS', apply_filters( 'masterslider_panel_default_setting', $slider_panel_default_setting ) );
 
 		do_action( 'masterslider_admin_add_panel_variables', $slider_type );
 	}
@@ -323,7 +329,7 @@ class MSP_Admin_Assets {
         }
 
 		// define admin ajax address and master slider page
-		wp_localize_script( 'jquery', '__MS', array(
+		wp_localize_script( $this->panel_js_handler, '__MS', array(
 			'ajax_url'       => admin_url( 'admin-ajax.php' ),
 			'msp_menu_page'  => menu_page_url( MSWP_SLUG, false ),
 			'msp_plugin_url' => MSWP_AVERTA_URL,
@@ -339,7 +345,7 @@ class MSP_Admin_Assets {
 	 */
 	public function add_panel_script_localizations() {
 
-		wp_localize_script( 'jquery', '__MSP_LAN', apply_filters( 'masterslider_admin_localize', array(
+		wp_localize_script( $this->panel_js_handler, '__MSP_LAN', apply_filters( 'masterslider_admin_localize', array(
 
 			// CallbacksController.js
 			'cb_001' => __( 'On slide change start', MSWP_TEXT_DOMAIN ),
@@ -491,7 +497,7 @@ class MSP_Admin_Assets {
 	 */
 	public function add_panel_general_script_localizations() {
 
-		wp_localize_script( 'jquery', '__MSP_GEN_LAN', apply_filters( 'masterslider_admin_general_localize', array(
+		wp_localize_script( $this->panel_js_handler, '__MSP_GEN_LAN', apply_filters( 'masterslider_admin_general_localize', array(
 
 			'genl_001' => __( 'The changes you made will be lost if you navigate away from this page. To exit preview mode click on close (X) button.', MSWP_TEXT_DOMAIN ),
 			'genl_002' => __( 'Master Slider Preview', MSWP_TEXT_DOMAIN ),
@@ -539,7 +545,7 @@ class MSP_Admin_Assets {
 	public function load_panel_general_scripts() {
 		// disable wp autosave on master slider panel
 		wp_dequeue_script( 'autosave' );
-		wp_enqueue_script( MSWP_SLUG .'-admin-scripts', MSWP_AVERTA_ADMIN_URL . '/assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-dialog'), MSWP_AVERTA_VERSION, true );
+		wp_enqueue_script(  $this->panel_js_handler, MSWP_AVERTA_ADMIN_URL . '/assets/js/admin.js', array('jquery', 'jquery-ui-core', 'jquery-ui-dialog'), MSWP_AVERTA_VERSION, true );
 	}
 
 }

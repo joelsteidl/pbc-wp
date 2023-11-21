@@ -398,6 +398,11 @@ function monsterinsights_get_option_name() {
 	//}
 }
 
+/**
+ * Export necessary settings to export as JSON.
+ *
+ * @return string
+ */
 function monsterinsights_export_settings() {
 	$settings = monsterinsights_get_options();
 	$exclude  = array(
@@ -414,6 +419,9 @@ function monsterinsights_export_settings() {
 			unset( $settings[ $e ] );
 		}
 	}
+
+	// Get site notes.
+	$settings['site_notes'] = monsterinsights_get_site_notes_to_export();
 
 	return wp_json_encode( $settings );
 }
@@ -443,3 +451,51 @@ function monsterinsights_force_events_mode( $value ) {
 }
 
 add_filter( 'monsterinsights_get_option_events_mode', 'monsterinsights_force_events_mode' );
+
+/**
+ * Prepare site notes to export.
+ */
+function monsterinsights_get_site_notes_to_export() {
+	$notes_db = new MonsterInsights_Site_Notes_DB_Base();
+
+	$note_items = $notes_db->get_items( array(
+		'per_page' => -1,
+		'orderby'  => 'id',
+		'order'    => 'asc',
+		'page'     => 1,
+	) );
+
+	$notes = array();
+
+	foreach ( $note_items['items'] as $note_item ) {
+		$notes[] = array(
+			'note_title'    => $note_item['note_title'],
+			'note_date'     => $note_item['note_date_ymd'],
+			'important'     => $note_item['important'],
+			'category_name' => empty( $note_item['category']['name'] ) ? '' : html_entity_decode( $note_item['category']['name'] ),
+		);
+	}
+
+	$categories = $notes_db->get_categories( array(
+		'per_page' => -1,
+		'page'     => 1,
+		'orderby'  => 'term_id',
+		'order'    => 'asc',
+	) );
+
+	$note_categories = array();
+
+	if ( is_array( $categories ) && ! empty( $categories ) ) {
+		foreach ( $categories as $category ) {
+			$note_categories[] = array(
+				'name'  => html_entity_decode( $category['name'] ),
+				'color' => $category['background_color'],
+			);
+		}
+	}
+
+	return array(
+		'notes'      => $notes,
+		'categories' => $note_categories,
+	);
+}

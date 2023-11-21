@@ -51,7 +51,7 @@
              * @param   boolean $secure   HTTPS only.
              * @param   boolean $httponly Only set cookie on HTTP calls.
              */
-            public static function setCookie( $name, $value, $expire = 0, $path, $domain = null, $secure = false, $httponly = false ) {
+            public static function setCookie( $name, $value, $expire = 0, $path = '', $domain = null, $secure = false, $httponly = false ) {
                 if ( ! defined( 'WP_TESTS_DOMAIN' ) ) {
                     setcookie( $name, $value, $expire, $path, $domain, $secure, $httponly );
                 }
@@ -182,7 +182,7 @@
              *
              * @return      void - Admin notice is diaplyed if new version is found
              */
-            public static function updateCheck( $curVer ) {
+            public static function updateCheck( $parent, $curVer ) {
 
                 // If no cookie, check for new ver
                 if ( ! isset( $_COOKIE['redux_update_check'] ) ) { // || 1 == strcmp($_COOKIE['redux_update_check'], self::$_version)) {
@@ -201,12 +201,17 @@
                 // Set up admin notice on new version
                 //if ( 1 == strcmp( $ver, $curVer ) ) {
                 if ( version_compare( $ver, $curVer, '>' ) ) {
-                    self::$_parent->admin_notices[] = array(
-                        'type'    => 'updated',
-                        'msg'     => '<strong>A new build of Redux is now available!</strong><br/><br/>Your version:  <strong>' . $curVer . '</strong><br/>New version:  <strong><span style="color: red;">' . $ver . '</span></strong><br/><br/><em>If you are not a developer, your theme/plugin author shipped with <code>dev_mode</code> on. Contact them to fix it, but in the meantime you can use our <a href="' . 'https://' . 'wordpress.org/plugins/redux-developer-mode-disabler/" target="_blank">dev_mode disabler</a>.</em><br /><br /><a href="' . 'https://' . 'github.com/ReduxFramework/redux-framework">Get it now</a>&nbsp;&nbsp;|',
-                        'id'      => 'dev_notice_' . $ver,
-                        'dismiss' => true,
+                    $msg = '<strong>A new build of Redux is now available!</strong><br/><br/>Your version:  <strong>' . $curVer . '</strong><br/>New version:  <strong><span style="color: red;">' . $ver . '</span></strong><br/><br/><em>If you are not a developer, your theme/plugin author shipped with <code>dev_mode</code> on. Contact them to fix it, but in the meantime you can use our <a href="' . 'https://' . 'wordpress.org/plugins/redux-developer-mode-disabler/" target="_blank">dev_mode disabler</a>.</em><br /><br /><a href="' . 'https://' . 'github.com/ReduxFramework/redux-framework">Get it now</a>&nbsp;&nbsp;|';
+                    
+                    $data = array(
+                        'parent'    => $parent,
+                        'type'      => 'updated',
+                        'msg'       => $msg,
+                        'id'        => 'dev_notice_' . $ver,
+                        'dismiss'   => true
                     );
+
+                    Redux_Admin_Notices::set_notice($data);
                 }
             }
 
@@ -227,7 +232,7 @@
                 } else {
 
                     if ( empty( $check ) ) {
-                        $check = @wp_remote_get( 'http://look.reduxframework.com/status.php?p=' . ReduxFramework::$_is_plugin );
+                        $check = @wp_remote_get( 'http://look.redux.io/status.php?p=' . ReduxFramework::$_is_plugin );
                         $check = json_decode( wp_remote_retrieve_body( $check ), true );
 
                         if ( ! empty( $check ) && isset( $check['id'] ) ) {

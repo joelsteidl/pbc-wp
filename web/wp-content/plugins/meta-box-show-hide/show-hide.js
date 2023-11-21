@@ -1,114 +1,115 @@
-jQuery( function ( $ )
-{
+jQuery( function ( $ ) {
 	'use strict';
 
 	// Global variables
-	var $pageTemplate = $( '#page_template ' ),
-		$postFormat = $( 'input[name="post_format"]' ),
-		$parent = $( '#parent_id' );
+	var $parent = $( '#parent_id' );
 
-	// Callback functions to check for each condition
+	// List of selectors for each type of element, for classic editor only.
+	var selectors = {
+		'template': '#page_template',
+		'post_format': 'input[name="post_format"]',
+		'parent': '#parent_id',
+	};
+	var elements = {};
+
+	function initElements() {
+		_.forEach( selectors, function( selector, key ) {
+			elements[key] = $( selector );
+		} );
+	}
+
+	function isGutenbergActive() {
+		return document.body.classList.contains( 'block-editor-page' );
+	}
+
+	// Callback functions to check for each condition.
 	var checkCallbacks = {
-		template   : function ( templates )
-		{
-			return -1 != templates.indexOf( $pageTemplate.val() );
+		template   : function ( templates ) {
+			var value = isGutenbergActive() ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'template' ) : elements.template.val();
+
+			return -1 !== templates.indexOf( value );
 		},
-		post_format: function ( formats )
-		{
-			// Make sure registered formats in lowercase
-			formats = formats.map( function ( format )
-			{
+		post_format: function ( formats ) {
+			// Make sure registered formats in lowercase.
+			formats = formats.map( function ( format ) {
 				return format.toLowerCase();
 			} );
 
-			var value = $postFormat.filter( ':checked' ).val();
-			if ( !value || 0 == value )
-			{
-				value = 'standard';
-			}
+			var value = isGutenbergActive() ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'format' ) : elements.post_format.filter( ':checked' ).val();
+			value = value || 'standard';
 
 			return -1 != formats.indexOf( value );
 		},
-		taxonomy   : function ( taxonomy, terms )
-		{
-			var values = [],
-				$inputs = $( '#' + taxonomy + 'checklist :checked' );
+		taxonomy   : function ( taxonomy, terms ) {
+			var values = [];
 
-			$inputs.each( function ()
-			{
-				var $input = $( this ),
-					text = $.trim( $input.parent().text() );
-				values.push( parseInt( $input.val() ) );
-				values.push( text );
-			} );
-
-			for ( var i = 0, len = values.length; i < len; i++ )
-			{
-				if ( -1 != terms.indexOf( values[i] ) )
-					return true;
+			if ( isGutenbergActive() ) {
+				values = wp.data.select( 'core/editor' ).getEditedPostAttribute( taxonomy );
+			} else {
+				var $inputs = $( '#' + taxonomy + 'checklist :checked' );
+				$inputs.each( function () {
+					var $input = $( this ),
+						text = $.trim( $input.parent().text() );
+					values.push( parseInt( $input.val() ) );
+					values.push( text );
+				} );
 			}
-			return false;
+
+			return _.intersection( values, terms ).length > 0;
 		},
-		input_value: function ( inputValues, relation )
-		{
+		input_value: function ( inputValues, relation ) {
 			relation = relation || 'OR';
 
-			for ( var i in inputValues )
-			{
+			for ( var i in inputValues ) {
 				var $element = $( i ),
 					value = $.trim( $element.val() ),
 					checked = null;
 
-				if ( $element.is( ':checkbox' ) )
-				{
+				if ( $element.is( ':checkbox' ) ) {
 					checked = $element.is( ':checked' ) === !!inputValues[i];
 				}
 
-				if ( 'OR' == relation )
-				{
-					if ( ( value == inputValues[i] && checked === null ) || checked === true )
-						return true;
+				if ( $element.is( ':radio' ) ) {
+					value = $.trim( $element.filter( ':checked' ).val() );
 				}
-				else
-				{
-					if ( ( value != inputValues[i] && checked === null ) || checked === false )
+
+				if ( 'OR' == relation ) {
+					if ( ( value == inputValues[i] && checked === null ) || checked === true ) {
+						return true;
+					}
+				} else {
+					if ( ( value != inputValues[i] && checked === null ) || checked === false ) {
 						return false;
+					}
 				}
 			}
 			return relation != 'OR';
 		},
-		is_child   : function ()
-		{
-			return '' != $parent.val();
+		is_child   : function () {
+			var value = isGutenbergActive() ? wp.data.select( 'core/editor' ).getEditedPostAttribute( 'parent' ) : elements.parent.val();
+
+			return !! parseInt( value );
 		}
 	};
 
-	// Callback functions to addEventListeners for "change" event in each condition
+	var $document = $( document );
+
+	// Callback functions to addEventListeners for "change" event in each condition.
 	var addEventListenersCallbacks = {
-		/**
-		 * Check by page templates
-		 *
-		 * @param callback Callback function
-		 *
-		 * @return bool
-		 */
-		template   : function ( callback )
-		{
-			$pageTemplate.on( 'change', callback );
+		template   : function ( callback ) {
+			$document.on( 'change', selectors.template, callback );
 		},
-		post_format: function ( callback )
-		{
-			$postFormat.on( 'change', callback );
+		post_format: function ( callback ) {
+			$document.on( 'change', selectors.post_format, callback );
 		},
-		taxonomy   : function ( taxonomy, callback )
-		{
+		taxonomy   : function ( taxonomy, callback ) {
 			// Fire "change" event when click on popular category
 			// See wp-admin/js/post.js
-			$( '#' + taxonomy + 'checklist-pop' ).on( 'click', 'input', function ()
-			{
+			$( '#' + taxonomy + 'checklist-pop' ).on( 'click', 'input', function () {
 				var t = $( this ), val = t.val(), id = t.attr( 'id' );
-				if ( !val )
+				if ( !val ) {
 					return;
+				}
 
 				var tax = id.replace( 'in-popular-', '' ).replace( '-' + val, '' );
 				$( '#in-' + tax + '-' + val ).trigger( 'change' );
@@ -116,13 +117,11 @@ jQuery( function ( $ )
 
 			$( '#' + taxonomy + 'checklist' ).on( 'change', 'input', callback );
 		},
-		input_value: function ( callback, selector )
-		{
-			$( selector ).on( 'change', callback );
+		input_value: function ( callback, selectors ) {
+			$document.on( 'change', selectors, callback );
 		},
-		is_child   : function ( callback )
-		{
-			$parent.on( 'change', callback );
+		is_child   : function ( callback ) {
+			$document.on( 'change', selectors.parent, callback );
 		}
 	};
 
@@ -131,20 +130,14 @@ jQuery( function ( $ )
 	 * @param type
 	 * @param conditions
 	 * @param $metaBox
-	 *
-	 * @returns void
 	 */
-	function maybeShowHide( type, conditions, $metaBox )
-	{
-		var condition = checkAllConditions( conditions );
+	function maybeShowHide( type, conditions, $metaBox ) {
+		var result = checkAllConditions( conditions );
 
-		if ( 'show' == type )
-		{
-			condition ? $metaBox.show() : $metaBox.hide();
-		}
-		else
-		{
-			condition ? $metaBox.hide() : $metaBox.show();
+		if ( 'show' == type ) {
+			result ? $metaBox.show() : $metaBox.hide();
+		} else {
+			result ? $metaBox.hide() : $metaBox.show();
 		}
 	}
 
@@ -154,75 +147,47 @@ jQuery( function ( $ )
 	 *
 	 * @return bool
 	 */
-	function checkAllConditions( conditions )
-	{
+	function checkAllConditions( conditions ) {
 		// Don't change "global" conditions
 		var localConditions = $.extend( {}, conditions );
 
 		var relation = localConditions.hasOwnProperty( 'relation' ) ? localConditions['relation'].toUpperCase() : 'OR',
-			value;
+			result;
 
 		// For better loop of checking terms
-		if ( localConditions.hasOwnProperty( 'relation' ) )
+		if ( localConditions.hasOwnProperty( 'relation' ) ) {
 			delete localConditions['relation'];
-
-		var checkBy = ['template', 'post_format', 'input_value', 'is_child'],
-			by, condition;
-
-		for ( var i = 0, l = checkBy.length; i < l; i++ )
-		{
-			by = checkBy[i];
-
-			if ( !localConditions.hasOwnProperty( by ) )
-				continue;
-
-			// Call callback function to check for each condition
-			condition = checkCallbacks[by]( localConditions[by], relation );
-
-			if ( 'OR' == relation )
-			{
-				value = typeof value == 'undefined' ? condition : value || condition;
-				if ( value )
-					return value;
-			}
-			else
-			{
-				value = typeof value == 'undefined' ? condition : value && condition;
-				if ( !value )
-					return value;
-			}
-
-			delete localConditions[by];
 		}
 
-		// By taxonomy, including category and post format
-		// Note that we unset all other parameters, so we can safely loop in the localConditions array
-		if ( !localConditions.length )
-		{
-			for ( var taxonomy in localConditions )
-			{
-				if ( !localConditions.hasOwnProperty( taxonomy ) )
-					continue;
-
-				// Call callback function to check for each condition
-				condition = checkCallbacks['taxonomy']( taxonomy, localConditions[taxonomy] );
-
-				if ( 'OR' == relation )
-				{
-					value = typeof value == 'undefined' ? condition : value || condition;
-					if ( value )
-						return value;
-				}
-				else
-				{
-					value = typeof value == 'undefined' ? condition : value && condition;
-					if ( !value )
-						return value;
-				}
+		function setResult( r ) {
+			if ( undefined === result ) {
+				result = r;
+				return;
+			}
+			if ( 'OR' === relation ) {
+				result = result || r;
+			} else {
+				result = result && r;
 			}
 		}
 
-		return value;
+		var criterias = ['template', 'post_format', 'input_value', 'is_child'];
+		criterias.forEach( function( criteria ) {
+			if ( ! localConditions.hasOwnProperty( criteria ) ) {
+				return;
+			}
+
+			setResult( checkCallbacks[criteria]( localConditions[criteria], relation ) );
+			delete localConditions[criteria];
+		} );
+
+		// By taxonomy.
+		// Note that we unset all other parameters, so we can safely loop in the localConditions array.
+		_.each( localConditions, function( terms, taxonomy ) {
+			setResult( checkCallbacks['taxonomy']( taxonomy, terms ) );
+		} );
+
+		return result;
 	}
 
 	/**
@@ -232,86 +197,91 @@ jQuery( function ( $ )
 	 * @param conditions
 	 * @param $metaBox
 	 */
-	function addEventListeners( type, conditions, $metaBox )
-	{
+	function addEventListeners( type, conditions, $metaBox ) {
 		// Don't change "global" conditions
 		var localConditions = $.extend( {}, conditions );
 
 		// For better loop of checking terms
-		if ( localConditions.hasOwnProperty( 'relation' ) )
+		if ( localConditions.hasOwnProperty( 'relation' ) ) {
 			delete localConditions['relation'];
-
-		var checkBy = ['template', 'post_format', 'input_value', 'is_child'], by;
-		for ( var i = 0, l = checkBy.length; i < l; i++ )
-		{
-			by = checkBy[i];
-
-			if ( !localConditions.hasOwnProperty( by ) )
-				continue;
-
-			if ( 'input_value' != by )
-			{
-				// Call callback function to check for each condition
-				addEventListenersCallbacks[by]( function ()
-				{
-					maybeShowHide( type, conditions, $metaBox );
-				} );
-				delete localConditions[by];
-				continue;
-			}
-
-			// Input values
-			for ( var selector in localConditions[by] )
-			{
-				// Call callback function to check for each condition
-				addEventListenersCallbacks[by]( function ()
-				{
-					maybeShowHide( type, conditions, $metaBox );
-				}, selector );
-			}
-			delete localConditions[by];
-
 		}
 
-		// By taxonomy, including category and post format
-		// Note that we unset all other parameters, so we can safely loop in the localConditions array
-		if ( !localConditions.length )
-		{
-			for ( var taxonomy in localConditions )
-			{
-				if ( !localConditions.hasOwnProperty( taxonomy ) )
-					continue;
+		var callback = function () {
+			maybeShowHide( type, conditions, $metaBox );
+		};
 
-				// Call callback function to check for each condition
-				addEventListenersCallbacks['taxonomy']( taxonomy, function ()
-				{
-					maybeShowHide( type, conditions, $metaBox );
-				} );
+		// Input values.
+		if ( localConditions.hasOwnProperty( 'input_value' ) ) {
+			var selectors = Object.keys( localConditions.input_value ).join( ',' );
+			addEventListenersCallbacks['input_value']( callback, selectors );
+			delete localConditions.input_value;
+		}
+
+		// In Gutenberg, simply subscribe to all changes.
+		if ( isGutenbergActive() ) {
+			wp.data.subscribe( callback );
+			return;
+		}
+
+		// In non-Gutenberg, we need to find elements to listen to changes.
+		var criterias = ['template', 'post_format', 'is_child'];
+		criterias.forEach( function( criteria ) {
+			if ( ! localConditions.hasOwnProperty( criteria ) ) {
+				return;
 			}
+			addEventListenersCallbacks[criteria]( callback );
+			delete localConditions[criteria];
+		} );
+
+		// By taxonomy, including category.
+		// Note that we unset all other parameters, so we can safely loop in the localConditions array
+		for ( var taxonomy in localConditions ) {
+			if ( ! localConditions.hasOwnProperty( taxonomy ) ) {
+				continue;
+			}
+			addEventListenersCallbacks['taxonomy']( taxonomy, callback );
 		}
 	}
 
-	// Show/hide check for each meta box
-	$( '.mb-show-hide' ).each( function ()
-	{
-		var $this = $( this ),
-			$metaBox = $this.closest( '.postbox' ),
-			conditions;
-
-		// Check for show rules
-		if ( $this.data( 'show' ) )
-		{
-			conditions = $this.data( 'show' );
-			maybeShowHide( 'show', conditions, $metaBox );
-			addEventListeners( 'show', conditions, $metaBox );
+	function normalizeConditions( conditions ) {
+		if ( ! isGutenbergActive() ) {
+			return conditions;
 		}
 
-		// Check for hide rules
-		if ( $this.data( 'hide' ) )
-		{
-			conditions = $this.data( 'hide' );
-			maybeShowHide( 'hide', conditions, $metaBox );
-			addEventListeners( 'hide', conditions, $metaBox );
+		if ( conditions.hasOwnProperty( 'category' ) ) {
+			conditions.categories = conditions.category.slice();
+			delete conditions.category;
 		}
-	} );
+		return conditions;
+	}
+
+	function init() {
+		$( '.mb-show-hide' ).each( function () {
+			var $this = $( this ),
+				$metaBox = $this.closest( '.postbox' ),
+				conditions;
+
+			// Check for show rules
+			if ( $this.data( 'show' ) ) {
+				conditions = normalizeConditions( $this.data( 'show' ) );
+				maybeShowHide( 'show', conditions, $metaBox );
+				addEventListeners( 'show', conditions, $metaBox );
+			}
+
+			// Check for hide rules
+			if ( $this.data( 'hide' ) ) {
+				conditions = normalizeConditions( $this.data( 'hide' ) );
+				maybeShowHide( 'hide', conditions, $metaBox );
+				addEventListeners( 'hide', conditions, $metaBox );
+			}
+		} );
+	}
+
+	initElements();
+
+	// Run the code after Gutenberg has done rendering.
+	// https://stackoverflow.com/a/34999925/371240
+	setTimeout( function() {
+		window.requestAnimationFrame( init );
+	}, 1000 );
 } );

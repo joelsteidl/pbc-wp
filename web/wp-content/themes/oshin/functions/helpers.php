@@ -73,31 +73,30 @@ endif;
 if ( ! function_exists( 'be_themes_category_list' ) ) :
 	function be_themes_category_list( $id ) {
 		global $blog_attr, $be_themes_data;
-		$numItems = count( get_the_category( $id ) );
-		$i = 0;
 		$category_color = '';
 		$category_bg_color = '';
-		foreach( ( get_the_category( $id ) ) as $category ) {
+		$cat_list = [];
+		foreach( ( get_the_category( $id ) ) as $key => $category ) {
+			if ( in_array( $category->cat_ID, $cat_list ) ) {
+				continue;
+			}
 			if($be_themes_data['blog_style'] == 'style8'){
 				$category_bg_color = get_term_meta($category->cat_ID,'be_catg_bg_color', true);
 				$category_color = get_term_meta($category->cat_ID,'be_catg_color', true);
-				if( empty( $category_bg_color ) ){
+				if( empty( $category_bg_color ) && !empty($be_themes_data['color_scheme']) ){
 					$category_bg_color = $be_themes_data['color_scheme'];
 				}else{
 					$category_bg_color = "#".$category_bg_color;
 				}
 
-				if( empty( $category_color ) ){
+				if( empty( $category_color ) && !empty($be_themes_data['alt_bg_text_color'])){
 					$category_color = $be_themes_data['alt_bg_text_color'];
 				}else{
 					$category_color = "#".$category_color;
 				}
 			}
-			if( ++$i === $numItems ) {
-				echo '<a href="'.get_category_link( $category->cat_ID ).'" style= "color: '.$category_color.';" data-background-color = "'.$category_bg_color.'" title="'.__('View all posts in','oshin').' '.$category->cat_name.'"> '.$category->cat_name.'</a>' ;
-			} else {
-				echo '<a href="'.get_category_link( $category->cat_ID ).'" style= "color: '.$category_color.';" data-background-color = "'.$category_bg_color.'" title="'.__('View all posts in','oshin').' '.$category->cat_name.'"> '.$category->cat_name.'</a>, ' ;
-			}
+			echo ( ( $key == 0 ) ? '' : ', ' ) . '<a href="'.get_category_link( $category->cat_ID ).'" style= "color: '.$category_color.';" data-background-color = "'.$category_bg_color.'" title="'.__('View all posts in','oshin').' '.$category->cat_name.'"> '.$category->cat_name.'</a>' ;
+			$cat_list[] = $category->cat_ID;
 		}
 	}
 endif;
@@ -314,15 +313,15 @@ endif;
 /* ---------------------------------------------  */
 // Filter to handle empty search query
 /* ---------------------------------------------  */
-if ( ! function_exists( 'be_themes_request_filter' ) ) :
-	function be_themes_request_filter( $query_vars ) {
-	    if( isset( $_GET['s'] ) && empty( $_GET['s'] ) ) {
-	        $query_vars['s'] = " ";
-	    }
-	    return $query_vars;
-	}
-	add_filter( 'request', 'be_themes_request_filter' );
-endif;
+// if ( ! function_exists( 'be_themes_request_filter' ) ) :
+// 	function be_themes_request_filter( $query_vars ) {
+// 	    if( isset( $_GET['s'] ) && empty( $_GET['s'] ) ) {
+// 	        $query_vars['s'] = " ";
+// 	    }
+// 	    return $query_vars;
+// 	}
+// 	add_filter( 'request', 'be_themes_request_filter' );
+// endif;
 /* ---------------------------------------------  */
 // Filter to remove empty widget title <h> tags
 /* ---------------------------------------------  */
@@ -700,7 +699,7 @@ if ( ! function_exists( 'get_be_themes_breadcrumb' ) ) :
 	                setup_postdata( $post );
 	                get_the_title();
 	                rewind_posts();
-	                $output .= __( 'Blog', 'oshin' );;
+	                $output .= __( get_the_title(), 'oshin' );;
 	            }
 	        }
 	        $output .= '</div>';
@@ -1035,6 +1034,55 @@ function oshine_typehub_default_values() {
 		}
 	}
 	return $typehub_default_saved_values;
+}
+
+if( !function_exists( 'oshine_get_all_pages' ) ) {
+	function oshine_get_all_pages() {
+		$pages_array = array();
+
+		$pages = get_posts(array( 'post_type' => 'page', 'numberposts' => -1) );
+		if( $pages ) {
+			foreach( $pages as $page ) {
+				$pages_array[ (string) $page->ID ] =  $page->post_title;
+			}
+			wp_reset_postdata();
+		}
+
+		return $pages_array;
+	}
+}
+
+/**
+ * Check if WooCommerce is activated
+ * @source - https://docs.woocommerce.com/document/query-whether-woocommerce-is-activated/
+ */
+if ( ! function_exists( 'be_themes_is_woocommerce_activated' ) ) {
+	function be_themes_is_woocommerce_activated() {
+		if ( class_exists( 'woocommerce' ) ) { return true; } else { return false; }
+	}
+}
+
+if( !function_exists( 'oshine_sticky_sections_fixed_wrapper_start' ) ) {
+    function oshine_sticky_sections_fixed_wrapper_start() {
+		global $be_themes_data;
+        $sticky_sections = get_post_meta( get_the_ID(), 'be_themes_sticky_sections', true );
+        if( $be_themes_data['opt-header-type'] == 'builder' && !empty( $sticky_sections ) ) :
+        ?>  
+            <div id = "be-sticky-section-fixed-wrap">
+        <?php
+        endif;
+    }
+    add_action( 'after_body', 'oshine_sticky_sections_fixed_wrapper_start' );
+}
+
+if( !function_exists('oshin_get_font_family')){
+	function oshin_get_font_family( $font ){
+		$family = be_get_font_family( $font );
+		if ( !empty( $family['value'] ) ){
+			return $family['value'];
+		}
+		return $family;
+	}
 }
 
 ?>

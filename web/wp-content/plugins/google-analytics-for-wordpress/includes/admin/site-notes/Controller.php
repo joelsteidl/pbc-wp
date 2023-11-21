@@ -5,6 +5,9 @@ class MonsterInsights_SiteNotes_Controller
 
 	public static $instance;
 
+	/**
+	 * @var MonsterInsights_Site_Notes_DB_Base
+	 */
 	private $db;
 
 	public static function get_instance()
@@ -633,7 +636,7 @@ class MonsterInsights_SiteNotes_Controller
 		$data['data']['overviewgraph']['notes'] = array();
 
 		foreach ($notes['items'] as $note) {
-			$date_index = wp_date('j M', strtotime($note['note_date'], current_time('U')));
+			$date_index = date('j M', strtotime($note['note_date'], current_time('U')));
 			if (!isset($data['data']['overviewgraph']['notes'][$date_index])) {
 				$data['data']['overviewgraph']['notes'][$date_index] = array();
 			}
@@ -746,7 +749,7 @@ class MonsterInsights_SiteNotes_Controller
 		$prepared_notes = array();
 
 		foreach ( $notes['items'] as $note ) {
-			$date_index = wp_date( 'j M', strtotime( $note['note_date'], current_time( 'U' ) ) );
+			$date_index = date( 'j M', strtotime( $note['note_date'], current_time( 'U' ) ) );
 
 			if ( ! isset( $prepared_notes[ $date_index ] ) ) {
 				$prepared_notes[ $date_index ] = array();

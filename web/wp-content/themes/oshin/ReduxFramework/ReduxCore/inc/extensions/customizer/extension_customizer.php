@@ -42,6 +42,7 @@
             private static $post_values = array();
             public static $version = "2.0.0";
             private $options = array();
+            protected $upload_dir;
 
             /**
              * Class Constructor. Defines the args for the extions class
@@ -81,8 +82,8 @@
                 }
 
                 if ( empty( $this->_extension_dir ) ) {
-                    $this->_extension_dir = trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) );
-                    $this->_extension_url = site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->_extension_dir ) );
+                    $this->_extension_dir = apply_filters( "redux/extension/customizer/dir", trailingslashit( str_replace( '\\', '/', dirname( __FILE__ ) ) ) );
+                    $this->_extension_url = apply_filters( "redux/extension/customizer/url", site_url( str_replace( trailingslashit( str_replace( '\\', '/', ABSPATH ) ), '', $this->_extension_dir ) ) );
                 }
 
                 self::get_post_values();
@@ -580,7 +581,7 @@
 
             }
 
-            public function add_section( $id, $args = array(), $wp_customize ) {
+            public function add_section( $id, $args = array(), $wp_customize = null) {
 
                 if ( is_a( $id, 'WP_Customize_Section' ) ) {
                     $section = $id;
@@ -603,7 +604,7 @@
              * @param WP_Customize_Panel|string $id   Customize Panel object, or Panel ID.
              * @param array                     $args Optional. Panel arguments. Default empty array.
              */
-            public function add_panel( $id, $args = array(), $wp_customize ) {
+            public function add_panel( $id, $args = array(), $wp_customize =null) {
                 if ( is_a( $id, 'WP_Customize_Panel' ) ) {
                     $panel = $id;
                 } else {

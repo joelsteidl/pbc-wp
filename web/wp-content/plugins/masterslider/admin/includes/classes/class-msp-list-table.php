@@ -62,7 +62,7 @@ class MSP_List_Table extends Axiom_List_Table {
             '<a href="%s">%s</a>',
             esc_url( add_query_arg(
                 array(
-                    'page'      => $_GET['page'],
+                    'page'      => esc_html( $_GET['page'] ),
                     'action'    => 'edit',
                     'slider_id' => $item['ID'  ]
                 )
@@ -83,7 +83,7 @@ class MSP_List_Table extends Axiom_List_Table {
                 '<a class="action-duplicate msp-ac-btn msp-btn-gray msp-iconic" href="%s"><span></span>%s</a>',
                 esc_url( add_query_arg(
                     array(
-                        'page'      => $_GET['page'],
+                        'page'      => esc_html( $_GET['page'] ),
                         'action'    => 'duplicate',
                         'slider_id' => $item['ID'],
                         'paged'     => $paged
@@ -98,7 +98,7 @@ class MSP_List_Table extends Axiom_List_Table {
                 '<a class="action-delete msp-ac-btn msp-btn-red msp-iconic" href="%s" onClick="return confirm(\'%s\');" ><span></span>%s</a>',
                 esc_url( add_query_arg(
                     array(
-                        'page'      => $_GET['page'],
+                        'page'      => esc_html( $_GET['page'] ),
                         'action'    => 'delete',
                         'slider_id' => $item['ID'],
                         'paged'     => $paged
@@ -115,7 +115,7 @@ class MSP_List_Table extends Axiom_List_Table {
             '<a class="action-preview msp-ac-btn msp-btn-blue msp-iconic" href="%s" onClick="lunchMastersliderPreviewBySliderID(%s);return false;" ><span></span>%s</a>',
             esc_url( add_query_arg(
                 array(
-                    'page'      => $_GET['page'],
+                    'page'      => esc_html( $_GET['page'] ),
                     'action'    => 'preview',
                     'slider_id' => $item['ID']
                 )
@@ -131,7 +131,7 @@ class MSP_List_Table extends Axiom_List_Table {
 
     function process_bulk_action() {
 
-        $slider_id = isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
+        $slider_id = isset( $_REQUEST['slider_id'] ) ? sanitize_text_field( $_REQUEST['slider_id'] ) : '';
 
         // check if a delete request recieved
         if( current_user_can( 'delete_masterslider' ) && 'delete' === $this->current_action() ) {
@@ -221,10 +221,10 @@ class MSP_List_Table extends Axiom_List_Table {
         $offset  = ( (int)$paged - 1 ) * $perpage;
 		$offset  = $offset < 0 ? 0 : $offset;
 
-		$orderby = isset( $_REQUEST['orderby'] ) ? $_REQUEST['orderby'] : 'ID';
-		$order 	 = isset( $_REQUEST['order'] ) ? $_REQUEST['order'] : 'ASC';
+		$orderby = isset( $_REQUEST['orderby'] ) ? sanitize_text_field( $_REQUEST['orderby'] ) : 'ID';
+		$order 	 = isset( $_REQUEST['order'] ) ? sanitize_text_field( $_REQUEST['order'] ) : 'ASC';
 
-		$search  = isset( $_REQUEST['s'] ) ? " AND title LIKE '%%" . $_REQUEST['s'] . "%%'" : '';
+		$search  = isset( $_REQUEST['s'] ) ? " AND title LIKE '%%" . sanitize_text_field( $_REQUEST['s'] ) . "%%'" : '';
 
 		return $mspdb->get_sliders( $perpage, $offset, $orderby, $order, $where.$search );
 	}
@@ -234,7 +234,7 @@ class MSP_List_Table extends Axiom_List_Table {
 		global $mspdb;
 
 		$all_items = $this->get_records( 0 );
-		return count( $all_items );
+		return is_array( $all_items ) ? count( $all_items ) : 0;
 	}
 
 

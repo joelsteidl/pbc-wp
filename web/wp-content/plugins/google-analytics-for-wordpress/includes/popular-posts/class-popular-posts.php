@@ -370,12 +370,13 @@ class MonsterInsights_Popular_Posts {
 	private function get_query_args() {
 
 		$args = array(
-			'numberposts'         => $this->posts_count,
+			'numberposts'         => 25,
 			'ignore_sticky_posts' => true,
 			'fields'              => 'ids',
+			'orderby'              => 'rand',
 		);
 		$args = wp_parse_args( $this->query_args(), $args );
-
+		
 		return apply_filters( 'monsterinsights_popular_posts_query_args', $args );
 	}
 

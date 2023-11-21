@@ -8,6 +8,7 @@
 class BEAdminMenu
 {
 	public static $settings;
+	public $core;
 
 	public function __construct($core) {
 		$this->core = $core;

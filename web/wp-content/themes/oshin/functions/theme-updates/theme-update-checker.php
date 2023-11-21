@@ -82,6 +82,7 @@ class ThemeUpdateChecker {
 		//Various options for the wp_remote_get() call. Themes can filter these, too.
 		$options = array(
 			'timeout' => 60,
+			'sslverify' => false,
 			'httpversion' => '1.1' //seconds
 		);
 		$options = apply_filters(self::$filterPrefix.'options-'.$this->theme, $options);
@@ -91,7 +92,6 @@ class ThemeUpdateChecker {
 			$url = add_query_arg($queryArgs, $url);
 		}
 
-		
 		//Send the request.
 		$result = wp_remote_get($url, $options);
 		//var_dump($result);
@@ -144,6 +144,9 @@ class ThemeUpdateChecker {
 			$state->lastCheck = 0;
 			$state->checkedVersion = '';
 			$state->update = null;
+		} else if ( ( empty( $_GET ) || empty( $_GET['be_check_theme_update'] ) ) && ! empty( $state->lastCheck  ) && is_numeric( $state->lastCheck ) && ( ( time() - ( $state->lastCheck * 1 ) ) < 12*3600 )  ) {
+			//if last check in less than a week then return
+			return;
 		}
 		
 		$state->lastCheck = time();
@@ -179,7 +182,7 @@ class ThemeUpdateChecker {
 		$state = get_option($this->optionName);
 		
 		//Is there an update to insert?
-		if ( !empty($state) && isset($state->update) && !empty($state->update) ){
+		if ( isset( $updates->response ) && is_array( $updates->response ) && !empty($state) && isset($state->update) && !empty($state->update) ){
 			$updates->response[$this->theme] = $state->update->toWpFormat();
 		}
 		

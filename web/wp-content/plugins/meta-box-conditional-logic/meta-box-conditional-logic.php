@@ -1,33 +1,35 @@
 <?php
-/*
-Plugin Name: Meta Box Conditional Logic
-Plugin URI: http://www.metabox.io/plugins/meta-box-conditional-logic
-Description: Control the Visibility of Meta Boxes and Fields or even HTML elements with ease.
-Version: 1.3
-Author: Tan Nguyen
-Author URI: https://www.binaty.org
-License: GPL2+
-*/
+/**
+ * Plugin Name: Meta Box Conditional Logic
+ * Plugin URI:  https://metabox.io/plugins/meta-box-conditional-logic/
+ * Description: Control the visibility of meta boxes and fields or even HTML elements with ease.
+ * Version:     1.6.20
+ * Author:      MetaBox.io
+ * Author URI:  https://metabox.io
+ * License:     GPL2+
+ *
+ * @package Meta Box
+ * @subpackage Meta Box Conditional Logic
+ */
 
-//Prevent loading this file directly
+// Prevent loading this file directly.
 defined( 'ABSPATH' ) || exit;
 
-//----------------------------------------------------------
-//Define plugin URL for loading static files or doing AJAX
-//------------------------------------------------------------
-if ( ! defined( 'MBC_URL' ) )
-	define( 'MBC_URL', plugin_dir_url( __FILE__ ) );
+if ( ! function_exists( 'mb_conditional_logic_load' ) ) {
+	/**
+	 * Hook to 'init' with priority 5 to make sure all actions are registered before Meta Box 4.9.0 runs
+	 */
+	add_action( 'init', 'mb_conditional_logic_load', 5 );
 
-define( 'MBC_JS_URL', trailingslashit( MBC_URL . 'assets/js' ) );
-// ------------------------------------------------------------
-// Plugin paths, for including files
-// ------------------------------------------------------------
-if ( ! defined( 'MBC_DIR' ) )
-	define( 'MBC_DIR', plugin_dir_path( __FILE__ ) );
+	/**
+	 * Load plugin files after Meta Box is loaded
+	 */
+	function mb_conditional_logic_load() {
+		if ( ! defined( 'RWMB_VER' ) ) {
+			return;
+		}
 
-define( 'MBC_INC_DIR', trailingslashit( MBC_DIR . 'inc' ) );
-
-// Load the conditional logic and assets
-include MBC_INC_DIR . 'class-conditional-logic.php';
-
-new MB_Conditional_Logic;
+		require __DIR__ . '/conditional-logic.php';
+		new MB_Conditional_Logic;
+	}
+}

@@ -40,6 +40,7 @@
             public static $theInstance;
             public static $version = "4.0";
             public $is_field = false;
+            public $field_name;
 
             /**
              * Class Constructor. Defines the args for the extions class

@@ -154,7 +154,6 @@ if (!class_exists('Redux_Framework_sample_config')) {
                 remove_action('admin_notices', array(ReduxFrameworkPlugin::instance(), 'admin_notices'));
             }
         }
-
         public function setSections() {
 
             /**
@@ -266,10 +265,10 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $left_header_styles_path    = get_template_directory().'/img/headers/left/';
             $left_header_styles_url     = get_template_directory_uri().'/img/headers/left/';
             $left_header_styles = array(
-                // array(
-                //     'alt' => 'Static',
-                //     'img' => $left_header_styles_url.'left-static-menu.jpg', // Fix Loading Style
-                // ),
+                array(
+                    'alt' => 'Static',
+                    'img' => $left_header_styles_url . 'left-static-menu.jpg', // Fix Loading Style
+                ),
                 array(
                     'alt' => 'Strip',
                     'img' => $left_header_styles_url.'left-strip-menu.jpg',
@@ -453,7 +452,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             // General Settings
             $this->sections[] = array(
                 'title'     => __('General Settings', 'oshin'),
-                'desc'      => __('General Settings of the site including the favicon and google analytics.', 'oshin'),
+                'desc'      => sprintf( __('General Settings of the site including the favicon and google analytics. <a href="%s" target="_blank">General Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/general-settings/'),
                 'icon'      => 'el-icon-adjust-alt',
                 'fields'    => array(
 
@@ -481,12 +480,28 @@ if (!class_exists('Redux_Framework_sample_config')) {
                     //     'desc' => __('Please upload a favicon here.', 'oshin')
                     // ),
                     array (
-                        'id' => 'google_analytics_code',
+                        'id' => 'google_analytics_v4_code',
                         'type' => 'text',
-                        'title' => __('Google Analytics Code', 'oshin'), 
-                        'desc' => __('Please enter your Google analytics tracking ID here.', 'oshin'),
+                        'title' => __('Google Analytics v4 Measurement ID', 'oshin'), 
+                        'placeholder' => 'e.g. G-123ABC456',
+                        'desc' => __('Please enter your Google Analytics v4 Measurement ID here.', 'oshin'),
                         'default' => ''
                     ),
+                    array (
+                        'id' => 'google_analytics_code',
+                        'type' => 'text',
+                        'title' => __('Google Analytics Tracking ID', 'oshin'), 
+                        'placeholder' => 'e.g. UA-1234567-12',
+                        'desc' => __('Please enter your Google Analytics tracking ID here. It will be deprecated soon.', 'oshin'),
+                        'default' => ''
+                    ),
+                    array (
+                        'id'            => 'track_logged_in',
+                        'type'          => 'checkbox',
+                        'title'         => __( 'Enable Google Analytics for Logged In Users', 'oshin' ),
+                        'desc'          => 'Warning! This will track all your traffic as a logged in user. (For testing/development purposes.)',
+                        'default'       => 0,
+                    ), 
                     array (
                         'id' => 'custom_css',
                         'type' => 'ace_editor',
@@ -509,6 +524,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             //Logo
             $this->sections[] = array(
                 'title' => __('Logo', 'oshin'),
+                'desc' => sprintf( __('<a href="%s" target="_blank">Logo Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/logo/' ),
                 
                 'icon' => 'el-icon-star',
                 'fields' => array ( 
@@ -576,12 +592,26 @@ if (!class_exists('Redux_Framework_sample_config')) {
                             'subtitle'  => __('Enter only Numbers (in pixels)', 'oshin'),
                             'default' => '25',
                          ), 
+                         array(
+                            'id'        => 'opt-logo-max-width',
+                            'type'      => 'text',
+                            'title'     => __('Logo max width', 'oshin'),
+                            'subtitle'  => __('Enter only Numbers (in pixels)', 'oshin'),
+                            'default' => '',
+                         ), 
+                         array(
+                            'id'        => 'opt-logo-max-width-mobile',
+                            'type'      => 'text',
+                            'title'     => __('Logo max width (Mobile)', 'oshin'),
+                            'subtitle'  => __('Enter only Numbers (in pixels)', 'oshin'),
+                            'default' => '',
+                         ),  
                     )
                 );
             //Background
             $this->sections[] = array(
                 'title' => __('Background', 'oshin'),
-                'desc' => __('Background settings for all the individual elements of the site.', 'oshin'),
+                'desc' => sprintf( __('Background settings for all the individual elements of the site. <a href="%s" target="_blank">Background Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/background-settings/'),
                 'icon' => 'el-icon-picture',
                 'fields' => array (    
 
@@ -1898,13 +1928,13 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array(
                 'icon' => 'el-icon-website',
                 'title' => __('Global Site Layout and Settings', 'oshin'),
-                'desc' => __('This Panel has all the settings related to the Global Settings and Layout of your Website', 'oshin'),
+                'desc'      => sprintf( __('This Panel has all the settings related to the Global Settings and Layout of your Website <a href="%s" target="_blank">Global Site Layout and Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/site-layout-settings/'),
                 'fields' => array (
                     array(
                         'id'        => 'opt-header-type',
                         'type'      => 'select',
                         'title'     => __('Header Layout', 'oshin'),
-                        'options'   => array('top' => 'Top Header' , 'left' => 'Left Header'), 
+                        'options'   => array('top' => 'Top Header' , 'left' => 'Left Header', 'builder' => 'Tatsu Header Builder'), 
                         'default'   => 'top',
                     ),
                     array (
@@ -1920,6 +1950,12 @@ if (!class_exists('Redux_Framework_sample_config')) {
                             'layout-border-header-top'=>'Header Top Border Layout',
                         ),
                         'default' => 'layout-wide'
+                    ), 
+                    array (
+                        'id' => 'enable_footer_builder',
+                        'type' => 'checkbox',
+                        'title' => __('Enable Footer Builder', 'oshin'),
+                        'default' => 0,
                     ),  
                     array(
                         'id'        => 'border-settings-start',
@@ -2041,10 +2077,25 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'default' => ''
                     ),
                     array (
+                        'id' => 'maintenance_mode_on',
+                        'type' => 'checkbox',
+                        'title' => __('Turn On Maintenance Mode', 'oshin'),
+                        'desc' => __('For users, not logged into site' , 'oshin'),
+                        'default' => 0
+                    ),
+                    array (
+                        'id' => 'maintenance_mode_page',
+                        'type' => 'select',
+                        'title' => __('Maintenance Mode Page', 'oshin'),
+                        'desc' => __('Select a page that you want to use as splash page in maintenance mode.' , 'oshin'),
+                        'options'=> oshine_get_all_pages(),
+                        'default' => 'right_side'
+                    ),
+                    array (
                         'id' => 'instagram_access_token',
                         'type' => 'text',
                         'title' => __('Instagram Access Token', 'oshin'), 
-                        'subtitle' => __("<a href='http://instagram.pixelunion.net/' target='_blank'>Generate Access Token</a>", 'oshin'),
+                        'subtitle' => __("<a href='https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/' target='_blank'>Generate Access Token</a>", 'oshin'),
                         'desc' => __('' , 'oshin'),
                         'default' => ''
                     ), 
@@ -2077,7 +2128,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             //Top Header Style
             $this->sections[] = array(
                 'title'     => __('Header Style', 'oshin'),
-                'desc'      => __('', 'oshin'),
+                'desc'      => __('<a href="https://oshine-knowledgebase.brandexponents.com/knowledge-base/top-header-settings/" target="_blank">Top Header Documentation</a>', 'oshin'),
                 'icon'      => '',
                 'subsection' => true,
                 'fields'    => array(
@@ -2103,6 +2154,14 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'title'     => 'Menu Settings',
                         'indent'    => true, // Indent all options below until the next 'section' option is set.
                     ),
+                    //Menu level
+                    array(
+                            'id'        => 'opt-menu-level',
+                            'type'      => 'text',
+                            'title'     => __('Menu Level', 'oshin'),
+                            'subtitle'  => __('Maximum menu level to show (numeric)', 'oshin'),
+                            'default' => '3',
+                         ),
                         // Old Menu Style Settings
                         array (
                             'id'        => 'top-menu-style',
@@ -2764,7 +2823,6 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'title'     => __( 'Menu Link Animation Direction', 'oshin'),
                         'required'  =>  array('left-header-style','equals', array(
                                                 get_template_directory_uri().'/img/headers/left/left-strip-menu.jpg',
-                                                get_template_directory_uri().'/img/headers/left/left-static-menu.jpg',
                                                 get_template_directory_uri().'/img/headers/left/overlay-center-align-menu.jpg',
                                                 get_template_directory_uri().'/img/headers/left/overlay-left-align-menu.jpg',
                                                 get_template_directory_uri().'/img/headers/left/perspective-right.jpg' ) ),
@@ -2795,7 +2853,6 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'title'     => __('Menu Vertical Alignment', 'oshin'),
                         'required'  =>  array('left-header-style','equals', array(
                                             get_template_directory_uri().'/img/headers/left/left-strip-menu.jpg',
-                                            get_template_directory_uri().'/img/headers/left/left-static-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/overlay-center-align-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/overlay-left-align-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/perspective-right.jpg' )
@@ -2808,11 +2865,17 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'type'      => 'select',
                         'title'     => __('Menu Horizontal Alignment', 'oshin'),
                         'required'  =>  array('left-header-style','equals', array(
-                                            get_template_directory_uri().'/img/headers/left/left-strip-menu.jpg',
-                                            get_template_directory_uri().'/img/headers/left/left-static-menu.jpg',
-                                            // get_template_directory_uri().'/img/headers/left/overlay-center-align-menu.jpg',
+                                            get_template_directory_uri().'/img/headers/left/left-strip-menu.jpg',                                            // get_template_directory_uri().'/img/headers/left/overlay-center-align-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/perspective-right.jpg' )
                                         ),
+                        'options'   => array( 'left'=>'Left', 'center'=>'Center', 'right'=>'Right' ),
+                        'default'   => 'center',
+                    ),
+                    array (
+                        'id'        => 'left_header_alignment_horizontal',
+                        'type'      => 'select',
+                        'title'     => __('Left Header Horizontal Alignment', 'oshin'),
+                        'required'  =>  array('left-header-style', 'equals', get_template_directory_uri().'/img/headers/left/left-static-menu.jpg' ),
                         'options'   => array( 'left'=>'Left', 'center'=>'Center', 'right'=>'Right' ),
                         'default'   => 'center',
                     ),
@@ -2846,7 +2909,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'id'        => 'left-static-overlay',
                         'type'      => 'color_rgba',
                         'title'     => __('Overlay Color on Left Menu', 'oshin'), 
-                        'subtitle'  => __('Will apply on the menu that has a BG image. This will not be applied on "Strip with Overlay Menu" style', 'oshin'),
+                        'subtitle'  => __('Will apply on the menu that has a BG image. This will not be applied on "3D Menu" style', 'oshin'),
                         'desc'      => __('', 'oshin'),
                         'default'   =>  array('color' => '#ffffff', 'alpha' => '0.85'),
                     ),
@@ -2858,7 +2921,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'desc'      => __('', 'oshin'),
                         'required'  => array('left-header-style','equals', array(
                                             get_template_directory_uri().'/img/headers/left/left-strip-menu.jpg',
-                                            get_template_directory_uri().'/img/headers/left/left-static-menu.jpg',
+                                            //get_template_directory_uri().'/img/headers/left/left-static-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/overlay.jpg',
                                             get_template_directory_uri().'/img/headers/left/overlay-center-align-menu.jpg',
                                             get_template_directory_uri().'/img/headers/left/overlay-left-align-menu.jpg',
@@ -2888,7 +2951,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             //Footer Settings
             $this->sections[] = array(
                 'title'     => __('Footer Settings', 'oshin'),
-                'desc'      => __('This Panel has all the settings required for the footer', 'oshin'),
+                'desc'      => sprintf( __('This Panel has all the settings required for the footer <a href="%s" target="_blank">Footer Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/footer-settings/'),
                 'icon'      => 'el-icon-hand-down',
                 'subsection' => false,
                 'fields'    => array(
@@ -3008,7 +3071,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             //Mobile Menu Settings
             $this->sections[] = array(
                 'title'     => __('Mobile Menu Settings', 'oshin'),
-                'desc'      => __('This Panel has all the settings related to the Mobile Menu', 'oshin'),
+                'desc'      => sprintf( __('This Panel has all the settings related to the Mobile Menu <a href="%s" target="_blank">Mobile Menu Documentation</a>', 'oshin') , 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/mobile-menu-settings/'  ),
                 'icon'      => 'el-icon-lines',
                 'subsection' => false,
                 // 'submenu' => false, // Setting submenu to false on a given section will hide it from the WordPress sidebar menu!
@@ -3034,7 +3097,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             );
             $this->sections[] = array(
                 'title'     => __('Hamburger Icon Settings', 'oshin'),
-                'desc'      => __('This Panel has all the settings related to the styling of the hamburger icon', 'oshin'),
+                'desc'      => sprintf( __('This Panel has all the settings related to the styling of the hamburger icon <a href="%s" target="_blank">Hamburger Icon Settings Documentation</a>', 'oshin') , 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/hamburger-icon-settings/'  ),
                 'icon'      => 'el-icon-lines',
                 'fields'    => array(
                         array(
@@ -3133,13 +3196,27 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array(
                 'icon' => 'el-icon-brush',
                 'title' => __('Colors', 'oshin'),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">Colors Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/colour-settings/'),
                 
                 'fields' => $colors_field
             );
             // Blog Settings
+            $get_posts = get_posts( array(
+                'posts_per_page' => -1,
+                'post_status'    => 'publish',
+            ) );
+            $post_options = array();
+            $latest_post_id = '';
+            if($get_posts){
+                foreach ( $get_posts as $post ) {
+                        $post_options[$post->ID] = html_entity_decode(get_the_title($post->ID));
+                        $latest_post_id = $post->ID;
+                }
+            }
             $this->sections[] = array (
                 'icon' => 'el-icon-blogger',
                 'title' => __('Blog Settings', 'oshin'),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">Blog Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/blog-settings/'),
                 
                 'fields' => array (
                     array (
@@ -3165,9 +3242,38 @@ if (!class_exists('Redux_Framework_sample_config')) {
                                     'style2'=>'Small Thumbnail', 
                                     'style3'=>'Masonry - Style 1 (Old)', 
                                     'style8'=>'Masonry - Style 2', 
+                                    'style10'=>'Single - Masonry',
                                     //'style9'=>'Metro Grid', 
                                 ),
                         'default' => 'style6'
+                    ),
+                    array (
+                        'id'        => 'blog-single-post-settings-start',
+                        'type'      => 'section',
+                        'title'     => 'Blog Single Post Settings',
+                        'subtitle'  => '',
+                        'indent'    => true, // Indent all options below until the next 'section' option is set.
+                        'required' => array('blog_style','equals','style10')
+                    ),
+                        array (
+                            'id' => 'blog_single_post_selected',
+                            'type' => 'select',
+                            'title'     => __('Select post', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'options'   => $post_options,
+                            'default'   => $latest_post_id
+                        ),
+                        array (
+                            'id' => 'blog_single_post_read_more_text',
+                            'type' => 'text',
+                            'title'     => __('Read more Text', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => 'Read More',
+                        ),
+                    array (
+                        'id'        => 'blog-single-post-settings-end',
+                        'type'      => 'section',
+                        'indent'    => false, // Indent all options below until the next 'section' option is set.
                     ),
                     array (
                         'id'        => 'blog-meta-setting-start',
@@ -3232,6 +3338,64 @@ if (!class_exists('Redux_Framework_sample_config')) {
                             array('blog_style','!=','style7'),
                         ),
                     ),
+                        array (
+                            'id' => 'blog_show_filters',
+                            'type' => 'switch',
+                            'title' => __('Filterable Post', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => true,
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'blog_filters_align',
+                            'type' => 'select',
+                            'title' => __('Filters Alignment', 'oshin'), 
+                            
+                            'desc' => __('' , 'oshin'),
+                            'options'=> array('left'=>'Left', 'center'=>'Center', 'right'=>'Right'),
+                            'default' => 'align-center',
+                            'required' => array('blog_show_filters','equals',true)
+                        ),
+                        array (
+                            'id' => 'blog_filter_bottom_color',
+                            'type' => 'color',
+                            'title' => __('Bottom border color', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => '#33e9b9',
+                            'required' => array('blog_show_filters','equals',true)
+                        ),
+                        array (
+                            'id' => 'blog_items_per_page',
+                            'type' => 'text',
+                            'title' => __('Number of Items Per Load', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => '9',
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'blog_image_aspect_ratio',
+                            'type' => 'text',
+                            'title' => __('Blog Images Aspect Ratio', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => '1.60',
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'blog_masonry_enable',
+                            'type' => 'switch',
+                            'title' => __('Masonry Layout', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => false,
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'blog_cat_hide',
+                            'type' => 'switch',
+                            'title' => __('Hide Categories', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => false,
+                            'required' => array('blog_style','equals','style10')
+                        ),
                         array (
                             'id' => 'blog_column',
                             'type' => 'select',
@@ -3320,7 +3484,11 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         
                         'desc' => __('' , 'oshin'),
                         'options'=> array('style1' => 'Text Underline', 'style2'=>'Border', 'style3'=>'Block'),
-                        'default' => 'style1'
+                        'default' => 'style1',
+                        'required' => array( 
+                            array('blog_style','!=','style2'),
+                            array('blog_style','!=','style8') 
+                        )
                     ),                    
                     array (
                         'id'        => 'single-post-setting-start',
@@ -3392,9 +3560,86 @@ if (!class_exists('Redux_Framework_sample_config')) {
                             ),
                             'default'   => 'light',
                             'required'  => array ( 'single_blog_style', 'equals', true )
-                        ),                        
+                        ),  
+                        array (
+                            'id' => 'show_related_posts',
+                            'type' => 'switch',
+                            'title' => __('More Posts Section', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => false,
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'related_posts_section_title',
+                            'type' => 'text',
+                            'title' => __('More Posts Section title', 'oshin'), 
+                            'desc' => __('' , 'oshin'),
+                            'default' => 'Industry Insights',
+                            'required' => array('show_related_posts','equals',true)
+                        ),
                     array (
                         'id'        => 'single-post-setting-end',
+                        'type'      => 'section',
+                        'indent'    => false, // Indent all options below until the next 'section' option is set.
+                    ),
+                    array (
+                        'id'        => 'blog-share-setting-start',
+                        'type'      => 'section',
+                        'title'     => 'Blog Post Share Settings',
+                        'subtitle'  => '',
+                        'indent'    => true, // Indent all options below until the next 'section' option is set.
+                        'required' => array('blog_style','equals','style10')
+                    ),
+                        array (
+                            'id' => 'blog_show_share_icons',
+                            'type' => 'switch',
+                            'title'     => __('Show Share Icons', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_style','equals','style10')
+                        ),
+                        array (
+                            'id' => 'blog_show_share_icon_facebook',
+                            'type' => 'switch',
+                            'title'     => __('Facebook', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_show_share_icons','equals',true)
+                        ),
+                        array (
+                            'id' => 'blog_show_share_icon_twitter',
+                            'type' => 'switch',
+                            'title'     => __('Twitter', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_show_share_icons','equals',true)
+                        ),
+                        /*array (
+                            'id' => 'blog_show_share_icon_google_plus',
+                            'type' => 'switch',
+                            'title'     => __('Google+', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_show_share_icons','equals',true)
+                        ),*/
+                        array (
+                            'id' => 'blog_show_share_icon_linkedin',
+                            'type' => 'switch',
+                            'title'     => __('Linkedin', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_show_share_icons','equals',true)
+                        ),
+                        array (
+                            'id' => 'blog_show_share_icon_pinterest',
+                            'type' => 'switch',
+                            'title'     => __('Pinterest', 'oshin'),
+                            'subtitle'  => __('', 'oshin'),
+                            'default'   => true,
+                            'required' => array('blog_show_share_icons','equals',true)
+                        ),
+                    array (
+                        'id'        => 'blog-share-setting-end',
                         'type'      => 'section',
                         'indent'    => false, // Indent all options below until the next 'section' option is set.
                     ),
@@ -3404,6 +3649,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array (
                 'icon' => 'el-icon-film',
                 'title' => __('Portfolio Settings', 'oshin'),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">Portfolio Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/portfolio-settings/'),
                 
                 'fields' => array (  
                     array (
@@ -3895,6 +4141,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this ->sections[] = array (
                 'icon' => 'el-icon-shopping-cart',
                 'title' => __('Shop', 'oshin'),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">Shop Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/shop-settings/'),
                 
                 'fields' => array (
                     array (
@@ -3912,6 +4159,12 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'title' => __('Enable Sidebar in Shop Page', 'oshin'),
                         
                         
+                        'default' => 0
+                    ),
+                    array (
+                        'id' => 'show_product_qty_plus_minus_btn',
+                        'type' => 'checkbox',
+                        'title' => __('Enable Product Quantity Increment Decrement Button', 'oshin'),
                         'default' => 0
                     ),
                     array (
@@ -4071,7 +4324,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array(
                 'icon' => 'el-icon-envelope',
                 'title' => __('Contact Settings', 'oshin'),
-                'desc' => __('Contact information that will be used in the Contact form', 'oshin'),
+                'desc'      => sprintf( __('Contact information that will be used in the Contact form <a href="%s" target="_blank">Contact Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/contact-settings/'),
                 'fields' => array (
                     array (
                         'id' => 'mail_id',
@@ -4282,7 +4535,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array (
                 'icon' => 'el-icon-magic',
                 'title' => __('Single Blog Hero Section', 'oshin'),
-                'desc' => __('Single Blog Hero Section Setting</p>', 'oshin'),
+                'desc'      => sprintf( __('Single Blog Hero Section Setting <a href="%s" target="_blank">Single Blog Hero Section Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/single-blog-hero-section/'),
                 'fields' => array (
                     array (
                         'id' => 'single_blog_hero_section_from',
@@ -4481,7 +4734,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             $this->sections[] = array (
                 'icon' => 'el-icon-magic',
                 'title' => __('Single Shop Hero Section', 'oshin'),
-                'desc' => __('Single Shop Hero Section Setting</p>', 'oshin'),
+                'desc'      => sprintf( __('Single Shop Hero Section Setting <a href="%s" target="_blank">Single Shop Hero Section Settings Documentation</a>', 'oshin'), 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/single-shop-hero-section/'),
                 'fields' => array (
                     array (
                         'id' => 'single_shop_hero_section_from',
@@ -4681,7 +4934,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             // Import Export
             $this->sections[] = array(
                 'title'     => __('Import / Export', 'oshin'),
-                'desc'      => __('Import and Export your Redux Framework settings from file, text or URL.', 'oshin'),
+                'desc'      => sprintf( __('Import and Export your Redux Framework settings from file, text or URL. <a href="%s" target="_blank">Import/Export Documentation</a>', 'oshin') , 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/importexport/' ),
                 'icon'      => 'el-icon-refresh',
                 'fields'    => array(
                     array(
@@ -4696,6 +4949,7 @@ if (!class_exists('Redux_Framework_sample_config')) {
             //Performace
             $this->sections[] = array(
                 'title'   => __( 'Performance', 'oshin' ),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">Performance Documentation</a>', 'oshin') , 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/performance/' ),
                 'icon'    => 'el el-wrench',
                 'fields'  => array (
                     array (
@@ -4722,9 +4976,10 @@ if (!class_exists('Redux_Framework_sample_config')) {
                 )
             );
 
-            //Performace
+            //GDPR
             $this->sections[] = array(
                 'title'   => __( 'GDPR Compliance', 'oshin' ),
+                'desc'      => sprintf( __('<a href="%s" target="_blank">GDPR Compliance Documentation</a>', 'oshin') , 'https://oshine-knowledgebase.brandexponents.com/knowledge-base/gdpr-compliance/' ),
                 'icon'    => 'el el-wrench',
                 'fields'  => array (
                     array (

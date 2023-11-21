@@ -10,7 +10,7 @@
             if(isset($be_themes_data['top-menu-style']) && !empty($be_themes_data['top-menu-style']) && $be_themes_data['top-menu-style'] == 'menu-animate-fall') { ?>
                 <div class="menu-controls menu-falling-animate-controller"><?php get_template_part( 'headers/header','hamburger' ); ?></div>
             <?php } 
-            if($be_themes_data['opt-header-pos']['right']) {
+            if(!empty($be_themes_data['opt-header-pos']) && !empty($be_themes_data['opt-header-pos']['right'])) {
                 foreach ($be_themes_data['opt-header-pos']['right'] as $key => $value) {
                     be_themes_get_header_widgets($key);
                 }

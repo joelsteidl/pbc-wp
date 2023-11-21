@@ -4,22 +4,29 @@
 /* ---------------------------------------------  */
 if (!function_exists('be_themes_hexa_to_rgb')) {
 	function be_themes_hexa_to_rgb( $color ) {
+		if ( strpos( $color, 'rgb' ) !== false ) {
+			$color = str_replace( array( 'rgb(', 'rgba(', ')' ), '', $color );
+			$color = explode( ',', $color );
+			return array( $color[0], $color[1], $color[2] );
+		}
 
-	  if ( isset( $color[0] ) && $color[0] == '#' ) {
-	      $color = substr($color, 1);
-	  }
+		if ( isset( $color[0] ) && $color[0] == '#' ) {
+			$color = substr( $color, 1 );
+		}
 
-	  if ( strlen( $color ) == 6 ) {
-	      list( $r, $g, $b ) = array( $color[0].$color[1], $color[2].$color[3], $color[4].$color[5] );
-	  } elseif (strlen($color) == 3) {
-	      list( $r, $g, $b ) = array( $color[0].$color[0], $color[1].$color[1], $color[2].$color[2] );
-	  } else {
-	      return false;
-	  }
+		if ( strlen( $color ) == 6 ) {
+			list( $r, $g, $b ) = array( $color[0].$color[1], $color[2].$color[3], $color[4].$color[5] );
+		} elseif (strlen($color) == 3) {
+			list( $r, $g, $b ) = array( $color[0].$color[0], $color[1].$color[1], $color[2].$color[2] );
+		} else {
+			return false;
+		}
 
-	  $r = hexdec( $r ); $g = hexdec( $g ); $b = hexdec( $b );
+		$r = hexdec( $r );
+		$g = hexdec( $g );
+		$b = hexdec( $b );
 
-	  return array( $r, $g, $b );
+		return array( $r, $g, $b );
 	}
 }
 
@@ -177,70 +184,130 @@ if (!function_exists('get_portfolio_image')) {
 			$image['class'] = 'not-wide';
 			$image['alt_class'] = 'no-wide-width-height';
 		}
-		return $image;
+		return apply_filters( 'be_get_portfolio_image', $image, $id, $column, $masonry );
 	}
 }
 
 /*************************************
  *  		Video details
  *************************************/
-if( !function_exists( 'be_get_video_details' ) ){
-	function be_get_video_details($url,$size = 'large'){
+if ( ! function_exists( 'be_get_video_details' ) ) {
+	function be_get_video_details( $url, $size = 'large' ) {
 		$pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
 		$details = array();
 
-		if( $result = preg_match($pattern, $url, $matches) ){
-			
-			if( $size  === 'small'){
-				$size = 'mqdefault';
-			}elseif( $size === 'large' ){
-				$size = 'maxresdefault';
-			}
+		if ( $result = preg_match( $pattern, $url, $matches ) ) {
+			$size = ( $size === 'large' ) ? 'maxresdefault' : 'mqdefault';
 	
 			$video_id = $matches[1];
-			$youtube_url = "https://img.youtube.com/vi/".$video_id."/".$size.".jpg";
+			$youtube_url = "https://img.youtube.com/vi/" . $video_id . "/". $size . ".jpg";
 
-			return array(
+			$details = array(
 				'source' => 'youtube',
 				'thumb_url' => $youtube_url,
 				'video_id' => $video_id
 			);
+		} else if ( strpos( $url, 'vimeo' ) !== false ) {
+			$size = ( $size === 'large' ) ? '_1280x720' : '_320x180';
 
-		}else if( strpos( $url,'vimeo' ) !== false ) {
+			$vimeo_id = substr( parse_url( $url, PHP_URL_PATH ), 1 );
+			$vimeo_id = explode( '/', $vimeo_id );
+				
+			$response = wp_remote_get( 'https://vimeo.com/api/oembed.json?url=' . $url, array(
+				'timeout'   => 60,
+				'sslverify' => false,
+			)  );
 
-			$vimeo_id = substr(parse_url($url, PHP_URL_PATH), 1); 
-			$response = wp_remote_get( "http://vimeo.com/api/v2/video/$vimeo_id.php" );
+			if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+				$response_body = wp_remote_retrieve_body( $response );
+    			$data = json_decode( $response_body );
+				
+				$thumbnail_url = explode( '_', $data->thumbnail_url );
+				$thumbnail_url = $thumbnail_url[0] . $size;
 
-			if( $size  === 'small'){
-				$size = '_320x180';
-			}elseif( $size === 'large' ){
-				$size = '_1280x720';
-			}
-
-			if( !is_wp_error( $response ) ){
-				$hash = unserialize( $response['body']);
-				$vimeo_url = $hash[0]['thumbnail_large'];
-				$vimeo_url = str_replace( '_640',$size,$vimeo_url );
-				return array(
+				$details = array(
 					'source' => 'vimeo',
-					'thumb_url' => $vimeo_url,
-					'video_id' => $vimeo_id
+					'thumb_url' => $thumbnail_url,
+					'video_id' => $data->video_id
 				);
-			}else{
-				return array(
+			} else {
+				$details = array(
 					'source' => 'vimeo',
-					'thumb_url' => 'https://placehold.it/1280x720',
-					'video_id' => ''
+					'thumb_url' => 'https://via.placeholder.com/1280x720',
+					'video_id' => $vimeo_id
 				);
 			}
 		}
+		return $details;
 	}
+}
+
+if ( ! function_exists( 'be_get_video_details_with_selfhosted_support' ) ) {
+    function be_get_video_details_with_selfhosted_support( $url, $size = 'large' ) {
+        $pattern = '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i';
+		$details = array();
+        $upload_dir_paths = wp_upload_dir();
+        $upload_dir_url = $upload_dir_paths['baseurl'];
+        if ( is_ssl() ) {
+            $upload_dir_url = str_replace( 'http://', 'https://', $upload_dir_url );
+        }
+
+		if ( $result = preg_match( $pattern, $url, $matches ) ) {
+			$size = ( $size === 'large' ) ? 'maxresdefault' : 'mqdefault';
+	
+			$video_id = $matches[1];
+			$youtube_url = "https://img.youtube.com/vi/" . $video_id . "/". $size . ".jpg";
+
+			$details = array(
+				'source' => 'youtube',
+				'thumb_url' => $youtube_url,
+				'video_id' => $video_id
+			);
+		} else if ( strpos( $url, 'vimeo' ) !== false ) {
+			$size = ( $size === 'large' ) ? '_1280x720' : '_320x180';
+
+			$vimeo_id = substr( parse_url( $url, PHP_URL_PATH ), 1 );
+			$vimeo_id = explode( '/', $vimeo_id );
+				
+			$response = wp_remote_get( 'https://vimeo.com/api/oembed.json?url=' . $url, array(
+				'timeout'   => 60,
+				'sslverify' => false,
+			) );
+
+			if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+				$response_body = wp_remote_retrieve_body( $response );
+    			$data = json_decode( $response_body );
+				
+				$thumbnail_url = explode( '_', $data->thumbnail_url );
+				$thumbnail_url = $thumbnail_url[0] . $size;
+
+				$details = array(
+					'source' => 'vimeo',
+					'thumb_url' => $thumbnail_url,
+					'video_id' => $data->video_id
+				);
+			} else {
+				$details = array(
+					'source' => 'vimeo',
+					'thumb_url' => 'https://via.placeholder.com/1280x720',
+					'video_id' => $vimeo_id
+				);
+			}
+		} else {
+            $video_details = wp_check_filetype( $url );
+            $details = array(
+                'source' => 'selfhosted',
+                'url'  => $url,
+                'mime_type' => $video_details['type'],
+            );
+        }
+		return $details;
+    }
 }
 
 /* ---------------------------------------------  */
 // Function to load video from video source
 /* ---------------------------------------------  */
-
 if( ! function_exists('be_carousel_video')) :
 	function be_carousel_video($url) {
 		$output = '';
@@ -275,7 +342,43 @@ if( ! function_exists('be_carousel_video')) :
 		return $output;
 	}
 endif;
+if( !function_exists( 'be_carousel_video_with_selfhosted_support' ) ) {
+    function be_carousel_video_with_selfhosted_support($url) {
+		$output = '';
+        $video_details = be_get_video_details_with_selfhosted_support( $url );
+        $video_id = '';
+		if ( $video_details['source'] === 'youtube'  ){
+			$video_id = ( preg_match( '%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $url, $match ) ) ? $match[1] : '' ;
+		} elseif ( $video_details['source'] === 'vimeo' ) {
+			sscanf(parse_url($url, PHP_URL_PATH), '/%d', $video_id);
+		}elseif( 'selfhosted' === $video_details['source'] ) {
+            $output = '<video playsinline muted = "muted"><source src = "' . $video_details['url'] . '" type = "' . $video_details['mime_type'] . '"></video>';
+            return $output;
+        }
+		if( !empty( $video_details ) ){
+				$embed_class = 'be-'.$video_details['source'].'-embed be-'.$video_details['source'].'-video';
+				$source = $video_details['source'];
+				$thumb_url = $video_details[ 'thumb_url' ];
+			if( function_exists( 'be_gdpr_privacy_ok' ) ){
+				if( !empty( $_COOKIE ) ){
+					if( be_gdpr_privacy_ok( $source ) ){                        
+						$output .= '<div class="'.$embed_class.'" data-video-id="'.$video_id.'"></div>';
+					} else {
+						$output .= be_gdpr_get_video_alt_content( $thumb_url, $source, false );
+					}
+				} else {
+					$output .= '<div class="'.$embed_class.' be-gdpr-consent-replace" data-gdpr-concern="'.$source.'" data-video-id="'.$video_id.'" ></div>';
 
+					$output .= be_gdpr_get_video_alt_content( $thumb_url, $source, true );
+				}
+			} else {
+				$output .= '<div class="'.$embed_class.'" data-video-id="'.$video_id.'" ></div>';
+			}
+		}
+		return $output;        
+    }
+}
+ 
 if( !function_exists( 'be_gdpr_get_video_alt_content' ) ){
 	function be_gdpr_get_video_alt_content( $img_src, $concern, $hide_by_default ){
 
@@ -309,7 +412,7 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 		$media =  ( $attachment ) ? $attachment[0] : '';
 		if( !$stacked ) {
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
-			$output .= '<a href="https://twitter.com/home?status='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
+			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
 			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';
@@ -319,12 +422,43 @@ if ( ! function_exists( 'be_get_share_button' ) ) :
 			$output .= '<span class = "be-share-stack-mask">';
 			$output .= '<a href = "#" class = "be-share-trigger"><i class = "font-icon icon-share"></i></a>';
 			$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
-			$output .= '<a href="https://twitter.com/home?status='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
+			$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
 			$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
 			$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
 			$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';			
 			$output .= '</span>';
 			$output .= '</span>';
+		}
+		return $output;
+	}
+endif;
+
+/* ---------------------------------------------  */
+// Function to publish share buttons with show and hide
+/* ---------------------------------------------  */
+if ( ! function_exists( 'be_get_share_button_show_hide' ) ) :
+	function be_get_share_button_show_hide($url, $title, $id, $stacked = false, $stack_direction = 'left', $class_names = '') {
+		global $be_themes_data;
+		$output = '';
+		if(!empty($be_themes_data['blog_show_share_icons']))
+		{
+			$attachment = wp_get_attachment_image_src( get_post_thumbnail_id( $id ), 'full' );
+			$media =  ( $attachment ) ? $attachment[0] : '';
+			if(!empty($be_themes_data['blog_show_share_icon_facebook'])){
+				$output .= '<a href="https://www.facebook.com/sharer/sharer.php?u='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_facebook"></i></a>';
+			}
+			if(!empty($be_themes_data['blog_show_share_icon_twitter'])){
+				$output .= '<a href="https://twitter.com/intent/tweet?url='.urlencode($url.' '.$title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_twitter"></i></a>';
+			}
+			if(!empty($be_themes_data['blog_show_share_icon_google_plus'])){
+				$output .= '<a href="https://plus.google.com/share?url='.urlencode($url).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_googleplus"></i></a>';
+			}	
+			if(!empty($be_themes_data['blog_show_share_icon_linkedin'])){
+				$output .= '<a href="https://www.linkedin.com/shareArticle?mini=true&amp;url='.urlencode($url).'&amp;title='.urlencode($title).'" class="custom-share-button" target="_blank"><i class="font-icon icon-social_linkedin"></i></a>';
+			}
+			if(!empty($be_themes_data['blog_show_share_icon_pinterest'])){
+				$output .= '<a href="https://www.pinterest.com/pin/create/button/?url='.urlencode($url).'&media='.urlencode($media).'&description='.urlencode($title).'" class="custom-share-button" target="_blank"  data-pin-do="buttonPin" data-pin-config="above"><i class="font-icon icon-social_pinterest"></i></a>';
+			}
 		}
 		return $output;
 	}
@@ -525,7 +659,7 @@ if (!function_exists( 'be_get_the_slug' )) {
 /* ---------------------------------------------------- */
 
 if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
-	function get_gallery_image_from_source($source, $images = false, $lightbox_type) {
+	function get_gallery_image_from_source($source, $images = false, $lightbox_type ='') {
 		$media = $return = array();
 		global $be_themes_data; 
 		switch ($source['source']) {
@@ -537,7 +671,10 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 				} else {
 					if (isset($be_themes_data['instagram_access_token']) && !empty($be_themes_data['instagram_access_token'] ) ){
 						$instagram_access_token = $be_themes_data['instagram_access_token'];
-						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'] );
+						$instagram_media = wp_remote_get( 'https://api.instagram.com/v1/users/self/media/recent/?access_token='.$instagram_access_token.'&count='.$source['count'], array(
+							'timeout'   => 60,
+							'sslverify' => false,
+						) );
 						if(isset($instagram_media->error_message) || !empty($instagram_media->error_message)) {
 							delete_transient( $transient_var );
 							$return['error'] = '<b>'.__('Instagram Error : ', 'oshin').'</b>'.$instagram_media->error_message;
@@ -549,11 +686,18 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 						}
 					}else{
 						delete_transient( $transient_var );
-						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from http://instagram.pixelunion.net/', 'oshin').'</div>';
+						$return['error'] = '<div class="be-notification error">'.__('Instagram Error : Access Token is not entered under OSHINE OPTIONS > GLOBAL SITE LAYOUT AND SETTINGS. Access Token for your account can be generated from https://developers.facebook.com/docs/instagram-basic-display-api/getting-started/', 'oshin').'</div>';
 						return $return;
 					}					
 				}
-
+                if($media && isset($media) && !empty($media)) {
+                    $images = json_decode($media["body"]);
+                    if($images->meta->code != '200'){
+                        delete_transient( $transient_var );
+						$return['error'] = '<b>'.__('Instagram Error :', 'oshine-modules').'</b>'.$images->meta->error_message;
+                        return $return;
+                    }
+                }    
 				if($media && isset($media) && !empty($media)) {
 					$images = json_decode($media["body"]);
 					$images = $images->data;
@@ -580,11 +724,17 @@ if ( ! function_exists( 'get_gallery_image_from_source' ) ) :
 				if($transient_media && isset($transient_media) && !empty($transient_media)) {
 					$media = unserialize($transient_media);
 				} else {
-					$user_data = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&username='.$source['account_name'].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033' );
+					$user_data = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.people.findByUsername&username='.$source['account_name'].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033', array(
+						'timeout'   => 60,
+						'sslverify' => false,
+					) );
 					$user_data = unserialize($user_data["body"]);
 					if(isset($user_data['stat']) && $user_data['stat'] == 'ok') {
 						if(isset($user_data["user"]["nsid"]) && !empty($user_data["user"]["nsid"]) && $user_data["user"]["nsid"]) {
-							$flickr_media = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.photos.search&user_id='.$user_data["user"]["nsid"].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033&per_page='.$source['count'].'&page=1&extras=url_z,url_o' );
+							$flickr_media = wp_remote_get( 'https://api.flickr.com/services/rest/?method=flickr.photos.search&user_id='.$user_data["user"]["nsid"].'&format=php_serial&api_key=85145f20ba1864d8ff559a3971a0a033&per_page='.$source['count'].'&page=1&extras=url_z,url_o', array(
+								'timeout'   => 60,
+								'sslverify' => false,
+							) );
 							$flickr_media = unserialize($flickr_media["body"]);
 							if(isset($flickr_media['stat']) && $flickr_media['stat'] == 'ok') {
 								set_transient( 'transient_flickr_user_data_'.$source['account_name'].'_'.$source['count'], serialize($flickr_media), 60 * 60 * 1 );
@@ -819,7 +969,10 @@ if( !function_exists( 'be_get_font_family' ) ) {
 		if( array_key_exists( $family, $standard_fonts ) ) {
 			$family = $standard_fonts[$family];
 		}
-		return $family;  
+		if( array_key_exists( $family, 'value' ) ) {
+			$family = $family['value'];
+		}
+		return $family['value'];  
 	}
 }
 

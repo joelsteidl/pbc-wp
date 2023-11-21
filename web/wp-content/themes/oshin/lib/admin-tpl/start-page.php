@@ -1,6 +1,13 @@
 <?php
 global $BECore;
 ?>
+<?php 
+$available_updates = '';
+if(isset($_GET) && !empty($_GET['be_check_theme_update'])){
+	$available_updates = be_themecheck_for_updates();
+}
+
+?>
 <header class="be-start-header">
    <div class="header-wrapper clearfix">
     <div class="c-3">
@@ -11,7 +18,7 @@ global $BECore;
     	</div>
     </div>
     <div class="c-9"><h1><?php esc_html_e( 'Welcome to ', 'oshin' ); ?><?php echo esc_html( ucfirst( $BECore['themeName'] ) ); ?></h1>
-<p>Thanks for purchasing and using <?php echo esc_html( ucfirst( $BECore['themeName'] ) ); ?>. Get started by installing all the required and recommended plugins and import a demo of your choice. <?php if( !defined('ENVATO_HOSTED_SITE')  ) : ?> Register your license and enjoy automatic theme updates. To learn more about the theme and its features, checkout our <a href="<?php echo esc_html($BECore['documentation']); ?>" target="_blank">online knowledgebase.</a><?php endif; ?></p>
+<p>Thanks for purchasing and using <?php echo esc_html( ucfirst( $BECore['themeName'] ) ); ?>. Get started by installing all the required and recommended plugins and import a demo of your choice. <?php if( !defined('ENVATO_HOSTED_SITE')  ) : ?> Register your license and enjoy automatic theme updates. To learn more about the theme and its features, checkout our <a href="<?php echo esc_html($BECore['documentation']); ?>" target="_blank">online knowledgebase.</a><?php endif; ?><br /><a href="<?php echo admin_url('themes.php?page=be_register&be_check_theme_update=1#be-welcome'); ?>">Check for updates</a> <span><?php echo empty($available_updates)?'':'Available version '.$available_updates; ?></span></p>
 	<span id="oshine-home-url" style="display:none;">
 	<?php 
 		echo esc_url( home_url() );		 
@@ -60,59 +67,78 @@ global $BECore;
 		// 	echo BEUpdater::matched_token();
 		// }
 		?>
+		<?php //Check for valid license
+			$invalid_theme_notice = '';
+			if(!be_is_theme_valid()){
+				$invalid_theme_notice = oshin_theme_update_notice(true);
+				if(empty($invalid_theme_notice)){
+					$invalid_theme_notice = '<h3 class="be-error-msg">Please provide a valid <a href="#" data-tab="be-welcome">purchase code</a> of the theme in order to install plugins and import demo</h3>';
+				}else{
+					echo $invalid_theme_notice;
+				}
+
+				if(!empty($_GET['beerrormsg']) && $_GET['beerrormsg'] == "no-pc-plugin-update"){
+					echo '<h3 class="be-error-msg">Please provide a valid <a href="#be-welcome">purchase code</a> of the theme in order to activate 1-click updates</h3>';
+				}
+			}
+		?>
 		</div>
 		<form id="be_start_updater" method="post" action="options.php">
 			<?php 
 			//settings_fields( BEUpdater::options_group_name() );
-			$be_purchase_data = get_option('be_themes_purchase_data', '');
+			$be_purchase_data = get_option( 'be_themes_purchase_data', '' );
 			$be_purchase_code = '';
-			if( !empty($be_purchase_data) && !empty( $be_purchase_data['theme_purchase_code'] ) ) {
-				$be_purchase_code = $be_purchase_data['theme_purchase_code'];
+			if ( ! empty( $be_purchase_data ) && !empty( $be_purchase_data['theme_purchase_code'] ) ) {
+				$be_purchase_code = trim( $be_purchase_data['theme_purchase_code'] );
 			}		
 			?>
-			<p class=""><strong><?php esc_html_e( 'Please enter your theme purchase code to allow automatic updates', 'oshin' ); ?></strong></p>
-
-			<!--<input type="text" id="start_token_field" size="30" name="<?php //echo esc_attr(BEUpdater::options_group_name()) ?>[token]" class="widefat" value="<?php //echo esc_attr(get_option( BEUpdater::options_group_name(), false )['token']) ?>"> -->
-			<input type="text" id="be_purchase_code" size="30" name="be_purchase_code" value="<?php echo esc_attr($be_purchase_code); ?>" class="widefat" />
-			<?php echo wp_nonce_field('be_save_purchase_code', 'purchase_nonce', true, false); ?>
+			<!-- theme purchase code -->
+			<div class="be-purchase-code">
+				<h2>Theme Purchase Code</h2>
+				<input type="text" id="be_purchase_code" size="30" name="be_purchase_code" <?php echo ( be_is_theme_valid() ) ? 'readonly' : ''; ?> value="<?php echo esc_attr( $be_purchase_code ); ?>" class="widefat" style="padding: 10px 15px;" />
+				<?php wp_nonce_field( 'be_save_purchase_code', 'purchase_nonce' ); ?>
+				<div>
+					<p class=""><strong><?php esc_html_e( 'Please enter your theme purchase code to allow automatic updates', 'oshin' ); ?></strong></p>
+					<p class="be-admin-accordion"><strong>Where can I find the purchase code ?</strong></p>
+					<p class="be-admin-accordion-panel">To locate your purchase code you need to log into the ThemeForest account from which you purchase the theme and go to your "Downloads" page. Click on the Download button next to the theme and then on the "License Certificate & Purchase code" link. You can find the purchase code inside the downloaded license certificate.</p>
+				</div>
+			</div>
+			<!--Subscribe newsletter -->
+			<div class="be-admin-newsletter">
+				<h2>Subscribe Newsletter</h2>
+				<?php 
+					$be_newsletter_email = get_option( 'oshine_newsletter_email', get_bloginfo( 'admin_email' ) );
+					if ( empty( $be_newsletter_email ) ) {
+						$be_newsletter_email = get_bloginfo( 'admin_email' );
+					}
+				?>
+				<input type="email" id="be-newsletter-email" size="30" name="be-newsletter-email" value="<?php echo esc_attr( $be_newsletter_email ); ?>" class="widefat" style="padding: 10px 15px;" />
+				<?php wp_nonce_field( 'subscribe_checker', 'be-newsletter-email-nonce' ); ?>
+				<div>
+					<p class="be-admin-accordion"><strong>More Info ?</strong></p>
+					<p class="be-admin-accordion-panel">We constantly update our products with new features and bug fixes. We need a way to reach out to you regarding these updates. Get update notifications with details on what was changed or added. Know how to use the new features and learn about special instructions for certain updates. A smoother experience for you and less support for us. Occasionally we send mailers about our product promotions that helps you save money on new licenses or support renewals.  We hate spam as much as you do and your details are never shared with any 3rd party.
+					</p>
+				</div>	
+			</div>
 			<?php
-			submit_button( esc_html__( 'Submit', 'oshin' ), 'primary', 'submit', true, null );
+				if ( ! be_is_theme_valid() ) {
+					submit_button( esc_html__( 'Submit', 'oshin' ), 'primary', 'submit' );
+				} else { ?>
+					<p class="submit"><input type="button" id="deactivate-license" class="button button-primary" data-license-key="<?php echo esc_attr( $be_purchase_code ); ?>" value="Deactivate License"></p>
+				<?php }
 			?>
 		</form>
-		
-		<h3>Where can I find the purchase code ?</h3>
-		<p>To locate your purchase code you need to log into the ThemeForest account from which you purchase the theme and go to your “Downloads” page.
-
-		Click on the Download button next to the theme and then on the “License Certificate & Purchase code” link. You can find the purchase code inside the downloaded license certificate.</p>
-		<div class = "be-newsletter">
-			<h2>Subscribe</h2>
-			<p>We constantly update our products with new features and bug fixes. We need a way to reach out to you regarding these updates. Get update notifications with details on what was changed or added. Know how to use the new features and learn about special instructions for certain updates. A smoother experience for you and less support for us. Occasionally we send mailers about our product promotions that helps you save money on new licenses or support renewals.  We hate spam as much as you do and your details are never shared with any 3rd party.
-			</p>
-			<form id="be-newsletter-form" method="post" action="options.php">
-				<div class = "clearfix">
-				<?php 
-					$be_newsletter_email = get_option('oshine_newsletter_email', '');	
-				?>
-				<input type="text" id="be-newsletter-email" size="30" name="be-newsletter-email" value="<?php echo esc_attr($be_newsletter_email); ?>" class="widefat" />
-				<?php wp_nonce_field( 'subscribe_checker', 'be-newsletter-email-nonce', true ); ?>
-				<div class = "be-newsletter-submit-wrap">
-					<div class = "be-newsletter-spinner">
-					</div>
-					<?php
-					submit_button( esc_html__( 'Submit', 'oshin' ), 'primary', 'submit', true, null );
-					?>
-				</div>
-				</div>
-			</form>
-		</div>
 		<?php do_action( 'be_license_tpl' ); ?>
 	</div>
 <?php endif; ?>	
 
 	<div class="nav-content" id="be-import">
 		<?php
-	
-		do_action( 'be_import_tpl' );
+		if(!empty($invalid_theme_notice)){
+			echo $invalid_theme_notice;
+		}else{
+			do_action( 'be_import_tpl' );
+		}
 		?>
 	</div>
 
@@ -124,7 +150,13 @@ global $BECore;
 	</div>
 <?php endif; ?>
 	<div class="nav-content" id="be-plugins">
-	<?php BE_get_Plugins()->envato_setup_default_plugins(); ?>
+	<?php
+	if(!empty($invalid_theme_notice)){
+		echo $invalid_theme_notice;
+	}else{
+		BE_get_Plugins()->envato_setup_default_plugins(); 
+	}
+	?>
 	</div>
 	<?php do_action( 'be_tabs_content' ); ?>
 </section>

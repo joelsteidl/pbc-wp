@@ -81,10 +81,9 @@
 			}	
 		});
 				
-		if( jQuery( 'body' ).hasClass( 'left-static-menu' ) ){
-			jQuery( '.special-header-menu' ).css('display','block');
-			self.animateMenu( 'openMenu' );
-		}
+		// if( jQuery( 'body' ).hasClass( 'left-static-menu' ) ){
+		// 	self.animateMenu( 'openMenu' );
+		// }
 		// event binding
 		this._initEvents();
 	};
@@ -381,10 +380,10 @@
 								specialHeaderLogo.addClass( 'animate-inFromBottom');
 								break;
 			}
-			if( jQuery( 'body' ).hasClass( 'left-static-menu' ) ){
-				specialHeaderBottomText.css( 'visibility', 'visible' );
-				specialHeaderLogo.css( 'visibility', 'visible' );
-			}
+			// if( jQuery( 'body' ).hasClass( 'left-static-menu' ) ){
+			// 	specialHeaderBottomText.css( 'visibility', 'visible' );
+			// 	specialHeaderLogo.css( 'visibility', 'visible' );
+			// }
 		}
 	};
 	window.OldMenu = OldMenu;

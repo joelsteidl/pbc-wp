@@ -281,8 +281,15 @@ class MSP_Parser {
             'on_video_close'          => '',
             'on_swipe_start'          => '',
             'on_swipe_move'           => '',
-            'on_swipe_end'            => ''
+			'on_swipe_end'            => '',
 
+			'responsive'              => $this->is_key_true( $setting, 'responsive', 'true' ),
+			'responsive_size'         => $this->is_key_true( $setting, 'responsiveSize', 'false' ),
+
+			'tablet_width'            => isset( $setting['tabletWidth']  ) ? (int) $setting['tabletWidth']  : 768,
+			'tablet_height'           => isset( $setting['tabletHeight'] ) ? (int) $setting['tabletHeight'] : null,
+			'phone_width'             => isset( $setting['phoneWidth']  ) ? (int) $setting['phoneWidth']  : 480,
+			'phone_height'            => isset( $setting['phoneHeight'] ) ? (int) $setting['phoneHeight'] : null
 	    );
 
 
@@ -369,7 +376,19 @@ class MSP_Parser {
             'video'                        => isset( $layer['video'] ) ? (string) $layer['video'] : '', // video iframe path
             'auto_play_video'              => $this->is_key_true( $layer, 'autoplayVideo', 'false' ), // autoplay for youtube or vimeo videos
             'width'                        => isset( $layer['width'] ) ? (int) $layer['width'] : '',
-            'height'                       => isset( $layer['height'] ) ? (int) $layer['height'] : ''
+			'height'                       => isset( $layer['height'] ) ? (int) $layer['height'] : '',
+
+			'fixed'                        => $this->is_key_true( $layer, 'fixed', 'false' ),
+
+			// responsive options
+			'tablet_offset_x'              => isset( $layer['tabletOffsetX'] ) ? (int) $layer['tabletOffsetX']   : 0,
+            'tablet_offset_y'              => isset( $layer['tabletOffsetY'] ) ? (int) $layer['tabletOffsetY']   : 0,
+			'tablet_origin'                => isset( $layer['tabletOrigin']  ) ? (string) $layer['tabletOrigin'] : '',
+
+			'phone_offset_x'               => isset( $layer['phoneOffsetX'] ) ? (int) $layer['phoneOffsetX']   : 0,
+            'phone_offset_y'               => isset( $layer['phoneOffsetY'] ) ? (int) $layer['phoneOffsetY']   : 0,
+			'phone_origin'                 => isset( $layer['phoneOrigin']  ) ? (string) $layer['phoneOrigin'] : '',
+			'hide_on'                      => isset( $layer['hideOn'] ) ? (string) $layer['hideOn'] : ''
         );
 
 	}

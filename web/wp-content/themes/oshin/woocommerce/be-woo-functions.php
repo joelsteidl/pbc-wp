@@ -204,7 +204,7 @@ if( class_exists('Woocommerce') ) {
 			$fragments['a.cart-contents'] = ob_get_clean();
 			return $fragments;
 		}
-		add_filter('add_to_cart_fragments', 'be_woo_ajax_fragment');
+		add_filter('woocommerce_add_to_cart_fragments', 'be_woo_ajax_fragment');
 	}
 	if (!function_exists('be_themes_number_of_products_per_page')) {
 		function be_themes_number_of_products_per_page( $count ) {
@@ -263,6 +263,27 @@ if( class_exists('Woocommerce') ) {
 			    woocommerce_upsell_display( 4, 4 );
 			}
 		}
+	}
+
+	//product quantity increment and decrement button
+	if ( ! function_exists('be_before_quantity_input_field') && ! function_exists('be_after_quantity_input_field') ) {
+		//increment button
+		function be_before_quantity_input_field() {
+			global $be_themes_data;
+			if ( isset( $be_themes_data ) && ! empty( $be_themes_data['show_product_qty_plus_minus_btn'] && 1 == $be_themes_data['show_product_qty_plus_minus_btn'] ) ) {
+				echo  '<div class="oshin-wc-qty-minus minus"> - </div>';
+			}
+		}
+		add_action( 'woocommerce_before_quantity_input_field', 'be_before_quantity_input_field', 15 );
+		
+		//decrement button
+		function be_after_quantity_input_field() {
+			global $be_themes_data;
+			if ( isset( $be_themes_data ) && ! empty( $be_themes_data['show_product_qty_plus_minus_btn'] && 1 == $be_themes_data['show_product_qty_plus_minus_btn'] ) ) {
+				echo '<div class="oshin-wc-qty-plus plus"> + </div>';
+			}
+		}
+		add_action( 'woocommerce_after_quantity_input_field', 'be_after_quantity_input_field', 15 );
 	}
 }
 ?>

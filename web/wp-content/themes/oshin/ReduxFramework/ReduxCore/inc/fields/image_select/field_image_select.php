@@ -34,6 +34,10 @@ if ( ! class_exists( 'ReduxFramework_image_select' ) ) {
      */
     class ReduxFramework_image_select {
 
+        
+        public $parent;
+        public $field;
+        public $value;
         /**
          * Field Constructor.
          * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -42,7 +46,7 @@ if ( ! class_exists( 'ReduxFramework_image_select' ) ) {
          * @access      public
          * @return      void
          */
-        function __construct( $field = array(), $value = '', $parent ) {
+        function __construct( $field = array(), $value = '', $parent = null) {
             $this->parent = $parent;
             $this->field  = $field;
             $this->value  = $value;
@@ -107,11 +111,12 @@ if ( ! class_exists( 'ReduxFramework_image_select' ) ) {
                     }
 
                     $theValue = $k;
+                    
+                    $selected = ( checked( $this->value, $theValue, false ) != '' ) ? ' redux-image-select-selected' : '';
+                    
                     if ( ! empty( $this->field['tiles'] ) && $this->field['tiles'] == true ) {
                         $theValue = $v['img'];
                     }
-
-                    $selected = ( checked( pathinfo( $this->value, PATHINFO_FILENAME ), pathinfo( $theValue, PATHINFO_FILENAME ), false ) != '' ) ? ' redux-image-select-selected' : '';
 
                     $presets   = '';
                     $is_preset = false;

@@ -26,7 +26,15 @@ if(is_category()) {
 } elseif(is_singular('post')) {
 	echo __('Blog','oshin');
 } elseif(is_home()){
-	echo __('Blog','oshin');
+	global $be_themes_data;
+	if(!empty($be_themes_data['blog_style']) && $be_themes_data['blog_style'] == 'style10'){
+		$page_title = wp_title( '|', false, 'right' );
+		$page_title = explode('|',$page_title);
+		echo $page_title[0];
+	}else{
+		echo __('Blog','oshin');
+	}
+	
 } else {
 	the_title();
 }

@@ -32,6 +32,10 @@
          */
         class ReduxFramework_section {
 
+            
+            public $parent;
+            public $field;
+            public $value;
             /**
              * Field Constructor.
              * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -40,7 +44,7 @@
              * @access        public
              * @return        void
              */
-            public function __construct( $field = array(), $value = '', $parent ) {
+            public function __construct( $field = array(), $value = '', $parent = null) {
                 $this->parent = $parent;
                 $this->field  = $field;
                 $this->value  = $value;

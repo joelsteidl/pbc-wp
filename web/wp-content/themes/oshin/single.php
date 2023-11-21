@@ -7,7 +7,10 @@
 get_header();
 global $be_themes_data; 
 $single_blog_style = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;
-$sidebar_flag = (array_key_exists('blog_single_sidebar', $be_themes_data) ) ?  $be_themes_data['blog_single_sidebar'] : '1' ;
+$sidebar_flag = '1';
+if(is_array($be_themes_data)){
+    $sidebar_flag = (array_key_exists('blog_single_sidebar', $be_themes_data) ) ?  $be_themes_data['blog_single_sidebar'] : '1' ;
+}
 $blog_style = ((!isset($be_themes_data['blog_style'])) || empty($be_themes_data['blog_style'])) ? 'style1' : $be_themes_data['blog_style'];
 $sidebar = 'right';
 $sidebar = ( isset($sidebar_flag) && '1' != $sidebar_flag) ? 'no' : $sidebar;
@@ -15,7 +18,9 @@ $content_single_sidebar = ( isset($sidebar_flag) && '1' != $sidebar_flag) ? '' :
 $enable_breadcrumb = ( isset($be_themes_data['enable_breadcrumb']) && 1 == $be_themes_data['enable_breadcrumb']) ? 1 : 0;
 while ( have_posts() ) : the_post(); ?>
 	<?php 
-	if( $single_blog_style ) {
+	if(!empty($single_blog_style) && $blog_style == 'style10'){
+		get_template_part( 'blog/single', 'wide-single' );
+	}else if( $single_blog_style ) {
 		get_template_part( 'blog/wide', 'single' );
 	}	
 	if($enable_breadcrumb){
@@ -32,7 +37,7 @@ while ( have_posts() ) : the_post(); ?>
 					?>
 				</div> <!--  End Page Content -->
 				<div class="be-themes-comments">
-					<?php comments_template( '', true ); ?>
+					<?php if($blog_style!='style10'){comments_template( '', true );} ?>
 				</div> <!--  End Optional Page Comments -->
 			</section>
 			<?php if ('no' != $sidebar ){?>
@@ -43,5 +48,13 @@ while ( have_posts() ) : the_post(); ?>
 		</div>
 	</section> <?php 
 endwhile;
+?>
+<?php 
+$show_related_posts = isset($be_themes_data['show_related_posts'])?$be_themes_data['show_related_posts']:false;
+if($blog_style=='style10' && $show_related_posts){ 
+	get_template_part( 'blog/single', 'related-posts' );
+ }
+?>
+<?php
 get_footer(); 
 ?>

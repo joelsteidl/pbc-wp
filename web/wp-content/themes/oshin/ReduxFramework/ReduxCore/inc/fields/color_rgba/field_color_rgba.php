@@ -33,6 +33,10 @@
          */
         class ReduxFramework_color_rgba {
 
+            
+            public $parent;
+            public $field;
+            public $value;
             /**
              * Class Constructor. Defines the args for the extions class
              *
@@ -45,7 +49,7 @@
              *
              * @return      void
              */
-            public function __construct( $field = array(), $value = '', $parent ) {
+            public function __construct( $field = array(), $value = '', $parent = null) {
 
                 // Set required variables
                 $this->parent = $parent;
@@ -148,7 +152,7 @@
                         type="hidden"
                         class="redux-hidden-color"
                         data-id="' . $field_id . '-color"
-                        id="' . $field_id . '-color"
+                        id="' . $field_id . '-color-hidden"
                         value="' . $this->value['color'] . '"
                       />';
 

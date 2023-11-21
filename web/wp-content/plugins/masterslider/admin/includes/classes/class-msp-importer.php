@@ -301,7 +301,7 @@ class MSP_Importer {
 
 				if( check_admin_referer('export-msp-sliders') ) {
 
-					$sliders 		= isset( $_POST['msp-export-sliders']  		 ) ? $_POST['msp-export-sliders'] 		 : '';
+					$sliders 		= isset( $_POST['msp-export-sliders']  		 ) ? $_POST['msp-export-sliders'] : '';
 					$preset_styles  = isset( $_POST['msp-export-preset-styles']  ) ? $_POST['msp-export-preset-styles']  : '';
                     $preset_effects = isset( $_POST['msp-export-preset-effects'] ) ? $_POST['msp-export-preset-effects'] : '';
 					$buttons_style  = isset( $_POST['msp-export-buttons-style']  ) ? $_POST['msp-export-buttons-style']  : '';

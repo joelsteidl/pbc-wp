@@ -68,6 +68,9 @@
 
         </div>
     <?php } ?>
+        <h2>
+            <a href="https://oshine-knowledgebase.brandexponents.com" target="_blank" style="color: #ffffff; padding-right: 10px; margin-top: 20px; position: relative; top: 47px;" ><?php _e( 'Visit Documentation', 'redux-framework' ); ?></a>
+        </h2>
 
     <div class="clear"></div>
 </div>

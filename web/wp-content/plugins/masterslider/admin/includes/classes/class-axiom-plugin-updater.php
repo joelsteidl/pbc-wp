@@ -67,7 +67,7 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
             $this->slug = empty( $slug ) ? str_replace('.php', '', $parts[1] ) : $slug;
             $this->installable_plugin_zip_file = empty( $installable_plugin_zip_file ) ? $this->slug . '-installable.zip' : $installable_plugin_zip_file;
 
-            add_action( 'admin_init', array( $this, 'plugin_update_rows' ) , 12 );
+            add_action( 'admin_head', array( $this, 'plugin_update_rows' ) , 12 );
             // a custom hook that fires on update.php page while upgrading the packages
             add_action( "update-custom_{$this->slug}-upgrade", array( $this, 'custom_upgrade_plugin' ) );
 
@@ -262,14 +262,14 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
          * @return string|WP_Error The full path to the downloaded package file, or a {@see WP_Error} object.
          */
         public function download_package( $package, $check_signatures = false, $hook_extra = array() ) {
-          // we will override package file with our own package
-          $package = $this->get_downloaded_package_url();
+            // we will override package file with our own package
+            $package = $this->get_downloaded_package_url();
 
-          if( is_wp_error( $package ) )
-             return $package;
+            if( is_wp_error( $package ) )
+                return $package;
 
-          return parent::download_package( $package, $check_signatures = false, $hook_extra = array() );
-      }
+            return parent::download_package( $package, $check_signatures );
+        }
 
         /**
          * Initialize the upgrade strings.
@@ -360,7 +360,7 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
             if( apply_filters( $this->slug.'_disable_auto_update', 0 ) )
                 return;
 
-            remove_action( "after_plugin_row_{$this->plugin_slug}", 'wp_plugin_update_row', 10 );
+            remove_action( "after_plugin_row_{$this->plugin_slug}", 'wp_plugin_update_row', 10, 2 );
             add_action( "after_plugin_row_{$this->plugin_slug}", array( $this, 'plugin_update_row' ), 10, 2 );
         }
 
@@ -412,12 +412,16 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
 
                 echo '<tr class="plugin-update-tr' . $active_class . '"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message notice inline notice-warning notice-alt"><p>';
 
+                $username       = msp_get_setting( 'username'      , 'msp_envato_license' );
+                $purchase_code  = msp_get_setting( 'purchase_code' , 'msp_envato_license' );
+                $token          = msp_get_setting( 'token'         , 'msp_envato_license' );
+
                 if ( ! current_user_can('update_plugins') ){
                     printf( __('There is a new version of %1$s available. <a href="%2$s" class="thickbox" title="%3$s">View version %4$s details</a>.'),
                             $plugin_name, esc_url($details_url), esc_attr($plugin_name), $r->new_version
                     );
 
-                } else if ( empty( $r->package ) ){
+                } else if ( ! get_option( 'masterslider_is_license_actived', 0) || empty( $username ) || empty( $purchase_code ) || empty( $token ) ){
                     printf(
                         __( 'There is a new version of %1$s available. <a href="%2$s" class="thickbox" title="%3$s">View version %4$s details</a>. <em>To receive automatic updates, license activation is required. Please visit %5$ssetting page%6$s to activate the license.</em>' ) . ' %7$s',
                         $plugin_name,

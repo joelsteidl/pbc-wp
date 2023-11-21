@@ -12,7 +12,7 @@
 	else{?>
 	<ul class="clearfix">
 		<li class="post-meta special-subtitle post-author"><?php _e('Posted By ','oshin'); ?> <?php echo get_the_author(); ?><span class="post-meta-sep"> </span></li>		
-		<li class="post-meta special-subtitle post-date"><?php _e(' on ','oshin'); ?><a href="'.get_permalink().'" ><?php echo get_the_date('F j,Y'); ?></a></li>
+		<li class="post-meta special-subtitle post-date"><?php _e(' on ','oshin'); ?><a href="<?php echo get_permalink(); ?>" ><?php echo get_the_date('F j,Y'); ?></a></li>
 	</ul>
 	<?php 
 	}

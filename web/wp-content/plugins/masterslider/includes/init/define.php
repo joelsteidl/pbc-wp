@@ -5,7 +5,7 @@ if ( ! defined('ABSPATH') ) {
     die();
 }
 
-define( 'MSWP_AVERTA_VERSION'		, '3.2.7' );
+define( 'MSWP_AVERTA_VERSION'		, '3.6.5' );
 
 define( 'MSWP_SLUG'					, 'masterslider' );
 define( 'MSWP_TEXT_DOMAIN'			, 'masterslider' );

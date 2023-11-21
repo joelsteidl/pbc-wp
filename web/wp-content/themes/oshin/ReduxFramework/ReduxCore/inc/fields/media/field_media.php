@@ -35,6 +35,10 @@ if ( ! class_exists( 'ReduxFramework_media' ) ) {
      */
     class ReduxFramework_media {
 
+        
+        public $parent;
+        public $field;
+        public $value;
         /**
          * Field Constructor.
          * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -43,7 +47,7 @@ if ( ! class_exists( 'ReduxFramework_media' ) ) {
          * @access      public
          * @return      void
          */
-        function __construct( $field = array(), $value = '', $parent ) {
+        function __construct( $field = array(), $value = '', $parent = null) {
             $this->parent = $parent;
             $this->field  = $field;
             $this->value  = $value;
@@ -66,6 +70,10 @@ if ( ! class_exists( 'ReduxFramework_media' ) ) {
                 'width'     => '',
                 'height'    => '',
                 'thumbnail' => '',
+                'title'     => '',
+                'caption'   => '',
+                'alt'       => '',
+                'description' => '',
             );
 
             $this->value = wp_parse_args( $this->value, $defaults );
@@ -156,10 +164,14 @@ if ( ! class_exists( 'ReduxFramework_media' ) ) {
             echo '<input placeholder="' . $placeholder . '" type="text" class="' . $hide . 'upload large-text ' . $this->field['class'] . '" name="' . $this->field['name'] . $this->field['name_suffix'] . '[url]" id="' . $this->parent->args['opt_name'] . '[' . $this->field['id'] . '][url]" value="' . $this->value['url'] . '"' . $readOnly . '/>';
             echo '<input type="hidden" class="data" data-mode="' . $this->field['mode'] . '" />';
             echo '<input type="hidden" class="library-filter" data-lib-filter="' . $libFilter . '" />';
-            echo '<input type="hidden" class="upload-id ' . $this->field['class'] . '" name="' . $this->field['name'] . $this->field['name_suffix'] . '[id]" id="' . $this->parent->args['opt_name'] . '[' . $this->field['id'] . '][id]" value="' . $this->value['id'] . '" />';
-            echo '<input type="hidden" class="upload-height" name="' . $this->field['name'] . $this->field['name_suffix'] . '[height]" id="' . $this->parent->args['opt_name'] . '[' . $this->field['id'] . '][height]" value="' . $this->value['height'] . '" />';
-            echo '<input type="hidden" class="upload-width" name="' . $this->field['name'] . $this->field['name_suffix'] . '[width]" id="' . $this->parent->args['opt_name'] . '[' . $this->field['id'] . '][width]" value="' . $this->value['width'] . '" />';
-            echo '<input type="hidden" class="upload-thumbnail" name="' . $this->field['name'] . $this->field['name_suffix'] . '[thumbnail]" id="' . $this->parent->args['opt_name'] . '[' . $this->field['id'] . '][thumbnail]" value="' . $this->value['thumbnail'] . '" />';
+            echo '<input type="hidden" class="upload-id ' . $this->field['class'] . '" name="' . $this->field['name'] . $this->field['name_suffix'] . '[id]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_id" value="' . $this->value['id'] . '" />';
+            echo '<input type="hidden" class="upload-height" name="' . $this->field['name'] . $this->field['name_suffix'] . '[height]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_height" value="' . $this->value['height'] . '" />';
+            echo '<input type="hidden" class="upload-width" name="' . $this->field['name'] . $this->field['name_suffix'] . '[width]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_width" value="' . $this->value['width'] . '" />';
+            echo '<input type="hidden" class="upload-thumbnail" name="' . $this->field['name'] . $this->field['name_suffix'] . '[thumbnail]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_thumbnail" value="' . $this->value['thumbnail'] . '" />';
+            echo '<input type="hidden" class="upload-title" name="' . $this->field['name'] . $this->field['name_suffix'] . '[title]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_title" value="' . $this->value['title'] . '" />';
+            echo '<input type="hidden" class="upload-caption" name="' . $this->field['name'] . $this->field['name_suffix'] . '[caption]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_caption" value="' . $this->value['caption'] . '" />';
+            echo '<input type="hidden" class="upload-alt" name="' . $this->field['name'] . $this->field['name_suffix'] . '[alt]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_alt" value="' . $this->value['alt'] . '" />';
+            echo '<input type="hidden" class="upload-description" name="' . $this->field['name'] . $this->field['name_suffix'] . '[description]" id="' . $this->parent->args['opt_name'] . '_' . $this->field['id'] . '_description" value="' . $this->value['description'] . '" />';
 
             //Preview
             $hide = '';

@@ -32,7 +32,10 @@ body.header-solid.perspective-left.perspectiveview.admin-bar #header #header-inn
 .perspective-right.perspectiveview {
 	position: fixed;
 	perspective: 1500px;
+	transform-style: preserve-3d;
+	pointer-events: none;
 }
+
 body.header-transparent.perspectiveview.admin-bar #header #header-inner-wrap.no-transparent.top-animate, 
 body.sticky-header.admin-bar.perspectiveview #header #header-inner-wrap.no-transparent.top-animate {
 	top : 0;
@@ -71,6 +74,7 @@ body.sticky-header.admin-bar.perspectiveview #header #header-inner-wrap.no-trans
 .perspective-left.animate #main-wrapper,
 .perspective-left.animate #header{
 	transform: translateX(-190px) rotateY(45deg) translateZ(0px);
+	pointer-events: auto;
 }
 
 .perspective-right.animate #main-wrapper,
@@ -89,6 +93,7 @@ body.sticky-header.admin-bar.perspectiveview #header #header-inner-wrap.no-trans
 
 .perspective-left .be-sidemenu.be-sidemenu-right.opened{
 	right: 0px;
+	pointer-events: auto;
 }
 
 .perspective-right .be-sidemenu.be-sidemenu-left{
@@ -97,6 +102,7 @@ body.sticky-header.admin-bar.perspectiveview #header #header-inner-wrap.no-trans
 
 .perspective-right .be-sidemenu.be-sidemenu-left.opened{
 	left: 0px;
+	pointer-events: auto;
 }
 
 .no-csstransforms3d .perspective-left.animate #main-wrapper

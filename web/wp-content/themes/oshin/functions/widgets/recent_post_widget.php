@@ -31,7 +31,7 @@
 				$number = 10;
 
 			// $r = new WP_Query(array('posts_per_page' => $number, 'no_found_rows' => true, 'post_status' => 'publish', 'ignore_sticky_posts' => true));
-			$r = wp_get_recent_posts(array('numberposts' => $number, 'post_status' => 'publish'),true);
+			$r = wp_get_recent_posts(array('numberposts' => $number, 'post_status' => 'publish'));
 			
 			echo $before_widget; 
 			if ( $title ) echo $before_title . $title . $after_title; ?>

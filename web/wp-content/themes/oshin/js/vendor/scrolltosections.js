@@ -3,8 +3,39 @@
 ;(function( $ ) {
 	var $window = $(window), move, pause_vimeo_video;
     $.fn.SectionScroll = function() {
+		Number_or_zero = function(num){
+			num = Number(num);
+			if(isNaN(num)){
+				num = 0;
+			}
+			return num;
+		}
+		triggerPortfolio = function() {
+			var curSection = jQuery( this ),
+				portfolio = curSection.find( '.portfolio' );
+			if( 0 < portfolio.length && null != oshinePortfolio ) {
+				if( portfolio.hasClass( 'portfolio-delay-load' ) ) {
+					oshinePortfolio.portfolioScrollReveal( portfolio.find( '.element' ) );
+				}
+				if( portfolio.hasClass( 'portfolio-lazy-load' ) ) {
+					oshinePortfolio.portfolioLazyReveal( portfolio.find( '.thumb-wrap' ).find( 'img' ) );
+				}
+			}
+		}
     	if(jQuery('body').hasClass('section-scroll')) {
 			var $this = $(this), $current = 0, $scrolled = false, scrollTimeout, $num_moves = jQuery('#page-content').find('.tatsu-section').length;
+			//check for portflolio section
+			$portfolioPresent = false;
+			var tatsuSections = jQuery('#page-content').find('.tatsu-section');
+			tatsuSections.each( function() {
+				var tatsuId = jQuery(this).attr('id');
+				if(typeof tatsuId != 'undefined' && tatsuId == 'portfolio') {
+					$portfolioPresent = true;
+					//console.log("portfolio ID "+tatsuId);
+				}
+			});
+			
+			
 			if(jQuery('.header-hero-section').length == 0 ) {
 				$num_moves--;
 			}
@@ -13,14 +44,30 @@
 				if(jQuery('body').hasClass('be-themes-layout-layout-border-header-top')) {
 					$border_length = 1;
 				}
-				var $moveto = ( ( $window.height() - ( jQuery('#wpadminbar').height() + jQuery('#header').height() + ( jQuery('.layout-box-bottom').height() * $border_length) ) ) * $current );
-				jQuery('#content').css({
-				    '-webkit-transform' : 'translatey(-'+$moveto+'px)',
-				    '-moz-transform' : 'translatey(-'+$moveto+'px)',
-				    '-o-transform' : 'translatey(-'+$moveto+'px)',
-				    '-ms-transform' : 'translatey(-'+$moveto+'px)',
-				    'transform' : 'translatey(-'+$moveto+'px)'
-				});
+
+				if(jQuery(window).width() > 960 && $portfolioPresent){
+					//scroll to section
+					var currentActiveId = jQuery(".tatsu-section").eq($current).attr('id');
+					if(typeof currentActiveId != 'undefined'){
+						jQuery('html, body').animate({
+							scrollTop: $("#"+currentActiveId).offset().top
+						}, 50);
+					}else{
+						jQuery('html, body').animate({
+							scrollTop: 0
+						}, 50);
+					}
+				}else{
+				
+					var $moveto = ( ( $window.height() - ( Number_or_zero(jQuery('#wpadminbar').height()) + Number_or_zero(jQuery('#header').height()) + Number_or_zero( jQuery('.layout-box-bottom').height() * $border_length) ) ) * $current );
+					jQuery('#content').css({
+						'-webkit-transform' : 'translatey(-'+$moveto+'px)',
+						'-moz-transform' : 'translatey(-'+$moveto+'px)',
+						'-o-transform' : 'translatey(-'+$moveto+'px)',
+						'-ms-transform' : 'translatey(-'+$moveto+'px)',
+						'transform' : 'translatey(-'+$moveto+'px)'
+					});
+				}
 				jQuery('li.fullscreen-nav-item, div.fullscreen-nav-item-hero-section').removeClass('current-item');
 				if(jQuery('body').hasClass('header-transparent')) {
 					jQuery('#header-inner-wrap').removeClass('background--dark').removeClass('background--light');
@@ -93,6 +140,7 @@
 			$window.on('resize.sectionresize', move);
 			move();
 			re_size();
+			
 			jQuery(document).on('mousewheel', 'body.section-scroll', function (event) {
 				if(jQuery(window).width() > 960 && jQuery('html').hasClass('csstransforms')) {
 					event.preventDefault();
@@ -120,6 +168,7 @@
 						scrollTimeout = setTimeout(function() {
 							$scrolled = false;
 						}, 1000);
+						triggerPortfolio.call(this);
 					}
 				}
 		    });

@@ -54,8 +54,18 @@ if(($blog_attr['style'] == 'style3' || $blog_attr['style'] == 'style8' || $blog_
 		?>
 	</div> <!--  End Page Content -->
 </section>
+<?php //style 10 blog single post content
+	if($blog_attr['style'] == 'style10'){
+		get_template_part( 'blog/single','post');	
+	}
+?>
 <section id="content" class="<?php echo esc_attr( $sidebar ); ?>-sidebar-page">
 	<div id="content-wrap" class= "<?php echo $be_wrap; ?>  clearfix"> 
+		<?php //style 10 blog single post content
+			if($blog_attr['style'] == 'style10'){
+				get_template_part( 'blog/single','masonry');	
+			}else{
+		?>
 		<section id="page-content" class="<?php echo ($blog_attr['style'] == 'style3' || $blog_attr['style'] == 'style8' || $sidebar == 'no') ? 'content-no-sidebar' : 'content-single-sidebar'; ?>">
 			<div class="portfolio-all-wrap">
 				<div class="<?php echo ($blog_attr['style'] == 'style3' || $blog_attr['style'] == 'style8' || $blog_attr['style'] == 'style9') ? 'portfolio full-screen full-screen-gutter ' . ( 'style8' == $blog_attr['style'] ? 'portfolio-delay-load portfolio-lazy-load ' : ''  ) .$blog_attr['gutter_style'].'-gutter '.$blog_column : ''; ?>" <?php echo $masonry_attr; ?>   data-col="<?php echo $col[0]; ?>" data-gutter-width="<?php echo esc_attr( $blog_attr['gutter_width'] ); ?>" data-showposts="<?php echo esc_attr( $items_per_page ); ?>" data-paged="2" <?php echo ( 'style8' == $blog_attr[ 'style' ] ) ? ( 'data-animation="fadeInUp"' ) : '' ?>  data-action="get_blog" <?php echo esc_attr( $portfolio_wrap_style ); ?> >
@@ -74,8 +84,10 @@ if(($blog_attr['style'] == 'style3' || $blog_attr['style'] == 'style8' || $blog_
 					<?php get_blog_pagination($blog_attr, $portfolio_pagination_style); ?>
 				</div>
 			</div>
-		</section> <?php
-		if($blog_attr['style'] != 'style3' && $blog_attr['style'] != 'style8' && $blog_attr['style'] != 'style9' && $sidebar != 'no') { ?>
+		</section> 
+		<?php } ?>
+		<?php
+		if($blog_attr['style'] != 'style3' && $blog_attr['style'] != 'style8' && $blog_attr['style'] != 'style10' && $blog_attr['style'] != 'style9' && $sidebar != 'no') { ?>
 			<section id="<?php echo esc_attr( $sidebar ); ?>-sidebar" class="sidebar-widgets">
 				<?php get_sidebar(); ?>
 			</section> <?php 

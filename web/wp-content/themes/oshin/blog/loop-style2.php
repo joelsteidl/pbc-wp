@@ -30,7 +30,7 @@ $post_format = get_post_format();
 								echo '</div>';
 								get_template_part( 'content', $post_format );
 							else :
-								echo '<h2 class="post-title"><a href="'.get_permalink(get_the_ID()).'">'.get_the_title(get_the_ID()).'</a></h2>';
+								be_echo_post_title();
 							endif;
 						?>
 					</header>

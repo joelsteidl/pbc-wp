@@ -314,6 +314,7 @@ function monsterinsights_admin_scripts()
 				'network'             => is_network_admin(),
 				'translations'        => wp_get_jed_locale_data(monsterinsights_is_pro_version() ? 'ga-premium' : 'google-analytics-for-wordpress'),
 				'assets'              => plugins_url($version_path . '/assets/vue', MONSTERINSIGHTS_PLUGIN_FILE),
+				'pro_assets'          => plugins_url($version_path . '/assets', MONSTERINSIGHTS_PLUGIN_FILE),
 				'shareasale_id'       => monsterinsights_get_shareasale_id(),
 				'shareasale_url'      => monsterinsights_get_shareasale_url(monsterinsights_get_shareasale_id(), ''),
 				'addons_url'          => is_multisite() ? network_admin_url('admin.php?page=monsterinsights_network#/addons') : admin_url('admin.php?page=monsterinsights_settings#/addons'),

@@ -1512,10 +1512,21 @@ function monsterinsights_custom_track_pretty_links_redirect( $url ) {
 	}
 
 	if ( monsterinsights_get_v4_id_to_output() ) {
+		// Get Pretty Links settings.
+		$pretty_track = monsterinsights_get_option( 'pretty_links_backend_track', '' );
+
+		if ( 'pretty_link' == $pretty_track ) {
+			global $prli_link;
+			$pretty_link = $prli_link->get_one_by( 'url', $url );
+			$link_url    = PrliUtils::get_pretty_link_url( $pretty_link->slug );
+		} else {
+			$link_url = $url;
+		}
+
 		$url_components = parse_url( $url );
 		$params_args    = array(
 			'link_text'   => 'external-redirect',
-			'link_url'    => $url,
+			'link_url'    => $link_url,
 			'link_domain' => $url_components['host'],
 			'outbound'    => 'true',
 		);

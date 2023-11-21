@@ -36,6 +36,56 @@ add_action( 'tgmpa_register', 'my_theme_register_required_plugins' );
  */
 function my_theme_register_required_plugins() {
 
+	$tgmData = be_get_theme_tgm_data(array(
+		'tatsu'=>array(
+			'download_url'=>'https://brandexponents.com/be-plugins/tatsu.zip',
+			'version'=>'3.3.7',
+		),
+		'oshine-core'=>array(
+			'download_url'=>'https://brandexponents.com/oshin-plugins/oshine-core.zip',
+			'version'=>'1.5.5',
+		),
+		'oshine-modules'=>array(
+			'download_url'=>'https://brandexponents.com/be-plugins/oshine-modules.zip',
+			'version'=>'3.2.7',
+		),
+		'typehub'=>array(
+			'download_url'=>'https://brandexponents.com/oshin-plugins/typehub.zip',
+			'version'=>'2.0.5',
+		),
+		'colorhub'=>array(
+			'download_url'=>'https://brandexponents.com/oshin-plugins/colorhub.zip',
+			'version'=>'1.0.6',
+		),
+		'be-grid'=>array(
+			'download_url'=>'https://brandexponents.com/be-plugins/be-grid.zip',
+			'version'=>'1.2.8',
+		),
+		'revslider'=>array(
+			'download_url'=>'https://brandexponents.com/thirdparty-plugins/revslider.zip',
+			'version'=>'6.5.5',
+		),
+		'masterslider'=>array(
+			'download_url'=>'https://brandexponents.com/thirdparty-plugins/masterslider.zip',
+			'version'=>'3.5.9',
+		),
+		'meta-box-conditional-logic'=>array(
+			'download_url'=>'https://brandexponents.com/thirdparty-plugins/meta-box-conditional-logic.zip',
+			'version'=>'1.6.13',
+		),
+		'meta-box-show-hide'=>array(
+			'download_url'=>'https://brandexponents.com/thirdparty-plugins/meta-box-show-hide.zip',
+			'version'=>'1.3.0',
+		),
+		'meta-box-tabs'=>array(
+			'download_url'=>'https://brandexponents.com/thirdparty-plugins/meta-box-tabs.zip',
+			'version'=>'1.1.10',
+		),
+		'be-gdpr'=>array(
+			'download_url'=>'https://brandexponents.com/oshin-plugins/be-gdpr.zip',
+			'version'=>'1.1.3',
+		)
+	));
 	/**
 	 * Array of plugin arrays. Required keys are name and slug.
 	 * If the source is NOT from the .org repo, then source is also required.
@@ -46,9 +96,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Tatsu', // The plugin name
 			'slug'     				=> 'tatsu', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/tatsu.zip',
+			'source'   				=> empty($tgmData['tatsu'])?'https://brandexponents.com/be-plugins/tatsu.zip':$tgmData['tatsu']['download_url'],
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '2.6.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['tatsu'])?'3.3.7':$tgmData['tatsu']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -60,9 +110,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Oshine Core', // The plugin name
 			'slug'     				=> 'oshine-core', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/oshine-core.zip', // The plugin source
+			'source'   				=> empty($tgmData['oshine-core'])?'https://brandexponents.com/oshin-plugins/oshine-core.zip':$tgmData['oshine-core']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.3.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['oshine-core'])?'1.5.5':$tgmData['oshine-core']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -70,39 +120,39 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Oshine Modules', // The plugin name
 			'slug'     				=> 'oshine-modules', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/oshine-modules.zip', // The plugin source
+			'source'   				=> empty($tgmData['oshine-modules'])?'https://brandexponents.com/be-plugins/oshine-modules.zip':$tgmData['oshine-modules']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '2.2.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['oshine-modules'])?'3.2.7':$tgmData['oshine-modules']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
 		),
-		array(
-			'name'     				=> 'Typehub', // The plugin name
-			'slug'     				=> 'typehub', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/typehub.zip', // The plugin source
-			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.0.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
-			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
-			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
-			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
-		),	
-		array(
-			'name'     				=> 'Colorhub', // The plugin name
-			'slug'     				=> 'colorhub', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/colorhub.zip', // The plugin source
-			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.0.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
-			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
-			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
-			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
-		),				
+		// array(
+		// 	'name'     				=> 'Typehub', // The plugin name
+		// 	'slug'     				=> 'typehub', // The plugin slug (typically the folder name)
+		// 	'source'   				=> 'https://brandexponents.com/oshin-plugins/typehub.zip', // The plugin source
+		// 	'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
+		// 	'version' 				=> '2.0.5', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+		// 	'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
+		// 	'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
+		// 	'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
+		// ),	
+		// array(
+		// 	'name'     				=> 'Colorhub', // The plugin name
+		// 	'slug'     				=> 'colorhub', // The plugin slug (typically the folder name)
+		// 	'source'   				=> 'https://brandexponents.com/oshin-plugins/colorhub.zip', // The plugin source
+		// 	'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
+		// 	'version' 				=> '1.0.6', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+		// 	'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
+		// 	'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
+		// 	'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
+		// ),				
 		array(
 			'name'     				=> 'Master Slider', // The plugin name
 			'slug'     				=> 'masterslider', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/masterslider.zip', // The plugin source
+			'source'   				=> empty($tgmData['masterslider'])?'https://brandexponents.com/thirdparty-plugins/masterslider.zip':$tgmData['masterslider']['download_url'], // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '3.2.2', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['masterslider'])?'3.5.9':$tgmData['masterslider']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -111,9 +161,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Slider Revolution', // The plugin name
 			'slug'     				=> 'revslider', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/revslider.zip', // The plugin source
+			'source'   				=> empty($tgmData['revslider'])?'https://brandexponents.com/thirdparty-plugins/revslider.zip':$tgmData['revslider']['download_url'], // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '5.4.7.3', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['revslider'])?'6.5.15':$tgmData['revslider']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -123,9 +173,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'BE Portfolio Post Type', // The plugin name
 			'slug'     				=> 'be-portfolio-post', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/be-portfolio-post.zip', // The plugin source
+			'source'   				=> empty($tgmData['be-portfolio-post'])?'https://brandexponents.com/oshin-plugins/be-portfolio-post.zip':$tgmData['be-portfolio-post']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['be-portfolio-post'])?'1.1.1':$tgmData['be-portfolio-post']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -134,9 +184,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'BE GDPR', // The plugin name
 			'slug'     				=> 'be-gdpr', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/be-gdpr.zip', // The plugin source
+			'source'   				=> empty($tgmData['be-gdpr'])?'https://brandexponents.com/oshin-plugins/be-gdpr.zip':$tgmData['be-gdpr']['download_url'], // The plugin source
 			'required' 				=> false, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.0.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['be-gdpr'])?'1.1.3':$tgmData['be-gdpr']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -145,9 +195,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Conditional Logic', // The plugin name
 			'slug'     				=> 'meta-box-conditional-logic', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-conditional-logic.zip', // The plugin source
+			'source'   				=> empty($tgmData['meta-box-conditional-logic'])?'https://brandexponents.com/thirdparty-plugins/meta-box-conditional-logic.zip':$tgmData['meta-box-conditional-logic']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.6.4', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['meta-box-conditional-logic'])?'1.6.16':$tgmData['meta-box-conditional-logic']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -156,9 +206,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Show Hide', // The plugin name
 			'slug'     				=> 'meta-box-show-hide', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-show-hide.zip', // The plugin source
+			'source'   				=> empty($tgmData['meta-box-show-hide'])?'https://brandexponents.com/thirdparty-plugins/meta-box-show-hide.zip':$tgmData['meta-box-show-hide']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.1.0', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['meta-box-show-hide'])?'1.3.0':$tgmData['meta-box-show-hide']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -167,9 +217,9 @@ function my_theme_register_required_plugins() {
 		array(
 			'name'     				=> 'Meta Box Tabs', // The plugin name
 			'slug'     				=> 'meta-box-tabs', // The plugin slug (typically the folder name)
-			'source'   				=> 'https://brandexponents.ams3.cdn.digitaloceanspaces.com/oshine/plugins/meta-box-tabs.zip', // The plugin source
+			'source'   				=> empty($tgmData['meta-box-tabs'])?'https://brandexponents.com/thirdparty-plugins/meta-box-tabs.zip':$tgmData['meta-box-tabs']['download_url'], // The plugin source
 			'required' 				=> true, // If false, the plugin is only 'recommended' instead of required
-			'version' 				=> '1.1.1', // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
+			'version' 				=> empty($tgmData['meta-box-tabs'])?'1.1.10':$tgmData['meta-box-tabs']['version'], // E.g. 1.0.0. If set, the active plugin must be this version or higher, otherwise a notice is presented
 			'force_activation' 		=> false, // If true, plugin is activated upon theme activation and cannot be deactivated until theme switch
 			'force_deactivation' 	=> false, // If true, plugin is deactivated upon theme switch, useful for theme-specific plugins
 			'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
@@ -186,10 +236,13 @@ function my_theme_register_required_plugins() {
 		// 	'external_url' 			=> '', // If set, overrides default API URL and points to an external URL
 		// ),	
 		// This is an example of how to include a plugin from the WordPress Plugin Repository
+		// array(
+		// 	'name' 		=> 'Contact Form 7',
+		// 	'slug' 		=> 'contact-form-7',
+		// ),
 		array(
-			'name' 		=> 'Contact Form 7',
-			'slug' 		=> 'contact-form-7',
-			
+			'name' 		=> 'WPForms Lite',
+			'slug' 		=> 'wpforms-lite',				
 		),
 		// array(
 		// 	'name' 		=> 'Sidekick - Voice Guided Training',

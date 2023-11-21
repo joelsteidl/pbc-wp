@@ -3,8 +3,8 @@ Contributors: chriscct7, smub
 Donate link: http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: WordPress analytics, google analytics, google analytics dashboard, google analytics widget, WooCommerce stats, analytics dashboard, universal google analytics, statistics, tracking, stats, google, google analytics by yoast, ga, monster insights, monsterinsights, universal analytics, web stats, ecommerce, ecommerce tracking
 Requires at least: 5.6.0
-Tested up to: 6.3.1
-Stable tag: 8.20.1
+Tested up to: 6.4.1
+Stable tag: 8.21.0
 Requires PHP: 7.2
 License: GPL v3
 
@@ -310,8 +310,17 @@ You can also learn about other <a href="http://www.wpbeginner.com/category/plugi
 4. Want more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion">Purchase MonsterInsights Pro</a>!
 
 == Changelog ==
+= 8.21.0: November 13, 2023 =
+- New: Social Media report.
+- New: Exclude query parameters from GA4 data stream.
+- Enhancement: Improved compatibility towards WordPress 6.4.1.
+- Fix: We fixed an issue that occurred with Pretty Links.
+
+= 8.20.2: November 01, 2023 =
+- Fix: Popular posts, we fixed a bug occurring in curated popular posts.
+
 = 8.20.1: October 09, 2023 =
-- Fix: We updated our lite emails to render better inside multiple mail clients. We also changed the emails to send out monthly instead of weekly. To disable emails go to Settings -> Advanced - Toggle the "Enable Email Summaries
+- Fix: We updated our lite emails to render better inside multiple mail clients. We also changed the emails to send out monthly instead of weekly. To disable emails go to Settings -> Advanced - Toggle the "Enable Email Summaries.
 
 = 8.20: October 03, 2023 =
 - New: Google Analytics and eCommerce support for WishList Member

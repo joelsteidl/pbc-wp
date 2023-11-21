@@ -65,11 +65,13 @@ if (! function_exists('be_themes_set_backgrounds') ){
 if (! function_exists('be_themes_background_colors') ){
   function be_themes_background_colors( $color, $opacity ) {
     //echo $color . '  ' . $opacity;
-    $rgb = be_themes_hexa_to_rgb( $color );  
-    $color = $rgb[0].','.$rgb[1].','.$rgb[2];
-    //echo $color;
-    echo 'background-color: rgb('.$color.');'; 
-    echo 'background-color: rgba('.$color.','.$opacity.');'; 
+    $rgb = be_themes_hexa_to_rgb( $color );
+    if ( is_array( $rgb ) && count( $rgb ) >= 3 ) {
+      $color = $rgb[0].','.$rgb[1].','.$rgb[2];
+      //echo $color;
+      echo 'background-color: rgb('.$color.');'; 
+      echo 'background-color: rgba('.$color.','.$opacity.');'; 
+    }
   }
 }
 

@@ -248,7 +248,7 @@ class Axiom_Plugin_License {
 		$license_info = get_option( $this->option_prefix . 'license', array() );
 
 		if( empty( $field ) )
-			return $license_info;
+			return empty( $license_info ) ? array() : $license_info;
 
 		return isset( $license_info[ $field ] ) ? $license_info[ $field ] : $default;
 	}

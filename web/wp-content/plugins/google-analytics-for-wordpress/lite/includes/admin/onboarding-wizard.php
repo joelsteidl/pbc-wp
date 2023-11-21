@@ -158,6 +158,15 @@ class MonsterInsights_Onboarding_Wizard {
 	 * Outputs the simplified header used for the Onboarding Wizard.
 	 */
 	public function onboarding_wizard_header() {
+		/**
+		 * Since WordPress 6.4 print_emoji_styles() and wp_admin_bar_header() have been deprecated.
+		 */
+		if ( has_action( 'admin_head', 'wp_admin_bar_header') ) {
+			remove_action( 'admin_head', 'wp_admin_bar_header' );
+		}
+		if ( has_action( 'admin_print_styles', 'print_emoji_styles') ) {
+			remove_action( 'admin_print_styles', 'print_emoji_styles' );
+		}
 		?>
 		<!DOCTYPE html>
 		<html <?php language_attributes(); ?>>

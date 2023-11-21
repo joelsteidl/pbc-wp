@@ -87,6 +87,7 @@ if ( is_admin() || ( defined( 'DOING_CRON' ) && DOING_CRON ) ) {
 // Popular posts.
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts-themes.php';
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts.php';
+require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/popular-posts/class-popular-posts-helper.php';
 // Lite popular posts specific.
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-inline.php';
 require_once MONSTERINSIGHTS_PLUGIN_DIR . 'lite/includes/popular-posts/class-popular-posts-cache.php';

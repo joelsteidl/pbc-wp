@@ -34,15 +34,19 @@ if( empty( $hero_section_custom_height ) ) {
                     <div class = "hero-section-inner">
                         <?php 
                             if( !empty( $cats ) ) :
+                                $cat_list = [];
                         ?>
                             <div class = "hero-section-blog-categories-wrap">
                                 <?php 
                                     foreach( $cats as $category ) :
+                                        if ( ! in_array( $category->cat_ID, $cat_list ) ) :
                                 ?> 
                                     <a href = "<?php echo get_category_link( $category->cat_ID ); ?>" title="<?php echo ( __('View all posts in','oshin').' '.$category->cat_name ); ?>">
                                         <?php echo $category->cat_name; ?>
                                     </a>
                                 <?php 
+                                            $cat_list[] = $category->cat_ID;
+                                        endif;
                                     endforeach; 
                                 ?>
                             </div>
@@ -73,7 +77,7 @@ if( empty( $hero_section_custom_height ) ) {
                                 if( 0 < $post_comments_count_obj->approved ) :
                             ?>
                                 <span class = "post-comments-wrap">
-                                    <?php echo ( 1 == $post_comments_count_obj->approved ) ? '1 comment' : ( $post_comments_count_obj->approved . ' comments' ); ?>
+                                    <?php echo ( comments_number('0','1','%') == 1 ) ? '1 comment' : ' comments'; ?>
                                 </span>
                             <?php
                                 endif;

@@ -1,3 +1,43 @@
+Version 3.6.1 / (10.02.2022)
+============================
+- [Fixed]: An issue with mouse wheel in chrome fixed.
+
+Version 3.5.9 / (11.10.2021)
+============================
+- [Fixed] An issue which caused controls `autohide` option didn't work.
+
+Version 3.5.1 / (28.04.2021)
+============================
+- [Improvement]: Security improvements were applied.
+
+Version 3.5.0 / (27.02.2021)
+============================
+[Fix]: An issue with rendering 3D transform on Firefox browser fixed.
+
+Version 3.4.10 / (15.02.2021)
+============================
+- [Fix] An issue with detecting css vendor prefix on webkit browsers fixed.
+
+Version 3.4.9 / (14.02.2021)
+============================
+- [Fix] An issue with applying transitions on new Edge browser fixed.
+
+Version 3.4.2 / (08.09.2020)
+============================
+- [Improvement]: Improvements for automatic update feature applied.
+
+Version 3.4.0 / (01.09.2020)
+============================
+- [New]: Introducing new responsive options for changing layers position on desktop, tablet or mobile devices added.
+- [New]: New layer option for hiding the layer on mobile or tablet added.
+- [New]: New options for slider width and height on mobile and tablet added.
+- [Fixe]: An issue with hotspot pulse animation fixed.
+- [Improvement]: Style improvements for admin panel applied.
+
+Version 3.2.9 / (11.08.2017)
+============================
+- [Fix]: Minor bugs fixed.
+
 Version 3.2.7 / (29.07.2017)
 ============================
 - [New]: Adding MasterSlider element to Elementor Page builder.
@@ -608,4 +648,3 @@ Version 1.0.3 / (14.04.2014)
 Version 1.0.0 / (12.04.2014)
 ============================
 - Initial release
-

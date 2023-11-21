@@ -4,7 +4,7 @@ global $blog_attr, $more_text, $be_themes_data;
 $is_wide_single = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;
 $post_classes = get_post_class();
 $post_classes = implode( ' ', $post_classes );
-if($blog_attr['style'] == 'style3') {
+if(!empty($blog_attr) && $blog_attr['style'] == 'style3') {
 	$post_classes .= ' element not-wide';
 	$article_gutter = 'style="margin-bottom: '.esc_attr( $blog_attr['gutter_width'] ).'px !important;"';
 } else {
@@ -30,7 +30,7 @@ $post_format = get_post_format();
 								echo '</div>';
 								get_template_part( 'content', $post_format );
 							else :
-								echo '<h2 class="post-title"><a href="'.get_permalink(get_the_ID()).'">'.get_the_title(get_the_ID()).'</a></h2>';
+								be_echo_post_title();
 							endif;
 						?>
 					</header>

@@ -1,13 +1,17 @@
-input[type='range'] {
-	vertical-align: middle;
-	border-radius: 2px;
-	border: 1px solid #dfdfdf;
+.rwmb-range-inner {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 }
-
-.rwmb-output {
-
-	display: inline-block;
-  position: relative;
-	padding: 5px 10px;
-	line-height: 20px;
+.rwmb-range {
+	flex: 1;
+}
+.rwmb-range.rwmb-range,
+.rwmb-range.rwmb-range:hover {
+	vertical-align: middle;
+	padding: 0;
+	border: none;
+}
+.rwmb-range-output {
+	margin-left: 8px;
 }

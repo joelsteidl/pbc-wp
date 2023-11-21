@@ -264,7 +264,16 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 					'on_video_close' 	 => '',
 					'on_swipe_start' 	 => '',
 					'on_swipe_move' 	 => '',
-					'on_swipe_end' 		 => ''
+					'on_swipe_end' 		 => '',
+
+					// responsive options
+					'responsive'         => 'true',
+					'responsive_size'    => 'false',
+					'tablet_width'       => 768,
+					'tablet_height'      => null,
+					'phone_width'        => 480,
+					'phone_height'       => null,
+					'sizing_reference'   => 'window' // 'window', 'self'
 				)
 				, $atts , 'ms_slider'
 	 );
@@ -302,10 +311,6 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 	} elseif ( 'partialview' == $layout ) {
 		$inline_style .= 'max-width:100%;';
 	}
-
-
-	$inline_style = empty( $inline_style ) ? '' : sprintf( 'style="%s" ', esc_attr( $inline_style ) );
-
 
 	$arrows_hideunder   = empty( $arrows_hideunder  ) ? '' : sprintf( ', hideUnder:%s', $arrows_hideunder  );
 	$bullets_hideunder  = empty( $bullets_hideunder ) ? '' : sprintf( ', hideUnder:%s', $bullets_hideunder );
@@ -422,9 +427,9 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
  ?>
 
 		<!-- MasterSlider -->
-		<div id="<?php echo $puid; ?>" class="master-slider-parent <?php echo trim( $wrapper_classes ); ?>" <?php echo $inline_style; ?> >
+		<div id="<?php echo $puid; ?>" class="master-slider-parent <?php echo esc_attr( trim( $wrapper_classes ) ); ?>" style="<?php echo esc_attr( $inline_style ); ?>" >
 
-			<?php echo $inner_template_container_open_tags; ?>
+			<?php echo wp_kses_post( $inner_template_container_open_tags ); ?>
 
 			<!-- MasterSlider Main -->
 			<div id="<?php echo $uid; ?>" class="master-slider <?php echo $skin; ?>" >
@@ -434,7 +439,7 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 			</div>
 			<!-- END MasterSlider Main -->
 
-			 <?php echo $inner_template_container_close_tags; ?>
+			 <?php echo wp_kses_post( $inner_template_container_close_tags ); ?>
 
 		</div>
 		<!-- END MasterSlider -->
@@ -443,7 +448,7 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 		( window.MSReady = window.MSReady || [] ).push( function( $ ) {
 
 			"use strict";
-			var <?php echo $instance_name; ?> = new MasterSlider();
+			var <?php echo esc_js( $instance_name ); ?> = new MasterSlider();
 
 			// slider controls
 <?php if($arrows  == 'true' || 'image-gallery' == $template ){
@@ -539,7 +544,7 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 								);
 } ?>
 			// slider setup
-			<?php echo $instance_name; ?>.setup("<?php echo $uid; ?>", {
+			<?php echo esc_js( $instance_name ); ?>.setup("<?php echo $uid; ?>", {
 				width           : <?php echo (int)$width; ?>,
 				height          : <?php echo (int) $height; ?>,
 				minHeight       : <?php echo (int) $min_height; ?>,
@@ -571,6 +576,12 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 				fullscreenMargin: <?php echo (int) $fullscreen_margin;  ?>,
 				speed           : <?php echo (int)$speed; ?>,
 				dir             : "<?php echo $direction; ?>",
+				responsive      : <?php msp_is_true_e($responsive); ?>,
+				tabletWidth     : <?php echo $tablet_width; ?>,
+				tabletHeight    : <?php echo empty( $tablet_height ) ? 'null' : $tablet_height; ?>,
+				phoneWidth      : <?php echo $phone_width; ?>,
+				phoneHeight    : <?php echo empty( $phone_height ) ? 'null' : $phone_height; ?>,
+				sizingReference : <?php echo $sizing_reference; ?>,
 <?php if( 'staff-3' == $template      ) { echo "viewOption      : { centerSpace:1.6 },\n"; } ?>
 <?php if( 'off'     != $parallax_mode ) { echo "\t\t\t\tparallaxMode    : '$parallax_mode',\n"; } ?>
 <?php if( 'false'   != $use_deep_link ) { echo "\t\t\t\tdeepLink        : '$deep_link',\n";
@@ -641,10 +652,6 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 					printf( "\t\t\tMSScrollParallax.setup( %s, %d, %d, %s );", $instance_name, $scroll_parallax_move, $scroll_parallax_bg_move, $scroll_parallax_fade );
 				}
 
-				if ( ! empty( $gfonts ) ) {
-					$link_tag = sprintf( "<link rel='stylesheet' id='ms-fonts'  href='//fonts.googleapis.com/css?family=%s' type='text/css' media='all' />", $gfonts );
-					echo "\n\t\t\t" . sprintf( '$("head").append( "%s" );', $link_tag ) . "\n";
-				}
 				// add slider instance to global scope
 				echo "\n\t\t\twindow.masterslider_instances = window.masterslider_instances || [];";
 				echo "\n\t\t\twindow.masterslider_instances.push( $instance_name );\n";
@@ -653,7 +660,13 @@ function msp_masterslider_wrapper_shortcode( $atts, $content = null ) {
 		</script>
 
 <?php
-	 return apply_filters( "masterslider_ms_slider_shortcode", ob_get_clean(), $mixed );
+	if ( ! empty( $gfonts ) ) {
+		$response = wp_remote_get( 'http://fonts.googleapis.com/css?family=' . $gfonts );
+		if ( !is_wp_error( $response ) ) {
+			wp_add_inline_style( 'ms-fonts', $response['body'] );
+		}		
+	}
+	return apply_filters( "masterslider_ms_slider_shortcode", ob_get_clean(), $mixed );
 }
 
 
@@ -746,8 +759,8 @@ function msp_masterslider_slide_shortcode( $atts, $content = null ) {
 	$src_blank 	= empty( $src_blank ) ? $src : $src_blank;
 
 	if( ! empty( $pattern ) || ! empty( $tintcolor ) ){
-		$inline_style   = ! empty( $tintcolor ) ? 'style="background-color:' . $tintcolor . ';"' : '';
-		$slide_content .= "\t\t\t\t\t" . sprintf('<div class="ms-pattern %s" %s ></div>', $pattern, $inline_style )."\n";
+		$inline_style   = ! empty( $tintcolor ) ? esc_attr( 'background-color:' . $tintcolor . ';' )  : '';
+		$slide_content .= "\t\t\t\t\t" . sprintf('<div class="ms-pattern %s" style="%s" ></div>', $pattern, $inline_style )."\n";
 	}
 
 	// decode escaped square brackets
@@ -947,7 +960,17 @@ function msp_masterslider_layer_shortcode( $atts, $content = null ) {
             'video'                        => '', // youtube or vimeo video link
             'auto_play_video'              => 'false', // autoplay for youtube or vimeo videos
             'width'                        => '',
-            'height'                       => ''
+			'height'                       => '',
+
+			// responsive options
+			'tablet_offset_x'              => '',
+            'tablet_offset_y'              => '',
+			'tablet_origin'                => '',
+
+			'phone_offset_x'               => '',
+            'phone_offset_y'               => '',
+			'phone_origin'                 => '',
+			'hide_on'                      => ''
         )
         , $atts, 'masterslider_layer' );
 
@@ -957,11 +980,22 @@ function msp_masterslider_layer_shortcode( $atts, $content = null ) {
 	$wrapper_class = trim( 'ms-layer '. $css_class.' '. $style_id );
 	$id_attr = empty( $css_id ) ? '' : 'id="'.$css_id.'"';
 
+	$position_attributes = array(
+		'data-offset-x' => empty( $offsetx ) ? '0' : rtrim( $offsetx, 'px' ),
+		'data-offset-y' => empty( $offsety ) ? '0' : rtrim( $offsety, 'px' ),
+		'data-origin'   => empty( $origin  ) ? 'tl' : $origin,
 
-	// position attrs
-	$data_offset_x  = empty( $offsetx ) ? 'data-offset-x="0"' : 'data-offset-x="'.rtrim( $offsetx, 'px' ).'"' ;
-	$data_offset_y  = empty( $offsety ) ? 'data-offset-y="0"' : 'data-offset-y="'.rtrim( $offsety, 'px' ).'"' ;
-	$data_origin    = empty( $origin  ) ? 'data-origin="tl"'  : 'data-origin="'.$origin.'"' ;
+		'data-tablet-offset-x' => empty( $tablet_offset_x ) ? null : rtrim( $tablet_offset_x, 'px' ),
+		'data-tablet-offset-y' => empty( $tablet_offset_y ) ? null : rtrim( $tablet_offset_y, 'px' ),
+		'data-tablet-origin'   => empty( $tablet_origin   ) ? null : $tablet_origin,
+
+		'data-phone-offset-x'  => empty( $phone_offset_x  ) ? null : rtrim( $phone_offset_x, 'px' ),
+		'data-phone-offset-y'  => empty( $phone_offset_y  ) ? null : rtrim( $phone_offset_y, 'px' ),
+		'data-phone-origin'    => empty( $phone_origin    ) ? null : $phone_origin,
+		'data-relative-size'   => empty( $tablet_offset_x ) && empty( $phone_offset_x ) ? null : 'true',
+		'data-hide-on'		   => empty( $hide_on ) ? null : $hide_on
+	);
+
 
 	// custom style + size styles
 	$style_size  = $style;
@@ -1105,9 +1139,9 @@ function msp_masterslider_layer_shortcode( $atts, $content = null ) {
 								$data_show_effect, $data_show_duration, $data_show_delay, $data_show_ease, $data_hide_effect,
 								$data_hide_duration, $data_hide_time, $data_hide_ease, $data_hide_delay, $data_fixed );
 
-	$common_attrs 	= sprintf( '%s %s %s %s %s %s %s %s %s', $data_parallax, $data_type, $data_resize, $data_align, $data_stay_hover, $data_tp_width, $data_target, $data_widthlimit, $data_action );
+	$common_attrs 	 = sprintf( '%s %s %s %s %s %s %s %s %s', $data_parallax, $data_type, $data_resize, $data_align, $data_stay_hover, $data_tp_width, $data_target, $data_widthlimit, $data_action );
 
-	$position_attrs = sprintf( '%s %s %s %s', $data_offset_x, $data_offset_y, $data_origin, $data_position );
+	$position_attrs  = msp_make_html_attributes( $position_attributes );
 
     $general_data_attrs = $data_ms_id . $data_wait . $data_masked . $data_mask_width . $data_mask_height . $data_overlay_target_slides;
 
@@ -1229,5 +1263,3 @@ function msp_masterslider_slide_flickr_shortcode( $atts, $content = null ) {
 
 	return apply_filters( 'masterslider_slide_flickr_shortcode', "\t\t\t\t".$output, $args );
 }
-
-

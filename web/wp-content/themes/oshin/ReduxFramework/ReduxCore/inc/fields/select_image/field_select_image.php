@@ -17,13 +17,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'ReduxFramework_select_image' ) ) {
     class ReduxFramework_select_image {
 
+        
+        public $parent;
+        public $field;
+        public $value;
         /**
          * Field Constructor.
          * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
          *
          * @since ReduxFramework 1.0.0
          */
-        function __construct( $field = array(), $value = '', $parent ) {
+        function __construct( $field = array(), $value = '', $parent = null) {
             $this->parent = $parent;
             $this->field  = $field;
             $this->value  = $value;
@@ -84,8 +88,7 @@ if ( ! class_exists( 'ReduxFramework_select_image' ) ) {
                     }
                     
                     // Set the selected entry
-                    //$selected = selected( $this->value, $v['img'], false );
-                    $selected = selected( pathinfo( $this->value, PATHINFO_FILENAME ), pathinfo( $v['img'], PATHINFO_FILENAME ), false );
+                    $selected = selected( $this->value, $v['img'], false );
 
                     // If selected returns something other than a blank space, we
                     // found our default/saved name.  Save the array number in a
@@ -96,7 +99,7 @@ if ( ! class_exists( 'ReduxFramework_select_image' ) ) {
                     }
 
                     // Add the option tag, with values.
-                    echo '<option value="' . $v['img'] . '" ' . $selected . ' data-title = "' . $v[ 'title' ] . '">' . $v['alt'] . '</option>';
+                    echo '<option value="' . $v['img'] . '" ' . $selected . '>' . $v['alt'] . '</option>';
 
                     // Add a bean
                     $x ++;

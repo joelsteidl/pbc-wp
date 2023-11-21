@@ -52,6 +52,7 @@
       }
 
       var $allVideos = $(this).find(selectors.join(','));
+      $allVideos = $allVideos.not('rs-bgvideo iframe'); // revSlider conflict patch
       $allVideos = $allVideos.not('object object'); // SwfObj conflict patch
       $allVideos = $allVideos.not(ignoreList); // Disable FitVids on this video.
 

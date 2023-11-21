@@ -33,6 +33,10 @@ if ( !class_exists ( 'ReduxFramework_checkbox' ) ) {
      */
     class ReduxFramework_checkbox {
 
+        public $parent;
+        public $field;
+        public $value;
+
         /**
          * Field Constructor.
          * Required - must call the parent constructor, then assign field and value to vars, and obviously call the render field function
@@ -41,7 +45,7 @@ if ( !class_exists ( 'ReduxFramework_checkbox' ) ) {
          * @access      public
          * @return      void
          */
-        function __construct ( $field = array(), $value = '', $parent ) {
+        function __construct ( $field = array(), $value = '', $parent = null) {
 
             $this->parent = $parent;
             $this->field = $field;
@@ -108,11 +112,11 @@ if ( !class_exists ( 'ReduxFramework_checkbox' ) ) {
 
                 echo '</ul>';
             } else if ( empty ( $this->field[ 'data' ] ) ) {
+                echo '<ul class="data-full"><li>';
 
-                echo (!empty ( $this->field[ 'desc' ] ) ) ? ' <ul class="data-full"><li><label for="' . strtr ( $this->parent->args[ 'opt_name' ] . '[' . $this->field[ 'id' ] . ']', array(
-                            '[' => '_',
-                            ']' => ''
-                        ) ) . '">' : '';
+                if ( !empty( $this->field[ 'label' ] ) ) {
+                    echo '<label>';
+                }
 
                 // Got the "Checked" status as "0" or "1" then insert it as the "value" option
                 //$ch_value = 1; // checked($this->value, '1', false) == "" ? "0" : "1";
@@ -121,8 +125,13 @@ if ( !class_exists ( 'ReduxFramework_checkbox' ) ) {
                     '[' => '_',
                     ']' => ''
                 ) ) . '" value="1" class="checkbox ' . $this->field[ 'class' ] . '" ' . checked ( $this->value, '1', false ) . '/>';
-                echo isset( $this->field[ 'label' ] ) ? ' ' . $this->field[ 'label' ] : '';
-                echo '</label></li></ul>';
+
+                if ( !empty( $this->field[ 'label' ] ) ) {
+                    echo ' ' . $this->field[ 'label' ];
+                    echo '</label>';
+                }
+
+                echo '</li></ul>';
             }
         }
 
@@ -155,5 +164,4 @@ if ( !class_exists ( 'ReduxFramework_checkbox' ) ) {
             );
         }
     }
-
 }

@@ -27,10 +27,10 @@
 
     if( optHeaderType == 'left' ){
         // Hide the top header panel settings
-        jQuery( '.top-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},0);
+        jQuery( '.top-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},1);
     } else if( optHeaderType == 'top' ){
         // Hide the left header panel settings
-        jQuery( '.left-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},0);
+        jQuery( '.left-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},1);
          // Show or hide the layout options based on header type and whether its new header style
         if( optHeaderStyle == 'style1' || optHeaderStyle == 'style2' || optHeaderStyle == 'style3' || optHeaderStyle == 'style4' || optHeaderStyle == 'style5' || optHeaderStyle == 'style6' || optHeaderStyle == 'style13' ){
             layout.css( 'display', 'table-row' );
@@ -41,6 +41,11 @@
             borderSettingsStartSection.css( 'display', 'none' );
             borderSettingsStartTable.css( 'display', 'none' );
         }
+    } else if( optHeaderType == 'builder' ){
+         // Hide the top header panel settings
+         jQuery( '.top-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},1);
+         // Hide the left header panel settings
+        jQuery( '.left-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'},1);
     }
     
     if( 'style7' != optHeaderStyle ){
@@ -66,16 +71,16 @@
             borderSettingsStartTable = jQuery( '#section-table-border-settings-start' );
         if(e.val == 'left'){
             // Toggle the header pannel visibility
-            jQuery( '.top-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'});
-            jQuery( '.left-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'});
-            
+            jQuery( '.top-header-settings' ).eq(0).animate({opacity: 0, height: 0, padding: 'toggle', margin: 'toggle'}).css('display','none');
+            jQuery( '.left-header-settings' ).eq(0).animate({opacity: 1, height: '39px', padding: 'toggle', margin: 'toggle'}).css('display','block');
+
             layout.css('display', 'table-row');
             borderSettingsStartSection.css( 'display', 'block' );
             borderSettingsStartTable.css( 'display', 'block' );
         } else if( e.val == 'top' ){
             // Toggle the header pannel visibility
-            jQuery( '.left-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'});
-            jQuery( '.top-header-settings' ).eq(0).animate({opacity: 'toggle', height: 'toggle', padding: 'toggle', margin: 'toggle'});
+            jQuery( '.left-header-settings' ).eq(0).animate({opacity: 0, height: 0, padding: 'toggle', margin: 'toggle'}).css('display','none');
+            jQuery( '.top-header-settings' ).eq(0).animate({opacity: 1, height: '57px', padding: 'toggle', margin: 'toggle'}).css('display','block');
             
             var optHeaderStyle = basename( jQuery( 'select[data-id="opt-header-style"]' )[0].value , '.png' );
             if( optHeaderStyle == 'style1' || optHeaderStyle == 'style2' || optHeaderStyle == 'style3' || optHeaderStyle == 'style4' || optHeaderStyle == 'style5' || optHeaderStyle == 'style6' || optHeaderStyle == 'style13' ){
@@ -87,7 +92,12 @@
                 borderSettingsStartSection.css( 'display', 'none' );
                 borderSettingsStartTable.css( 'display', 'none' );
             }
-        }
+        } else if( e.val == 'builder' ){
+            // Hide the top header panel settings
+            jQuery( '.top-header-settings' ).eq(0).animate({opacity: 0, height: 0, padding: 'toggle', margin: 'toggle'}).css('display','none');
+            // Hide the left header panel settings
+           jQuery( '.left-header-settings' ).eq(0).animate({opacity: 0, height: 0, padding: 'toggle', margin: 'toggle'}).css('display','none');
+       }
     });
 
     jQuery( 'select[data-id="opt-header-style"]' ).on('change', function(e){
@@ -173,5 +183,8 @@ jQuery(document).ready( function() {
         }
         console.log(counter);
     }, 200 );
-    
+    var previousHeaderType,
+        previousFooterType;
+    window.previousHeaderType = jQuery('#be_themes_data-opt-header-type select.redux-select-item').val();    
+    window.previousFooterStatus = jQuery('#be_themes_data-enable_footer_builder input[name="be_themes_data[enable_footer_builder]"]').val();
 });

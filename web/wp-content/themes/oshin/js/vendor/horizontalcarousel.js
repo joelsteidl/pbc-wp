@@ -191,12 +191,20 @@
 				player.api("pause");
 			}
 		}
+		Number_or_zero = function(num){
+			num = Number(num);
+			if(isNaN(num)){
+				num = 0;
+			}
+			return num;
+		}
 		image_resize = function() {
 			var $border_length = 2;
 			if(jQuery('body').hasClass('be-themes-layout-layout-border-header-top')) {
 				$border_length = 1;
 			}
-			var $height = (Number(jQuery(window).height())-(Number(jQuery('#header').innerHeight())+(Number(jQuery('.layout-box-bottom:visible').height())*$border_length)+Number(jQuery('#wpadminbar').innerHeight())+Number(jQuery('#portfolio-title-nav-wrap').innerHeight())+Number(jQuery('#footer').innerHeight()))), $slider_height = $height;
+			var $height = (Number_or_zero(jQuery(window).height())-(Number_or_zero(jQuery('#header').innerHeight())+(Number_or_zero(jQuery('.layout-box-bottom:visible').height())*$border_length)+Number_or_zero(jQuery('#wpadminbar').innerHeight())+Number_or_zero(jQuery('#portfolio-title-nav-wrap').innerHeight())+Number_or_zero(jQuery('#footer').innerHeight()))), $slider_height = $height;
+			//console.log("$height",$height);
 			if(jQuery('#gallery-container-wrap').attr('data-height')) {
 				$slider_height = (($height/100)*parseInt(jQuery('#gallery-container-wrap').attr('data-height')));
 				var $padding = ($height-$slider_height)/2;

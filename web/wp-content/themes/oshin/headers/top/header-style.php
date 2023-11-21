@@ -20,9 +20,11 @@
 				<?php
 					get_template_part( 'headers/top/header', 'items' );
 				?>
+				<div id="header-bottom-bar">
 				<nav id="navigation" class="clearfix">	<?php
 					be_themes_get_header_navigation();?>
 				</nav><!-- End Navigation -->
+				</div>
 			</div>
 
 			<?php

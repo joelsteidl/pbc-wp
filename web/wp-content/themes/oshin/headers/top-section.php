@@ -112,7 +112,7 @@
 				$output = '';
 				$output .= '<div class="hero-section-wrap be-section '.$full.' '.$hero_section_with_header.' '.$bg_stretch.' '.$bg_animation.' '.$bg_overlay_class.' '.$bg_video_class.' clearfix" style="'.$background.'; height: '.$hero_section_custom_height.'px !important;">';
 				if( isset( $bg_video ) && 1 == $bg_video ) {
-					$output .= '<video class="be-bg-video" autoplay="autoplay" loop="loop" muted="'.$bg_video_mute.'" preload="auto">';
+					$output .= '<video class="be-bg-video" autoplay="autoplay" loop="loop" muted="'.$bg_video_mute.'" playsinline preload="auto">';
 					if('mp4' == $bg_video_format) {
 						$output .= '<source src="'.$bg_video_src.'" type="video/mp4">';
 					}
@@ -252,7 +252,7 @@
 				$output = '';
 				$output .= '<div class="hero-section-wrap be-section '.$full.' '.$hero_section_with_header.' '.$bg_stretch.' '.$bg_animation.' '.$bg_overlay_class.' '.$bg_video_class.' clearfix" style="'.$background.'; height: '.$hero_section_custom_height.'px;">';
 				if( isset( $bg_video ) && 1 == $bg_video ) {
-					$output .= '<video class="be-bg-video" autoplay="autoplay" loop="loop" muted="muted" preload="auto">';
+					$output .= '<video class="be-bg-video" autoplay="autoplay" loop="loop" muted="muted" playsinline preload="auto">';
 					if($bg_video_mp4_src) {
 						$output .= '<source src="'.$bg_video_mp4_src.'" type="video/mp4">';
 					}

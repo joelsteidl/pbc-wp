@@ -486,7 +486,7 @@ function msp_the_resized_attachment( $attach_id = null, $width = null , $height 
     function msp_get_the_resized_attachment( $attach_id = null, $width = null , $height = null, $crop = null , $quality = 100 ) {
         $image_src = msp_get_the_resized_attachment_src( $attach_id, $width , $height, $crop, $quality );
 
-        return $image_src ? '<img src="'.$image_src.'" alt="" />': '';
+        return $image_src ? '<img src="'.esc_url( $image_src ).'" alt="" />': '';
     }
 
         /**
@@ -861,7 +861,8 @@ function msp_the_trimmed_string( $string, $max_length = 1000, $more = ' ...' ){
     if( ! function_exists( 'msp_get_trimmed_string') ){
 
         function msp_get_trimmed_string( $string, $max_length = 1000, $more = ' ...' ){
-            return function_exists( 'mb_strimwidth' ) ? mb_strimwidth( $string, 0, $max_length, '' ) . $more : substr( $string, 0, $max_length ) . $more;
+            $trimmed = function_exists( 'mb_strimwidth' ) ? mb_strimwidth( $string, 0, $max_length, $more ) : substr( $string, 0, $max_length ) . $more;
+            return wp_kses_post( $trimmed );
         }
 
     }
@@ -894,7 +895,8 @@ function msp_the_trim_excerpt( $post_id = null, $char_length = null, $exclude_st
             $excerpt = strip_tags( msp_strip_shortcodes( $excerpt, $exclude_strip_shortcode_tags ) );
             $text = msp_get_trimmed_string( $excerpt, $char_length, $excerpt_more );
 
-            return apply_filters( 'wp_trim_excerpt', $text, $raw_excerpt );
+            $text = apply_filters( 'wp_trim_excerpt', $text, $raw_excerpt );
+            return wp_kses_post( $text );
         }
 
     }
@@ -1013,8 +1015,13 @@ function msp_get_template_tag_value( $tag_name, $post = null, $args = null ){
 			$value = get_permalink( $post );
 			break;
 
-		case 'author':
-			$value = get_the_author_meta( 'display_name', (int)$post->post_author );
+        case 'author':
+            $value = get_the_author_meta( 'display_name', (int)$post->post_author );
+            break;
+
+		case 'author-avatar':
+            $user_email = get_the_author_meta( 'user_email', (int)$post->post_author );
+			$value = get_avatar( $user_email );
 			break;
 
 		case 'post_id':
@@ -1103,11 +1110,11 @@ function msp_get_template_tag_value( $tag_name, $post = null, $args = null ){
 			break;
 
 		case 'date-published':
-			$value = $post->post_date;
+			$value = mysql2date( get_option( 'date_format' ), $post->post_date );
 			break;
 
 		case 'date-modified':
-			$value = $post->post_modified;
+			$value = mysql2date( get_option( 'date_format' ), $post->post_modified );
 			break;
 
 		case 'commentnum':
@@ -1267,6 +1274,14 @@ function msp_get_template_tag_value( $tag_name, $post = null, $args = null ){
                 }
 
             // if the tag is {{wc_price-2}} with dynamic points length
+            } elseif( strpos( $tag_name, 'title-' ) !== false ){
+                preg_match( "/([\d]{1,})/", $tag_name, $matches );
+
+                if( isset( $matches[0] ) && is_numeric( $matches[0] ) ){
+                    $excerpt_length = (int) $matches[0];
+                    $value = wp_trim_words( $post->post_title, $excerpt_length );
+                    break;
+                }
             } elseif( strpos( $tag_name, 'wc_price-' ) !== false ){
 
                 if ( ! msp_is_plugin_active('woocommerce/woocommerce.php') ) break;
@@ -1375,4 +1390,24 @@ function msp_is_key_true( $array, $key, $default = 'true' ) {
     } else {
         return $default;
     }
+}
+
+function msp_make_html_attributes( $attrs = array() ){
+
+    if( ! is_array( $attrs ) ){
+        trigger_error( sprintf( __( 'Input value for "%s" function should be array.', MSWP_TEXT_DOMAIN ), __FUNCTION__ ) );
+        return '';
+    }
+
+    $attributes_string = '';
+
+    foreach ( $attrs as $attr => $value ) {
+        $value = is_array( $value ) ? join( ' ', array_unique( $value ) ) : $value;
+        if( is_null( $value ) ){
+            continue;
+        }
+        $attributes_string .= sprintf( '%s="%s" ', $attr, esc_attr( trim( $value ) ) );
+    }
+
+    return $attributes_string;
 }

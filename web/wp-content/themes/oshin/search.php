@@ -64,7 +64,11 @@ if($blog_attr['style'] == 'style3' && $blog_attr['gutter_style'] == 'style2') {
 							endif;
 						?>
 					</div>
-					<?php get_blog_pagination($blog_attr, $portfolio_pagination_style); ?>
+					<?php 
+					if( isset( $_GET['s'] ) && !empty( $_GET['s'] ) ){
+					get_blog_pagination($blog_attr, $portfolio_pagination_style);
+					} 
+					?>
 				</div>
 			</div>
 		</section> <?php

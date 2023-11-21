@@ -56,7 +56,7 @@ if($blog_attr['style'] == 'style9') {
                             <?php be_themes_category_list($id); ?>
                         </div>
                     <?php }
-                    echo '<h2 class="post-title"><a href="'.get_permalink(get_the_ID()).'">'.get_the_title(get_the_ID()).'</a></h2>'; ?>
+                    be_echo_post_title(); ?>
                     <?php if(null !== $be_themes_data['blog_meta_date'] && $be_themes_data['blog_meta_date'] != false){?>
                         <div class = "post-meta post-date">
                             <?php echo get_the_date(); ?>

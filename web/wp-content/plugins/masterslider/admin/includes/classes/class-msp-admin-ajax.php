@@ -121,23 +121,19 @@ class MSP_Admin_Ajax {
 	 */
     public function save_panel_ajax() {
 
-        header( "Content-Type: application/json" );
-
         // verify nonce
         if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], "msp_panel") ) {
-            echo json_encode( array( 'success' => false, 'message' => __("Authorization failed!", MSWP_TEXT_DOMAIN ) ) );
-            exit();
+			wp_send_json( array( 'success' => false, 'message' => __("Authorization failed!", MSWP_TEXT_DOMAIN ) ) );
         }
 
         // ignore the request if the current user doesn't have sufficient permissions
         if ( ! current_user_can( 'publish_masterslider' ) ) {
-            echo json_encode(
+            wp_send_json(
                 array(
                     'success' => false,
                     'message' => apply_filters( 'masterslider_insufficient_permissions_to_publish_message', __( "Sorry, You don't have enough permission to publish slider!", MSWP_TEXT_DOMAIN ) )
                 )
             );
-            exit();
         }
 
         /////////////////////////////////////////////////////////////////////////////////////////
@@ -146,8 +142,7 @@ class MSP_Admin_Ajax {
 		$slider_id 		= isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
 
 		if ( empty( $slider_id ) ) {
-			 echo json_encode( array( 'success' => false, 'type' => 'save' , 'message' => __( "Slider id is not defined.", MSWP_TEXT_DOMAIN )  ) );
-			 exit;
+			wp_send_json( array( 'success' => false, 'type' => 'save' , 'message' => __( "Slider id is not defined.", MSWP_TEXT_DOMAIN )  ) );
 		}
 
 		// get the slider type
@@ -179,7 +174,7 @@ class MSP_Admin_Ajax {
 		$slider_custom_styles = $parser->get_styles();
 
 		$fields = array(
-            'title'         => $slider_setting[ 'title' ],
+            'title'         => sanitize_text_field( $slider_setting[ 'title' ] ),
 			'alias' 		=> $slider_setting[ 'alias' ],
 			'type'			=> $slider_setting[ 'slider_type' ],
 			'slides_num'	=> count( $slides ),
@@ -203,13 +198,9 @@ class MSP_Admin_Ajax {
 
 		// create and output the response
 		if( isset( $is_saved ) )
-			$response = json_encode( array( 'success' => true, 'type' => 'save' , 'message' => __( "Saved Successfully.", MSWP_TEXT_DOMAIN )  ) );
+			wp_send_json( array( 'success' => true, 'type' => 'save' , 'message' => __( "Saved Successfully.", MSWP_TEXT_DOMAIN )  ) );
 	    else
-	    	$response = json_encode( array( 'success' => true, 'type' => 'save' , 'message' => __( "No Data Recieved."  , MSWP_TEXT_DOMAIN )  ) );
-
-	    echo $response;
-
-	    exit;// IMPORTANT
+			wp_send_json( array( 'success' => true, 'type' => 'save' , 'message' => __( "No Data Recieved."  , MSWP_TEXT_DOMAIN )  ) );
 	}
 
 

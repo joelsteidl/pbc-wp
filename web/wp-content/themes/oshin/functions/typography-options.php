@@ -470,6 +470,35 @@
                 'letter-spacing' => '0px'
             )
         ),
+        'style4_portfolio_typography' => array (
+            'label' => __( 'Split Screen Portfolio Title', 'oshin' ),
+            'selector' => '.ps-fade-nav-item .ps-fade-nav-item-inner',
+            'responsive' => true,
+            //'img' => get_template_directory_uri().'/img/typehub/portfolio_details_content.jpg',
+            'options' => array(
+                'font-size'     => '60px',
+                'line-height'   => '1.3em',
+                'font-family'   => 'google:Raleway',
+                'font-variant'   => '600',
+                'text-transform' => 'none',
+                'letter-spacing' => '0px',
+                'color' => '#000',
+            )
+        ),
+        'style5_portfolio_typography' => array (
+            'label' => __( 'Title Carousel Portfolio Title', 'oshin' ),
+            'selector' => '.ps-fade-horizontal-nav-item-inner',
+            'responsive' => true,
+            //'img' => get_template_directory_uri().'/img/typehub/portfolio_details_content.jpg',
+            'options' => array(
+                'font-size'     => '80px',
+                'line-height'   => '1.3em',
+                'font-family'   => 'google:Raleway',
+                'font-variant'   => '600',
+                'text-transform' => 'none',
+                'letter-spacing' => '0px'
+            )
+        ),
         'portfolio_nav_bottom_typography' => array(
             'label' => __( 'Global Portfolio Navigation', 'oshin' ),
             'selector' => 'a.navigation-previous-post-link, a.navigation-next-post-link',

@@ -97,7 +97,7 @@ class Axiom_Plugin_Check_Update {
      */
     public function check_update( $transient ) {
 
-        if( apply_filters( 'masterslider_disable_auto_update', 0 ) )
+        if( apply_filters( 'masterslider_disable_automatic_update', 0 ) )
             return $transient;
 
         // Get the remote version

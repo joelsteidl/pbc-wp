@@ -18,7 +18,7 @@
             static public $_parent;
             static private $_set;
 
-            private static function is_enqueued( $handle, $list = 'enqueued', $is_script ) {
+            private static function is_enqueued( $handle, $list = 'enqueued', $is_script = true) {
                 if ( $is_script ) {
                     wp_script_is( $handle, $list );
                 } else {
@@ -42,7 +42,7 @@
                 }
             }
 
-            private static function _cdn( $register = true, $handle, $src_cdn, $deps, $ver, $footer_or_media, $is_script = true ) {
+            private static function _cdn( $register = true, $handle = '', $src_cdn = '', $deps = [], $ver = false, $footer_or_media = false, $is_script = true ) {
                 $tran_key = '_style_cdn_is_up';
                 if ( $is_script ) {
                     $tran_key = '_script_cdn_is_up';
@@ -76,13 +76,17 @@
                                     $msg = sprintf( __( 'If you are developing offline, please download and install the <a href="%s" target="_blank">Redux Vendor Support</a> plugin/extension to bypass the our CDN and avoid this warning', 'redux-framework' ), 'https://github.com/reduxframework/redux-vendor-support' );
                                 }
 
-                                self::$_parent->admin_notices[] = array(
-                                    'type'    => 'error',
-                                    'msg'     => '<strong>' . __( 'Redux Framework Warning', 'redux-framework' ) . '</strong><br/>' . sprintf( __( '%s CDN unavailable.  Some controls may not render properly.', 'redux-framework' ), $handle ) . '  ' . $msg,
-                                    'id'      => $handle . $tran_key,
-                                    'dismiss' => false,
+                                $msg = '<strong>' . __( 'Redux Framework Warning', 'redux-framework' ) . '</strong><br/>' . sprintf( __( '%s CDN unavailable.  Some controls may not render properly.', 'redux-framework' ), $handle ) . '  ' . $msg;
+
+                                $data = array(
+                                    'parent'    => self::$_parent,
+                                    'type'      => 'error',
+                                    'msg'       => $msg,
+                                    'id'        => $handle . $tran_key,
+                                    'dismiss'   => false
                                 );
 
+                                Redux_Admin_Notices::set_notice($data);
                             }
                         }
                     } else {
@@ -97,7 +101,7 @@
                 }
             }
 
-            private static function _vendor_plugin( $register = true, $handle, $src_cdn, $deps, $ver, $footer_or_media, $is_script = true ) {
+            private static function _vendor_plugin( $register = true, $handle = '', $src_cdn = '', $deps = [], $ver = false, $footer_or_media = false, $is_script = true ) {
                 if ( class_exists( 'Redux_VendorURL' ) ) {
                     $src = Redux_VendorURL::get_url( $handle );
 
@@ -108,12 +112,17 @@
                     }
                 } else {
                     if ( ! self::$_set ) {
-                        self::$_parent->admin_notices[] = array(
-                            'type'    => 'error',
-                            'msg'     => sprintf( __( 'The <a href="%s">Vendor Support plugin</a> (or extension) is either not installed or not activated and thus, some controls may not render properly.  Please ensure that it is installed and <a href="%s">activated</a>', 'redux-framework' ), 'https://github.com/reduxframework/redux-vendor-support', admin_url( 'plugins.php' ) ),
-                            'id'      => $handle . '23',
-                            'dismiss' => false,
+                        $msg = sprintf( __( 'The <a href="%s">Vendor Support plugin</a> (or extension) is either not installed or not activated and thus, some controls may not render properly.  Please ensure that it is installed and <a href="%s">activated</a>', 'redux-framework' ), 'https://github.com/reduxframework/redux-vendor-support', admin_url( 'plugins.php' ) );
+
+                        $data = array(
+                            'parent'    => self::$_parent,
+                            'type'      => 'error',
+                            'msg'       => $msg,
+                            'id'        => $handle,
+                            'dismiss'   => false
                         );
+
+                        Redux_Admin_Notices::set_notice($data);
 
                         self::$_set = true;
                     }

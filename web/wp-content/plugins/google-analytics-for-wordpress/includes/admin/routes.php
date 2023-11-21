@@ -284,7 +284,7 @@ class MonsterInsights_Rest_Routes {
 	public function get_addons() {
 		global $current_user;
 		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
-		
+
 		if ( ! current_user_can( 'monsterinsights_view_dashboard' ) ) {
 			return;
 		}
@@ -763,7 +763,7 @@ class MonsterInsights_Rest_Routes {
 
 
 	/**
-	 *
+	 * Import exported JSON file.
 	 */
 	public function handle_settings_import() {
 
@@ -777,7 +777,9 @@ class MonsterInsights_Rest_Routes {
 			return;
 		}
 
-		$extension = explode( '.', sanitize_text_field( wp_unslash( $_FILES['import_file']['name'] ) ) ); // phpcs:ignore
+		$import_file = $_FILES['import_file']; // phpcs:ignore
+
+		$extension = explode( '.', sanitize_text_field( wp_unslash( $import_file['name'] ) ) ); // phpcs:ignore
 		$extension = end( $extension );
 
 		if ( 'json' !== $extension ) {
@@ -786,9 +788,8 @@ class MonsterInsights_Rest_Routes {
 			) );
 		}
 
-		$import_file = sanitize_text_field( wp_unslash( $_FILES['import_file']['tmp_name'] ) ); // phpcs:ignore
+		$file = file_get_contents( $import_file['tmp_name'] );
 
-		$file = file_get_contents( $import_file );
 		if ( empty( $file ) ) {
 			wp_send_json_error( array(
 				'message' => esc_html__( 'Please select a valid file to upload.', 'google-analytics-for-wordpress' ),
@@ -806,6 +807,9 @@ class MonsterInsights_Rest_Routes {
 			'cron_last_run',
 			'monsterinsights_oauth_status',
 		);
+
+		$this->import_site_notes( $new_settings['site_notes'] );
+		unset( $new_settings['site_notes'] );
 
 		foreach ( $exclude as $e ) {
 			if ( ! empty( $new_settings[ $e ] ) ) {
@@ -1122,7 +1126,7 @@ class MonsterInsights_Rest_Routes {
 				$exclude[$value['id']] = $value['id'];
 			}
 		}
-		
+
 		$exclude = array_unique(array_values($exclude));
 
 		$args = array(
@@ -1404,5 +1408,31 @@ class MonsterInsights_Rest_Routes {
 
 		wp_send_json_error();
 
+	}
+
+	/**
+	 * Import site notes from exported file.
+	 */
+	private function import_site_notes( $site_notes ) {
+		$notes_db = new MonsterInsights_Site_Notes_DB_Base();
+
+		// Import site-notes category.
+		foreach ( $site_notes['categories'] as $category ) {
+			$notes_db->create_category( array(
+				'name'             => $category['name'],
+				'background_color' => $category['color'],
+			) );
+		}
+
+		foreach ( $site_notes['notes'] as $notes ) {
+			$category = get_term_by( 'name', $notes['category_name'], 'monsterinsights_note_category' );
+
+			$notes_db->create( array(
+				'note'      => $notes['note_title'],
+				'date'      => $notes['note_date'],
+				'important' => $notes['important'],
+				'category'  => intval( ( ! empty( $category ) && ! empty( $category->term_id ) ) ? $category->term_id : 0 ),
+			) );
+		}
 	}
 }

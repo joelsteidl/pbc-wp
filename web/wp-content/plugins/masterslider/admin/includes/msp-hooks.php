@@ -103,7 +103,7 @@ function msp_request_remote_sample_sliders( $force_to_fetch = false ) {
     }
 
     if ( 'masterslider' == MSWP_SLUG ) {
-        if ( '1' == get_option( 'masterslider_is_license_actived', false ) ) {
+        if ( '1' == get_option( 'masterslider_is_license_actived', false ) || msp_unlock_conditions() ) {
             $request_body['slider_type'] = 'pro-registered';
         } else {
             $request_body['slider_type'] = 'pro-all';
@@ -164,7 +164,7 @@ function msp_premium_sliders( $demos ) {
                         $demos['masterslider_pro_custom_samples1'][] = $demo;
                     }
                 } else {
-                    if ( '1' == get_option( 'masterslider_is_license_actived', false ) ) {
+                    if ( '1' == get_option( 'masterslider_is_license_actived', false ) || msp_unlock_conditions() ) {
                         $demos['masterslider_pro_custom_samples1'][] = $demo;
                     } else {
                         if( ! empty( $demo['disable'] ) && $demo['disable'] ){

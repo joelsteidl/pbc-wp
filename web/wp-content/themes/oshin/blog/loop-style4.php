@@ -4,7 +4,7 @@ global $blog_attr, $more_text, $be_themes_data;
 $post_classes = get_post_class();
 $post_classes = implode( ' ', $post_classes );
 $is_wide_single = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;
-if($blog_attr['style'] == 'style3') {
+if(!empty($blog_attr['style']) && $blog_attr['style'] == 'style3') {
 	$post_classes .= ' element not-wide';
 }
 $post_format = get_post_format();
@@ -35,11 +35,7 @@ $post_format = get_post_format();
 								?>
 							</div>
 							<div class="left post-title-section">
-								<h2 class="post-title">
-									<a href="<?php echo get_permalink(get_the_ID()); ?>"> 
-										<?php echo get_the_title(get_the_ID()); ?>
-									</a>
-								</h2>
+								<?php be_echo_post_title(); ?>
 								<?php get_template_part( 'blog/post', 'details' ); ?>
 							</div>
 						</div> <?php

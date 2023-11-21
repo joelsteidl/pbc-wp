@@ -158,11 +158,12 @@ class MSP_Gallery_Extention {
 		foreach ( $attachments as $id => $attachment ) {
 
 			$attrs   = '';
-			$img_src = wp_get_attachment_image_src( $id, 'large' );
+			$img_info = wp_get_attachment_image_src( $id, 'large' );
+
+			$img_src = ! empty( $img_info[0] ) ? $img_info[0] : '';
 
 			$attrs  .= sprintf( '%s="%s" ', 'src'     , $img_src );
 			$attrs  .= sprintf( '%s="%s" ', 'src_full', $img_src );
-
 
 			if ( 'file' == $atts['link'] ) {
 				$link = $img_src;

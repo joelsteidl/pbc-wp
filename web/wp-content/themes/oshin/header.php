@@ -25,17 +25,24 @@
     ?>
 </head>
 <body <?php body_class(); ?> data-be-site-layout='<?php echo $be_themes_data['layout']; ?>' data-be-page-template = '<?php echo basename(get_page_template(),".php"); ?>' >	
+<?php wp_body_open(); ?>
 	<?php
 		do_action( 'after_body' );
-		$widget_style = (isset($be_themes_data['seach_widget_style']) && !empty($be_themes_data['seach_widget_style'])) ? $be_themes_data['seach_widget_style'] : 'style1-header-search-widget';
-		if($widget_style == 'style2-header-search-widget') {
-			be_themes_get_header_search_form_widget( false, true);
+		if( $be_themes_data['opt-header-type'] !== 'builder' ){
+			$widget_style = (isset($be_themes_data['seach_widget_style']) && !empty($be_themes_data['seach_widget_style'])) ? $be_themes_data['seach_widget_style'] : 'style1-header-search-widget';
+			if($widget_style == 'style2-header-search-widget') {
+				be_themes_get_header_search_form_widget( false, true);
+			}
+			if ( ('left' == $be_themes_data['opt-header-type'] ) && isset($be_themes_data['left-header-style']) ){
+				$opt_header_type = 'left';
+			} else if( ('top' == $be_themes_data['opt-header-type'] ) && isset($be_themes_data['opt-header-type']) ){
+				$opt_header_type = 'top';
+			}
+			// based on the choice of header style call its header-default.php
+			get_template_part('headers/'.$opt_header_type.'/header', 'default');
+		}else{
+			do_action( 'tatsu_print_header' );
+			get_template_part( 'headers/top', 'section' );
 		}
-		if ( ('left' == $be_themes_data['opt-header-type'] ) && isset($be_themes_data['left-header-style']) ){
-			$opt_header_type = 'left';
-		} else if( ('top' == $be_themes_data['opt-header-type'] ) && isset($be_themes_data['opt-header-type']) ){
-			$opt_header_type = 'top';
-		}
-		// based on the choice of header style call its header-default.php
-		get_template_part('headers/'.$opt_header_type.'/header', 'default');
 		do_action( 'tatsu_head' );
+		

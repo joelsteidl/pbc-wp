@@ -4,14 +4,14 @@ global $blog_attr, $more_text, $be_themes_data;
 $is_wide_single = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;
 $post_classes = get_post_class();
 $post_classes = implode( ' ', $post_classes );
-if($blog_attr['style'] == 'style3') {
+if(!empty($blog_attr) && $blog_attr['style'] == 'style3') {
 	$post_classes .= ' element not-wide';
 }
 $post_format = get_post_format();
 ?>	
 
 <article id="post-<?php the_ID(); ?>" class="element not-wide blog-post clearfix <?php echo esc_attr( $post_classes ); ?>">
-	<div class="element-inner" style="<?php echo ($blog_attr['style'] == 'style3') ? 'margin-left:'.$blog_attr['gutter_width'].'px' : ''; ?>">
+	<div class="element-inner" style="<?php echo (isset( $blog_attr['style'] ) && $blog_attr['style'] == 'style3') ? 'margin-left:'.$blog_attr['gutter_width'].'px' : ''; ?>">
 		<div class="post-content-wrap">
 			<?php
 				if( $post_format != 'quote' && $post_format != 'link' && !is_search() ) {
@@ -36,11 +36,7 @@ $post_format = get_post_format();
 								?>
 							</div>
 							<div class="left post-title-section">
-								<h2 class="post-title">
-									<a href="<?php echo get_permalink(get_the_ID()); ?>"> 
-										<?php echo get_the_title(get_the_ID()); ?>
-									</a>
-								</h2>
+								<?php be_echo_post_title(); ?>
 								<?php get_template_part( 'blog/post', 'details' ); ?>
 							</div>
 						</div> <?php

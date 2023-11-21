@@ -9,10 +9,12 @@
  * @copyright Copyright © 2015 averta
  */
 
-do_action( 'masterslider_panel_header' );
 ?>
 
 <!-- markup for slider panel page here. -->
+<div id="msp-header">
+    <div class="msp-logo"><a href="?page=masterslider"><img src="<?php echo MSWP_AVERTA_ADMIN_URL . '/views/slider-panel'; ?>/images/masterslider.gif" ></a></div>
+</div>
 <div id="panelLoading" class="msp-loading">
     <img src="<?php echo MSWP_AVERTA_ADMIN_URL . '/views/slider-panel'; ?>/images/loading.gif">
     <?php _e('Loading data...', MSWP_TEXT_DOMAIN); ?>
@@ -43,7 +45,9 @@ do_action( 'masterslider_panel_header' );
             </ul>
         </nav>
         <div class="clear"></div>
+        <div class="msp-main-container">
         {{outlet}}
+        </div>
         <div class="msp-shortcode-cont">
             <span><?php _e('Shortcode :', MSWP_TEXT_DOMAIN); ?> </span>
             {{view MSPanel.SimpleCodeBlock value=shortCode width=120}}
@@ -72,7 +76,7 @@ do_action( 'masterslider_panel_header' );
 <script type="text/x-handlebars" id="wooc-error">
     <h3><?php _e('Ooops! It seems Woocommers plugin is not installed.', MSWP_TEXT_DOMAIN); ?> </h3>
     <p>
-        <?php _e('This type of slider requiers the Woocommers plugin. ', MSWP_TEXT_DOMAIN); ?>
+        <?php _e('This type of slider requires the Woocommers plugin. ', MSWP_TEXT_DOMAIN); ?>
         <a {{bind-attr href=wooLink}} > <?php _e('Please install and activate it first.', MSWP_TEXT_DOMAIN); ?> </a>
     </p>
 </script>
@@ -98,6 +102,22 @@ do_action( 'masterslider_panel_header' );
                 <label><?php _e('Slider height :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=height}} px
             </div>
 
+            <div class="msp-metabox-indented">
+                {{switch-box value=responsiveSize}}<label><?php _e('Custom responsive size', MSWP_TEXT_DOMAIN); ?></label>
+            </div>
+
+            {{#if responsiveSize}}
+            <div class="msp-metabox-indented">
+                 <label><?php _e('Tablet width :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=tabletWidth}} px
+                <span class="msp-form-space"></span>
+                <label><?php _e('Tablet height :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=tabletHeight}} px
+            </div>
+            <div class="msp-metabox-indented">
+                 <label><?php _e('Phone width :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=phoneWidth}} px
+                <span class="msp-form-space"></span>
+                <label><?php _e('Phone height :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=phoneHeight}} px
+            </div>
+            {{/if}}
             <div class="msp-metabox-indented">
                {{switch-box value=autoCrop}}<label><?php _e('Automatically crop and resize slider images based on the size above.', MSWP_TEXT_DOMAIN); ?></label>
             </div>
@@ -708,111 +728,119 @@ do_action( 'masterslider_panel_header' );
 <!-- Slides Page -->
 <script type="text/x-handlebars" id="slides">
     {{#if customSlider}}
-        <!-- Slides List -->
-        {{#meta-box title="<?php _e('Slides', MSWP_TEXT_DOMAIN); ?>"}}
-        <div class="msp-metabox-row">
-         {{view MSPanel.SlideList}}
+        <div class="msp-slides-list-panel">
+            <!-- Slides List -->
+            {{#meta-box title="<?php _e('Slides', MSWP_TEXT_DOMAIN); ?>"}}
+            <div class="msp-metabox-row">
+                {{view MSPanel.SlideList}}
+            </div>
+            {{/meta-box}}
         </div>
-        {{/meta-box}}
         {{#if currentSlide}}
             {{partial "slide-settings"}}
         {{/if}}
     {{/if}}
     {{#if templateSlider}}
-         {{#meta-box title="<?php _e('Slides Template', MSWP_TEXT_DOMAIN); ?>"}}
+        <div class="msp-slides-list-panel">
+        {{#meta-box title="<?php _e('Slides Template', MSWP_TEXT_DOMAIN); ?>"}}
             <div class="msp-metabox-row">
                 <div class="msp-metabox-indented">
-                 <?php _e('In this section you can create slide template for your slider.', MSWP_TEXT_DOMAIN); ?><br>
-                 <?php _e('Slide template will be used by the slider to create dynamically slides from posts, Facebook or Flickr photos.', MSWP_TEXT_DOMAIN); ?><br>
+                <?php _e('In this section you can create slide template for your slider.', MSWP_TEXT_DOMAIN); ?><br>
+                <?php _e('Slide template will be used by the slider to create dynamically slides from posts, Facebook or Flickr photos.', MSWP_TEXT_DOMAIN); ?><br>
                 </div>
             </div>
-         {{/meta-box}}
-
+        {{/meta-box}}
+        </div>
         {{partial "slide-template-settings"}}
 
     {{/if}}
 </script>
 <!-- tempalte slide settings -->
 <script type="text/x-handlebars" id="slide-template-settings">
-    {{#tabs-panel id="slide-settings"}}
-    <div class="msp-metabox-handle">
+    <div class="msp-slide-settings-panel">
+        {{#tabs-panel id="slide-settings"}}
+        <div class="msp-metabox-handle">
 
-        <ul class="tabs">
-            <li class="active"><a href="#sl-bg"><?php _e('Fill Mode', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-inf"><?php _e('Slide Info', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-misc"><?php _e('Misc', MSWP_TEXT_DOMAIN); ?></a></li>
+            <ul class="tabs">
+                <li class="active"><a href="#sl-bg"><?php _e('Fill Mode', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-inf"><?php _e('Slide Info', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-misc"><?php _e('Misc', MSWP_TEXT_DOMAIN); ?></a></li>
+            </ul>
+
+            <div class="msp-metabox-toggle"></div>
+        </div>
+
+        <ul class="tabs-content">
+            <li id="sl-bg">
+                <div class="msp-metabox-row">
+                    <h4><?php _e('Choose slide background fill mode', MSWP_TEXT_DOMAIN); ?></h4>
+                    <div class="msp-metabox-indented">
+                        <label><?php _e('Fillmode :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.Fillmode value=currentSlide.fillMode}}
+                    </div>
+                </div>
+            </li>
+            <li id="sl-inf">{{partial 'slide-info'}}</li>
+            <li id="sl-misc">
+                <div class="msp-metabox-row">
+                    <h4><?php _e('Slide background color', MSWP_TEXT_DOMAIN); ?></h4>
+                    <div class="msp-metabox-indented">
+                        <label><?php _e('Background color :', MSWP_TEXT_DOMAIN); ?> </label> {{color-picker value=currentSlide.bgColor}}
+                    </div>
+                    <h4><?php _e('Custom class name for slide element', MSWP_TEXT_DOMAIN); ?> </h4>
+                    <div class="msp-metabox-indented">
+                        <label><?php _e('Class name :', MSWP_TEXT_DOMAIN); ?> </label> {{input size=30 value=currentSlide.cssClass}}
+                    </div>
+                </div>
+            </li>
         </ul>
 
-        <div class="msp-metabox-toggle"></div>
+        {{/tabs-panel}}
     </div>
-
-    <ul class="tabs-content">
-        <li id="sl-bg">
-            <div class="msp-metabox-row">
-                <h4><?php _e('Choose slide background fill mode', MSWP_TEXT_DOMAIN); ?></h4>
-                <div class="msp-metabox-indented">
-                    <label><?php _e('Fillmode :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.Fillmode value=currentSlide.fillMode}}
-                </div>
-            </div>
-        </li>
-        <li id="sl-inf">{{partial 'slide-info'}}</li>
-        <li id="sl-misc">
-             <div class="msp-metabox-row">
-                <h4><?php _e('Slide background color', MSWP_TEXT_DOMAIN); ?></h4>
-                <div class="msp-metabox-indented">
-                    <label><?php _e('Background color :', MSWP_TEXT_DOMAIN); ?> </label> {{color-picker value=currentSlide.bgColor}}
-                </div>
-                <h4><?php _e('Custom class name for slide element', MSWP_TEXT_DOMAIN); ?> </h4>
-                <div class="msp-metabox-indented">
-                    <label><?php _e('Class name :', MSWP_TEXT_DOMAIN); ?> </label> {{input size=30 value=currentSlide.cssClass}}
-                </div>
-            </div>
-        </li>
-    </ul>
-
-    {{/tabs-panel}}
-
+    <div class="msp-slide-editor-panel">
     {{render "layers" currentSlide.layers}}
+    </div>
 </script>
 <!-- Slide Settings Partial -->
 <script type="text/x-handlebars" id="slide-settings">
+    <div class="msp-slide-settings-panel">
+        {{#if currentSlide.isOverlayLayers}}
+            {{#meta-box title="<?php _e('Overlay layers', MSWP_TEXT_DOMAIN); ?>"}}
+                <div class="msp-metabox-indented">
+                    <p><?php _e('In this section you can add layers over the slider. They remain fixed while changing slides.', MSWP_TEXT_DOMAIN);?></p>
+                </div>
+                <div class="msp-metabox-indented">
+                    {{switch-box value=sliderSettings.enableOverlayLayers}} <label> <?php _e('Enable overlay layers', MSWP_TEXT_DOMAIN);?></label>
+                </div>
+            {{/meta-box}}
+        {{else}}
+        {{#tabs-panel id="slide-settings"}}
+        <div class="msp-metabox-handle">
 
-    {{#if currentSlide.isOverlayLayers}}
-        {{#meta-box title="<?php _e('Overlay layers', MSWP_TEXT_DOMAIN); ?>"}}
-            <div class="msp-metabox-indented">
-                <p><?php _e('In this section you can add layers over the slider. They remain fixed while changing slides.', MSWP_TEXT_DOMAIN);?></p>
-            </div>
-            <div class="msp-metabox-indented">
-                 {{switch-box value=sliderSettings.enableOverlayLayers}} <label> <?php _e('Enable overlay layers', MSWP_TEXT_DOMAIN);?></label>
-            </div>
-        {{/meta-box}}
-    {{else}}
-    {{#tabs-panel id="slide-settings"}}
-    <div class="msp-metabox-handle">
+            <ul class="tabs">
+                <li class="active"><a href="#sl-bg"><?php _e('Background', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-vbg"><?php _e('Video Background', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-val"><?php _e('Video and Link', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-inf"><?php _e('Slide Info', MSWP_TEXT_DOMAIN); ?></a></li>
+                <li><a href="#sl-misc"><?php _e('Misc', MSWP_TEXT_DOMAIN); ?></a></li>
+            </ul>
 
-        <ul class="tabs">
-            <li class="active"><a href="#sl-bg"><?php _e('Background', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-vbg"><?php _e('Video Background', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-val"><?php _e('Video and Link', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-inf"><?php _e('Slide Info', MSWP_TEXT_DOMAIN); ?></a></li>
-            <li><a href="#sl-misc"><?php _e('Misc', MSWP_TEXT_DOMAIN); ?></a></li>
+            <div class="msp-metabox-toggle"></div>
+        </div>
+
+        <ul class="tabs-content">
+            <li id="sl-bg">{{partial 'slide-background'}}</li>
+            <li id="sl-vbg">{{partial 'slide-videobg'}}</li>
+            <li id="sl-val">{{partial 'slide-video-and-link'}}</li>
+            <li id="sl-inf">{{partial 'slide-info'}}</li>
+            <li id="sl-misc">{{partial 'slide-misc'}}</li>
         </ul>
 
-        <div class="msp-metabox-toggle"></div>
+        {{/tabs-panel}}
+
+        <!-- end of check for overlay if -->
+        {{/if}}
     </div>
 
-    <ul class="tabs-content">
-        <li id="sl-bg">{{partial 'slide-background'}}</li>
-        <li id="sl-vbg">{{partial 'slide-videobg'}}</li>
-        <li id="sl-val">{{partial 'slide-video-and-link'}}</li>
-        <li id="sl-inf">{{partial 'slide-info'}}</li>
-        <li id="sl-misc">{{partial 'slide-misc'}}</li>
-    </ul>
-
-    {{/tabs-panel}}
-
-    <!-- end of check for overlay if -->
-    {{/if}}
     {{render "layers" currentSlide.layers}}
 </script>
 
@@ -935,6 +963,7 @@ do_action( 'masterslider_panel_header' );
 </script>
 <!-- Slide Scene Partial -->
 <script type="text/x-handlebars" id='layers'>
+    <div class="msp-slide-editor-panel">
     {{#meta-box title="Slide"}}
     {{view MSPanel.StageArea}}
     <hr class="msp-metabox-hr">
@@ -949,6 +978,7 @@ do_action( 'masterslider_panel_header' );
     {{view MSPanel.Timeline}}
 
     {{/meta-box}}
+    </div>
 
     {{partial layerSettings}}
 </script>
@@ -965,6 +995,10 @@ do_action( 'masterslider_panel_header' );
         <div class="msp-form-space"></div>
         <label><?php _e('Unique layer id :', MSWP_TEXT_DOMAIN); ?> </label> {{input value=currentLayer.msId}}
     </div>
+    <div class="msp-metabox-indented">
+        <label><?php _e('Hide element on :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.BreakpointSelect layer=currentLayer}}
+    </div>
+
     {{#if currentLayer.slide.isOverlayLayers}}
         <div class="msp-metabox-indented">
             <p><?php _e('Enter slide(s) id separated by comma to show or hide the overlay layer over specific slide.', MSWP_TEXT_DOMAIN); ?></p>
@@ -980,6 +1014,7 @@ do_action( 'masterslider_panel_header' );
 
 <!-- text layer settings -->
 <script type="text/x-handlebars" id="text-layer-settings">
+    <div class="msp-layer-settings-panel">
     {{#tabs-panel}}
     <div class="msp-metabox-handle">
 
@@ -1032,10 +1067,12 @@ do_action( 'masterslider_panel_header' );
     </ul>
 
     {{/tabs-panel}}
+    </div>
 </script>
 
 <!-- image layer settings -->
 <script type="text/x-handlebars" id="image-layer-settings">
+    <div class="msp-layer-settings-panel">
     {{#tabs-panel}}
     <div class="msp-metabox-handle">
 
@@ -1079,10 +1116,12 @@ do_action( 'masterslider_panel_header' );
     </ul>
 
     {{/tabs-panel}}
+    </div>
 </script>
 
 <!-- video layer settings -->
 <script type="text/x-handlebars" id="video-layer-settings">
+    <div class="msp-layer-settings-panel">
     {{#tabs-panel}}
     <div class="msp-metabox-handle">
 
@@ -1127,10 +1166,12 @@ do_action( 'masterslider_panel_header' );
         <li id="layer-misc">{{partial 'layer-misc-settings'}}</li>
     </ul>
     {{/tabs-panel}}
+    </div>
 </script>
 
 <!-- hotspot layer settings -->
 <script type="text/x-handlebars" id="hotspot-layer-settings">
+    <div class="msp-layer-settings-panel">
     {{#tabs-panel}}
     <div class="msp-metabox-handle">
 
@@ -1193,6 +1234,7 @@ do_action( 'masterslider_panel_header' );
         <li id="layer-misc">{{partial 'layer-misc-settings'}}</li>
     </ul>
     {{/tabs-panel}}
+    </div>
 </script>
 
 <!--
@@ -1200,6 +1242,7 @@ do_action( 'masterslider_panel_header' );
     @since 1.9.0
 -->
 <script type="text/x-handlebars" id="button-layer-settings">
+    <div class="msp-layer-settings-panel">
     {{#tabs-panel}}
     <div class="msp-metabox-handle">
 
@@ -1250,6 +1293,7 @@ do_action( 'masterslider_panel_header' );
     </ul>
 
     {{/tabs-panel}}
+    </div>
 </script>
 
 <!-- layer transition tab -->
@@ -1303,9 +1347,9 @@ do_action( 'masterslider_panel_header' );
         <div class="msp-metabox-indented">
             <label><?php _e('Layer position origin :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.PositionOrigin layer=currentLayer}}
             <span class="msp-form-space"></span>
-            <label><?php _e('OffsetX :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=currentLayer.offsetX min=null}} px
+            <label><?php _e('OffsetX :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.ResponsivePositionInput layer=currentLayer axis='x'}} px
             <span class="msp-form-space"></span>
-            <label><?php _e('OffsetY :', MSWP_TEXT_DOMAIN); ?> </label> {{number-input value=currentLayer.offsetY min=null}} px
+            <label><?php _e('OffsetY :', MSWP_TEXT_DOMAIN); ?> </label> {{view MSPanel.ResponsivePositionInput layer=currentLayer axis='y'}} px
             <span class="msp-form-space"></span>
         </div>
         <div class="msp-metabox-indented">

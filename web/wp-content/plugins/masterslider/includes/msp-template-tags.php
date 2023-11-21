@@ -10,6 +10,12 @@ function msp_get_general_post_template_tags() {
 		       'callback' 	=> ''
 		),
 
+		array( 'name'		=> 'title-5',
+		       'label' 		=> __( 'The post title-(with length limit)', MSWP_TEXT_DOMAIN ),
+		       'type'		=> '_general',
+		       'callback' 	=> ''
+		),
+		
 		array( 'name'		=> 'linked_title',
 		       'label' 		=> __( 'The post title with link', MSWP_TEXT_DOMAIN ),
 		       'type'		=> '_general',
@@ -54,6 +60,12 @@ function msp_get_general_post_template_tags() {
 
 		array( 'name'		=> 'author',
 		       'label' 		=> __( 'The author name', MSWP_TEXT_DOMAIN ),
+		       'type'		=> '_general',
+		       'callback' 	=> ''
+		),
+
+		array( 'name'		=> 'author-avatar',
+		       'label' 		=> __( 'The author avatar', MSWP_TEXT_DOMAIN ),
 		       'type'		=> '_general',
 		       'callback' 	=> ''
 		),

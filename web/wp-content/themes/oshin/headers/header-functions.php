@@ -119,14 +119,12 @@ if ( !function_exists( 'be_themes_after_body' ) ) {
 						<div id="sb-slidebar-content" class="sb-slidebar-content ajaxable">
 							<?php 
 							if((!isset($be_themes_data['disable_logo']) || empty($be_themes_data['disable_logo'])) || (isset($be_themes_data['disable_logo']) && (0 == $be_themes_data['disable_logo'])) ){		
+								$logo_sidebar = get_template_directory_uri().'/img/logo.png';
 								if( ! empty( $be_themes_data['logo_sidebar']['url'] )) {
 									$logo_sidebar = $be_themes_data['logo_sidebar']['url'];
 								}else{
 									if( array_key_exists('logo', $be_themes_data) && ! empty( $be_themes_data['logo']['url'] ) ) {
 										$logo_sidebar = $be_themes_data['logo']['url'];
-									} 
-									else {
-										$logo_sidebar = get_template_directory_uri().'/img/logo.png';
 									}
 								}
 							}
@@ -153,7 +151,7 @@ if (!function_exists ('be_themes_get_submenu' ) ){
 		$sub_menu_type = 'oldMultilevelMenu';
 		$header_type = $be_themes_data['opt-header-type'];		
 		$new_top_header_styles = array( 'page-stack-top','overlay-center-align-menu','overlay-horizontal-menu','page-stack-left','page-stack-right','page-stack-top','perspective-left','perspective-right','special-left-menu','special-right-menu' );
-		$new_left_header_styles = array('left-static-menu','left-strip-menu','overlay-center-align-menu','overlay-left-align-menu','perspective-right');
+		$new_left_header_styles = array('left-strip-menu','overlay-center-align-menu','overlay-left-align-menu','perspective-right');
 		if($header_type == 'top'){
 			$header_style = isset($be_themes_data['opt-menu-style'] ) ? basename($be_themes_data['opt-menu-style'], '.jpg' ) : 'none';
 			if(in_array($header_style, $new_top_header_styles)){
@@ -251,35 +249,40 @@ if ( !function_exists( 'be_left_sidemenu' ) ) {
 			$sidebar_class = 'be-sidemenu-left';
 			if( be_is_special_left_menu( 'overlay-left-align-menu' ) || be_is_special_left_menu( 'overlay-center-align-menu' ) || be_is_special_left_menu( 'left-static-menu' ) ){
 				$sidebar_class = '';
-			}
+            }
+            if( be_is_special_left_menu( 'left-static-menu' ) && !empty( $be_themes_data['left_header_alignment_horizontal'] ) ) {
+                $sidebar_class .= ' be-sidemenu-align-' . $be_themes_data['left_header_alignment_horizontal'];
+            }
 			?>
 				<div class="be-sidemenu <?php echo $sidebar_class; ?>" 
-					<?php 
-						if( isset( $be_themes_data['left_special_header_menu_animation'] ) && !empty( $be_themes_data['left_special_header_menu_animation'] ) ){
-							echo "data-link-animation-direction = '".$be_themes_data['left_special_header_menu_animation']."'";
-						}
-						if( isset( $be_themes_data['left_special_menu_alignment'] ) && !empty( $be_themes_data['left_special_menu_alignment'] ) ){
-							echo "data-menu-alignment = '".$be_themes_data['left_special_menu_alignment']."'";
-						}
+                    <?php 
+                        if( !be_is_special_left_menu( 'left-static-menu' ) ) {
+                            if( isset( $be_themes_data['left_special_header_menu_animation'] ) && !empty( $be_themes_data['left_special_header_menu_animation'] ) ){
+                                echo "data-link-animation-direction = '".$be_themes_data['left_special_header_menu_animation']."'";
+                            }
+                            if( isset( $be_themes_data['left_special_menu_alignment'] ) && !empty( $be_themes_data['left_special_menu_alignment'] ) ){
+                                echo "data-menu-alignment = '".$be_themes_data['left_special_menu_alignment']."'";
+                            }
+                        }
 						echo "data-submenu = ". be_themes_get_submenu();
-					?>>
+					?>
+                >
 					<?php
 						if( be_is_special_left_menu( 'overlay-center-align-menu' ) || be_is_special_left_menu( 'overlay-left-align-menu' ) ){
 							echo "<i class='be-overlay-menu-close font-icon icon-icon_close'></i>";
 						}
+						$tatsu_wrap_class = be_is_special_left_menu( 'left-static-menu' ) ? '' : 'tatsu-wrap';
 					?>
-						<div id="be-sidemenu-content" class="be-sidemenu-content tatsu-wrap">
+						<div id="be-sidemenu-content" class="be-sidemenu-content <?php echo esc_attr( $tatsu_wrap_class ); ?>">
 							<?php 
-								if((!isset($be_themes_data['disable_logo']) || empty($be_themes_data['disable_logo'])) || (isset($be_themes_data['disable_logo']) && (0 == $be_themes_data['disable_logo'])) ){		
-									if( ! empty( $be_themes_data['logo_sidebar']['url'] )) {
-										$logo_sidebar = $be_themes_data['logo_sidebar']['url'];
-										echo '<div class="special-header-logo"><a href="'.home_url().'"><img class="transparent-logo dark-scheme-logo" src="'.$logo_sidebar.'" alt="'.esc_attr(get_bloginfo('name')).'" /></a></div>';
-									}
+                                if( ( empty( $be_themes_data['disable_logo'] ) && !empty( $be_themes_data['logo_sidebar']['url'] ) ) || be_is_special_left_menu( 'left-static-menu' ) ){
+                                    $logo_sidebar_html = !empty( $be_themes_data['logo_sidebar']['url'] ) ? '<img class="transparent-logo dark-scheme-logo" src="'. $be_themes_data['logo_sidebar']['url'] .'" alt="'.esc_attr(get_bloginfo('name')).'" />' : '';
+									echo '<div class="special-header-logo"><a href="'.home_url().'">' . $logo_sidebar_html . '</a></div>';
 								}
 								be_themes_get_header_sidebar_navigation();
-								if ( isset($be_themes_data['left_special_header_bottom_text']) && !empty($be_themes_data['left_special_header_bottom_text']) ){?>
+								if ( !empty($be_themes_data['left_special_header_bottom_text']) || be_is_special_left_menu( 'left-static-menu' ) ){?>
 									<div class = "special-header-bottom-text">
-										<?php echo do_shortcode( $be_themes_data['left_special_header_bottom_text'] ) ; ?>
+										<?php echo !empty($be_themes_data['left_special_header_bottom_text']) ? do_shortcode( $be_themes_data['left_special_header_bottom_text'] ) : '' ; ?>
 									</div>
 							<?php
 								}
@@ -347,6 +350,11 @@ if ( !function_exists( 'be_themes_header_details' ) ) {
 			if( isset( $sticky_sections ) && !empty( $sticky_sections ) ) {
 				$hero_section = 'none';
 			}
+		}
+		/*****Single Post Transparent Header settings saved in particular post************/
+		$post_header_transparent = get_post_meta($post_id, 'be_themes_header_transparent', true);
+		if(!empty($post_header_transparent) && $post_header_transparent !== $header_transparent && $post_header_transparent != 'none'){
+			$header_transparent = $post_header_transparent;
 		}
 
 		if ( 'left' === $be_themes_data['opt-header-type'] ) {
@@ -801,6 +809,17 @@ if ( ! function_exists( 'be_themes_add_body_class' ) ) {
 			$header_transparent = get_post_meta($post_id, 'be_themes_header_transparent', true);
 			$header_sticky = get_post_meta($post_id, 'be_themes_sticky_header', true);
 		}
+
+		/*****Single Post Transparent Header settings saved in particular post************/
+		$post_header_transparent = get_post_meta($post_id, 'be_themes_header_transparent', true);
+		$post_header_sticky = get_post_meta($post_id, 'be_themes_sticky_header', true);
+		if(!empty($post_header_transparent) && $post_header_transparent !== $header_transparent && $post_header_transparent != 'none'){
+			$header_transparent = $post_header_transparent;
+		}
+		if(!empty($post_header_sticky) && $post_header_sticky !== $header_sticky && $post_header_sticky != 'inherit'){
+			$header_sticky = $post_header_sticky;
+		}
+
 		if ( isset($be_themes_data['opt-header-type']) && ('top' == $be_themes_data['opt-header-type'] ) && empty( $sticky_sections ) ){
 			if($header_sticky == 'inherit' || empty($header_sticky)) {
 				if(!empty($header_transparent) && isset($header_transparent) && ('none' != $header_transparent) )  {
@@ -959,7 +978,27 @@ if ( ! function_exists( 'be_themes_add_body_class' ) ) {
 	}
 	add_filter('body_class','be_themes_add_body_class');
 }
+/* ---------------------------------- */
+// Get Image Dimension 
+/* ---------------------------------- */
+if (!function_exists( 'be_themes_get_image_dimension' )) {
+ function be_themes_get_image_dimension($src){
+	$image_id = get_attachment_id_from_src($src);
+	$filetype = wp_check_filetype($src);
+	$image_dimension = array();
+	if(!empty($filetype['ext']) && $filetype['ext']=='svg'){
+		$image_meta = get_metadata('post',$image_id,'_wp_attachment_metadata',true);
+		if(!empty($image_meta) && !empty($image_meta['width']) && !empty($image_meta['height'])){
+			$image_dimension = array($src,$image_meta['width'],$image_meta['height']);
+		}
+	}
 
+	if(empty($image_dimension)){
+		$image_dimension = wp_get_attachment_image_src($image_id, 'full');
+	}
+	return $image_dimension;
+ }
+}
 /* ---------------------------------- */
 // Calculate Logo Height 
 /* ---------------------------------- */
@@ -1013,36 +1052,98 @@ if (!function_exists( 'be_themes_calculate_logo_height' )) {
 			}
 			$logo_dark_src = (isset($be_themes_data['logo_transparent']['url']) && !empty($be_themes_data['logo_transparent']['url'])) ? $be_themes_data['logo_transparent']['url'] : $logo_src;
 			$logo_light_src = (isset($be_themes_data['logo_transparent_light']['url']) && !empty($be_themes_data['logo_transparent_light']['url'])) ? $be_themes_data['logo_transparent_light']['url'] : $logo_src;
-			$logo_id = get_attachment_id_from_src($logo_src);
-			$logo = wp_get_attachment_image_src($logo_id, 'full');
-			$logo_sticky_id = get_attachment_id_from_src($logo_sticky_src);
-			$logo_sticky = wp_get_attachment_image_src($logo_sticky_id, 'full');
-			$logo_transparent_id = get_attachment_id_from_src($logo_transparent_src);
-			$logo_dark_id = get_attachment_id_from_src( $logo_dark_src );
-			$logo_dark = wp_get_attachment_image_src( $logo_dark_id, 'full' );
-			$logo_light_id = get_attachment_id_from_src( $logo_light_src );
-			$logo_light = wp_get_attachment_image_src( $logo_light_id, 'full' );
-			$logo_transparent = wp_get_attachment_image_src($logo_transparent_id, 'full');
+
+			if((!empty($be_themes_data['opt-logo-max-width']) && is_numeric($be_themes_data['opt-logo-max-width'])) || (!empty($be_themes_data['opt-logo-max-width-mobile']) && is_numeric($be_themes_data['opt-logo-max-width-mobile']))){ 
+				$logo = be_themes_get_image_dimension($logo_src);
+				$logo_sticky = be_themes_get_image_dimension($logo_sticky_src);
+				$logo_transparent = be_themes_get_image_dimension($logo_transparent_src);
+				$logo_dark = be_themes_get_image_dimension( $logo_dark_src );
+				$logo_light = be_themes_get_image_dimension( $logo_light_src );
+			}else{
+				$logo_id = get_attachment_id_from_src($logo_src);
+				$logo = wp_get_attachment_image_src($logo_id, 'full');
+				$logo_sticky_id = get_attachment_id_from_src($logo_sticky_src);
+				$logo_sticky = wp_get_attachment_image_src($logo_sticky_id, 'full');
+				$logo_transparent_id = get_attachment_id_from_src($logo_transparent_src);
+				$logo_dark_id = get_attachment_id_from_src( $logo_dark_src );
+				$logo_dark = wp_get_attachment_image_src( $logo_dark_id, 'full' );
+				$logo_light_id = get_attachment_id_from_src( $logo_light_src );
+				$logo_light = wp_get_attachment_image_src( $logo_light_id, 'full' );
+				$logo_transparent = wp_get_attachment_image_src($logo_transparent_id, 'full');
+			}
 			if( isset( $logo[2] ) || !empty( $logo[2] ) ) {
 			  $logo_height = $logo[2];
+			  $logo_width = $logo[1];
 			}
 			if( isset( $logo_dark[2] ) || !empty( $logo_dark[2] ) ) {
 				$logo_dark_height = $logo_dark[ 2 ];
+				$logo_dark_width = $logo_dark[ 1 ];
 			}
 			if( isset( $logo_light[ 2 ] ) || !empty( $logo_light[ 2 ] ) ) {
 				$logo_light_height = $logo_light[ 2 ];
+				$logo_light_width = $logo_light[ 1 ];
 			}
 			if( isset( $logo_sticky[2] ) || !empty( $logo_sticky[2] ) ) {
 			  $logo_sticky_height = $logo_sticky[2];
+			  $logo_sticky_width  = $logo_sticky[1];
 			}
 			if( isset( $logo_transparent[2] ) || !empty( $logo_transparent[2] ) ) {
 			  $logo_transparent_height = $logo_transparent[2];
+			  $logo_transparent_width = $logo_transparent[1];
 			}
 		}else{
-			$nav_text_height = $be_themes_data['navigation_text']['font-size'];
+			$nav_text_height = isset($be_themes_data['navigation_text']['font-size']) ? $be_themes_data['navigation_text']['font-size'] : 0;
 			$logo_height = $logo_sticky_height = $logo_transparent_height = intval($nav_text_height);
 		}
 
+		//Calculate logo height and reinitialize if admin set logo max width for mobile
+		if(!empty($be_themes_data['opt-logo-max-width-mobile']) && is_numeric($be_themes_data['opt-logo-max-width-mobile'])){ 
+			$logo_max_width = intval($be_themes_data['opt-logo-max-width-mobile']);
+			$result['logo_max_width_mobile'] =$logo_max_width;
+			$result['logo_height_mobile'] = $padding + $logo_height;
+			$result['logo_sticky_height_mobile'] = $padding + $logo_sticky_height;
+			$result['logo_transparent_height_mobile'] = $padding + $logo_transparent_height;
+			$result[ 'logo_light_height_mobile' ] = $padding + $logo_light_height;
+			$result[ 'logo_dark_height_mobile' ] = $padding + $logo_dark_height;
+			if(!empty($logo_height) && !empty($logo_width) && $logo_width>$logo_max_width){
+				$result['logo_height_mobile'] = $padding + intval($logo_max_width*($logo_height/$logo_width));
+			}
+			if(!empty($logo_sticky_height) && !empty($logo_sticky_width) && $logo_sticky_width>$logo_max_width){
+				$result['logo_sticky_height_mobile'] = $padding + intval($logo_max_width*($logo_sticky_height/$logo_sticky_width));
+			}
+			if(!empty($logo_transparent_height) && !empty($logo_transparent_width) && $logo_transparent_width>$logo_max_width){
+				$result['logo_transparent_height_mobile'] =$padding + intval($logo_max_width*($logo_transparent_height/$logo_transparent_width));
+			}
+			if(!empty($logo_light_height) && !empty($logo_light_width) && $logo_light_width>$logo_max_width){
+				$result['logo_light_height_mobile'] =$padding + intval($logo_max_width*($logo_light_height/$logo_light_width));
+			}
+			if(!empty($logo_dark_height) && !empty($logo_dark_width) && $logo_dark_width>$logo_max_width){
+				$result['logo_dark_height_mobile'] =$padding + intval($logo_max_width*($logo_dark_height/$logo_dark_width));
+			}	
+			
+		}
+		
+		//Calculate logo height and reinitialize if admin set logo max width
+		if(!empty($be_themes_data['opt-logo-max-width']) && is_numeric($be_themes_data['opt-logo-max-width'])){ 
+			$logo_max_width = intval($be_themes_data['opt-logo-max-width']);
+			if(!empty($logo_height) && !empty($logo_width) && $logo_width>$logo_max_width){
+				$logo_height =intval($logo_max_width*($logo_height/$logo_width));
+			}
+			if(!empty($logo_sticky_height) && !empty($logo_sticky_width) && $logo_sticky_width>$logo_max_width){
+				$logo_sticky_height =intval($logo_max_width*($logo_sticky_height/$logo_sticky_width));
+			}
+			if(!empty($logo_transparent_height) && !empty($logo_transparent_width) && $logo_transparent_width>$logo_max_width){
+				$logo_transparent_height =intval($logo_max_width*($logo_transparent_height/$logo_transparent_width));
+			}
+			if(!empty($logo_light_height) && !empty($logo_light_width) && $logo_light_width>$logo_max_width){
+				$logo_light_height =intval($logo_max_width*($logo_light_height/$logo_light_width));
+			}
+			if(!empty($logo_dark_height) && !empty($logo_dark_width) && $logo_dark_width>$logo_max_width){
+				$logo_dark_height =intval($logo_max_width*($logo_dark_height/$logo_dark_width));
+			}	
+			
+		}
+		
 		$result['logo_sticky_height'] = $padding + $logo_sticky_height;
 		$result['logo_height'] = $padding + $logo_height;
 		$result['logo_height_original'] = $logo_height;
@@ -1078,6 +1179,20 @@ if (!function_exists( 'be_themes_calculate_logo_width' )) {
 		if( isset( $logo_transparent[1] ) || !empty( $logo_transparent[1] ) ) {
 		  $logo_transparent_width = $logo_transparent[1];
 		}
+
+		if(empty($logo_width) && ((!empty($be_themes_data['opt-logo-max-width-mobile']) && is_numeric($be_themes_data['opt-logo-max-width-mobile'])) || (!empty($be_themes_data['opt-logo-max-width']) && is_numeric($be_themes_data['opt-logo-max-width']))) ){
+			$logo = be_themes_get_image_dimension($logo_src);
+			if( isset( $logo[1] ) || !empty( $logo[1] ) ) {
+				$logo_width = $logo[1];
+				$logo_attachment_flag = 1;
+			}
+		}
+		//Reinitialize logo width if admin set logo max width
+		if(!empty($be_themes_data['opt-logo-max-width']) && is_numeric($be_themes_data['opt-logo-max-width'])){ 
+			$logo_max_width = intval($be_themes_data['opt-logo-max-width']);
+			$logo_width = ($logo_width>$logo_max_width)?$logo_max_width:$logo_width;
+			$logo_transparent_width = ($logo_transparent_width>$logo_max_width)?$logo_max_width:$logo_transparent_width;
+		}
 		$result['logo_attachment_flag'] = $logo_attachment_flag;
 		$result['logo_width'] = $logo_width;
 		$result['logo_transparent_width'] = $logo_transparent_width;
@@ -1095,10 +1210,13 @@ if ( ! function_exists( 'be_themes_get_header_navigation' ) ) {
 		if( $be_themes_enable_main_nav ) {
 			global $be_themes_data;
 			$nav_link_style = (isset($be_themes_data['nav_link_style']) && !empty($be_themes_data['nav_link_style'])) ? $be_themes_data['nav_link_style'] : '';
+
+			$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
+
 			$menu_class = 'clearfix ' . $nav_link_style ;
 			$defaults = array (
 				'theme_location'=>'main_nav',
-				'depth'=>3,
+				'depth'=>$menu_depth,
 				'container_class'=>'menu',
 				'menu_id' => 'menu',
 				'menu_class' => $menu_class,
@@ -1117,10 +1235,12 @@ if ( ! function_exists( 'be_themes_get_header_left_navigation' ) ) {
 		if( $be_themes_enable_left_nav ) {
 			global $be_themes_data;
 			$nav_link_style = (isset($be_themes_data['nav_link_style']) && !empty($be_themes_data['nav_link_style'])) ? $be_themes_data['nav_link_style'] : '';
+			$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
+
 			$menu_class = 'clearfix ' . $nav_link_style ;
 			$defaults = array (
 				'theme_location'=>'main_left_nav',
-				'depth'=>3,
+				'depth'=>$menu_depth,
 				'container_class'=>'menu',
 				'menu_id' => 'left-menu',
 				'menu_class' => $menu_class,
@@ -1139,10 +1259,11 @@ if ( ! function_exists( 'be_themes_get_header_right_navigation' ) ) {
 		if( $be_themes_enable_right_nav ) {
 			global $be_themes_data;
 			$nav_link_style = (isset($be_themes_data['nav_link_style']) && !empty($be_themes_data['nav_link_style'])) ? $be_themes_data['nav_link_style'] : '';
+			$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
 			$menu_class = 'clearfix ' . $nav_link_style ;
 			$defaults = array (
 				'theme_location'=>'main_right_nav',
-				'depth'=>3,
+				'depth'=>$menu_depth,
 				'container_class'=>'menu',
 				'menu_id' => 'right-menu',
 				'menu_class' => $menu_class,
@@ -1158,6 +1279,7 @@ if ( ! function_exists( 'be_themes_get_header_right_navigation' ) ) {
 if ( ! function_exists( 'be_themes_get_header_sidebar_navigation' ) ) {
 	function be_themes_get_header_sidebar_navigation() {
 		global $be_themes_data;
+		$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
 		$menu_loc = 'sidebar_nav'; 
 		$menu_class = 'clearfix ';
 		$container_class = 'menu';
@@ -1172,7 +1294,7 @@ if ( ! function_exists( 'be_themes_get_header_sidebar_navigation' ) ) {
 		}
 		$defaults = array (
 			'theme_location'=> $menu_loc,
-			'depth'=> 3,
+			'depth'=> $menu_depth,
 			'container_class'=> $container_class,
 			'menu_id' => 'slidebar-menu',
 			'menu_class' => $menu_class,
@@ -1186,11 +1308,12 @@ if ( ! function_exists( 'be_themes_get_header_sidebar_navigation' ) ) {
 if ( ! function_exists( 'be_themes_get_header_mobile_navigation' ) ) {
 	function be_themes_get_header_mobile_navigation() {
 		global $be_themes_data;
+		$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
 		echo "<div class='header-mobile-navigation clearfix'>";
 		if(basename($be_themes_data['opt-header-style'], '.png') == 'style6' ) {
 			$defaults = array (
 				'theme_location'=>'main_left_nav',
-				'depth'=> 3,
+				'depth'=> $menu_depth,
 				'container_class'=> 'mobile-menu left-mobile-menu',
 				'menu_id' => 'mobile-menu',
 				'menu_class' => 'clearfix',
@@ -1200,7 +1323,7 @@ if ( ! function_exists( 'be_themes_get_header_mobile_navigation' ) ) {
 			wp_nav_menu( $defaults );
 			$defaults = array (
 				'theme_location'=>'main_right_nav',
-				'depth'=> 3,
+				'depth'=> $menu_depth,
 				'container_class'=> 'mobile-menu right-mobile-menu',
 				'menu_id' => 'mobile-menu',
 				'menu_class' => 'clearfix',
@@ -1211,7 +1334,7 @@ if ( ! function_exists( 'be_themes_get_header_mobile_navigation' ) ) {
 		} else {
 			$defaults = array (
 				'theme_location'=> 'main_nav',
-				'depth'=> 3,
+				'depth'=> $menu_depth,
 				'container_class'=> 'mobile-menu',
 				'menu_id' => 'mobile-menu',
 				'menu_class' => 'clearfix',
@@ -1226,9 +1349,10 @@ if ( ! function_exists( 'be_themes_get_header_mobile_navigation' ) ) {
 // TOPBAR MENU
 if ( ! function_exists( 'be_themes_get_topbar_navigation' ) ) {
 	function be_themes_get_topbar_navigation() {
+		$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
 		$defaults = array (
 			'theme_location'=> 'topbar_nav',
-			'depth'=> 3,
+			'depth'=> $menu_depth,
 			'container_class'=> 'topbar-menu-container',
 			'menu_id' => 'topbar-menu',
 			'menu_class' => 'clearfix',
@@ -1241,10 +1365,11 @@ if ( ! function_exists( 'be_themes_get_topbar_navigation' ) ) {
 // FOOTER MENU
 if ( ! function_exists( 'be_themes_get_footer_navigation' ) ) {
 	function be_themes_get_footer_navigation() {
+		$menu_depth = (isset($be_themes_data['opt-menu-level']) && !empty($be_themes_data['opt-menu-level'])) ? $be_themes_data['opt-menu-level'] : 3;
 
 		$defaults = array (
 			'theme_location'=> 'footer_nav',
-			'depth'=> 3,
+			'depth'=> $menu_depth,
 			'container_class'=> 'footer-menu-container',
 			'menu_id' => 'footer-menu',
 			'menu_class' => 'clearfix',

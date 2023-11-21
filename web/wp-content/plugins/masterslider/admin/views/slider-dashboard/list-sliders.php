@@ -88,7 +88,7 @@
 	    			$disabled_msg   = isset( $starter_data['disabled_msg'] ) && ! empty( $starter_data['disabled_msg'] ) ? $starter_data['disabled_msg'] : '';
 
 	    			?>
-					<div class="msp-template-figure <?php echo $selected_attr . $is_unavailable; ?>" data-slider-type="<?php echo $starter_data['slidertype']; ?>"
+					<div class="msp-template-figure <?php echo esc_attr( $selected_attr . $is_unavailable ); ?>" data-slider-type="<?php echo $starter_data['slidertype']; ?>"
 							data-starter-uid="<?php echo $starter_data['id']; ?>" data-starter-section="<?php echo $section_id; ?>" data-disabled-msg="<?php echo $disabled_msg; ?>"  >
 				        <div class="msp-templte-selected"></div>
 				        <img src="<?php echo $starter_data['screenshot']; ?>" />
@@ -150,7 +150,7 @@
 	    <div class="msp-export-wrapper">
 			<h4 class="msp-dialog-inner-split-header"><?php _e('Export', MSWP_TEXT_DOMAIN ) ?></h4>
 
-			<form action="<?php echo $_SERVER['REQUEST_URI'] ?>" method="post" class="msp-export-form msp-dialog-inner-section">
+			<form action="<?php echo esc_attr( $_SERVER['REQUEST_URI'] ); ?>" method="post" class="msp-export-form msp-dialog-inner-section">
 
 				<div class="msp-export-table-container">
 

@@ -4,7 +4,7 @@ global $blog_attr, $more_text, $be_themes_data;
 $post_classes = get_post_class();
 $is_wide_single = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;
 $post_classes = implode( ' ', $post_classes );
-if($blog_attr['style'] == 'style3') {
+if(!empty($blog_attr) && $blog_attr['style'] == 'style3') {
 	$post_classes .= ' element not-wide';
 	$article_gutter = 'style="margin-bottom: '.$blog_attr['gutter_width'].'px !important;"';
 } else {
@@ -13,7 +13,7 @@ if($blog_attr['style'] == 'style3') {
 $post_format = get_post_format();
 ?>	
 <article id="post-<?php the_ID(); ?>" class="element not-wide blog-post clearfix <?php echo esc_attr( $post_classes ); ?>" <?php echo esc_attr( $article_gutter ); ?>>
-	<div class="element-inner" style="<?php echo ($blog_attr['style'] == 'style3') ? 'margin-left:'.$blog_attr['gutter_width'].'px' : ''; ?>">
+	<div class="element-inner" style="<?php echo (!empty($blog_attr) && $blog_attr['style'] == 'style3') ? 'margin-left:'.$blog_attr['gutter_width'].'px' : ''; ?>">
 		<div class="post-content-wrap">
 			<?php
 				if( $post_format != 'quote' && $post_format != 'link' ) {
@@ -32,7 +32,7 @@ $post_format = get_post_format();
 							else :
 								echo '<div class="special-subtitle post-date"><a href="'.get_permalink().'" >'.get_the_date().'</a></div>';
 								if(get_the_title(get_the_ID())) {
-									echo '<h2 class="post-title"><a href="'.get_permalink(get_the_ID()).'">'.get_the_title(get_the_ID()).'</a></h2>';
+									be_echo_post_title();
 								}
 							endif;
 						?>

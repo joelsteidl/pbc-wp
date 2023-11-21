@@ -1,10 +1,10 @@
 /*! 
  * Master Slider – Responsive Touch Swipe Slider
- * Copyright © 2018 All Rights Reserved. 
+ * Copyright © 2022 All Rights Reserved. 
  *
  * @author Averta [www.averta.net]
- * @version 2.61.2
- * @date Jul 2018
+ * @version 2.85.13
+ * @date Feb 2022
  */
 
 
@@ -60,9 +60,15 @@ window.averta = {};
 
 		if('result' in arguments.callee) return arguments.callee.result;
 
-		var regex = /^(Moz|Webkit|Khtml|O|ms|Icab)(?=[A-Z])/;
-
+		var regex = /^(Moz|Khtml|O|ms|Icab)(?=[A-Z])/;
+        var webKitOnly = /^(Webkit|webkit)(?=[A-Z])/;
 		var someScript = document.getElementsByTagName('script')[0];
+
+		for(var prop in someScript.style){
+			if(webKitOnly.test(prop)){
+				return arguments.callee.result = 'Webkit';
+			}
+		}
 
 		for(var prop in someScript.style){
 			if(regex.test(prop)){
@@ -213,12 +219,12 @@ window.averta = {};
 	 * @return {Boolean}
 	 */
 	window.isMSIE = function ( version ) {
-		if ( !$.browser.msie ) {
+		if ( !window.MSBrowserInfo.msie ) {
 			return false;
 		} else if ( !version ) {
 			return true;
 		}
-		var ieVer = $.browser.version.slice(0 , $.browser.version.indexOf('.'));
+		var ieVer = window.MSBrowserInfo.version.slice(0 , window.MSBrowserInfo.version.indexOf('.'));
 		if ( typeof version === 'string' ) {
 			if ( version.indexOf('<') !== -1  || version.indexOf('>') !== -1) {
 				return eval( ieVer + version );
@@ -306,7 +312,7 @@ window.averta = {};
 				delete browser.mozilla;
 			}
 
-			jQuery.browser = browser;
+			window.MSBrowserInfo = browser;
 
 		//}
 
@@ -405,7 +411,7 @@ window.averta = {};
         this.$element = $element;
         this.enabled = true;
 
-        $element.bind(ev_start  , {target: this} , this.__touchStart);
+        $element.on(ev_start  , {target: this} , this.__touchStart);
 
         $element[0].swipe = this;
 
@@ -514,9 +520,9 @@ window.averta = {};
 
         swipe.start_time = new Date().getTime();
 
-        $(document).bind(ev_end    , {target: swipe} , swipe.__touchEnd).
-                    bind(ev_move   , {target: swipe} , swipe.__touchMove).
-                    bind(ev_cancel , {target: swipe} , swipe.__touchCancel);
+        $(document).on(ev_end    , {target: swipe} , swipe.__touchEnd).
+                    on(ev_move   , {target: swipe} , swipe.__touchMove).
+                    on(ev_cancel , {target: swipe} , swipe.__touchCancel);
 
         var status = swipe.createStatusObject(point);
         status.phase = 'start';
@@ -574,9 +580,9 @@ window.averta = {};
         swipe.touchStarted = false;
         swipe.priventEvt   = null;
 
-        $(document).unbind(ev_end     , swipe.__touchEnd).
-                    unbind(ev_move    , swipe.__touchMove).
-                    unbind(ev_cancel  , swipe.__touchCancel);
+        $(document).off(ev_end     , swipe.__touchEnd).
+                    off(ev_move    , swipe.__touchMove).
+                    off(ev_cancel  , swipe.__touchCancel);
 
         status.speed = status.distance / status.duration;
 
@@ -1127,7 +1133,7 @@ window.averta = {};
      * registers events needed for the polyfill to work properly
      */
     Polyfill.prototype.registerEvents = function(){
-        $(document).on(this.getEventNames(), this.options.selector, $.proxy(this.onElementClick, this));
+        $(document).on(this.getEventNames(), this.options.selector, this.onElementClick.bind(this));
     };
 
     /**
@@ -2296,28 +2302,28 @@ window.averta = {};
 
 /* ================== bin-debug/js/pro/layers/LayerEffects.js =================== */
 ;(function($){
-	
+
 	window.MSLayerEffects = {};
-	
+
 	var installed,
 		_fade = {opacity:0};
-		
+
 	MSLayerEffects.setup = function(){
-		
+
 		if(installed) return;
 		installed = true;
-		
+
 		var st 					= MSLayerEffects,
 			transform_css 		= window._jcsspfx + 'Transform',
 			transform_orig_css  = window._jcsspfx + 'TransformOrigin',
-			o					= $.browser.opera; // Opera sucks :|
+			o					= window.MSBrowserInfo.opera; // Opera sucks :|
 			_2d					= window._css2d && window._cssanim && !o;
-		
+
 		st.defaultValues = {left : 0 , top: 0 , opacity:(isMSIE('<=9')?1:'') , right:0 , bottom:0};
 		st.defaultValues[transform_css] 	 = '';
 		//st.defaultValues[transform_orig_css] = '';
 		st.rf = 1;
-		
+
 		st.presetEffParams = {
 			random: '30|300',
 			long 	: 300,
@@ -2325,25 +2331,25 @@ window.averta = {};
 			'false'	:false,
 			'true'	:true,
 			tl	 : 'top left'	,	bl: 'bottom left',
-			tr   : 'top right'	,   br: 'bottom right', 
+			tr   : 'top right'	,   br: 'bottom right',
 			rt   : 'top right'	,	lb: 'bottom left',
 			lt   : 'top left'	,	rb: 'bottom right',
 			t	 : 'top'		,	b : 'bottom',
 			r	 : 'right'		,	l : 'left',
-			c	 : 'center'	
+			c	 : 'center'
 		};
-		
-		
+
+
 		/*
 		 ----------------------------------------
 		 				2D Effects
 		 ----------------------------------------
 		 */
-		
+
 		st.fade = function(){
 			return _fade;
 		};
-	
+
 		st.left = (_2d)? function(dist , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'translateX(' + -dist*st.rf + 'px)';
@@ -2353,7 +2359,7 @@ window.averta = {};
 			r.left = -dist*st.rf + 'px';
 			return r;
 		};
-		
+
 		st.right = (_2d)? function(dist , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'translateX(' + dist*st.rf + 'px)';
@@ -2363,7 +2369,7 @@ window.averta = {};
 			r.left = dist*st.rf + 'px';
 			return r;
 		};
-		
+
 		st.top = (_2d)? function(dist , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'translateY(' + -dist*st.rf + 'px)';
@@ -2373,7 +2379,7 @@ window.averta = {};
 			r.top = -dist*st.rf + 'px';
 			return r;
 		};
-		
+
 		st.bottom = (_2d)? function(dist , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'translateY(' + dist*st.rf + 'px)';
@@ -2383,7 +2389,7 @@ window.averta = {};
 			r.top = dist*st.rf + 'px';
 			return r;
 		};
-		
+
 		st.from = (_2d)? function(leftdis , topdis , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'translateX('+leftdis*st.rf+'px) translateY(' + topdis*st.rf + 'px)';
@@ -2394,10 +2400,10 @@ window.averta = {};
 			r.left = leftdis*st.rf + 'px';
 			return r;
 		};
-		
-		
+
+
 		// --------------------------------------------------------------------
-		
+
 		st.rotate = (_2d)? function(deg , orig ){
 			var r = {opacity: 0};
 			r[transform_css] = ' rotate('+deg+'deg)';
@@ -2406,7 +2412,7 @@ window.averta = {};
 		} : function (deg, orig){
 			return _fade;
 		};
-		
+
 		st.rotateleft = (_2d)? function(deg , dist , orig , fade){
 			var r = st.left(dist , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2415,7 +2421,7 @@ window.averta = {};
 		} : function (deg , dist , orig , fade){
 			return st.left(dist , fade);
 		};
-		
+
 		st.rotateright = (_2d)? function(deg , dist , orig , fade){
 			var r = st.right(dist , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2424,7 +2430,7 @@ window.averta = {};
 		} : function (deg , dist , orig , fade){
 			return st.right(dist , fade);
 		};
-		
+
 		st.rotatetop = (_2d)? function(deg , dist , orig , fade){
 			var r = st.top(dist , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2433,7 +2439,7 @@ window.averta = {};
 		} : function (deg , dist , orig , fade){
 			return st.top(dist , fade);
 		};
-		
+
 		st.rotatebottom = (_2d)? function(deg , dist , orig , fade){
 			var r = st.bottom(dist , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2442,7 +2448,7 @@ window.averta = {};
 		} : function (deg , dist , orig , fade){
 			return st.bottom(dist , fade);
 		};
-			
+
 		st.rotatefrom = (_2d)? function(deg , leftdis , topdis , orig , fade){
 			var r = st.from(leftdis , topdis , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2451,40 +2457,40 @@ window.averta = {};
 		} : function (deg , leftdis , topdis , orig , fade){
 			return st.from(leftdis , topdis , fade);
 		};
-			
+
 		st.skewleft = (_2d)? function(deg , dist , fade){
 			var r = st.left(dist , fade);
 			r[transform_css] += ' skewX(' + deg + 'deg)';
 			return r;
 		} : function (deg , dist , fade){
 			return st.left(dist , fade);
-		};	
-		
+		};
+
 		st.skewright = (_2d)? function(deg , dist , fade){
 			var r = st.right(dist , fade);
 			r[transform_css] += ' skewX(' + -deg + 'deg)';
 			return r;
 		} : function (deg , dist , fade){
 			return st.right(dist , fade);
-		};	
-		
+		};
+
 		st.skewtop = (_2d)? function(deg , dist , fade){
 			var r = st.top(dist , fade);
 			r[transform_css] += ' skewY(' + deg + 'deg)';
 			return r;
 		} : function (deg , dist , fade){
 			return st.top(dist , fade);
-		};	
-		
+		};
+
 		st.skewbottom = (_2d)? function(deg , dist , fade){
 			var r = st.bottom(dist , fade);
 			r[transform_css] += ' skewY(' + -deg + 'deg)';
 			return r;
 		} : function (deg , dist , fade){
 			return st.bottom(dist , fade);
-		};	
-		
-		
+		};
+
+
 		st.scale = (_2d)? function(x , y , orig , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = ' scaleX('+x+') scaleY('+y+')';
@@ -2493,7 +2499,7 @@ window.averta = {};
 		} : function (x , y , orig , fade){
 			return fade === false ? {} : {opacity:0};
 		};
-		
+
 		st.scaleleft = (_2d)? function(x , y  , dist , orig , fade){
 			var r = st.left(dist , fade);
 			r[transform_css] = ' scaleX('+x+') scaleY('+y+')';
@@ -2502,7 +2508,7 @@ window.averta = {};
 		} : function (x , y  , dist , orig , fade){
 			return st.left(dist , fade);
 		};
-		
+
 		st.scaleright = (_2d)? function(x , y  , dist , orig , fade){
 			var r = st.right(dist , fade);
 			r[transform_css] = ' scaleX('+x+') scaleY('+y+')';
@@ -2511,7 +2517,7 @@ window.averta = {};
 		} : function (x , y  , dist , orig , fade){
 			return st.right(dist , fade);
 		};
-		
+
 		st.scaletop = (_2d)? function(x , y  , dist , orig , fade){
 			var r = st.top(dist , fade);
 			r[transform_css] = ' scaleX('+x+') scaleY('+y+')';
@@ -2520,7 +2526,7 @@ window.averta = {};
 		} : function (x , y  , dist , orig , fade){
 			return st.top(dist , fade);
 		};
-		
+
 		st.scalebottom = (_2d)? function(x , y  , dist , orig , fade){
 			var r = st.bottom(dist , fade);
 			r[transform_css] = ' scaleX('+x+') scaleY('+y+')';
@@ -2529,7 +2535,7 @@ window.averta = {};
 		} : function (x , y  , dist , orig , fade){
 			return st.bottom(dist , fade);
 		};
-			
+
 		st.scalefrom = (_2d)? function(x , y  , leftdis , topdis , orig , fade){
 			var r = st.from(leftdis , topdis , fade);
 			r[transform_css] += ' scaleX('+x+') scaleY('+y+')';
@@ -2538,7 +2544,7 @@ window.averta = {};
 		} : function (x , y  , leftdis , topdis , orig , fade){
 			return st.from(leftdis , topdis , fade);
 		};
-		
+
 		st.rotatescale = (_2d)? function(deg , x , y  ,  orig , fade){
 			var r = st.scale(x , y , orig , fade);
 			r[transform_css] += ' rotate('+deg+'deg)';
@@ -2547,14 +2553,14 @@ window.averta = {};
 		} : function (deg , x , y  ,  orig , fade){
 			return st.scale(x , y , orig , fade);
 		};
-		
-		
+
+
 		/*
 		 ----------------------------------------
 		 				3D Effects
 		 ----------------------------------------
 		 */
-		
+
 		st.front = (window._css3d)? function(dist , fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'perspective(2000px) translate3d(0 , 0 ,' + dist + 'px ) rotate(0.001deg)';
@@ -2562,7 +2568,7 @@ window.averta = {};
 		} : function (dist){
 			return _fade;
 		};
-		
+
 		st.back = (window._css3d)? function(dist, fade){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'perspective(2000px) translate3d(0 , 0 ,' + -dist + 'px ) rotate(0.001deg)';
@@ -2570,7 +2576,7 @@ window.averta = {};
 		} : function (dist){
 			return _fade;
 		};
-		
+
 		st.rotatefront = (window._css3d)? function(deg , dist , orig , fade ){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'perspective(2000px) translate3d(0 , 0 ,' + dist + 'px ) rotate('+ (deg || 0.001) +'deg)';
@@ -2579,7 +2585,7 @@ window.averta = {};
 		} : function (deg , dist , orig , fade ){
 			return _fade;
 		};
-		
+
 		st.rotateback = (window._css3d)? function(deg , dist , orig , fade ){
 			var r = fade === false ? {} : {opacity:0};
 			r[transform_css] = 'perspective(2000px) translate3d(0 , 0 ,' + -dist + 'px ) rotate('+ (deg || 0.001) +'deg)';
@@ -2588,58 +2594,58 @@ window.averta = {};
 		} : function (deg , dist , orig , fade ){
 			return _fade;
 		};
-						
+
 		st.rotate3dleft = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.left(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
-			
+			return r;
+
 		} : function (x , y , z , dist , orig , fade){
 			return st.left(dist , fade);;
 		};
-		
+
 		st.rotate3dright = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.right(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
+			return r;
 		} : function (x , y , z , dist , orig , fade){
 			return st.right(dist , fade);;
 		};
-		
+
 		st.rotate3dtop = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.top(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
+			return r;
 		} : function (x , y , z , dist , orig , fade){
 			return st.top(dist , fade);;
 		};
-		
+
 		st.rotate3dbottom = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.bottom(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
+			return r;
 		} : function (x , y , z , dist , orig , fade){
 			return st.bottom(dist , fade);
 		};
-		
+
 		st.rotate3dfront = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.front(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
+			return r;
 		} : function (x , y , z , dist , orig , fade){
 			return st.front(dist , fade);
-		};		
-		
+		};
+
 		st.rotate3dback = (window._css3d)? function(x , y , z , dist , orig , fade){
 			var r = st.back(dist , fade);
 			r[transform_css] += (x?' rotateX('+x+'deg)' : ' ')+(y?' rotateY('+y+'deg)' : '')+(z?' rotateZ('+z+'deg)' : '');
 			if(orig) r[transform_orig_css] = orig;
-			return r;		
+			return r;
 		} : function (x , y , z , dist , orig , fade){
 			return st.back(dist , fade);
 		};
@@ -2665,12 +2671,12 @@ window.averta = {};
 
 			var trans_origin = '';
 
-			trans_origin += (ox !== 'n' ? ox + '% ' : '50% '); 
-			trans_origin += (oy !== 'n' ? oy + '% ' : '50% '); 
-			trans_origin += (oz !== 'n' ? oz + 'px' : ''); 
+			trans_origin += (ox !== 'n' ? ox + '% ' : '50% ');
+			trans_origin += (oy !== 'n' ? oy + '% ' : '50% ');
+			trans_origin += (oz !== 'n' ? oz + 'px' : '');
 
 			_r[transform_orig_css] = trans_origin;
-			
+
 			return _r;
 
 		} : function(fade,tx,ty,tz,r,rx,ry,rz,scx,scy,skx,sky,ox,oy,oz) {
@@ -2679,7 +2685,7 @@ window.averta = {};
 			tx  !== 'n' && (r.left = tx * st.rf + 'px');
 			ty  !== 'n' && (r.top  = ty * st.rf + 'px');
 			return r;
-		}			
+		}
 	};
 })(jQuery);
 
@@ -2789,6 +2795,7 @@ window.averta = {};
 		this.fixedLayer = this.$element.data('position') === 'fixed';
 		this.layersCont = this.controller.$layers;
 
+
 		// make it visible if it's static
 		if ( this.staticLayer ) {
 			this.$element.css('display', '')
@@ -2834,51 +2841,63 @@ window.averta = {};
             }
         }
 
-        // new alignment method
-        // @since v1.6.1
-        var layerOrigin = this.layerOrigin = this.$element.data('origin');
+        this.layerOrigin = this.$element.data('origin');
 
-        if ( layerOrigin ){
+        if ( this.slide.slider.options.responsive ) {
+            var el = this.$element;
+            this.origin = [el.data('phone-origin'), el.data('tablet-origin'), el.data('origin')];
+            this.offsetX = [el.data('phone-offset-x'), el.data('tablet-offset-x'), el.data('offset-x')];
+            this.offsetY = [el.data('phone-offset-y'), el.data('tablet-offset-y'), el.data('offset-y')];
+            this.relativeScale = el.data('relative-size');
+            this.hideOn = (el.data('hide-on') || '').split(',');
+        } else {
+            // new alignment method
+            // @since v1.6.1
+            var layerOrigin = this.layerOrigin;
 
-            var vOrigin  = layerOrigin.charAt(0),
-                hOrigin  = layerOrigin.charAt(1),
-                offsetX  = this.$element.data('offset-x'),
-                offsetY  = this.$element.data('offset-y'),
-                layerEle = this.masked ? this.$mask[0] : this.$element[0];
+            if ( layerOrigin ){
 
-            if( offsetY === undefined ){
-                offsetY = 0;
-            }
+                var vOrigin  = layerOrigin.charAt(0),
+                    hOrigin  = layerOrigin.charAt(1),
+                    offsetX  = this.$element.data('offset-x'),
+                    offsetY  = this.$element.data('offset-y'),
+                    layerEle = this.masked ? this.$mask[0] : this.$element[0];
 
-            switch ( vOrigin ){
-                case 't':
-                    layerEle.style.top = offsetY + 'px';
-                    break;
-                case 'b':
-                    layerEle.style.bottom = offsetY + 'px';
-                    break;
-                case 'm':
-                    layerEle.style.top = offsetY + 'px';
-                    this.middleAlign = true;
-            }
+                if( offsetY === undefined ){
+                    offsetY = 0;
+                }
 
-            if( offsetX === undefined ){
-                offsetX = 0;
-            }
+                switch ( vOrigin ){
+                    case 't':
+                        layerEle.style.top = offsetY + 'px';
+                        break;
+                    case 'b':
+                        layerEle.style.bottom = offsetY + 'px';
+                        break;
+                    case 'm':
+                        layerEle.style.top = offsetY + 'px';
+                        this.middleAlign = true;
+                }
+
+                if( offsetX === undefined ){
+                    offsetX = 0;
+                }
 
 
-            switch ( hOrigin ){
-                case 'l':
-                    layerEle.style.left = offsetX + 'px';
-                    break;
-                case 'r':
-                    layerEle.style.right = offsetX + 'px';
-                    break;
-                case 'c':
-                    layerEle.style.left = offsetX + 'px';
-                    this.centerAlign = true;
+                switch ( hOrigin ){
+                    case 'l':
+                        layerEle.style.left = offsetX + 'px';
+                        break;
+                    case 'r':
+                        layerEle.style.right = offsetX + 'px';
+                        break;
+                    case 'c':
+                        layerEle.style.left = offsetX + 'px';
+                        this.centerAlign = true;
+                }
             }
         }
+
 
         // parallax effect
         // @since v1.6.0
@@ -2906,6 +2925,7 @@ window.averta = {};
 
             // add bottom 0 to the parallax element if layer origin specified to the bottom
             this.alignedToBot = this.layerOrigin && this.layerOrigin.indexOf('b') !== -1;
+
             if( this.alignedToBot ) {
                 this.$parallaxElement.css('bottom', 0);
             }
@@ -2995,13 +3015,90 @@ window.averta = {};
     };
 
     /**
+     * Updates the layer position based on current breakpoint
+     */
+    p.updatePosition = function() {
+        var bp = this.slide.slider.getActiveBreakpoint();
+        if ( this.lastBp !== bp ) {
+            this.lastBp = bp;
+            this.layerOrigin = this.slide.slider.getResponsiveValue(this.origin);
+
+            if ( this.layerOrigin ){
+
+                var vOrigin  = this.layerOrigin.charAt(0),
+                hOrigin  = this.layerOrigin.charAt(1),
+                offsetX  = this.slide.slider.getResponsiveValue(this.offsetX),
+                offsetY  = this.slide.slider.getResponsiveValue(this.offsetY),
+                layerEle = this.masked ? this.$mask[0] : this.$element[0];
+
+                this.middleAlign = false;
+                this.centerAlign = false;
+                this.baseStyle.top = undefined;
+                this.baseStyle.left = undefined;
+                this.baseStyle.right = undefined;
+                this.baseStyle.bottom = undefined;
+                layerEle.style.top = '';
+                layerEle.style.left = '';
+                layerEle.style.right = '';
+                layerEle.style.bottom = '';
+
+                if( offsetY === undefined ){
+                    offsetY = 0;
+                }
+
+
+                switch ( vOrigin ){
+                    case 't':
+                        layerEle.style.top = offsetY + 'px';
+                        this.baseStyle.top = offsetY;
+                        break;
+                    case 'b':
+                        layerEle.style.bottom = offsetY + 'px';
+                        this.baseStyle.bottom = offsetY;
+                        break;
+                    case 'm':
+                        layerEle.style.top = offsetY + 'px';
+                        this.baseStyle.top = offsetY;
+                        this.middleAlign = true;
+                }
+
+
+                if( offsetX === undefined ){
+                    offsetX = 0;
+                }
+
+
+                switch ( hOrigin ){
+                    case 'l':
+                        layerEle.style.left = offsetX + 'px';
+                        this.baseStyle.left = offsetX;
+                        break;
+                    case 'r':
+                        layerEle.style.right = offsetX + 'px';
+                        this.baseStyle.right = offsetX;
+                        break;
+                    case 'c':
+                        layerEle.style.left = offsetX + 'px';
+                        this.baseStyle.left = offsetX;
+                        this.centerAlign = true;
+                }
+            }
+
+        }
+    };
+
+    /**
      * locate layer over slider
      */
     p.locate = function(){
 
         // is slide ready?
-        if ( !this.slide.ready ) {
+        if ( !this.slide.ready || !this.initialized ) {
             return;
+        }
+
+        if ( this.slide.slider.options.responsive ) {
+            this.updatePosition();
         }
 
         var width       = parseFloat(this.layersCont.css('width')),
@@ -3017,7 +3114,11 @@ window.averta = {};
             this.$element.addClass('ms-hover-active');
         }
 
-        factor = this.resizeFactor  = width / this.slide.slider.options.width;
+        if ( this.slide.slider.options.responsive && this.relativeScale )  {
+            factor = this.resizeFactor  = width / this.slide.slider.getBreakpointReferenceSize() // this.slide.slider.options.width;
+        } else {
+            factor = this.resizeFactor  = width / this.slide.slider.options.width;
+        }
 
         var $layerEle = this.masked ? this.$mask : this.$element;
 
@@ -3034,7 +3135,7 @@ window.averta = {};
                 factor = this.resizeFactor;
             }
 
-            if( !this.resizable && !isPosition ){
+            if((!this.resizable && !isPosition) || this.baseStyle[key] === undefined ){
                 continue;
             }
 
@@ -3056,7 +3157,10 @@ window.averta = {};
         }
 
 
-		this.visible(this.minWidth < width);
+        this.visible(this.minWidth < width);
+        if ( this.minWidth < width && this.slide.slider.options.responsive ) {
+            this.visible(this.hideOn.indexOf(this.slide.slider.getActiveBreakpoint()) === -1);
+        }
 	};
 
 	/**
@@ -3463,7 +3567,7 @@ window.averta = {};
 			}).each($.jqLoadFix);
 		}
 
-		if($.browser.msie)
+		if(window.MSBrowserInfo.msie)
 			this.$element.on('dragstart', function(event) { event.preventDefault(); }); // disable native dragging
 	};
 
@@ -3481,22 +3585,22 @@ window.averta = {};
 
 /* ================== bin-debug/js/pro/layers/VideoLayerElement.js =================== */
 ;(function($){
-	
+
 	window.MSVideoLayerElement = function(){
 		MSLayerElement.call(this);
-		
+
 		this.__cssConfig.push(
 				'height'
 		);
-	
+
 		this.type = 'video';
 	};
-	
+
 	MSVideoLayerElement.extend(MSLayerElement);
-	
+
 	var p  = MSVideoLayerElement.prototype;
 	var _super  = MSLayerElement.prototype;
-	
+
 	/*-------------- METHODS --------------*/
 	p.__playVideo = function(){
 		if(this.img)CTween.fadeOut(this.img , 500 , 2);
@@ -3516,17 +3620,17 @@ window.averta = {};
 
 	p.reset = function(){
 		_super.reset.call(this);
-		
+
 		if(this.needPreload || this.$element.data('btn')){
 			this.video_btn.css('opacity' , 1).css('display', 'block');
 			this.video_frame.attr('src' , 'about:blank').css('display' , 'none');
 		}
-		
+
 		if(this.needPreload){
-			this.img.css('opacity' , 1).css('display', 'block');	
+			this.img.css('opacity' , 1).css('display', 'block');
 			return;
 		}
-		
+
 		this.video_frame.attr('src' , this.video_url);
 	};
 
@@ -3535,26 +3639,26 @@ window.averta = {};
 
 		this.video_frame = this.$element.find('iframe').css({width:'100%' , height:'100%'});
 		this.video_url   = this.video_frame.attr('src');
-		
+
 		var has_img = this.$element.has('img').length != 0;
-		
+
 		if(!has_img && !this.$element.data('btn')) return;
-		
+
 		this.video_frame.attr('src' , 'about:blank').css('display' , 'none');
-		
+
 		var that = this;
-		
-		this.video_btn = $('<div></div>').appendTo(this.$element).addClass('ms-video-btn').click(function() {
+
+		this.video_btn = $('<div></div>').appendTo(this.$element).addClass('ms-video-btn').on('click', function() {
 			that.__playVideo();
 		});
-		
+
 		//this.video_frame.attr('src' , 'about:blank');
-		
+
 		if(!has_img) return;
-		
+
 		this.needPreload = true;
 		this.img = this.$element.find('img:first').addClass('ms-video-img');
-		
+
 		if(this.img.data('src') !== undefined){
 			this.img_src = this.img.data('src');
 			this.img.removeAttr('data-src');
@@ -3566,11 +3670,11 @@ window.averta = {};
 					that.controller._onlayersReady();
 			}).each($.jqLoadFix);
 		}
-		
-		if($.browser.msie)
+
+		if(window.MSBrowserInfo.msie)
 			this.img.on('dragstart', function(event) { event.preventDefault(); }); // disables native dragging
 	};
-	
+
 	p.loadImage = function(){
 		var that = this;
 		this.img.preloadImg(this.img_src, function(event) {
@@ -3578,7 +3682,7 @@ window.averta = {};
 			if(that.controller.preloadCount === 0) that.controller._onlayersReady();
 		});
 	};
-	
+
 })(jQuery);
 
 /* ================== bin-debug/js/pro/layers/HotspotLayer.js =================== */
@@ -3918,19 +4022,19 @@ window.averta = {};
 
 	window.MSButtonLayer = function(){
 		MSLayerElement.call(this);
-		
+
 		this.type = 'button';
 	};
-	
+
 	MSButtonLayer.extend(MSLayerElement);
-	
+
 	var p = MSButtonLayer.prototype;
 	var _super = MSLayerElement.prototype;
-	
+
 	var positionKies = ['top', 'left', 'bottom', 'right'];
 
 	/*-------------- METHODS --------------*/
-	
+
 	p.create = function(){
 		_super.create.call(this);
 		this.$element.wrap('<div class="ms-btn-container"></div>').css('position', 'relative');
@@ -3943,7 +4047,7 @@ window.averta = {};
 
 		for (var i=0; i<4; i++){
 			key = positionKies[i];
-			if ( key in this.baseStyle ) {
+			if ( key in this.baseStyle && this.baseStyle[key] !== undefined ) {
 				tempValue = this.$element.css(key);
 				this.$element.css(key, '');
 				this.$container.css(key, tempValue);
@@ -3953,7 +4057,7 @@ window.averta = {};
 		this.$container.width(this.$element.outerWidth(true))
 					   .height(this.$element.outerHeight(true));
 	};
-	
+
 })(jQuery);
 
 /* ================== bin-debug/js/pro/controls/SliderEvent.js =================== */
@@ -4001,7 +4105,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
         this.autoAppend = true;
         this.isSleeping = true;
 
-        this.moz = $.browser.mozilla;
+        this.moz = window.MSBrowserInfo.mozilla;
     };
 
     var p = MSSlide.prototype;
@@ -4202,7 +4306,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
         this.bgLoaded = true;
 
-        if ( $.browser.msie ) {
+        if ( window.MSBrowserInfo.msie ) {
             this.$bg_img.on('dragstart', function(event) { event.preventDefault(); }); // disables native dragging
         }
 
@@ -4431,14 +4535,14 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
             this.layerController.create();
         }
         if ( this.link ) {
-            this.link.addClass('ms-slide-link').html('').click(function(e){
+            this.link.addClass('ms-slide-link').html('').on('click', function(e){
                 if ( that.linkdis ) {
                     e.preventDefault();
                 }
             });
 
             // this.$element.css('cursor' , 'pointer')
-            //           .click(function(){ if(!that.linkdis) window.open(that.link , that.link_targ || '_self'); });
+            //           .on('click', function(){ if(!that.linkdis) window.open(that.link , that.link_targ || '_self'); });
         }
 
         if ( this.video ) {
@@ -4456,12 +4560,12 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
             this.vpbtn = $('<div></div>')
                         .addClass('ms-slide-vpbtn')
-                        .click(function(){that.__playVideo();})
+                        .on('click', function(){that.__playVideo();})
                         .appendTo(this.$element);
 
             this.vcbtn = $('<div></div>')
                         .addClass('ms-slide-vcbtn')
-                        .click(function(){that.__closeVideo();})
+                        .on('click', function(){that.__closeVideo();})
                         .appendTo(this.$element)
                         .css('display','none');
 
@@ -4731,7 +4835,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		this.resize_listener = function(){that.__resize();};
 
 		// in @version 1.5.7 it will be added in Masterslider.js _setupSliderLayout function
-		//$(window).bind('resize', this.resize_listener);
+		//$(window).on('resize', this.resize_listener);
 
 		//if(this.so.smoothHeight) this.so.autoHeight = true;
 
@@ -4755,16 +4859,16 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		//this.view.slideDuration = this.so.duration;
 
 		var viewClass = SliderViewList[this.slider.options.view] || MSBasicView;
-		if(viewClass._3dreq && (!window._css3d || $.browser.msie) ) viewClass = viewClass._fallback || MSBasicView;
+		if(viewClass._3dreq && (!window._css3d || window.MSBrowserInfo.msie) ) viewClass = viewClass._fallback || MSBasicView;
 
 		this.view = new viewClass(viewOptions);
 
 		if(this.so.overPause){
 			var that = this;
-			this.slider.$element.mouseenter(function(){
+			this.slider.$element.on('mouseenter',function(){
 				that.is_over = true;
 				that._stopTimer();
-			}).mouseleave(function(){
+			}).on('mouseleave',function(){
 				that.is_over = false;
 				that._startTimer();
 			});
@@ -4972,7 +5076,10 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 			this.so.heightLimit = false;
 			this.so.autoHeight = false;
 			this.height = this.slider.$element[0].clientHeight;
-		} else {
+		} else if ( this.so.responsive ) {
+            this.slider.aspect = this.slider.getResponsiveValue(this.slider.responsiveAspect);
+            this.height = this.width / this.slider.aspect;
+        } else {
 			this.height = this.width / this.slider.aspect;
 		}
 		if( this.so.autoHeight ){
@@ -5097,7 +5204,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
 				var delta = Math.abs(e.detail || e.wheelDelta);
 
-				if ( $.browser.mozilla ) {
+				if ( window.MSBrowserInfo.mozilla ) {
 					delta *= 100;
 				}
 
@@ -5119,8 +5226,9 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 				return false;
 			};
 
-			if($.browser.mozilla) this.slider.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
-			else this.slider.$element.bind('mousewheel', this.wheellistener);
+            this.slider.$element[0].addEventListener('mousewheel' , this.wheellistener, {passive: false});
+			// if(window.MSBrowserInfo.mozilla) this.slider.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
+			// else this.slider.$element.on('mousewheel', this.wheellistener);
 		}
 
 		// if(this.so.wheel){
@@ -5137,8 +5245,8 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		// 		return false;
 		// 	};
 
-		// 	if($.browser.mozilla) this.slider.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
-		// 	else this.slider.$element.bind('mousewheel', this.wheellistener);
+		// 	if(window.MSBrowserInfo.mozilla) this.slider.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
+		// 	else this.slider.$element.on('mousewheel', this.wheellistener);
 		// }
 
 		if(this.slider.$element[0].clientWidth === 0)
@@ -5187,13 +5295,13 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		this._timer.reset();
 		this._timer = null;
 
-		$(window).unbind('resize', this.resize_listener);
+		$(window).off('resize', this.resize_listener);
 		this.view.destroy();
 		this.view = null;
 
 		if(this.so.wheel){
-			if($.browser.mozilla) this.slider.$element[0].removeEventListener('DOMMouseScroll' , this.wheellistener);
-			else this.slider.$element.unbind('mousewheel', this.wheellistener);
+			if(window.MSBrowserInfo.mozilla) this.slider.$element[0].removeEventListener('DOMMouseScroll' , this.wheellistener);
+			else this.slider.$element.off('mousewheel', this.wheellistener);
 			this.wheellistener = null;
 		}
 
@@ -5374,7 +5482,13 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 			rtl 				: false,	  // @since 1.8.0, Whether Right-to-left direction slider.
 			deepLink			: null,       // @since 2.1.0, null value disables slider deep-linking any string values identifies the slider in page's url like /#msslider-1
 			deepLinkType 		: 'path', 	  // @since 2.1.0, type of hash value in page's url possible values, path and query (  #gallery/1 || #gallery=4 )
-			disablePlugins      : []		  // @since 2.9.6, list of disabled Master Slider plugin names for this instance.
+            disablePlugins      : [],		  // @since 2.9.6, list of disabled Master Slider plugin names for this instance.
+            responsive          : true,
+            tabletWidth         : 768,
+            tabletHeight        : null,
+            phoneWidth          : 480,
+            phoneHeight         : null,
+            sizingReference     : 'window', // window
 		};
 
 		this.slides = [];
@@ -5395,13 +5509,13 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
 		var that = this;
 		this.resize_listener = function(){that._resize();};
-		$(window).bind('resize', this.resize_listener);
+		$(window).on('resize', this.resize_listener);
 
 	};
 
 	MasterSlider.author  		= 'Averta Ltd. (www.averta.net)';
-	MasterSlider.version 		= '2.61.2';
-	MasterSlider.releaseDate 	= 'Jul 2018';
+	MasterSlider.version 		= '2.85.13';
+	MasterSlider.releaseDate 	= 'Feb 2022';
 
 	// Master Slider plugins.
 	MasterSlider._plugins = []
@@ -5555,7 +5669,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 	 * @private
 	 */
 	p._removeLoading = function(){
-		$(window).unbind('resize', this.resize_listener);
+		$(window).off('resize', this.resize_listener);
 		this.$element.removeClass('before-init')
 					.css('visibility', 'visible')
 					.css('height','')
@@ -5633,12 +5747,12 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 			this.$element.addClass('ms-layout-partialview');
 		}
 		if( lo === 'fullscreen' ||  lo === 'fullwidth' || lo === 'autofill' ){
-			$(window).bind('resize', {that:this}, this._updateLayout);
+			$(window).on('resize', {that:this}, this._updateLayout);
 			this._updateLayout();
 		}
 
 		// bind resize handler of slidecontroller __resize
-		$(window).bind('resize', this.slideController.resize_listener);
+		$(window).on('resize', this.slideController.resize_listener);
 	};
 
 	/**
@@ -5733,21 +5847,21 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		if(this.options.swipe && !window._touch && this.options.grabCursor && this.options.mouse){
 			var $view = this.view.$element;
 
-			$view.mousedown(function(){
+			$view.on('mousedown',function(){
 				$view.removeClass('ms-grab-cursor');
 				$view.addClass('ms-grabbing-cursor');
 
-				if ( $.browser.msie && window.ms_grabbing_curosr ) {
+				if ( window.MSBrowserInfo.msie && window.ms_grabbing_curosr ) {
 					$view[0].style.cursor = 'url(' + window.ms_grabbing_curosr + '), move';
 				}
 
 			}).addClass('ms-grab-cursor');
 
-			$(document).mouseup(function(){
+			$(document).on('mouseup',function(){
 				$view.removeClass('ms-grabbing-cursor');
 				$view.addClass('ms-grab-cursor');
 
-				if ( $.browser.msie && window.ms_grab_curosr ) {
+				if ( window.MSBrowserInfo.msie && window.ms_grab_curosr ) {
 					$view[0].style.cursor = 'url(' + window.ms_grab_curosr + '), move';
 				}
 
@@ -5881,12 +5995,12 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
 		// IE prefix class
 		// add browser prefix class name
-		if($.browser.msie){
+		if(window.MSBrowserInfo.msie){
 			this.$element.addClass('ms-ie')
-						 .addClass('ms-ie' + $.browser.version.slice(0 , $.browser.version.indexOf('.')));
-		} else if ( $.browser.webkit ) {
+						 .addClass('ms-ie' + window.MSBrowserInfo.version.slice(0 , window.MSBrowserInfo.version.indexOf('.')));
+		} else if ( window.MSBrowserInfo.webkit ) {
 			this.$element.addClass('ms-wk');
-		} else if ( $.browser.mozilla ) {
+		} else if ( window.MSBrowserInfo.mozilla ) {
 			this.$element.addClass('ms-moz');
 		}
 
@@ -5902,6 +6016,10 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		$.extend(this.options, options);
 
 		this.aspect = this.options.width / this.options.height;
+
+        this.responsiveWidth = [this.options.phoneWidth, this.options.tabletWidth, this.options.width];
+        this.responsiveHeight = [this.options.phoneHeight, this.options.tabletHeight, this.options.height];
+        this.responsiveAspect = [this.options.phoneWidth / this.options.phoneHeight, this.options.tabletWidth / this.options.tabletHeight, this.options.width / this.options.height ];
 
 		this.$loading = $('<div></div>').
 						addClass('ms-loading-container').
@@ -5948,7 +6066,46 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 		});
 
 		return this;
-	};
+    };
+
+    p.getActiveBreakpoint = function(getIndex) {
+        var bpList = ['phone', 'tablet', 'desktop'];
+        var bpSizes = [
+             this.options.phoneWidth || 480,
+             this.options.tabletWidth || 768,
+             this.options.width
+        ];
+
+        var currentSize = this.options.sizingReference === 'self' ? this.$element.outerWidth(false) : window.innerWidth;
+        var bp = 'desktop';
+        var bpIndex = 2;
+
+        bpSizes.every(function(size, index) {
+            if ( size >= currentSize ) {
+                bp = bpList[index];
+                bpIndex = index;
+                return false;
+            }
+
+            return true;
+        }.bind(this));
+
+        return getIndex ? bpIndex : bp;
+    };
+
+    p.getBreakpointReferenceSize = function() {
+        var bp = this.getActiveBreakpoint();
+        if ( bp === 'desktop' ) {
+            return this.options.width;
+        }
+
+        return this.options[bp + 'Width'];
+    }
+
+    p.getResponsiveValue = function(repsVal) {
+        var bpIndex = this.getActiveBreakpoint(true);
+        return repsVal.slice(bpIndex).filter(function(value) {return value !== undefined && value !== Infinity})[0];
+    };
 
 	/**
 	 * destroy the slider instance
@@ -5980,7 +6137,7 @@ MSSliderEvent.DESTROY				= 'ms_destroy';
 
 		var lo = this.options.layout;
 		if( lo === 'fullscreen' ||  lo === 'fullwidth' ){
-			$(window).unbind('resize', this._updateLayout);
+			$(window).off('resize', this._updateLayout);
 		}
 
 		this.view = null;
@@ -6270,7 +6427,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		this._checkCritMargins();
 
-		if($.browser.mozilla){
+		if(window.MSBrowserInfo.mozilla){
 			this.slideList[this.index].$element[0].style.marginTop 	= '0.1px';
 			if(this.currentSlide){
 				this.currentSlide.$element[0].style.marginTop 	= '';
@@ -6967,25 +7124,25 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 /* ================== bin-debug/js/pro/views/MaskView.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	window.MSMaskView = function(options){
 		MSBasicView.call(this , options);
 		this.$element.removeClass('ms-basic-view').addClass('ms-mask-view');
-		
+
 	};
-	
+
 	MSMaskView.extend(MSBasicView);
-	
+
 	var p  = MSMaskView.prototype;
 	var _super  = MSBasicView.prototype;
-		
+
 	/*-------------- METHODS --------------*/
-	
+
 	p.addSlide = function(slide){ // OK
 		slide.view = this;
-		
+
 		slide.$frame = $('<div></div>').addClass('ms-mask-frame').append(slide.$element);
 		slide.$element[0].style.position = 'relative';
 		//this.$slideCont.append(slide.$frame);
@@ -6993,100 +7150,100 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		this.slides.push(slide);
 		this.slideList.push(slide);
-		
+
 		this.slidesCount++;
 	};
-	
+
 	p.setSize = function(width , height){
 		var slider = this.slides[0].slider;
-		
+
 		for(var i = 0; i < this.slidesCount ; ++i){
 			this.slides[i].$frame[0].style.width  = width  + 'px';
 			if(!slider.options.autoHeight)
 				this.slides[i].$frame[0].style.height = height + 'px';
 		}
-		
+
 		_super.setSize.call(this , width , height);
 	};
-	
+
 	// p.__snapUpdate = function(controller , snap , change){
-		
+
 	// 	if(this.loop){
 	// 		var target_index = this.index + change;
 	// 		this.updateLoop(target_index);
 
 	// 		if(target_index >= this.slidesCount)	target_index = target_index - this.slidesCount;
 	// 		if(target_index <  0)					target_index = this.slidesCount + target_index;
-		
+
 	// 		this.index = target_index;
 	// 	}else{
 	// 		if(snap < 0 ||  snap >= this.slidesCount) return
 	// 		this.index = snap;
 	// 	}
-		
-		
+
+
 	// 	this._checkCritMargins();
 
-	// 	if($.browser.mozilla){
-			
+	// 	if(window.MSBrowserInfo.mozilla){
+
 	// 		this.slideList[this.index].$frame[0].style.marginTop 	= '0.1px';
 	// 		this.slideList[this.index].$element[0].style.marginTop 	= '0.1px';
-			
+
 	// 		if(this.currentSlide){
 	// 			this.currentSlide.$frame[0].style.marginTop 	= '';
 	// 			this.currentSlide.$element[0].style.marginTop 	= '';
 	// 		}
 	// 	}
-		
+
 	// 		var new_slide = this.slideList[this.index];
 	// 	if(new_slide === this.currentSlide)return;
-		
+
 	// 	this.currentSlide = new_slide;
-	// 	this.dispatchEvent(new MSViewEvents(MSViewEvents.CHANGE_START));		
+	// 	this.dispatchEvent(new MSViewEvents(MSViewEvents.CHANGE_START));
 	// };
-	
+
 	p._horizUpdate = function(controller , value){
-		
+
 		_super._horizUpdate.call(this , controller , value);
-		
+
 		var i = 0;
-		
+
 		if(this.css3) {
 			for(i = 0 ; i < this.slidesCount ; ++i){
 				this.slideList[i].$element[0].style[window._jcsspfx + 'Transform'] = 'translateX('+(value - this.slideList[i].position)+'px)'+ this.__translate_end;
 			}
 			return;
 		}
-		
+
 		for(i = 0 ; i < this.slidesCount ; ++i){
-			this.slideList[i].$element[0].style.left = (value - this.slideList[i].position) + 'px';	
+			this.slideList[i].$element[0].style.left = (value - this.slideList[i].position) + 'px';
 		}
-			
+
 	};
-	
+
 	p._vertiUpdate = function(controller , value){
-		
+
 		_super._vertiUpdate.call(this , controller , value);
-		
+
 		var i = 0;
-		
+
 		if(this.css3) {
 			for(i = 0 ; i < this.slidesCount ; ++i){
 				this.slideList[i].$element[0].style[window._jcsspfx + 'Transform'] = 'translateY('+(value - this.slideList[i].position)+'px)'+ this.__translate_end;
 			}
 			return;
 		}
-		
+
 		for(i = 0 ; i < this.slidesCount ; ++i){
-			this.slideList[i].$element[0].style.top = (value - this.slideList[i].position) + 'px';	
+			this.slideList[i].$element[0].style.top = (value - this.slideList[i].position) + 'px';
 		}
-			
+
 	};
-	
+
 	p.__pushEnd = function(){ // OK
 		var first_slide = this.slides.shift();
 		var last_slide = this.slides[this.slidesCount - 2];
-		
+
 		this.slides.push(first_slide);
 		if(!this.normalMode) return;
 
@@ -7094,21 +7251,21 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		first_slide.$frame[0].style[this.__cssProb] = pos + 'px';
 		first_slide.position = pos;
 	};
-	
+
 	p.__pushStart = function(){ // OK
-		
+
 		var last_slide =  this.slides.pop();
 		var first_slide = this.slides[0];
-		
+
 		this.slides.unshift(last_slide);
-		
+
 		if(!this.normalMode) return;
-		
+
 		var pos = first_slide.$frame[0][this.__offset] - this.spacing - this[this.__dimension];
 		last_slide.$frame[0].style[this.__cssProb] = pos + 'px';
 		last_slide.position = pos;
 	};
-	
+
 	p.__updateViewList = function(){
 
 			if(this.normalMode) {
@@ -7118,8 +7275,8 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		var temp = this.viewSlidesList.slice();
 
-		// update view list 
-		this.viewSlidesList = [];	
+		// update view list
+		this.viewSlidesList = [];
 		var i = 0 , hlf = Math.floor(this.options.viewNum / 2) , l;
 
 		if(this.loop){
@@ -7128,7 +7285,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		}else{
 			// before
 			for(i = 0 ; i !== hlf && this.index - i !== -1 ; i++)
-				this.viewSlidesList.unshift(this.slideList[this.index - i]);	
+				this.viewSlidesList.unshift(this.slideList[this.index - i]);
 			// after
 			for(i = 1; i !== hlf && this.index + i !== this.slidesCount; i++)
 				this.viewSlidesList.push(this.slideList[this.index + i]);
@@ -7149,18 +7306,18 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		this.__updateViewList();
 
-		start = !this.loop ? this.slides.indexOf(this.viewSlidesList[0]) * (this[this.__dimension] + this.spacing ) : start || 0; 
+		start = !this.loop ? this.slides.indexOf(this.viewSlidesList[0]) * (this[this.__dimension] + this.spacing ) : start || 0;
 
 		// Old method
 		// for(var i = 0; i < this.slidesCount ; ++i){
 		// 	var pos =  i * (this[this.__dimension] + this.spacing);
-			
+
 		// 	this.slides[i].position = pos;
 		// 	this.slides[i].$frame[0].style[this.__cssProb] =  pos + 'px';
 		// }
 
 		var l = this.viewSlidesList.length , slide;
-		
+
 		for(var i = 0; i !== l ; i++){
 			var pos =  start + i * (this[this.__dimension] + this.spacing );
 			slide = this.viewSlidesList[i];
@@ -7181,7 +7338,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if(move !== false)this.controller.changeTo( this.slideList[this.index].position , false , null , null , false);
 
 	};
-	
+
 	MSSlideController.registerView('mask' , MSMaskView);
 })(jQuery);
 
@@ -7247,42 +7404,42 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 /* ================== bin-debug/js/pro/views/FadeView.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	window.MSFadeView = function(options){
 		MSBasicView.call(this , options);
 		this.$element.removeClass('ms-basic-view').addClass('ms-fade-view');
 		this.controller.renderCallback(this.__update , this);
 	};
-	
+
 	MSFadeView.extend(MSBasicView);
-	
+
 	var p  = MSFadeView.prototype;
 	var _super  = MSBasicView.prototype;
-	 
+
 	/*-------------- METHODS --------------*/
-	
+
 	p.__update = function(controller , value){
 		var cont_scroll = -value;
 		var slide_pos , slide , distance;
-		
+
 		for(var i = 0; i < this.slidesCount; ++i){
 			slide = this.slideList[i];
 			distance = -cont_scroll - slide.position;
 			this.__updateSlides(slide , distance);
 		}
 	};
-	
+
 	p.__updateSlides = function(slide , distance){
 		var value =  Math.abs(distance / this[this.__dimension]);
 		if(1 - value <= 0){
-			slide.$element.fadeTo(0 , 0).css('visibility' , 'hidden');	
+			slide.$element.css('opacity', 0).css('visibility' , 'hidden');
 		}else{
-			slide.$element.fadeTo(0 , 1 - value).css('visibility' , '');
+			slide.$element.css('opacity', 1 - value).css('visibility' , '');
 		}
 	};
-	
+
 	p.__locateSlides = function(move , start){
 
 		this.__updateViewList();
@@ -7292,10 +7449,10 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		// 	this.slides[i].position = i * this[this.__dimension];
 		// }
 
-		start = !this.loop ? this.slides.indexOf(this.viewSlidesList[0]) * (this[this.__dimension] + this.spacing ) : start || 0; 
+		start = !this.loop ? this.slides.indexOf(this.viewSlidesList[0]) * (this[this.__dimension] + this.spacing ) : start || 0;
 
 		var l = this.viewSlidesList.length , slide;
-		
+
 		for(var i = 0; i !== l ; i++){
 			var pos =  start + i * this[this.__dimension];
 			slide = this.viewSlidesList[i];
@@ -7306,27 +7463,27 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if(move !== false)this.controller.changeTo( this.slideList[this.index].position , false , null , null , false);
 
 	};
-	
+
 	p.__pushEnd = function(){
 		var first_slide = this.slides.shift();
 		var last_slide = this.slides[this.slidesCount - 2];
 		this.slides.push(first_slide);
 		first_slide.position = last_slide.position + this[this.__dimension];
 	};
-	
+
 	p.__pushStart = function(){
 		var last_slide =  this.slides.pop();
 		var first_slide = this.slides[0];
-		this.slides.unshift(last_slide);		
+		this.slides.unshift(last_slide);
 		last_slide.position = first_slide.position - this[this.__dimension];
 	};
-	
+
 	p.create = function(index){
 		_super.create.call(this , index);
 		this.spacing = 0;
 		this.controller.options.minValidDist = 10;
 	};
-	
+
 	MSSlideController.registerView('fade' , MSFadeView);
 })(jQuery);
 
@@ -7590,9 +7747,9 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 /* ================== bin-debug/js/pro/uicontrols/BaseControl.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	var BaseControl = function(){
 		this.options = {
 			prefix:'ms-',
@@ -7601,16 +7758,16 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			customClass: null
 		};
 	};
-	
+
 	var p = BaseControl.prototype;
-	
+
 	/* -------------------------------- */
-	
+
 	p.slideAction = function(slide){
 
 	};
-	
-	p.setup = function(){		
+
+	p.setup = function(){
 		this.cont = this.options.insertTo ? $(this.options.insertTo) : this.slider.$controlsCont;
 		if(!this.options.overVideo) this._hideOnvideoStarts();
 
@@ -7620,7 +7777,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if(this.options.hideUnder){
 			//this.slider.api.addEventListener(MSSliderEvent.RESIZE, this.onSliderResize, this);
 			this.needsRealign = !this.options.insetTo && (this.options.align === 'left' || this.options.align === 'right') && this.options.inset === false;
-			$(window).bind('resize', {that:this}, this.onResize);
+			$(window).on('resize', {that:this}, this.onResize);
 			this.onResize();
 
 		}
@@ -7644,50 +7801,50 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			that.onAppend();
 		}
 	};
-	
+
 	p.create = function(){
 		var that = this;
 		if(this.options.autohide ){
-			
+
 			this.hide(true);
-			
-			this.slider.$controlsCont.mouseenter($.proxy(this._onMouseEnter, this))
-									 .mouseleave($.proxy(this._onMouseLeave, this))
-									 .mousedown($.proxy(this._onMouseDown, this));
+
+			this.slider.$controlsCont.on('mouseenter', this._onMouseEnter.bind(this))
+									 .on('mouseleave', this._onMouseLeave.bind(this))
+									 .on('mousedown', this._onMouseDown.bind(this));
 
 			if ( this.$element ) {
-				this.$element.mouseenter($.proxy(this._onMouseEnter, this))
-							 .mouseleave($.proxy(this._onMouseLeave, this))
-							 .mousedown($.proxy(this._onMouseDown, this));
+				this.$element.on('mouseenter', this._onMouseEnter.bind(this))
+							 .on('mouseleave', this._onMouseLeave.bind(this))
+							 .on('mousedown', this._onMouseDown.bind(this));
 			}
 
-			$(document).mouseup($.proxy(this._onMouseUp, this));
+			$(document).on('mouseup', this._onMouseUp.bind(this));
 		}
-		
+
 		if ( this.options.align ) {
 			this.$element.addClass('ms-align-' + this.options.align);
 		}
 
-		// add custom class to control 
+		// add custom class to control
 		if ( this.options.customClass && this.$element ) {
 			this.$element.addClass(this.options.customClass);
 		}
 	};
 
 	/**
-	 * Mouse Enter Listener 
+	 * Mouse Enter Listener
 	 * @since 2.2
 	 */
 	p._onMouseEnter = function(){
 		if ( !this._disableAH && !this.mdown ){
 			this.visible();
 		}
-		
+
 		this.mleave = false;
 	};
 
 	/**
-	 * Mouse Leave Listener 
+	 * Mouse Leave Listener
 	 * @since 2.2
 	 */
 	p._onMouseLeave = function(){
@@ -7699,7 +7856,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 	};
 
 	/**
-	 * Mouse Down Listener 
+	 * Mouse Down Listener
 	 * @since 2.2
 	 */
 	p._onMouseDown = function(){
@@ -7707,14 +7864,14 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 	};
 
 	/**
-	 * Mouse Up Listener 
+	 * Mouse Up Listener
 	 * @since 2.2
 	 */
 	p._onMouseUp = function(){
-		if ( this.mdown && this.mleave ) { 
+		if ( this.mdown && this.mleave ) {
 			this.hide();
 		}
-		
+
 		this.mdown = false;
 	};
 
@@ -7737,20 +7894,20 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			this.slider._realignControls();
 		}
 	};
-	
+
 	p._hideOnvideoStarts = function(){
 		var that = this;
 		this.slider.api.addEventListener(MSSliderEvent.VIDEO_PLAY , function(){
    			 that._disableAH = true;
    			 that.hide();
 		});
-		 
+
 		this.slider.api.addEventListener(MSSliderEvent.VIDEO_CLOSE , function(){
 		     that._disableAH = false;
    			 that.visible();
 		});
 	};
-	
+
 	p.hide = function(fast){
 		if(fast){
 			this.$element.css('opacity' , 0);
@@ -7765,7 +7922,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		this.$element.addClass('ms-ctrl-hide');
 	};
-	
+
 	p.visible = function(){
 		if(this.detached) return;
 		clearTimeout(this.hideTo);
@@ -7773,54 +7930,54 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		CTween.fadeIn(this.$element , 400 , false);
 		this.$element.removeClass('ms-ctrl-hide');
 	};
-	
+
 	p.destroy = function(){
 
 		if(this.options && this.options.hideUnder){
 			//this.slider.api.removeEventListener(MSSliderEvent.RESIZE, this.onResize, this);
-			$(window).unbind('resize', this.onResize);
+			$(window).off('resize', this.onResize);
 		}
 	};
-	
+
 	window.BaseControl = BaseControl;
-	
+
 })(jQuery);
 
 /* ================== bin-debug/js/pro/uicontrols/Arrows.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	var MSArrows = function(options){
 		BaseControl.call(this);
 		$.extend(this.options , options);
 	};
-	
+
 	MSArrows.extend(BaseControl);
-	
+
 	var p = MSArrows.prototype;
 	var _super = BaseControl.prototype;
-	
+
 	/* -------------------------------- */
-	
+
 	p.setup = function(){
 		var that = this;
-		
+
 		this.$next = $('<div></div>')
 					.addClass(this.options.prefix + 'nav-next')
 					//.appendTo(this.cont)
-					.bind('click' , function(){
+					.on('click' , function(){
 							that.slider.api.next(true);
 					});
-				
-		
+
+
 		this.$prev = $('<div></div>')
 					.addClass(this.options.prefix + 'nav-prev')
 					//.appendTo(this.cont)
-					.bind('click' , function(){
+					.on('click' , function(){
 						that.slider.api.previous(true);
 					});
-		
+
 		_super.setup.call(this);
 
 		this.cont.append(this.$next);
@@ -7828,21 +7985,21 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		this.checkHideUnder(); // super method
 	};
-	
+
 	p.hide = function(fast){
 		if(fast){
 			this.$prev.css('opacity' , 0).css('display', 'none');
 			this.$next.css('opacity' , 0).css('display', 'none');
 			return;
 		}
-	
+
 		CTween.fadeOut(this.$prev , 400 , false);
 		CTween.fadeOut(this.$next , 400 , false);
-		
+
 		this.$prev.addClass('ms-ctrl-hide');
 		this.$next.addClass('ms-ctrl-hide');
 	};
-	
+
 	p.visible = function(){
 		if(this.detached) return;
 		CTween.fadeIn(this.$prev , 400 );
@@ -7850,25 +8007,25 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.$prev.removeClass('ms-ctrl-hide').css('display', '');
 		this.$next.removeClass('ms-ctrl-hide').css('display', '');
 	};
-	
+
 	p.destroy = function(){
 		_super.destroy();
 		this.$next.remove();
 		this.$prev.remove();
 	};
-	
+
 	window.MSArrows = MSArrows;
 	MSSlideController.registerControl('arrows' , MSArrows);
 })(jQuery);
 
 /* ================== bin-debug/js/pro/uicontrols/Thumblist.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	var MSThumblist = function(options){
 		BaseControl.call(this);
-		
+
 		// default options
 		this.options.dir 	= 'h';
 		this.options.wheel	= options.dir === 'v';
@@ -7882,29 +8039,29 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.options.height = 100;
 		this.options.type = 'thumbs'; // tabs
 		this.options.hover = false;
-		
-		
+
+
 		$.extend(this.options , options);
-		
+
 		this.thumbs = [];
 		this.index_count = 0;
-		
+
 		this.__dimen    		= this.options.dir === 'h' ? 'width' : 'height';
 		this.__alignsize 		= this.options.dir === 'h' ? 'height' : 'width';
 		this.__jdimen    		= this.options.dir === 'h' ? 'outerWidth' : 'outerHeight';
-		this.__pos				= this.options.dir === 'h' ? 'left'	 : 'top';		
-		
+		this.__pos				= this.options.dir === 'h' ? 'left'	 : 'top';
+
 		this.click_enable = true;
 
 	};
-	
+
 	MSThumblist.extend(BaseControl);
-	
+
 	var p = MSThumblist.prototype;
 	var _super = BaseControl.prototype;
-	
+
 	/* -------------------------------- */
-	
+
 	p.setup = function(){
 		this.$element = $('<div></div>')
 						.addClass(this.options.prefix + 'thumb-list');
@@ -7912,10 +8069,10 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if(this.options.type === 'tabs'){
 			this.$element.addClass(this.options.prefix + 'tabs');
 		}
-		
+
 		this.$element.addClass('ms-dir-' + this.options.dir);
 
-		_super.setup.call(this);	
+		_super.setup.call(this);
 
 
 		if( this.slider.$controlsCont === this.cont ){
@@ -7923,15 +8080,15 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		}else{
 			this.$element.appendTo(this.cont);
 		}
-						
+
 		this.$thumbscont = $('<div></div>')
 						.addClass('ms-thumbs-cont')
 						.appendTo(this.$element);
-		
+
 		if(this.options.arrows){
 			var that = this;
-			this.$fwd = $('<div></div>').addClass('ms-thumblist-fwd').appendTo(this.$element).click(function(){that.controller.push(-15);});
-			this.$bwd = $('<div></div>').addClass('ms-thumblist-bwd').appendTo(this.$element).click(function(){that.controller.push(15);});
+			this.$fwd = $('<div></div>').addClass('ms-thumblist-fwd').appendTo(this.$element).on('click', function(){that.controller.push(-15);});
+			this.$bwd = $('<div></div>').addClass('ms-thumblist-bwd').appendTo(this.$element).on('click', function(){that.controller.push(15);});
 		}
 
 		// align control
@@ -7962,9 +8119,9 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		}
 
 		this.checkHideUnder(); // super method
-	
+
 	};
-	
+
 	/**
 	 * calls by "RESERVED_SPACE_CHANGE" realigns the control in slider
 	 * @since 1.5.7
@@ -7985,81 +8142,81 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 					.addClass('ms-thumb-frame')
 					.append(thumb_ele)
 					.append($('<div class="ms-thumb-ol"></div>'))
-					.bind(this.options.hover? 'hover' : 'click' , function(){that.changeSlide(thumb_frame);});
+					.on(this.options.hover? 'hover' : 'click' , function(){that.changeSlide(thumb_frame);});
 
 		if( this.options.align ){
 			thumb_frame.width(this.options.width - (this.options.dir === 'v' && this.options.type === 'tabs' ? 12 : 0))  // less arrow size 12px
 					.height(this.options.height)
-					.css('margin-'+(this.options.dir === 'v' ? 'bottom' : 'right'), this.options.space); 
-		}			
-					
+					.css('margin-'+(this.options.dir === 'v' ? 'bottom' : 'right'), this.options.space);
+		}
+
 		thumb_frame[0].index =  this.index_count ++;
-		
+
 		this.$thumbscont.append(thumb_frame);
-		
+
 		// Added Fillmode support to thumblist
 		// @since 1.6.0
 		if( this.options.fillMode && thumb_ele.is('img') ){
 			var aligner = new window.MSAligner(this.options.fillMode, thumb_frame, thumb_ele);
 			thumb_ele[0].aligner = aligner;
 			thumb_ele.one('load', function(e){
-				var $this = $(this); 
+				var $this = $(this);
 				$this[0].aligner.init($this.width(), $this.height());
 				$this[0].aligner.align();
 			}).each($.jqLoadFix);
 		}
 
-		if($.browser.msie)
+		if(window.MSBrowserInfo.msie)
 				thumb_ele.on('dragstart', function(event) { event.preventDefault(); }); // disable native dragging
-				
+
 		this.thumbs.push(thumb_frame);
 	};
-	
+
 	p.create = function(){
 		_super.create.call(this);
-		
+
 		this.__translate_end	= window._css3d ? ' translateZ(0px)' : '';
 		this.controller 	 = new Controller(0 , 0 , {
 			//snapping	     : true,
 			snappingMinSpeed : 2,
 			friction		 : (100 - this.options.speed * 0.5) / 100
 		});
-				
+
 		this.controller.renderCallback(this.options.dir === 'h'? this._hMove : this._vMove , this);
 		//this.controller.snappingCallback(this.__snapUpdate , this);
 		//this.controller.snapCompleteCallback(this.__snapCompelet , this);
-		
+
 		var that = this;
 		this.resize_listener = function(){that.__resize();};
-		$(window).bind('resize', this.resize_listener);
-		
+		$(window).on('resize', this.resize_listener);
+
 		this.thumbSize = this.thumbs[0][this.__jdimen](true);
-		
+
 		this.setupSwipe();
 		this.__resize();
-		
+
 		var that = this;
 		if(this.options.wheel){
-			
+
 			this.wheellistener = function(event){
 				var e = window.event || event.orginalEvent || event;
 				var delta = Math.max(-1, Math.min(1, (e.wheelDelta || -e.detail)));
 				that.controller.push(-delta*10);
 				return false;
 			};
-			
-			if($.browser.mozilla) this.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
-			else this.$element.bind('mousewheel', this.wheellistener);
+
+			if(window.MSBrowserInfo.mozilla) this.$element[0].addEventListener('DOMMouseScroll' , this.wheellistener);
+			else this.$element.on('mousewheel', this.wheellistener);
 		}
-		
+
 		this.slider.api.addEventListener(MSSliderEvent.CHANGE_START , this.update , this);
 		this.slider.api.addEventListener(MSSliderEvent.HARD_UPDATE, this.realignThumbs, this);
 		this.cindex =  this.slider.api.index();
 		this.select(this.thumbs[this.cindex]);
-		
-		
+
+
 	};
-	
+
 	p._hMove = function(controller , value){
 		this.__contPos = value;
 		if(window._cssanim) {
@@ -8068,7 +8225,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		}
 		this.$thumbscont[0].style.left = -value + 'px';
 	};
-	
+
 	p._vMove = function(controller , value){
 		this.__contPos = value;
 		if(window._cssanim) {
@@ -8077,23 +8234,23 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		}
 		this.$thumbscont[0].style.top = -value + 'px';
 	};
-	
-	p.setupSwipe = function(){ 
+
+	p.setupSwipe = function(){
 		this.swipeControl = new averta.TouchSwipe(this.$element);
 		this.swipeControl.swipeType = this.options.dir === 'h'? 'horizontal' : 'vertical';
-		
+
 		var that = this;
 		if(this.options.dir === 'h')
 			this.swipeControl.onSwipe = function(status){that.horizSwipeMove(status);};
 		else
 			this.swipeControl.onSwipe = function(status){that.vertSwipeMove(status);};
 	};
-	
+
 	p.vertSwipeMove = function(status){
 		if(this.dTouch) return;
 		var phase = status.phase;
 		if(phase === 'start')
-			this.controller.stop();	
+			this.controller.stop();
 		else if(phase === 'move')
 			this.controller.drag(status.moveY);
 		else if(phase === 'end' || phase === 'cancel'){
@@ -8103,15 +8260,15 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			}else{
 				this.click_enable = true;
 				this.controller.cancel();
-			} 
+			}
 		}
 	};
-	
+
 	p.horizSwipeMove = function(status){
 		if(this.dTouch) return;
 		var phase = status.phase;
 		if(phase === 'start'){
-			this.controller.stop();	
+			this.controller.stop();
 			this.click_enable = false;
 		}else if(phase === 'move')
 			this.controller.drag(status.moveX);
@@ -8125,38 +8282,38 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			}
 		}
 	};
-	
+
 	p.update = function(){
 		var nindex = this.slider.api.index();
 		if(this.cindex === nindex) return;
-		
+
 		if(this.cindex != null)this.unselect(this.thumbs[this.cindex]);
 		this.cindex = nindex;
 		this.select(this.thumbs[this.cindex]);
-	
+
 		if(!this.dTouch)this.updateThumbscroll();
 	};
 
 	p.realignThumbs = function () {
 		this.$element.find('.ms-thumb').each( function (index, thumb) {
 			if ( thumb.aligner ) {
-				thumb.aligner.align();	
-			} 
+				thumb.aligner.align();
+			}
 		} );
 	};
 
 	p.updateThumbscroll = function(){
 		var thumb_size;
-		
+
 		var pos = this.thumbSize * this.cindex;
-		
+
 		if(this.controller.value == NaN) this.controller.value = 0;
-		
+
 		if(pos -  this.controller.value < 0){
 			this.controller.gotoSnap(this.cindex , true);
 			return;
 		}
-				
+
 		if(pos + this.thumbSize - this.controller.value > this.$element[this.__dimen]()){
 			var first_snap = this.cindex - Math.floor(this.$element[this.__dimen]() / this.thumbSize) + 1;
 			this.controller.gotoSnap(first_snap , true);
@@ -8168,31 +8325,31 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if(!this.click_enable || this.cindex === thumb[0].index) return;
 		this.slider.api.gotoSlide(thumb[0].index);
 	};
-	
+
 	p.unselect = function(ele){
 		ele.removeClass('ms-thumb-frame-selected');
 	};
-	
+
 	p.select = function(ele){
 		ele.addClass('ms-thumb-frame-selected');
 	};
-	
+
 	p.__resize = function(){
 		var size = this.$element[this.__dimen]();
 
 		if(this.ls === size) return;
-		
+
 		this.ls = size;
-		
+
 		this.thumbSize = this.thumbs[0][this.__jdimen](true);
 		var len = this.slider.api.count() * this.thumbSize;
 		this.$thumbscont[0].style[this.__dimen] = len + 'px';
-		
+
 		if(len <= size){
 			this.dTouch = true;
 			this.controller.stop();
 			this.$thumbscont[0].style[this.__pos] = (size - len)*.5 + 'px';
-			this.$thumbscont[0].style[window._jcsspfx + 'Transform'] = '';			
+			this.$thumbscont[0].style[window._jcsspfx + 'Transform'] = '';
 		}else{
 			this.dTouch = false;
 			this.click_enable = true;
@@ -8201,29 +8358,29 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			this.controller.options.snapsize = this.thumbSize;
 			this.updateThumbscroll();
 		}
-		
+
 	};
-	
+
 	p.destroy = function(){
 		_super.destroy();
-		
+
 		if(this.options.wheel){
-			if($.browser.mozilla) this.$element[0].removeEventListener('DOMMouseScroll' , this.wheellistener);
-			else this.$element.unbind('mousewheel', this.wheellistener);
+			if(window.MSBrowserInfo.mozilla) this.$element[0].removeEventListener('DOMMouseScroll' , this.wheellistener);
+			else this.$element.off('mousewheel', this.wheellistener);
 			this.wheellistener = null;
-		}		
-		
-		$(window).unbind('resize', this.resize_listener);
+		}
+
+		$(window).off('resize', this.resize_listener);
 
 		this.$element.remove();
 
 		this.slider.api.removeEventListener(MSSliderEvent.RESERVED_SPACE_CHANGE, this.align, this);
 		this.slider.api.removeEventListener(MSSliderEvent.CHANGE_START , this.update , this);
 	};
-	
+
 	window.MSThumblist = MSThumblist;
 	MSSlideController.registerControl('thumblist' , MSThumblist);
-	
+
 })(jQuery);
 
 /* ================== bin-debug/js/pro/uicontrols/Bullets.js =================== */
@@ -8650,92 +8807,92 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 /* ================== bin-debug/js/pro/uicontrols/CircleTimer.js =================== */
 ;(function($){
-	
+
 	"use strict";
-	
+
 	var MSCircleTimer = function(options){
 		BaseControl.call(this);
-		
+
 		this.options.color 	= '#A2A2A2';
 		this.options.stroke = 10;
 		this.options.radius	= 4;
-		
+
 		this.options.autohide = false;
 		$.extend(this.options , options);
 	};
-	
+
 	MSCircleTimer.extend(BaseControl);
-	
+
 	var p = MSCircleTimer.prototype;
 	var _super = BaseControl.prototype;
-	
+
 	/* -------------------------------- */
-	
+
 	p.setup = function(){
 		var that = this;
 		_super.setup.call(this);
-		
+
 		this.$element = $('<div></div>')
 					.addClass(this.options.prefix + 'ctimer')
 					.appendTo(this.cont);
-					
+
 		this.$canvas = 	$('<canvas></canvas>')
 					.addClass('ms-ctimer-canvas')
-					.appendTo(this.$element);		
-		
+					.appendTo(this.$element);
+
 		this.$bar = $('<div></div>')
 					.addClass('ms-ctimer-bullet')
 					.appendTo(this.$element);
-		
+
 		if(!this.$canvas[0].getContext){
 			this.destroy();
 			this.disable = true;
 			return;
 		}
-		
-		
+
+
 		this.ctx		= this.$canvas[0].getContext('2d');
 		this.prog		= 0;
-		
+
 		this.__w = (this.options.radius + this.options.stroke/2) * 2;
 		this.$canvas[0].width  = this.__w;
 		this.$canvas[0].height = this.__w;
 
 		this.checkHideUnder(); // super method
 	};
-	
+
 	p.create = function(){
 		if(this.disable) return;
 		_super.create.call(this);
 		this.slider.api.addEventListener(MSSliderEvent.WAITING , this._update , this);
-		
+
 		var that = this;
-		this.$element.click(function(){
+		this.$element.on('click', function(){
 			if(that.slider.api.paused)
 				that.slider.api.resume();
 			else
 				that.slider.api.pause();
 		});
-		
+
 		this._update();
 	};
-	
+
 	p._update = function(){
 		var that = this;
 		$(this).stop(true).animate({prog:this.slider.api._delayProgress * 0.01} ,
 					 	{duration:200 , step:function(){that._draw();}});
 		//this.$bar[0].style.width = this.slider.api._delayProgress/100 * this.$element.width() + 'px';
 	};
-	
+
 	p._draw = function(){
 		this.ctx.clearRect(0 , 0,  this.__w ,  this.__w);
-		this.ctx.beginPath(); 
+		this.ctx.beginPath();
 		this.ctx.arc(this.__w * .5 , this.__w * .5 ,this.options.radius , Math.PI * 1.5 , Math.PI * 1.5 + 2 * Math.PI * this.prog, false);
 		this.ctx.strokeStyle = this.options.color;
 		this.ctx.lineWidth = this.options.stroke;
 		this.ctx.stroke();
 	};
-	
+
 	p.destroy = function(){
 		_super.destroy();
 		if(this.disable) return;
@@ -8743,7 +8900,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.slider.api.removeEventListener(MSSliderEvent.WAITING , this._update , this);
 		this.$element.remove();
 	};
-	
+
 	window.MSCircleTimer = MSCircleTimer;
 		MSSlideController.registerControl('circletimer' , MSCircleTimer);
 })(jQuery);
@@ -8956,35 +9113,35 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
  */
 
 ;(function($){
-	
+
 	window.MSGallery = function(id , slider){
 		this.id = id;
 		this.slider = slider;
-		
+
 		this.telement = $('#'+id);
-		
+
 		this.botcont = $('<div></div>').addClass('ms-gallery-botcont').appendTo(this.telement);
 		this.thumbcont = $('<div></div>').addClass('ms-gal-thumbcont hide-thumbs').appendTo(this.botcont);
 		this.playbtn  = $('<div></div>').addClass('ms-gal-playbtn').appendTo(this.botcont);
 		this.thumbtoggle  = $('<div></div>').addClass('ms-gal-thumbtoggle').appendTo(this.botcont);
-		
+
 		// adds required controls to slider
 		slider.control('thumblist' , {insertTo:this.thumbcont , autohide:false , dir:'h'});
 		slider.control('slidenum'  , {insertTo:this.botcont , autohide:false});
-		slider.control('slideinfo' , {insertTo:this.botcont , autohide:false});		
-		slider.control('timebar'   , {insertTo:this.botcont , autohide:false});		
-		slider.control('bullets'   , {insertTo:this.botcont , autohide:false});		
+		slider.control('slideinfo' , {insertTo:this.botcont , autohide:false});
+		slider.control('timebar'   , {insertTo:this.botcont , autohide:false});
+		slider.control('bullets'   , {insertTo:this.botcont , autohide:false});
 	};
-	
+
 	var p = MSGallery.prototype;
-	
+
 	p._init = function(){
 		var that = this;
-		
+
 		if(!this.slider.api.paused)
 			 this.playbtn.addClass('btn-pause');
-		 
-		this.playbtn.click(function(){
+
+		this.playbtn.on('click', function(){
 			if(that.slider.api.paused){
 				 that.slider.api.resume();
 				 that.playbtn.addClass('btn-pause');
@@ -8993,10 +9150,10 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 				 that.playbtn.removeClass('btn-pause');
 			}
 		});
-		
-		
-		this.thumbtoggle.click(function(){
-			
+
+
+		this.thumbtoggle.on('click', function(){
+
 			if(that.vthumbs){
 				//that.hideThumbs();
 				that.thumbtoggle.removeClass('btn-hide');
@@ -9009,15 +9166,15 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 				that.vthumbs = true;
 			}
 		});
-		
+
 	};
-	
+
 	p.setup = function(){
 		var that = this;
 		$(document).ready(function(){that._init();});
 	};
-	
-	
+
+
 })(jQuery);
 
 /* ================== bin-debug/js/pro/plugins/MSFlickrV2.js =================== */
@@ -9352,7 +9509,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.bgparallax = bgparallax/100;
 
 		slider.api.addEventListener(MSSliderEvent.INIT, this.init, this);
-		slider.api.addEventListener(MSSliderEvent.DESTROY, this.destory, this);	
+		slider.api.addEventListener(MSSliderEvent.DESTROY, this.destory, this);
 		slider.api.addEventListener(MSSliderEvent.CHANGE_END, this.resetLayers, this);
 		slider.api.addEventListener(MSSliderEvent.CHANGE_START, this.updateCurrentSlide, this);
 	};
@@ -9366,12 +9523,12 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		if( parallax == null ) {
 			parallax = 50;
 		}
-		
+
 		if( bgparallax == null ){
 			bgparallax = 40;
 		}
 
-		return new MSScrollParallax(slider, parallax, bgparallax, fade); 
+		return new MSScrollParallax(slider, parallax, bgparallax, fade);
 	};
 
 	var p = window.MSScrollParallax.prototype;
@@ -9390,7 +9547,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 				slide.$scrollParallaxCont = slide.layerController.$layers.parent();
 			}
 		}
-		
+
 		$(window).on('scroll', {that:this}, this.moveParallax).trigger('scroll');
 	};
 
@@ -9437,7 +9594,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 			out = offset - scrollTop;
 
 		if( out <= 0 ) {
-			
+
 			if( layers ){
 				if ( window._css3d ) {
 					layers[0].style[window._jcsspfx + 'Transform'] = 'translateY(' + -out * that.parallax + 'px) translateZ(0.4px)';
@@ -9447,10 +9604,10 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 					layers[0].style.top =  -out * that.parallax + 'px';
 				}
 			}
-			
+
 			that.updateSlidesBG(-out * that.bgparallax + 'px', true);
 
-			if ( layers && that.fade ) { 
+			if ( layers && that.fade ) {
 				layers.css('opacity',  (1 - Math.min(1, -out / slider.api.height)) );
 			}
 
@@ -9465,7 +9622,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 			that.updateSlidesBG('0px', false);
 
-			if ( layers && that.fade ) { 
+			if ( layers && that.fade ) {
 				layers.css('opacity',  1 );
 			}
 
@@ -9475,16 +9632,16 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 	p.updateSlidesBG = function(pos, fixed) {
 		var slides = this.slider.api.view.slideList,
-			position = ( fixed &&  !$.browser.msie && !$.browser.opera ? 'fixed' : '');
+			position = ( fixed &&  !window.MSBrowserInfo.msie && !window.MSBrowserInfo.opera ? 'fixed' : '');
 
 		for(var i = 0, l = slides.length; i!==l ; i++) {
 			if ( slides[i].hasBG ) {
-				slides[i].$imgcont[0].style.position = position; 
+				slides[i].$imgcont[0].style.position = position;
 				slides[i].$imgcont[0].style.top = pos;
 			}
 
 			if ( slides[i].$bgvideocont ){
-				slides[i].$bgvideocont[0].style.position = position; 
+				slides[i].$bgvideocont[0].style.position = position;
 				slides[i].$bgvideocont[0].style.top = pos;
 			}
 		}
@@ -9493,7 +9650,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 	p.destory = function () {
 		slider.api.removeEventListener(MSSliderEvent.INIT, this.init, this);
-		slider.api.removeEventListener(MSSliderEvent.DESTROY, this.destory, this);	
+		slider.api.removeEventListener(MSSliderEvent.DESTROY, this.destory, this);
 		slider.api.removeEventListener(MSSliderEvent.CHANGE_END, this.resetLayers, this);
 		slider.api.removeEventListener(MSSliderEvent.CHANGE_START, this.updateCurrentSlide, this);
 		$(window).off('scroll', this.moveParallax);
@@ -9563,7 +9720,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 /* ================== bin-debug/js/pro/plugins/MSStartOnAppear.js =================== */
 /**
  * Start on appear plugin for Master Slider.
- * 
+ *
  * @description This plugin prevents slider automatically initialization and inits slider when it appears inside of the browser window.
  * @version  1.0.0
  * @author Averta
@@ -9584,11 +9741,11 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.PId = PId++;
 		this.slider = slider;
 		this.$slider = slider.$element;
-		
+
 		if ( this.slider.options.startOnAppear ) {
 			// hold on slider
 			slider.holdOn();
-			$doc.ready($.proxy(this.init, this));
+			$doc.ready(this.init.bind(this));
 		}
 	};
 
@@ -9600,7 +9757,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 	 */
 	p.init = function (){
 		var api = this.slider.api;
-		$window.on('scroll.soa' + this.PId , $.proxy(this._onScroll, this)).trigger('scroll');
+		$window.on('scroll.soa' + this.PId , this._onScroll.bind(this)).trigger('scroll');
 	};
 
 	p._onScroll = function () {
@@ -9628,7 +9785,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 /**
  * Master Slider Filters Plugin
  * This plugin adds CSS3 filters to the slides, like brightness, grayscale, sepia, ... It works in major browser and devices but in IE `opacity` only supported.
- * 
+ *
  * @package Master Slider jQuery
  * @author Averta
  * @version  1.0.0a
@@ -9679,7 +9836,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 		this.slidesCount 	= view.slidesCount;
 		this.dimension 		= view[view.__dimension];
 		this.target 		= this.slider.options.filterTarget === 'slide' ? '$element' : '$bg_img';
-		this.filterName 	= $.browser.webkit ? 'WebkitFilter' : 'filter';
+		this.filterName 	= window.MSBrowserInfo.webkit ? 'WebkitFilter' : 'filter';
 
 		// override controller update callback
 		var superFun = view.controller.__renderHook.fun,
@@ -9696,26 +9853,26 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 	 * Apply css effect to slides based on slide position.
 	 * @param  {Number} value Current position of slider controller
 	 */
-	p.applyEffect = function (value) { 
+	p.applyEffect = function (value) {
 		var factor, slide;
 
 		for( var i = 0; i < this.slidesCount; ++i ) {
 			slide = this.slideList[i];
 			factor = Math.min(1 , Math.abs(value - slide.position) / this.dimension);
-			
+
 			if ( slide[this.target] ) {
-				if ( !$.browser.msie ) {
+				if ( !window.MSBrowserInfo.msie ) {
 					slide[this.target][0].style[this.filterName] = this.generateStyle(factor);
 				} else if ( this.filters.opacity != null ) {
 					slide[this.target].opacity( 1 - this.filters.opacity * factor);
 				}
-			}		
+			}
 		}
 	};
 
 	/**
 	 * Generate filter style based on slide distance factor
-	 * @param  {Number} factor 
+	 * @param  {Number} factor
 	 * @return {String} CSS style
 	 */
 	p.generateStyle = function (factor) {
@@ -9724,7 +9881,7 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
 
 		for ( var filter in this.filters ) {
 			unit = filterUnits[filter] || '';
-			style += filter + '(' + ( initialValues[filter] + (this.filters[filter] - initialValues[filter]) * factor) + ') ';			
+			style += filter + '(' + ( initialValues[filter] + (this.filters[filter] - initialValues[filter]) * factor) + ') ';
 		}
 
 		return style;
@@ -9842,3 +9999,18 @@ MSViewEvents.CHANGE_END	     	= 'slideChangeEnd';
         }
     }
 })(jQuery, window, document);
+/**
+ * Addon file, it will be appended to master slider front-end main js file.
+ */
+;( function ($) {
+
+    $(window).on('vc_reload', function() {
+        if ( window.MSReady ) {
+            for ( var i = 0, l = MSReady.length; i !== l; i++ ) {
+                MSReady[i].call( null, $ );
+            }
+        }
+    });
+
+	window.msCli = function(f){f=f||'pause';var m=masterslider_instances;for(var i in m){m[i].api[f]();}}
+})(jQuery);

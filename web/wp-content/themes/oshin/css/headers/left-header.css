@@ -179,3 +179,75 @@
 .left-strip-menu #be-sidemenu-content{
 	padding-top : 40px;
 }
+
+/**
+ * Static Left Header 
+ */
+.left-static-menu .be-sidemenu {
+    overflow-y: auto;
+}
+.left-static-menu #be-sidemenu-content {
+    padding : 35px;
+    min-height: 100%;
+    height : auto;
+}
+.left-static-menu .be-sidemenu .special-header-logo, 
+.left-static-menu .be-sidemenu .special-header-menu, 
+.left-static-menu .be-sidemenu .special-header-bottom-text {
+    padding: 0;
+    margin : 0;
+    padding : 20px 0;
+    flex-basis: 33.33%;
+    flex-grow: 1;
+}
+
+.left-static-menu .be-sidemenu .special-header-logo {
+	padding-top: 0;
+}
+
+.left-static-menu .be-sidemenu .special-header-bottom-text {
+	padding-bottom: 0;
+}
+
+.be-sidemenu-align-center  .special-header-menu .menu-item, 
+.be-sidemenu-align-center  .special-header-logo, 
+.be-sidemenu-align-center  .special-header-bottom-text {
+    text-align: center;
+}
+
+.be-sidemenu-align-left  .special-header-menu .menu-item, 
+.be-sidemenu-align-left  .special-header-logo, 
+.be-sidemenu-align-left  .special-header-bottom-text {
+    text-align: left;
+}
+
+.be-sidemenu-align-right  .special-header-menu .menu-item, 
+.be-sidemenu-align-right  .special-header-logo, 
+.be-sidemenu-align-right  .special-header-bottom-text {
+    text-align: right;
+}
+
+.left-static-menu .menu-container {
+    position: static;
+    overflow: hidden;
+    width : 100%;
+}
+
+.left-static-menu .special-header-bottom-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+}
+
+.left-static-menu .special-header-menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.be-sidemenu-align-right  .special-header-bottom-text {
+    align-items: flex-end;
+}
+.be-sidemenu-align-center  .special-header-bottom-text {
+    align-items: center;
+}

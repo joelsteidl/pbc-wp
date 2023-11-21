@@ -36,11 +36,11 @@ if(isset($be_themes_data['portfolio_hover']) && !empty($be_themes_data['portfoli
 } else {
 	$portfolio_hover_opacity = 80;
 }
-// if(isset($be_themes_data['portfolio_style']) && !empty($be_themes_data['portfolio_style'])) {
-// 	$portfolio_style = $be_themes_data['portfolio_style'];
-// } else {
-// 	$portfolio_style = 'portfolio';
-// }
+if(isset($be_themes_data['portfolio_style']) && !empty($be_themes_data['portfolio_style'])) {
+	$portfolio_style = $be_themes_data['portfolio_style'];
+} else {
+	$portfolio_style = 'portfolio';
+}
 // For Backward Compatibility for Grid Style
 if(isset($be_themes_data['portfolio_style']) && $be_themes_data['portfolio_style'] != 'portfolio'){
 	$be_wrap = '';
@@ -79,7 +79,7 @@ if(isset($be_themes_data['portfolio_style']) && $be_themes_data['portfolio_style
 						// }else {
 						// 	$gutter_width = 30 ;
 						// }
-						echo do_shortcode('[portfolio col= "'.$portfolio_col.'" gutter_width = "'.$gutter_width.'" show_filters= "no" filter = "categories" tax_name="portfolio_tags" category= "'.$term->slug.'" items_per_page="-1" pagination="none" overlay_color= "'.$portfolio_hover_color.'"]');
+						echo do_shortcode('[portfolio col= "'.$portfolio_col.'" gutter_width = "'.$gutter_width.'" show_filters= "no" filter = "categories" tax_name="portfolio_tags" tags= "'.$term->slug.'" items_per_page="-1" pagination="none" overlay_color= "'.$portfolio_hover_color.'"]');
 					else:
 						echo '<p class="inner-content">'.__( 'Apologies, but no results were found. Perhaps searching will help find a related post.', 'oshin' ).'</p>';
 					endif;

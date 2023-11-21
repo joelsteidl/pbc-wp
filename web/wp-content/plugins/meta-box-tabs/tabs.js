@@ -1,66 +1,60 @@
-/* global jQuery, google */
-
-jQuery( function ( $ )
-{
+( function ( window, document, $ ) {
 	'use strict';
 
-	/**
-	 * Refresh Google maps, make sure they're fully loaded
-	 * The problem is Google maps won't fully display when it's in hidden div (tab)
-	 * We need to find all maps and send the 'resize' command to force them to refresh
-	 *
-	 * @see https://developers.google.com/maps/documentation/javascript/reference
-	 *      ('resize' Event)
-	 *
-	 * @return void
-	 */
-	function refreshMap()
-	{
-		if ( typeof google !== 'object' || typeof google.maps !== 'object' )
+	function switchTab() {
+		$( '.rwmb-tab-nav' ).on( 'click', 'a', e => {
+			e.preventDefault();
+			showTab( e.target );
+		} );
+	}
+
+	function showTab( el ) {
+		var tab = el.closest( 'li' ).dataset.panel,
+			$wrapper = $( el ).closest( '.rwmb-tabs' ),
+			$tabs = $wrapper.find( '.rwmb-tab-nav > li' ),
+			$panels = $wrapper.find( '.rwmb-tab-panel' );
+
+		$tabs.removeClass( 'rwmb-tab-active' ).filter( '[data-panel="' + tab + '"]' ).addClass( 'rwmb-tab-active' );
+		$panels.hide().filter( '.rwmb-tab-panel-' + tab ).show();
+
+		rwmb.$document.trigger( 'mb_init_editors' );
+
+		// Refresh maps, make sure they're fully loaded, when it's in hidden div (tab).
+		$( window ).trigger( 'rwmb_map_refresh' );
+	}
+
+	// Set active tab based on visible pane to better works with Meta Box Conditional Logic.
+	function tweakForConditionalLogic() {
+		if ( $( '.rwmb-tab-active' ).is( 'visible' ) ) {
 			return;
+		}
 
-		$( '.rwmb-map-field' ).each( function ()
-		{
-			var controller = $( this ).data( 'mapController' );
+		// Find the active pane.
+		var activePane = $( '.rwmb-tab-panel[style*="block"]' ).index();
+		if ( activePane >= 0 ) {
+			$( '.rwmb-tab-nav li' ).removeClass( 'rwmb-tab-active' ).eq( activePane ).addClass( 'rwmb-tab-active' );
+		}
+	}
 
-			if ( typeof controller !== 'undefined' && typeof controller.map !== 'undefined' )
-			{
-				google.maps.event.trigger( controller.map, 'resize' );
+	function showValidateErrorFields() {
+		var inputSelectors = 'input[class*="rwmb-error"], textarea[class*="rwmb-error"], select[class*="rwmb-error"], button[class*="rwmb-error"]';
+		$( document ).on( 'after_validate', 'form', e => {
+			var $input = $( e.target ).find( inputSelectors ),
+				$panel = $input.closest( '.rwmb-tab-panel' );
+			if ( $panel.length ) {
+				showTab( $input.closest( '.rwmb-tabs' ).find( 'li[data-panel="' + $panel.data( 'panel' ) + '"] a' )[ 0 ] );
 			}
 		} );
 	}
 
-	$( '.rwmb-tab-nav' ).on( 'click', 'a', function ( e )
-	{
-		e.preventDefault();
+	$( document ).on( 'mb_ready', function () {
+		switchTab();
+		tweakForConditionalLogic();
+		showValidateErrorFields();
 
-		var $li = $( this ).parent(),
-			panel = $li.data( 'panel' ),
-			$wrapper = $li.closest( '.rwmb-tabs' ),
-			$panel = $wrapper.find( '.rwmb-tab-panel-' + panel );
+		$( '.rwmb-tab-active a' ).trigger( 'click' );
 
-		$li.addClass( 'rwmb-tab-active' ).siblings().removeClass( 'rwmb-tab-active' );
-		$panel.show().siblings().hide();
-
-		refreshMap();
+		// Remove wrapper. Use Meta Box's seamless style.
+		$( '.rwmb-tabs-no-wrapper' ).closest( '.postbox' ).removeClass( 'rwmb-default' ).addClass( 'rwmb-seamless' );
 	} );
-
-	// Set active tab based on visible pane to better works with Meta Box Conditional Logic
-	if ( ! $( '.rwmb-tab-active').is( 'visible' ) )
-	{
-		// Find the active pane
-		var activePane = $( '.rwmb-tab-panel[style*="block"]' ).index();
-
-		if (activePane >= 0 )
-		{
-			$( '.rwmb-tab-nav li' ).removeClass( 'rwmb-tab-active' );
-
-			$( '.rwmb-tab-nav li' ).eq( activePane ).addClass( 'rwmb-tab-active' );
-		}
-	}
-
-	$( '.rwmb-tab-active a' ).trigger( 'click' );
-
-	// Remove wrapper
-	$( '.rwmb-tabs-no-wrapper' ).closest( '.postbox' ).addClass( 'rwmb-tabs-no-controls' );
-} );
+} )( window, document, jQuery );

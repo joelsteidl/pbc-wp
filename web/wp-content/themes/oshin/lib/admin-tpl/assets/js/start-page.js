@@ -1,6 +1,7 @@
 (function($) {
     var import_log = '',
         data = [],
+        curPurchaseCode = '',
         windHref = window.location.href;
 
     function admin_tabs() {
@@ -33,7 +34,7 @@
 
     function copy_system_status() {
         var stat_text = $('.be-system-status').text();
-        var clipboard = new Clipboard(document.querySelectorAll('#be-copy-status'), {
+        var clipboard = new ClipboardJS(document.querySelectorAll('#be-copy-status'), {
             text: function() {
                 return stat_text;
             }
@@ -61,7 +62,7 @@
         if (window.location.hash) {
             tab = window.location.hash;
             tab = tab.replace('#', '');
-            go_to_tab(tab);
+            //go_to_tab(tab);
         }
     }
 
@@ -85,22 +86,78 @@
         // })
 
         $('#be_start_updater').submit(function(e) {
+            e.preventDefault();
             var token_field = $('#be_purchase_code').val(),
                 security = $('#purchase_nonce').val();
-
+            var newsletterEmail = $('#be-newsletter-email').val();
+            if( token_field === curPurchaseCode ) {
+                // $('.token_check').html($('<div class="notic notic-warning ">No Changes have been made</div>'));
+                // return;
+            }
+            $('.token_check').html('<div class="notic notic-warning">Please wait...</div>');
             $.ajax({
                 url: ajaxurl,
                 type: 'POST',
                 data: {
                     action: 'be_save_purchase_code',
                     token: token_field,
-                    security: security
+                    security: security,
+                    email: newsletterEmail
                 },
                 success: function(response) {
-                    $('.token_check').html(response);
+                    if(response) {
+                        cachePurchaseCode(token_field);
+                        $('.token_check').html(response.msg);  
+                        if(response.res){
+                            setTimeout(function() {
+                                window.location.reload();
+                            },1500);
+                        }      
+                    }else {
+                        $('.token_check').html('<div class="notic notic-warning">Unable to save Purchase Code</div>');
+                    }
+                },
+                error : function(response) {
+                    $('.token_check').html('<div class="notic notic-warning">Unable to save Purchase Code</div>');
                 }
             })
+        });
+
+        $('body').find('#deactivate-license').on('click', function(e) {
             e.preventDefault();
+
+            if ( confirm("Deactivating license will also deactivate the Oshine Modules and Oshine Core Plugins. Are you confirm?") == false ) {
+                return false;
+            }
+
+            var token_field = $(this).attr('data-license-key'),
+            security = $('#purchase_nonce').val();
+            $('.token_check').html('<div class="notic notic-warning">Please wait...</div>');
+
+            $.ajax({
+                url: ajaxurl,
+                type: 'POST',
+                data: {
+                    action: 'be_deactivate_purchase_code',
+                    token: token_field,
+                    security: security,
+                },
+                success: function(response) {
+                    if ( response ) {
+                        $( '.token_check' ).html( response.msg );  
+                        if ( response.res ) {
+                            setTimeout( function() {
+                                location.reload();
+                            }, 1500 );
+                        }      
+                    } else {
+                        $('.token_check').html('<div class="notic notic-warning ">Unable to deactivate Purchase Code</div>');
+                    }
+                },
+                error : function(response) {
+                    $('.token_check').html('<div class="notic notic-warning ">Unable to deactivate Purchase Code</div>');
+                }
+            })
         });
         
         $('#be-newsletter-form').submit(function (e) {
@@ -126,7 +183,7 @@
 
     }
 
-    function ajax_handle(demo, action, loader, next) {
+    function ajax_handle(demo, action, loader, next, attempt=0) {
         $.ajax({
             url: ajaxurl,
 
@@ -134,10 +191,37 @@
             data: {
                 action: action,
                 demo: demo,
+                attempt: attempt,
             },
             beforeSend: function() {
                 $(loader).removeClass('click');
                 $(loader).addClass('loading');
+            },
+            statusCode: {
+                504: function(res) {
+                    //console.log("504 status code",res);
+                    attempt = attempt+1;
+                    if(attempt<25){
+                        console.log("Resume Import");
+                        ajax_handle(demo, action, loader, next, attempt);
+                    }else{
+                        console.log("Failed to Import");
+                    }
+                },
+                503: function(res) {
+                    //console.log("503 status code",res);
+                    attempt = attempt+1;
+                    if(attempt<25){
+                        console.log("Resume Import");
+                        ajax_handle(demo, action, loader, next, attempt);
+                    }else{
+                        console.log("Failed to Import");
+                    }
+                }
+
+            },
+            error: function(e) {
+                console.log(e);
             },
             success: function(resp) {
                 $(loader).removeClass('loading');
@@ -159,7 +243,7 @@
                     theme: 'modern',
                     content: '',
                     onOpen: function() {
-                        new Clipboard(document.querySelectorAll('.copy-log'), {
+                        new ClipboardJS(document.querySelectorAll('.copy-log'), {
                             text: function() {
                                 return import_log;
                             }
@@ -242,7 +326,23 @@
                                                 selc = data[current];
                                                 el = $('.be_demo_content').find('[data-value="' + selc + '"]');
                                                 ajax_handle(demo, ajaxSlug + '_' + selc, el, function(resp6) {
+                                                    current = current + 1;
                                                     import_log += resp6 + "\n";
+                                                    if (dataSize >= 6) {
+                                                        selc = data[current];
+                                                        el = $('.be_demo_content').find('[data-value="' + selc + '"]');
+                                                        ajax_handle(demo, ajaxSlug + '_' + selc, el, function(resp7) {
+                                                            current = current + 1;
+                                                            import_log += resp7 + "\n";
+                                                            if (dataSize >= 7) {
+                                                                selc = data[current];
+                                                                el = $('.be_demo_content').find('[data-value="' + selc + '"]');
+                                                                ajax_handle(demo, ajaxSlug + '_' + selc, el, function(resp8) {
+                                                                    import_log += resp8 + "\n";
+                                                                });
+                                                            }
+                                                        });
+                                                    }
                                                 });
                                             }
                                         })
@@ -258,6 +358,11 @@
             }
             e.preventDefault();
         });
+    }
+
+    function cachePurchaseCode(code) {
+        code = code || $('#be_purchase_code').val();
+        curPurchaseCode = code;
     }
 
     function alret_message(message, confirmtext, submitform, btn_class ) {
@@ -497,19 +602,37 @@
         });
     }
 
+    function be_admin_accordion(){
+        var acc = document.getElementsByClassName("be-admin-accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+        acc[i].addEventListener("click", function() {
+            /* Toggle between hiding and showing the active panel */
+            var panel = this.nextElementSibling;
+            if(panel.style.maxHeight){
+                panel.style.maxHeight = null;
+            }else{
+                panel.style.maxHeight = panel.scrollHeight + "px";
+            }
+        });
+        }
+    }
 
     $(document).ready(function() {
+        cachePurchaseCode();
         check_import_requires_plugins();
         form_token_check();
         admin_tabs();
         form_installer();
         radio_list();
         fix_button();
-        go_to_tab();
+        //go_to_tab();
         tabs_url_navigation();
         copy_system_status();
         check_selected_data();
         avilable_settings();
+        be_admin_accordion();
         $('#be_import_form').fixedSidebar('.content', '.content', '.c-8');
         $("select.image-picker").imagepicker({
             show_label  : true,

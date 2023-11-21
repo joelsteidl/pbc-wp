@@ -36,11 +36,11 @@ if(isset($be_themes_data['portfolio_hover']) && !empty($be_themes_data['portfoli
 } else {
 	$portfolio_hover_opacity = 80;
 }
-// if(isset($be_themes_data['portfolio_style']) && !empty($be_themes_data['portfolio_style'])) {
-// 	$portfolio_style = $be_themes_data['portfolio_style'];
-// } else {
-// 	$portfolio_style = 'portfolio';
-// }
+if(isset($be_themes_data['portfolio_style']) && !empty($be_themes_data['portfolio_style'])) {
+	$portfolio_style = $be_themes_data['portfolio_style'];
+} else {
+	$portfolio_style = 'portfolio';
+}
 // For Backward Compatibility for Grid Style
 if(isset($be_themes_data['portfolio_style']) && $be_themes_data['portfolio_style'] != 'portfolio'){
 	$be_wrap = '';
