@@ -1,0 +1,22 @@
+name: Deploy PBC
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to prod
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{secrets.SSH_HOST}}
+          username: ${{ secrets.SSH_USERNAME }}
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |
+            cd ~/providencedenver.org/web/
+            git pull
+            wp db export pbc_wp_prod_`date +%Y-%m-%d-%H.%M.%S`.sql --gzip
+            wp core update-db
