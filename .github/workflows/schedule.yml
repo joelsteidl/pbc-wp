@@ -1,0 +1,55 @@
+name: Security Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+
+jobs:
+  process-queue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Login and check for changes
+        uses: garygrossgarten/github-action-ssh@release
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          privateKey: ${{ secrets.SSH_KEY }}
+          command: |
+            cd ~/providencedenver.org/web
+            status=$(git status)
+            if [[ $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
+              if [[ $status =~ "Untracked files:" && $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
+                  echo "UNTRACKED_FILE=$status" >> $GITHUB_ENV
+                  rm -rf wp-content/plugins/insert-headers-and-footers/
+              fi
+            fi
+
+      - name: Send mail
+        if: env.UNTRACKED_FILE
+        uses: dawidd6/action-send-mail@v3
+        with:
+          # Required mail server address if not connection_url:
+          server_address: smtp.gmail.com
+          # Server port, default 25:
+          server_port: 465
+          # Optional whether this connection use TLS (default is true if server_port is 465)
+          secure: true
+          # Optional (recommended) mail server username:
+          username: ${{ secrets.MAIL_USERNAME }}
+          # Optional (recommended) mail server password:
+          password: ${{ secrets.MAIL_PASSWORD }}
+          # Required mail subject:
+          subject: PBC Github Actions Security Check
+          # Required recipients' addresses:
+          to: joelsteidl@gmail.com
+          # Required sender full name (address can be skipped):
+          from: What The HellWeek # <user@example.com>
+          # Optional plain body:
+          body: ${{ env.UNTRACKED_FILE }}
+          # Optional recipient of the email response:
+          reply_to: whatthehellweek@s-12.com
+          # Optional unsigned/invalid certificates allowance:
+          ignore_cert: true
+          # Optional priority: 'high', 'normal' (default) or 'low'
+          priority: low
