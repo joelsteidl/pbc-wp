@@ -20,7 +20,7 @@ jobs:
             status=$(git status)
             if [[ $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
               if [[ $status =~ "Untracked files:" && $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
-                  echo "UNTRACKED_FILE=$status" >> $GITHUB_ENV
+                  echo "UNTRACKED_FILE=${status}" >> $GITHUB_ENV
                   rm -rf wp-content/plugins/insert-headers-and-footers/
               fi
             fi
