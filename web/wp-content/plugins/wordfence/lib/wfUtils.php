@@ -886,7 +886,7 @@ class wfUtils {
 			}
 			$skipToNext = false;
 			if ($trustedProxies === null) {
-				$trustedProxies = explode("\n", wfConfig::get('howGetIPs_trusted_proxies', ''));
+				$trustedProxies = self::unifiedTrustedProxies();
 			}
 			foreach(array(',', ' ', "\t") as $char){
 				if(strpos($item, $char) !== false){
@@ -943,6 +943,29 @@ class wfUtils {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Returns an array of all trusted proxies, combining both the user-entered ones and those from the selected preset.
+	 * 
+	 * @return string[]
+	 */
+	public static function unifiedTrustedProxies() {
+		$trustedProxies = explode("\n", wfConfig::get('howGetIPs_trusted_proxies', ''));
+		
+		$preset = wfConfig::get('howGetIPs_trusted_proxy_preset');
+		$presets = wfConfig::getJSON('ipResolutionList', array());
+		if (is_array($presets) && isset($presets[$preset])) {
+			$testIPs = array_merge($presets[$preset]['ipv4'], $presets[$preset]['ipv6']);
+			foreach ($testIPs as $val) {
+				if (strlen($val) > 0) {
+					if (wfUtils::isValidIP($val) || wfUtils::isValidCIDRRange($val)) {
+						$trustedProxies[] = $val;
+					}
+				}
+			}
+		}
+		return $trustedProxies;
 	}
 
 	/**
@@ -3120,6 +3143,52 @@ class wfUtils {
 			$encoded = json_encode($data);
 		}
 		return $encoded;
+	}
+	
+	/**
+	 * Convenience function to extract a matched pattern from a string. If $pattern has no matching groups, the entire
+	 * matched portion is returned. If it has at least one matching group, the first one is returned (others are 
+	 * ignored). If there is no match, false is returned.
+	 * 
+	 * @param string $pattern
+	 * @param string $subject
+	 * @param bool $expandToLine Whether or not to expand the captured value to include the entire line's contents
+	 * @return false|string
+	 */
+	public static function pregExtract($pattern, $subject, $expandToLine = false) {
+		if (preg_match($pattern, $subject, $matches, PREG_OFFSET_CAPTURE)) {
+			if (count($matches) > 1) {
+				$start = $matches[1][1];
+				$text = $matches[1][0];
+				$end = $start + strlen($text);
+			}
+			else {
+				$start = $matches[0][1];
+				$text = $matches[0][0];
+				$end = $start + strlen($text);
+			}
+			
+			if ($expandToLine) {
+				if (preg_match_all('/[\r\n]/', substr($subject, 0, $start), $matches, PREG_OFFSET_CAPTURE)) {
+					$start = $matches[0][count($matches[0]) - 1][1] + 1;
+				}
+				else {
+					$start = 0;
+				}
+				
+				if (preg_match('/[\r\n]/', $subject, $matches, PREG_OFFSET_CAPTURE, $end)) {
+					$end = $matches[0][1];
+				}
+				else {
+					$end = strlen($subject) - 0;
+				}
+				
+				$text = substr($subject, $start, $end - $start);
+			}
+			
+			return $text;
+		}
+		return false;
 	}
 	
 	/**

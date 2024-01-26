@@ -316,8 +316,12 @@ class MonsterInsights_Report {
 
 			return array(
 				'success' => false,
-				'error'   => sprintf( __( 'You must be properly authenticated with MonsterInsights to use our reports. Please use our %1$ssetup wizard%2$s to get started.', 'google-analytics-for-wordpress' ), '<a href=" ' . $url . ' ">', '</a>' ),
-				// Translators: Wizard link tag starts with url, Wizard link tag ends.
+				'error'   => sprintf(
+					/* translators: Placeholders add a link to the Setup Wizard page. */
+					__( 'You must be properly authenticated with MonsterInsights to use our reports. Please use our %1$ssetup wizard%2$s to get started.', 'google-analytics-for-wordpress' ),
+					'<a href=" ' . $url . ' ">',
+					'</a>'
+				),
 				'data'    => array(),
 			);
 		}

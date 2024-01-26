@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'OSHIN_THEME_VERSION' ) ) {
-	define( 'OSHIN_THEME_VERSION', '7.1.6' );
+	define( 'OSHIN_THEME_VERSION', '7.1.8' );
 }
 
 load_theme_textdomain( 'oshin', get_template_directory() . '/languages' );
@@ -24,6 +24,19 @@ if ( ! function_exists( 'be_is_theme_valid' ) ) {
 			return empty( $invalid_theme ) ? true : false;
 		}
 		return false;
+	}
+}
+
+//get blog attribute
+if ( ! function_exists( 'be_get_blog_attr' ) ) {
+	function be_get_blog_attr( $blog_attr ) {
+		if ( empty( $blog_attr ) ) {
+			$blog_attr = array(
+				'style' => '',
+				'gutter_width' => '',
+			);
+		} 
+		return $blog_attr;
 	}
 }
 
@@ -1457,7 +1470,8 @@ add_filter( 'protected_title_format', function( $content ) {
 //print post title
 if ( ! function_exists( 'be_echo_post_title' ) ) {
 	function be_echo_post_title() {
-		if ( function_exists( 'is_single' ) && is_single() ) {
+		global $blog_attr;
+		if ( function_exists( 'is_single' ) && is_single() && ( empty( $blog_attr ) || empty( $blog_attr['style'] ) ||  'shortcodes' != $blog_attr['style'] ) ) {
 			echo '<h1 class="post-title">'.get_the_title(get_the_ID()).'</h1>';
 		} else {
 			echo '<h2 class="post-title"><a href="'.get_permalink(get_the_ID()).'">'.get_the_title(get_the_ID()).'</a></h2>';

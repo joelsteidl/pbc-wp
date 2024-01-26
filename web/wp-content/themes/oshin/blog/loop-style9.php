@@ -1,6 +1,7 @@
 <?php
 $page_id = be_get_page_id();
 global $blog_attr, $more_text, $be_themes_data;
+$blog_attr = be_get_blog_attr( $blog_attr );
 $post_classes = get_post_class();
 $post_format = get_post_format();
 $post_classes = implode( ' ', $post_classes );

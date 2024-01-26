@@ -248,6 +248,38 @@ function monsterinsights_ajax_dismiss_semrush_cta() {
 
 add_action( 'wp_ajax_monsterinsights_vue_dismiss_semrush_cta', 'monsterinsights_ajax_dismiss_semrush_cta' );
 
+
+/**
+ * Dismiss AISEO plugin call-to-action
+ *
+ * @access public
+ * @since 8.22.1
+ */
+function monsterinsights_vue_dismiss_aiseo_cta() {
+	check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+
+	if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+		return;
+	}
+
+	// Deactivate the notice
+	if ( update_option( 'monsterinsights_dismiss_aiseo_cta', 'yes' ) ) {
+		// Return true
+		wp_send_json( array(
+			'dismissed' => 'yes',
+		) );
+		wp_die();
+	}
+
+	// If here, an error occurred
+	wp_send_json( array(
+		'dismissed' => 'no',
+	) );
+	wp_die();
+}
+
+add_action( 'wp_ajax_monsterinsights_vue_dismiss_aiseo_cta', 'monsterinsights_vue_dismiss_aiseo_cta' );
+
 /**
  * Get the sem rush cta dismiss status value
  */
@@ -262,6 +294,24 @@ function monsterinsights_get_sem_rush_cta_status() {
 }
 
 add_action( 'wp_ajax_monsterinsights_get_sem_rush_cta_status', 'monsterinsights_get_sem_rush_cta_status' );
+
+/**
+ * Checks if AISEO call-to-action is dismissed.
+ *
+ * @since 8.22.1
+ * @return void
+ */
+function monsterinsights_get_aiseo_cta_status() {
+	check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+
+	$dismissed_cta = get_option( 'monsterinsights_dismiss_aiseo_cta', 'no' );
+
+	wp_send_json( array(
+		'dismissed' => $dismissed_cta,
+	) );
+}
+
+add_action( 'wp_ajax_monsterinsights_get_aiseo_cta_status', 'monsterinsights_get_aiseo_cta_status' );
 
 function monsterinsights_handle_get_plugin_info() {
 

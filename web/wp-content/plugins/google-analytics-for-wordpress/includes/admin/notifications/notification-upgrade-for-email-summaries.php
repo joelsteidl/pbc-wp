@@ -24,8 +24,12 @@ final class MonsterInsights_Notification_Upgrade_For_Email_Summaries extends Mon
 	 */
 	public function prepare_notification_data( $notification ) {
 		$notification['title'] = __( 'Get Weekly Email Reports', 'google-analytics-for-wordpress' );
-		// Translators: upgrade for email summaries notification content
-		$notification['content'] = sprintf( __( 'Wouldn’t it be easy if you could get your website’s performance report in your email inbox every week? With Email Summaries, you can view all your important stats in a simple report that’s delivered straight to your inbox. <br><br>You get an overview of your site\'s performance without logging in to WordPress or going through different analytics reports. %sUpgrade to MonsterInsights Pro%s to enable the Email Summaries feature.', 'google-analytics-for-wordpress' ), '<a href="' . $this->get_upgrade_url() . '" target="_blank">', '</a>' );
+		$notification['content'] = sprintf(
+			/* translators: Placeholders add a link to an article. */
+			__( 'Wouldn’t it be easy if you could get your website’s performance report in your email inbox every week? With Email Summaries, you can view all your important stats in a simple report that’s delivered straight to your inbox. <br><br>You get an overview of your site\'s performance without logging in to WordPress or going through different analytics reports. %1$sUpgrade to MonsterInsights Pro%2$s to enable the Email Summaries feature.', 'google-analytics-for-wordpress' ),
+			'<a href="' . $this->get_upgrade_url() . '" target="_blank">',
+			'</a>'
+		);
 		$notification['btns']    = array(
 			"get_monsterinsights_pro" => array(
 				'url'         => $this->get_upgrade_url(),

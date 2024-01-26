@@ -32,14 +32,12 @@ class Tatsu_Store {
 					//$response = wp_remote_get( "https://www.brandexponents.com/subscribe/be-subscribe.php?email=$email&list_name=$list_name" );
 					$response = wp_remote_get( "https://brandexponents.com/api.php?email=$email" );
 					$body = wp_remote_retrieve_body( $response );
-					$response_data = json_decode( $body )->code;
-		
-					if ( $response_data == 'duplicate_parameter' ) {
+					$response_data = json_decode( $body );
+					if ( ! empty( $response_data ) && ! empty( $response_data->code ) && $response_data->code == 'duplicate_parameter' ) {
 						$msg .= '<div class="notic notic-warning ">Unable to Save Email or Email Already in use</div>';
 					} else {
-						if ( update_option( 'exponent_newsletter_email', $email ) ) {
-							$msg .= '<div class="notic notic-success ">Email Saved Successfully</div>';
-						}
+						update_option( 'exponent_newsletter_email', $email );
+						$msg .= '<div class="notic notic-success ">Email Saved Successfully</div>';
 					}
 				}
 			}

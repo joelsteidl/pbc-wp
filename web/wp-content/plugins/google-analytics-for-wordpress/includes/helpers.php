@@ -1361,7 +1361,9 @@ function monsterinsights_detect_tracking_code_error( $body ) {
 	}
 
 	if ( false === strpos( $body, '__gtagTracker' ) ) {
-		$errors[] = $cache_error;
+		if ( ! isset ( $errors ) ) {
+			$errors[] = $cache_error;
+		}
 
 		return $errors;
 	}

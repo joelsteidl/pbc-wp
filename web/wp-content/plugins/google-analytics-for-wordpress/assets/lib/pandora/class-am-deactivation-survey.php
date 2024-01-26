@@ -73,6 +73,11 @@ if ( ! class_exists( 'AM_Deactivation_Survey' ) ) {
 			}
 
 			$url          = network_site_url( '/' );
+
+			if ( ! function_exists( 'monsterinsights_is_dev_url' ) ) {
+				return false;
+			}
+
 			$is_local_url = monsterinsights_is_dev_url( $url );
 
 			return $is_local_url;

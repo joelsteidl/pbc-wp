@@ -143,7 +143,12 @@ class BEThemeImporter {
           'v49' => 'V49 Split Screen Portfolio',   
           'v50' => 'V50 Title Carousel Portfolio',  
           'v51' => 'V51 Modern Coworking Space',                                 
-          'v52' => 'V52 Writer / Author',                                 
+          'v52' => 'V52 Writer / Author', 
+          'v53' => 'V53 Photography', 
+          'v54' => 'V54 Portfolio',
+          'v55' => 'V55 Artwork', 
+          'v57' => 'V57 Oshine Agency', 
+          'v58' => 'V58 Fashion Photographer',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }
@@ -166,6 +171,13 @@ class BEThemeImporter {
             <div class="c-4 content">
             <h3 style="">Choose the contents </h3>
             <ul class="radio-list be_demo_content">
+            <li class="theme_options" data-value="import_theme_options" class="click">
+              <div class="loader"><span class="circle"></span></div>
+                <div class="radio-option"><span class="checkmark">
+    <div class="checkmark_stem"></div>
+    <div class="checkmark_kick"></div>
+</span></div><?php esc_html_e( 'Options Panel Settings', 'be-functions' ); ?>
+            </li>
             <li class="demo_content" data-value="set_demo_content" class="click">
             <div class="loader"><span class="circle"></span></div>
                 <div class="radio-option"><span class="checkmark">
@@ -174,14 +186,7 @@ class BEThemeImporter {
 </span></div><?php esc_html_e( 'Content ( Posts, Pages and other post types )', 'be-functions' ); ?>
 
               </li>
-              <li class="theme_options" data-value="import_theme_options" class="click">
-              <div class="loader"><span class="circle"></span></div>
-                <div class="radio-option"><span class="checkmark">
-    <div class="checkmark_stem"></div>
-    <div class="checkmark_kick"></div>
-</span></div><?php esc_html_e( 'Options Panel Settings', 'be-functions' ); ?>
-              </li>
-
+              
               <li class="typehub_options" data-value="import_typehub_options" class="click">
               <div class="loader"><span class="circle"></span></div>
                 <div class="radio-option"><span class="checkmark">

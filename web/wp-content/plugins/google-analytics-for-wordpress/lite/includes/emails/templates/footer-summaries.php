@@ -28,8 +28,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 								style="padding-top: 30px;padding-right: 40px;padding-bottom: 0;padding-left: 40px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #828282;font-family: Helvetica;font-size: 12px;line-height: 20px;text-align: left;">
 								<!-- Footer content -->
 								<?php
-								/* translators: %s - link to a site. */
-								$footer = sprintf( esc_html__( 'To make sure you keep getting these emails, please add %s to your address book or whitelist us. Want out of the loop? %s', 'google-analytics-for-wordpress' ), '<a href="mailto:' . $from_address . '" style="color:#4B9BF0;text-decoration:none;">' . $from_address . '</a>', '<a href="' . $settings_tab_url . '" target="_blank" style="color:#4B9BF0;text-decoration:none;">Unsubscribe.</a>' );
+								$footer = sprintf(
+									/* translators: Placeholders add links to form addresses and settings page. */
+									esc_html__( 'To make sure you keep getting these emails, please add %1$s to your address book or whitelist us. Want out of the loop? %2$sUnsubscribe%3$s.', 'google-analytics-for-wordpress' ),
+									'<a href="mailto:' . $from_address . '" style="color:#4B9BF0;text-decoration:none;">' . $from_address . '</a>',
+									'<a href="' . $settings_tab_url . '" target="_blank" style="color:#4B9BF0;text-decoration:none;">',
+									'</a>'
+								);
 								echo apply_filters( 'mi_email_summaries_footer_text', $footer ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 								?>
 							</td>

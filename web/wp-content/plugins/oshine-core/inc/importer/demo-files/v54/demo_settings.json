@@ -1,0 +1,13 @@
+{
+	"home_page_title": "Home v54",
+	"menus": {
+		"main_nav": "Main Menu v54"
+	},
+	"nav_menus":{"12":"Main Menu v54"},
+	"tatsu_active_header":"portfolio-header",
+	"tatsu_active_footer":"portfolio-footer",
+	"content_plugins": {
+		"be-portfolio-post": "BE Portfolio Post",
+		"safe-svg":"Safe SVG"
+	}
+}

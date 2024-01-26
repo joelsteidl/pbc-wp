@@ -932,7 +932,7 @@ function monsterinsights_maybe_add_wp_php_version_notification()
 add_action('admin_init', 'monsterinsights_maybe_add_wp_php_version_notification');
 
 /**
- * Add notification for Year In Review report for year 2021.
+ * Add notification for Year In Review report for year 2023.
  *
  * @return void
  * @since 7.13.2
@@ -941,15 +941,15 @@ add_action('admin_init', 'monsterinsights_maybe_add_wp_php_version_notification'
 function monsterinsights_year_in_review_notification()
 {
 
-	// Check if dates are between Jan 1st 2022 & 13th Jan 2022.
-	if (monsterinsights_date_is_between('2022-01-01', '2022-01-14')) {
+	// Check if dates are between Jan 1st 2023 & 14th Jan 2023.
+	if (monsterinsights_date_is_between('2023-01-01', '2023-01-14')) {
 
 		$notification['id']      = 'monsterinsights_notification_year_in_review';
 		$notification['type']    = array('basic', 'lite', 'master', 'plus', 'pro');
-		$notification['start']   = '2022-01-01';
-		$notification['end']     = '2022-01-14';
-		$notification['title']   = esc_html__('View 2021 Year in Review report!', 'google-analytics-for-wordpress');
-		$notification['content'] = esc_html__('See how your website performed this year and find tips along the way to help grow even more in 2022!', 'google-analytics-for-wordpress');
+		$notification['start']   = '2023-01-01';
+		$notification['end']     = '2023-01-14';
+		$notification['title']   = esc_html__('View 2023 Year in Review report!', 'google-analytics-for-wordpress');
+		$notification['content'] = esc_html__('See how your website performed this year and find tips along the way to help grow even more in 2024!', 'google-analytics-for-wordpress');
 		$notification['btns']    = array(
 			'learn_more' => array(
 				'url'  => esc_url(admin_url('admin.php?page=monsterinsights_reports#/year-in-review')),
@@ -964,22 +964,52 @@ function monsterinsights_year_in_review_notification()
 
 add_action('admin_init', 'monsterinsights_year_in_review_notification');
 
+/**
+ * Avoid UI errors by filtering eCommerce data when the addon is missing.
+ * For now, it will be applied only to the `yearinreview` report.
+ *
+ * @param $data Array Report data.
+ * @param $name string Report name
+ * @param $report Object Report object.
+ * @return mixed
+ */
+function monsterinsights_year_in_review_check_for_ecommerce($data, $name, $report) {
+
+	if ( $name === 'yearinreview' && ! class_exists( 'MonsterInsights_eCommerce' ) ) {
+		unset($data['data']['ecommerce']);
+	}
+
+	return $data;
+}
+add_filter('monsterinsights_vue_reports_data', 'monsterinsights_year_in_review_check_for_ecommerce', 3, 10 );
+
 
 /**
  * Dynamic dates for Year In Review report
  */
 function monsterinsights_yearinreview_dates()
 {
-	$current_date = date('Y-m-d'); // phpcs:ignore
-	$current_year = date('Y'); // phpcs:ignore
+	$current_date = wp_date('Y-m-d');
+	$current_year = wp_date('Y');
 	$report_year = $current_year - 1;
+	$report_year = 2023;
+	$next_year = 2024;
 	$show_report = false;
+
 	$next_year = (string) $report_year + 1;
-	$show_report_start_date = date('Y-m-d', strtotime("Jan 01, {$current_year}")); // phpcs:ignore
-	$show_report_end_date = date('Y-m-d', strtotime("Jan 14, {$current_year}")); // phpcs:ignore
-	if (($current_date >= $show_report_start_date) && ($current_date <= $show_report_end_date)) {
+	$show_report_start_date = wp_date( 'Y-m-d', strtotime( "Jan 01, " . $current_year ) );
+	$show_report_end_date = wp_date( 'Y-m-d', strtotime( "Jan 14, " . $current_year ) );
+	if (
+		$current_date >= $show_report_start_date
+		&& $current_date <= $show_report_end_date 
+	) {
 		$show_report = true;
 	}
+
+	if ( function_exists( 'monsterinsights_is_debug_mode' ) && monsterinsights_is_debug_mode() ) {
+		$show_report = true;
+	}
+
 	return [
 		'report_year' => $report_year,
 		'next_year' => $next_year,

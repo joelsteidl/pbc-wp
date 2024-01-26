@@ -108,6 +108,10 @@ function my_theme_register_required_plugins() {
 			'slug' 		=> 'meta-box',				
 		),
 		array(
+			'name' 		=> 'Safe SVG',
+			'slug' 		=> 'safe-svg',				
+		),
+		array(
 			'name'     				=> 'Oshine Core', // The plugin name
 			'slug'     				=> 'oshine-core', // The plugin slug (typically the folder name)
 			'source'   				=> empty($tgmData['oshine-core'])?'https://brandexponents.com/oshin-plugins/oshine-core.zip':$tgmData['oshine-core']['download_url'], // The plugin source

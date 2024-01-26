@@ -791,6 +791,30 @@ function tatsu_register_font_awesome() {
 	);
 
 	tatsu_register_icon_kit( 'font_awesome', esc_html__( 'Font Awesome Icons', 'tatsu' ) , $font_awesome_icons , TATSU_PLUGIN_URL.'/includes/icons/font_awesome/font-awesome.css' );
+
+
+	//Brand icons
+	tatsu_register_icon_kit( 'font_awesome_brands', esc_html__( 'Brand Icons', 'tatsu' ) , array(
+		'fa-brands fa-x-twitter',
+		'fa-brands fa-square-x-twitter',
+		'fa-brands fa-meta',
+		'fa-brands fa-threads',
+		'fa-brands fa-square-threads',
+		'fa-brands fa-slack',
+		'fa-brands fa-figma',
+		'fa-brands fa-discord',
+		'fa-brands fa-airbnb',
+		'fa-brands fa-wix',
+		'fa-brands fa-cloudflare',
+		'fa-brands fa-line',
+		'fa-brands fa-react',
+		'fa-brands fa-salesforce',
+		'fa-brands fa-unsplash',
+		'fa-brands fa-xbox',
+		'fa-brands fa-waze',
+	) , TATSU_PLUGIN_URL.'/includes/icons/font_awesome/brands.css' );
+
+
 } 
 
 ?>

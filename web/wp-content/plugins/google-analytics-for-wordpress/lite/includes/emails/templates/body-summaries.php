@@ -153,14 +153,20 @@ if ((int) $prev_engagement_percentage === (int) $prev_engagement_percentage && (
 												?>
 											</span>
 											<span style="display:inline-block;" class="<?php echo $sessions_percentage_class; ?>">
-												<?php printf(__('%s&#37;', 'google-analytics-for-wordpress'), $prev_sessions_percentage); ?>
+												<?php 
+												/* translators: Placeholder adds percentage value. */
+												printf(__('%s&#37;', 'google-analytics-for-wordpress'), $prev_sessions_percentage);
+												?>
 											</span>
 										</span>
 									</td>
 								</tr>
 								<tr>
 									<td style="padding-bottom:5px; font-size:10px; color: #9CA4B5;">
-										<?php printf(__('vs previous %s days', 'google-analytics-for-wordpress'), $range);  ?>
+										<?php
+										/* translators: Placeholder adds a range of days. */
+										printf(__('vs previous %s days', 'google-analytics-for-wordpress'), $range);
+										?>
 									</td>
 								</tr>
 							</tbody>

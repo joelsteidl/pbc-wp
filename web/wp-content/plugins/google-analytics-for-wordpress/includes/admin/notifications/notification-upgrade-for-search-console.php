@@ -24,8 +24,8 @@ final class MonsterInsights_Notification_Upgrade_For_Search_Console extends Mons
 	 */
 	public function prepare_notification_data( $notification ) {
 		$notification['title'] = __( 'See Top Performing Keywords', 'google-analytics-for-wordpress' );
-		// Translators: upgrade for search console notification content
-		$notification['content'] = sprintf( __( '%sUpgrade to MonsterInsights Pro%s to see which keywords are driving traffic to your website so you can focus on what\'s working.', 'google-analytics-for-wordpress' ), '<a href="' . $this->get_upgrade_url() . '" target="_blank">', '</a>' );
+		/* translators: Placeholders add a link to the upgrade url. */
+		$notification['content'] = sprintf( __( '%1$sUpgrade to MonsterInsights Pro%2$s to see which keywords are driving traffic to your website so you can focus on what\'s working.', 'google-analytics-for-wordpress' ), '<a href="' . $this->get_upgrade_url() . '" target="_blank">', '</a>' );
 		$notification['btns']    = array(
 			"get_monsterinsights_pro" => array(
 				'url'         => $this->get_upgrade_url(),

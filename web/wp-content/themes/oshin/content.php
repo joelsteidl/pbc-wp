@@ -19,10 +19,11 @@ $class = '';
 if((isset($be_themes_data['open_to_lightbox']) && 1 == $be_themes_data['open_to_lightbox']) ) { //|| is_single()
 	$class = 'image-popup-vertical-fit mfp-image';
 } else {
-	if(!is_single()){
-		$link = get_permalink();	
-	}else{
+
+	if ( is_single() && ( empty( $blog_attr ) || empty( $blog_attr['style'] ) ||  'shortcodes' != $blog_attr['style'] ) ) {
 		$link = '#';
+	} else {
+		$link = get_permalink();	
 	}
 }
 $is_tastu_output = ( isset( $blog_attr['style'] ) && $blog_attr['style'] == 'shortcodes' && ( ( isset( $blog_attr['hide_thubnail'] ) && ! $blog_attr['hide_thubnail'] ) || ! isset( $blog_attr['hide_thubnail'] ) ) ) ? true : false;

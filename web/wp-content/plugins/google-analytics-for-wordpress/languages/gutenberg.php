@@ -178,16 +178,16 @@ $generated_i18n_strings = array(
 	// Reference: src/plugins/metabox/components/pro-badge.js:12
 	__( 'Upgrade', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/metabox/components/site-notes.js:23
+	// Reference: src/plugins/metabox/components/site-notes.js:26
 	__( 'Add a Site Note when publishing this post', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/metabox/components/site-notes.js:24
+	// Reference: src/plugins/metabox/components/site-notes.js:27
 	__( 'Add a Site Note', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/metabox/components/site-notes.js:27
+	// Reference: src/plugins/metabox/components/site-notes.js:30
 	__( 'Category', 'google-analytics-for-wordpress' ),
 
-	// Reference: src/plugins/metabox/components/site-notes.js:29
+	// Reference: src/plugins/metabox/components/site-notes.js:32
 	__( 'Published: %s', 'google-analytics-for-wordpress' ),
 
 	// Reference: src/plugins/metabox/index.js:49

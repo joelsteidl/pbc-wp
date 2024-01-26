@@ -1,3 +1,13 @@
+v7.1.8 ( 22 January 2024 )
+======
+* Added: Safe SVG in required plugin list
+
+v7.1.7 ( 11 December 2023 )
+======
+* Fixed: Php notices
+* Fixed: Recent blog post module heading link in single post
+* Fixed: Recent blog post module thumbnail link in single post
+
 v7.1.6 ( 09 October 2023 )
 ======
 * Fixed: Single post title html tag

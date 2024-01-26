@@ -3,8 +3,8 @@ Contributors: chriscct7, smub
 Donate link: http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: WordPress analytics, google analytics, google analytics dashboard, google analytics widget, WooCommerce stats, analytics dashboard, universal google analytics, statistics, tracking, stats, google, google analytics by yoast, ga, monster insights, monsterinsights, universal analytics, web stats, ecommerce, ecommerce tracking
 Requires at least: 5.6.0
-Tested up to: 6.4.1
-Stable tag: 8.21.0
+Tested up to: 6.4.2
+Stable tag: 8.23.1
 Requires PHP: 7.2
 License: GPL v3
 
@@ -310,6 +310,22 @@ You can also learn about other <a href="http://www.wpbeginner.com/category/plugi
 4. Want more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion">Purchase MonsterInsights Pro</a>!
 
 == Changelog ==
+= 8.23.1: December 18, 2023 =
+- Fix: We fixed an issue related to All in One SEO plugin.
+
+= 8.23.0: December 14, 2023 =
+- New: Our Year In Review report is here. This report will automatically show up starting in January 1 until Jan 14 2024.
+- Fix: We fixed an issue occurring with Site Notes.
+- Fix: We fixed minor issues in the Gutenberg blocks.
+- Fix: We added support for WooCommerce custom order status.
+
+= 8.22.0: November 29, 2023 =
+- Enhancement: Improved Social Media report.
+- Fix: We fixed the View More link in the Email Summaries.
+- Fix: We fixed a Vue warning in Site Notes.
+- Fix: We fixed the sporadic Error 429 from Google Analytics API.
+- Fix: We fixed a duplicate error message in the Setup Checklist.
+
 = 8.21.0: November 13, 2023 =
 - New: Social Media report.
 - New: Exclude query parameters from GA4 data stream.

@@ -1,0 +1,20 @@
+{
+	"home_page_title": "Home v57",
+	"sliders": {
+		"masterslider": "v57.json"
+	},
+	"menus": {
+		"main_nav": "Main Menu v57"
+	},
+	"nav_menus":{
+		"7":"Footer v57",
+		"11":"Main Menu v57",
+		"12":"Mobile Menu v57"
+	},
+	"tatsu_active_header":"agency-header",
+	"tatsu_active_footer":"agency-footer",
+	"content_plugins": {
+		"masterslider": "Master Slider",
+		"safe-svg":"Safe SVG"
+	}
+}

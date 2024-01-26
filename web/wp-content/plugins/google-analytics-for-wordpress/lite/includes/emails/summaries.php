@@ -113,7 +113,7 @@ class MonsterInsights_Email_Summaries {
 			$this->is_enabled = false;
 
 			if ( ! $this->is_preview() ) {
-				
+
 				$info_block      = new MonsterInsights_Summaries_InfoBlocks();
 				$info_block      = $info_block->fetch_data();
 				$email_addresses = $this->get_email_addresses();
@@ -318,7 +318,7 @@ class MonsterInsights_Email_Summaries {
 	 * @since 8.19.0
 	 */
 	public function cron() {
-		
+
 		if ( ! $this->is_enabled() ) {
 			return;
 		}
@@ -352,7 +352,7 @@ class MonsterInsights_Email_Summaries {
 		if( !empty( $email['address'] ) ){
 			foreach ( $email['address'] as $address ) {
 				$sent = $emails->send( trim( $address ), $email['subject'] );
-	
+
 				if ( true === $sent && ! empty( $next_block ) ) {
 					$info_blocks->register_sent( $next_block );
 				}
@@ -427,6 +427,8 @@ class MonsterInsights_Email_Summaries {
 
 		$args['body']['settings_tab_url']   = esc_url( admin_url( 'admin.php?page=monsterinsights_settings#/advanced' ) );
 		$args['footer']['settings_tab_url'] = esc_url( admin_url( 'admin.php?page=monsterinsights_settings#/advanced' ) );
+
+		$args['body']['summaries']['data']['galinks']['topposts']  = admin_url( 'admin.php?page=monsterinsights_reports#/' );
 
 		return apply_filters( 'monsterinsights_email_summaries_template_args', $args );
 	}

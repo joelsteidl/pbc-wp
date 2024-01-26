@@ -1,6 +1,7 @@
 <?php
 $page_id = be_get_page_id();
 global $blog_attr, $more_text, $be_themes_data;
+$blog_attr = be_get_blog_attr( $blog_attr );
 $post_classes = get_post_class();
 $post_classes = implode( ' ', $post_classes );
 $is_wide_single = ( isset( $be_themes_data[ 'single_blog_style' ] ) && !empty( $be_themes_data[ 'single_blog_style' ] ) ) ? true : false;

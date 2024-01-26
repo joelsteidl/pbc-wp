@@ -292,8 +292,9 @@ class BEThemeDemoImporter extends BEThemeImporter {
 	public function ajax_set_home_page() {
 		require( ABSPATH . '/wp-load.php' );
 		$demo = $_POST['demo'];
-		$page_title = self::get_settings($demo)['home_page_title'];
-		$blog_page_title = self::get_settings($demo)['blog_page_title'];
+		$settings = self::get_settings($demo);
+		$page_title = $settings['home_page_title'];
+		$blog_page_title = $settings['blog_page_title'];
 		$page = be_get_page_by_title(esc_html( $page_title ));
 		$blog_page = be_get_page_by_title( $blog_page_title );
 		if($page->ID) {
@@ -315,16 +316,81 @@ class BEThemeDemoImporter extends BEThemeImporter {
 			printf('%s page has been set as front page & %s has been set as blog page', $page_title, $blog_page_title);
 		}
 
+		//set tatsu header
+		if ( ! empty( $settings['tatsu_active_header'] ) ) {
+			update_option( 'tatsu_active_header', $settings['tatsu_active_header'] );
+		}
+
+		//set tatsu footer
+		if ( ! empty( $settings['tatsu_active_footer'] ) ) {
+			update_option( 'tatsu_active_footer', $settings['tatsu_active_footer'] );
+		}
+
+		//SET HEADER AND FOOTER MENU IF NOT SET
+		$demo_nav_menus = $settings['nav_menus'];
+		if( ! empty( $demo_nav_menus ) && function_exists( 'tatsu_header_get_menu_list' ) && ( ! empty( $settings['tatsu_active_header'] ) || ! empty( $settings['tatsu_active_footer'] ) ) ){
+			$current_nav_menus = tatsu_header_get_menu_list()[0];
+			$diff_nav = array_diff_assoc($demo_nav_menus,$current_nav_menus);
+			if(!empty($current_nav_menus) && !empty($diff_nav)){
+				$replace_ids = array();
+				$header_id = tatsu_get_active_header_id();
+				$footer_id = tatsu_get_active_footer_id();
+				$header_content = '';
+				$footer_content = '';
+				if(!empty($header_id)){
+					$header_page = get_post( $header_id );
+					if(!empty($header_page)){
+						$header_content = $header_page->post_content;
+					}
+				}
+				if(!empty($footer_id)){
+					$footer_page = get_post( $footer_id );
+					if(!empty($footer_page)){
+						$footer_content = $footer_page->post_content;
+					}
+				}
+			   if(!empty($header_content) || !empty($footer_content)){
+				foreach ($demo_nav_menus as $key_id => $nav_menu) {
+					$key_replace = array_search($nav_menu,$current_nav_menus);
+					if($key_replace !== false && $key_id != $key_replace){
+						$replace_ids[$key_id]=$key_replace;
+						$demo_menu_name = 'menu_name= "'.$key_id.'"';
+						$current_menu_name = 'menu_name="'.$key_replace.'"';
+						$header_content = str_ireplace($demo_menu_name,$current_menu_name,$header_content);
+						$footer_content = str_ireplace($demo_menu_name,$current_menu_name,$footer_content);
+					}
+				}
+				if(!empty($header_id) && !empty($header_content)){
+					wp_update_post( array(
+						'ID'           => $header_id,
+						'post_content' => $header_content,
+					) );
+					$title = 'Header';
+					printf('%s menu has been set', $title);
+				}
+				if(!empty($footer_id) && !empty($footer_content)){
+					wp_update_post( array(
+						'ID'           => $footer_id,
+						'post_content' => $footer_content,
+					) );
+					$title = 'Footer';
+					printf('%s menu has been set', $title);
+				}
+			
+			   }
+			}
+		}
+
 		//Set woocommerce shop page
-		$shop_page_title = self::get_settings($demo)['shop_page_title']; 
+		$shop_page_title = $settings['shop_page_title']; 
 		if(!empty($shop_page_title)){ 
 			$shop_page = be_get_page_by_title(esc_html( $shop_page_title ));
 			if(!empty($shop_page->ID)){
 				if(update_option( 'woocommerce_shop_page_id', $shop_page->ID )){
 					printf('%s page has been set as shop page', $shop_page_title);
-					$my_account_page_title = self::get_settings($demo)['my_account_page_title']; 
-					$cart_page_title = self::get_settings($demo)['cart_page_title']; 
-					$checkout_page_title = self::get_settings($demo)['checkout_page_title'];
+					$my_account_page_title = $settings['my_account_page_title']; 
+					$cart_page_title = $settings['cart_page_title']; 
+					$checkout_page_title = $settings['checkout_page_title'];
 					//My account page
 					$myaccount_page = be_get_page_by_title(esc_html( $my_account_page_title ));
 					if(!empty($myaccount_page->ID)){
@@ -354,7 +420,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 					}
 				
 				//SET woocommerce_settings options if provided
-				$woocommerce_settings = self::get_settings($demo)['woocommerce_settings']; 
+				$woocommerce_settings = $settings['woocommerce_settings']; 
 				if(!empty($woocommerce_settings)){ 
 					foreach ($woocommerce_settings as $option_name => $option_value) {
 						update_option( $option_name, $option_value );
@@ -368,7 +434,7 @@ class BEThemeDemoImporter extends BEThemeImporter {
 		}
 
 		//Nav menu widget settings if provided
-		$widget_nav_menu_settings = self::get_settings($demo)['widget_nav_menu_settings'];
+		$widget_nav_menu_settings = $settings['widget_nav_menu_settings'];
 		if(!empty($widget_nav_menu_settings)){
 			$widget_nav_menu = get_option('widget_nav_menu');
 			if(!empty($widget_nav_menu) && is_array($widget_nav_menu)){

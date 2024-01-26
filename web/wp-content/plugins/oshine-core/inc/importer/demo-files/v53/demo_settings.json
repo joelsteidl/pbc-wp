@@ -1,0 +1,12 @@
+{
+	"home_page_title": "Home v53",
+	"menus": {
+		"main_nav": "Main menu v53"
+	},
+	"nav_menus":{"2":"Main menu v53"},
+	"tatsu_active_header":"photography-header",
+	"content_plugins": {
+		"be-portfolio-post": "BE Portfolio Post",
+		"safe-svg":"Safe SVG"
+	}
+}

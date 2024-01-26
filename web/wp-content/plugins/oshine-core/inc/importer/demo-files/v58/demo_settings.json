@@ -1,0 +1,15 @@
+{
+	"home_page_title": "Home v58",
+	"menus": {
+		"main_nav": "Main Menu v58"
+	},
+	"nav_menus":{
+		"2":"Footer Menu v58",
+		"3":"Footer Social Menu v58",
+		"4":"Main Menu v58"
+	},
+	"tatsu_active_footer":"fashion-photographer-footer",
+	"content_plugins": {
+		"safe-svg":"Safe SVG"
+	}
+}

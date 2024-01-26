@@ -71,7 +71,7 @@
  	{
  		$this->core = $core;
 		$this->theme_name = $core['themeName'];
-		$this->plugins_order = array( 'oshine-core', 'tatsu', 'oshine-modules', 'be-portfolio-post', 'be-gdpr', 'contact-form-7', 'meta-box', 'meta-box-conditional-logic', 'meta-box-show-hide', 'meta-box-tabs', 'masterslider', 'revslider' );
+		$this->plugins_order = array( 'oshine-core', 'tatsu', 'oshine-modules', 'be-portfolio-post', 'be-gdpr', 'contact-form-7', 'meta-box', 'safe-svg', 'meta-box-conditional-logic', 'meta-box-show-hide', 'meta-box-tabs', 'masterslider', 'revslider' );
  	}
 
  	public function run() {

@@ -161,8 +161,9 @@ class MonsterInsights_Onboarding_Wizard {
 		/**
 		 * Since WordPress 6.4 print_emoji_styles() and wp_admin_bar_header() have been deprecated.
 		 */
-		if ( has_action( 'admin_head', 'wp_admin_bar_header') ) {
+		if ( has_action( 'admin_head', 'wp_admin_bar_header') && function_exists( 'wp_enqueue_admin_bar_header_styles' ) ) {
 			remove_action( 'admin_head', 'wp_admin_bar_header' );
+			add_action( 'admin_head', 'wp_enqueue_admin_bar_header_styles' );
 		}
 		if ( has_action( 'admin_print_styles', 'print_emoji_styles') ) {
 			remove_action( 'admin_print_styles', 'print_emoji_styles' );

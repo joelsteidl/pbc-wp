@@ -526,6 +526,7 @@ class Tatsu {
         $this->loader->add_action( 'template_redirect', $plugin_builder, 'init', 999999 );
 		$this->loader->add_action( 'template_redirect', $plugin_iframe_loader, 'init',9999999 );
 		$this->loader->add_action( 'init', $tatsu_integrations, 'init' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $tatsu_integrations, 'editor_scripts' );
         $this->loader->add_action( 'init', $this, 'tatsu_add_image_size' );
         
         //admin load hooks

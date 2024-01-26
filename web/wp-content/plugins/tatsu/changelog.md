@@ -1,3 +1,14 @@
+v3.4.7 ( 22 January 2024 )
+======
+* Added: Plus Jakarta Sans google fonts
+* Integrated: Rank math Content Analysis API
+
+v3.4.6 ( 11 December 2023 )
+======
+* Added: Space Grotesk and outfit google fonts
+* Fixed: Php notices
+* Added: Font Awesome 6 Brand icons - x-twitter, square-x-twitter, meta, threads, square-threads, slack, figma, discord, airbnb, wix, cloudflare, line, react, salesforce, unsplash, xbox, waze
+
 v3.4.5 ( 09 October 2023 )
 ======
 * Fixed: BE GDPR consent.

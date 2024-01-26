@@ -154,4 +154,27 @@ class Tatsu_Integrations {
 			add_action( 'admin_action_tatsu_change_builder', array($this, 'change_builder_mode') );
         }
     }
+
+	//Wordpress editor js: works with both classic and gutenberg editor 
+	public function editor_scripts( $page_name ) {
+		if ( ! empty( $page_name ) && in_array( $page_name, array( 'post.php', 'post-new.php' ) ) ) {
+
+			//For Rank math Content Analysis API
+			if ( class_exists( 'RankMath' ) && function_exists('do_shortcode') && function_exists('get_the_content') ) {
+				global $post;
+				$post_content = empty( $post ) ? get_the_content(): $post->post_content;
+				if ( ! empty( $post_content ) ) {
+					$post_content = do_shortcode( $post_content );
+				}
+				wp_enqueue_script( 'tatsu-wordpress-editor', TATSU_PLUGIN_URL . '/admin/js/tatsu-wordpress-editor.js', array( 'wp-hooks' ), TATSU_VERSION, true );
+				wp_localize_script( 
+					'tatsu-wordpress-editor', 
+					'TatsuWordpressEditor', 
+					array (
+						'post_content'	=>  $post_content
+					)
+				);
+			}
+		}
+	}
 }

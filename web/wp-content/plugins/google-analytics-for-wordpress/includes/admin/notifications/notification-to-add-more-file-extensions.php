@@ -29,8 +29,15 @@ final class MonsterInsights_Notification_To_Add_More_File_Extensions extends Mon
 			$settings_url          = is_network_admin() ? $this->get_view_url( 'monsterinsights-settings-block-file-downloads', 'monsterinsights_network', 'engagement' ) : $this->get_view_url( 'monsterinsights-settings-block-file-downloads', 'monsterinsights_settings', 'engagement' );
 			$publishers_report_url = $this->get_view_url( 'monsterinsights-report-download-links', 'monsterinsights_reports', 'publishers' );
 			$notification['title'] = __( 'Track Your Website Downloads', 'google-analytics-for-wordpress' );
-			// Translators: File extensions notification content
-			$notification['content'] = sprintf( __( 'By default, MonsterInsights automatically tracks downloads of the following file extensions: doc, pdf, ppt, zip, xls, docx, pptx, and xlsx. You can easily add or remove extensions from that list in the %sEngagement settings%s of MonsterInsights.<br><br> You can view your Top Downloads report directly in the MonsterInsights %sPublishers report%s.', 'google-analytics-for-wordpress' ), '<a href="' . $settings_url . '">', '</a>', '<a href="' . $publishers_report_url . '">', '</a>' );
+
+			$notification['content'] = sprintf(
+				/* translators: Placeholders add links to settings pages. */
+				__( 'By default, MonsterInsights automatically tracks downloads of the following file extensions: doc, pdf, ppt, zip, xls, docx, pptx, and xlsx. You can easily add or remove extensions from that list in the %1$sEngagement settings%2$s of MonsterInsights.<br><br> You can view your Top Downloads report directly in the MonsterInsights %3$sPublishers report%4$s.', 'google-analytics-for-wordpress' ),
+				'<a href="' . $settings_url . '">',
+				'</a>',
+				'<a href="' . $publishers_report_url . '">',
+				'</a>'
+			);
 			$notification['btns']    = array(
 				"add_more_file_extensions" => array(
 					'url'  => $settings_url,

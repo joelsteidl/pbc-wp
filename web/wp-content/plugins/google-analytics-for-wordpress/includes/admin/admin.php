@@ -789,6 +789,7 @@ function monsterinsights_empty_measurement_protocol_token()
 	}
 
 	$message = sprintf(
+		/* translators: Placeholders add a link to an article. */
 		esc_html__(
 			'Your Measurement Protocol API Secret is currently left blank. To see more advanced analytics please enter a Measurement API Secret. %1$sLearn how to find your API Secret%2$s.',
 			'google-analytics-for-wordpress'

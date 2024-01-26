@@ -61,7 +61,6 @@ class MonsterInsights_SiteNotes_Controller
 		add_filter('wp_untrash_post_status', array($this, 'change_restore_note_status'), 10, 3);
 		add_action('monsterinsights_after_exclude_metabox', array($this, 'add_metabox_contents'), 11, 2);
 		add_action('admin_enqueue_scripts', array($this, 'load_metabox_assets'));
-		add_action('current_screen', array($this, 'clear_sitenote_meta'));
 	}
 
 	private function prepare_notes($params)
@@ -706,17 +705,6 @@ class MonsterInsights_SiteNotes_Controller
 
 		wp_register_script('monsterinsights-admin-metabox-sitenotes-script', plugins_url('assets/js/admin-metabox-sitenotes.js', MONSTERINSIGHTS_PLUGIN_FILE), array('jquery'), monsterinsights_get_asset_version());
 		wp_enqueue_script('monsterinsights-admin-metabox-sitenotes-script');
-	}
-
-	public function clear_sitenote_meta()
-	{
-		if (isset($_GET['action']) && $_GET['action'] == 'edit' && isset($_GET['post'])) {
-			$post_id = $_GET['post'];
-			delete_post_meta($post_id, '_monsterinsights_sitenote_active');
-			delete_post_meta($post_id, '_monsterinsights_sitenote_note');
-			delete_post_meta($post_id, '_monsterinsights_sitenote_id');
-			delete_post_meta($post_id, '_monsterinsights_sitenote_category');
-		}
 	}
 
 	/**
