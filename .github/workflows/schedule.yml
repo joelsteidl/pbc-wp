@@ -17,14 +17,11 @@ jobs:
           privateKey: ${{ secrets.SSH_KEY }}
           command: |
             cd ~/providencedenver.org/web
-            ls -la
             status=$(git status)
-            if [[ $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
-              if [[ $status =~ "Untracked files:" && $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
-                  rm -rf wp-content/plugins/insert-headers-and-footers/
-                  log_file="$HOME/github_action_security_check.txt"
-                  current_date=$(date +"%Y-%m-%d %H:%M:%S")
-                  log_message="Logged at: $current_date"
-                  echo "$log_message" > "$log_file"
-              fi
+            if [[ $status =~ "Untracked files:" && $status =~ "wp-content/plugins/insert-headers-and-footers/" ]]; then
+                rm -rf wp-content/plugins/insert-headers-and-footers/
+                log_file="$HOME/github_action_security_check.txt"
+                current_date=$(date +"%Y-%m-%d %H:%M:%S")
+                log_message="Logged at: $current_date"
+                echo "$log_message" > "$log_file"
             fi
