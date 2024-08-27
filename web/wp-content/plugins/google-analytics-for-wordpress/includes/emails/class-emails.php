@@ -358,10 +358,9 @@ class MonsterInsights_WP_Emails {
 		// Hooks into the email footer.
 		do_action( 'monsterinsights_email_footer', $email_parts['footer'] );
 
-
 		$body    = implode( $email_parts );
 		$message = $this->process_tag( $message, false );
-		$message = nl2br( $message );
+		$message = $message ? nl2br( $message ) : '';
 		$message = str_replace( '{email}', $message, $body );
 
 		//$message = make_clickable( $message );
@@ -395,7 +394,7 @@ class MonsterInsights_WP_Emails {
 		}
 
 		// Don't send if email address is invalid.
-		if ( ! is_email( $to ) ) {
+		if ( is_string( $to ) && ! is_email( $to ) ) {
 			return false;
 		}
 

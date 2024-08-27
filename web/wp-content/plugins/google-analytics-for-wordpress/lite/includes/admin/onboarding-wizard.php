@@ -101,28 +101,14 @@ class MonsterInsights_Onboarding_Wizard {
 	 * Load the scripts needed for the Onboarding Wizard.
 	 */
 	public function enqueue_scripts() {
+		$version_path = 'lite';
 
-		global $wp_version;
-		$version_path = monsterinsights_is_pro_version() ? 'pro' : 'lite';
-		$rtl          = is_rtl() ? '.rtl' : '';
-		if ( ! defined( 'MONSTERINSIGHTS_LOCAL_WIZARD_JS_URL' ) ) {
-			wp_enqueue_style( 'monsterinsights-vue-style-vendors', plugins_url( $version_path . '/assets/vue/css/chunk-vendors' . $rtl . '.css', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version() );
-			wp_enqueue_style( 'monsterinsights-vue-style-common', plugins_url( $version_path . '/assets/vue/css/chunk-common' . $rtl . '.css', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version() );
-			wp_enqueue_style( 'monsterinsights-vue-style', plugins_url( $version_path . '/assets/vue/css/wizard' . $rtl . '.css', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version() );
-			wp_enqueue_script( 'monsterinsights-vue-vendors', plugins_url( $version_path . '/assets/vue/js/chunk-vendors.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), true );
-			wp_enqueue_script( 'monsterinsights-vue-common', plugins_url( $version_path . '/assets/vue/js/chunk-common.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), true );
-			wp_register_script( 'monsterinsights-vue-script', plugins_url( $version_path . '/assets/vue/js/wizard.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(
-				'monsterinsights-vue-vendors',
-				'monsterinsights-vue-common',
-			), monsterinsights_get_asset_version(), true );
-		} else {
-			wp_enqueue_script( 'monsterinsights-vue-vendors', MONSTERINSIGHTS_LOCAL_VENDORS_JS_URL, array(), monsterinsights_get_asset_version(), true );
-			wp_enqueue_script( 'monsterinsights-vue-common', MONSTERINSIGHTS_LOCAL_COMMON_JS_URL, array(), monsterinsights_get_asset_version(), true );
-			wp_register_script( 'monsterinsights-vue-script', MONSTERINSIGHTS_LOCAL_WIZARD_JS_URL, array(
-				'monsterinsights-vue-vendors',
-				'monsterinsights-vue-common',
-			), monsterinsights_get_asset_version(), true );
+		if ( ! defined( 'MONSTERINSIGHTS_LOCAL_JS_URL' ) ) {
+			MonsterInsights_Admin_Assets::enqueue_script_specific_css( 'src/modules/wizard-onboarding/wizard.js' );
 		}
+
+		$app_js_url = MonsterInsights_Admin_Assets::get_js_url( 'src/modules/wizard-onboarding/wizard.js' );
+		wp_register_script( 'monsterinsights-vue-script', $app_js_url, array(), monsterinsights_get_asset_version(), true );
 		wp_enqueue_script( 'monsterinsights-vue-script' );
 
 		$settings_page = is_network_admin() ? add_query_arg( 'page', 'monsterinsights_network', network_admin_url( 'admin.php' ) ) : add_query_arg( 'page', 'monsterinsights_settings', admin_url( 'admin.php' ) );
@@ -179,7 +165,7 @@ class MonsterInsights_Onboarding_Wizard {
 			<?php do_action( 'admin_print_scripts' ); ?>
 			<?php do_action( 'admin_head' ); ?>
 		</head>
-		<body class="monsterinsights-onboarding">
+		<body class="monsterinsights-onboarding monsterinsights_page">
 		<?php
 	}
 

@@ -1078,7 +1078,7 @@ if( !function_exists( 'oshine_sticky_sections_fixed_wrapper_start' ) ) {
 if( !function_exists('oshin_get_font_family')){
 	function oshin_get_font_family( $font ){
 		$family = be_get_font_family( $font );
-		if ( !empty( $family['value'] ) ){
+		if ( is_array( $family ) && !empty( $family['value'] ) ){
 			return $family['value'];
 		}
 		return $family;

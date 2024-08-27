@@ -1,6 +1,13 @@
 <?php
 require_once(dirname(__FILE__) . '/wfConfig.php');
 class wfUtils {
+	//Flags for wfUtils::parse_version
+	const VERSION_MAJOR = 'major';
+	const VERSION_MINOR = 'minor';
+	const VERSION_PATCH = 'patch';
+	const VERSION_PRE_RELEASE = 'pre-release';
+	const VERSION_BUILD = 'build';
+	
 	private static $isWindows = false;
 	public static $scanLockFH = false;
 	private static $lastErrorReporting = false;
@@ -1263,6 +1270,85 @@ class wfUtils {
 			return $wp_version;
 		}
 	}
+	
+	public static function parse_version($version, $component = null) {
+		$major = 0;
+		$minor = 0;
+		$patch = 0;
+		$prerelease = '';
+		$build = '';
+		
+		if (preg_match('/^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/', $version, $matches)) { //semver
+			$major = $matches[1];
+			$minor = $matches[2];
+			$patch = $matches[3];
+			
+			if (preg_match('/^([^\+]+)\+(.*)$/', $version, $matches)) {
+				$version = $matches[1];
+				$build = $matches[2];
+			}
+			
+			if (preg_match('/^([^\-]+)\-(.*)$/', $version, $matches)) {
+				$version = $matches[1];
+				$prerelease = $matches[2];
+			}
+		}
+		else { //Parse as "PHP-standardized" (see version_compare docs: "The function first replaces _, - and + with a dot . in the version strings and also inserts dots . before and after any non number so that for example '4.3.2RC1' becomes '4.3.2.RC.1'.")
+			$version = trim(preg_replace('/\.\.+/', '.', preg_replace('/([^0-9\.]+)/', '.$1.', preg_replace('/[_\-\+]+/', '.', $version))), '.');
+			$components = explode('.', $version);
+			$i = 0;
+			if (isset($components[$i]) && is_numeric($components[$i])) { $major = $components[$i]; $i++; }
+			if (isset($components[$i]) && is_numeric($components[$i])) { $minor = $components[$i]; $i++; }
+			if (isset($components[$i]) && is_numeric($components[$i])) { $patch = $components[$i]; $i++; }
+			while (isset($components[$i]) && is_numeric($components[$i])) {
+				if (!empty($build)) {
+					$build .= '.';
+				}
+				$build .= $components[$i];
+				$i++;
+			}
+			while (isset($components[$i])) {
+				if (!empty($prerelease)) {
+					$prerelease .= '.';
+				}
+				
+				if (preg_match('/^(?:dev|alpha|a|beta|b|rc|#|pl|p)$/i', $components[$i])) {
+					$prerelease .= strtolower($components[$i]);
+					if (isset($components[$i + 1])) {
+						if (!preg_match('/^(?:a|b|rc|#|pl|p)$/i', $components[$i])) {
+							$prerelease .= '-';
+						}
+						$i++;
+					}
+				}
+				
+				$prerelease .= $components[$i];
+				$i++;
+			}
+		}
+		
+		$version = array(
+			self::VERSION_MAJOR => $major,
+			self::VERSION_MINOR => $minor,
+			self::VERSION_PATCH => $patch,
+			self::VERSION_PRE_RELEASE => $prerelease,
+			self::VERSION_BUILD => $build,
+		);
+		
+		$version = array_filter($version, function($v) {
+			return $v !== '';
+		});
+		
+		if ($component === null) {
+			return $version;
+		}
+		else if (isset($version[$component])) {
+			return $version[$component];
+		}
+		
+		return null;
+	}
+	
 	public static function isAdminPageMU(){
 		if(preg_match('/^[\/a-zA-Z0-9\-\_\s\+\~\!\^\.]*\/wp-admin\/network\//', $_SERVER['REQUEST_URI'])){
 			return true;
@@ -1365,11 +1451,7 @@ class wfUtils {
 		return implode("\n", array_unique(array_filter(array_map('trim', explode("\n", $string)))));
 	}
 
-	public static function beginProcessingFile($file) {
-		//Do nothing
-	}
-
-	public static function endProcessingFile() {
+	public static function afterProcessingFile() {
 		if (wfScanner::shared()->useLowResourceScanning()) {
 			usleep(10000); //10 ms
 		}
@@ -1419,11 +1501,13 @@ class wfUtils {
 				$ip_printable = $IP;
 				$ip_bin = wfUtils::inet_pton($IP);
 			}
-
-			$row = $db->querySingleRec("select IP, ctime, failed, city, region, countryName, countryCode, lat, lon, unix_timestamp() - ctime as age from " . $locsTable . " where IP=%s", $ip_bin);
+			
+			$ipHex = wfDB::binaryValueToSQLHex($ip_bin);
+			$row = $db->querySingleRec("select IP, ctime, failed, city, region, countryName, countryCode, lat, lon, unix_timestamp() - ctime as age from " . $locsTable . " where IP={$ipHex}");
 			if($row){
 				if($row['age'] > WORDFENCE_MAX_IPLOC_AGE){
-					$db->queryWrite("delete from " . $locsTable . " where IP=%s", $row['IP']);
+					$ipHex = wfDB::binaryValueToSQLHex($row['IP']);
+					$db->queryWrite("delete from " . $locsTable . " where IP={$ipHex}");
 				} else {
 					if($row['failed'] == 1){
 						$IPLocs[$ip_printable] = false;
@@ -1473,16 +1557,16 @@ class wfUtils {
 			if(is_array($freshIPs)){
 				foreach($freshIPs as $IP => $value){
 					$IP_bin = wfUtils::inet_pton($IP);
+					$ipHex = wfDB::binaryValueToSQLHex($IP_bin);
 					if($value == 'failed'){
-						$db->queryWrite("insert IGNORE into " . $locsTable . " (IP, ctime, failed) values (%s, unix_timestamp(), 1)", $IP_bin);
+						$db->queryWrite("insert IGNORE into " . $locsTable . " (IP, ctime, failed) values ({$ipHex}, unix_timestamp(), 1)");
 						$IPLocs[$IP] = false;
 					} else if(is_array($value)){
 						for($i = 0; $i <= 5; $i++){
 							//Prevent warnings in debug mode about uninitialized values
 							if(! isset($value[$i])){ $value[$i] = ''; }
 						}
-						$db->queryWrite("insert IGNORE into " . $locsTable . " (IP, ctime, failed, city, region, countryName, countryCode, lat, lon) values (%s, unix_timestamp(), 0, '%s', '%s', '%s', '%s', %s, %s)",
-							$IP_bin,
+						$db->queryWrite("insert IGNORE into " . $locsTable . " (IP, ctime, failed, city, region, countryName, countryCode, lat, lon) values ({$ipHex}, unix_timestamp(), 0, '%s', '%s', '%s', '%s', %s, %s)",
 							$value[3], //city
 							$value[2], //region
 							$value[1], //countryName
@@ -1515,7 +1599,8 @@ class wfUtils {
 		$db = new wfDB();
 		$reverseTable = wfDB::networkTable('wfReverseCache');
 		$IPn = wfUtils::inet_pton($IP);
-		$host = $db->querySingle("select host from " . $reverseTable . " where IP=%s and unix_timestamp() - lastUpdate < %d", $IPn, WORDFENCE_REVERSE_LOOKUP_CACHE_TIME);
+		$ipHex = wfDB::binaryValueToSQLHex($IPn);
+		$host = $db->querySingle("select host from " . $reverseTable . " where IP={$ipHex} and unix_timestamp() - lastUpdate < %d", WORDFENCE_REVERSE_LOOKUP_CACHE_TIME);
 		if (!$host) {
 			// This function works for IPv4 or IPv6
 			if (function_exists('gethostbyaddr')) {
@@ -1540,7 +1625,7 @@ class wfUtils {
 			if (!$host) {
 				$host = 'NONE';
 			}
-			$db->queryWrite("insert into " . $reverseTable . " (IP, host, lastUpdate) values (%s, '%s', unix_timestamp()) ON DUPLICATE KEY UPDATE host='%s', lastUpdate=unix_timestamp()", $IPn, $host, $host);
+			$db->queryWrite("insert into " . $reverseTable . " (IP, host, lastUpdate) values ({$ipHex}, '%s', unix_timestamp()) ON DUPLICATE KEY UPDATE host='%s', lastUpdate=unix_timestamp()", $host, $host);
 		}
 		if ($host == 'NONE') {
 			$_memoryCache[$IP] = '';
@@ -1563,26 +1648,35 @@ class wfUtils {
 		if(class_exists('wfScan')){ wfScan::$errorHandlingOn = true; }
 	}
 	//Note this function may report files that are too big which actually are not too big but are unseekable and throw an error on fseek(). But that's intentional
-	public static function fileTooBig($file){ //Deals with files > 2 gigs on 32 bit systems which are reported with the wrong size due to integer overflow
+	public static function fileTooBig($file, &$size = false, &$handle = false){ //Deals with files > 2 gigs on 32 bit systems which are reported with the wrong size due to integer overflow
 		if (!@is_file($file) || !@is_readable($file)) { return false; } //Only apply to readable files
 		wfUtils::errorsOff();
-		$fh = @fopen($file, 'r');
+		$fh = @fopen($file, 'rb');
 		wfUtils::errorsOn();
 		if(! $fh){ return false; }
-		$offset = WORDFENCE_MAX_FILE_SIZE_TO_PROCESS + 1;
-		$tooBig = false;
 		try {
-			if(@fseek($fh, $offset, SEEK_SET) === 0){
-				if(strlen(fread($fh, 1)) === 1){
-					$tooBig = true;
-				}
+			if(@fseek($fh, WORDFENCE_MAX_FILE_SIZE_OFFSET, SEEK_SET) === 0 && !empty(fread($fh, 1))){
+				return true;
 			} //Otherwise we couldn't seek there so it must be smaller
-			fclose($fh);
-			return $tooBig;
-		} catch(Exception $e){ return true; } //If we get an error don't scan this file, report it's too big.
+			if ($size !== false && @fseek($fh, 0, SEEK_END) === 0) {
+				$size = @ftell($fh);
+				if ($size === false)
+					$size = 0; // Assume 0 if unable to determine file size
+			}
+			return false;
+		} catch(Exception $e){
+			return true; //If we get an error don't scan this file, report it's too big.
+		} finally {
+			if ($handle === false) {
+				fclose($fh);
+			}
+			else {
+				$handle = $fh;
+			}
+		}
 	}
 	public static function fileOver2Gigs($file){ //Surround calls to this func with try/catch because fseek may throw error.
-		$fh = @fopen($file, 'r');
+		$fh = @fopen($file, 'rb');
 		if(! $fh){ return false; }
 		$offset = 2147483647;
 		$tooBig = false;
@@ -2766,6 +2860,21 @@ class wfUtils {
 		return $result;
 	}
 	
+	/**
+	 * Convenience function to return the value in an array or the given default if not present.
+	 * 
+	 * @param array $array
+	 * @param string|int $key
+	 * @param mixed $default
+	 * @return mixed|null
+	 */
+	public static function array_choose($array, $key, $default = null) {
+		if (isset($array[$key])) {
+			return $array[$key];
+		}
+		return $default;
+	}
+	
 	public static function array_column($input = null, $columnKey = null, $indexKey = null) { //Polyfill from https://github.com/ramsey/array_column/blob/master/src/array_column.php
 		$argc = func_num_args();
 		$params = func_get_args();
@@ -2833,6 +2942,20 @@ class wfUtils {
 		}
 		
 		return $resultArray;
+	}
+	
+	/**
+	 * Returns $string if it isn't empty, $ifEmpty if it is.
+	 * 
+	 * @param string $string
+	 * @param string $ifEmpty
+	 * @return string
+	 */
+	public static function string_empty($string, $ifEmpty) {
+		if (empty($string)) {
+			return $ifEmpty;
+		}
+		return $string;
 	}
 	
 	/**
@@ -3071,6 +3194,53 @@ class wfUtils {
 			implode('/', $relativeComponents),
 			($trailingSlash && (count($relativeComponents) > 0 || !$leadingSlash)) ? '/' : ''
 		));
+	}
+
+	/**
+	 * Determine the effective port given the output of parse_url
+	 * @param array $urlComponents
+	 * @return int the resolved port number
+	 */
+	private static function resolvePort($urlComponents) {
+		if (array_key_exists('port', $urlComponents) && !empty($urlComponents['port'])) {
+			return $urlComponents['port'];
+		}
+		if (array_key_exists('scheme', $urlComponents) && $urlComponents['scheme'] === 'https') {
+			return 443;
+		}
+		return 80;
+	}
+
+	/**
+	 * Check if two site URLs identify the same site
+	 * @param string $a first url
+	 * @param string $b second url
+	 * @param array $ignoredSubdomains An array of subdomains to ignore when matching (e.g., www)
+	 * @return bool true if the URLs match, false otherwise
+	 */
+	public static function compareSiteUrls($a, $b, $ignoredSubdomains = array()) {
+		$patterns = array_map(function($p) { return '/^' . preg_quote($p, '/') . '\\./i'; }, $ignoredSubdomains);
+		
+		$componentsA = parse_url($a);
+		if (isset($componentsA['host'])) { $componentsA['host'] = preg_replace($patterns, '', $componentsA['host']); }
+		$componentsB = parse_url($b);
+		if (isset($componentsB['host'])) { $componentsB['host'] = preg_replace($patterns, '', $componentsB['host']); }
+		foreach (array('host', 'port', 'path') as $component) {
+			$valueA = array_key_exists($component, $componentsA) ? $componentsA[$component] : null;
+			$valueB = array_key_exists($component, $componentsB) ? $componentsB[$component] : null;
+			if ($valueA !== $valueB) {
+				if ($component === 'port') {
+					$portA = self::resolvePort($componentsA);
+					$portB = self::resolvePort($componentsB);
+					if ($portA !== $portB)
+						return false;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public static function getHomePath() {

@@ -213,7 +213,7 @@ class MSP_Importer {
 
 			if( current_user_can('export_masterslider') || apply_filters( 'masterslider_user_can_import_starter_content', 0 ) ) {
 
-				if ( $starter_field = msp_get_slider_starter_field( $_REQUEST['starter_id'] ) ) {
+				if ( $starter_field = msp_get_slider_starter_field( sanitize_text_field( $_REQUEST['starter_id'] ) ) ) {
 
                     $import_data = $starter_field['importdata'];
 
@@ -233,7 +233,7 @@ class MSP_Importer {
                                 )
                             );
 
-                            $request = wp_remote_get( 'http://api.averta.net/products/masterslider/samples/', $args );
+                            $request = wp_remote_get( 'https://api.averta.net/products/masterslider/samples/', $args );
 
                             if ( is_wp_error( $request ) || wp_remote_retrieve_response_code( $request ) !== 200 ) {
                                 _e( 'Cannot fetch slider data ..', MSWP_TEXT_DOMAIN );
@@ -277,7 +277,7 @@ class MSP_Importer {
 					if( 2 == $step ){
 
 						if( $import_data = msp_get_theme_sliders_data() ){
-							$allowed_slider_ids = isset( $_POST['ms_import_theme_slider_ids'] ) ? $_POST['ms_import_theme_slider_ids'] : null;
+							$allowed_slider_ids = isset( $_POST['ms_import_theme_slider_ids'] ) ? msp_sanitize_input( $_POST['ms_import_theme_slider_ids'] ) : null;
 							$this->import_data( $import_data, $allowed_slider_ids );
 						}
 					}
@@ -301,10 +301,10 @@ class MSP_Importer {
 
 				if( check_admin_referer('export-msp-sliders') ) {
 
-					$sliders 		= isset( $_POST['msp-export-sliders']  		 ) ? $_POST['msp-export-sliders'] : '';
-					$preset_styles  = isset( $_POST['msp-export-preset-styles']  ) ? $_POST['msp-export-preset-styles']  : '';
-                    $preset_effects = isset( $_POST['msp-export-preset-effects'] ) ? $_POST['msp-export-preset-effects'] : '';
-					$buttons_style  = isset( $_POST['msp-export-buttons-style']  ) ? $_POST['msp-export-buttons-style']  : '';
+					$sliders 		= isset( $_POST['msp-export-sliders']  		 ) ? msp_sanitize_input( $_POST['msp-export-sliders'] ) : '';
+					$preset_styles  = isset( $_POST['msp-export-preset-styles']  ) ? msp_sanitize_input( $_POST['msp-export-preset-styles'] )  : '';
+                    $preset_effects = isset( $_POST['msp-export-preset-effects'] ) ? msp_sanitize_input( $_POST['msp-export-preset-effects'] ) : '';
+					$buttons_style  = isset( $_POST['msp-export-buttons-style']  ) ? msp_sanitize_input( $_POST['msp-export-buttons-style'] )  : '';
 
 					$args = array();
 

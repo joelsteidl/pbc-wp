@@ -132,9 +132,6 @@ class MonsterInsights_Review {
 					?>
 				</p>
 				<p>
-					<strong><?php echo wp_kses( __( '~ Syed Balkhi<br>Co-Founder of MonsterInsights', 'google-analytics-for-wordpress' ), array( 'br' => array() ) ); ?></strong>
-				</p>
-				<p>
 					<a
 						href="https://wordpress.org/support/plugin/google-analytics-for-wordpress/reviews/?filter=5#new-post"
 					   	class="monsterinsights-dismiss-review-notice monsterinsights-review-out"

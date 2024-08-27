@@ -1,31 +1,46 @@
-v3.4.7 ( 22 January 2024 )
+v3.5.0 ( 25th April 2024 )
+======
+* Fixed: Download Google Fonts
+* Fixed: Php notice
+
+v3.4.9 ( 04th April 2024 )
+======
+* Added: Familjen Grotesk google fonts
+* Added: None option for Header Color Scheme inside image background in section module for enable transparent header to use default theme settings
+
+v3.4.8 ( 12th February 2024 )
+======
+* Fixed: Revslider preview
+* Added: Filter for Tatsu section concepts
+
+v3.4.7 ( 22th January 2024 )
 ======
 * Added: Plus Jakarta Sans google fonts
 * Integrated: Rank math Content Analysis API
 
-v3.4.6 ( 11 December 2023 )
+v3.4.6 ( 11th December 2023 )
 ======
 * Added: Space Grotesk and outfit google fonts
 * Fixed: Php notices
 * Added: Font Awesome 6 Brand icons - x-twitter, square-x-twitter, meta, threads, square-threads, slack, figma, discord, airbnb, wix, cloudflare, line, react, salesforce, unsplash, xbox, waze
 
-v3.4.5 ( 09 October 2023 )
+v3.4.5 ( 09th October 2023 )
 ======
 * Fixed: BE GDPR consent.
 * Fixed: php deprecations.
 * Fixed: single image module open in lightbox
 
-v3.4.4 (23 August 2023)
+v3.4.4 (23th August 2023)
 ======
 * Added: Responsive media query screen width settings.
 
-v3.4.3 (28 April 2023)
+v3.4.3 (28th April 2023)
 ======
 * Added: Private Vimeo Video Support.
 * Fixed: Tatsu Header image CSS.
 * Fixed: PHP warnings.
 
-v3.4.2 (21 December 2022)
+v3.4.2 (21st December 2022)
 ======
 * Added: Option to change video preload option for Column and Section Module.
 * Added: Tiktok Icon in the icon library.
@@ -34,18 +49,18 @@ v3.4.2 (21 December 2022)
 * Fixed: Wrong license status issue.
 * Fixed: PHP warnings.
 
-v3.4.1 (10 August 2022)
+v3.4.1 (10th August 2022)
 =====
 * Fixed: Tatsu Editor Settings icon can't be clicked.
 * Fixed: Textarea field rendering.
 * Fixed: Row Border settings.
 
-v3.4.0 (12 July 2022)
+v3.4.0 (12th July 2022)
 =====
 * Added: ACF and WordPress Dynamic Fields Support on 30 Modules.
 * Fixed: CSS issue on Tatsu Editor light mode.
 
-v3.3.14 (2 June 2022)
+v3.3.14 (2nd June 2022)
 =====
 * Added: Module Categories
 * Fixed: TGMPA notice dismiss
@@ -55,7 +70,7 @@ v3.3.14 (2 June 2022)
 * Fixed: Template Import issue
 * Fixed: Wrong conditional tag
 
-v3.3.13 (30 March 2022)
+v3.3.13 (30th March 2022)
 =====
 * Fixed: Form Submission email
 * Fixed: Typehub Custom font upload conditional logic

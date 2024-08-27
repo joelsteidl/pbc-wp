@@ -1,3 +1,7 @@
+v1.6.1 ( 25th April 2024 )
+======
+* Added: V59 Freelance Designer and V60 Oshine Restaurant demo
+
 v1.6.0 ( 22 January 2024 )
 ======
 * Added: V57 Oshine Agency and V58 Fashion Photographer demo

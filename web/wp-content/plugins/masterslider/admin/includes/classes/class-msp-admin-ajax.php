@@ -74,7 +74,7 @@ class MSP_Admin_Ajax {
         global $mspdb;
 
         if( isset( $_REQUEST['slug'] ) && isset( $_REQUEST['id'] ) ){
-            wp_send_json_success( $mspdb->validate_slider_alias( $_REQUEST['slug'], $_REQUEST['id'] ) );
+            wp_send_json_success( $mspdb->validate_slider_alias( sanitize_text_field( $_REQUEST['slug'] ), sanitize_text_field( $_REQUEST['id'] ) ) );
         } else {
             wp_send_json_error( __( "Slider ID or slug is not available", MSWP_TEXT_DOMAIN ) );
         }
@@ -139,20 +139,20 @@ class MSP_Admin_Ajax {
         /////////////////////////////////////////////////////////////////////////////////////////
 
 		// Get the slider id
-		$slider_id 		= isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
+		$slider_id 		= isset( $_REQUEST['slider_id'] ) ? msp_sanitize_input( $_REQUEST['slider_id'] ) : '';
 
 		if ( empty( $slider_id ) ) {
 			wp_send_json( array( 'success' => false, 'type' => 'save' , 'message' => __( "Slider id is not defined.", MSWP_TEXT_DOMAIN )  ) );
 		}
 
 		// get the slider type
-		$slider_type 	= isset( $_REQUEST['slider_type']   ) ? $_REQUEST['slider_type']   : 'custom';
+		$slider_type 	= isset( $_REQUEST['slider_type']   ) ? msp_sanitize_input( $_REQUEST['slider_type'] )   : 'custom';
 
 		// get panel data
-		$msp_data		= isset( $_REQUEST['msp_data']      ) ? $_REQUEST['msp_data']      : NULL;
-		$preset_style	= isset( $_REQUEST['preset_style']  ) ? $_REQUEST['preset_style']  : NULL;
-		$preset_effect	= isset( $_REQUEST['preset_effect'] ) ? $_REQUEST['preset_effect'] : NULL;
-		$buttons_style	= isset( $_REQUEST['buttons'] 		) ? $_REQUEST['buttons'] 	   : NULL;
+		$msp_data		= isset( $_REQUEST['msp_data']      ) ? msp_sanitize_input( $_REQUEST['msp_data'] )      : NULL;
+		$preset_style	= isset( $_REQUEST['preset_style']  ) ? msp_sanitize_input( $_REQUEST['preset_style'] )  : NULL;
+		$preset_effect	= isset( $_REQUEST['preset_effect'] ) ? msp_sanitize_input( $_REQUEST['preset_effect'] ) : NULL;
+		$buttons_style	= isset( $_REQUEST['buttons'] 		) ? msp_sanitize_input( $_REQUEST['buttons'] ) 	   : NULL;
 
 
 		// store preset data in database seperately
@@ -233,7 +233,7 @@ class MSP_Admin_Ajax {
 		/////////////////////////////////////////////////////////////////////////////////////////
 
 		// Get the slider id
-		$slider_type = isset( $_REQUEST['slider_type'] ) ? $_REQUEST['slider_type'] : '';
+		$slider_type = isset( $_REQUEST['slider_type'] ) ? sanitize_text_field( $_REQUEST['slider_type'] ) : '';
 
 
 		// Get new slider id
@@ -264,9 +264,9 @@ class MSP_Admin_Ajax {
 			exit();
 		}*/
 
-        $username    	= isset( $_POST['username'] 	 ) ? $_POST['username'] 	 : '';
-        $purchase_code  = isset( $_POST['purchase_code'] ) ? $_POST['purchase_code'] : ''; // check emptiness
-        $action 		= isset( $_POST['type'] 		 ) ? $_POST['type'] 		 : '';
+        $username    	= isset( $_POST['username'] 	 ) ? sanitize_text_field( $_POST['username'] ) 	 : '';
+        $purchase_code  = isset( $_POST['purchase_code'] ) ? sanitize_text_field( $_POST['purchase_code'] ) : ''; // check emptiness
+        $action 		= isset( $_POST['type'] 		 ) ? sanitize_text_field( $_POST['type'] ) 		 : '';
 
         $result = Axiom_Plugin_License::get_instance()->license_action( $username, $purchase_code, $action );
 
@@ -298,12 +298,12 @@ class MSP_Admin_Ajax {
 				wp_send_json_error( __( 'Please select where to replace.', MSWP_TEXT_DOMAIN ) );
 			}
 
-			$ids            = $_POST['ids'];
+			$ids            = msp_sanitize_input( $_POST['ids'] );
 			$search         = sanitize_text_field($_POST['search']);
 			$replace        = sanitize_text_field($_POST['replace']);
 			$case_sensitive = sanitize_text_field($_POST['cs']);
-			$where          = $_POST['where'];
-			$backup         = $_POST['backup'];
+			$where          = msp_sanitize_input( $_POST['where'] );
+			$backup         = sanitize_text_field( $_POST['backup'] );
 
 			if ( array('slides', 'layers') == $where ) {
 				$where_replace = 'full';
@@ -317,7 +317,7 @@ class MSP_Admin_Ajax {
 				'offset'  => 0,
 				'orderby' => 'ID',
 				'order'   => 'DESC',
-				'where'   => "ID IN (".implode(',', $ids).") AND status='published'",
+				'where'   => "ID IN (". esc_sql( implode(',', $ids) ) .") AND status='published'",
 				'like' 	  => ''
 			);
 			global $mspdb;

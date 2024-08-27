@@ -96,7 +96,7 @@ function monsterinsights_get_addons_data( $key ) {
 	// Get Addons
 	// If the key is valid, we'll get personalised upgrade URLs for each Addon (if necessary) and plugin update information.
 	if ( monsterinsights_is_pro_version() && $key ) {
-		$addons = MonsterInsights()->license_actions->perform_remote_request( 'get-addons-data-v600', array( 'tgm-updater-key' => $key ) );
+		$addons = monsterinsights_perform_remote_request( 'get-addons-data-v600', array( 'tgm-updater-key' => $key ) );
 	} else {
 		$addons = monsterinsights_get_all_addons_data();
 	}
@@ -128,41 +128,54 @@ function monsterinsights_get_addons_data( $key ) {
  * @return array|bool|mixed|object
  */
 function monsterinsights_get_all_addons_data() {
-	// Build the body of the request.
-	$body = array(
-		'tgm-updater-action'     => 'get-all-addons-data',
-		'tgm-updater-key'        => '',
-		'tgm-updater-wp-version' => get_bloginfo( 'version' ),
-		'tgm-updater-referer'    => site_url(),
-		'tgm-updater-mi-version' => MONSTERINSIGHTS_VERSION,
-		'tgm-updater-is-pro'     => false,
-	);
-	$body = http_build_query( $body, '', '&' );
 
-	// Build the headers of the request.
-	$headers = array(
-		'Content-Type'   => 'application/x-www-form-urlencoded',
-		'Content-Length' => strlen( $body ),
-	);
+    $body = array(
+        'tgm-updater-action'     => 'get-all-addons-data',
+        'tgm-updater-key'        => '',
+        'tgm-updater-wp-version' => get_bloginfo( 'version' ),
+        'tgm-updater-referer'    => site_url(),
+        'tgm-updater-mi-version' => MONSTERINSIGHTS_VERSION,
+        'tgm-updater-is-pro'     => false,
+    );
 
-	// Setup variable for wp_remote_post.
-	$post = array(
-		'headers' => $headers,
-		'body'    => $body,
-	);
+    return monsterinsights_perform_remote_request( 'verify-key', $body );
+}
 
-	// Perform the query and retrieve the response.
-	$response      = wp_remote_post( monsterinsights_get_licensing_url(), $post );
-	$response_code = wp_remote_retrieve_response_code( $response );
-	$response_body = wp_remote_retrieve_body( $response );
+function monsterinsights_get_addon( $installed_plugins, $addons_type, $addon, $slug ) {
+	$active          = false;
+	$installed       = false;
 
-	// Bail out early if there are any errors.
-	if ( 200 !== $response_code || is_wp_error( $response_body ) ) {
-		return false;
+	$slug = apply_filters( 'monsterinsights_addon_slug', $slug );
+
+	$plugin_basename = monsterinsights_get_plugin_basename_from_slug( $slug );
+
+	if ( isset( $installed_plugins[ $plugin_basename ] ) ) {
+		$installed = true;
+
+		if ( is_multisite() && is_network_admin() ) {
+			$active = is_plugin_active_for_network( $plugin_basename );
+		} else {
+			$active = is_plugin_active( $plugin_basename );
+		}
+	}
+	if ( empty( $addon->url ) ) {
+		$addon->url = '';
 	}
 
-	// Return the json decoded content.
-	return json_decode( $response_body );
+	$active_version = false;
+	if ( $active ) {
+		if ( ! empty( $installed_plugins[ $plugin_basename ]['Version'] ) ) {
+			$active_version = $installed_plugins[ $plugin_basename ]['Version'];
+		}
+	}
+
+	$addon->type           = $addons_type;
+	$addon->installed      = $installed;
+	$addon->active_version = $active_version;
+	$addon->active         = $active;
+	$addon->basename       = $plugin_basename;
+
+	return $addon;
 }
 
 /**

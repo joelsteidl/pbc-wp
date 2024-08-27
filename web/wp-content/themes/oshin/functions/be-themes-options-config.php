@@ -3248,6 +3248,17 @@ if (!class_exists('Redux_Framework_sample_config')) {
                         'default' => 'style6'
                     ),
                     array (
+                        'id' => 'enable_read_more_link',
+                        'type' => 'checkbox',
+                        'title' => __('Enable read more link', 'oshin'),
+                        'default' => 0,
+                        'required' => array('blog_style','equals', array(
+                            'style2',
+                            'style3',
+                            'style8',
+                        ))
+                    ),
+                    array (
                         'id'        => 'blog-single-post-settings-start',
                         'type'      => 'section',
                         'title'     => 'Blog Single Post Settings',

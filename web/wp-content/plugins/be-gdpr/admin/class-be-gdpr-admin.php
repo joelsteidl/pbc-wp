@@ -104,11 +104,12 @@ class Be_Gdpr_Admin {
 		add_submenu_page("options-general.php", __( "BE GDPR Settings", "be-gdpr"), "BE GDPR", "manage_options", "be_gdpr",'show_settings'); 
 	
 		function show_settings(){
+			
 			?>
 			<div class="wrap">
 			<h1>BE GDPR Settings</h1>
 
-			<form method="post" action="options.php">
+			<form id="be-gdpr-settings-form" method="post" action="options.php">
 			
 				<?php settings_fields( 'be_gdpr' ); ?>
 				<?php do_settings_sections( 'be_gdpr' ); ?>
@@ -119,6 +120,20 @@ class Be_Gdpr_Admin {
 								<span class="slider round"></span>
 					  		</div>
 					</div>
+					<?php 
+					$multi_language_translation = get_option( 'be_gdpr_multi_language_translation', '' );
+					?>
+					<div class="be-settings-page-option" >
+						<label class="be-settings-page-option-label" ><?php esc_html_e("Multi Language Translation", "be-gdpr"); ?></label>
+						<div class="gdpr-settings" ><label class="switch be-modal-switch">
+							<input id="be-gdpr-multi-language-translation" class="be-gdpr-multi-language-translation" name="be_gdpr_multi_language_translation" <?php echo  ( 'on' === $multi_language_translation ) ? "checked" : ''; ?> type="checkbox"> 
+							<span class="slider round"></span>
+					  	</div>
+					</div>
+					<div id="be-settings-page-for-single-language" 
+					style="<?php if ( 'on' === $multi_language_translation ) {
+						echo "display:none;";
+					} ?>" >
 					<div class="be-settings-page-option" >
 						<label class="be-settings-page-option-label" ><?php esc_html_e("Cookie Notice Bar Content", "be-gdpr"); ?></label>
 						<div><textarea name="be_gdpr_cookie_privacy_content" rows="4" cols="50" ><?php echo get_option( 'be_gdpr_cookie_privacy_content' ) ; ?></textarea></div>
@@ -151,13 +166,12 @@ class Be_Gdpr_Admin {
 						<label class="be-settings-page-option-label" ><?php esc_html_e("Text on overlay over blocked content", "be-gdpr"); ?> </label>
 						<div><textarea name="be_gdpr_text_on_overlay" rows="4" cols="50" ><?php echo get_option( 'be_gdpr_text_on_overlay' ) ; ?></textarea></div>
 					</div>
+					</div>
 				<?php submit_button(); ?>
 			</form>
 
 			<div class="be-gdpr-disclaimer" >
-			DISCLAIMER:
-
-This plugin is meant to assist you in making some of the features ( such as Youtube, Vimeo and Google Map embeds ) available in the themes and plugins created by Brand Exponents, compatible with GDPR. Using this plugin does not guarantee that an organisation is successfully meeting its responsibilities and obligations of GDPR. Organisations should assess their unique responsibilities and ensure extra measures are taken to meet any obligations required by law. The pre-filled content in the consent popup and cookie notice bar, are just samples for your reference. We recommend that you consult a legal expert to formulate the exact text copy depending on the needs of your website.
+			<?php esc_html_e( 'DISCLAIMER: This plugin is meant to assist you in making some of the features ( such as Youtube, Vimeo and Google Map embeds ) available in the themes and plugins created by Brand Exponents, compatible with GDPR. Using this plugin does not guarantee that an organisation is successfully meeting its responsibilities and obligations of GDPR. Organisations should assess their unique responsibilities and ensure extra measures are taken to meet any obligations required by law. The pre-filled content in the consent popup and cookie notice bar, are just samples for your reference. We recommend that you consult a legal expert to formulate the exact text copy depending on the needs of your website.', 'be-gdpr' ) ?>
 			</div>
 
 		</div>
@@ -167,17 +181,23 @@ This plugin is meant to assist you in making some of the features ( such as Yout
 
 	public function add_cookie_privacy_content() {
   
-		$options_to_be_registered = array(	
-			'be_gdpr_cookie_privacy_content' =>  'We use cookies to enhance your experience while using our website. To learn more about the cookies we use and the data we collect, please check our [be_gdpr_privacy_popup].',
-			'be_gdpr_show_cookie_notice_bar' =>'',
-			'be_gdpr_accept_btn_text' => 'I Accept',
-			'be_gdpr_popup_title_text' => 'Privacy Settings',
-			'be_gdpr_popup_intro_content' =>  'We use cookies to enhance your experience while using our website. If you are using our Services via a browser you can restrict, block or remove cookies through your web browser settings. We also use content and scripts from third parties that may use tracking technologies. You can selectively provide your consent below to allow such third party embeds. For complete information about the cookies we use, data we collect and how we process them, please check our [be_gdpr_privacy_policy_page]',
-			'be_gdpr_privacy_policy_link_text' => 'Privacy Policy',
-			'be_gdpr_popup_save_btn_text' => 'Save',
-			'be_gdpr_consent_desc' =>  'Consent to display content from - [be_gdpr_api_name]',
-			'be_gdpr_text_on_overlay' =>  'Your consent is required to display this content from [be_gdpr_api_name] - [be_gdpr_privacy_popup]' ,
-		);
+		$options_to_be_registered = function_exists( 'be_gdpr_get_cookie_privacy_content' ) ? be_gdpr_get_cookie_privacy_content(): array();
+
+		//if admin needs to translate then text should not be saved in option
+		if ( ! empty( $_POST ) && ! empty( $_POST['be_gdpr_multi_language_translation'] ) && 'on' === sanitize_key( wp_unslash( $_POST['be_gdpr_multi_language_translation'] ) ) ) {
+			/**** 
+			foreach( $options_to_be_registered as $option => $value ){
+				if ( ! empty( $option ) && stripos( $option,'be_gdpr_') !== false ) {
+					delete_option( $option );
+				}
+			}
+			******/
+			$options_to_be_registered = array();
+		} 
+
+		$options_to_be_registered['be_gdpr_show_cookie_notice_bar'] = '';
+		$options_to_be_registered['be_gdpr_multi_language_translation'] = '';
+	
 
 		foreach( $options_to_be_registered as $option => $value ){
 		register_setting( 'be_gdpr', $option, array('default' => $value) ); 

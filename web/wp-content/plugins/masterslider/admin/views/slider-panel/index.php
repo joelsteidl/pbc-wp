@@ -42,6 +42,8 @@
                 <li>{{#link-to 'slides'}} <?php _e('Slides', MSWP_TEXT_DOMAIN); ?> <span class="msp-ico msp-ico-slides"></span>{{/link-to}}</li>
                 <li>{{#link-to 'controls'}} <?php _e('Slider Controls', MSWP_TEXT_DOMAIN); ?> <span class="msp-ico msp-ico-controls"></span>{{/link-to}}</li>
                 <li>{{#link-to 'callbacks'}} <?php _e('Slider Callbacks', MSWP_TEXT_DOMAIN); ?> <span class="msp-ico msp-ico-api"></span>{{/link-to}}</li>
+                <li class="msp-depicter-btn"> {{#link-to 'depicter'}}Meet Depicter Slider{{/link-to}}</li>
+
             </ul>
         </nav>
         <div class="clear"></div>
@@ -71,6 +73,20 @@
         </div>
     {{/if}}
 </script>
+
+<script type="text/x-handlebars" id="depicter">
+    {{#meta-box }}
+    <div class="depicter-banner">
+        <div class="depicter-banner-overlay">
+            <a href="https://depicter.com/pricing/?utm_source=master-plugin&utm_medium=editor-tab&utm_campaign=MS2DP23" target="_blank" class="depicter-banner-cta" >Get It Now</a>
+            <a href="https://depicter.com/?utm_source=master-plugin&utm_medium=editor-tab&utm_campaign=MS2DP23" target="_blank" class="depicter-banner-cta2" >Meet Depicter</a>
+            <span class="depicter-banner-coupon">MSTODP23</span>
+        </div>
+        <img usemap="#primary"  class="depicter-banner-img" src="<?php echo MSWP_AVERTA_ADMIN_URL . '/views/slider-panel'; ?>/images/depicter-banner.png" alt="">
+    </div>
+    {{/meta-box}}
+</script>
+
 
 <!-- woocommers no installed error -->
 <script type="text/x-handlebars" id="wooc-error">

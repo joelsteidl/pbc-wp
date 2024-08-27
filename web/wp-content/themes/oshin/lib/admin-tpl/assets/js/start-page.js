@@ -107,12 +107,25 @@
                 success: function(response) {
                     if(response) {
                         cachePurchaseCode(token_field);
-                        $('.token_check').html(response.msg);  
-                        if(response.res){
-                            setTimeout(function() {
-                                window.location.reload();
-                            },1500);
-                        }      
+                        var res_msg = response.msg;
+                        if ( -1 < res_msg.indexOf("try again after") ) {
+                            var try_after = res_msg.match(/\d+/)[0];
+                            if ( 'undefined' !== typeof try_after && null !== try_after && '' !== try_after && 0 < try_after ) {
+                                try_after = try_after * 1000;
+                                //$('.token_check').html('<div class="notic notic-warning">Please wait ...</div>'); 
+                                setTimeout(function() {
+                                    $('#be_start_updater #submit').click();
+                                },try_after);
+                            }
+                        } else {
+                            $('.token_check').html(response.msg);  
+                            if(response.res){
+                                setTimeout(function() {
+                                    window.location.reload();
+                                },1500);
+                            }
+                        }
+                              
                     }else {
                         $('.token_check').html('<div class="notic notic-warning">Unable to save Purchase Code</div>');
                     }

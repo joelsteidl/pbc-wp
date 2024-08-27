@@ -8,6 +8,7 @@ if (!function_exists('be_portfolio')) {
 		$atts = shortcode_atts( array (
 			'col' => 'three',
 			'gutter_style' => 'style1',
+			'gutter_width_responsive' => -1,
 			'gutter_width' => 40,
 	        'show_filters' => '1',
 	        'tax_name' => 'portfolio_categories',
@@ -63,6 +64,8 @@ if (!function_exists('be_portfolio')) {
 		$col = ((!isset($col)) || empty($col)) ? 'three' : $col;
 		$gutter_style = ((!isset($gutter_style)) || empty($gutter_style)) ? 'style1' : $gutter_style;
 		$gutter_width = ( isset( $gutter_width ) ) ? intval( $gutter_width ) : intval(40);
+		$reponsive_gutter_width = be_get_reponsive_gutter_width( $gutter_width_responsive, $gutter_width );
+		$gutter_width = intval( $reponsive_gutter_width['d'] );
 		$masonry_enable = ((!isset($masonry)) || empty($masonry)) ? 'masonry_disable' : 'masonry_enable';
 		$maintain_order = ( isset( $maintain_order ) && !empty( $maintain_order ) ) ? 1 : 0;
 		$prebuilt_hover = (!isset($prebuilt_hover) || empty($prebuilt_hover)) ? intval(0) : intval(1);
@@ -193,7 +196,7 @@ if (!function_exists('be_portfolio')) {
 		$output .= '<div ' . $css_id . ' class = "' . implode( ' ', $classes ) . '" ' . $data_animations . ' > ';
         $output .= $custom_style_tag;
 		$data_meta_to_show_filter = isset($meta_to_show) ? $meta_to_show : 'portfolio_categories';
-		$output .= '<div class="portfolio '. $delay_load_class . $two_col_mobile .'full-screen '. ( ( 1 == $prebuilt_hover ) ? ( 'be-portfolio-prebuilt-hover-' . $prebuilt_hover_style . ' ' ) : ' ' ) . $lazy_load_class .'full-screen-gutter '.$masonry_enable.' '.$gutter_style.'-gutter '.$col.'-col " ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-action="get_ajax_full_screen_gutter_portfolio" data-category="'.$category.'" data-aspect-ratio = "'.$aspect_ratio.'" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-showposts="'.$items_per_page.'" data-paged="2" data-col="'.$col.'" data-gallery="'.$gallery.'" data-filter="'.$filter_to_use.'" data-meta_to_show="'.$data_meta_to_show_filter.'" data-show_filters="'.$show_filters.'" data-thumbnail-bg-color="'.$global_thumb_overlay_color.'" data-thumbnail-bg-gradient="'.$gradient_style_color.'"' . ( ( '' != $title_style ) ? ( ' data-title-style="'.$title_style.'"' ) : '' ) . ( ( $lazy_load || $delay_load ) ? ( ' data-placeholder-color="' . $placeholder_color . '"' ) : '' ) . ' data-cat-color="'.$cat_color.'" data-title-color="'.$title_color.'"' . ( ( 'none' != $title_animation_type ) ? ( ' data-title-animation-type="'.$title_animation_type.'"' ) : '' ) . ( ( 'none' != $cat_animation_type ) ? ( ' data-cat-animation-type="'.$cat_animation_type.'"' ) : '' ) . ( ( '' != $hover_style ) ? ( ' data-hover-style="'.$hover_style.'"' ) : '' ) . ' data-gutter-width="'.$gutter_width.'" data-img-grayscale="'.$img_grayscale.'"' . ( ( 'none' != $image_effect ) ? ( ' data-image-effect="'.$image_effect.'"' ) : '' ) . ( ( '' != $prebuilt_hover_style ) ? ( ' data-prebuilt-hover-style="' . $prebuilt_hover_style . '"' ) : '' ) . '" data-gradient-style-color="'.$global_gradient_style_color.'" data-cat-hide="'.$cat_hide.'" data-like-indicator="'.$like_button.'" '.$portfolio_wrap_style.'>';
+		$output .= '<div class="portfolio '. $delay_load_class . $two_col_mobile .'full-screen '. ( ( 1 == $prebuilt_hover ) ? ( 'be-portfolio-prebuilt-hover-' . $prebuilt_hover_style . ' ' ) : ' ' ) . $lazy_load_class .'full-screen-gutter '.$masonry_enable.' '.$gutter_style.'-gutter '.$col.'-col " ' . ( '' != $init_image_load ? 'data-animation = "'.$init_image_load.'"' : '' ) . ' data-action="get_ajax_full_screen_gutter_portfolio" data-category="'.$category.'" data-aspect-ratio = "'.$aspect_ratio.'" data-enable-masonry="'.$masonry.'" ' . ( $maintain_order ? 'data-maintain-order = "1" ' : '' ) . 'data-showposts="'.$items_per_page.'" data-paged="2" data-col="'.$col.'" data-gallery="'.$gallery.'" data-filter="'.$filter_to_use.'" data-meta_to_show="'.$data_meta_to_show_filter.'" data-show_filters="'.$show_filters.'" data-thumbnail-bg-color="'.$global_thumb_overlay_color.'" data-thumbnail-bg-gradient="'.$gradient_style_color.'"' . ( ( '' != $title_style ) ? ( ' data-title-style="'.$title_style.'"' ) : '' ) . ( ( $lazy_load || $delay_load ) ? ( ' data-placeholder-color="' . $placeholder_color . '"' ) : '' ) . ' data-cat-color="'.$cat_color.'" data-title-color="'.$title_color.'"' . ( ( 'none' != $title_animation_type ) ? ( ' data-title-animation-type="'.$title_animation_type.'"' ) : '' ) . ( ( 'none' != $cat_animation_type ) ? ( ' data-cat-animation-type="'.$cat_animation_type.'"' ) : '' ) . ( ( '' != $hover_style ) ? ( ' data-hover-style="'.$hover_style.'"' ) : '' ) . ' '.$reponsive_gutter_width['data_gutter_width'].' data-gutter-width="'.$gutter_width.'" data-img-grayscale="'.$img_grayscale.'"' . ( ( 'none' != $image_effect ) ? ( ' data-image-effect="'.$image_effect.'"' ) : '' ) . ( ( '' != $prebuilt_hover_style ) ? ( ' data-prebuilt-hover-style="' . $prebuilt_hover_style . '"' ) : '' ) . '" data-gradient-style-color="'.$global_gradient_style_color.'" data-cat-hide="'.$cat_hide.'" data-like-indicator="'.$like_button.'" '.$portfolio_wrap_style.'>';
 		$category = explode(',', $category);
 		$tags = explode(',',$tags);
 		
@@ -658,6 +661,7 @@ function oshine_register_portfolio() {
                                                 'col',
                                                 'masonry',
                                                 'gutter_style',
+												'gutter_width_responsive',
                                                 'gutter_width',
                                                 'two_col_mobile',
                                                 'item_parallax',
@@ -752,6 +756,18 @@ function oshine_register_portfolio() {
 	        		'default' => 'style1',
 	        		'tooltip' => ''
 	        	),
+				array (
+					'att_name' => 'gutter_width_responsive',
+					'type' => 'number',
+					'label' => __('Gutter Width responsive','oshine-modules'),
+					'options' => array(
+						'unit' => 'px',
+					),
+					'default' => '',
+					'is_inline' => true,
+					'responsive' => true,
+					'tooltip' => ''
+				),
 	        	array (
 	        		'att_name' => 'gutter_width',
 	        		'type' => 'number',
@@ -761,7 +777,8 @@ function oshine_register_portfolio() {
 	        		),
                     'default' => '40',
                     'is_inline' => true,
-	        		'tooltip' => ''
+	        		'tooltip' => '',
+					'visible' => array( 'gutter_width_responsive', '=', '' ),
 	        	),
 	            array (
 	              	'att_name' => 'masonry',

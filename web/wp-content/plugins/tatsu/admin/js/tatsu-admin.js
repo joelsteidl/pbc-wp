@@ -111,6 +111,17 @@
 		// 	$('#setting-error-tgmpa p span').last().remove();
 		// }
 		
+		/**
+		 * Remove notice
+		 */
+		var remove_notice = tatsuAdminConfig.ajaxurl.replace(/admin-ajax.php/i, 'admin.php?page=meta-box-updater');
+		remove_notice = document.querySelector( '.notice.notice-warning a[href="'+remove_notice+'"]' );
+		if ( 'undefined' !== typeof remove_notice && null !== remove_notice) {
+			remove_notice = remove_notice.parentNode.parentNode;
+			if ( remove_notice.classList.contains( 'notice-warning' ) ) {
+				remove_notice.remove();
+			}
+		}
 
 		/**
 		 * Dismiss notices.

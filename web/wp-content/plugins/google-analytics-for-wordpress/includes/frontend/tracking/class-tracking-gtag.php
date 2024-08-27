@@ -203,6 +203,7 @@ class MonsterInsights_Tracking_Gtag extends MonsterInsights_Tracking_Abstract {
 			echo $output; // phpcs:ignore
 		} ?>
 		<?php if ( ! empty( $v4_id ) ) {
+			do_action( 'monsterinsights_tracking_gtag_frontend_before_script_tag' );
 			?>
 			<script src="<?php echo $src; // phpcs:ignore ?>" <?php echo $attr_string; // phpcs:ignore ?> <?php echo esc_attr( $gtag_async ); ?>></script>
 			<script<?php echo $attr_string; // phpcs:ignore ?>>
@@ -210,6 +211,12 @@ class MonsterInsights_Tracking_Gtag extends MonsterInsights_Tracking_Abstract {
 				var mi_track_user = <?php echo $track_user ? 'true' : 'false'; ?>;
 				var mi_no_track_reason = <?php echo $reason ? "'" . esc_js( $reason ) . "'" : "''"; ?>;
 				<?php do_action( 'monsterinsights_tracking_gtag_frontend_output_after_mi_track_user' ); ?>
+				var MonsterInsightsDefaultLocations = <?php echo $this->get_default_locations(); ?>;
+				if ( typeof MonsterInsightsPrivacyGuardFilter === 'function' ) {
+					var MonsterInsightsLocations = (typeof MonsterInsightsExcludeQuery === 'object') ? MonsterInsightsPrivacyGuardFilter( MonsterInsightsExcludeQuery ) : MonsterInsightsPrivacyGuardFilter( MonsterInsightsDefaultLocations );
+				} else {
+					var MonsterInsightsLocations = (typeof MonsterInsightsExcludeQuery === 'object') ? MonsterInsightsExcludeQuery : MonsterInsightsDefaultLocations;
+				}
 
 				<?php if ($this->should_do_optout()) { ?>
 				var disableStrs = [
@@ -302,6 +309,9 @@ class MonsterInsights_Tracking_Gtag extends MonsterInsights_Tracking_Abstract {
 						}
 						?>
 					});
+					if ( MonsterInsightsLocations.page_location ) {
+						__gtagTracker('set', MonsterInsightsLocations);
+					}
 					<?php if (! empty( $v4_id )) { ?>
 					__gtagTracker('config', '<?php echo esc_js( $v4_id ); ?>', <?php echo $options_v4; // phpcs:ignore ?> );
 					<?php } ?>
@@ -454,5 +464,20 @@ class MonsterInsights_Tracking_Gtag extends MonsterInsights_Tracking_Abstract {
 
 	public function should_do_optout() {
 		return ! ( defined( 'MI_NO_TRACKING_OPTOUT' ) && MI_NO_TRACKING_OPTOUT );
+	}
+
+	/**
+	 * Get current page URL and
+	 */
+	private function get_default_locations() {
+		global $wp;
+
+		$urls['page_location'] = add_query_arg( $_SERVER['QUERY_STRING'], '', trailingslashit( home_url( $wp->request ) ) );
+
+		if ( $referer = wp_get_referer() ) {
+			$urls['page_referrer'] = $referer;
+		}
+
+		return wp_json_encode( $urls );
 	}
 }

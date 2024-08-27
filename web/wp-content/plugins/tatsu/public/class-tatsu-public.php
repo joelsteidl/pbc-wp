@@ -485,12 +485,12 @@ class Tatsu_Public {
 				if( is_home() ){
 					$post_type = 'archive-'.$post_type;
 				} else if( is_archive() ){	
-					if( array_key_exists( 'post_type', $wp_query->query ) ){
+					if( ! empty( $wp_query->query ) && array_key_exists( 'post_type', $wp_query->query ) ){
 						$post_type = $wp_query->query['post_type'];
 					}
 					$post_type = 'archive-'.$post_type;
 				}else {
-					if( array_key_exists( 'post_type', $wp_query->query ) ){
+					if( ! empty( $wp_query->query ) && array_key_exists( 'post_type', $wp_query->query ) ){
 						$post_type = $wp_query->query['post_type'];
 					}
 					$post_type = 'single-'.$post_type;
@@ -572,12 +572,12 @@ class Tatsu_Public {
 				if( is_home() ){
 					$post_type = 'archive-'.$post_type;
 				} else if( is_archive() ){	
-					if( array_key_exists( 'post_type', $wp_query->query ) ){
+					if( ! empty( $wp_query->query ) && array_key_exists( 'post_type', $wp_query->query ) ){
 						$post_type = $wp_query->query['post_type'];
 					}
 					$post_type = 'archive-'.$post_type;
 				}else {
-					if( array_key_exists( 'post_type', $wp_query->query ) ){
+					if( ! empty( $wp_query->query ) && array_key_exists( 'post_type', $wp_query->query ) ){
 						$post_type = $wp_query->query['post_type'];
 					}
 					$post_type = 'single-'.$post_type;

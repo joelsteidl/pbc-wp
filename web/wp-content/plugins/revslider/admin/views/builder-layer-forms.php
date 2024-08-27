@@ -5,7 +5,7 @@
  * This file is used to markup the admin-facing aspects of the plugin.
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2022 ThemePunch
+ * @copyright 2024 ThemePunch
  */
 if(!defined('ABSPATH')) exit();
 ?>
@@ -1006,7 +1006,7 @@ if(!defined('ABSPATH')) exit();
 					<div class="div10"></div>
 					<row class="direktrow">
 						<labelhalf><i class="material-icons vmi">sms_failed</i></labelhalf>
-						<contenthalf><div class="function_info"><?php _e('Depricated Function !<br>Only visible by Rendering. Limited influence on Styled Layers. Custom CSS Inline will be removed in Version 6.2', 'revslider');?></div></contenthalf>
+						<contenthalf><div class="function_info"><?php _e('Deprecated Function !<br>Only visible by Rendering. Limited influence on Styled Layers. Custom CSS Inline will be removed in Version 6.2', 'revslider');?></div></contenthalf>
 					</row>
 				</div>
 			</div>

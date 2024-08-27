@@ -53,17 +53,15 @@ class Area {
 	 *
 	 * @since 1.0.0
 	 */
-	public function __construct() {
-
-		$this->hooks();
-	}
+	public function __construct() {}
 
 	/**
 	 * Assign all hooks to proper places.
 	 *
 	 * @since 1.0.0
+	 * @since 4.0.0 Changed visibility to public.
 	 */
-	protected function hooks() {
+	public function hooks() {
 
 		// Add the Settings link to a plugin on Plugins page.
 		add_filter( 'plugin_action_links_' . plugin_basename( WPMS_PLUGIN_FILE ), [ $this, 'add_plugin_action_link' ], 10, 1 );
@@ -558,6 +556,10 @@ class Area {
 				'gmail'             => [
 					'one_click_setup_upgrade_title'   => wp_kses( __( 'One-Click Setup for Google Mailer <br> is a Pro Feature', 'wp-mail-smtp' ), [ 'br' => [] ] ),
 					'one_click_setup_upgrade_content' => esc_html__( 'We\'re sorry, One-Click Setup for Google Mailer is not available on your plan. Please upgrade to the Pro plan to unlock all these awesome features.', 'wp-mail-smtp' ),
+				],
+				'rate_limit'        => [
+					'upgrade_title'   => wp_kses( __( 'Email Rate Limiting <br> is a Pro Feature', 'wp-mail-smtp' ), [ 'br' => [] ] ),
+					'upgrade_content' => esc_html__( 'We\'re sorry, Email Rate Limiting is not available on your plan. Please upgrade to the Pro plan to unlock all these awesome features.', 'wp-mail-smtp' ),
 				],
 			],
 			'all_mailers_supports'    => wp_mail_smtp()->get_providers()->get_supports_all(),
@@ -1399,7 +1401,7 @@ class Area {
 			array_filter(
 				$submenu[ self::SLUG ],
 				function ( $item ) {
-					return strpos( $item[2], 'https://wpmailsmtp.com/lite-upgrade' ) !== false;
+					return strpos( urldecode( $item[2] ), 'wpmailsmtp.com/lite-upgrade' ) !== false;
 				}
 			)
 		);
@@ -1416,6 +1418,15 @@ class Area {
 		} else {
 			$submenu[ self::SLUG ][ $upgrade_link_position ][] = 'wp-mail-smtp-sidebar-upgrade-pro';
 		}
+
+		$current_screen      = get_current_screen();
+		$upgrade_utm_content = $current_screen === null ? 'Upgrade to Pro' : 'Upgrade to Pro - ' . $current_screen->base;
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$upgrade_utm_content = empty( $_GET['tab'] ) ? $upgrade_utm_content : $upgrade_utm_content . ' -- ' . sanitize_key( $_GET['tab'] );
+
+		// Add the correct utm_content to the menu item.
+		$submenu[ self::SLUG ][ $upgrade_link_position ][2] =
+			esc_url( wp_mail_smtp()->get_upgrade_link( [ 'medium' => 'admin-menu', 'content' => $upgrade_utm_content ] ) ); // phpcs:ignore WordPress.Arrays.ArrayDeclarationSpacing.AssociativeArrayFound
 		// phpcs:enable WordPress.WP.GlobalVariablesOverride.Prohibited
 
 		// Output inline styles.

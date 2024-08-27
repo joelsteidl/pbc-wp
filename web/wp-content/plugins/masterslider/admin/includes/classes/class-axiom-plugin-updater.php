@@ -107,7 +107,7 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
          * @return string   The API URI
          */
         public function get_download_api() {
-            return 'http://support.averta.net/en/api/?branch=envato&group=items&cat=download-purchase';
+            return 'https://env.averta.net/en/api/?branch=envato&group=items&cat=download-purchase';
         }
 
         /**
@@ -120,7 +120,7 @@ if( ! class_exists('Axiom_Plugin_Updater') ) {
             if( apply_filters( $this->slug.'_disable_auto_update', 0 ) )
                 return;
 
-            $plugin = isset($_REQUEST['plugin']) ? trim($_REQUEST['plugin']) : '';
+            $plugin = isset($_REQUEST['plugin']) ? trim( sanitize_text_field( $_REQUEST['plugin'] )) : '';
 
             if ( ! current_user_can('update_plugins') )
                 wp_die(__('You do not have sufficient permissions to update plugins for this site.'));

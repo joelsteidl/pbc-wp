@@ -2,7 +2,7 @@
 /**
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2022 ThemePunch
+ * @copyright 2024 ThemePunch
  */
 
 if(!defined('ABSPATH')) exit();
@@ -291,7 +291,7 @@ $api = 'revapi'; // . $slider_id;
 						<!-- SLIDER MIN HEIGHT AND MAX WIDTH -->
 						<longoption class="slidermaxwidth"><i class="material-icons rcw">unfold_more</i><label_a><?php _e('Max Width', 'revslider');?></label_a><input data-allowed="px,%,none" data-min="0" data-numeric="true"  id="sr_size_maxwidth" data-r="size.maxWidth" data-evt="updatesliderlayout"  type="text"  class="sliderinput valueduekeyboard easyinit" placeholder="none"></longoption>
 						<longoption class="sliderminheight"><i class="material-icons">unfold_less</i><label_a><?php _e('Min Height', 'revslider');?></label_a><input data-min="0" data-numeric="true"  data-allowed="px,%,none" id="sr_size_minheight" data-r="size.minHeight" data-evt="updatesliderlayout"  type="text" class="sliderinput valueduekeyboard smallinput easyinit" placeholder="none"></longoption>
-						<longoption class="sliderfsminheight"><i class="material-icons">unfold_less</i><label_a><?php _e('Min Height', 'revslider');?></label_a><input data-min="0" data-numeric="true" data-allowed="none,px,%" id="sr_size_minheight_fs" data-r="size.minHeightFullScreen" placeholder="none" data-evt="updatesliderlayout"  type="text"  class="sliderinput valueduekeyboard easyinit"></longoption>
+						<longoption class="sliderfsminheight"><i class="material-icons">unfold_less</i><label_a><?php _e('Min Height', 'revslider');?></label_a><input data-min="0" data-numeric="true" data-allowed="px,%" id="sr_size_minheight_fs" data-r="size.minHeightFullScreen" placeholder="none" data-evt="updatesliderlayout"  type="text"  class="sliderinput valueduekeyboard easyinit"></longoption>
 						<longoption><i class="material-icons">unfold_more</i><label_a><?php _e('Wrapper Max Height', 'revslider');?></label_a><input data-allowed="px,%,none" data-min="0" data-numeric="true"  id="sr_size_maxheight" data-r="size.maxHeight"  type="text"  class="sliderinput valueduekeyboard easyinit" placeholder="none"></longoption>
 
 						<div class="div20"></div>
@@ -549,8 +549,7 @@ $api = 'revapi'; // . $slider_id;
 							<div><input value="post" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings, #post_typesubselector" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Post-Based', 'revslider');?></label_sub></div>
 							<div><input value="woo" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('WooCommerce', 'revslider');?></label_sub></div>
 							<div><input value="flickr" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Flickr', 'revslider');?></label_sub></div>
-							<div><input value="instagram" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Instagram', 'revslider');?></label_sub></div>
-							<div><input value="twitter" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Twitter', 'revslider');?></label_sub></div>
+							<div><input value="instagram" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Instagram', 'revslider');?></label_sub></div>							
 							<div><input value="facebook" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Facebook', 'revslider');?></label_sub></div>
 							<div><input value="youtube" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('YouTube', 'revslider');?></label_sub></div>
 							<div><input value="vimeo" type="radio" name="slider_sourcetype" class="sliderinput easyinit" data-evt="loadStreamDependencies" data-evtparam="force" data-show="#source_*val*_settings" data-hide=".source_subsetting_wrapper" data-r="sourcetype"><label_sub><?php _e('Vimeo', 'revslider');?></label_sub></div>
@@ -1056,7 +1055,7 @@ foreach ($wc_sortby as $wc_val => $wc_name) {
 					<div class="div10"></div>
 					<row class="direktrow">
 						<labelhalf><i class="material-icons vmi">sms_failed</i></labelhalf>
-						<contenthalf><div class="function_info"><?php _e('Option is depricated and will be removed in upcoming updates !', 'revslider');?></div></contenthalf>
+						<contenthalf><div class="function_info"><?php _e('Option is deprecated and will be removed in upcoming updates !', 'revslider');?></div></contenthalf>
 					</row>
 				</div>
 			</div>

@@ -50,6 +50,7 @@ class Tatsu_Section_Concepts {
 			$new_concept['content'] = $parser->parse( $options['shortcode'] );
 			$concepts[] = $new_concept;
 		}
+		$concepts = apply_filters( 'tatsu_get_section_concepts', $concepts );
 		header('Content-Type: application/json');
 		echo json_encode( $concepts );
 		wp_die();

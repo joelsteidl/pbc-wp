@@ -1,0 +1,20 @@
+{
+	"home_page_title": "Home v60",
+	"sliders": {
+		"masterslider": "v60.json",
+		"revslider": "slider-1.zip"
+	},
+	"menus": {
+		"main_nav": "Main Menu v60"
+	},
+	"nav_menus":{
+		"2":"Main Menu v60"
+	},
+	"tatsu_active_header":"header",
+	"tatsu_active_footer":"footer",
+	"content_plugins": {
+		"masterslider": "Master Slider",
+		"revslider": "Slider Revolution",
+		"safe-svg":"Safe SVG"
+	}
+}

@@ -31,7 +31,7 @@ class MSP_Frontend_Assets {
 		$this->version    = MSWP_AVERTA_VERSION;
 
         if( isset( $_GET['msbta'] ) ){
-            $this->assets_dir = 'http://cdn.averta.net/project/masterslider/assets';
+            $this->assets_dir = 'https://cdn.averta.net/project/masterslider/assets';
         }
 
 		add_action( 'wp_enqueue_scripts', array( $this, 'load_assets'     ), 15 );

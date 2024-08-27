@@ -464,7 +464,7 @@ if ( ! function_exists( 'get_be_gallery_shortcode' ) ) :
 			foreach($images as $image) {
 				$image_atts = get_portfolio_image($image['id'], $col, $masonry);
 				$attachment_info = be_wp_get_attachment( $image['id'] );
-				if(('flickr' != $image_source && 'instagram' != $image_source ) && (!$attachment_info || empty( $attachment_info )) ) {
+				if(('flickr' != $image_source && 'instagram' != $image_source ) && ( empty( $attachment_info ) || empty( $attachment_info[ 'width' ] ) || empty( $attachment_info[ 'height' ] ) || empty( $image[ 'width' ] ) || empty( $image[ 'height' ] ) ) ) {
 					continue;
 				} 
 				if($hover_content_option == 'title'){

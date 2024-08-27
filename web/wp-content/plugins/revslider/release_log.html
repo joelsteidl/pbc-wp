@@ -1,5 +1,109 @@
-<div class="slider-revolution-update-list">
-	<h3 class="version-number">Version 6.6.18 (23rd October 2023)</h3>
+<div class="slider-revolution-update-list">	
+	<h3 class="version-number">Version 6.7.7 (23rd April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>			
+		<li>Templates and Modules with links (action of simple links) may scroll down at opening the page</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.6 (23rd April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>			
+		<li>Navigation is not visible if the 'Hide Under' value is bigger the highest Device Size set in Module</li>
+		<li>'In' Animation duration under 75ms not triggering any events, addon relaying on events are not starting</li>
+		<li>System Fonts are loaded by Google Fonts API, which breaks all Google Fonts on the same page</li>
+		<li>HTML5 Video without Poster image (first frame image) breaks at startanimation</li>
+		<li>Custom SVG upload fails</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.5 (19th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>			
+		<li>Empty Tag Removal in Text Layers: Empty span and p tags within text layers are removed, despite being used for visual effects or by third-party functions.</li>
+		<li>Image Rendering with Special Characters: Images with special space characters used as background for shapes cause rendering issues in SR7.</li>
+		<li>Gradient and Image Conflict: Elements with both gradient coloring and an image source render only the image, ignoring gradient colors in the frontend.</li>
+		<li>Container Dimension Calculation Error: Container rendering dimensions are incorrectly calculated if module width and height are oversized on desktop level.</li>
+		<li>Video Autoplay Issue in Safari: Unmuted videos fail to start without user interaction on Safari browser.</li>
+    	<li>Scroll Timeline Displacement: Modules based on scroll timeline without a fixed position are calculated with oversized height upon initialization, causing incorrect scrolling behavior with Scroll to Id navigation.</li>
+		<li>PanZoom Effect shows the original Image underlaying the Pan Zoom effect, causing a double effect</li>
+		<li>Simple Link and Menu Link forwards to the wrong address based on the different settings</li>
+		<li>Simple and Menu Link fails if target is a simple hash char</li>
+    	<li>Slide Background Video loops even option is disabled</li>
+    	<li>HTML Export for V7 engine does not export V7 data</li>
+    	<li>Formating the WordPress date format in a wrong way can cause the Slider Revolution backend to produce JS errors</li>
+		<li>Image From Stream option produced error when there were no Stream available</li>
+		<li>Global Custom Fonts are not written in V7 engine output</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.4 (16th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>			
+		<li>Media Filters Missing: Slide backgrounds lack the configured media filters, impacting visual consistency.</li>
+		<li>Migration Failure with AddOns: Enabling Exploding Layers AddOns causes migration processes to fail.</li>
+		<li>Min Height Calculation Error: Setting 'Min Height' to 'none' calculates the Content Flow height as NaN, disrupting the layout integrity.</li>
+		<li>AddOns Loading Issue in Smart Mode: AddOns placed in the 4th position or later under Smart Loading mode fail to load some necessary resources.</li>	
+		<li>SVG Layer Visibility Issue: SVG layers become invisible when inner component IDs are duplicated, leading to display inconsistencies.</li>
+		<li>Editor Breakage at Small Dimensions: Setting module dimensions to under 10px causes the editor to break, impairing usability.</li>
+		<li>Text Layer Width Issue: Text layers with 'width' set to 'auto' disregard 'max-width' settings, leading to content overflow.</li>
+		<li>Font Loading Issue: Fonts do not load if 'Cache Fonts Locally' is enabled and only one font weight is used across the DOM in a single module.</li>
+		<li>Module Migration Issue in SR6 Editor: Saving and migrating modules may alter Responsive Height settings if previously unset, scaling them based on larger dimensions.</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.3 (12th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>	
+		<li>Carousel Interaction Issue: Dragging the carousel with a longer delay causes an overjump of the next element if it's already in focus.</li>
+		<li>Rapidly click on Navigation elements makes the Carousel aniamtion stuttering</li>
+		<li>Text Layer Issue: Text layers cannot be selected, even with 'Layer Selectable' enabled in default settings.</li>
+    	<li>Video Dimension Issue: HTML5 video elements receive incorrect dimensions on the 2nd and subsequent slides if a fullscreen video exists on the first slide.</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.2 (11th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>	
+		<li>Background Color Animation Issue: Animations fail to transition from a colored background to a transparent background when custom colors are set within the animation settings.</li>
+		<li>Dimension Calculation Error: Elements with a previously set Module alignment within any container are miscalculating dimensions, due to issues with the marked Module-based alignment setting.</li>	
+		<li>DOM Layer Rewrite Conflict: Existing layers in the Document Object Model (DOM) are being rewritten upon initializing the module, which results in the malfunction of shortcodes and similar components.</li>
+    	<li>File Name Loading Error: Files that contain 'none-break narrow space' characters in their names fail to load, leading to potential accessibility and data retrieval issues.</li>
+		<li>Module Resizing Inconsistency: In specific scenarios, modules that are excessively large (both vertically and horizontally) encounter issues in linearly resizing underlying layers, leading to inconsistent display and layout problems.</li>
+		<li>Responsive Module Sizing Error: Incorrect module sizing observed when Responsive dimensions are not previously modified, leading to layout discrepancies.</li>
+    	<li>Background Overlay: Issues with background dotted overlays not rendering on colored or image-based module backgrounds; dotted overlay omitted from slide backgrounds when globally enabled.</li>				
+		<li>Image List Modification Conflict: Third-party cache plugins altering image lists and modifying data attribute names, causing disruptions in the Image loading process of SR7.</li>
+		<li>Plugin Extension Removal by Third-party Integrations: Third-party themes and plugins are removing loaded plugin extensions, leading to significant layout and functionality issues in Slider Revolution 7.</li>	
+		<li>Rapid Slide Change Issue: If multiple slide change requests are made in quick succession, the slides switch immediately without waiting for animations to complete, creating a disjointed and buggy user experience.</li>
+	</ul>	
+	<h3 class="version-number">Version 6.7.1 (8th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>	
+		<li>Unpublished slides showed up in V7 Velocity engine</li>
+		<li>Quick selection of sliders in the page in the top admin bar is missing in V7 Velocity engine</li>
+		<li>German translation files have some wrong translations</li>
+		<li>Modules larger than the screen size in mobile view are limited to the screen size, breaking the layout</li>
+		<li>Enhanced protection for images loading from external servers: initially attempting with cross-origin, and using without cross-origin attributes as a fallback.</li>
+		<li>Horizontal scrollbar appears upon resizing if modules have not yet been initialized.</li>
+		<li>Issue with Saving Global Settings in SR6 Before SR7 Initialization: Global settings in SR6 fail to save properly if SR7 is not initialized beforehand</li>
+		<li>Misalignment with Percentage-Sized and Right-Aligned Elements: Elements sized by percentage and aligned to the right using max-width exhibit misalignment</li>
+		<li>Layer Actions Disabled in Non-Interactive Videos: Videos set to 'no interaction' mode inadvertently disable associated layer actions</li>
+		<li>Delayed Background Color Rendering: Background colors experience a delay in rendering, leading to brief flashes during scrolling</li>
+		<li>Redundant Creation of Font Tester Containers: The font tester is generating multiple similar containers, leading to unnecessary clutter in the DOM</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.0 (5th April 2024)</h3>
+	<div class="newfeature">Introducing Velocity Engine</div>
+	<ul>
+		<li>Upgraded to SR7 “Velocity” Engine for improved efficiency and animation fluidity. Legacy SR6 Engine included for continued support.</li>
+	</ul>
+	<h3 class="version-number">Version 6.6.20 (21st December 2023)</h3>
+	<div class="newfeature"><strong style="font-weight:700">New Features</strong></div>
+	<ul>
+		<li>Added WPML compatibility with the upcoming WPML Sliders AddOn</li>
+	</ul>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>	
+		<li>Importing certain Slider will result in warnings</li>
+		<li>Instagram functionality fixes</li>
+		<li>Add nonce token validation to Instagram and Facebook requests</li>
+	</ul>
+	<h3 class="version-number">Version 6.6.19 (7th December 2023)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
+	<ul>	
+		<li>Fullscreen carousel with padding overflows the module</li>
+		<li>Security vulnerability associated with unserializing objects from the 'custom_animations.txt' file.</li>
+	</ul>
+	<h3 class="version-number">Version 6.6.18 (23th October 2023)</h3>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
 	<ul>	
 		<li>Regression in 6.6.17 causes sliders with height greater than window height get cropped</li>
@@ -1033,7 +1137,7 @@
 		<li>Fixed video position calculation in groups if the video height is set to 100% and the video is not loaded before the group is drawn</li>
 		<li>In some cases the slider height was not auto updated when the height shrinks and a new slide has no rows added to the content</li>
 		<li>Covered shape and image aligned to the module was not showing well in the editor</li>
-		<li>Replaced depricated jQuery functions to raise compatibility with upcoming WordPress versions</li>
+		<li>Replaced deprecated jQuery functions to raise compatibility with upcoming WordPress versions</li>
 	</ul>
 
 	<h3 class="version-number">Version 6.3.1 (24th November 2020)</h3>

@@ -22,10 +22,22 @@ function monsterinsights_gutenberg_editor_assets() {
 		}
 	}
 
+	$suffix = (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG) ? '' : '.min';
 	wp_enqueue_script( 'lodash', includes_url('js') . '/underscore.min.js' );
-	$plugins_js_path    = '/assets/gutenberg/js/editor.min.js';
+	// @TODO Robo minification is breaking the editor. We will use the main version for now.
+	$plugins_js_path    = '/assets/gutenberg/js/editor.js';
 	$plugins_style_path = '/assets/gutenberg/css/editor.css';
 	$version_path       = monsterinsights_is_pro_version() ? 'pro' : 'lite';
+
+	$plugins_js_url = apply_filters(
+		'monsterinsights_editor_scripts_url',
+		plugins_url( $plugins_js_path, MONSTERINSIGHTS_PLUGIN_FILE )
+	);
+
+	$plugins_css_url = apply_filters(
+		'monsterinsights_editor_style_url',
+		plugins_url( $plugins_style_path, MONSTERINSIGHTS_PLUGIN_FILE )
+	);
 
 	$js_dependencies = array(
 		'wp-plugins',
@@ -52,7 +64,7 @@ function monsterinsights_gutenberg_editor_assets() {
 	// Enqueue our plugin JavaScript.
 	wp_enqueue_script(
 		'monsterinsights-gutenberg-editor-js',
-		plugins_url( $plugins_js_path, MONSTERINSIGHTS_PLUGIN_FILE ),
+		$plugins_js_url,
 		$js_dependencies,
 		monsterinsights_get_asset_version(),
 		true
@@ -61,7 +73,7 @@ function monsterinsights_gutenberg_editor_assets() {
 	// Enqueue our plugin JavaScript.
 	wp_enqueue_style(
 		'monsterinsights-gutenberg-editor-css',
-		plugins_url( $plugins_style_path, MONSTERINSIGHTS_PLUGIN_FILE ),
+		$plugins_css_url,
 		array(),
 		monsterinsights_get_asset_version()
 	);
@@ -101,7 +113,8 @@ function monsterinsights_gutenberg_editor_assets() {
 			'page_insights_addon_active'   => class_exists( 'MonsterInsights_Page_Insights' ),
 			'page_insights_nonce'          => wp_create_nonce( 'mi-admin-nonce' ),
 			'isnetwork'                    => is_network_admin(),
-			'is_v4'                        => true
+			'is_v4'                        => true,
+			'dismiss_envira_promo'         => isset($plugins['envira-gallery-lite/envira-gallery-lite.php']) || isset($plugins['envira-gallery/envira-gallery.php']) || get_transient('_monsterinsights_dismiss_envira_promo'),
 		) )
 	);
 }

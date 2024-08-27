@@ -304,9 +304,9 @@ $text_direction = is_rtl() ? 'rtl' : 'ltr';
 						echo '<tr><td valign="top" align="center" id="templateHeader" style="padding-top:25px;padding-right:25px;padding-bottom:25px;padding-left:25px;text-align:left;background:#ffffff;border-radius:5px 5px 0 0;">';
 						echo '<a href="' . esc_url( get_site_url() ) . '">';
 						if ( ! empty( $header_image['2x'] ) ) {
-							echo '<img style="width:200px;"  src="' . esc_url( $header_image['url'] ) . '" srcset="' . esc_url( $header_image['2x'] ) . ' 2x" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
+							echo '<img style="width:200px; height:auto;"  src="' . esc_url( $header_image['2x'] ) . '" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
 						} else {
-							echo '<img style="width:200px;"  src="' . esc_url( $header_image['url'] ) . '" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
+							echo '<img style="width:200px; height:auto;"  src="' . esc_url( $header_image['url'] ) . '" alt="' . esc_attr__( 'Monthly Traffic Summary', 'google-analytics-for-wordpress' ) . '" />';
 						}
 						echo '</a>';
 						echo '</td></tr>';

@@ -232,6 +232,7 @@ class MonsterInsights_Popular_Posts_Ajax {
 	 * Ajax handler to get the output for Popular Posts widgets from the JSON data on the frontend.
 	 */
 	public function get_ajax_output() {
+		check_ajax_referer( 'mi-popular-posts' );
 
 		if ( empty( $_POST['data'] ) || ! is_array( $_POST['data'] ) ) {
 			return;

@@ -1,3 +1,15 @@
+v3.3.6 ( 25th April 2024 )
+======
+* Fixed: Portfolio image missing height and width
+
+v3.3.5 ( 06 March 2024 )
+======
+* Fixed: PHP error notice in Gallery and Justified Gallery module
+
+v3.3.4 ( 12 February 2024 )
+======
+* Added: responsive gutter width controls in portfolio and gallery module
+
 v3.3.3 ( 09 October 2023 )
 ======
 * Fixed: Newsletter error - Invalid Form Fields

@@ -107,7 +107,7 @@ if (!function_exists('be_justified_gallery')) {
 
 		$images_arr = $images;	
 		//$data_total_items = count(explode(',',$images_arr)) - $items_per_load;
-		$data_total_items = count(explode(',',$images_arr)) - $items_per_load;
+		$data_total_items = count(explode(',',$images_arr)) - intval( $items_per_load );
 		if(1 == $gallery_paginate && '' != $items_per_load){
 			$images_subset = array_slice(explode(',', $images), '0', $items_per_load);
 		}else{

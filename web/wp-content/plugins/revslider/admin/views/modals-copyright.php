@@ -5,7 +5,7 @@
  * This file is used to markup the admin-facing aspects of the plugin.
  * @author    ThemePunch <info@themepunch.com>
  * @link      https://www.themepunch.com/
- * @copyright 2022 ThemePunch
+ * @copyright 2024 ThemePunch
  */
  
 if(!defined('ABSPATH')) exit();
@@ -112,8 +112,8 @@ $registered_p_c_url = ($rs_f->get_addition('selling') === true) ? 'https://accou
 								<div id="pop_scroll_o_based"><label_a><?php _e('Offset','revslider');?></label_a><input data-r="popup.scroll.v" data-rocker="foals" class="valueduekeyboard smallinput scblockinput easyinit " data-allowed="px"  data-numeric="true" data-min="-1000" data-max="200000" type="text"></div>
 								<div class="div25"></div>							
 								<div class="ale_i_title thumbnail_title"><?php _e('Pop Up by Events','revslider');?><input type="checkbox" data-rocker="foals"  class="easyinit scblockinput" data-r="popup.event.use"></div><hr class="general_hr"><span class="linebreak"></span>							
-								<row class="direktrow"><onefull><label_a><?php _e('Listen to','revslider');?></label_a><input data-r="popup.event.v" class="valueduekeyboard longinput scblockinput easyinit callEvent" data-evt="updateSRBSSVREVT" type="text"></onefull></row>							
-								<div class="function_info_small">i.e.: jQuery(document).trigger("<span id="srbs_scr_evt"></span>")</div>
+								<row class="direktrow"><onefull><label_a><?php _e('Listen to','revslider');?></label_a><input data-r="popup.event.v" class="valueduekeyboard longinput scblockinput easyinit callEvent" data-evt="updateSRBSSVREVT" type="text"></onefull></row>								
+								<div class="function_info_small">i.e.: document.dispatchEvent(new Event('<span id="srbs_scr_evt"></span>'))</div>
 								<div class="div25"></div>
 								<div class="ale_i_title thumbnail_title"><?php _e('Pop Up on URL Hash ','revslider');?><input type="checkbox" data-rocker="foals"  class="easyinit scblockinput" data-r="popup.hash.use"></div><hr class="general_hr"><span class="linebreak"></span>															
 								<div class="function_info"><?php _e('https://yourwebsite.com/yourpage/#<span id="srbs_scr_hash"></span>','revslider') ?></div>

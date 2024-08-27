@@ -7,7 +7,7 @@ echo '<div id="ms-preview-wrapper">';
 
 if( isset( $_REQUEST['slider_params'] ) && ! empty( $_REQUEST['slider_params'] ) ) {
 
-	$slider_params = $_REQUEST['slider_params'];
+	$slider_params = msp_sanitize_input( $_REQUEST['slider_params'] );
 	$slider_shortcodes = msp_panel_data_2_ms_slider_shortcode( $slider_params );
 	echo do_shortcode( $slider_shortcodes );
 
@@ -18,7 +18,7 @@ if( isset( $_REQUEST['slider_params'] ) && ! empty( $_REQUEST['slider_params'] )
     printf( "<!-- Custom slider styles -->\n<style>%s</style>", $slider_custom_css );
 
 } elseif ( isset( $_REQUEST['slider_id'] ) && ! empty( $_REQUEST['slider_id'] ) ) {
-	$slider_id = $_REQUEST['slider_id'];
+	$slider_id = msp_sanitize_input( $_REQUEST['slider_id'] );
 	$slider_shortcodes = msp_get_ms_slider_shortcode_by_slider_id( $slider_id );
 	echo do_shortcode( $slider_shortcodes );
 	// print slider custom css inline in live preview
@@ -32,7 +32,7 @@ if( isset( $_REQUEST['slider_params'] ) && ! empty( $_REQUEST['slider_params'] )
 if( isset( $_REQUEST['preset_style'] ) && ! empty( $_REQUEST['preset_style'] ) ) {
 
 	$parser = msp_get_parser();
-	$preset_styles = $parser->get_preset_styles( $_REQUEST['preset_style'] );
+	$preset_styles = $parser->get_preset_styles( msp_sanitize_input( $_REQUEST['preset_style'] ) );
 	printf( "<!-- Preset styles -->\n<style>%s</style>", $preset_styles );
 }
 
@@ -40,7 +40,7 @@ if( isset( $_REQUEST['preset_style'] ) && ! empty( $_REQUEST['preset_style'] ) )
 if( isset( $_REQUEST['preset_buttons'] ) && ! empty( $_REQUEST['preset_buttons'] ) ) {
 
 	$parser = msp_get_parser();
-	$preset_buttons = $parser->get_buttons_styles( $_REQUEST['preset_buttons'] );
+	$preset_buttons = $parser->get_buttons_styles( msp_sanitize_input( $_REQUEST['preset_buttons'] ) );
 	printf( "<!-- buttons styles -->\n<style>%s</style>", $preset_buttons );
 }
 

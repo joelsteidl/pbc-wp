@@ -29,4 +29,31 @@
 	 * practising this, we should strive to set a better example in our own work.
 	 */
 
+	document.addEventListener("DOMContentLoaded", function(){
+		function ready() {
+			toggle_multi_language_translation();
+		}
+		//on toggle Multi Language Translation keep predefined options only 
+		function toggle_multi_language_translation(){
+			var checkbox_multi_lang = document.getElementById('be-gdpr-multi-language-translation');
+			var settings_single_lang = document.getElementById('be-settings-page-for-single-language');
+			if ( 'undefined' === typeof checkbox_multi_lang || null === checkbox_multi_lang || 'undefined' === typeof settings_single_lang || null === settings_single_lang ) {
+				return false;
+			}
+			checkbox_multi_lang.addEventListener( 'click', function ( e ) {
+				//select all textarea and input boxes
+				var input_boxes = settings_single_lang.querySelectorAll('textarea, input');
+				if ( 'undefined' === typeof input_boxes || null === input_boxes  ) {
+					return false;
+				}
+				settings_single_lang.style.display = ( checkbox_multi_lang.checked ) ? 'none': 'block';
+				//disable or enable input 
+				for (let index = 0; index < input_boxes.length; index++) {
+					input_boxes[index].disabled = ( checkbox_multi_lang.checked ) ? true: false;
+				}
+			});
+		}
+
+		ready();
+	});
 })( jQuery );

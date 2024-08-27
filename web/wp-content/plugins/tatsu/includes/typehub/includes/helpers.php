@@ -344,7 +344,9 @@ if( !function_exists( 'get_google_fonts_by_user' ) ){
 if( !function_exists('typehub_download_font_from_google') ){
 	function typehub_download_font_from_google($font_name){
 		$slugged_name = sluggify_font_name($font_name);
-		$response = wp_remote_get( 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name );
+		//$response = wp_remote_get( 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name );
+		$response = wp_remote_get( 'https://gwfh.mranftl.com/api/fonts/'.$slugged_name );
+		
 		if( !is_wp_error( $response ) ){
 			if(200 != wp_remote_retrieve_response_code($response)){
 				return (defined('SCRIPT_DEBUG') && SCRIPT_DEBUG)?json_encode($response['body']):'success';//success response for continue download
@@ -399,9 +401,11 @@ if( !function_exists( 'get_weights_of_font' ) ){
 			if( array_key_exists( "font-family",$value ) ){
 				$temp = explode(":",$value['font-family']);
 				if( $temp[0] === 'schemes' ){
-					$temp = explode(":",$temp);
-				}
-				if( $temp[0] === 'google' ){
+					//$temp = explode(":",$temp);
+					if( ! empty( $value['font-variant'] ) && ! in_array( $value['font-variant'], $weights ) ){
+						array_push( $weights, $value['font-variant'] );
+					}
+				} else if( $temp[0] === 'google' ){
 					if($temp[1] === $font_family ){
 						if( !in_array( $value['font-variant'],$weights ) ){
 							array_push($weights,$value['font-variant']);
@@ -419,7 +423,7 @@ if( !function_exists( 'typehub_write_css_link_to_file' ) ){
 	function typehub_write_css_link_to_file($font_family){
 
 		$slugged_name = sluggify_font_name($font_family);
-		$response = wp_remote_get( 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name );
+		$response = wp_remote_get( 'https://gwfh.mranftl.com/api/fonts/'.$slugged_name );
 		if( !is_wp_error( $response ) ){
 		$font_details =  json_decode( $response['body'] );
 		$upload_dir = wp_upload_dir();
@@ -489,7 +493,7 @@ if( !function_exists( 'get_font_download_URL' ) ){
 			}
 			$subsets = join( ',', array_reverse($subsets) );
 			$variants = join( ',', $variants );
-			return 'https://google-webfonts-helper.herokuapp.com/api/fonts/'.$slugged_name.'?download=zip&subsets='.$subsets.'&variants='.$variants;
+			return 'https://gwfh.mranftl.com/api/fonts/'.$slugged_name.'?download=zip&subsets='.$subsets.'&variants='.$variants;
 	}
 }
 

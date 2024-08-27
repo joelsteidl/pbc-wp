@@ -136,13 +136,13 @@ class MSP_Screen_Help extends Axiom_Screen_Help {
 
 		<h4>If you have any questions please follow these steps:</h4>
 		<ul>
-			<li>1 - Please read item's <a href="http://avt.li/mswpcondoc" target="_blank">Documentation </a> </li>
-			<li>2 - Take a look in our <a href="http://support.averta.net/envato/faq/" target="_blank">FAQ</a> page</li>
-			<li>3 - Take a look in our <a href="http://support.averta.net/envato/knowledgebase/" target="_blank">Knowledge base</a></li>
-			<li>4 - Take a look in <a href="http://support.averta.net/envato/videos/" target="_blank">Video Tutorials</a> page</li>
-			<li>5 - Still have questions(s)? <a href="http://support.averta.net/envato/registration/" target="_blank" >Create an Account</a> in <a href="http://support.averta.net/envato/support/" rel="nofollow">Support Forums</a></li>
+			<li>1 - Please read item's <a href="https://avt.li/mswpcondoc" target="_blank">Documentation </a> </li>
+			<li>2 - Take a look in our <a href="https://env.averta.net/envato/faq/" target="_blank">FAQ</a> page</li>
+			<li>3 - Take a look in our <a href="https://env.averta.net/envato/knowledgebase/" target="_blank">Knowledge base</a></li>
+			<li>4 - Take a look in <a href="https://env.averta.net/envato/videos/" target="_blank">Video Tutorials</a> page</li>
+			<li>5 - Still have questions(s)? <a href="https://env.averta.net/envato/registration/" target="_blank" >Create an Account</a> in <a href="https://env.averta.net/envato/support/" rel="nofollow">Support Forums</a></li>
 			<li>6 - Use search field at the top of support forum for similar topics</li>
-			<li>7 - If you still didn't find your answers please post your question(s) in the item’s <a href="http://support.averta.net/envato/support/" target="_blank">support forum</a>
+			<li>7 - If you still didn't find your answers please post your question(s) in the item’s <a href="https://env.averta.net/envato/support/" target="_blank">support forum</a>
 			Our support staff are there to help you as soon as possible.</li>
 		</ul>
 		<br>
@@ -171,7 +171,7 @@ class MSP_Screen_Help extends Axiom_Screen_Help {
 		<br>
 
 		<p><span class="label label-info">Important Note</span> We <strong>CAN NOT</strong> provide support via email.
-		Please ask your support related questions only in our <a href="http://support.averta.net/envato/support/" target="_blank">support forum</a>.
+		Please ask your support related questions only in our <a href="https://env.averta.net/envato/support/" target="_blank">support forum</a>.
 		</p>
 
 		<br>

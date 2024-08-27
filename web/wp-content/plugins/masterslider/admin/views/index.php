@@ -10,9 +10,9 @@
  */
 
  $msp_nonce = wp_create_nonce( 'msp_panel' );
- $action 	= isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
- $slider_id = isset( $_REQUEST['slider_id'] ) ? $_REQUEST['slider_id'] : '';
- $do 		= isset( $_REQUEST['action'] ) ? $_REQUEST['action'] : '';
+ $action 	= isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : '';
+ $slider_id = isset( $_REQUEST['slider_id'] ) ? msp_sanitize_input( $_REQUEST['slider_id'] ) : '';
+ $do 		= isset( $_REQUEST['action'] ) ? sanitize_text_field( $_REQUEST['action'] ) : '';
 
 
 function msp_thankyou_footer() {

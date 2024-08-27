@@ -1411,3 +1411,27 @@ function msp_make_html_attributes( $attrs = array() ){
 
     return $attributes_string;
 }
+
+/**
+ * Sanitize array values as text fields
+ *
+ * @param array|string|int $input
+ * @return array
+ */
+function msp_sanitize_input( $input ) {
+    if ( is_array( $input ) ) {
+        array_walk_recursive( $input, function( &$value, $key ) {
+            if ( !is_array( $value ) && !empty( $value ) && $value != ' ' ) {
+                $value = sanitize_text_field( $value );
+            }
+        });
+    } else {
+        if ( is_numeric( $input ) ) {
+            $input = absint( $input );
+        } else {
+            $input = sanitize_text_field( $input );
+        }
+    }
+    
+    return $input;
+}

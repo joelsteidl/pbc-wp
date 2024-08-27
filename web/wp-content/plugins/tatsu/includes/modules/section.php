@@ -1035,9 +1035,10 @@ function tatsu_register_section()
 			array(
 				'att_name' => 'full_screen_header_scheme',
 				'type' => 'button_group',
-				'is_inline' => true,
+				'is_inline' => false,
 				'label' => esc_html__('Header Color Scheme', 'tatsu'),
 				'options' => array(
+					'background--none' => 'None',//enable transparent header to use default theme settings
 					'background--light' => 'Dark',
 					'background--dark' => 'Light',
 				),

@@ -148,7 +148,9 @@ class BEThemeImporter {
           'v54' => 'V54 Portfolio',
           'v55' => 'V55 Artwork', 
           'v57' => 'V57 Oshine Agency', 
-          'v58' => 'V58 Fashion Photographer',                                 
+          'v58' => 'V58 Fashion Photographer',
+          'v59' => 'V59 Freelance Designer',
+          'v60' => 'V60 Oshine Restaurant',                                 
           'shop_samples' => 'Shop Samples',
         );   
     }

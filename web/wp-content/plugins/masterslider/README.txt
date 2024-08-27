@@ -3,8 +3,8 @@ Contributors: averta
 Tags: slider, image slider, slideshow, video gallery,
 Requires PHP: 5.4
 Requires at least: 4.8
-Tested up to: 5.9.0
-Stable tag: 3.6.1
+Tested up to: 6.4.2
+Stable tag: 3.7.7
 License URI: LICENSE.txt
 
 == Description ==

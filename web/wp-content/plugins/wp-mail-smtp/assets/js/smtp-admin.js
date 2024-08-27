@@ -278,6 +278,25 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 
 				app.education.gmailOneClickSetupUpgrade();
 			} );
+
+			$( '#wp-mail-smtp-setting-misc-rate_limit-lite' ).on( 'click', function( e ) {
+				e.preventDefault();
+
+				app.education.rateLimitUpgrade();
+			} );
+
+			// Obfuscated fields
+			$( '.wp-mail-smtp-btn[data-clear-field]' ).on( 'click', function( e ) {
+				var $button = $( this );
+				var fieldId = $button.attr( 'data-clear-field' );
+				var $field = $( `#${fieldId}` );
+
+				$field.prop( 'disabled', false );
+				$field.attr( 'name', $field.attr( 'data-name' ) );
+				$field.removeAttr( 'value' );
+				$field.focus();
+				$button.remove();
+			} );
 		},
 
 		education: {
@@ -298,6 +317,15 @@ WPMailSMTP.Admin.Settings = WPMailSMTP.Admin.Settings || ( function( document, w
 					wp_mail_smtp.education.gmail.one_click_setup_upgrade_title,
 					wp_mail_smtp.education.gmail.one_click_setup_upgrade_content,
 					'gmail-one-click-setup'
+				);
+			},
+
+			rateLimitUpgrade: function() {
+
+				app.education.upgradeModal(
+					wp_mail_smtp.education.rate_limit.upgrade_title,
+					wp_mail_smtp.education.rate_limit.upgrade_content,
+					'rate-limit-setting'
 				);
 			},
 

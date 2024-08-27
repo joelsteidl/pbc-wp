@@ -103,7 +103,7 @@ class MonsterInsights_Site_Notes_DB_Base
 			'ID' => isset($data['id']) ? $data['id'] : null,
 			'post_title'    => sanitize_text_field($data['note']),
 			'post_status'   => 'publish',
-			'post_author'   => get_current_user_id(),
+			'post_author'   => isset( $data['author_id'] ) ? intval( $data['author_id'] ) : get_current_user_id(),
 			'post_date'     => !empty($data['date']) ? $data['date'] : current_datetime()->format('Y-m-d'),
 			'post_type'     => 'monsterinsights_note',
 		);
@@ -188,7 +188,7 @@ class MonsterInsights_Site_Notes_DB_Base
 			'note_date' => get_the_date( 'Y-m-d', $post),
 			'note_date_ymd' => get_the_date( 'Y-m-d', $post ),
 			'status' => get_post_status($post),
-			'important' => get_post_meta($post->ID, 'important', true),
+			'important' => (int) get_post_meta($post->ID, 'important', true),
 			'medias' => array(),
 			'category' => array(
 				'id' => 0,

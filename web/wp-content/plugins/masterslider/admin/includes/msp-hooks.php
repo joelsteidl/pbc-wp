@@ -5,7 +5,7 @@ function msp_check_for_update() {
 
     $plugin_update_check = new Axiom_Plugin_Check_Update (
         MSWP_AVERTA_VERSION,                    // current version
-        'http://api.averta.net/envato/items/',  // update path
+        'https://api.averta.net/envato/items/',  // update path
         MSWP_AVERTA_BASE_NAME,                  // plugin file slug
         'masterslider',                         // plugin slug
         'masterslider-wp',                      // item request name
@@ -112,7 +112,7 @@ function msp_request_remote_sample_sliders( $force_to_fetch = false ) {
         $request_body['slider_type'] = 'free';
     }
 
-    $response = wp_remote_get( 'http://api.averta.net/products/masterslider/samples/' ,
+    $response = wp_remote_get( 'https://api.averta.net/products/masterslider/samples/' ,
         array(
             'body'    => $request_body,
             'timeout' => 30

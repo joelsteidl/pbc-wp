@@ -164,9 +164,10 @@ class Be_Gdpr {
 	private function define_admin_hooks() {
 
 		$plugin_admin = new Be_Gdpr_Admin( $this->get_plugin_name(), $this->get_version() );
-
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		if ( ! empty( $_GET ) && ! empty( $_GET['page'] ) &&  'be_gdpr' === $_GET['page'] ) {
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
+		}
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'add_cookie_privacy_content' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_submenu_GDPR' );
 	}
@@ -258,11 +259,10 @@ class Be_Gdpr {
 		} else {
 			$privacy_url = '#';
 		}
-		return '<a target="_blank" href="'. $privacy_url .'">'. get_option( 'be_gdpr_privacy_policy_link_text', 'Privacy Policy' ) .'</a>';
+		return '<a target="_blank" href="'. esc_url( $privacy_url ) .'">'. be_gdpr_get_cookie_privacy_content( 'be_gdpr_privacy_policy_link_text' ) .'</a>';
 	}
 
 	public function privacy_settings_popup(){
-		$default_popup_html = '<a href="#gdpr-popup" class="mfp-popup white-popup privacy-settings" data-type="HTML" >'. get_option( 'be_gdpr_popup_title_text','Privacy Settings' ) .'</a>';
-		return apply_filters( 'be_gdpr_privacy_settings_popup', $default_popup_html);
+		return apply_filters( 'be_gdpr_privacy_settings_popup', '<a href="#gdpr-popup" class="mfp-popup white-popup privacy-settings" data-type="HTML" >'. be_gdpr_get_cookie_privacy_content( 'be_gdpr_popup_title_text' ) .'</a>' );
 	}
 }

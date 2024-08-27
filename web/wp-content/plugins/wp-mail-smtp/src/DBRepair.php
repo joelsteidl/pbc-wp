@@ -5,6 +5,8 @@ namespace WPMailSMTP;
 use WPMailSMTP\Admin\Area;
 use WPMailSMTP\Admin\DebugEvents\DebugEvents;
 use WPMailSMTP\Admin\DebugEvents\Migration as DebugMigration;
+use WPMailSMTP\Queue\Migration as QueueMigration;
+use WPMailSMTP\Queue\Queue;
 use WPMailSMTP\Tasks\Meta;
 
 /**
@@ -49,11 +51,17 @@ class DBRepair {
 				}
 
 				$redirect_page = isset( $_GET['page'] ) ? sanitize_key( $_GET['page'] ) : Area::SLUG;
+				$redirect_tab  = isset( $_GET['tab'] ) ? sanitize_key( $_GET['tab'] ) : '';
+				$query_args    = [
+					'check-db-tables' => 1,
+				];
+
+				if ( ! empty( $redirect_tab ) ) {
+					$query_args['tab'] = $redirect_tab;
+				}
 
 				$redirect_url = add_query_arg(
-					[
-						'check-db-tables' => 1,
-					],
+					$query_args,
 					wp_mail_smtp()->get_admin()->get_admin_page_url( $redirect_page )
 				);
 
@@ -76,6 +84,8 @@ class DBRepair {
 			update_option( DebugMigration::OPTION_NAME, 0 );
 		} elseif ( $missing_table === Meta::get_table_name() ) {
 			update_option( Migration::OPTION_NAME, 1 );
+		} elseif ( $missing_table === Queue::get_table_name() ) {
+			update_option( QueueMigration::OPTION_NAME, 0 );
 		}
 	}
 
@@ -121,6 +131,11 @@ class DBRepair {
 			$reason .= $this->get_reason_output_message(
 				$missing_table,
 				get_option( Migration::ERROR_OPTION_NAME, $this->get_missing_table_default_error_message() )
+			);
+		} elseif ( $missing_table === Queue::get_table_name() ) {
+			$reason .= $this->get_reason_output_message(
+				$missing_table,
+				get_option( QueueMigration::ERROR_OPTION_NAME, $this->get_missing_table_default_error_message() )
 			);
 		}
 
@@ -187,17 +202,6 @@ class DBRepair {
 			$reasons = array_filter( $reasons ); // Filtering out the empty values.
 
 			if ( ! empty( $reasons ) ) {
-				$msg = sprintf(
-					wp_kses( /* translators: %1$s: Singular/Plural string, %2$s - the error messages from the migrations for the missing tables. */
-						__( 'The following DB %1$s still missing. <br />%2$s', 'wp-mail-smtp' ),
-						[
-							'br' => [],
-						]
-					),
-					_n( 'Table is', 'Tables are', count( $missing_tables ), 'wp-mail-smtp' ),
-					implode( '<br/>', $reasons )
-				);
-
 				$msg = sprintf(
 					wp_kses(
 						_n( 'The following DB table is still missing.', 'The following DB tables are still missing.', count( $missing_tables ), 'wp-mail-smtp' ) . '<br />%s',

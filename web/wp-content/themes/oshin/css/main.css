@@ -3082,10 +3082,10 @@ TABLE OF CONTENTS
    .style3-blog .blog-post.element .element-inner {
        background: #fff;
    }
-   .style2-blog .more-link,
-   .style3-blog .more-link,
-   .style8-blog .more-link,
-   .style9-blog .more-link {
+   .style2-blog .more-link:not(.enable),
+   .style3-blog .more-link:not(.enable),
+   .style8-blog .more-link:not(.enable),
+   .style9-blog .more-link:not(.enable) {
        display: none;
    }
    .style3-blog .fluid-width-video-wrapper,

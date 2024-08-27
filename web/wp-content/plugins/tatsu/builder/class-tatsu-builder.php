@@ -240,13 +240,13 @@ class Tatsu_Builder {
 				'is_tatsu_standalone'=>is_tatsu_standalone()
 			)
 		);
-		
+		$postid = empty( $this->post_id ) ? '': $this->post_id;
 		wp_enqueue_script( 'webfont-loader', '//ajax.googleapis.com/ajax/libs/webfont/1/webfont.js',array(),$this->version );
 		wp_localize_script(
 			'tatsu',
 			'tatsuConfig',
 			array(
-				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ),
+				'ajaxurl' => esc_url( admin_url( 'admin-ajax.php' ) ).'?postid='.$postid,
 				'shape_dividers' => $this->get_shape_dividers(), 
                 'slider_icons'	=> tatsu_get_slider_icons(),
                 'theme' => get_option('tatsu_ui_theme','dark'),

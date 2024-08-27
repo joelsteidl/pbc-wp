@@ -38,7 +38,7 @@
 					<iframe src="http://demo.averta.net/plugins/master/log/videotuts.php" width="100%" height="100%" ></iframe>
 				</th>
 				<th scope="col" class="latest-updates" >
-					<iframe src="http://support.averta.net/envato/api/?branch=envato&group=items&cat=changelog&action=text&item-name=masterslider-wp&view=pre&pl" width="100%" height="100%" ></iframe>
+					<iframe src="https://env.averta.net/envato/api/?branch=envato&group=items&cat=changelog&action=text&item-name=masterslider-wp&view=pre&pl" width="100%" height="100%" ></iframe>
 				</th>
 			</tr>
 		</tbody>
@@ -54,6 +54,11 @@
 	<div id="msp-slider-type-select" >
 
 	    <div class="msp-templates-list">
+			<div class="depicter-banner">
+              <a href="https://depicter.com" target="_blank">
+                <img src="<?php echo MSWP_AVERTA_ADMIN_URL . '/assets/images/depicter-banner.jpg';?>" alt="depicter-banner">
+              </a>
+            </div>
 
 	    	<?php
 	    	sanitize_title( '' );
@@ -224,4 +229,3 @@
 	</div>
 
 <?php } ?>
-

@@ -121,7 +121,8 @@ class MonsterInsights_Notification_Event_Runner {
 
 		// Loop through registered notifications.
 		foreach ( $notifications as $notification ) {
-			/**¬
+			$added_notification = $notification->add_notification();
+			/**
 			 * The notification instance.
 			 *
 			 * @var MonsterInsights_Notification_Event $notification

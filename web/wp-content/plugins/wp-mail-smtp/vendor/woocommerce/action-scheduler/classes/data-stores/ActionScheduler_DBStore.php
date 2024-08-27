@@ -146,7 +146,7 @@ class ActionScheduler_DBStore extends ActionScheduler_Store {
 		$column_sql      = '`' . implode( '`, `', $columns ) . '`';
 		$placeholder_sql = implode( ', ', $placeholders );
 		$where_clause    = $this->build_where_clause_for_insert( $data, $table_name, $unique );
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $column_sql and $where_clause are already prepared. $placeholder_sql is hardcoded.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.UnfinishedPrepare	 -- $column_sql and $where_clause are already prepared. $placeholder_sql is hardcoded.
 		$insert_query    = $wpdb->prepare(
 			"
 INSERT INTO $table_name ( $column_sql )
@@ -181,7 +181,7 @@ WHERE ( $where_clause ) IS NULL",
 		);
 		$pending_status_placeholders = implode( ', ', array_fill( 0, count( $pending_statuses ), '%s' ) );
 
-		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared -- $pending_status_placeholders is hardcoded.
+		// phpcs:disable WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders.ReplacementsWrongNumber -- $pending_status_placeholders is hardcoded.
 		$where_clause = $wpdb->prepare(
 			"
 SELECT action_id FROM $table_name
@@ -480,7 +480,7 @@ AND `group_id` = %d
 				case 'like':
 					foreach ( $query['args'] as $key => $value ) {
 						$sql          .= ' AND a.args LIKE %s';
-						$json_partial = $wpdb->esc_like( trim( json_encode( array( $key => $value ) ), '{}' ) );
+						$json_partial = $wpdb->esc_like( trim( wp_json_encode( array( $key => $value ) ), '{}' ) );
 						$sql_params[] = "%{$json_partial}%";
 					}
 					break;
@@ -705,7 +705,7 @@ AND `group_id` = %d
 			array(
 				'per_page' => 1000,
 				'status'   => self::STATUS_PENDING,
-				'orderby'  => 'action_id',
+				'orderby'  => 'none',
 			)
 		);
 
@@ -935,7 +935,17 @@ AND `group_id` = %d
 		$sql           = $wpdb->prepare( "{$update} {$where} {$order} LIMIT %d", $params ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared, WordPress.DB.PreparedSQLPlaceholders
 		$rows_affected = $wpdb->query( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared, WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching
 		if ( false === $rows_affected ) {
-			throw new \RuntimeException( __( 'Unable to claim actions. Database error.', 'action-scheduler' ) );
+			$error = empty( $wpdb->last_error )
+				? _x( 'unknown', 'database error', 'action-scheduler' )
+				: $wpdb->last_error;
+
+			throw new \RuntimeException(
+				sprintf(
+					/* translators: %s database error. */
+					__( 'Unable to claim actions. Database error: %s.', 'action-scheduler' ),
+					$error
+				)
+			);
 		}
 
 		return (int) $rows_affected;
@@ -1021,7 +1031,7 @@ AND `group_id` = %d
 		$row_updates = 0;
 		if ( count( $action_ids ) > 0 ) {
 			$action_id_string = implode( ',', array_map( 'absint', $action_ids ) );
-			$row_updates = $wpdb->query( "UPDATE {$wpdb->actionscheduler_actions} SET claim_id = 0 WHERE action_id IN ({$action_id_string})" ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
+			$row_updates      = $wpdb->query( "UPDATE {$wpdb->actionscheduler_actions} SET claim_id = 0 WHERE action_id IN ({$action_id_string})" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 
 		$wpdb->delete( $wpdb->actionscheduler_claims, array( 'claim_id' => $claim->get_id() ), array( '%d' ) );
@@ -1029,6 +1039,7 @@ AND `group_id` = %d
 		if ( $row_updates < count( $action_ids ) ) {
 			throw new RuntimeException(
 				sprintf(
+					// translators: %d is an id.
 					__( 'Unable to release actions from claim id %d.', 'action-scheduler' ),
 					$claim->get_id()
 				)

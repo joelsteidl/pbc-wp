@@ -833,13 +833,6 @@ class Tatsu_Admin {
 			return;
 		}
 
-		if ( ! in_array( 'tatsu-typehub-colorhub-info-notice', $tatsu_admin_dismiss_notices ) ) { ?>
-			<div id="tatsu-typehub-colorhub-info-notice" class="notice tatsu-admin-notice notice-info is-dismissible">
-				<h3><?php esc_html_e( 'Typehub and Colorhub are now included in Tatsu', 'tatsu' ); ?></h3>
-				<p><?php esc_html_e( 'Typehub and Colorhub settings are avilable inside Tatsu menu. Please deactivate Typehub and Colorhub plugins.', 'tatsu' ); ?></p>
-			</div>
-		<?php }
-
 		if ( ! in_array( 'tatsu-spyro-info-notice', $tatsu_admin_dismiss_notices ) && 'tatsu_settings' === $current_screen->parent_file ) {
 			echo '<div id="tatsu-spyro-info-notice" class="notice tatsu-admin-notice notice-info is-dismissible">
 				<h3>'.esc_html__( 'Newly Launched - Spyro WordPress Theme - A BrandExponents Product', 'tatsu' ).'</h3>

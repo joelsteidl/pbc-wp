@@ -275,6 +275,11 @@ tbody .latest-updates {
 #msp-slider-type-select {
 	display:none;
 }
+
+#msp-slider-type-select .depicter-banner img {
+	width: 100%;
+}
+
 #msp-slider-type-select .msp-templates-list {
 	top:47px;
 }

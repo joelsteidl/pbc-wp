@@ -123,9 +123,9 @@ class Be_Gdpr_Public {
 			<div id="gdpr-popup" class="be-gdpr-popup <?php echo $popup_classes; ?> " data-rel="gdpr-popup-gallery" >
 				<div  class="be-gdpr-modal" >
 				<div class="be-modal-content-wrapper" >
-					<div class="be-gdpr-modal-heading" ><?php echo get_option( 'be_gdpr_popup_title_text', 'Privacy Settings' ); ?></div>
+					<div class="be-gdpr-modal-heading" ><?php echo be_gdpr_get_cookie_privacy_content( 'be_gdpr_popup_title_text' ); ?></div>
 
-					<div class="be-gdpr-modal-desc" > <?php echo do_shortcode( get_option( 'be_gdpr_popup_intro_content', 'We use cookies to enhance your experience while using our website. If you are using our Services via a browser you can restrict, block or remove cookies through your web browser settings. We also use content and scripts from third parties that may use tracking technologies. You can selectively provide your consent below to allow such third party embeds. For complete information about the cookies we use, data we collect and how we process them, please check our [be_gdpr_privacy_policy_page]')); ?> </div>
+					<div class="be-gdpr-modal-desc" > <?php echo do_shortcode( be_gdpr_get_cookie_privacy_content( 'be_gdpr_popup_intro_content' ) ); ?> </div>
 					<div class="be-gdpr-modal-items" >
 						<?php
 
@@ -134,7 +134,7 @@ class Be_Gdpr_Public {
 						foreach($options as $option => $value){
 							echo '<div class="be-gdpr-modal-item" >
 								<div class="be-gdpr-modal-item-head" >'. $value['label'] .'</div>
-								<div class="be-gdpr-modal-item-desc" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api='.$value['label'].' ]', get_option( 'be_gdpr_consent_desc', 'Consent to display content from [be_gdpr_api_name]' ))).' </div>
+								<div class="be-gdpr-modal-item-desc" >'. do_shortcode( str_replace('[be_gdpr_api_name]','[be_gdpr_api_name api='.$value['label'].' ]', be_gdpr_get_cookie_privacy_content( 'be_gdpr_consent_desc' ) ) ).' </div>
 								<div class="be-gdpr-modal-item-switch">
 									<label class="switch be-modal-switch">
 										<input class="be-gdpr-switch-input" value="'.$option.'" type="checkbox">
@@ -146,7 +146,7 @@ class Be_Gdpr_Public {
 					</div>
 					</div>
 					<div class="be-gdpr-modal-footer" >
-						<div class="be-gdpr-modal-save-btn" onClick="gdprSaveBtnClick(event);" ><?php echo get_option( 'be_gdpr_popup_save_btn_text', 'Save' ); ?></div>
+						<div class="be-gdpr-modal-save-btn" onClick="gdprSaveBtnClick(event);" ><?php echo be_gdpr_get_cookie_privacy_content( 'be_gdpr_popup_save_btn_text' ); ?></div>
 					</div>
 				</div>
 			</div>
@@ -155,9 +155,9 @@ class Be_Gdpr_Public {
 			
 				echo '<div class="be-gdpr-cookie-notice-bar">
 						<div class="be-gdpr-cookie-notice-wrap">
-							<div class="be-gdpr-cookie-notice-bar-text">'.  do_shortcode( get_option( 'be_gdpr_cookie_privacy_content', $default = 'We use cookies to enhance your experience while using our website. To learn more about the cookies we use and the data we collect, please check our [be_gdpr_privacy_popup].' )).'</div>
+							<div class="be-gdpr-cookie-notice-bar-text">'.  do_shortcode( be_gdpr_get_cookie_privacy_content( 'be_gdpr_cookie_privacy_content' ) ).'</div>
 							<div class="be-gdpr-cookie-notice-actions">
-							<div class="be-gdpr-cookie-notice-button">'. get_option( 'be_gdpr_accept_btn_text', 'I Accept' ) .'</div>
+							<div class="be-gdpr-cookie-notice-button">'. be_gdpr_get_cookie_privacy_content( 'be_gdpr_accept_btn_text' ) .'</div>
 							</div>
 						</div>
 					 </div>';

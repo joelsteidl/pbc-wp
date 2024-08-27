@@ -392,6 +392,11 @@ class MonsterInsights_WP_Site_Health_Lite {
 	 * Checks if there are errors communicating with monsterinsights.com.
 	 */
 	public function test_check_connection() {
+		check_ajax_referer( 'health-check-site-status' );
+
+		if ( ! current_user_can( 'view_site_health_checks' ) ) {
+			wp_send_json_error();
+		}
 
 		$result = array(
 			'label'       => __( 'Can connect to MonsterInsights.com correctly', 'google-analytics-for-wordpress' ),
@@ -431,6 +436,11 @@ class MonsterInsights_WP_Site_Health_Lite {
 	 * Checks if there is a duplicate tracker.
 	 */
 	public function test_check_tracking_code() {
+		check_ajax_referer( 'health-check-site-status' );
+
+		if ( ! current_user_can( 'view_site_health_checks' ) ) {
+			wp_send_json_error();
+		}
 
 		$result = array(
 			'label'       => __( 'Tracking code is properly being output.', 'google-analytics-for-wordpress' ),
@@ -462,4 +472,3 @@ class MonsterInsights_WP_Site_Health_Lite {
 }
 
 new MonsterInsights_WP_Site_Health_Lite();
-

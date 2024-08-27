@@ -2737,6 +2737,62 @@
     	                });
                     });                
 	            },
+				checkIsEmpty = function ( data ) {
+					//check if data is empty
+					return ( 'undefined' === typeof data || null === data || '' === data );
+				},
+				getMediaNameOrSize = function ( device_cat ) {
+					//Get media name or size
+					var device_width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+					if ( checkIsEmpty( device_width ) ) {
+						return false;
+					}
+
+					if ( ! device_cat ) {
+						return device_width;
+					}
+					
+					if ( 767 >= device_width ) {
+						device_cat = 'm';
+					} else if ( 1024 >= device_width ) {
+						device_cat = 't';
+					} else if ( 1377 >= device_width ) {
+						device_cat = 'l';
+					} else {
+						device_cat = 'd';
+					}
+
+					return device_cat;
+				},
+				responsiveGutterWidth = function() {
+					//Apply responsive gutter width in oshine gallery|portfolio module 
+					var portfolio = jQuery('.portfolio');
+	                if( portfolio.length > 0 ) {	 
+						var device_cat = getMediaNameOrSize( true );
+						if ( false === device_cat ) {
+							return false;
+						}
+						portfolio.each( function() {                  
+	                    	var data_gutter_width = jQuery( this ).attr( "data-gutter-width-"+device_cat );
+							if ( ! checkIsEmpty( data_gutter_width ) ) {
+								jQuery( this ).attr( "data-gutter-width", data_gutter_width );
+								data_gutter_width = data_gutter_width+'px';
+
+								//refrence gallery module
+								if ( jQuery( this).hasClass( 'style2-gutter' ) ) {
+									jQuery( this ).css('margin-left', '-'+data_gutter_width );
+								} else {
+									jQuery( this ).css('margin-right', data_gutter_width );
+								}
+								
+								//refrence: get_be_gallery_shortcode()
+								jQuery( this ).find( '.element' ).css('margin-bottom', data_gutter_width );
+								jQuery( this ).find( '.element .element-inner' ).css('margin-left', data_gutter_width );
+							}
+						});
+	                }
+					
+				},
 
 	            ready = function( portfolio ) {
 
@@ -2764,6 +2820,7 @@
 	            }, 
 
 	            run = function() {
+					responsiveGutterWidth();
 	                portfolio = jQuery('.portfolio');
 	                if( portfolio.length > 0 ) {	                   
 	                    ready( portfolio );

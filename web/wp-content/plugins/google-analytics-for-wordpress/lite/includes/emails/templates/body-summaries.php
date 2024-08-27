@@ -41,7 +41,6 @@ $end_date   = date("F j, Y", strtotime($end_date));
 
 $range              = isset($summaries['data']['infobox']['range']) ? $summaries['data']['infobox']['range'] : 0;
 $total_sessions              = isset($summaries['data']['infobox']['sessions']['value']) ? $summaries['data']['infobox']['sessions']['value'] : 0;
-$total_sessions_string              = ($total_sessions > 0) ? number_format($total_sessions / 1000, 0) : 0;
 $prev_sessions_percentage    = isset($summaries['data']['infobox']['sessions']['prev']) ? $summaries['data']['infobox']['sessions']['prev'] : 0;
 $sessions_percentage_icon    = $icon_decrease;
 $sessions_percentage_icon_2x = $icon_decrease_2x;
@@ -55,7 +54,6 @@ if ((int) $prev_sessions_percentage === (int) $prev_sessions_percentage && (int)
 }
 
 $total_pageviews              = isset($summaries['data']['infobox']['pageviews']['value']) ? $summaries['data']['infobox']['pageviews']['value'] : 0;
-$total_pageviews_string              = ($total_pageviews > 0) ? number_format($total_pageviews / 1000, 0) : 0;
 $prev_pageviews_percentage    = isset($summaries['data']['infobox']['pageviews']['prev']) ? $summaries['data']['infobox']['pageviews']['prev'] : 0;
 $pageviews_percentage_icon    = $icon_decrease;
 $pageviews_percentage_icon_2x = $icon_decrease_2x;
@@ -74,7 +72,6 @@ $more_pages     = isset($summaries['data']['galinks']['topposts']) ? $summaries[
 $more_referrals = isset($summaries['data']['galinks']['referrals']) ? $summaries['data']['galinks']['referrals'] : '';
 
 $total_engagement = (isset($summaries['data']['infobox']['engagement']['value'])) ? $summaries['data']['infobox']['engagement']['value'] : 0;
-$total_engagement_string = number_format($total_engagement * 100, 1);
 $prev_engagement_percentage = isset($summaries['data']['infobox']['engagement']['prev']) ? $summaries['data']['infobox']['engagement']['prev'] : 0;
 
 $engagement_percentage_icon    = $icon_decrease;
@@ -98,10 +95,10 @@ if ((int) $prev_engagement_percentage === (int) $prev_engagement_percentage && (
 				</tr>
 				<tr style="display:block;">
 					<td style="padding-right: 25px;padding-left: 25px;padding-top:8px;font-weight: normal;font-size: 14px;line-height: 16px;color: #7F899F;" class="mcnTextContent">
-						<?php echo $start_date; // phpcs:ignore 
+						<?php echo esc_html( $start_date );
 						?>
 						-
-						<?php echo $end_date; // phpcs:ignore 
+						<?php echo esc_html( $end_date );
 						?>
 					</td>
 				</tr>
@@ -140,25 +137,34 @@ if ((int) $prev_engagement_percentage === (int) $prev_engagement_percentage && (
 									</td>
 								</tr>
 								<tr>
-									<td style="padding-bottom:5px; font-size:12px; display:flex; align-items: center; justify-content: center; gap: 6px;">
-										<span style="display:inline-block; font-size:28px; color: #000000; font-weight: bold;">
-											<?php printf(esc_html('%s%s', 'google-analytics-for-wordpress'), $total_sessions_string, ($total_sessions > 999) ? 'k' : ''); ?>
-										</span>
-										<span style="display:flex; align-items: center; justify-content: center; gap: 1px;">
-											<span style="display:inline-block;">
-												<?php
-												if (!empty($sessions_percentage_icon)) {
-													echo '<img src="' . esc_url($sessions_percentage_icon) . '" srcset="' . esc_url($sessions_percentage_icon_2x) . ' 2x" target="_blank" alt="' . $sessions_difference . '" />';
-												}
-												?>
-											</span>
-											<span style="display:inline-block;" class="<?php echo $sessions_percentage_class; ?>">
-												<?php 
-												/* translators: Placeholder adds percentage value. */
-												printf(__('%s&#37;', 'google-analytics-for-wordpress'), $prev_sessions_percentage);
-												?>
-											</span>
-										</span>
+									<td style="padding-bottom:5px; font-size:12px;" align="center">
+										<table cellspacing="0" cellpadding="0" border="0">
+											<tbody>
+												<tr>
+													<td valign="middle" style="font-size:28px; color: #000000; font-weight: bold; padding-right: 5px;">
+														<?php echo esc_html( number_format_i18n( $total_sessions ) ); ?>
+													</td>
+													<td valign="middle">
+														<table cellspacing="0" cellpadding="0" border="0">
+															<tbody>
+																<tr>
+																	<td valign="middle" style="padding-right:1px; padding-top:1px;">
+																		<?php
+																			if (!empty($sessions_percentage_icon_2x)) {
+																				echo '<img src="' . esc_url($sessions_percentage_icon_2x) . '" target="_blank" alt="' . $sessions_difference . '" style="width: 8px; height: auto;" />';
+																			}
+																		?>
+																	</td>
+																	<td valign="middle" class="<?php echo $sessions_percentage_class; ?>">
+																		<?php printf('%s&#37;', $prev_sessions_percentage); ?>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</td>
 								</tr>
 								<tr>
@@ -191,22 +197,34 @@ if ((int) $prev_engagement_percentage === (int) $prev_engagement_percentage && (
 									</td>
 								</tr>
 								<tr>
-									<td style="padding-bottom:5px; font-size:12px; display:flex; align-items: center; justify-content: center; gap: 6px;">
-										<span style="display:inline-block; font-size:28px; color: #000000; font-weight: bold;">
-											<?php printf(esc_html('%s%s', 'google-analytics-for-wordpress'), $total_pageviews_string, ($total_pageviews > 999) ? 'k' : ''); ?>
-										</span>
-										<span style="display:flex; align-items: center; justify-content: center; gap: 1px;">
-											<span style="display:inline-block;">
-												<?php
-												if (!empty($pageviews_percentage_icon)) {
-													echo '<img src="' . esc_url($pageviews_percentage_icon) . '" srcset="' . esc_url($pageviews_percentage_icon_2x) . ' 2x" target="_blank" alt="' . $pageviews_difference . '" />';
-												}
-												?>
-											</span>
-											<span style="display:inline-block;" class="<?php echo $pageviews_percentage_class; ?>">
-												<?php printf(__('%s&#37;', 'google-analytics-for-wordpress'), $prev_pageviews_percentage); ?>
-											</span>
-										</span>
+									<td style="padding-bottom:5px; font-size:12px;" align="center">
+										<table cellspacing="0" cellpadding="0" border="0">
+											<tbody>
+												<tr>
+													<td valign="middle" style="font-size:28px; color: #000000; font-weight: bold; padding-right: 5px;">
+														<?php echo esc_html( number_format_i18n( $total_pageviews ) ); ?>
+													</td>
+													<td valign="middle">
+														<table cellspacing="0" cellpadding="0" border="0">
+															<tbody>
+																<tr>
+																	<td valign="middle" style="padding-right:1px; padding-top:1px;">
+																		<?php
+																			if (!empty($pageviews_percentage_icon)) {
+																				echo '<img src="' . esc_url($pageviews_percentage_icon) . '" srcset="' . esc_url($pageviews_percentage_icon_2x) . ' 2x" target="_blank" alt="' . $pageviews_difference . '" />';
+																			}
+																		?>
+																	</td>
+																	<td valign="middle" class="<?php echo $pageviews_percentage_class; ?>">
+																		<?php printf('%s&#37;', $prev_pageviews_percentage); ?>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</td>
 								</tr>
 								<tr>
@@ -236,22 +254,34 @@ if ((int) $prev_engagement_percentage === (int) $prev_engagement_percentage && (
 									</td>
 								</tr>
 								<tr>
-									<td style="padding-bottom:5px; font-size:12px; display:flex; align-items: center; justify-content: center; gap: 6px;">
-										<span style="display:inline-block; font-size:28px; color: #000000; font-weight: bold;">
-											<?php printf(esc_html('%s', 'google-analytics-for-wordpress'), $total_engagement_string); ?>
-										</span>
-										<span style="display:flex; align-items: center; justify-content: center; gap: 1px;">
-											<span style="display:inline-block;">
-												<?php
-												if (!empty($engagement_percentage_icon)) {
-													echo '<img src="' . esc_url($engagement_percentage_icon) . '" srcset="' . esc_url($engagement_percentage_icon_2x) . ' 2x" target="_blank" alt="' . $engagement_difference . '" />';
-												}
-												?>
-											</span>
-											<span style="display:inline-block;" class="<?php echo $engagement_percentage_class; ?>">
-												<?php printf(__('%s&#37;', 'google-analytics-for-wordpress'), $prev_engagement_percentage); ?>
-											</span>
-										</span>
+									<td style="padding-bottom:5px; font-size:12px;" align="center">
+										<table cellspacing="0" cellpadding="0" border="0">
+											<tbody>
+												<tr>
+													<td valign="middle" style="font-size:28px; color: #000000; font-weight: bold; padding-right: 5px;">
+														<?php echo esc_html( number_format_i18n( $total_engagement ) ); ?>
+													</td>
+													<td valign="middle">
+														<table cellspacing="0" cellpadding="0" border="0">
+															<tbody>
+																<tr>
+																	<td valign="middle" style="padding-right:1px; padding-top:1px;">
+																		<?php
+																			if (!empty($engagement_percentage_icon)) {
+																				echo '<img src="' . esc_url($engagement_percentage_icon) . '" srcset="' . esc_url($engagement_percentage_icon_2x) . ' 2x" target="_blank" alt="' . $engagement_difference . '" />';
+																			}
+																		?>
+																	</td>
+																	<td valign="middle" class="<?php echo $pageviews_percentage_class; ?>">
+																		<?php printf('%s&#37;', $prev_engagement_percentage); ?>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</td>
+												</tr>
+											</tbody>
+										</table>
 									</td>
 								</tr>
 								<tr>

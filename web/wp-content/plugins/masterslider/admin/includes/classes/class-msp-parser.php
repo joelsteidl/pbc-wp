@@ -67,9 +67,6 @@ class MSP_Parser {
 
 	public function parse_setting( $setting = array() ) {
 
-		// make sure $setting is not serialized
-		$setting = maybe_unserialize( $setting );
-
 		$setid = isset( $setting['setId'] ) ? (string) $setting['setId'] : '';
 
 		$post_cats = isset( $setting['postCats'] ) ? (array) $setting['postCats'] : array();
@@ -299,9 +296,6 @@ class MSP_Parser {
 
 	public function parse_layer( $layer ) {
 
-		// make sure $layer is not serialized
-		$layer = maybe_unserialize( $layer );
-
 		if( empty( $layer ) )
 			return $layer;
 
@@ -395,9 +389,6 @@ class MSP_Parser {
 
 
 	public function parse_slide( $slide = array() ) {
-
-		// make sure $slide is not serialized
-		$slide = maybe_unserialize( $slide );
 
 		if( empty( $slide ) )
 			return $slide;
@@ -543,9 +534,6 @@ class MSP_Parser {
 
 
 	public function parse_each_style( $style_obj, $allowed_style_type = array( 'custom' ) ) {
-
-		// make sure $style_obj is not serialized
-		$style_obj = maybe_unserialize( $style_obj );
 
 		if( empty( $style_obj ) )
 			return $style_obj;

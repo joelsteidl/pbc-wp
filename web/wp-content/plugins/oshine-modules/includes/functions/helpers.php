@@ -749,4 +749,32 @@ function oshine_get_image_from_url( $image_url, $size ) {
 	}
 }
 
+if ( ! function_exists( 'be_get_reponsive_gutter_width' ) ) {
+	/**
+	 * Get responsive gutter width details
+	 * 
+	 * @param string json_encoded responsive gutter width
+	 * 
+	 * return array desktop gutter width and html attribute contain rest of width
+	 */
+	function be_get_reponsive_gutter_width( $width = null, $default_width = 40 ) {
+		$reponsive_width = array(
+			'd' => $default_width,
+			'data_gutter_width' => ''
+		);
+		if ( isset( $width ) && is_string( $width ) && false !== stripos( $width, '}' ) ) {
+			$width = json_decode( $width, true );
+			foreach ( array( 'd', 'l', 't', 'm' ) as $device_type ) {
+				if ( isset( $width[ $device_type ] ) && '' !== $width[ $device_type ] ) {
+					$reponsive_width[ $device_type ] = $width[ $device_type ];
+					if ( 'd' === $device_type ) {
+						continue;
+					}
+					$reponsive_width['data_gutter_width'] .= ' data-gutter-width-'.$device_type.'="'.esc_attr( $width[ $device_type ] ).'" ';
+				}
+			}
+		}
+		return $reponsive_width;
+	}
+}
 ?>

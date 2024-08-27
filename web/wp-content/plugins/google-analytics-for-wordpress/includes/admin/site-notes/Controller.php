@@ -10,6 +10,9 @@ class MonsterInsights_SiteNotes_Controller
 	 */
 	private $db;
 
+	/**
+	 * @return self
+	 */
 	public static function get_instance()
 	{
 		if (!isset(self::$instance) && !(self::$instance instanceof MonsterInsights_SiteNotes_Controller)) {
@@ -753,6 +756,13 @@ class MonsterInsights_SiteNotes_Controller
 		$data['data']['sessions_chart']['notes'] = $prepared_notes;
 
 		return $data;
+	}
+
+	/**
+	 * Create a site note.
+	 */
+	public function create_note( $note_details ) {
+		return $this->db->create( $note_details );
 	}
 }
 

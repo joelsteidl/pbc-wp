@@ -155,23 +155,31 @@ add_action( 'admin_bar_menu', 'monsterinsights_add_admin_bar_menu', 999 );
  */
 function monsterinsights_frontend_admin_bar_scripts() {
 	global $current_user;
+	global $pagenow;
 	if ( monsterinsights_prevent_loading_frontend_reports() ) {
 		return;
 	}
 
-	$version_path    = monsterinsights_is_pro_version() ? 'pro' : 'lite';
-	$rtl             = is_rtl() ? '.rtl' : '';
-	$frontend_js_url = defined( 'MONSTERINSIGHTS_LOCAL_FRONTEND_JS_URL' ) && MONSTERINSIGHTS_LOCAL_FRONTEND_JS_URL ? MONSTERINSIGHTS_LOCAL_FRONTEND_JS_URL : plugins_url( $version_path . '/assets/vue/js/frontend.js', MONSTERINSIGHTS_PLUGIN_FILE );
-
-	if ( ! defined( 'MONSTERINSIGHTS_LOCAL_FRONTEND_JS_URL' ) ) {
-		wp_enqueue_style( 'monsterinsights-vue-frontend-style', plugins_url( $version_path . '/assets/vue/css/frontend' . $rtl . '.css', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version() );
-		wp_enqueue_script( 'monsterinsights-vue-vendors', plugins_url( $version_path . '/assets/vue/js/chunk-frontend-vendors.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), true );
-		wp_enqueue_script( 'monsterinsights-vue-common', plugins_url( $version_path . '/assets/vue/js/chunk-common.js', MONSTERINSIGHTS_PLUGIN_FILE ), array(), monsterinsights_get_asset_version(), true );
-	} else {
-		wp_enqueue_script( 'monsterinsights-vue-vendors', MONSTERINSIGHTS_LOCAL_VENDORS_JS_URL, array(), monsterinsights_get_asset_version(), true );
-		wp_enqueue_script( 'monsterinsights-vue-common', MONSTERINSIGHTS_LOCAL_COMMON_JS_URL, array(), monsterinsights_get_asset_version(), true );
+	// Avoid loading scripts on pages that don't have admin bar such as WPBakery Page Builder.
+	if (isset($_GET['vc_editable']) && isset($_GET['vc_post_id']) && $_GET['vc_editable'] === 'true') {
+		return;
 	}
 
+	// Avoid adding admin bar scripts in Elementor's preview which is done via admin-ajax(where $pagenow = 'index.php')
+	if ($pagenow === 'index.php' && isset($_GET['elementor-preview'])) {
+		return;
+	}
+
+	if ( ! class_exists( 'MonsterInsights_Admin_Assets' ) ) {
+		require_once MONSTERINSIGHTS_PLUGIN_DIR . 'includes/admin/admin-assets.php';
+	}
+
+	if ( ! defined( 'MONSTERINSIGHTS_LOCAL_JS_URL' ) ) {
+		MonsterInsights_Admin_Assets::enqueue_script_specific_css( 'src/modules/frontend/frontend.js' );
+	}
+
+	$version_path    = monsterinsights_is_pro_version() ? 'pro' : 'lite';
+	$frontend_js_url = MonsterInsights_Admin_Assets::get_js_url( 'src/modules/frontend/frontend.js' );
 	wp_register_script( 'monsterinsights-vue-frontend', $frontend_js_url, array(), monsterinsights_get_asset_version(), true );
 	wp_enqueue_script( 'monsterinsights-vue-frontend' );
 
@@ -420,15 +428,13 @@ add_action( 'init', 'monsterinsights_maybe_handle_legacy_shortcodes', 1000 );
 /**
  * Remove Query String from a Vue Settings before sending the data to GA.
  *
- * @param array  $options GA Options.
- *
- * @return array
+ * @return void
  */
-function monsterinsights_exclude_query_params_v4( $options ) {
+function monsterinsights_exclude_query_params_v4() {
 	global $wp;
 
 	if ( ! monsterinsights_get_option( 'exclude_query_params', false ) ) {
-		return $options;
+		return;
 	}
 
 	$current_page_url = add_query_arg( $_SERVER['QUERY_STRING'], '', trailingslashit( home_url( $wp->request ) ) );
@@ -436,21 +442,19 @@ function monsterinsights_exclude_query_params_v4( $options ) {
 	$pg_options       = $query_options ? explode( ',', $query_options ) : array();
 
 	if ( is_array( $pg_options ) && empty( $pg_options ) ) {
-		return $options;
+		return;
 	}
 
 	$filtered_options                  = array();
 	$filtered_url                      = remove_query_arg( $pg_options, $current_page_url );
-	$filtered_options['page_location'] = esc_url( $filtered_url );
+	$filtered_options['page_location'] = $filtered_url;
 
 	if ( wp_get_referer() ) {
 		$filtered_page_ref_url             = remove_query_arg( $pg_options, wp_get_referer() );
-		$filtered_options['page_referrer'] = esc_url( $filtered_page_ref_url );
+		$filtered_options['page_referrer'] = $filtered_page_ref_url;
 	}
 
-	$options = array_merge( $options, $filtered_options );
-
-	return $options;
+	printf( "var MonsterInsightsExcludeQuery = %s;\n", wp_json_encode( $filtered_options ) );
 }
 
-add_filter( 'monsterinsights_frontend_tracking_options_gtag_before_pageview', 'monsterinsights_exclude_query_params_v4', 10, 1 );
+add_action( 'monsterinsights_tracking_gtag_frontend_output_after_mi_track_user', 'monsterinsights_exclude_query_params_v4' );

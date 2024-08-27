@@ -74,6 +74,7 @@ class MonsterInsights_Rest_Routes {
 			'is_expired'  => MonsterInsights()->license->site_license_expired(),
 			'expiry_date' => MonsterInsights()->license->get_license_expiry_date(),
 			'is_invalid'  => MonsterInsights()->license->site_license_invalid(),
+			'is_agency'   => MonsterInsights()->license->site_is_agency(),
 		);
 		$network_license = array(
 			'key'         => MonsterInsights()->license->get_network_license_key(),
@@ -82,6 +83,7 @@ class MonsterInsights_Rest_Routes {
 			'is_expired'  => MonsterInsights()->license->network_license_expired(),
 			'expiry_date' => MonsterInsights()->license->get_license_expiry_date(),
 			'is_invalid'  => MonsterInsights()->license->network_license_disabled(),
+			'is_agency'   => MonsterInsights()->license->network_is_agency(),
 		);
 
 		wp_send_json( array(
@@ -502,6 +504,18 @@ class MonsterInsights_Rest_Routes {
 			'settings'  => admin_url( 'admin.php?page=aioseo' ),
 		);
 
+		// FunnelKit Stripe Woo Payment Gateway.
+		$parsed_addons['funnelkit-stripe-woo-payment-gateway'] = array(
+			'active'    => class_exists( 'FKWCS_Gateway_Stripe' ),
+			'icon'      => plugin_dir_url( MONSTERINSIGHTS_PLUGIN_FILE ) . 'assets/images/plugins/plugin-funnelkit-stripe-woo-payment-gateway.png',
+			'title'     => 'Stripe Payment Gateway for WooCommerce',
+			'excerpt'   => __( 'Stripe Payment Gateway for WooCommerce is an integrated solution that lets you accept payments on your online store for web and mobile.', 'google-analytics-for-wordpress' ),
+			'installed' => array_key_exists( 'funnelkit-stripe-woo-payment-gateway/funnelkit-stripe-woo-payment-gateway.php', $installed_plugins ),
+			'basename'  => 'funnelkit-stripe-woo-payment-gateway/funnelkit-stripe-woo-payment-gateway.php',
+			'slug'      => 'funnelkit-stripe-woo-payment-gateway',
+			'settings'  => admin_url( 'admin.php?page=wc-settings&tab=fkwcs_api_settings' ),
+		);
+
 		// Use the plugin dir name as the array key since AJAX activation in add-ons page won't work.
 		$parsed_addons['all-in-one-seo-pack'] = $parsed_addons['aioseo'];
 
@@ -651,9 +665,11 @@ class MonsterInsights_Rest_Routes {
 			'installed' => array_key_exists('uncanny-automator/uncanny-automator.php', $installed_plugins),
 			'basename'  => 'uncanny-automator/uncanny-automator.php',
 			'slug'      => 'uncanny-automator',
-			'setup_complete'      => (bool) get_option('automator_reporting', false),
+			'setup_complete' => class_exists( 'Uncanny_Automator\Api_Server' ) ? !! \Uncanny_Automator\Api_Server::is_automator_connected() : false,
+			'wizard_url'     => admin_url( 'edit.php?post_type=uo-recipe&page=uncanny-automator-setup-wizard' ),
+			'recipe_url'     => admin_url( 'post-new.php?post_type=uo-recipe' ),
 		);
-		
+
 		// Pretty Links
 		$parsed_addons['pretty-link'] = array(
 			'active'    => class_exists( 'PrliBaseController' ),
@@ -779,41 +795,19 @@ class MonsterInsights_Rest_Routes {
 		wp_send_json( $parsed_addons );
 	}
 
+	/**
+	 * Wrapper around the monsterinsights_get_addon function.
+	 * Kept for backwards compatibility.
+	 *
+	 * @param $installed_plugins
+	 * @param $addons_type
+	 * @param $addon
+	 * @param $slug
+	 * @deprecated Use monsterinsights_get_addon instead.
+	 * @return mixed
+	 */
 	public function get_addon( $installed_plugins, $addons_type, $addon, $slug ) {
-		$active          = false;
-		$installed       = false;
-
-        $slug = apply_filters( 'monsterinsights_addon_slug', $slug );
-
-		$plugin_basename = monsterinsights_get_plugin_basename_from_slug( $slug );
-
-		if ( isset( $installed_plugins[ $plugin_basename ] ) ) {
-			$installed = true;
-
-			if ( is_multisite() && is_network_admin() ) {
-				$active = is_plugin_active_for_network( $plugin_basename );
-			} else {
-				$active = is_plugin_active( $plugin_basename );
-			}
-		}
-		if ( empty( $addon->url ) ) {
-			$addon->url = '';
-		}
-
-		$active_version = false;
-		if ( $active ) {
-			if ( ! empty( $installed_plugins[ $plugin_basename ]['Version'] ) ) {
-				$active_version = $installed_plugins[ $plugin_basename ]['Version'];
-			}
-		}
-
-		$addon->type           = $addons_type;
-		$addon->installed      = $installed;
-		$addon->active_version = $active_version;
-		$addon->active         = $active;
-		$addon->basename       = $plugin_basename;
-
-		return $addon;
+		return monsterinsights_get_addon($installed_plugins, $addons_type, $addon, $slug);
 	}
 
 	/**
@@ -1107,6 +1101,12 @@ class MonsterInsights_Rest_Routes {
 			'end'   => $end,
 		);
 
+		// User want to show compare report.
+		if ( isset( $_POST['compare_report'] ) ) {
+			$args['compare_start'] = ! empty( $_POST['compare_start'] ) ? sanitize_text_field( wp_unslash( $_POST['compare_start'] ) ) : $report->default_compare_start_date();
+			$args['compare_end']   = ! empty( $_POST['compare_end'] ) ? sanitize_text_field( wp_unslash( $_POST['compare_end'] ) ) : $report->default_compare_end_date();
+		}
+
 		if ( $isnetwork ) {
 			$args['network'] = true;
 		}
@@ -1247,6 +1247,11 @@ class MonsterInsights_Rest_Routes {
 	 * Store that the first run notice has been dismissed so it doesn't show up again.
 	 */
 	public function dismiss_first_time_notice() {
+		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+			return;
+		}
 
 		monsterinsights_update_option( 'monsterinsights_first_run_notice', true );
 

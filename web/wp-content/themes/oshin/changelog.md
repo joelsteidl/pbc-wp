@@ -1,3 +1,19 @@
+v7.2.1 ( 25th April 2024 )
+======
+* Added: V59 Freelance Designer and V60 Oshine Restaurant demo
+* Added: Enable read more link setting for blog
+* Fixed: Php notices
+* Added: Update require plugin details on install-required-plugins page
+
+v7.2.0 ( 04 March 2024 )
+======
+* Updated: Translation .pot file
+
+v7.1.9 ( 12 February 2024 )
+======
+* Added: Retry purchase code verify as per response
+* Fixed: Php notices
+
 v7.1.8 ( 22 January 2024 )
 ======
 * Added: Safe SVG in required plugin list

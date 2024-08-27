@@ -189,7 +189,7 @@ class MSP_Settings {
                     array(
                         'name'      => 'username',
                         'label'     => __( 'Your Envato Username'     , MSWP_TEXT_DOMAIN ),
-                        'desc'      => sprintf( ' (<a href="http://support.averta.net/envato/wp-content/uploads/envato_username.png" target="_blank" >%s</a>)',
+                        'desc'      => sprintf( ' (<a href="https://env.averta.net/envato/wp-content/uploads/envato_username.png" target="_blank" >%s</a>)',
                                                                                                                               __( 'How to find your envato username', MSWP_TEXT_DOMAIN ) ),
                         'type'      => 'text',
                         'default'   => ''
@@ -197,7 +197,7 @@ class MSP_Settings {
                     array(
                         'name'      => 'purchase_code',
                         'label'     => __( 'Master Slider Purchase Code' , MSWP_TEXT_DOMAIN ),
-                        'desc'      => __( 'Please enter purchase code for your Master Slider', MSWP_TEXT_DOMAIN ) . sprintf( ' (<a href="http://support.averta.net/envato/knowledgebase/find-item-purchase-code/" target="_blank" >%s</a>)',
+                        'desc'      => __( 'Please enter purchase code for your Master Slider', MSWP_TEXT_DOMAIN ) . sprintf( ' (<a href="https://env.averta.net/envato/knowledgebase/find-item-purchase-code/" target="_blank" >%s</a>)',
                                                                                                                               __( "How to find your Item's Purchase Code", MSWP_TEXT_DOMAIN ) ),
                         'type'      => 'password',
                         'default'   => ''

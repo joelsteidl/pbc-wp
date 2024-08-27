@@ -44,7 +44,11 @@ if(($post_format == 'quote' || $post_format == 'link') && !is_single() ){
                         get_template_part( 'content', $post_format ); 
                     } else if( ( !is_single() && ( ('' != $post_format ) || !empty( $post_thumb_img ) ) ) || ( ( '' != $post_format && 'image' != $post_format ) || ( !$is_wide_single && !empty( $post_thumb_img ) ) ) ) {?>
                     <div <?php echo ( ( '' == $post_format || 'image' == $post_format ) ) ? ('class = "post-thumb-wrap" style = "padding-bottom:' . $current_height .';" data-aspect-ratio = "'. $aspect_ratio . '"') : '' ?> >
-                        
+                        <?php
+                        if ( empty( $post_thumb_img ) && ( $post_format == 'audio' || $post_format == 'video' ) ) {
+                            $post_thumb_img = array( '#', '0', '0', false );
+                        }
+                        ?>
                         <a href = "<?php echo ( ( isset($be_themes_data['open_to_lightbox']) && 1 == $be_themes_data['open_to_lightbox'] ) ? ( $post_thumb_img[ 0 ] ) : ( is_single() ? '#' : get_permalink( get_the_ID() ) ) ); ?>" class = "thumb-wrap <?php echo ( (isset($be_themes_data['open_to_lightbox']) && 1 == $be_themes_data['open_to_lightbox'] ) ? 'image-popup-vertical-fit mfp-image' : '' ); ?>" >
                             <?php if($post_format == 'audio' || $post_format == 'video'){
                                 get_template_part( 'content', $post_format ); 

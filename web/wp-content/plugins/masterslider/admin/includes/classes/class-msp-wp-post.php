@@ -91,28 +91,28 @@ class MSP_WP_Post {
 
 		$query = array();
 
-		$query['image_from']     = isset( $_REQUEST['slideImage'] )     ? $_REQUEST['slideImage']     : 'auto';
-		$query['excerpt_length'] = isset( $_REQUEST['excerpt_length'] ) ? $_REQUEST['excerpt_length'] : 100;
-        $query['exclude_post_no_image'] = isset( $_REQUEST['exclude_post_no_image'] ) ? $_REQUEST['exclude_post_no_image'] : false;
+		$query['image_from']     = isset( $_REQUEST['slideImage'] )     ? msp_sanitize_input( $_REQUEST['slideImage'] )     : 'auto';
+		$query['excerpt_length'] = isset( $_REQUEST['excerpt_length'] ) ? msp_sanitize_input( $_REQUEST['excerpt_length'] ) : 100;
+        $query['exclude_post_no_image'] = isset( $_REQUEST['exclude_post_no_image'] ) ? msp_sanitize_input( $_REQUEST['exclude_post_no_image'] ) : false;
 
 		if( isset( $_REQUEST['post_type'] ) && ! empty( $_REQUEST['post_type'] ) )
-			$query['post_type'] = $_REQUEST['post_type'];
+			$query['post_type'] = msp_sanitize_input( $_REQUEST['post_type'] );
 
 		if( isset( $_REQUEST['orderby'] ) )
-			$query['orderby'] = $_REQUEST['orderby'];
+			$query['orderby'] = msp_sanitize_input( $_REQUEST['orderby'] );
 
 		if( isset( $_REQUEST['order'] ) )
-			$query['order'] = $_REQUEST['order'];
+			$query['order'] = msp_sanitize_input( $_REQUEST['order'] );
 
 		$query['posts_per_page'] = isset( $_REQUEST['limit'] )  && ! empty( $_REQUEST['limit'] ) ? (int)$_REQUEST['limit'] : 10;
 
 		if( isset( $_REQUEST['post__not_in'] )  && ! empty( $_REQUEST['post__not_in'] ) ) {
-			$posts_not_in = explode( ',', $_REQUEST['post__not_in'] );
+			$posts_not_in = explode( ',', sanitize_text_field( $_REQUEST['post__not_in'] ) );
 			$query['post__not_in'] = array_filter( $posts_not_in );
 		}
 
 		if( isset( $_REQUEST['post__in'] )  && ! empty( $_REQUEST['post__in'] ) ) {
-			$posts_in = explode( ',', $_REQUEST['post__in'] );
+			$posts_in = explode( ',', sanitize_text_field( $_REQUEST['post__in'] ) );
 			$query['post__in'] = array_filter( $posts_in );
 		}
 
@@ -123,12 +123,12 @@ class MSP_WP_Post {
 		$taxs_data = array();
 
 		if( isset( $_REQUEST['cats'] ) && ! empty( $_REQUEST['cats'] ) ) {
-			$cats = explode( ',', $_REQUEST['cats'] );
+			$cats = explode( ',', sanitize_text_field( $_REQUEST['cats'] ) );
 			$taxs_data = array_merge( $taxs_data, $cats );
 		}
 
 		if( isset( $_REQUEST['tags'] ) && ! empty( $_REQUEST['tags'] ) ) {
-			$tags = explode( ',', $_REQUEST['tags'] );
+			$tags = explode( ',', sanitize_text_field( $_REQUEST['tags'] ) );
 			$taxs_data = array_merge( $taxs_data, $tags );
 		}
 
@@ -157,7 +157,7 @@ class MSP_WP_Post {
 	public function get_first_post_template_tags_value(){
 		$post = $this->parse_and_get_first_post_object();
 		$args = array();
-		$args['image_from'] = isset( $_REQUEST['slideImage'] ) ? $_REQUEST['slideImage'] : 'auto';
+		$args['image_from'] = isset( $_REQUEST['slideImage'] ) ? msp_sanitize_input( $_REQUEST['slideImage'] ) : 'auto';
 
 		return get_post_template_tags_value( $post, $args );
 	}

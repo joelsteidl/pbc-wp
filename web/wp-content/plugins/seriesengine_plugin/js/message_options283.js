@@ -11,6 +11,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		jQuery("#enmse-podcast-content").hide();
 		jQuery("#enmse-related-files").hide();
 		jQuery("#enmse-scripture").hide();
+		return false;	
 	});
 	
 	jQuery('#enmse-message-video').click(function() { 
@@ -24,6 +25,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		jQuery("#enmse-podcast-content").hide();
 		jQuery("#enmse-related-files").hide();
 		jQuery("#enmse-scripture").hide();
+		return false;	
 	});
 	
 	jQuery('#enmse-message-podcast').click(function() { 
@@ -37,6 +39,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		jQuery("#enmse-podcast-content").show();
 		jQuery("#enmse-related-files").hide();
 		jQuery("#enmse-scripture").hide();
+		return false;	
 	});
 	
 	jQuery('#enmse-message-files').click(function() { 
@@ -50,6 +53,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		jQuery("#enmse-podcast-content").hide();
 		jQuery("#enmse-related-files").show();
 		jQuery("#enmse-scripture").hide();
+		return false;	
 	});
 
 	jQuery('#enmse-message-scripture').click(function() { 
@@ -63,6 +67,7 @@ jQuery(document).ready(function(){ /* ----- Series Engine - JavaScript for Messa
 		jQuery("#enmse-podcast-content").hide();
 		jQuery("#enmse-related-files").hide();
 		jQuery("#enmse-scripture").show();
+		return false;	
 	});
 	
 	jQuery("#message_audio_url").change(function() {

@@ -299,7 +299,7 @@
         $filter_bottom_color = ( (!isset($filter_bottom_color)) || empty($filter_bottom_color) ) ? '#33e9b9' : $filter_bottom_color;
 
         $output .= '<div class="filters clearfix '.$filter_style.' align-'.$filter_alignment.'" ' . $portfolio_filter_style . '>';
-        $output .= '<div class="filter_item"><style>.oshine-single-masonry-posts .filter_item span.sort.current_choice {border-color:'.$filter_bottom_color.' ;}</style><span class="sort current_choice" data-id="element">'.__( 'All topics', 'oshine-modules' ).'</span></div>';
+        $output .= '<div class="filter_item"><style>.oshine-single-masonry-posts .filter_item span.sort.current_choice {border-color:'.$filter_bottom_color.' ;}</style><span class="sort current_choice" data-id="element">'.__( 'All topics', 'oshin' ).'</span></div>';
         foreach ($terms as $term) {
             if( is_object( $term ) ) {
                 $output .= '<div class="filter_item">';    		
@@ -548,7 +548,7 @@
                 $output .= '</div>';
                 $output .= '</div>'; // End Thumb Bg
                 
-                $output .= '<div class="read-more"><a href="'.$attachment_full_url.'">Read <i class="tatsu-icon icon-arrow-right7"></i></a></div>';
+                $output .= '<div class="read-more"><a href="'.$attachment_full_url.'">' . __( 'Read', 'oshin' ) . ' <i class="tatsu-icon icon-arrow-right7"></i></a></div>';
                 
                 $output .= ( ( 1 == $prebuilt_hover && 'style1' == $prebuilt_hover_style ) ? ( '<div class = "thumb-border-wrapper" style = "border-color:' . ( ( isset($thumb_overlay_color) && !empty($thumb_overlay_color) ) ? $thumb_overlay_color : $overlay_color ) . ';" ></div>' ) : '' ) . '</div>'; //End Thumb Bg & Thumb Overlay
                 $output .= '</a>'; //End Thumb Wrap
@@ -621,7 +621,7 @@
         if( $pagination == 'infinite' ) {
             $output .='<div class="trigger_infinite_scroll portfolio_infinite_scroll" data-type="portfolio"></div>';
         } elseif( $pagination == 'loadmore' ) {
-            $output .='<div class="trigger_load_more portfolio_load_more" data-total-items="'.($the_query->found_posts-$items_initial_load).'" data-type="portfolio"><a class="be-shortcode mediumbtn be-button tatsu-button alt-bg alt-bg-text-color" href="#">'.__( 'Load More', 'oshine-modules' ).'</a></div>';
+            $output .='<div class="trigger_load_more portfolio_load_more" data-total-items="'.($the_query->found_posts-$items_initial_load).'" data-type="portfolio"><a class="be-shortcode mediumbtn be-button tatsu-button alt-bg alt-bg-text-color" href="#">'.__( 'Load More', 'oshin' ).'</a></div>';
         }
     }
     $output .='</div></div>'; //end portfolio

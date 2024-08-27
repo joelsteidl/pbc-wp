@@ -3,8 +3,8 @@ Contributors: mmaunder, wfryan, wfmatt, wfmattr
 Tags: security, waf, malware, 2fa, two factor, login security, firewall, brute force, scanner, scan, web application firewall, protection, stop hackers, prevent hacks, secure wordpress, wordpress security
 Requires at least: 3.9
 Requires PHP: 5.5
-Tested up to: 6.4
-Stable tag: 7.11.1
+Tested up to: 6.6
+Stable tag: 7.11.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -88,7 +88,7 @@ The WordPress security plugin provides the best protection available for your we
 
 = What features does Wordfence Premium enable? =
 
-We offer a Premium API key that gives you real-time updates to the Threat Defense Feed which includes a real-time IP blocklist, firewall rules, and malware signatures. Premium support, country blocking, more frequent scans, and spam and spamvertising checks are also included. [Click here to sign-up for Wordfence Premium now](http://www.wordfence.com/) or simply install Wordfence free and start protecting your website.
+We offer a Premium API key that gives you real-time updates to the Threat Defense Feed which includes a real-time IP blocklist, firewall rules, and malware signatures. Premium support, country blocking, more frequent scans, and spam and spamvertising checks are also included. [Click here to sign-up for Wordfence Premium now](https://www.wordfence.com/) or simply install Wordfence free and start protecting your website.
 
 = How does the Wordfence WordPress Firewall protect websites? =
 
@@ -188,6 +188,46 @@ Secure your website with Wordfence.
 9. Logging in is easy with Wordfence 2FA.
 
 == Changelog ==
+
+= 7.11.7 - July 29, 2024 =
+* Improvement: Optimized scan performance by reducing database queries by approximately 38% along with CPU usage
+* Fix: Added translation support for "Page not found" string when viewing recent traffic
+
+= 7.11.6 - June 6, 2024 =
+* Improvement: Revised the strong password requirements notice to be more readable
+* Improvement: Removed unnecessary calls for the plugin and theme vulnerability checks
+* Improvement: Reduced the frequency of calls to Wordfence Central during some operations where the values do not need to be synced
+* Improvement: Refactored some queries to avoid the automatic SHOW FULL COLUMNS queries that WordPress performs to verify database encodings
+* Improvement: Infrequently-used config values are no longer automatically loaded into memory and instead loaded only on demand
+* Fix: Fixed an issue where multisite installations using the WAF mysqli storage engine could repeatedly attempt to update WAF rules when not in optimized mode
+* Improvement: Updated the bundled GeoIP database
+* Change: Revised the formatting of TOTP app URLs to prioritize the site's own URL for better sorting and display
+* Fix: Fixed the last captcha column in the users page so it no longer displays "(not required)" on 2FA users since that no longer applies
+* Fix: Added a check in wflogs/rules.php to only run when within the WAF's bootstrap stage when hosted behind nginx
+
+= 7.11.5 - April 3, 2024 =
+* Fix: Revised the behavior of the reCAPTCHA verification to use the documented expiration period of the token and response to avoid sending verification requests too frequently, which could artificially lower scores in some circumstances
+* Fix: Addressed PHP 8 deprecation notices in the file differ used by file changed scan results
+* Fix: Reduced the frequency of Wordfence Central status update callbacks in sections of the scan that occur quickly in sequence
+
+= 7.11.4 - March 11, 2024 =
+* Change: CAPTCHA verification when enabled now additionally applies to 2FA logins (may send an email verification on low scores) and no longer reveals whether a user exists for the submitted account credentials (credit: Raxis)
+* Fix: Addressed a potential PHP 8 notice in the human/bot detection AJAX call
+* Fix: Addressed a potential PHP 8 notice when requesting a lockout unlock verification email
+* Fix: Fixed the emailed diagnostics view not showing the missing table information when applicable
+* Fix: Improved quick scan logic to base timing on regular scans so they're more evenly distributed
+
+= 7.11.3 - February 15, 2024 =
+* Fix: Fixed an issue with sites containing invalid Wordfence Central site data where they could throw an error when viewing Wordfence pages
+
+= 7.11.2 - February 14, 2024 =
+* Improvement: Enhanced the vulnerability scan to check and alert for WordPress core vulnerabilities and to adjust the severity of the scan result based on findings or available updates
+* Improvement: Updated the bundled GeoIP database
+* Improvement: Increased compatibility of brute force protection with plugins that override the normal login flow and omit traditional hooks
+* Change: Adjusted the behavior of automatic quick scans to schedule themselves further away from full scans
+* Fix: Added detection for a site being linked to a non-matching Wordfence Central record (e.g., when cloning the database to a staging site)
+* Fix: Streamlined the license and terms of use installation flow to avoid unnecessary prompting
+* Fix: Fixed an issue where user profiles with a selected locale different from the site itself could end up loading the site's locale instead
 
 = 7.11.1 - January 2, 2024 =
 * Improvement: Added ".env" to the files checked for "Scan for publicly accessible configuration, backup, or log files"

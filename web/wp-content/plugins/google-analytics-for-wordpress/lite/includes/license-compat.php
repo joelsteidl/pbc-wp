@@ -59,4 +59,13 @@ class MonsterInsights_License_Compat {
 		return '';
 	}
 
+	/**
+	 * Mimic the license expiration check for the lite version.
+	 * On lite we don't have a license key so we can't check if it's expired.
+	 *
+	 * @return bool
+	 */
+	public function license_expired() {
+		return false;
+	}
 }

@@ -73,7 +73,7 @@ class Axiom_Plugin_License {
 
 	    $action = ( 'activate' === $action ) ? 'activate' : 'deactivate';
 
-	    $api_url = 'http://support.averta.net/envato/api/?branch=envato&group=items&cat=verify-purchase';
+	    $api_url = 'https://env.averta.net/envato/api/?branch=envato&group=items&cat=verify-purchase';
 
 	    $token   	  = $this->get_license_info( 'token' );
 
@@ -191,7 +191,7 @@ class Axiom_Plugin_License {
 
         global $wp_version;
 
-        $api_url = 'http://support.averta.net/envato/api/?branch=envato&group=items&cat=verify-purchase';
+        $api_url = 'https://env.averta.net/envato/api/?branch=envato&group=items&cat=verify-purchase';
         $token = $this->get_license_info( 'token' );
 
         $args = array(

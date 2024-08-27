@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'OSHIN_THEME_VERSION' ) ) {
-	define( 'OSHIN_THEME_VERSION', '7.1.8' );
+	define( 'OSHIN_THEME_VERSION', '7.2.1' );
 }
 
 load_theme_textdomain( 'oshin', get_template_directory() . '/languages' );
@@ -765,10 +765,14 @@ if ( ! function_exists( 'oshin_theme_update_notice' ) ) {
 
 if ( ! function_exists( 'be_get_theme_tgm_data' ) ) {
 	function be_get_theme_tgm_data( $plugin_slugs ) {
-		//check if tgm data is already available
-		$tgmData = get_option( 'oshin-themetgmdata', false );
-		if ( ! empty( $tgmData ) && ! empty( $tgmData['version'] ) && version_compare( $tgmData['version'], OSHIN_THEME_VERSION, '==' ) ) {
-			return $tgmData;
+		
+		//Fetch fresh update on install-required-plugins
+		if ( ! empty( $_GET['plugin'] ) || empty( $_GET['page'] ) || 'install-required-plugins' != sanitize_key( wp_unslash( $_GET['page'] ) ) ) {
+			//check if tgm data is already available
+			$tgmData = get_option( 'oshin-themetgmdata', false );
+			if ( ! empty( $tgmData ) && ! empty( $tgmData['version'] ) && version_compare( $tgmData['version'], OSHIN_THEME_VERSION, '==' ) ) {
+				return $tgmData;
+			}
 		}
 		
 		//get purchase key
@@ -1455,11 +1459,12 @@ add_filter( 'the_content_more_link', function() {
 	$read_more_text = $be_themes_data['blog_single_post_read_more_text'];
 	$style = $be_themes_data['blog_read_more_style'];	 
 	$blog_style = $be_themes_data['blog_style'];
+	$enable = empty( $be_themes_data['enable_read_more_link'] ) ? '': 'enable';
 
 	$text = __( 'Read More', 'oshin' );
 	$text = ( ! empty( $read_more_text ) && $blog_style == 'style10' ) ? $read_more_text : $text;
 
-	return '<a class="more-link ' . esc_attr( $style ) . '-button" href="' . esc_url( get_permalink() ) . '">' . esc_html( $text ) . '</a>';
+	return '<a class="more-link ' . esc_attr( $style ) . '-button ' . esc_attr( $enable ) . '" href="' . esc_url( get_permalink() ) . '">' . esc_html( $text ) . '</a>';
 } );
 
 /*Remove protected title from protected page*/

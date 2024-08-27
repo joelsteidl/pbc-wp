@@ -40,6 +40,7 @@ jQuery(document).ready(function() { /* ----- Series Engine - Admin JavaScript --
 		jQuery("#enmse-label-settings").hide();
 		jQuery("#enmse-general-settings").show();
 		jQuery("#enmse-archivesection-settings").hide();
+		return false;	
 	});
 	
 	jQuery('#enmse-settings-styles').click(function() { 
@@ -50,7 +51,8 @@ jQuery(document).ready(function() { /* ----- Series Engine - Admin JavaScript --
 		jQuery("#enmse-style-settings").show();
 		jQuery("#enmse-label-settings").hide();
 		jQuery("#enmse-general-settings").hide();
-		jQuery("#enmse-archivesection-settings").hide();				
+		jQuery("#enmse-archivesection-settings").hide();
+		return false;					
 	});
 
 	jQuery('#enmse-settings-labels').click(function() { 
@@ -61,7 +63,8 @@ jQuery(document).ready(function() { /* ----- Series Engine - Admin JavaScript --
 		jQuery("#enmse-style-settings").hide();
 		jQuery("#enmse-label-settings").show();
 		jQuery("#enmse-general-settings").hide();
-		jQuery("#enmse-archivesection-settings").hide();				
+		jQuery("#enmse-archivesection-settings").hide();
+		return false;					
 	});
 
 	jQuery('#enmse-settings-archivesection').click(function() { 
@@ -72,7 +75,8 @@ jQuery(document).ready(function() { /* ----- Series Engine - Admin JavaScript --
 		jQuery("#enmse-style-settings").hide();
 		jQuery("#enmse-label-settings").hide();
 		jQuery("#enmse-general-settings").hide();
-		jQuery("#enmse-archivesection-settings").show();				
+		jQuery("#enmse-archivesection-settings").show();
+		return false;					
 	});
 	
 	function limitText(limitField, limitCount, limitNum) {
