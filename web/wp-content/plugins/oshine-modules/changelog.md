@@ -1,3 +1,11 @@
+v3.3.8 ( 30th May 2024 )
+======
+* Fixed: Escaping attributes in ajax calls
+
+v3.3.7 ( 22nd May 2024 )
+======
+* Fixed: validation in Newsletter module
+
 v3.3.6 ( 25th April 2024 )
 ======
 * Fixed: Portfolio image missing height and width

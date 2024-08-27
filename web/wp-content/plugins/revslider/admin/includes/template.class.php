@@ -289,7 +289,7 @@ class RevSliderTemplate extends RevSliderFunctions {
 							}else{
 								$count = 0;
 								do{
-									$image_data = wp_remote_get($url.'/'.$this->templates_server_path.$temp['img'], array('timeout' => 10));
+									$image_data = wp_safe_remote_get($url.'/'.$this->templates_server_path.$temp['img'], array('timeout' => 10));
 									if(!is_wp_error($image_data) && isset($image_data['body']) && isset($image_data['response']) && isset($image_data['response']['code']) && $image_data['response']['code'] == '200'){
 										$done = true;
 										$image_data = $this->get_val($image_data, 'body');

@@ -163,8 +163,8 @@ class Tatsu_Public {
 				'slider_icons' 	=> tatsu_get_slider_icons(),
 				'version'	=> $version,
 				'recaptcha_type'=>empty($recaptcha_settings)?'':$recaptcha_settings['recaptcha_type'],
-				'recaptcha_site_key'=>empty($recaptcha_settings)?'':$recaptcha_settings['site_key']
-
+				'recaptcha_site_key'=>empty($recaptcha_settings)?'':$recaptcha_settings['site_key'],
+				'tatsunonce'	=> wp_create_nonce( 'tatsu_module_nonce' ),
 			) 
 		);
 		if( current_theme_supports('tatsu-header-builder') ) {

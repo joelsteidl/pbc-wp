@@ -93,6 +93,12 @@ class RevSliderInstagram extends RevSliderFunctions {
 		//we need token and slide ID / slider alias to proceed with saving token
 		if(!isset($_GET[self::QUERY_TOKEN]) || !( isset($_GET['id']) || isset($_GET['alias']) ) ) return;
 
+		$sr_admin = RevSliderGlobals::instance()->get('RevSliderAdmin');
+		if(!current_user_can($sr_admin->get_user_role())){
+			$_GET[self::QUERY_ERROR] = __('Bad Request', 'revslider');
+			return;
+		}
+
 		$token		 = $_GET[self::QUERY_TOKEN];
 		$connectwith = $_GET[self::QUERY_CONNECTWITH];
 		$id			 = $this->get_val($_GET, 'id');
@@ -144,7 +150,7 @@ class RevSliderInstagram extends RevSliderFunctions {
 
 		//redirect
 		$url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$url = add_query_arg(array(self::QUERY_TOKEN => false, self::QUERY_SHOW => 1), $url);
+		$url = add_query_arg(array(self::QUERY_TOKEN => false, 'rs_ig_nonce' => false, self::QUERY_SHOW => 1), $url);
 		wp_redirect($url);
 		exit();
 	}

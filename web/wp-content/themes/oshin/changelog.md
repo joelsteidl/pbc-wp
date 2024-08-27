@@ -1,3 +1,7 @@
+v7.2.2 ( 30th May 2024 )
+======
+* Fixed: Escaping attributes in ajax calls
+
 v7.2.1 ( 25th April 2024 )
 ======
 * Added: V59 Freelance Designer and V60 Oshine Restaurant demo

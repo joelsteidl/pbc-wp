@@ -1320,7 +1320,7 @@ class RevSliderFunctions extends RevSliderData {
 					if(!is_dir($base_dir.'/themepunch/gfonts/')) mkdir($base_dir.'/themepunch/gfonts/');
 					if(!is_dir($base_dir.'/themepunch/gfonts/'.$font_name)) mkdir($base_dir.'/themepunch/gfonts/'.$font_name);
 
-					$content = wp_remote_get('https://fonts.googleapis.com/css2?family='.$font, $options);
+					$content = wp_safe_remote_get('https://fonts.googleapis.com/css2?family='.$font, $options);
 					$body	 = $this->get_val($content, 'body', '');
 					$body	 = explode('}', $body);
 
@@ -2131,12 +2131,61 @@ rs-module .material-icons {
 		return (!empty($list)) ? implode(', ', $list) : '';
 	}
 
+	/**
+	 * get text intro, limit by number of words
+	 * @before: RevSliderFunctionsWP::getTextIntro();
+	 */
+	public function get_text_intro($text, $limit){
+		$limit++;
+		$array = explode(' ', $text, $limit);
+		
+		if(count($array) >= $limit){
+			array_pop($array);
+			$intro = implode(' ', $array);
+			$intro = trim($intro);
+			$intro .= (!empty($intro)) ? '...' : '';
+		}else{
+			$intro = $text;
+		}
+		
+		return preg_replace('`\[[^\]]*\]`', '', $intro);
+	}
 	
+	/**
+	 * get text intro, limit by number of words
+	 * @before: RevSliderFunctionsWP::getTextIntro();
+	 */
+	public function get_text_intro_chars($text, $limit){
+		$intro = substr($text, 0, $limit);
+		return preg_replace('`\[[^\]]*\]`', '', $intro);
+	}
+
 	/**
 	 * convert assoc array to array
 	 */
 	public static function assoc_to_array($assoc){
 		return array_values($assoc ?? []);
+	}
+
+	/**
+	 * filter non-allowed chars for html classes / IDs
+	 * 
+	 * @param array|string $classes
+	 * @return array|string
+	 */
+	public function filter_class_name($classes)
+	{
+		$single = false;
+		if(!is_array($classes)) {
+			$classes = [$classes];
+			$single = true;
+		}
+
+		$classes = array_map(function($className) {
+			return preg_replace('/[^a-zA-Z\d_-]/', '', $className);
+		}, $classes);
+
+		return $single ? $classes[0] : $classes;
 	}
 
 	public function truncate_v7(){

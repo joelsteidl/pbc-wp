@@ -89,11 +89,12 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 		}
 
 		if($SR_GLOBALS['front_version'] === 6){
+			if($elementor) $SR_GLOBALS['preview_mode'] = true;
 			$output_class = new RevSliderOutput();
 			$output_class->add_inline_double_jquery_error(true);
 			echo RevSliderFunctions::js_set_start_size();
 		}
-
+		
 		$dev_mode = (!file_exists(RS_PLUGIN_PATH.'admin/assets/js/plugins/utils.min.js') && !file_exists(RS_PLUGIN_PATH.'admin/assets/js/modules/editor.min.js')) ? true : false;
 
 		if($dev_mode === true){
@@ -106,9 +107,21 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 		}else{
 			wp_enqueue_script('revbuilder-utils', RS_PLUGIN_URL_CLEAN . 'admin/assets/js/plugins/utils.min.js', array('jquery', 'wp-i18n', 'wp-color-picker'), RS_REVISION, false);
 		}
-
-		//if($SR_GLOBALS['front_version'] === 6) 
+		
 		wp_enqueue_script('tp-tools', RS_PLUGIN_URL_CLEAN . 'sr6/assets/js/rbtools.min.js', array('jquery'), RS_TP_TOOLS, true);
+
+		
+		if($SR_GLOBALS['front_version'] === 7){ //add v7 scripts/css
+			$rs_front = RevSliderGlobals::instance()->get('RevSliderFront');
+			$rs_output = RevSliderGlobals::instance()->get('RevSlider7Output');
+			wp_enqueue_script('_tpt', RS_PLUGIN_URL_CLEAN . 'public/js/libs/tptools.js', '', RS_REVISION, ['strategy' => 'async']);
+			wp_enqueue_script('sr7', RS_PLUGIN_URL_CLEAN . 'public/js/sr7.js', '', RS_REVISION, ['strategy' => 'async']);			
+			wp_enqueue_style('sr7css', RS_PLUGIN_URL_CLEAN . 'public/css/sr7.css', '', RS_REVISION);
+			wp_enqueue_script('sr7migration', RS_PLUGIN_URL_CLEAN . 'public/js/migration.js', '', RS_REVISION, ['strategy' => 'async']);
+			add_action('wp_footer', array($rs_front, 'load_google_fonts'));
+			add_action('wp_footer', array($rs_output, 'add_js'), 100);
+			//wp_enqueue_script('sr7page', RS_PLUGIN_URL_CLEAN . 'public/js/page.js', '', RS_REVISION, ['strategy' => 'async']);
+		}
 
 		// object library translations
 		wp_localize_script('revbuilder-utils', 'RVS_LANG', array(			
@@ -253,6 +266,12 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 		
 		$rs_color_picker_presets = RSColorpicker::get_color_presets();
 		
+		if($SR_GLOBALS['front_version'] === 7){
+			$rs_front	= RevSliderGlobals::instance()->get('RevSliderFront');
+			$global = $rs_front->get_global_settings();
+			echo $rs_front->js_add_header_scripts();
+		}
+
 		?>
 		<script>
             var ajaxurl = '<?php echo esc_js( admin_url( 'admin-ajax.php', 'relative' ) ); ?>';

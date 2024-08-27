@@ -1320,27 +1320,44 @@ class RevSliderSlider extends RevSliderFunctions {
 	}
 	
 	public function save_slider_v7($slider_id, $settings, $title, $alias){
-		global $wpdb;
+		global $wpdb, $SR_GLOBALS;
 
 		$v			= '7';
 		$settings	= $this->json_decode_slashes($settings);
 		$title		= (empty($title)) ? $this->get_val($settings, 'title') : $title;
 		$alias		= (empty($alias)) ? $this->get_val($settings, 'alias') : $alias;
+		$exists		= $this->check_id_v7($slider_id);
+
+		if(!current_user_can('administrator') && apply_filters('revslider_restrict_role', true)){
+			if(isset($settings['codes']) && isset($settings['codes']['css'])) unset($settings['codes']['css']);
+			if(isset($settings['codes']) && isset($settings['codes']['js'])) unset($settings['codes']['js']);
+		}
 		
-		//if($this->check_alias($alias)){
-		//	$this->throw_error(__('A Slider with the given alias already exists', 'revslider'));
-		//}
-		
+		if($exists){
+			$t = $SR_GLOBALS['use_table_version'];
+			$SR_GLOBALS['use_table_version'] = 7;
+			$this->init_by_id($slider_id);
+			$SR_GLOBALS['use_table_version'] = $t;
+			
+			if(!current_user_can('administrator') && apply_filters('revslider_restrict_role', true)){
+				//check for js and css, add it to $params
+				$settings['codes'] = [
+					'css' => $this->get_param(['codes', 'css'], ''),
+					'js' => $this->get_param(['codes', 'js'], '')
+				];
+			}
+		}
+
 		//insert slider to database
 		$slider_data = array(
 			'title'		=> $title,
 			'alias'		=> $alias,
 			'params'	=> json_encode($settings),
-			'settings'	=> '', //json_encode($settings),
+			'settings'	=> json_encode(['version' => RS_REVISION], JSON_FORCE_OBJECT),
 			'type'		=> ''
 		);
-		
-		if(!$this->check_id_v7($slider_id)){ //create slider
+
+		if(!$exists){ //create slider
 			$slider_data['id'] = $slider_id;
 			$result		= $wpdb->insert($wpdb->prefix . RevSliderFront::TABLE_SLIDER . $v, $slider_data);
 			$slider_id	= ($result) ? $wpdb->insert_id : false;
@@ -1769,7 +1786,7 @@ class RevSliderSlider extends RevSliderFunctions {
 	public function get_slides_for_output($published = false, $lang = 'all'){
 		global $SR_GLOBALS;
 
-		$parent_slides = $this->get_parent_slides($published, array(), $lang);
+		$parent_slides = $this->get_parent_slides($published, $lang);
 		
 		if($SR_GLOBALS['front_version'] !== 6) return $parent_slides;
 		if($lang == 'all' || $this->is_stream()) return $parent_slides;	//$this->is_posts() || 	
@@ -2975,6 +2992,11 @@ class RevSliderSlider extends RevSliderFunctions {
 		//$source_type		= $this->get_param('sourcetype', 'gallery');
 		$key				= 0;
 		$num_temp			= count($templates);
+		$excerpt_limit		= $this->get_val($this->params, array('source', 'post', 'excerptLimit'), 55);
+		$excerpt_type		= (strpos($excerpt_limit, 'chars') !== false) ? 'chars' : 'words';
+		$excerpt_limit		= (strpos($excerpt_limit, 'chars') !== false) ? str_replace('chars', '', $excerpt_limit) : str_replace(array('char', 'words'), '', $excerpt_limit); //char is a fallback from before 6.3.4
+		$excerpt_limit		= (int)$excerpt_limit;
+
 		foreach($data as $k => $entry){
 			$template = clone $templates[$key];
 			$key++;
@@ -3006,13 +3028,15 @@ class RevSliderSlider extends RevSliderFunctions {
 					}
 				}
 			}
-			$title = $this->get_val($entry, array('post_title'));
+			$title	 = $this->get_val($entry, array('post_title'));
+			$excerpt = str_replace(array('<br/>', '<br />'), '', strip_tags($this->get_val($entry, array('post_excerpt')), '<b><br><i><strong><small>'));
+			$excerpt = ($excerpt_type === 'words') ? $this->get_text_intro($excerpt, $excerpt_limit) : $this->get_text_intro_chars($excerpt, $excerpt_limit);
 
 			$raw_data = array(
 				'id'			=> $post_id,
 				'author'		=> $this->get_val($author, array('data', 'display_name')),
 				'content'		=> array('content' => $this->get_val($entry, array('post_content'))),
-				'excerpt'		=> $this->get_val($entry, array('post_excerpt')),
+				'excerpt'		=> $excerpt,
 				'link'			=> get_permalink($this->get_val($entry, 'ID')),
 				'media'			=> ($featured_image_url !== false) ? $featured_image_url[0] : '',//$this->get_val($entry, array('full_picture')),
 				'mediatag'		=> ($featured_image_url !== false) ?'<img src="'.$featured_image_url[0].'" width="'.$featured_image_url[1].'" height="'.$featured_image_url[2].'" alt="'.esc_attr($title).'" data-no-retina />' : '',//$this->get_val($entry, array('full_picture')),
@@ -3353,7 +3377,9 @@ class RevSliderSlider extends RevSliderFunctions {
 	 * returns a slider object with all slides and static slide in v6 or v7 format for JSON/REST
 	 * sensitive data needs to be removed: source as it contains stream login data
 	 */
-	public function get_full_slider_JSON($slider = false, $full = true, $slide_ids = array(), $raw = false, $modify = true){
+	public function get_full_slider_JSON($slider = false, $full = true, $slide_ids = array(), $forced_ids = array(), $raw = false, $modify = true){
+		global $SR_GLOBALS;
+
 		if($slider === false) $slider = $this;
 		if(!empty($slide_ids) && !is_array($slide_ids)) $slide_ids = (array)$slide_ids;
 
@@ -3361,7 +3387,11 @@ class RevSliderSlider extends RevSliderFunctions {
 		$lang	 = $SR_wpml->get_slider_language($slider);
 		if($lang !== 'all' && $modify === true) $slider->change_language($lang);
 		
-		$slider_id = $slider->get_id();
+		$slider_id		= $slider->get_id();
+		$modify_allow	= array('excerptLimit', 'maxPosts', 'maxProducts', 'count');
+		$modify_sources	= array('post', 'specific_posts', 'specific_post', 'woo', 'woocommerce', 'instagram', 'facebook', 'flickr', 'twitter', 'vimeo', 'youtube');
+		$modify_setting	= ($slider->v7) ? 'settings' : 'slider_params';
+
 		if($slider->v7){
 			$obj = (empty($slide_ids)) ? array('settings' => $slider->get_params(), 'slides' => array(), 'id' => $slider_id) : array('slides' => array());
 
@@ -3374,9 +3404,11 @@ class RevSliderSlider extends RevSliderFunctions {
 			foreach($slides as $slide_id => $slide){
 				if(!empty($slide_ids) && !in_array($slide_id, $slide_ids)) continue;
 				if($modify === true && !$slide->check_use_slide()) continue;
+				if($SR_GLOBALS['serial'] > 2 && !empty($forced_ids) && !in_array($slide_id, $forced_ids)) continue;
 
 				$obj['slides'][$slide_id] = array(
-					'slide' => $slide->get_params(),
+					'id'	 => $slide_id,
+					'slide'	 => $slide->get_params(),
 					'layers' => ($full === true || $full === false && $first === true) ? $slide->get_layers(true) : array()
 				);
 				$first = false;
@@ -3390,17 +3422,13 @@ class RevSliderSlider extends RevSliderFunctions {
 				$static_slide->init_by_static_id($static_slide_id);
 				if(!empty($static_slide)){
 					$obj['slides'][$static_slide_id] = array( //'static_'.
+						'id'		=> $static_slide_id,
 						'slide'		=> $static_slide->get_params(),
 						'layers'	=> $static_slide->get_layers()
 					);
 				}
 			}
-
-			if($modify === true){ //make sure to have the source overwritten for streams, if we are not in backend
-				if(isset($obj['settings']['source'])) $obj['settings']['source'] = array('type' => $this->get_val($obj, array('settings', 'source', 'type')));
-			}
 		}else{
-			global $SR_GLOBALS;
 			$slides = ($raw) ? $slider->get_slides() : $slider->get_slides_modified();
 			if($lang !== 'all' && $modify === true) $slides = $slider->get_language_slides_v7($slides);//get WPML language slides
 
@@ -3412,6 +3440,7 @@ class RevSliderSlider extends RevSliderFunctions {
 					$slide_id = $s->get_id();
 					if(!empty($slide_ids) && !in_array($slide_id, $slide_ids)) continue;
 					if($modify === true && !$s->check_use_slide()) continue;
+					if($SR_GLOBALS['serial'] > 2 && !empty($forced_ids) && !in_array($slide_id, $forced_ids)) continue;
 
 					if($SR_GLOBALS['use_table_version'] === 6 && $SR_GLOBALS['front_version'] === 7){
 						$t_v7id = $this->get_v7_slider_map(false, $slide_id);
@@ -3430,6 +3459,7 @@ class RevSliderSlider extends RevSliderFunctions {
 				//$static_slide_id = (intval($static_slide_id) === 0) ? $slide->create_slide($slider_id, '', true) : $static_slide_id;
 			
 				$static_slide = false;
+				
 				if(intval($static_slide_id) > 0){
 					$static_slide = new RevSliderSlide();
 					$static_slide->init_by_static_id($static_slide_id);
@@ -3460,7 +3490,7 @@ class RevSliderSlider extends RevSliderFunctions {
 			) : array('slides' => $_slides, 'static_slide' => $_static_slide);
 
 			if(empty($slide_ids)){
-				$rs7output = new RevSlider7Output();
+				$rs7output	= new RevSlider7Output();
 				$rs7output->slider = $slider;
 				$rs7output->set_slider_id($slider->get_id());
 				$rs7output->slides = $slides;
@@ -3468,9 +3498,20 @@ class RevSliderSlider extends RevSliderFunctions {
 				$obj['navs']	= (object)array_filter($this->get_val($SR_GLOBALS, array('collections', 'nav'), array()), function($value) { return !empty($value); });
 				$obj['trans']	= (object)array_filter($this->get_val($SR_GLOBALS, array('collections', 'trans'), array()), function($value) { return !empty($value); });
 				$obj['v6v7ids']	= (object)$this->get_v7_slider_map($slider_id);
+			}else{ //set modify -> false as we do not have slider_settings
+				$modify = false;
+			}
+		}
 
-				if($modify === true){ //make sure to have the source overwritten for streams, if we are not in backend
-					if(isset($obj['slider_params']['source'])) $obj['slider_params']['source'] = array('type' => $this->get_val($obj, array('slider_params', 'source', 'type')));
+		if($modify === true && isset($obj[$modify_setting]['source'])){ //make sure to have the source overwritten for streams, if we are not in backend
+			$source = $obj[$modify_setting]['source'];
+			$obj[$modify_setting]['source'] = array('type' => $this->get_val($obj, array($modify_setting, 'source', 'type')));
+			foreach($modify_sources as $m_source){
+				if(!isset($source[$m_source])) continue;
+				foreach($modify_allow as $allow){
+					if(!isset($source[$m_source][$allow])) continue;
+
+					$obj[$modify_setting]['source'][$m_source][$allow] = $source[$m_source][$allow];
 				}
 			}
 		}

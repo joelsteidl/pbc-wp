@@ -103,7 +103,7 @@ class Tatsu_Integrations {
 	
 	public function enqueue_assets() {
 		$post_id = get_the_ID();
-		wp_enqueue_script( 'tatsu-gutenberg', TATSU_PLUGIN_URL . '/admin/js/tatsu-gutenberg.js', array( 'jquery' ), '1.0', true );
+		wp_enqueue_script( 'tatsu-gutenberg', TATSU_PLUGIN_URL . '/admin/js/tatsu-gutenberg.js', array( 'jquery' ), TATSU_VERSION, true );
 		$tatsu_settings = array (
 			'editedWithTatsu' => is_edited_with_tatsu($post_id),
 		);

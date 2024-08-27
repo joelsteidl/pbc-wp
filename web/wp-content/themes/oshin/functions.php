@@ -1,6 +1,6 @@
 <?php
 if ( ! defined( 'OSHIN_THEME_VERSION' ) ) {
-	define( 'OSHIN_THEME_VERSION', '7.2.1' );
+	define( 'OSHIN_THEME_VERSION', '7.2.2' );
 }
 
 load_theme_textdomain( 'oshin', get_template_directory() . '/languages' );

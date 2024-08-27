@@ -9,12 +9,11 @@ if(!defined('ABSPATH')) exit();
 
 class RevSliderFront extends RevSliderFrontGlobal {
 
-	public $v6_slider			 = false;
-	public $JSON_slider			 = '';
+	public $v6_slider = false;
 
 	public function __construct(){
 		parent::__construct();
-		$this->add_actions();
+		add_action('wp_enqueue_scripts', array($this, 'add_actions'));
 	}
 
 	/**
@@ -26,10 +25,6 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		wp_enqueue_style('sr7css', RS_PLUGIN_URL_CLEAN . 'public/css/sr7.css', '', RS_REVISION);
 		
 		//check if a v6 slider is on the page, if yes then load the migration JS
-		//we fill $JSON_slider here, so that we can push migration.js in the header properly
-		$global = $this->get_global_settings();
-		if($this->get_val($global, array('getTec', 'core'), 'MIX') !== 'REST') $this->JSON_slider = $this->load_v7_slider();
-
 		if($this->v6_slider) wp_enqueue_script('sr7migration', RS_PLUGIN_URL_CLEAN . 'public/js/migration.js', '', RS_REVISION, ['strategy' => 'async']);
 		do_action('sr_front_add_scripts', $this);
 	}
@@ -50,7 +45,30 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	}
 	  
 	public function add_actions(){
-		add_action('wp_enqueue_scripts', array($this, 'add_scripts'));
+		global $SR_GLOBALS;
+
+		$global	 	= $this->get_global_settings();
+		$inc_global	= $this->_truefalse($this->get_val($global, 'allinclude', true));		
+		$inc_footer = $this->_truefalse($this->get_val($global, array('script', 'footer'), true));
+		$widget	 	= is_active_widget(false, false, 'rev-slider-widget', true);
+		
+		$load = false;
+		$load = apply_filters('revslider_include_libraries', $load);
+		$load = ($SR_GLOBALS['preview_mode'] === true) ? true : $load;
+		$load = ($inc_global === true) ? true : $load;
+		$load = (self::has_shortcode('rev_slider') === true || self::has_shortcode('sr7') === true) ? true : $load;
+		$load = ($widget !== false) ? true : $load;
+		
+		if($inc_global === false){
+			$output = new RevSliderOutput();
+			$output->set_add_to($this->get_val($global, 'includeids', ''));
+			$add_to = $output->check_add_to(true);
+			$load	= ($add_to === true) ? true : $load;
+		}
+		
+		if($load === false) return false;
+
+		$this->add_scripts();
 		add_action('wp_head', array($this, 'js_add_header_scripts'), 99);
 		add_action('wp_head', array($this, 'load_header_fonts'));
 		add_filter('style_loader_tag', array($this, 'add_html_to_style_tags'), 10, 2);
@@ -119,7 +137,6 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		// Add Page Handler Inline Script
 		if($this->get_val($global, array('getTec', 'core'), 'MIX') !== 'REST' || $SR_GLOBALS['markup_export'] === true){
 			$script .= '	SR7.JSON			??= {};' ."\n";
-			$script .= $this->JSON_slider; //is getting added before
 		}
 		if($SR_GLOBALS['markup_export'] === false) $script .= (file_get_contents(RS_PLUGIN_PATH . 'public/js/page.js'));
 
@@ -132,8 +149,12 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	public function load_v7_slider(){
 		global $SR_GLOBALS, $post;
 		
+		$used_slider	= [];
+		$forced_slides	= [];
 		$id				= (isset($post->ID)) ? $post->ID : '';
-		$all_shortcodes	= $this->get_shortcode_from_page($id);
+		//$all_shortcodes	= $this->get_shortcode_from_page($id);
+		//$all_shortcodes = array_unique(array_merge($all_shortcodes, $SR_GLOBALS['sliders']));
+		$all_shortcodes = $SR_GLOBALS['sliders'];
 		$script			= '';
 
 		if(empty($all_shortcodes)) return $script;
@@ -141,7 +162,12 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		$table_temp = $SR_GLOBALS['use_table_version'];
 		$SR_GLOBALS['use_table_version'] = ($SR_GLOBALS['front_version'] === 6) ? 6 : 7;
 
-		if($SR_GLOBALS['serial'] > 0) $SR_GLOBALS['serial'] = 0;
+		$serial		= $SR_GLOBALS['serial'];
+		$collection	= $SR_GLOBALS['collections']['ids'];
+		$SR_GLOBALS['collections']['ids'] = array();
+		if($SR_GLOBALS['serial'] > 0){
+			$SR_GLOBALS['serial'] = 0;
+		}
 		$global		= $this->get_global_settings();
 		$mode		= $this->get_val($global, array('getTec', 'core'), 'MIX');
 		$start_ver	= $SR_GLOBALS['use_table_version'];
@@ -157,23 +183,49 @@ class RevSliderFront extends RevSliderFrontGlobal {
 			$slider->init_by_alias($alias, false);
 			if($slider->inited === false) continue;
 			
+			if($SR_GLOBALS['use_table_version'] === 6) $this->v6_slider = true;
+
+			$dl = $slider->get_param('deepLinks', []);
+			foreach($dl ?? [] as $slide_id){
+				if(!in_array($slide_id, $forced_slides)) $forced_slides[] = $slide_id;
+			}
+			
+			$used_slider[] = $slider;
+		}
+
+		foreach($used_slider ?? [] as $slider){
 			$SR_GLOBALS['serial']++;
 			$sid		= $slider->get_id();
 			$slider_id	= $slider->get_param('id', '');
 			$html_id	= (trim($slider_id) !== '') ? $slider_id : 'SR7_'.$sid.'_'.$SR_GLOBALS['serial'];
 			$html_id	= $this->set_html_id_v7($html_id, true);
 			$full		= ($slider->v7 === false || ($slider->v7 === true && ($slider->get_param('fixed', false) !== false || in_array($slider->get_param('type', ''), array('scene', 'hero', 'carousel'))))) ? true : false;
-			$data		= $slider->get_full_slider_JSON(false, $full);
-			$data		= apply_filters('sr_load_slider_json', $data, $this);
+			if($mode === 'MIX' && $SR_GLOBALS['serial'] > 2) $full = false; //we only print $forced_slides from now on
 
-			//load dom data directly
-			$script .= "	SR7.JSON['".$html_id."'] = ".json_encode($data).";"."\n";
-			if($SR_GLOBALS['use_table_version'] === 6) $this->v6_slider = true;
+			if($SR_GLOBALS['markup_export'] === true){
+				$script .= "	SR7.JSON['".$html_id."'] = 'assets/".$html_id.".json';"."\n";
+			}else{
+				$data	= $slider->get_full_slider_JSON(false, $full, array(), $forced_slides);
+				$data	= apply_filters('sr_load_slider_json', $data, $this);
 
-			if($mode === 'MIX' && $SR_GLOBALS['serial'] >= 2) break;
+				if($mode === 'MIX' && $SR_GLOBALS['serial'] > 2 && !empty($forced_slides)){ //we check if slides are in the forced_slides list, if not then we ignore
+					$print = false;
+					foreach($data['slides'] ?? [] as $slide){
+						if(!in_array($this->get_val($slide, 'id'), $forced_slides)) continue;
+						$print = true;
+						break;
+					}
+					if($print === false) continue; //do not pront any information about the slider
+				}
+
+				//load dom data directly
+				$script .= "	SR7.JSON['".$html_id."'] = ".json_encode($data).";"."\n";
+			}
+
+			if($mode === 'MIX' && $SR_GLOBALS['serial'] >= 2 && empty($forced_slides)) break;
 		}
-		$SR_GLOBALS['collections']['ids'] = array(); //reset html ids here, so that they are later on empty when the page is parsed
-		$SR_GLOBALS['serial'] = 0; //reset to 0, hope for the best
+		$SR_GLOBALS['collections']['ids'] = $collection; //reset html ids here, so that they are later on empty when the page is parsed
+		$SR_GLOBALS['serial'] = $serial; //reset back to what it was before
 		$SR_GLOBALS['use_table_version'] = $table_temp;
 
 		return $script;
@@ -183,6 +235,9 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	 * print in header
 	 **/
 	public function load_header_fonts(){
+		$global = $this->get_global_settings();
+		if($this->get_val($global, 'fontdownload', 'off') === 'disable') return;
+
 		echo '<link rel="preconnect" href="https://fonts.googleapis.com">'."\n";
 		echo '<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>'."\n";
 	}
@@ -200,21 +255,25 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		echo "\n".$fonts."\n";
 
 		global $SR_GLOBALS;
-		if(empty($SR_GLOBALS['fonts']['loaded'])) return;
+		if(empty($SR_GLOBALS['fonts']['loaded']) && empty($SR_GLOBALS['fonts']['custom'])) return;
 	
 		$domFonts = array();
 		echo '<script>'."\n";
-		foreach($SR_GLOBALS['fonts']['loaded'] as $handle => $values){
-			$handle = preg_replace('/[^-0-9a-zA-Z+]/', '', str_replace(' ', '+', $handle));
-			if(isset($values['url'])){
-				echo "_tpt.R.fonts.customFonts['". $handle ."'] = ". json_encode($values) .";"."\n";
-			}else{
-				$domFonts[$handle] = array(
-					'normal'	=> $this->get_val($values, array('variants', 'normal'), array()),
-					'italic'	=> $this->get_val($values, array('variants', 'italic'), array())
-				);
+		$branches = array('loaded', 'custom');
+		foreach($branches as $branch){
+			foreach($SR_GLOBALS['fonts'][$branch] ?? [] as $handle => $values){
+				$handle = preg_replace('/[^-0-9a-zA-Z+]/', '', str_replace(' ', '+', $handle));
+				if(isset($values['url'])){
+					echo "_tpt.R.fonts.customFonts['". $handle ."'] = ". json_encode($values) .";"."\n";
+				}else{
+					$domFonts[$handle] = array(
+						'normal'	=> $this->get_val($values, array('variants', 'normal'), array()),
+						'italic'	=> $this->get_val($values, array('variants', 'italic'), array())
+					);
+				}
 			}
 		}
+
 		if(!empty($domFonts)){
 			echo "_tpt.R.fonts.domFonts = ". json_encode($domFonts) .";"."\n";
 		}

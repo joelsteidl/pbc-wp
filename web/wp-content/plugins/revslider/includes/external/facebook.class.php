@@ -75,6 +75,12 @@ class RevSliderFacebook extends RevSliderFunctions {
 		//we need token and slide ID / slider alias to proceed with saving token
 		if(!isset($_GET[self::QUERY_TOKEN]) || !( isset($_GET['id']) || isset($_GET['alias']) ) ) return;
 
+		$sr_admin = RevSliderGlobals::instance()->get('RevSliderAdmin');
+		if(!current_user_can($sr_admin->get_user_role())){
+			$_GET[self::QUERY_ERROR] = __('Bad Request', 'revslider');
+			return;
+		}
+
 		$token = $_GET[self::QUERY_TOKEN];
 		$connectwith = isset($_GET[self::QUERY_CONNECTWITH]) ? $_GET[self::QUERY_CONNECTWITH] : '';
 		$page_id = isset($_GET[self::QUERY_PAGE_ID]) ? $_GET[self::QUERY_PAGE_ID] : '';
@@ -128,7 +134,7 @@ class RevSliderFacebook extends RevSliderFunctions {
 
 		//redirect
 		$url = set_url_scheme( 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] );
-		$url = add_query_arg(array(self::QUERY_TOKEN => false, self::QUERY_PAGE_ID => false, self::QUERY_CONNECTWITH => false, self::QUERY_SHOW => 1), $url);
+		$url = add_query_arg(array(self::QUERY_TOKEN => false, self::QUERY_PAGE_ID => false, self::QUERY_CONNECTWITH => false, 'rs_fb_nonce' => false, self::QUERY_SHOW => 1), $url);
 		wp_redirect($url);
 		exit();
 	}
@@ -167,7 +173,7 @@ class RevSliderFacebook extends RevSliderFunctions {
 
 		$rslb = RevSliderGlobals::instance()->get('RevSliderLoadBalancer');
 
-		$response = wp_remote_post($rslb->get_url('updates') . '/' . self::URL_FB_API, array(
+		$response = wp_safe_remote_post($rslb->get_url('updates') . '/' . self::URL_FB_API, array(
 			'user-agent' => 'WordPress/'.$wp_version.'; '.get_bloginfo('url'),
 			'body'		 => $args,
 			'timeout'	 => 45

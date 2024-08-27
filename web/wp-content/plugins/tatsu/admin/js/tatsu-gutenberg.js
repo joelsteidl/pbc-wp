@@ -22,6 +22,10 @@
                 gutenbergBlockList = $('#editor').find('.block-editor-block-list__layout, .editor-post-text-editor');
             if( 0 < gutenbergBlockList.length  && ! gutenberg.find( '#tatsu_edit_post_wrap' ).length ) {
                 gutenbergBlockList.after(tatsuEditorPanel);
+                // Hide Tatsu shortcode in gutenberg if already saved content with tatsu 
+                if( 'undefined' !== typeof TatsuGutenbergSettings && '1' ===  TatsuGutenbergSettings.editedWithTatsu ) {
+                    gutenbergBlockList.hide();
+                }
             }
         };
     

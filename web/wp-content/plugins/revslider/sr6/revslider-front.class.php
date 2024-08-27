@@ -33,7 +33,7 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		$load = apply_filters('revslider_include_libraries', $load);
 		$load = ($SR_GLOBALS['preview_mode'] === true) ? true : $load;
 		$load = ($inc_global === true) ? true : $load;
-		$load = (self::has_shortcode('rev_slider') === true) ? true : $load;
+		$load = (self::has_shortcode('rev_slider') === true || self::has_shortcode('sr7') === true) ? true : $load;
 		$load = ($widget !== false) ? true : $load;
 		
 		if($inc_global === false){
@@ -243,23 +243,6 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		}else{
 			return str_replace(' id=', ' async id=', $tag);
 		}
-	}
-	
-	
-	/**
-	 * check the current post for the existence of a short code
-	 * @before: hasShortcode()
-	 */  
-	public static function has_shortcode($shortcode = ''){  
-		$found = false; 
-		
-		if(empty($shortcode)) return false;
-		if(!is_singular()) return false;
-		
-		$post = get_post(get_the_ID());  
-		if(stripos($post->post_content, '[' . $shortcode) !== false) $found = true;  
-		
-		return $found;  
 	}
 	
 }

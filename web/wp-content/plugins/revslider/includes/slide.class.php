@@ -450,6 +450,68 @@ class RevSliderSlide extends RevSliderFunctions {
 	}
 
 	/**
+	 * @param string $tag_key
+	 * @param string $default
+	 * @return void
+	 */
+	public function filter_layer_tags($tag_key, $default){
+		$allowed_tags = $this->get_allowed_layer_tags();
+		foreach($this->layers as $key => $layer){
+			if(empty($layer[$tag_key]) || in_array($layer[$tag_key], $allowed_tags)) continue;
+			$this->layers[$key][$tag_key] = $default;
+		}
+	}
+	
+	public function filter_layer_attributes_v6(){
+		foreach($this->layers ?? [] as $key => $layer){
+			if(!isset($layer['attributes']) || empty($layer['attributes'])) continue;
+			foreach($layer['attributes'] ?? [] as $aKey => $aVal){
+				if(empty($aVal)) continue;
+				switch($aKey){
+					case 'title':
+						$this->layers[$key]['attributes'][$aKey] = sanitize_text_field($aVal);
+					break;
+					case 'classes':
+					case 'wrapperClasses':
+						$this->layers[$key]['attributes'][$aKey] = (is_array($aVal)) ? implode(' ', $this->filter_class_name(explode(' ', $aVal))) : $aVal;
+					break;
+					case 'id':
+					case 'wrapperId':
+					case 'rel':
+						$this->layers[$key]['attributes'][$aKey] = $this->filter_class_name($aVal);
+					break;
+				}
+			}
+		}
+	}
+
+	public function filter_layer_attributes_v7(){
+		foreach($this->layers ?? [] as $key => $layer){
+			if(!isset($layer['attr']) || empty($layer['attr'])) continue;
+			foreach($layer['attr'] ?? [] as $aKey => $aVal){
+				if(empty($aVal)) continue;
+				switch($aKey){
+					case 'aO':
+					case 't':
+					case 'tO':
+						$this->layers[$key]['attr'][$aKey] = sanitize_text_field($aVal);
+					break;
+					case 'class':
+					case 'wrapClass':
+					case 'iClass':
+						$this->layers[$key]['attr'][$aKey] = (is_array($aVal)) ? implode(' ', $this->filter_class_name(explode(' ', $aVal))) : $aVal;
+					break;
+					case 'id':
+					case 'wrapId':
+					case 'rel':
+						$this->layers[$key]['attr'][$aKey] = $this->filter_class_name($aVal);
+					break;
+				}
+			}
+		}
+	}
+
+	/**
 	 * v7 data is structured a little different, hence we need a different process of saving
 	 **/
 	public function save_slide_v7($slide_id, $data, $slider_id){
@@ -461,6 +523,8 @@ class RevSliderSlide extends RevSliderFunctions {
 		$this->settings['version'] = $this->get_val($data, 'version', $this->get_val($this->settings, 'version', RS_REVISION));
 		$this->params = $this->get_val($data, 'slide', array());
 		$this->layers = $this->get_val($data, 'layers', array());
+		$this->filter_layer_tags('tag', 'sr7-layer');
+		$this->filter_layer_attributes_v7();
 
 		$this->save_params();
 		$this->save_layers();
@@ -503,6 +567,8 @@ class RevSliderSlide extends RevSliderFunctions {
 		$layers = $this->get_val($data, 'layers', array());
 		$layers = $this->json_decode_slashes($layers);
 		$this->layers = (empty($layers) || !is_array($layers)) ? array() : $layers;
+		$this->filter_layer_tags('htmltag', 'rs-layer');
+		$this->filter_layer_attributes_v6();
 		
 		$this->save_params();
 		$this->save_layers();
@@ -1062,38 +1128,6 @@ class RevSliderSlide extends RevSliderFunctions {
 
 		return apply_filters('revslider_getExcerptById', $excerpt, $post, $limit);
 	}
-	
-	
-	/**
-	 * get text intro, limit by number of words
-	 * @before: RevSliderFunctionsWP::getTextIntro();
-	 */
-	public function get_text_intro($text, $limit){
-		$limit++;
-		$array = explode(' ', $text, $limit);
-		
-		if(count($array) >= $limit){
-			array_pop($array);
-			$intro = implode(' ', $array);
-			$intro = trim($intro);
-			$intro .= (!empty($intro)) ? '...' : '';
-		}else{
-			$intro = $text;
-		}
-		
-		return preg_replace('`\[[^\]]*\]`', '', $intro);
-	}
-	
-	
-	/**
-	 * get text intro, limit by number of words
-	 * @before: RevSliderFunctionsWP::getTextIntro();
-	 */
-	public function get_text_intro_chars($text, $limit){
-		$intro = substr($text, 0, $limit);
-		return preg_replace('`\[[^\]]*\]`', '', $intro);
-	}
-	
 	
 	/**
 	 * replace placeholders with post data
@@ -1932,6 +1966,23 @@ class RevSliderSlide extends RevSliderFunctions {
 		$table			= ($this->static_slide && $SR_GLOBALS['use_table_version'] !== 7) ? $wpdb->prefix . RevSliderFront::TABLE_STATIC_SLIDES : $wpdb->prefix . RevSliderFront::TABLE_SLIDES . $v;
 		$this->layers	= apply_filters('revslider_slide_saveLayers', $this->layers, $this->static_slide, $this);
 		
+		if(!empty($this->layers) && $SR_GLOBALS['use_table_version'] === 6){
+			if(!current_user_can('administrator') && apply_filters('revslider_restrict_role', true)){
+				foreach($this->layers ?? [] as $k => $layer){
+				
+					$actions = $this->get_val($layer, ['actions', 'action'], []);
+					if(empty($actions)) continue;
+
+					foreach($actions ?? [] as $l => $action){
+						if(!isset($action['actioncallback'])) continue;
+						unset($actions[$l]);
+					}
+
+					$this->layers[$k]['actions']['action'] = $actions;
+				}
+			}
+		}
+
 		$wpdb->update($table, array('layers' => json_encode($this->layers)), array('id' => $this->id));
 	}
 	
@@ -1988,6 +2039,20 @@ class RevSliderSlide extends RevSliderFunctions {
 		
 		$table = ($this->static_slide && $SR_GLOBALS['use_table_version'] !== 7) ? $wpdb->prefix . RevSliderFront::TABLE_STATIC_SLIDES : $wpdb->prefix . RevSliderFront::TABLE_SLIDES . $v;
 		$this->params = apply_filters('revslider_slide_saveParams', $this->params, $this->static_slide, $this);
+
+		if(!empty($this->params) && $SR_GLOBALS['use_table_version'] === 7){
+			if(!current_user_can('administrator') && apply_filters('revslider_restrict_role', true)){
+				$actions = $this->get_val($this->params, 'actions', []);
+				if(!empty($actions)){
+					foreach($actions ?? [] as $k => $action){
+						if($this->get_val($action, 'a') !== 'callback') continue;
+						unset($actions[$k]);
+					}
+
+					$this->params['actions'] = $actions;
+				}
+			}
+		}
 
 		$wpdb->update($table, array('params' => json_encode($this->params)), array('id' => $this->id));
 	}

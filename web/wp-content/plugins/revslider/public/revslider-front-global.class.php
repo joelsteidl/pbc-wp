@@ -62,6 +62,25 @@ class RevSliderFrontGlobal extends RevSliderFunctions {
 	}
 
 	/**
+	 * create tables
+	 * check if table sliders v6 is empty. if yes, set engine to v7
+	 */
+	public static function do_activation_actions(){
+		global $wpdb;
+
+		self::create_tables();
+
+		$result = $wpdb->get_row("SELECT COUNT( DISTINCT id ) AS NumberOfEntrys FROM " . $wpdb->prefix . self::TABLE_SLIDER);
+		
+		$f = RevSliderGlobals::instance()->get('RevSliderFunctions');
+		if(intval($f->get_val($result, 'NumberOfEntrys', 0)) > 0) return true;
+
+		//set engine to SR7, as no Slider are currently present
+		$g = ['getTec' => ['engine' => 'SR7']];
+		$f->set_global_settings($g, true);
+	}
+
+	/**
 	 * Create Tables
 	 * @only_base needs to be false
 	 *  it can only be true by fixing database issues
@@ -228,26 +247,28 @@ class RevSliderFrontGlobal extends RevSliderFunctions {
 		if(!is_object($user) || !isset($user->ID)) return $url;
 		
 		$post = get_post($user->ID);
-		if(is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'rev_slider')){
-			preg_match_all('/\[rev_slider.*alias=.(.*)"\]/', $post->post_content, $shortcodes);
-			
-			if(isset($shortcodes[1]) && $shortcodes[1] !== ''){
-				foreach($shortcodes[1] as $s){
-					if(strpos($s, '"') !== false){
-						$s = explode('"', $s);
-						$s = (isset($s[0])) ? $s[0] : '';
-					}
-					if(!RevSliderSlider::alias_exists($s)) continue;
-					
-					$sldr = new RevSliderSlider();
-					$sldr->init_by_alias($s);
-					$sldr->get_slides();
-					$imgs = $sldr->get_images();
-					if(!empty($imgs)){
-						if(!isset($url['images'])) $url['images'] = array();
-						foreach($imgs as $v){
-							$url['images'][] = $v;
-						}
+		if(is_a($post, 'WP_Post') && (has_shortcode($post->post_content, 'rev_slider') || has_shortcode($post->post_content, 'sr7'))){
+			preg_match_all('/\[rev_slider.*alias=.(.*)"\]/', $post->post_content, $shortcodesold);
+			preg_match_all('/\[sr7.*alias=.(.*)"\]/', $post->post_content, $shortcodes);
+			$sc = [];
+			if(isset($shortcodes[1]) && $shortcodes[1] !== '')		 $sc = array_merge($sc, $shortcodes[1]);
+			if(isset($shortcodesold[1]) && $shortcodesold[1] !== '') $sc = array_merge($sc, $shortcodesold[1]);
+
+			foreach($sc ?? [] as $s){
+				if(strpos($s, '"') !== false){
+					$s = explode('"', $s);
+					$s = (isset($s[0])) ? $s[0] : '';
+				}
+				if(!RevSliderSlider::alias_exists($s)) continue;
+				
+				$sldr = new RevSliderSlider();
+				$sldr->init_by_alias($s);
+				$sldr->get_slides();
+				$imgs = $sldr->get_images();
+				if(!empty($imgs)){
+					if(!isset($url['images'])) $url['images'] = array();
+					foreach($imgs as $v){
+						$url['images'][] = $v;
 					}
 				}
 			}
@@ -313,36 +334,45 @@ class RevSliderFrontGlobal extends RevSliderFunctions {
 		?>
 		<script>
 			function rs_adminBarToolBarTopFunction() {
-				if(jQuery('#wp-admin-bar-revslider-default').length > 0 && jQuery('<?php echo $search; ?>').length > 0){
-					var aliases = new Array();
-					jQuery('<?php echo $search; ?>').each(function(){
-						aliases.push(jQuery(this).data('alias'));
+				var revSliderDefault = document.querySelector('#wp-admin-bar-revslider-default');
+				var sr7Module = document.querySelectorAll('<?php echo $search; ?>');
+
+				if (revSliderDefault && sr7Module.length > 0) {
+					var aliases = [];
+
+					sr7Module.forEach(function(element) {
+						aliases.push(element.getAttribute('data-alias'));
 					});
 
-					if(aliases.length > 0){
-						jQuery('#wp-admin-bar-revslider-default li').each(function(){
-							var li = jQuery(this),
-								t = li.find('.ab-item .rs-label').data('alias'); //text()
-							t = t!==undefined && t!==null ? t.trim() : t;
-							if(jQuery.inArray(t,aliases)!=-1){
-							}else{
+					if (aliases.length > 0) {
+						revSliderDefault.querySelectorAll('li').forEach(function(li) {
+							var rsLabel = li.querySelector('.ab-item .rs-label');
+							var t = rsLabel ? rsLabel.getAttribute('data-alias') : undefined;
+							t = t !== undefined && t !== null ? t.trim() : t;
+
+							if (aliases.indexOf(t) === -1) {
 								li.remove();
 							}
 						});
 					}
-				}else{
-					jQuery('#wp-admin-bar-revslider').remove();
+				} else {
+					var revSlider = document.querySelector('#wp-admin-bar-revslider');
+					if (revSlider) {
+						revSlider.remove();
+					}
 				}
 			}
-			var adminBarLoaded_once = false
-			if (document.readyState === "loading") 
-				document.addEventListener('readystatechange',function(){
+
+			var adminBarLoaded_once = false;
+
+			if (document.readyState === "loading") {
+				document.addEventListener('readystatechange', function() {
 					if ((document.readyState === "interactive" || document.readyState === "complete") && !adminBarLoaded_once) {
 						adminBarLoaded_once = true;
-						rs_adminBarToolBarTopFunction()
+						rs_adminBarToolBarTopFunction();
 					}
 				});
-			else {
+			} else {
 				adminBarLoaded_once = true;
 				rs_adminBarToolBarTopFunction();
 			}
@@ -356,5 +386,17 @@ class RevSliderFrontGlobal extends RevSliderFunctions {
 	public static function wp_rocket_inline_atts_exclusions($inline_atts_exclusions){
 		$inline_atts_exclusions[] = "sr7-inline-css";	
 		return $inline_atts_exclusions;
+	}
+
+	/**
+	 * check the current post for the existence of a short code
+	 */  
+	public static function has_shortcode($shortcode = ''){  
+		if(empty($shortcode)) return false;
+		if(!is_singular()) return false;
+		
+		$post = get_post(get_the_ID());  
+		
+		return (stripos($post->post_content, '[' . $shortcode) !== false) ? true : false;
 	}
 }

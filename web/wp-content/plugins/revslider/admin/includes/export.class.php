@@ -520,7 +520,7 @@ class RevSliderSliderExport extends RevSliderSlider {
 		$cont_url_no_www	= str_replace('www.', '', $cont_url);
 		
 		foreach($this->used_svg as $file => $val){
-			if(strpos($file, 'http') !== false){ //remove all up to wp-content folder
+			if(strpos($file, 'http') !== false || substr($file, 0, 2) === '//' || substr($file, 0, 4) === '\/\/'){ //remove all up to wp-content folder
 				$file		= $this->remove_http($file);
 				$_checkpath = str_replace(array($cont_url.'/', $cont_url_no_www.'/'), '', $file);
 				$checkpath = str_replace($c_url, '', $file);
@@ -541,7 +541,7 @@ class RevSliderSliderExport extends RevSliderSlider {
 				$checkpath2 = str_replace('/', '\/', str_replace('/revslider/assets/svg', '', $checkpath2));
 
 				if(is_file($c_path.$checkpath)){
-					$this->export_data = str_replace(array('http:'.$file, 'https:'.$file), $checkpath2, $this->export_data);
+					$this->export_data = str_replace(array('http:'.$file, 'https:'.$file, $file), $checkpath2, $this->export_data);
 				}
 			}
 		}
@@ -583,7 +583,7 @@ class RevSliderSliderExport extends RevSliderSlider {
 					}
 				}
 				
-				if(strpos($file, 'http') !== false){
+				if(strpos($file, 'http') !== false || substr($file, 0, 2) === '//' || substr($file, 0, 4) === '\/\/'){
 					//check if we are in objects folder, if yes take the original image into the zip-
 					$remove		= false;
 					$checkpath	= str_replace(array($cont_url.'/', $cont_url_no_www.'/', $cont_url2.'/', $cont_url2_no_www.'/'), '', $file);

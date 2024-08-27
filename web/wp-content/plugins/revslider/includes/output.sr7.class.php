@@ -400,6 +400,15 @@ class RevSlider7Output extends RevSliderFunctions {
 	public function get_custom_settings(){
 		return apply_filters('revslider_get_custom_settings', $this->custom_settings, $this);
 	}
+
+	/**
+	 * register the alias for the JSON later to be printed
+	 */
+	public function register_module(){
+		global $SR_GLOBALS;
+
+		$SR_GLOBALS['sliders'][] = (!empty($this->slider_v7)) ? $this->slider_v7->get_alias() : $this->slider->get_alias();
+	}
 	
 	/**
 	 * check the add_to
@@ -541,8 +550,8 @@ class RevSlider7Output extends RevSliderFunctions {
 					$_link			= ($action_type === 'menu') ? $this->remove_http($this->get_val($act, 'menu_link', ''), $http) : $this->remove_http($this->get_val($act, 'image_link', ''), $http);
 					$_link			= do_shortcode($_link);
 					$link_open_in	= $this->get_val($act, 'link_open_in', '');
-					$link			= 'href="'.$_link.'"';
-					$link			.= ($link_open_in !== '') ? ' target="'.$link_open_in.'"' : '';
+					$link			= 'href="'.esc_url($_link).'"';
+					$link			.= ($link_open_in !== '') ? ' target="'.esc_attr($link_open_in).'"' : '';
 					if($this->get_val($act, 'link_follow', '') === 'nofollow'){
 						$link .= ' rel="nofollow';
 						$link .= ($link_open_in === '_blank') ? ' noopener' : '';
@@ -567,12 +576,12 @@ class RevSlider7Output extends RevSliderFunctions {
 		$rel	= $this->get_val($layer, 'rel', '');
 
 		if($this->get_val($layer, 'tag', 'sr7-txt') === 'a'){
-			$html 	.= ' href="'.$this->get_val($layer, 'href', '').'"';
+			$html 	.= ' href="'.esc_url($this->get_val($layer, 'href', '')).'"';
 			$target	= $this->get_val($layer, 'target', '');
-			if(!empty($target)) $html .= ' target="'. $target .'"';
+			if(!empty($target)) $html .= ' target="'. esc_attr($target) .'"';
 		}
 
-		if(!empty($rel)) $html .= ' rel="'. $rel .'"';
+		if(!empty($rel)) $html .= ' rel="'. esc_attr($rel) .'"';
 
 		return $html;
 	}
@@ -603,6 +612,7 @@ class RevSlider7Output extends RevSliderFunctions {
 	 **/
 	public function get_layer_tag($html_simple_link, $special_type = false){
 		$layer	= $this->get_layer();
+		$layer	= (!empty($this->slider_v7)) ? $this->filter_single_layer_tags($layer, 'tag', 'sr7-txt') : $this->filter_single_layer_tags($layer, 'htmltag', 'sr7-txt');
 		$tag	= (!empty($this->slider_v7)) ? $this->get_val($layer, 'tag', 'sr7-txt') : $this->get_val($layer, 'htmltag', 'sr7-txt');
 		
 		if($html_simple_link !== '' && empty($this->slider_v7)) $tag = 'a';
@@ -631,9 +641,10 @@ class RevSlider7Output extends RevSliderFunctions {
 	 **/
 	public function get_html_class($class, $layer_tag){
 		$html	= '';
+		$class	= trim($class);
 		$c		= array();
 
-		if(trim($class) !== '') $c[] = trim($class);
+		if($class !== '') $c = explode(' ', $class);
 		if(!in_array($layer_tag, array('rs-row', 'rs-column', 'sr7-layer', 'rs-group', 'rs-bgvideo'), true)){
 			$c[] = 'sr7-layer';
 		}
@@ -641,7 +652,7 @@ class RevSlider7Output extends RevSliderFunctions {
 		$slider	= (!empty($this->slider_v7)) ? $this->slider_v7 : $this->slider;
 		$c		= apply_filters('revslider_add_layer_classes', $c, $this->layer, $this->slide, $slider);
 		
-		return (!empty($c)) ? 'class="'.implode(' ', $c).'"' : '';
+		return (!empty($c)) ? 'class="'.implode(' ', $this->filter_class_name($c)).'"' : '';
 	}
 
 	/**
@@ -677,7 +688,7 @@ class RevSlider7Output extends RevSliderFunctions {
 		$ids	= (!empty($this->slider_v7)) ? $this->get_val($layer, array('attr', 'id')) : $this->get_val($layer, array('attributes', 'id'));
 		$ids 	= (trim($ids) == '') ? $this->get_html_id().'-'.preg_replace("/[^\w]+/", "", $this->get_slide_id()).'-'.$this->get_layer_unique_id() : $ids;
 		
-		if($raw === false) $ids = ($ids != '') ? 'id="'.$ids.'"' : '';
+		if($raw === false) $ids = ($ids != '') ? 'id="'.$this->filter_class_name($ids).'"' : '';
 		
 		return $ids;
 	}
@@ -740,6 +751,8 @@ class RevSlider7Output extends RevSliderFunctions {
 				$this->throw_error(__('Please register the Slider Revolution plugin to use premium templates.', 'revslider'));
 			}
 
+			$this->register_module();
+
 			if($this->get_from_caching()) return true;
 
 			$slider_id	= (!empty($this->slider_v7)) ? $this->slider_v7->get_param('id', '') : $this->slider->get_param('id', '');
@@ -766,7 +779,11 @@ class RevSlider7Output extends RevSliderFunctions {
 			echo $this->close_slider_div();
 			echo $this->js_get_start_size();
 			
-			add_action('wp_print_footer_scripts', array($this, 'add_js'), 100);
+			if($SR_GLOBALS['loaded_by_editor'] === true){ //for elementor
+				$this->add_js();
+			}else{
+				add_action('wp_print_footer_scripts', array($this, 'add_js'), 99);
+			}
 
 			$this->set_javascript_variables();
 
@@ -932,10 +949,10 @@ class RevSlider7Output extends RevSliderFunctions {
 		}
 		
 		$r = "\n".RS_T4.'<p class="rs-p-wp-fix"></p>'."\n";
-		$r .= RS_T4.'<sr7-module data-alias="'. $alias .'" data-id="'. $id .'" id="'. $this->get_html_id() .'"';
-		$r .= (!empty($class)) ? ' class="'. implode(' ', $class) .'"' : '';
+		$r .= RS_T4.'<sr7-module data-alias="'. esc_attr($alias) .'" data-id="'. esc_attr($id) .'" id="'. esc_attr($this->get_html_id()) .'"';
+		$r .= (!empty($class)) ? ' class="'. implode(' ', $this->filter_class_name($class)) .'"' : '';
 		$r .= ' data-version="'. RS_REVISION .'"';
-		$r .= (!empty($modal)) ? ' data-style="display:none" data-modal="'.$modal.'"' : '';
+		$r .= (!empty($modal)) ? ' data-style="display:none" data-modal="'.esc_attr($modal).'"' : '';
 		$r .= (!empty($gallery)) ? ' data-source="wp-gallery" data-sourceids="'.implode(',', $gallery).'"' : '';
 		$r .= '>'."\n";
 		$r .= RS_T5.'<sr7-adjuster></sr7-adjuster>'."\n";
@@ -1001,13 +1018,37 @@ class RevSlider7Output extends RevSliderFunctions {
 		$used_images = $this->get_images_list();
 		$images = array();
 		foreach($used_images ?? [] as $image){
-			$imgsrc = $this->remove_http($this->get_val($image, 'src'));
+			$imgsrc	 = $this->remove_http($this->get_val($image, 'src'));
 			$imgorig = $this->remove_http($this->get_val($image, 'orig'));
 			if(empty($imgsrc) || empty($imgorig)) continue;
-			$lib_id = $this->get_val($image, 'lib_id');
+
+			$lib_id	 = $this->get_val($image, 'lib_id');
+			$info	 = false;
+			$attr	 = array(
+				'alt' => $this->get_val($image, 'a', false),
+				'title' => $this->get_val($image, 't', false),
+			);
+			foreach($attr as $key => $value){
+				if($value === '#fn'){
+					$info	= ($info === false) ? pathinfo($imgsrc) : $info;
+					$value	= $this->get_val($info, 'filename', '');
+				}else{
+					$value 	 = ($value === 'c') ? $this->get_val($image, 'a') : $value;
+					if($key === 'title'){
+						$value 	 = ($value === false && intval($lib_id) > 0) ? get_the_title($lib_id) : '';
+					}else{
+						$value 	 = ($value === false && intval($lib_id) > 0) ? get_post_meta($lib_id, '_wp_attachment_image_alt', true) : '';
+					}
+				}
+				$attr[$key]	= $value;
+			}
+
 			$additions = (!empty($lib_id)) ? ' data-libid="'. esc_attr($lib_id) .'"' : '';
 			$additions .= (!empty($this->get_val($image, 'lib'))) ? ' data-lib="'. esc_attr($this->get_val($image, 'lib')) .'"' : '';
-			$images[] = RS_T6.'<img data-src="'. $imgsrc .'" alt="cdn_helper"'.$additions.' width="0" height="0" data-dbsrc="'. base64_encode($imgorig) .'"/>';
+			foreach($attr as $key => $value){
+				$additions .= (!empty($value)) ? ' '.$key.'="'. esc_attr(strip_tags($value)) .'"' : '';
+			}
+			$images[] = RS_T6.'<img data-src="'. $imgsrc .'"'.$additions.' width="0" height="0" data-dbsrc="'. base64_encode($imgorig) .'"/>';
 		}
 
 		$images = apply_filters('sr_add_image_lists', $images, $this);
@@ -1210,11 +1251,11 @@ class RevSlider7Output extends RevSliderFunctions {
 				if($nav_set !== true) continue;
 				$do = false;
 				if($nav_io === 'outer-vertical'){
-					$html .= $nk.'w:"'.$nav_widht_min.'",';
+					$html .= $nk.'w:"'.esc_attr($nav_widht_min).'",';
 					$do = true;
 				}elseif($nav_io === 'outer-horizontal'){
 					$nav_height = ($nav_padding > 0) ? $nav_height + $nav_padding * 2 : $nav_height;
-					$html .= $nk.'h:"'.$nav_height.'",';
+					$html .= $nk.'h:"'.esc_attr($nav_height).'",';
 					$do = true;
 				}
 				
@@ -1249,15 +1290,15 @@ class RevSlider7Output extends RevSliderFunctions {
 		$html .= "mh:'".esc_attr($mheight)."',";
 		if($sbt) $html .= "sbt:{use:true},";
 		
-		if(!is_string($bgcolor)) $bgcolor = json_encode($bgcolor);				
-		$html .= "onh:".esc_attr($onh).",";		
-		$html .= "onw:".esc_attr($onw).",";		
+		if(!is_string($bgcolor)) $bgcolor = json_encode($bgcolor, JSON_HEX_APOS); else $bgcolor = esc_attr($bgcolor);
+		$html .= "onh:".esc_attr($onh).",";
+		$html .= "onw:".esc_attr($onw).",";
 		$html .= "bg:{color:'".$bgcolor."'";
 			
 		if($usebgimage){
-			if(!is_string($bgimage)) $bgimage = json_encode($bgimage);
+			if(!is_string($bgimage)) $bgimage = json_encode($bgimage, JSON_HEX_APOS); else $bgimage = esc_attr($bgimage);
 			$html .= ",image:{src:'".$bgimage."'";
-			$html .= ",size:'".esc_attr($bgfit)."'";	
+			$html .= ",size:'".esc_attr($bgfit)."'";
 			$html .= ",position:'".esc_attr($bgpos)."'";
 			$html .= ",repeat:'".esc_attr($bgrep)."'";
 			$html .= "}";
@@ -1820,13 +1861,24 @@ class RevSlider7Output extends RevSliderFunctions {
 	 **/
 	public function add_js(){
 		global $SR_GLOBALS;
-		if($SR_GLOBALS['js_init'] === true) return;
+
+		if($SR_GLOBALS['js_init'] === true && $SR_GLOBALS['loaded_by_editor'] !== true) return;
 
 		echo '<script>'."\n";
 		do_action('revslider_pre_add_js', $this);
+		if($SR_GLOBALS['loaded_by_editor'] === true){
+			echo RS_T.'SR7.E.elementorBackend  = true;'."\n";
+		}
+		
+		if($this->get_val($this->global_settings, array('getTec', 'core'), 'MIX') !== 'REST' || $SR_GLOBALS['markup_export'] === true){
+			//get all sliders that have been loaded and write their JSON
+			$SR_front = RevSliderGlobals::instance()->get('RevSliderFront');
+			echo $SR_front->load_v7_slider();
+		}
+
 		echo RS_T."if (SR7.F.init) SR7.F.init(); // DOUBLE CALL NOT A PROBLEM, MANAGED IN INIT"."\n";
-		echo RS_T."document.addEventListener('DOMContentLoaded', function() {if (SR7.F.init) SR7.F.init();});"."\n";
-		echo RS_T."window.addEventListener('load', function() {if (SR7.F.init) SR7.F.init(); });"."\n";
+		echo RS_T."document.addEventListener('DOMContentLoaded', function() {if (SR7.F.init) SR7.F.init(); else SR7.shouldBeInited = true;});"."\n";
+		echo RS_T."window.addEventListener('load', function() {if (SR7.F.init) SR7.F.init(); else SR7.shouldBeInited = true; });"."\n";
 
 		if(!empty($SR_GLOBALS['collections']['trans'])){
 			echo RS_T.'SR7.E.transtable ??={};'."\n";
@@ -2035,7 +2087,7 @@ class RevSlider7Output extends RevSliderFunctions {
 		if(!empty($icons)){
 			foreach($icons as $font => $values){
 				if(in_array($font, array('Materialicons', 'PeIcon', 'FontAwesome', 'RevIcon'), true)){
-					if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array());
+					if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array(), 'custom' => array());
 					if($values === true) $SR_GLOBALS['fonts']['queue'][$font] = true;
 				}
 			}
@@ -2078,12 +2130,15 @@ class RevSlider7Output extends RevSliderFunctions {
 		
 		$custom_fonts = $this->get_val($this->global_settings, 'customFontList', array());
 		$keys = array('normal', 'italic');
+		
 		foreach($gf as $font => $values){
+			$branch = 'queue';
 			if(in_array($font, array('Materialicons', 'PeIcon', 'FontAwesome', 'RevIcon'), true)){
-				if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array());
+				if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array(), 'custom' => array());
 				if($values === true) $SR_GLOBALS['fonts']['queue'][$font] = true;
 			}
 			if(!is_array($values)) continue;
+
 			$variants	= array('normal' => array(), 'italic' => array());
 			$subsets	= array('normal' => array(), 'italic' => array());
 			foreach($keys as $key){
@@ -2101,16 +2156,18 @@ class RevSlider7Output extends RevSliderFunctions {
 				//add url
 				foreach($custom_fonts ?? [] as $cfont){
 					if($cfont['family'] !== str_replace(array('"', "'"), '', $values['name'])) continue;
-					if($this->_truefalse($cfont['frontend']) === true) $values['url'] = $cfont['url'];
+					$values['url'] = ($this->_truefalse($cfont['frontend']) === true) ? $cfont['url'] : '';
 					break;
 				}
 			}else{ //only allow google fonts, no system fonts
 				if(!isset($googlefonts)) include(RS_PLUGIN_PATH . 'includes/googlefonts.php');
-				if(!isset($googlefonts[$font])) continue;
+				$_font = str_replace(array('+', '"', "'"), array(' ', '', ''), $font);
+				if(!isset($googlefonts[$_font])) $branch = 'custom';
 			}
-			$url = (isset($values['url'])) ? $values['url'] : '';
 
-			$this->set_clean_font_import_v7($font, $url, $variants, $subsets);
+			$url = (isset($values['url'])) ? $values['url'] : '';
+			
+			$this->set_clean_font_import_v7($font, $url, $variants, $subsets, $branch);
 		}
 	}
 
@@ -2118,24 +2175,24 @@ class RevSlider7Output extends RevSliderFunctions {
 	 * set the font clean for import
 	 * @before: RevSliderOperations::setCleanFontImport()
 	 */
-	public function set_clean_font_import_v7($font, $url = '', $variants = array(), $subsets = array()){
+	public function set_clean_font_import_v7($font, $url = '', $variants = array(), $subsets = array(), $branch = 'queue'){
 		global $SR_GLOBALS;
 		
-		if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array()); //if this is called without revslider.php beeing loaded
+		if(!isset($SR_GLOBALS['fonts'])) $SR_GLOBALS['fonts'] = array('queue' => array(), 'loaded' => array(), 'custom' => array()); //if this is called without revslider.php beeing loaded
 		
 		if(!empty($variants) || !empty($subsets)){
-			if(!isset($SR_GLOBALS['fonts']['queue'][$font])) $SR_GLOBALS['fonts']['queue'][$font] = array();
-			if(!isset($SR_GLOBALS['fonts']['queue'][$font]['variants'])) $SR_GLOBALS['fonts']['queue'][$font]['variants'] = array();
-			if(!isset($SR_GLOBALS['fonts']['queue'][$font]['subsets'])) $SR_GLOBALS['fonts']['queue'][$font]['subsets'] = array();
+			if(!isset($SR_GLOBALS['fonts'][$branch][$font])) $SR_GLOBALS['fonts'][$branch][$font] = array();
+			if(!isset($SR_GLOBALS['fonts'][$branch][$font]['variants'])) $SR_GLOBALS['fonts'][$branch][$font]['variants'] = array();
+			if(!isset($SR_GLOBALS['fonts'][$branch][$font]['subsets'])) $SR_GLOBALS['fonts'][$branch][$font]['subsets'] = array();
 			
 			if(!empty($variants)){
 				foreach($variants as $type => $variant){
 					if(empty($variant)) continue;
-					if(!isset($SR_GLOBALS['fonts']['queue'][$font]['variants'][$type])) $SR_GLOBALS['fonts']['queue'][$font]['variants'][$type] = array();
+					if(!isset($SR_GLOBALS['fonts'][$branch][$font]['variants'][$type])) $SR_GLOBALS['fonts'][$branch][$font]['variants'][$type] = array();
 					foreach($variant as $k => $v){
 						//check if the variant is already in loaded
-						if(!in_array($v, $SR_GLOBALS['fonts']['queue'][$font]['variants'][$type], true)){
-							$SR_GLOBALS['fonts']['queue'][$font]['variants'][$type][] = $v;
+						if(!in_array($v, $SR_GLOBALS['fonts'][$branch][$font]['variants'][$type], true)){
+							$SR_GLOBALS['fonts'][$branch][$font]['variants'][$type][] = $v;
 						}else{ //already included somewhere, so do not call it anymore
 							unset($variants[$type][$k]);
 						}
@@ -2144,16 +2201,16 @@ class RevSlider7Output extends RevSliderFunctions {
 			}
 
 			foreach($subsets ?? [] as $k => $v){
-				if(!in_array($v, $SR_GLOBALS['fonts']['queue'][$font]['subsets'], true)){
-					$SR_GLOBALS['fonts']['queue'][$font]['subsets'][] = $v;
+				if(!in_array($v, $SR_GLOBALS['fonts'][$branch][$font]['subsets'], true)){
+					$SR_GLOBALS['fonts'][$branch][$font]['subsets'][] = $v;
 				}else{ //already included somewhere, so do not call it anymore
 					unset($subsets[$k]);
 				}
 			}
 
 			if($url !== ''){
-				$SR_GLOBALS['fonts']['queue'][$font]['url'] = $url;
-				$SR_GLOBALS['fonts']['queue'][$font]['load'] = true;
+				$SR_GLOBALS['fonts'][$branch][$font]['url'] = $url;
+				$SR_GLOBALS['fonts'][$branch][$font]['load'] = true;
 			}
 		}
 	}
