@@ -664,6 +664,13 @@ if(!defined('ABSPATH')) exit();
 												<div class="buttonextension basic_action_button insertineditor mini_action_button onlyicon" data-insertfrom="#apimeth71"><i class="material-icons">add</i></div>
 											</div>
 
+											<label_a origtitle="<?php _e("Forced Pause Progress", 'revslider');?>"><?php _e("Forced Pause", 'revslider')?></label_a><!--
+											--><div class="input_with_buttonextenstion">
+												<input type="text" readonly  class="api-input withlabel" value="revapi.forcedPause();">
+												<textarea id="apimeth711" class="hidden">revapi.forcedPause(); // Forced Pause Progress (will not auto resume in viewport until resume() method call)</textarea>
+												<div class="buttonextension basic_action_button insertineditor mini_action_button onlyicon" data-insertfrom="#apimeth711"><i class="material-icons">add</i></div>
+											</div>
+
 											<label_a origtitle="<?php _e("Resume Progress", 'revslider');?>"><?php _e("Resume Slider", 'revslider')?></label_a><!--
 											--><div class="input_with_buttonextenstion">
 												<input type="text" readonly class="api-input withlabel" value="revapi.resume();">

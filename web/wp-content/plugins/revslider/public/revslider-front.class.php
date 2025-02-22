@@ -20,7 +20,12 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	 * Add all actions that the frontend needs here
 	 **/
 	public function add_scripts(){
-		wp_enqueue_script('_tpt', RS_PLUGIN_URL_CLEAN . 'public/js/libs/tptools.js', '', RS_REVISION, ['strategy' => 'async']);
+		global $wp_scripts;
+		if(version_compare($this->get_val($wp_scripts, array('registered', 'tp-tools', 'ver'), '1.0'), RS_TP_TOOLS, '<')){
+			wp_deregister_script('tp-tools');
+			wp_dequeue_script('tp-tools');
+		}
+		wp_enqueue_script('tp-tools', RS_PLUGIN_URL_CLEAN . 'public/js/libs/tptools.js', '', RS_REVISION, ['strategy' => 'async']);
 		wp_enqueue_script('sr7', RS_PLUGIN_URL_CLEAN . 'public/js/sr7.js', '', RS_REVISION, ['strategy' => 'async']);			
 		wp_enqueue_style('sr7css', RS_PLUGIN_URL_CLEAN . 'public/css/sr7.css', '', RS_REVISION);
 		
@@ -125,7 +130,7 @@ class RevSliderFront extends RevSliderFrontGlobal {
 		$script .= "	SR7.E.plugin_url	= '". str_replace(array("\n", "\r"), '', RS_PLUGIN_URL) ."';" . "\n";
 		$script .= "	SR7.E.wp_plugin_url = '". str_replace(array("\n", "\r"), '', WP_PLUGIN_URL) . "/" ."';" . "\n";
 		$script .= "	SR7.E.revision		= '". RS_REVISION ."';" . "\n";
-		$script .= "	SR7.E.fontBaseUrl	= '". $this->modify_fonts_url('https://fonts.googleapis.com/css2?family=') ."';" . "\n";
+		$script .= "	SR7.E.fontBaseUrl	= '". ($this->get_val($global, 'fontdownload') === 'off' ? $this->modify_fonts_url('https://fonts.googleapis.com/css2?family=') : '') ."';" . "\n";
 		$script .= "	SR7.G.breakPoints 	= [".implode(',', $breakpoints)."];" . "\n";
 		$script .= "	SR7.E.modules 		= ['".implode("','", $modules)."'];" . "\n";
 		if(!empty($libs))	$script .= '	SR7.E.libs 			= [' . implode(',', $libs) . '];' . "\n";
@@ -201,6 +206,7 @@ class RevSliderFront extends RevSliderFrontGlobal {
 			$html_id	= $this->set_html_id_v7($html_id, true);
 			$full		= ($slider->v7 === false || ($slider->v7 === true && ($slider->get_param('fixed', false) !== false || in_array($slider->get_param('type', ''), array('scene', 'hero', 'carousel'))))) ? true : false;
 			if($mode === 'MIX' && $SR_GLOBALS['serial'] > 2) $full = false; //we only print $forced_slides from now on
+			$full		= ($slider->is_stream_post()) ? true : $full; //check if we are stream/post, these need to always write all layers (B-7235530610)
 
 			if($SR_GLOBALS['markup_export'] === true){
 				$script .= "	SR7.JSON['".$html_id."'] = 'assets/".$html_id.".json';"."\n";

@@ -17,8 +17,8 @@ if (method_exists('RevSliderGlobals','instance')) {
 }
 
 
-$registered_p_c = ($rs_f->get_addition('selling') === true) ? __('registered license key', 'revslider') : __('registered purchase code', 'revslider');
-$registered_p_c_url = ($rs_f->get_addition('selling') === true) ? 'https://account.sliderrevolution.com/portal/pricing/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=buykey' : 'https://themepunch.com/faq/where-to-find-purchase-code/';
+$registered_p_c = __('registered license key', 'revslider');
+$registered_p_c_url = 'https://account.sliderrevolution.com/portal/pricing/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=buykey';
 ?>
 
 <!--OPTIMIZER DETAILS-->

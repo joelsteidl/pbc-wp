@@ -19,7 +19,7 @@ class RevSliderFunctionsAdmin extends RevSliderFunctions {
 	 * +- Font Icons
 	 * - layers
 	 **/
-	public function get_full_library($include = array('all'), $tmp_slide_uid = array(), $refresh_from_server = false, $get_static_slide = false){
+	public function get_full_library($include = array('all'), $tmp_slide_uid = array(), $refresh_from_server = false, $get_static_slide = false, $page = false){
 		$include	= (array)$include;
 		$template	= new RevSliderTemplate();
 		$library	= new RevSliderObjectLibrary();
@@ -55,7 +55,7 @@ class RevSliderFunctionsAdmin extends RevSliderFunctions {
 			$object = apply_filters('revslider_get_full_library_refresh', $object, $include, $tmp_slide_uid, $refresh_from_server, $get_static_slide, $this);
 		}
 		
-		if(in_array('moduletemplates', $include) || in_array('all', $include))		$object['moduletemplates']['items']	= $object['moduletemplates']['items'] ?? $template->get_tp_template_sliders_for_library($refresh_from_server);
+		if(in_array('moduletemplates', $include) || in_array('all', $include))		$object['moduletemplates']['items']	= $object['moduletemplates']['items'] ?? $template->get_tp_template_sliders_for_library($refresh_from_server, $page);
 		if(in_array('moduletemplateslides', $include) || in_array('all', $include))	$object['moduletemplateslides']['items'] = $object['moduletemplateslides']['items'] ?? $template->get_tp_template_slides_for_library($tmp_slide_uid);
 		if(in_array('modules', $include) || in_array('all', $include))				$object['modules']['items'] = $object['modules']['items'] ?? $this->get_slider_overview();
 		if(in_array('moduleslides', $include) || in_array('all', $include))			$object['moduleslides']['items'] = $object['moduleslides']['items'] ?? $slide->get_slides_for_library($tmp_slide_uid, $get_static_slide);
@@ -955,9 +955,7 @@ class RevSliderFunctionsAdmin extends RevSliderFunctions {
 			'active_sr_to_access' => __('Register Slider Revolution<br>to Unlock Premium Features', 'revslider'),
 			'membersarea' => __('Members Area', 'revslider'),
 			'onelicensekey' => __('1 License Key per Website!', 'revslider'),
-			'onepurchasekey' => __('1 Purchase Code per Website!', 'revslider'),
 			'onelicensekey_info' => __('If you want to use your license key on another domain, please<br> deregister it in the members area or use a different key.', 'revslider'),
-			'onepurchasekey_info' => __('If you want to use your purchase code on<br>another domain, please deregister it first or', 'revslider'),
 			'registeredlicensekey' => __('Registered License Key', 'revslider'),
 			'registeredpurchasecode' => __('Registered Purchase Code', 'revslider'),
 			'registerlicensekey' => __('Register License Key', 'revslider'),
@@ -966,14 +964,10 @@ class RevSliderFunctionsAdmin extends RevSliderFunctions {
 			'registerKey' => __('Register this License Key', 'revslider'),
 			'deregisterCode' => __('Deregister this Code', 'revslider'),
 			'deregisterKey' => __('Deregister this License Key', 'revslider'),
-			'active_sr_plg_activ' => __('Register Purchase Code', 'revslider'),
 			'active_sr_plg_activ_key' => __('Register License Key', 'revslider'),
-			'getpurchasecode' => __('Get a Purchase Code', 'revslider'),
 			'getlicensekey' => __('Get a License Key', 'revslider'),
-			'ihavepurchasecode' => __('I have a Purchase Code', 'revslider'),
 			'ihavelicensekey' => __('I have a License Key', 'revslider'),
 			'enterlicensekey' => __('Enter License Key', 'revslider'),
-			'enterpurchasecode' => __('Enter Purchase Code', 'revslider'),
 			'colrskinhas' => __('This Skin use', 'revslider'),
 			'deleteskin' => __('Delete Skin', 'revslider'),
 			'references' => __('References', 'revslider'),

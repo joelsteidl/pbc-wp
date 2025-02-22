@@ -275,6 +275,11 @@ class RevSliderPluginUpdate extends RevSliderFunctions {
 		if(version_compare($version, '6.6.21', '<')){
 			$upd->set_version('6.6.21');
 		}
+
+		if(version_compare($version, '6.7.24', '<')){
+			$upd->update_post_slide_template_v7();
+			$upd->set_version('6.7.24');
+		}
 	}
 	
 	/**
@@ -341,8 +346,12 @@ class RevSliderPluginUpdate extends RevSliderFunctions {
 			$this->upgrade_slider_to_6_6_20($slider);
 		}
 		
-		if(version_compare($version, '6.6.21', '<')){
-			$this->upgrade_slider_to_6_6_21($slider);
+		if(version_compare($version, '6.7.21', '<')){
+			$this->upgrade_slider_to_6_7_21($slider);
+		}
+		
+		if(version_compare($version, '6.7.24', '<')){
+			$this->upgrade_slider_to_6_7_24($slider);
 		}
 	}
 	
@@ -1086,7 +1095,7 @@ class RevSliderPluginUpdate extends RevSliderFunctions {
 	 * change svg path of all layers from the upload folder if 5.2.5.3+ was installed
 	 * @since 5.2.5.5
 	 */
-	public function upgrade_slider_to_6_6_21($sliders = false){
+	public function upgrade_slider_to_6_7_21($sliders = false){
 		$sr = new RevSliderSlider();
 		$sl = new RevSliderSlide();
 		$upload_dir = wp_upload_dir();
@@ -1147,6 +1156,27 @@ class RevSliderPluginUpdate extends RevSliderFunctions {
 		}
 	}
 	
+	/** check to convert the given Slider to latest versions
+	 * @since: 6.6.10
+	 **/
+	public function upgrade_slider_to_6_7_24($sliders = false){
+		$sr = new RevSliderSlider();
+		
+		$sliders = ($sliders === false) ? $sr->get_sliders() : array($sliders); //do it on all Sliders if false
+		
+		if(!empty($sliders) && is_array($sliders)){
+			foreach($sliders as $slider){
+				if(version_compare($slider->get_setting('version', '1.0.0'), '6.7.24', '<')){
+					$params = $slider->get_params();
+					$params['version'] = '6.7.24';
+					
+					$slider->update_params($params, true);
+					
+					$slider->update_settings(array('version' => '6.7.24'));
+				}
+			}
+		}
+	}
 	
 	/**
 	 * translates removed settings from Slider Settings from version <= 4.x to 5.0
@@ -6992,6 +7022,31 @@ class RevSliderPluginUpdate extends RevSliderFunctions {
 		$wpdb->query("DELETE FROM ". $wpdb->prefix . RevSliderFront::TABLE_SLIDER ." WHERE `type` = 'template'");
 		$wpdb->query("DELETE FROM ". $wpdb->prefix . RevSliderFront::TABLE_SLIDES ." WHERE `slider_id` IN ('". implode("', '", $ids) ."')");
 		$wpdb->query("DELETE FROM ". $wpdb->prefix . RevSliderFront::TABLE_STATIC_SLIDES ." WHERE `slider_id` IN ('". implode("', '", $ids) ."')");
+	}
+
+	/**
+	 * get in all posts the slide_template variable and migrate to slide_template_v7
+	 * $slide_id needs to be a v6 slide id
+	 **/
+	public function update_post_slide_template_v7($slide_id = false){
+		global $wpdb;
+
+		if(!isset($_GET['pk'])) return true;
+
+		if($slide_id !== false){
+			$results = $wpdb->get_results($wpdb->prepare("SELECT post_id, meta_value FROM ".$wpdb->postmeta." WHERE meta_key = 'slide_template' AND meta_value = %s", $slide_id), ARRAY_A);
+		}else{
+			$results = $wpdb->get_results("SELECT post_id, meta_value FROM {$wpdb->postmeta} WHERE meta_key = 'slide_template'", ARRAY_A);
+		}
+		
+		foreach($results ?? [] as $row){
+			$slide_template_v7 = $this->get_v7_slide_map($row['meta_value']);
+			if($slide_template_v7 !== false){
+				update_post_meta($row['post_id'], 'slide_template_v7', $slide_template_v7);
+			}else{
+				delete_post_meta($row['post_id'], 'slide_template_v7');
+			}
+		}
 	}
 	
 	/**

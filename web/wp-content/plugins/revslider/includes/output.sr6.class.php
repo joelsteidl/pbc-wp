@@ -8,10 +8,8 @@
 if(!defined('ABSPATH')) exit();
 
 global $rs_double_jquery_script;
-global $rs_youtube_api_loaded;
 
 $rs_double_jquery_script		= false;
-$rs_youtube_api_loaded			= false;
 
 class RevSliderOutput extends RevSliderFunctions {
 	
@@ -849,7 +847,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				$this->add_slider_transient($transient, $content);
 			}
 			
-			echo $content;
+			echo apply_filters('revslider_html_v6_output', $content, $this);
 		}catch(Exception $e){
 			$message = $e->getMessage();
 			
@@ -1004,18 +1002,18 @@ class RevSliderOutput extends RevSliderFunctions {
 	 * @since: 6.5.7
 	 **/
 	public function add_youtube_api_html(){
-		global $rs_youtube_api_loaded;
+		global $SR_GLOBALS;
 		
 		$r = '';
 
-		if($rs_youtube_api_loaded === true) return $r; //already loaded
+		if($this->get_val($SR_GLOBALS, 'yt_api_loaded', false) === true) return $r; //already loaded
 		if($this->youtube_exists !== true) return $r; //no layer or slide used it
 
 		//check global option if enabled
 		$gs = $this->get_global_settings();
-		if($this->_truefalse($this->get_val($gs, array('script', 'ytapi'), true)) === true){
+		if($this->_truefalse($this->get_val($gs, array('script', 'ytapi'), false)) === true){
 			$r = RS_T4.'<script src="https://www.youtube.com/iframe_api"></script>'."\n";
-			$rs_youtube_api_loaded = true;
+			$SR_GLOBALS['yt_api_loaded'] = true;
 		}
 		
 		return apply_filters('revslider_add_youtube_api_html', $r, $this);

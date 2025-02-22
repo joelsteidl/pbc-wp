@@ -1073,7 +1073,8 @@ class RevSliderSliderImport extends RevSliderSlider {
 							$zimage	= $wp_filesystem->exists($this->download_path.'images/'.$svg);
 							if(!$zimage) $zimage = $wp_filesystem->exists(str_replace('//', '/', $this->download_path.'images/'.$svg));
 							$svgurl = ($zimage === true) ? $this->get_image_url_from_path($this->check_file_in_zip($this->download_path, $svg, $alias, $this->imported, true)) : content_url().$svg;
-							
+							if($zimage === false && (strpos($svg, 'http:') !== false || strpos($svg, 'https:') !== false)) $svgurl = ''; //remove, as its not in the zip and also not an internal server svg
+
 							if(!empty($svg)) $layer['svg']['source'] = $svgurl;
 						}
 					}

@@ -281,6 +281,7 @@ if(!defined('ABSPATH')) exit();
 					</div>
 					<longoption class="_nsfa_"><i class="material-icons">featured_video</i><label_a ><?php _e('Inline Mode', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.playInline"></longoption>
 					<longoption class="_nsfa_"><i class="material-icons">volume_mute</i><label_a><?php _e('Mute at Start', 'revslider');?></label_a><input type="checkbox" class="easyinit layerinput" data-r="media.mute"></longoption>
+					<longoption class="_nsfa_ carouselavailable standardunavailable sceneunavailable"><i class="material-icons">start</i><label_a><?php _e('Keep when Slide Unfocused', 'revslider');?></label_a><div class="tponoffwrap off"><div class="tponoff_inner"><div class="tponoff_off">Off</div><div class="tponoff_on">On<input type="checkbox" id="vide_playback_oncarousel" class="layerinput easyinit tponoff" data-r="media.keepOnCarousel"></div></div></div></longoption>
 					<div class="div15"></div>
 					<row class="directrow">
 						<onelong><label_icon class="ui_volume"></label_icon><input id="layer_video_volume" data-allowed="" data-numeric="true" data-min="0" data-max="100" class="layerinput easyinit" type="text" data-r="media.volume" placeholder="<?php _e('Media Volume (0-100)', 'revslider');?>"></onelong>

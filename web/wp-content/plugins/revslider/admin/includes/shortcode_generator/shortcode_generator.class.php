@@ -35,6 +35,7 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 		wp_enqueue_style('revslider-material-icons', RS_PLUGIN_URL_CLEAN . 'sr6/assets/fonts/material/material-icons.css', array(), RS_REVISION);
 		//wp_enqueue_style('revslider-material-icons', RS_PLUGIN_URL_CLEAN . 'admin/assets/icons/material-icons.css', array(), RS_REVISION);
 		wp_enqueue_style('revslider-basics-css', RS_PLUGIN_URL_CLEAN . 'admin/assets/css/basics.css', array(), RS_REVISION);
+		wp_enqueue_style('rs-new-plugin-settings', RS_PLUGIN_URL_CLEAN . 'admin/assets/css/builder.css', array(), RS_REVISION);
 		wp_enqueue_style('rs-color-picker-css', RS_PLUGIN_URL_CLEAN . 'admin/assets/css/tp-color-picker.css', array(), RS_REVISION);
 		wp_enqueue_style('revbuilder-ddTP', RS_PLUGIN_URL_CLEAN . 'admin/assets/css/ddTP.css', array(), RS_REVISION);
 		$f	 			= new RevSliderFunctions();
@@ -228,9 +229,7 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 			'active_sr_one_on_one' => __('1on1 Support', 'revslider'),			
 			'membersarea' => __('Members Area', 'revslider'),
 			'onelicensekey' => __('1 License Key per Website!', 'revslider'),
-			'onepurchasekey' => __('1 Purchase Code per Website!', 'revslider'),
 			'onelicensekey_info' => __('If you want to use your license key on another domain, please<br> deregister it in the members area or use a different key.', 'revslider'),
-			'onepurchasekey_info' => __('If you want to use your purchase code on<br>another domain, please deregister it first or', 'revslider'),
 			'registeredlicensekey' => __('Registered License Key', 'revslider'),
 			'registeredpurchasecode' => __('Registered Purchase Code', 'revslider'),
 			'registerlicensekey' => __('Register License Key', 'revslider'),
@@ -239,14 +238,10 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 			'registerKey' => __('Register this License Key', 'revslider'),
 			'deregisterCode' => __('Deregister this Code', 'revslider'),
 			'deregisterKey' => __('Deregister this License Key', 'revslider'),
-			'active_sr_plg_activ' => __('Register Purchase Code', 'revslider'),
 			'active_sr_plg_activ_key' => __('Register License Key', 'revslider'),
-			'getpurchasecode' => __('Get a Purchase Code', 'revslider'),
 			'getlicensekey' => __('Get a License Key', 'revslider'),
-			'ihavepurchasecode' => __('I have a Purchase Code', 'revslider'),
 			'ihavelicensekey' => __('I have a License Key', 'revslider'),
 			'enterlicensekey' => __('Enter License Key', 'revslider'),
-			'enterpurchasecode' => __('Enter Purchase Code', 'revslider'),
 			'premium_template' => __('PREMIUM TEMPLATE', 'revslider'),
 			'rs_premium_content' => __('This is a Premium template from the Slider Revolution <a target="_blank" rel="noopener" href="https://www.sliderrevolution.com/examples/">template library</a>. It can only be used on this website with a <a target="_blank" rel="noopener" href="https://www.sliderrevolution.com/manual/quick-setup-register-your-plugin/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=registermanual">registered license key</a>.', 'revslider'),
 			'premium' => __('Premium', 'revslider'),
@@ -289,7 +284,6 @@ class RevSliderShortcodeWizard extends RevSliderFunctions {
 			RVS.ENV.nonce		= '<?php echo wp_create_nonce('revslider_actions'); ?>';
 			RVS.ENV.activated	= '<?php echo (get_option('revslider-valid', 'false') == 'true' || get_option('revslider-valid', 'false') === true) ? 'true' : 'false'; ?>';
 			RVS.ENV.activated	= RVS.ENV.activated == 'true' || RVS.ENV.activated == true ? true : false;
-			RVS.ENV.selling		= <?php echo ($rsaf->get_addition('selling') === true) ? 'true' : 'false'; ?>;
 			RVS.LIB.COLOR_PRESETS	= <?php echo (!empty($rs_color_picker_presets)) ? 'JSON.parse('. $rsaf->json_encode_client_side($rs_color_picker_presets) .')' : '{}'; ?>;
 			
 			window.addEventListener('load', function(){

@@ -344,7 +344,7 @@ class RevSliderFunctions extends RevSliderData {
 			if(@is_dir($temp) && wp_is_writable($temp)){
 				$dir = trailingslashit($temp).$path.'/';
 				if(!is_dir($dir)) @mkdir($dir, 0777, true);
-				return $dir;
+				if(is_dir($dir) && wp_is_writable($dir)) return $dir;
 			}
 		}
 	
@@ -352,18 +352,19 @@ class RevSliderFunctions extends RevSliderData {
 		if(@is_dir($temp) && wp_is_writable($temp)){
 			$dir = trailingslashit($temp).$path.'/';
 			if(!is_dir($dir)) @mkdir($dir, 0777, true);
-			return trailingslashit($temp).$path.'/';
+			if(is_dir($dir) && wp_is_writable($dir)) return $dir;
 		}
 
 		$temp_dir = get_temp_dir();
 		if(wp_is_writable($temp_dir)){
-			$dir		= trailingslashit($temp_dir).$path.'/';
+			$dir = trailingslashit($temp_dir).$path.'/';
 			if(!is_dir($dir)) @mkdir($dir, 0777, true);
-		}else{
-			$upload_dir = wp_upload_dir();
-			$dir		= $upload_dir['basedir'].'/'.$path.'/';
-			if(!is_dir($dir)) @mkdir($dir, 0777, true);
+			if(is_dir($dir) && wp_is_writable($dir)) return $dir;
 		}
+		
+		$upload_dir = wp_upload_dir();
+		$dir		= $upload_dir['basedir'].'/'.$path.'/';
+		if(!is_dir($dir)) @mkdir($dir, 0777, true);
 
 		return $dir;
 	}
@@ -431,6 +432,8 @@ class RevSliderFunctions extends RevSliderData {
 	 * before: RevSliderBase::stripslashes_deep()
 	 */
 	public static function stripslashes_deep($value){
+		if(empty($value)) return $value;
+		
 		$value = is_array($value) ? array_map(array('RevSliderFunctions', 'stripslashes_deep'), $value) : stripslashes($value);
 		
 		return $value;
@@ -1995,6 +1998,13 @@ rs-module .material-icons {
 	}
 
 	/**
+	 * checks if any shortcode format is present in given string
+	 */
+	public function has_any_shortcode($text){
+		return (preg_match('/\[.*?\]/', $text)) ? true : false;
+	}
+
+	/**
 	 * open and checks a zip file for filetypes
 	 **/
 	public function check_bad_files($zip_file, $extensions_allowed = false){
@@ -2182,7 +2192,7 @@ rs-module .material-icons {
 		}
 
 		$classes = array_map(function($className) {
-			return preg_replace('/[^a-zA-Z\d_-]/', '', $className);
+			return preg_replace('/[^a-zA-Z \d_-]/', '', $className);
 		}, $classes);
 
 		return $single ? $classes[0] : $classes;
@@ -2245,6 +2255,26 @@ rs-module .material-icons {
 				if($t !== $_type) continue;
 				if(isset($v[$v6_slide_id])) return $v[$v6_slide_id];
 			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * retrieves the v6 slide id by a v7 slide id from the slide map
+	 **/
+	public function get_v6_slide_by_v7_id($v7_slide_id){
+		$slide_map 	= get_option('sliderrevolution-v7-slide-map', array());
+		if(empty($slide_map)) return false;
+
+		foreach($slide_map as $module => $slides){
+			$_slides = $this->get_val($slides, 'n', []);
+			if(empty($_slides)) continue;
+			if(!in_array($v7_slide_id, $_slides)) continue;
+			foreach($_slides as $v6 => $v7){
+				if($v7 == $v7_slide_id) return $v6;
+			}
+			return false;
 		}
 
 		return false;

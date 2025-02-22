@@ -1304,7 +1304,7 @@ label_a.long,
 label_a.halflong,
 .label_a.halflong { min-width: 150px; }
 
-longoption label_a { min-width: 150px; text-align: left; margin-left: 15px;vertical-align: top; line-height: 38px; padding: 0px; margin-right: 10px; }
+longoption label_a { min-width: 150px; text-align: left; margin-left: 15px;vertical-align: top; line-height: 38px; padding: 0px; margin-right: 10px; overflow: visible; }
 longoption label_a.longlabellength { min-width: 220px }
 
 longoption i.material-icons { color: #b7bbc0; font-size: 20px; margin-left: 15px; vertical-align: top; line-height:38px;}
@@ -4321,7 +4321,9 @@ oneshort .input_presets { right: 0px !important; left:auto !important; }
 
 /*WRAP LEVEL 3*/
 ._lc_content_            { position: relative; width:auto;height:auto;box-sizing: border-box; vertical-align: inherit}
-._lc_image_inside_       {  width: 100%;height:100%; z-index: 2; position: relative; vertical-align: top; 
+._lc_fw_img ._lc_image_inside_ { height: auto; width: 100%; }
+._lc_fh_img ._lc_image_inside_ { height: 100%; width: auto; }
+._lc_image_inside_       {  height:100%; z-index: 2; position: relative; vertical-align: top; top: 50%; left: 50%; transform: translate(-50%, -50%);
                           -webkit-touch-callout: none; /* iOS Safari */
                             -webkit-user-select: none; /* Safari */
                              -khtml-user-select: none; /* Konqueror HTML */

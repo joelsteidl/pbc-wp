@@ -86,7 +86,7 @@ class RevSliderUpdate extends RevSliderFunctions {
 
 	public function _check_updates(){
 		// Get data
-		if(empty($this->data)){
+		if(empty($this->data) || !isset($this->data->basic)){
 			$data = get_option($this->option, false);
 			$data = $data ? $data : new stdClass;
 			

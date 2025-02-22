@@ -468,7 +468,7 @@
 		$element.find( rwmb.inputSelectors ).each( function() {
 			let $this = $( this ),
 				$field = $this.closest( '.rwmb-field.required' ),
-				oldRequired = $this.data( 'old-required' );
+				oldRequired = $this.attr( 'data-old-required' );
 				
 			if ( $field.length && oldRequired ) {
 				$this.prop( 'required', oldRequired );
@@ -508,7 +508,7 @@
 			let $this = $( this ),
 				required = $this.attr( 'required' );
 
-			$this.data( 'old-required', required );
+			$this.attr( 'data-old-required', required );
 
 			if ( required ) {
 				$this.prop( 'required', false );

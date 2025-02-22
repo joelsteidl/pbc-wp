@@ -57,9 +57,7 @@ class RevSliderTemplate extends RevSliderFunctions {
 							$return = array('error' => __('Can\'t write the file into the uploads folder of WordPress, please change permissions and try again!', 'revslider'));
 						}
 					}else{
-						$error = ($this->get_addition('selling') === true) ? __('License Key is invalid', 'revslider') : __('Purchase Code is invalid', 'revslider');
-						
-						$return = array('error' => $error);
+						$return = array('error' => __('License Key is invalid', 'revslider'));
 					}
 				}
 			}else{//else, check for error and print it to customer
@@ -512,10 +510,25 @@ class RevSliderTemplate extends RevSliderFunctions {
 	 * get the template sliders for the get_full_library function
 	 * @since: 6.0
 	 */
-	public function get_tp_template_sliders_for_library($leave_counter = false){
+	public function get_tp_template_sliders_for_library($leave_counter = false, $page = false){
 		$templates = $this->get_tp_template_sliders();
+		if($page !== false && intval($page) <= 0) $page = 1;
+		$start	 = 500 * $page - 500;
+		$current = 0;
+		$added	 = 0;
+		$max	 = 500;
+		
 		foreach($templates ?? [] as $k => $t){
 			if(isset($templates[$k]['params'])) unset($templates[$k]['params']);
+			if($page !== false){
+				if($current < $start || $added >= $max){
+					unset($templates[$k]);
+				}else{
+					$added++;
+				}
+				
+				$current++;
+			}
 		}
 		
 		if(!$this->_truefalse($leave_counter)){

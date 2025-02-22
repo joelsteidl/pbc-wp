@@ -1174,16 +1174,20 @@ class RevSliderObjectLibrary extends RevSliderFunctions {
 				}
 			break;
 		}
+		
+		// initialize sanitizer
+		$sanitizer = new RevSliderSvgSanitizer();
 
 		foreach($import ?? [] as $k => $v){
 			$check = $wp_filesystem->exists($v) ? $wp_filesystem->get_contents($v) : '';
 			if(empty($check)){
 				unset($import[$k]);
-			}else{
-				$doc = new DOMDocument();
-				if(!$doc->loadXML($check)) unset($import[$k]);
-				$script_tags = $doc->getElementsByTagName('script');
-				if($script_tags->length > 0) unset($import[$k]);
+				continue;
+			}
+			
+			$clean = $sanitizer->sanitize($check);
+			if($clean === false || !$wp_filesystem->put_contents($v, $clean, FS_CHMOD_FILE)){
+				unset($import[$k]);
 			}
 		}
 		

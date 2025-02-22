@@ -146,7 +146,6 @@ $rs_show_deregister_popup = $rsaf->_truefalse(get_option('revslider-deregister-p
 	RVS.ENV.img_sizes		= JSON.parse(<?php echo $rsaf->json_encode_client_side($rs_added_image_sizes); ?>);
 	RVS.ENV.create_img_meta	= <?php echo (!empty($rs_image_meta_todo)) ? 'true' : 'false'; ?>;
 	RVS.ENV.notices			= <?php echo (!empty($rs_notices)) ? 'JSON.parse('. $rsaf->json_encode_client_side($rs_notices) .')' : '[]'; ?>;
-	RVS.ENV.selling			= <?php echo ($rsaf->get_addition('selling') === true) ? 'true' : 'false'; ?>;
 	RVS.ENV.newAddonsAmount = '<?php echo $rs_new_addon_counter; ?>';
 	RVS.ENV.newTemplatesAmount = '<?php echo $rs_new_temp_counter; ?>';
 	RVS.ENV.deregisterPopup	= <?php echo ($rs_show_deregister_popup) ? 'true' : 'false'; ?>;

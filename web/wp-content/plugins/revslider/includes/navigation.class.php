@@ -74,7 +74,7 @@ class RevSliderNavigation extends RevSliderFunctions {
 				$navigations[$key]['css']		= ($old === true) ? $navigations[$key]['css'] : stripslashes($navigations[$key]['css']);
 				$navigations[$key]['markup']	= ($old === true) ? $navigations[$key]['markup'] : stripslashes($navigations[$key]['markup']);
 
-				if(isset($navigations[$key]['settings'])){
+				if(isset($navigations[$key]['settings']) && !empty($navigations[$key]['settings'])){
 					$navigations[$key]['settings'] = RevSliderFunctions::stripslashes_deep(json_decode($navigations[$key]['settings'], true));
 					if(!is_array($navigations[$key]['settings'])){
 						$navigations[$key]['settings'] = json_decode($navigations[$key]['settings'], true);

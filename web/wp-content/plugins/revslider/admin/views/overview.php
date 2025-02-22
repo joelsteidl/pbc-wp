@@ -18,7 +18,6 @@ $code			= get_option('revslider-code', '');
 $time			= date('H');
 $timezone		= date('e');/* Set the $timezone variable to become the current timezone */
 $hi				= __('Good Evening ', 'revslider');
-$selling 		= $rsaf->get_addition('selling');
 $rs_front_version = $rsaf->get_val($SR_GLOBALS, 'front_version', 7);
 if($time < '12'){
 	$hi = __('Good Morning ', 'revslider');
@@ -59,10 +58,7 @@ $rs_languages	= $rsaf->get_available_languages();
 	<div id="rs_welcome_header_area">
 		<h2 id="rs_welcome_h2" class="title"><?php echo $hi; echo $current_user->display_name; echo '!'; ?></h2>
 		<h3 id="rs_welcome_h3" class="subtitle"><?php _e('You are running Slider Revolution ', 'revslider'); echo RS_REVISION; ?></h3>
-		<?php if ($selling === true) { ?>	
-			<a href="https://account.sliderrevolution.com/portal/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=members" target="_blank" rel="noopener" id="rs_memarea_registered" class="basic_action_button longbutton basic_action_lilabutton"><i class="material-icons">person_outline</i><?php _e('Members Area', 'revslider');?></a>
-			<!-- <a href="https://account.sliderrevolution.com/portal/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=members" target="_blank" rel="noopener" id="rs_memarea"></a>					  -->
-		<?php } ?>		
+		<a href="https://account.sliderrevolution.com/portal/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=members" target="_blank" rel="noopener" id="rs_memarea_registered" class="basic_action_button longbutton basic_action_lilabutton"><i class="material-icons">person_outline</i><?php _e('Members Area', 'revslider');?></a>
 	</div>
 	
 	<div id="sr67-versionbadge" class="<?php echo ($rs_front_version == 7) ? 'v_velocity' : 'v_genesis'; ?>">
@@ -167,27 +163,23 @@ $rs_languages	= $rsaf->get_available_languages();
 	<div id="plugin_activation_row" class="plugin_inforow">
 		<!-- PLUGIN UPDATE -->
 		<div id="activation_area" class="pli_left">	
-			<h3 id="activateplugintitle" class="pli_title"><?php echo ($selling === true) ? __('Register License Key', 'revslider') : __('Register Purchase Code', 'revslider');?></h3>
+			<h3 id="activateplugintitle" class="pli_title"><?php echo __('Register License Key', 'revslider');?></h3>
 			<row>
 
 				<onehalf style="padding-right:5px"><div id="activated_ornot_box" class="box_with_icon"><i class="material-icons">done</i><?php _e('Registered', 'revslider');?></div></onehalf>
-				<onehalf style="padding-left:5px"><a target="_blank" rel="noopener" href="<?php echo ($selling === true) ? 'https://www.sliderrevolution.com/faq/where-to-find-purchase-code/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=findkey' : 'https://themepunch.com/faq/where-to-find-the-purchase-code/'; ?>" class="box_with_icon"><i class="material-icons">vpn_key</i><?php echo ($selling === true) ? __('Find My Key', 'revslider') : __('Find My Code', 'revslider');?></a></onehalf>
+				<onehalf style="padding-left:5px"><a target="_blank" rel="noopener" href="<?php echo 'https://www.sliderrevolution.com/faq/where-to-find-purchase-code/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=findkey'; ?>" class="box_with_icon"><i class="material-icons">vpn_key</i><?php echo __('Find My Key', 'revslider');?></a></onehalf>
 			</row>
 			<div class="div10"></div>
 			<div id="purchasekey_wrap" class="activated">
 				<div id="hide_purchasekey"><?php _e('xxxx xxxx xxxx xxxx', 'revslider');?></div>				
-				<input class="codeinput" id="purchasekey" placeholder="<?php echo ($selling === true) ? __('Enter License Key', 'revslider') : __('Enter Purchase Code', 'revslider');?>"/>	
+				<input class="codeinput" id="purchasekey" placeholder="<?php echo __('Enter License Key', 'revslider');?>"/>
 			</div>
 			<div class="div25"></div>
-			<bluebutton id="activateplugin"><?php echo ($selling === true) ? __('Deregister this Key', 'revslider') : __('Deregister this Code', 'revslider');?></bluebutton>
+			<bluebutton id="activateplugin"><?php echo __('Deregister this Key', 'revslider');?></bluebutton>
 			<div class="div25"></div>
 			<div class="infobox">
-				<div class="whitetitle"><?php echo ($selling === true) ? __('1 License Key per Website', 'revslider') : __('1 Purchase Code per Website', 'revslider');?></div>
-				<?php if ($selling === true) { ?>
+				<div class="whitetitle"><?php echo __('1 License Key per Website', 'revslider');?></div>
 				<div class="simpletext"><?php _e('If you want to use Slider Revolution on another domain, you need to use a different license key.', 'revslider');?></div>
-				<?php } else { ?>
-				<div class="simpletext"><?php _e('If you want to use Slider Revolution on another domain, you need to use a different license key.', 'revslider');?></div>
-				<?php } ?>
 				<div class="div25"></div>
 				<a class="lilabuybutton" href="https://account.sliderrevolution.com/portal/pricing/?utm_source=admin&utm_medium=button&utm_campaign=srusers&utm_content=buykey" target="_blank" rel="noopener"><?php _e('Buy License Key', 'revslider');?></a>
 			</div>

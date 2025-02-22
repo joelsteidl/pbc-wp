@@ -537,12 +537,11 @@ class RevSliderSliderExport extends RevSliderSlider {
 						$this->pclzip->add($c_path.$checkpath, PCLZIP_OPT_REMOVE_PATH, $c_path, PCLZIP_OPT_ADD_PATH, $_checkpath);
 					}
 				}
-				$file = str_replace('/', '\/', $file);
+				$_file = str_replace('/', '\/', $file);
 				$checkpath2 = str_replace('/', '\/', str_replace('/revslider/assets/svg', '', $checkpath2));
 
-				if(is_file($c_path.$checkpath)){
-					$this->export_data = str_replace(array('http:'.$file, 'https:'.$file, $file), $checkpath2, $this->export_data);
-				}
+				$replace = (is_file($c_path.$checkpath)) ? $checkpath2 : '';
+				$this->export_data = str_replace(array('http:'.$_file, 'https:'.$_file, $_file, 'http:'.$file, 'https:'.$file, $file), $replace, $this->export_data);
 			}
 		}
 	}

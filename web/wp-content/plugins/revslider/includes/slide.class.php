@@ -27,6 +27,7 @@ class RevSliderSlide extends RevSliderFunctions {
 	public $post_data;
 	private $template_id;
 	public $ignore_alt = false;
+	public $img_sizes = [];
 	public $v7 = false;
 	
 	private $static_slide = false;
@@ -769,20 +770,37 @@ class RevSliderSlide extends RevSliderFunctions {
 	 * init post data in v7 style
 	 */
 	public function init_by_post_data_v7($post, RevSliderSlide $template, $slider_id){
-		$post_id = $this->get_val($post, 'id');
-		$temp_id = get_post_meta($post_id, 'slide_template', true);
-		$temp_id = intval($temp_id);
+		global $SR_GLOBALS;
+
+		$post_id	= $this->get_val($post, 'id');
+		$_temp_id	= false;
+		$v6			= false;
+		$temp_id_v6 = intval(get_post_meta($post_id, 'slide_template', true));
+		$temp_id_v7 = intval(get_post_meta($post_id, 'slide_template_v7', true));
 		$this->post_data = apply_filters('revslider_slide_initByPostData', $post, $template, $slider_id, $this);
 
-		if($temp_id > 0){
+		if($temp_id_v6 > 0 || $temp_id_v7 > 0){
 			try{
 				$local = new RevSliderSlide();
+				if($temp_id_v7 > 0){
+					$temp_id = $temp_id_v7;
+				}else{
+					$_temp_id = $this->get_v7_slide_map($temp_id_v6); //we always receive the v6 slide id here so we need to translate to v7
+					if($_temp_id !== false){
+						$temp_id = $_temp_id;
+					}else{
+						$temp_id = $temp_id_v6;
+						$v6		 = $SR_GLOBALS['use_table_version'];
+						$SR_GLOBALS['use_table_version'] = 6;
+					}
+				}
 				if($local->exist_by_id($temp_id)){
 					$local->init_by_id($temp_id);
 					$this->init_by_slide($local);
 				}else{
 					$this->init_by_slide($template);
 				}
+				if($v6 !== false) $SR_GLOBALS['use_table_version'] = $v6;
 			}catch(Exception $e){
 				$this->init_by_slide($template);
 			}
@@ -924,8 +942,8 @@ class RevSliderSlide extends RevSliderFunctions {
 		$translation = array('publish' => 'date', 'modified' => 'date_modified', 'author' => 'author_name', 'comments' => 'num_comments', 'catlistraw' => 'catlist_raw'); //translation is needed, as $post has different keys now than before
 		$replace	 = array('catlist' => 'catlistraw');
 		$post		 = apply_filters('revslider_set_layers_by_stream_post', $post, $slider_id, $this);
-		
 		if(empty($this->layers)) return;
+		if(empty($this->img_sizes)) $this->img_sizes = $this->get_all_image_sizes();
 
 		$layers = json_encode($this->layers, true);
 		foreach($post as $from => $to){
@@ -967,6 +985,16 @@ class RevSliderSlide extends RevSliderFunctions {
 					if(isset($translation[$from])) $layers = str_replace(array('{{'.$translation[$from].'}}', '%'.$translation[$from].'%'), $to, $layers);
 				}
 			}
+		}
+
+		foreach($this->img_sizes ?? [] as $img_handle => $img_name){
+			$layers = str_replace(['{{featured_image_url_'.$img_handle.'}}', '%featured_image_url_'.$img_handle.'%'],  $this->get_val($post, ['img_urls', $img_handle, 'url'], ''), $layers);
+			$layers = str_replace(['{{featured_image_'.$img_handle.'}}', '%featured_image_'.$img_handle.'%'], $this->get_val($post, ['img_urls', $img_handle, 'tag'], ''), $layers);
+			
+			//fix for using the lowercase name instead of the handle
+			$img_name = str_replace(' ', '_', strtolower($img_name));
+			$layers = str_replace(['{{featured_image_url_'.$img_name.'}}', '%featured_image_url_'.$img_name.'%'],  $this->get_val($post, ['img_urls', $img_handle, 'url'], ''), $layers);
+			$layers = str_replace(['{{featured_image_'.$img_name.'}}', '%featured_image_'.$img_name.'%'], $this->get_val($post, ['img_urls', $img_handle, 'tag'], ''), $layers);
 		}
 		
 		$layers = preg_replace('/\[rev_slider.*?\]|\[\/rev_slider\]|\[sr7.*?\]|\[\/sr7\]/', '', $layers, -1); //remove shortcode in case of recursion
@@ -2367,7 +2395,7 @@ class RevSliderSlide extends RevSliderFunctions {
 	/**
 	 * get all slides from specific slider id
 	 **/
-	public function get_slides_by_slider_id($slider_id, $published = false, $wmpl = false, $first = false, $init_layer = true, $fetch_single = false){
+	public function get_slides_by_slider_id($slider_id, $published = false, $wpml = false, $first = false, $init_layer = true, $fetch_single = false){
 		global $wpdb, $SR_GLOBALS;
 		
 		$v = ($SR_GLOBALS['use_table_version'] === 7) ? '7' : '';
@@ -2383,33 +2411,33 @@ class RevSliderSlide extends RevSliderFunctions {
 		}else{
 			$slides_data_sql = $wpdb->prepare("SELECT * FROM ".$wpdb->prefix . RevSliderFront::TABLE_SLIDES . $v . " WHERE slider_id = %d".$first_sql.$addition." ORDER BY slide_order ASC", $slider_id);
 		}
-
+		
 		$cache_key = $this->get_wp_cache_key('get_slides_by_slider_id', $slides_data_sql);
 		$slides_data = wp_cache_get($cache_key, self::CACHE_GROUP);
 		if (false === $slides_data) {
 			$slides_data = $wpdb->get_results($slides_data_sql, ARRAY_A);
 			wp_cache_set($cache_key, $slides_data, self::CACHE_GROUP);
 		}
-		
+
 		foreach($slides_data as $slide_data){
 			$slide	= new RevSliderSlide();
 			$slide->init_layer = $init_layer;
 			$slide->init_by_data($slide_data);
-			
+
 			if($published == true && $slide->get_param(array('publish', 'state'), 'published') == 'unpublished') continue;
 			
 			$pid = ($this->v7) ? $slide->get_param('parentID', '') : $slide->get_param(array('child', 'parentId'), '');
-			
+
 			if(!empty($pid)){
 				if(!isset($children[$pid])) $children[$pid] = array();
 				$children[$pid][] = $slide;
 				
-				if(!$wmpl) continue; //do not add it to $slides
+				if(!$wpml) continue; //do not add it to $slides
 			}
 			
 			$slides[$slide->get_id()] = $slide;
 			
-			if($first) break; //we only want the first slide!
+			if($first && $wpml === false) break; //we only want the first slide on none wpml sliders!
 		}
 		
 		//add children array to the parent slides
@@ -2419,6 +2447,12 @@ class RevSliderSlide extends RevSliderFunctions {
 			$slides[$pid]->children = $arr;
 		}
 		
+		if($first && $wpml === true){ //as we have wmpl enabled, we still need to only return one slide, but with all its children for later selection
+			foreach($children ?? [] as $slide){
+				return $slide;
+			}
+		}
+
 		return $slides;
 	}
 	

@@ -143,15 +143,16 @@ if(!defined('ABSPATH')) exit();
 									</select><span class="linebreak"></span>						
 						<label_a><?php _e('Slider Revolution Analytics Sharing', 'revslider');?></label_a><input type="checkbox" data-evt="udpateTrackingEnv" class="easyinit globalinput callEvent" data-r="globals.trackingOnOff"><span class="linebreak"></span>
 						
-						<div class="div25"></div>
-						<div class="hideforsr7">
+						<div class="div25"></div>						
 							<div class="ale_i_title"><?php _e('Page Loading Optimization', 'revslider');?></div>
 							<hr class="general_hr">
-							<label_a><?php _e('Insert scripts in footer', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.footer"><span class="linebreak"></span>
-							<label_a><?php _e('Defer JavaScript loading', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.defer"><span class="linebreak"></span>
-							<label_a><?php _e('Load Files asynchronously', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.async"><span class="linebreak"></span>
+							<div class="hideforsr7">
+								<label_a><?php _e('Insert scripts in footer', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.footer"><span class="linebreak"></span>
+								<label_a><?php _e('Defer JavaScript loading', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.defer"><span class="linebreak"></span>
+								<label_a><?php _e('Load Files asynchronously', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.async"><span class="linebreak"></span>
+							</div>	
 							<label_a><?php _e('Load YouTube API early', 'revslider');?></label_a><input type="checkbox" class="easyinit globalinput" data-r="globals.script.ytapi"><span class="linebreak"></span>
-						</div>	
+						
 						
 						<div class="div25"></div>
 						<div class="ale_i_title"><?php _e('Fonts', 'revslider');?></div>

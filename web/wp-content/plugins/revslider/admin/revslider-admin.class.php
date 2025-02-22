@@ -457,8 +457,15 @@ class RevSliderAdmin extends RevSliderFunctionsAdmin {
 		$slide_template = $f->get_post_var('slide_template');
 		if(in_array($slide_template, array('', 'default'))){
 			delete_post_meta($post_id, 'slide_template');
+			delete_post_meta($post_id, 'slide_template_v7');
 		}else{
 			update_post_meta($post_id, 'slide_template', $slide_template);
+			$slide_template_v7 = $f->get_v7_slide_map($slide_template);
+			if($slide_template_v7 !== false){
+				update_post_meta($post_id, 'slide_template_v7', $slide_template_v7);
+			}else{
+				delete_post_meta($post_id, 'slide_template_v7');
+			}
 		}
 
 		// Blank Page Template Background Color
@@ -530,7 +537,7 @@ class RevSliderAdmin extends RevSliderFunctionsAdmin {
 		
 		$cache = RevSliderGlobals::instance()->get('RevSliderCache');
 		
-		add_action('plugins_loaded', array($this, 'load_plugin_textdomain'));
+		add_action('after_setup_theme', array($this, 'load_plugin_textdomain'));
 		add_action('admin_head', array($this, 'hide_notices'), 1);
 		add_action('admin_menu', array($this, 'add_admin_pages'));
 		add_action('admin_init', array($this, 'display_external_redirects'));
@@ -764,7 +771,6 @@ class RevSliderAdmin extends RevSliderFunctionsAdmin {
 			'success' => $success,
 			'message' => $message,
 		);
-
 		if(!empty($data)){
 			if(gettype($data) == 'string') $data = array('data' => $data);
 			$response = array_merge($response, $data);

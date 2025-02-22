@@ -221,13 +221,11 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	 * @updated: 6.4.12
 	 */
 	public static function add_defer_forscript($tag, $handle){
-		if(strpos($tag, 'rs6') === false && strpos($tag, 'rbtools.min.js') === false && strpos($tag, 'revolution.addon.') === false && strpos($tag, 'sr6/assets/js/libs/') === false && (strpos($tag, 'liquideffect') === false && strpos($tag, 'pixi.min.js') === false) && strpos($tag, 'rslottie-js') === false){
+		if(is_admin() || strpos($tag, 'rs6') === false && strpos($tag, 'rbtools.min.js') === false && strpos($tag, 'revolution.addon.') === false && strpos($tag, 'sr6/assets/js/libs/') === false && (strpos($tag, 'liquideffect') === false && strpos($tag, 'pixi.min.js') === false) && strpos($tag, 'rslottie-js') === false){
 			return $tag;
-		}elseif(is_admin()){
-			return $tag;
-		}else{
-			return str_replace(' id=', ' defer id=', $tag);
 		}
+
+		return str_replace(' id=', ' defer id=', $tag);
 	}
 
 	/**
@@ -236,13 +234,11 @@ class RevSliderFront extends RevSliderFrontGlobal {
 	 * @updated: 6.4.12
 	 */
 	public static function add_async_forscript($tag, $handle){
-		if(strpos($tag, 'rs6') === false && strpos($tag, 'rbtools.min.js') === false && strpos($tag, 'revolution.addon.') === false && strpos($tag, 'sr6/assets/js/libs/') === false && (strpos($tag, 'liquideffect') === false && strpos($tag, 'pixi.min.js') === false) && strpos($tag, 'rslottie-js') === false){
+		if(is_admin() || strpos($tag, 'rs6') === false && strpos($tag, 'rbtools.min.js') === false && strpos($tag, 'revolution.addon.') === false && strpos($tag, 'sr6/assets/js/libs/') === false && (strpos($tag, 'liquideffect') === false && strpos($tag, 'pixi.min.js') === false) && strpos($tag, 'rslottie-js') === false){
 			return $tag;
-		}elseif(is_admin()){
-			return $tag;
-		}else{
-			return str_replace(' id=', ' async id=', $tag);
 		}
+		
+		return str_replace(' id=', ' async id=', $tag);
 	}
 	
 }
