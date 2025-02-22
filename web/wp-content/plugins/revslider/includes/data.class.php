@@ -1011,4 +1011,24 @@ class RevSliderData {
 
 		return ($raw) ? $transitions : json_decode($transitions, true);
 	}
+	
+	public function get_allowed_layer_tags()
+	{
+		return array('sr7-layer', 'rs-layer', 'a', 'div', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'span', 'label');
+	}
+
+	/**
+	 * @param array $layer
+	 * @param string $tag_key
+	 * @param string $default
+	 * @return array
+	 */
+	public function filter_single_layer_tags($layer, $tag_key, $default)
+	{
+		$allowed_tags = $this->get_allowed_layer_tags();
+		if (!empty($layer[$tag_key]) && !in_array($layer[$tag_key], $allowed_tags)) { 
+			$layer[$tag_key] = $default;
+		}
+		return $layer;
+	}
 }

@@ -809,6 +809,11 @@ class RevSliderApi extends RevSliderFunctions {
 					}
 				break;
 				case 'save_navigation': //also deletes if requested
+
+					if(!current_user_can('administrator') && apply_filters('revslider_restrict_role', true)){
+						$this->ajax_response_error(__('Function only available for administrators', 'revslider'));
+					}
+
 					$_nav = new RevSliderNavigation();
 					$navs = (array) $this->get_val($data, 'navs', array());
 					$delete_navs = (array) $this->get_val($data, 'delete', array());
@@ -915,7 +920,7 @@ class RevSliderApi extends RevSliderFunctions {
 						$static_slide->init_by_static_id($static_slide_id);
 					}
 					
-					$slides = $slider->get_slides();
+					$slides	 = $slider->get_slides(false, true);
 					$_slides = array();
 					$_static_slide = array();
 
@@ -2066,7 +2071,7 @@ class RevSliderApi extends RevSliderFunctions {
 
 		}
 
-		$JSON = $slider->get_full_slider_JSON(false, true, $slide_ids, $raw, $modify);
+		$JSON = $slider->get_full_slider_JSON(false, true, $slide_ids, array(), $raw, $modify);
 		
 		return $this->ajax_response_data(apply_filters('sr_get_full_slider_object', $JSON, $slider));
 	}

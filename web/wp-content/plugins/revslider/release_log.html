@@ -1,4 +1,125 @@
-<div class="slider-revolution-update-list">	
+<div class="slider-revolution-update-list">
+	<h3 class="version-number">Version 6.7.15 (10th July 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Zone positions on mobile sizes are not calculated well on some slides</li>
+		<li>Vimeo arguments are ignored in SR7 frontend on background videos</li>
+		<li>Perspective is set on layers if they dont have any rotation, breaking fonts on iOS</li>
+		<li>Deep link is not working on carousel layout</li>
+		<li>First alternative slide is not working on any layout in SR7</li>
+		<li>Video with auto height not resized properly</li>
+		<li>Static layers can not be triggered any more by normal layers via actions</li>
+		<li>Video slider are skipping slides if they are set to rewind and switch the slide at the end of the video</li>
+		<li>Content on mobile phones are offsetted after oriention change</li>
+		<li>Video overlay color settings has no effects</li>
+		<li>Images using auto width and height dimensions in columns are not respecting their parent container dimensions</li>
+	</ul>
+
+	<h3 class="version-number">Version 6.7.14 (25th June 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Mute & unmute videos not working well in some cases</li>
+		<li>If preloading is active for the SR7 Data Load Method, global slides are not loaded from the third slider onwards</li>
+		<li>Global setting "Include library globally" is not respected by the SR7 engine</li>
+		<li>Slider not initialized when optimized by Rocket Loader</li>
+		<li>SR7 removes sibling tags like span and p</li>
+		<li>Vimeo attributes like pip, dnt, pip, transcript, portrait are not working</li>
+		<li>The ToolBarTopFunction is still using the jQuery library, producing some errors in preview pages if jQuery is not loaded</li>
+		<li>Fullscreen height on mobile is not respecting min height of content in some cases</li>
+		<li>Parallax disabled on mobile still calculates the initial offset position of parallax elements which renders all layers at the wrong position</li>
+		<li>SVG export with starting // is not processed properly</li>
+		<li>Background image on module repeated even if the option is not selected</li>
+		<li>Media library image was not showing for post based slides if featured image on a post was missing</li>
+		<li>Security hardening to prevent XSS: Input sanitization and output escaping now enforced on layer actions</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.13 (6th June 2024)</h3>
+	<div class="change"><strong style="font-weight:700">Changes</strong></div>
+	<ul>
+		<li>Depricated Next Slide on Focus and Disable Blur/Focus behavior options and introduced new V7 Freeze On Blur option</li>
+	</ul>	
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Enable Google Fonts global option does not respect "Disable" and loads https://fonts.googleapis.com and https://fonts.gstatic.com/</li>
+		<li>Alternate URL for module is not migrated from SR6 to SR7</li>
+		<li>DeepLink Hash Tags in URl break Modules if they added on 3thd place or later</li>
+		<li>"Next Slide on Focus" and "Disable Blur/Focus Behavior" settings do not affect runtime processing</li>
+		<li>Lottie and BubbleMorph AddOns not working in admin preview due to incorrect layer class names</li>
+		<li>Mouse Wheel navigation not working when screen size height is smaller than slider height</li>
+		<li>Looping Slide not respecting the End time, but will restart after the last animated frame on timeline</li>
+		<li>Missing background color for layers with background image assigned</li>
+		<li>Global Layers with "auto" height and "%" width may not drawn straight if the Module is starting outside of the viewport</li>
+		<li>Loading Modals delayed, via PHP Filters may not set the default Dimensions correctly on opened Modules</li>
+		<li>Modal shows misaligned and with the wrong dimensions if Modal Module layout set to Auto</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.12 (23rd May 2024)</h3>
+	<div class="change"><strong style="font-weight:700">Changes</strong></div>
+	<ul>
+		<li>On installation/plugin activation, if no Slider is present, the engine is changed to the Velocity Engine (V7)</li>
+	</ul>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Instagram stream not displaying images</li>
+		<li>Hover processing too early, negatively influencing the "in" animation of layers</li>
+		<li>MouseTrap AddOn when adding a click event on video without providing a layer caused an error</li>
+		<li>Not initialized modules out of viewport resized incorrectly on window resize causing the horizontal scroll to appear</li>
+		<li>Scroll Below under, Scroll-based Timelines and Video Scrolled Content not scrolling to the right ID</li>
+		<li>Fix Positioned Top Sliders by setting Pointer Events to none, without any exclusions</li>
+		<li>Filmstrip AddOn flickers on mobile phones</li>
+		<li>Gradient Backgrounds on SVG's drawn Transparent since latest updates</li>
+		<li>Swipe on MacOs swaps multiple slides if the swipe is thrown on a longer distance</li>
+		<li>Image Layers with auto width and auto height drawn stretched</li>
+		<li>Disabling Parallax Effect on Mobile has no Effect</li>
+	</ul>
+	
+	<h3 class="version-number">Version 6.7.11 (15th May 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Parallax effect on mobile reacting only on touchmove and not simple touches anymore </li>
+		<li>Attribute alt and title on images are missing in source mode</li>
+		<li>Rows and columns are ignoring parallax and loop animations</li>
+		<li>Ajax form submit not working for Contact Form 7 added to a layer via shortcode</li>
+		<li>Special Effect keeps playing on layer hidden by device visibility options</li>
+		<li>HTML Video Toggle Mute action had to be double fired to mute video for the first time</li>
+		<li>If SVG elements are added (i.e. Charts) an extra space is generated under the module</li>
+		<li>Deeplink slide targets not working in SR7</li>
+		<li>Module margins and paddings are not respected and rendered</li>
+		<li>Overdimensioned modules behave differently in SR7 than in SR6 when the screen size is smaller on some responsive screensizes</li>
+		<li>Link action on YouTube stream-based slides is leading to the same URL of the last video</li>
+		<li>If a slide is hidden from navigation it causes a JavaScript error and breaks the navigation</li>
+		<li>Security hardening to prevent XSS: Input sanitization and output escaping now enforced on layer attributes and elementor widget attributes</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.10 (6th May 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Touch Swipe is not working on Hoverable and Clickable elements</li>
+		<li>Min Height set on Auto layout also respected on Fullwdith and Fullscreen layouts</li>		
+		<li>Post Excerpts Meta {{excerpt}} is not shortened by the slider setting Limit Excerpt in Velocity Engine</li>
+		<li>Images with special Characters in URL not loading</li>
+		<li>{{link}} meta is not working on slide Tags & Links in Post Based Sliders</li>
+		<li>HTML5 Volume set >1 stops the Module with JS error</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.9 (30th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>
+		<li>Media position miscalculated when no aspect ratio is set and aspect ratio unavailable at preload.</li>
+		<li>Permission checks missing for Instagram and Facebook API requests.</li>
+		<li>Potential XSS vulnerabilities due to unescaped output of slider parameters.</li>
+		<li>'Touchstart' and 'Touchend' behavior on mobile devices differs from SR6.</li>
+		<li>'mailto:' and 'tel:' simple link actions removed in SR7 frontend.</li>
+		<li>SVGs within 'a' tag layers not respecting parent layer dimensions.</li>
+		<li>Hero Slide fails to initiate if navigation visibility was previously configured.</li>
+		<li>Timeline set to loop through a single frame does not loop in SR7.</li>
+		<li>Elementor backend does not display SR7 Modules in Live Editor.</li>
+		<li>Scroll-based timelines break visually when the layout is set to fullscreen and browser height is less than module height.</li>
+		<li>SR7 Frontend loads slower if Modules added via Shortcode, due to missing JSON SR7 needs to load per restApi the data on demand</li>
+		<li>Global video layer was playing with sound when starting not from the first slide even if volume set to zero</li>
+	</ul>
+	<h3 class="version-number">Version 6.7.8 (25th April 2024)</h3>
+	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
+	<ul>	
+		<li>Links containing "#" disrupt URL construction and can cause Module failure upon loading</li>
+		<li>Security hardening to prevent XSS: Input sanitization and output escaping now enforced on 'htmltag' and 'tag layer' parameters to thwart script injection attacks</li>
+	</ul>
 	<h3 class="version-number">Version 6.7.7 (23rd April 2024)</h3>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
 	<ul>			
@@ -7,8 +128,8 @@
 	<h3 class="version-number">Version 6.7.6 (23rd April 2024)</h3>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>	
 	<ul>			
-		<li>Navigation is not visible if the 'Hide Under' value is bigger the highest Device Size set in Module</li>
-		<li>'In' Animation duration under 75ms not triggering any events, addon relaying on events are not starting</li>
+		<li>Navigation is not visible if the 'Hide Under' value is bigger than the highest Device Size set in Module</li>
+		<li>'In' Animation duration under 75ms not triggering any events, addon relying on events are not starting</li>
 		<li>System Fonts are loaded by Google Fonts API, which breaks all Google Fonts on the same page</li>
 		<li>HTML5 Video without Poster image (first frame image) breaks at startanimation</li>
 		<li>Custom SVG upload fails</li>
@@ -84,7 +205,7 @@
 	<h3 class="version-number">Version 6.7.0 (5th April 2024)</h3>
 	<div class="newfeature">Introducing Velocity Engine</div>
 	<ul>
-		<li>Upgraded to SR7 “Velocity” Engine for improved efficiency and animation fluidity. Legacy SR6 Engine included for continued support.</li>
+		<li>Upgraded to SR7 "Velocity" Engine for improved efficiency and animation fluidity. Legacy SR6 Engine included for continued support.</li>
 	</ul>
 	<h3 class="version-number">Version 6.6.20 (21st December 2023)</h3>
 	<div class="newfeature"><strong style="font-weight:700">New Features</strong></div>
@@ -103,7 +224,7 @@
 		<li>Fullscreen carousel with padding overflows the module</li>
 		<li>Security vulnerability associated with unserializing objects from the 'custom_animations.txt' file.</li>
 	</ul>
-	<h3 class="version-number">Version 6.6.18 (23th October 2023)</h3>
+	<h3 class="version-number">Version 6.6.18 (23rd October 2023)</h3>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
 	<ul>	
 		<li>Regression in 6.6.17 causes sliders with height greater than window height get cropped</li>
@@ -369,7 +490,7 @@
 		<li>Scroll based blur in Safari cuts the edges of layers</li>
 		<li>Vimeo video limit of 20 raised to 60</li>
 	</ul>		
-	<h3 class="version-number">Version 6.5.31 (13th August 2022)</h3>
+	<h3 class="version-number">Version 6.5.31 (13rd August 2022)</h3>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
 	<ul>
 		<li>Notice occurring since 6.5.30 about bos not defined</li>
@@ -1545,7 +1666,7 @@
 	<ul>
 		<li>Links with target="_blank" will be extended with the rel="noopener" attribute to avoid performance and security issues</li>
 		<li>Double defined slide link actions : "Next Slide" and "Previous Slide" removed from the "Jump To Slide" action to avoid misunderstanding (existing values are still available)</li>
-		<li>Added ScrollTo GreenSock Plugin with the latest Version to avoid issues where 3th Party Plugins and Themes using RS Libraries with older components of GreenSock</li>
+		<li>Added ScrollTo GreenSock Plugin with the latest Version to avoid issues where 3rd Party Plugins and Themes using RS Libraries with older components of GreenSock</li>
 	</ul>
 	<div class="bugfix"><strong style="font-weight:700">Bugfixes</strong></div>
 	<ul>
@@ -1984,7 +2105,7 @@
 		<li>Fixed Elementor widgets of Slider Revolution not working if logged out</li>
 	</ul>
 
-	<h3 class="version-number">Version 6.0.7 (23th July 2019)</h3>
+	<h3 class="version-number">Version 6.0.7 (23rd July 2019)</h3>
 	<div class="change"><strong style="font-weight:700">Changes</strong></div>
 	<ul>
 		<li>Changed global option "Include libraries globally" default value to on, please set it to off manually again if wanted</li>
@@ -2048,7 +2169,7 @@
 		<li>Fixed the quick style auto selection when new buttons, content or headlines had been selected</li>
 	</ul>
 
-	<h3 class="version-number">Version 6.0.4 (13th July 2019)</h3>
+	<h3 class="version-number">Version 6.0.4 (13rd July 2019)</h3>
 	<div class="change"><strong style="font-weight:700">Changes</strong></div>
 	<ul>
 		<li>Added an "Edit" button to the Gutenberg editor Slider Revolution block</li>

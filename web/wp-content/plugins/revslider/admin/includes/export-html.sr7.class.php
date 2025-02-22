@@ -124,7 +124,7 @@ class RevSliderSliderExportHtml extends RevSliderSliderExport {
 		$this->html_id	= (trim($slider_id) !== '') ? $slider_id : 'SR7_'.$sid.'_'.$SR_GLOBALS['serial'];
 
 		$sr_front = RevSliderGlobals::instance()->get('RevSliderFront');
-		$sr_front->JSON_slider = "	SR7.JSON['".$this->html_id."'] = 'assets/".$this->html_id.".json';"."\n";;
+		
 		$data = $this->slider->get_full_slider_JSON();
 		$data = apply_filters('sr_load_slider_json', $data, $this);
 		$this->json = json_encode($data);

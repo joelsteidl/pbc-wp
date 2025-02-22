@@ -936,7 +936,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		if(!in_array($max_width, array('0', 0, '0px', '0%'), true) && $type == 'auto'){
 			if(intval($max_width) > 0 && strpos($max_width, 'px') === false && strpos($max_width, '%') === false) $max_width .= 'px';
-			$style .= (empty($max_width)) ? '' : 'max-width:'. $max_width.';';
+			$style .= (empty($max_width)) ? '' : 'max-width:'. esc_attr($max_width).';';
 		}
 
 		$fixedOnTop = array(
@@ -952,21 +952,21 @@ class RevSliderOutput extends RevSliderFunctions {
 		$r .= RS_T3.'<rs-module-wrap';
 		$this->rs_module_wrap_open = true;
 		$r .= ' id="'.$this->get_html_id().'_wrapper"';
-		$r .= (!empty($class)) ? ' class="'.trim($class).'"' : '';
+		$r .= (!empty($class)) ? ' class="'.esc_attr(trim($class)).'"' : '';
 		if((is_super_admin() || is_admin_bar_showing()) && current_user_can('edit_theme_options')){
 			$r .= ' data-alias="'.esc_attr($this->slider->get_alias()).'"';
 		}
 		
-		$r .= ' data-source="'.$this->slider->get_param('sourcetype').'"';
+		$r .= ' data-source="'.esc_attr($this->slider->get_param('sourcetype')).'"';
 		$show_alternate	= $this->slider->get_param(array('troubleshooting', 'alternateImageType'), 'off');
 		if($show_alternate !== 'off'){
 			$show_alternate_image = $this->slider->get_param(array('troubleshooting', 'alternateURL'), '');
-			$r .= ' data-aimg="'.$show_alternate_image.'" ';
+			$r .= ' data-aimg="'.esc_attr($show_alternate_image).'" ';
 			$r .= ($show_alternate == 'mobile' || $show_alternate == 'mobile-ie8') ? ' data-amobile="enabled" ' : '';
 			$r .= ($show_alternate == 'mobile-ie8' || $show_alternate == 'ie8') ? ' data-aie8="enabled" ' : '';
 		}
 				
-		$r .= ' style="visibility:hidden;'. $style .'">'."\n";
+		$r .= ' style="visibility:hidden;'. esc_attr($style) .'">'."\n";
 		
 		return apply_filters('revslider_get_slider_wrapper_div', $r, $this);
 	}
@@ -1048,8 +1048,8 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		$r = RS_T4.'<rs-module id="'. $this->get_html_id() .'"';
 		$this->rs_module_open = true;
-		$r .= ($class !== '') ? ' class="'. $class .'"' : '';
-		$r .= ' style="'. $style .'"';
+		$r .= ($class !== '') ? ' class="'. esc_attr($class) .'"' : '';
+		$r .= ' style="'. esc_attr($style) .'"';
 		$r .= ' data-version="'. RS_REVISION .'"';
 		$r .= '>'."\n";
 		
@@ -1229,7 +1229,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		$timer_bar = ($enable_progressbar !== true || $layouttype == 'hero') ? 'hide' : $timer_bar;
 		
-		$progress_style = ' style="height: '.esc_attr($progress_height).'px; background: '.$progressbar_color.';"';
+		$progress_style = ' style="height: '.esc_attr($progress_height).'px; background: '.esc_attr($progressbar_color).';"';
 		
 		$r = '';
 		switch($timer_bar){
@@ -1353,10 +1353,10 @@ class RevSliderOutput extends RevSliderFunctions {
 			echo RS_T7.'<img';
 			foreach($img as $k => $v){
 				if($k === 'alt'){
-					echo ' '.$k.'="'.$v.'"'; //always print an alt even if empty
+					echo ' '.esc_attr($k).'="'.esc_attr($v).'"'; //always print an alt even if empty
 					continue;
 				}
-				echo (trim($v) !== '') ? ' '.$k.'="'.$v.'"' : '';
+				echo (trim($v) !== '') ? ' '.esc_attr($k).'="'.esc_attr($v).'"' : '';
 			}
 			echo ' data-no-retina>'."\n";
 		}
@@ -1476,7 +1476,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$bg .= ($f_r['f'] !== '' && $f_r['f'] !== 'cover') ? 'f:'.$f_r['f'].';' : '';
 		$bg .= ($f_r['r'] !== '' && $f_r['r'] !== 'no-repeat') ? 'r:'.$f_r['r'].';' : '';
 		
-		return $bg;
+		return esc_attr($bg);
 	}
 	
 	/**
@@ -1638,7 +1638,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				$zi = $this->get_val($layers, array($zone, 'position', 'zIndex'), $this->row_zindex);
 				
 				$this->decrease_layer_depth();
-				echo RS_T6. $this->add_closing_comment() .'<rs-zone id="rrz'.$zs.'_'.$this->slide->get_id().'" class="rev_row_zone_'.$zone.'" style="z-index: '.$zi.';">';
+				echo RS_T6. $this->add_closing_comment() .'<rs-zone id="rrz'.$zs.'_'.$this->slide->get_id().'" class="rev_row_zone_'.$zone.'" style="z-index: '.esc_attr($zi).';">';
 				echo $this->add_opening_comment()."\n";
 				echo $row_layers;
 				echo RS_T7.$this->add_closing_comment().'</rs-zone>'.$this->add_opening_comment()."\n";
@@ -2039,7 +2039,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		if(!empty($loop_data)){
 			foreach($loop_data as $ldk => $ld){
-				echo ($ld !== '') ? $this->ld().RS_T8.'data-'.$ldk.'="'.$ld.'"'."\n" : '';
+				echo ($ld !== '') ? $this->ld().RS_T8.'data-'.$ldk.'="'.esc_attr($ld).'"'."\n" : '';
 			}
 		}
 		
@@ -2176,8 +2176,8 @@ class RevSliderOutput extends RevSliderFunctions {
 					$menu_link = do_shortcode($menu_link);
 					$link_open_in = $this->get_val($act, 'link_open_in', '');
 					$link_follow = $this->get_val($act, 'link_follow', '');
-					$link = 'href="'.$menu_link.'"';
-					$link .= ($link_open_in !== '') ? ' target="'.$link_open_in.'"' : '';
+					$link = 'href="'.esc_url($menu_link).'"';
+					$link .= ($link_open_in !== '') ? ' target="'.esc_attr($link_open_in).'"' : '';
 					if($link_follow === 'nofollow'){
 						$link .= ' rel="nofollow';
 						$link .= ($link_open_in === '_blank') ? ' noopener' : '';
@@ -2195,8 +2195,8 @@ class RevSliderOutput extends RevSliderFunctions {
 						$link_open_in = $this->get_val($act, 'link_open_in', '');
 						$link_follow = $this->get_val($act, 'link_follow', '');
 						
-						$link = 'href="'.$image_link.'"';
-						$link .= ($link_open_in !== '') ? ' target="'.$link_open_in.'"' : '';
+						$link = 'href="'.esc_url($image_link).'"';
+						$link .= ($link_open_in !== '') ? ' target="'.esc_attr($link_open_in).'"' : '';
 						if($link_follow === 'nofollow'){
 							$link .= ' rel="nofollow';
 							$link .= ($link_open_in === '_blank') ? ' noopener' : '';
@@ -2219,6 +2219,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	 **/
 	public function get_layer_tag($html_simple_link, $special_type = false){
 		$layer	= $this->get_layer();
+		$layer	= $this->filter_single_layer_tags($layer, 'htmltag', 'rs-layer');
 		$tag	= $this->get_val($layer, 'htmltag', 'rs-layer');
 		
 		if($html_simple_link !== '') $tag = 'a';
@@ -2256,7 +2257,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$svg		= $this->get_val($layer, 'svg', false);
 		
 		if($idle_class !== '') $class[] = $idle_class;
-		if($internal_class !== '') $class[] = $internal_class;
+		if($internal_class !== '') $class = array_merge($class, explode(' ', $internal_class));
 		
 		if($selectable !== 'default'){
 			if($this->_truefalse($selectable) == true) $class[] = 'rs-selectable';
@@ -2330,7 +2331,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			}
 		}
 
-		return implode(' ', $class);
+		return implode(' ', $this->filter_class_name($class));
 	}
 	
 	/**
@@ -2543,7 +2544,9 @@ class RevSliderOutput extends RevSliderFunctions {
 		$html = '';
 		if(!empty($style)){
 			foreach($style as $k => $v){
-				$v = trim($v);
+				$v = esc_attr(trim($v));
+				// convert back quotes for font families
+				if ($k == 'font-family') $v = str_replace(array('&quot;', '&#039;'), array('"', "'"), $v);
 				$html .= (!in_array($v, array('', 'px', '%'), true)) ? $k.':'.$v.';' : '';
 			}
 		}		
@@ -2652,7 +2655,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		if($op !== 1) $html .='o:'.$op.';';
 		if($iosfx !== 'd') $html .='iosfx:'.$iosfx.';';
 		
-		return ($html !== '') ? 'data-btrans="'.$html.'"' : $html;
+		return ($html !== '') ? 'data-btrans="'.esc_attr($html).'"' : $html;
 	}
 
 	/**
@@ -2685,7 +2688,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	 **/
 	public function get_html_layer_ids($raw = false){
 		$layer = $this->get_layer();
-		$ids = $this->get_val($layer, array('attributes', 'id'));
+		$ids = $this->filter_class_name($this->get_val($layer, array('attributes', 'id')));
 		
 		$ss	 = $this->get_static_slide();
 		$uid = $this->get_layer_unique_id();
@@ -2709,7 +2712,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer = $this->get_layer();
 		$title = $this->get_val($layer, array('attributes', 'title'));
 		
-		return ($title != '') ? 'title="'.$title.'"' : '';
+		return ($title != '') ? 'title="'.esc_attr($title).'"' : '';
 	}
 	
 	/**
@@ -2719,7 +2722,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer		= $this->get_layer();
 		$tabindex	= $this->get_val($layer, array('attributes', 'tabIndex'));
 		
-		return (!in_array($tabindex, array('', '0', 0), true)) ? 'tabindex="'.$tabindex.'"' : '';
+		return (!in_array($tabindex, array('', '0', 0), true)) ? 'tabindex="'.esc_attr($tabindex).'"' : '';
 	}
 	
 	/**
@@ -2729,7 +2732,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer = $this->get_layer();
 		$rel = $this->get_val($layer, array('attributes', 'rel'));
 		
-		return ($rel != '') ? 'rel="'.$rel.'"' : '';
+		return ($rel != '') ? 'rel="'.esc_attr($rel).'"' : '';
 	}
 	
 	/**
@@ -2764,10 +2767,10 @@ class RevSliderOutput extends RevSliderFunctions {
 				$myVer	= $this->shorten($myVer, $f, $t);
 				$myTop	= $this->shorten($myTop, $f, $t);
 				
-				$xy .= (!in_array($myHor, array('', 0, '0', '0px'), true)) ? 'x:'.$myHor.';' : '';
-				$xy .= (!in_array($myLeft, array('', 0, '0', '0px'), true)) ? 'xo:'.$myLeft.';' : '';
-				$xy .= (!in_array($myVer, array('', 0, '0', '0px'), true)) ? 'y:'.$myVer.';' : '';
-				$xy .= (!in_array($myTop, array('', 0, '0', '0px'), true)) ? 'yo:'.$myTop.';' : '';
+				$xy .= (!in_array($myHor, array('', 0, '0', '0px'), true)) ? 'x:'.esc_attr($myHor).';' : '';
+				$xy .= (!in_array($myLeft, array('', 0, '0', '0px'), true)) ? 'xo:'.esc_attr($myLeft).';' : '';
+				$xy .= (!in_array($myVer, array('', 0, '0', '0px'), true)) ? 'y:'.esc_attr($myVer).';' : '';
+				$xy .= (!in_array($myTop, array('', 0, '0', '0px'), true)) ? 'yo:'.esc_attr($myTop).';' : '';
 			}else{
 				$alignHor	= $this->get_biggest_device_setting($alignHor, $this->enabled_sizes);
 				$alignVert	= $this->get_biggest_device_setting($alignVert, $this->enabled_sizes);
@@ -2780,34 +2783,34 @@ class RevSliderOutput extends RevSliderFunctions {
 				switch($alignHor){
 					default:
 					case 'left':
-						$xy .= ($left !== '') ? 'x:'.$left.';' : '';
+						$xy .= ($left !== '') ? 'x:'.esc_attr($left).';' : '';
 					break;
 					case 'center':
 						$left = (in_array($left, array('', 0, '0', '0px'), true)) ? '' : $left;
 						$xy .= 'x:c;';
-						$xy .= ($left !== '') ? 'xo:'.$left.';' : '';
+						$xy .= ($left !== '') ? 'xo:'.esc_attr($left).';' : '';
 					break;
 					case 'right':
 						$left = (in_array($left, array('', 0, '0', '0px'), true)) ? '' : $left;
 						$xy .= 'x:r;';
-						$xy .= ($left !== '') ? 'xo:'.$left.';' : '';
+						$xy .= ($left !== '') ? 'xo:'.esc_attr($left).';' : '';
 					break;
 				}
 				
 				switch($alignVert){
 					default:
 					case 'top':
-						$xy .= ($top !== '') ? 'y:'.$top.';' : '';
+						$xy .= ($top !== '') ? 'y:'.esc_attr($top).';' : '';
 					break;
 					case 'middle':
 						$top = (in_array($top, array('', 0, '0', '0px'), true)) ? '' : $top;
 						$xy .= 'y:c;';
-						$xy .= ($top !== '') ? 'yo:'.$top.';' : '';
+						$xy .= ($top !== '') ? 'yo:'.esc_attr($top).';' : '';
 					break;
 					case 'bottom':
 						$top = (in_array($top, array('', 0, '0', '0px'), true)) ? '' : $top;
 						$xy .= 'y:b;';
-						$xy .= ($top !== '') ? 'yo:'.$top.';' : '';
+						$xy .= ($top !== '') ? 'yo:'.esc_attr($top).';' : '';
 					break;
 				}
 			}
@@ -2891,7 +2894,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			foreach($data as $k => $d){
 				if(!empty($d)){
 					if($d !== ''){
-						$text .= $k.':'.$d.';';
+						$text .= $k.':'.esc_attr($d).';';
 					}
 				}
 			}
@@ -2927,7 +2930,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			foreach($data as $k => $d){
 				if(!empty($d)){
 					if($d !== ''){
-						$text .= $k.':'.$d.';';
+						$text .= $k.':'.esc_attr($d).';';
 					}
 				}
 			}
@@ -2953,7 +2956,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				$color = $this->get_biggest_device_setting($this->get_val($layer, array('idle', 'color'), '#ffffff'), $this->enabled_sizes);
 				$color = (trim($color) === '') ? '#ffffff' : $color;
 			}
-			$text .= ($color !== '') ? $color : '';
+			$text .= ($color !== '') ? esc_attr($color) : '';
 		}
 		
 		$text .= '"';
@@ -2972,7 +2975,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			$color = str_replace(' ', '', $this->get_val($layer, array('idle', 'boxShadow', 'color'), 'rgba(0,0,0,0.25)'));
 			
 			if($this->get_val($layer, array('idle', 'boxShadow', 'container'), 'content') !== 'content') $text.= 'e:w'; //w for wrapper
-			if(!in_array($color, array('rgba(0,0,0,0.25)'))) $text.= 'c:'.$color.';';
+			if(!in_array($color, array('rgba(0,0,0,0.25)'))) $text.= 'c:'.esc_attr($color).';';
 			
 			$data = array();
 			if($this->adv_resp_sizes == true){
@@ -2989,7 +2992,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			
 			if(!empty($data)){
 				foreach($data as $k => $v){
-					$text .= (!in_array(trim($v), array(0, '0', '0px', ''), true)) ? $k.':'.$v.';' : '';
+					$text .= (!in_array(trim($v), array(0, '0', '0px', ''), true)) ? $k.':'.esc_attr($v).';' : '';
 				}
 			}
 		}
@@ -3011,7 +3014,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				$color	= str_replace(' ', '', $this->get_val($layer, array('idle', 'textShadow', 'color'), 'rgba(0,0,0,0.25)'));
 				
 				if($this->get_val($layer, array('idle', 'textShadow', 'container'), 'content') !== 'content') $text.= 'e:w'; //w for wrapper
-				if(!in_array($color, array('rgba(0,0,0,0.25)'))) $text.= 'c:'.$color.';';
+				if(!in_array($color, array('rgba(0,0,0,0.25)'))) $text.= 'c:'.esc_attr($color).';';
 				
 				$data = array();
 				if($this->adv_resp_sizes == true){
@@ -3026,7 +3029,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				
 				if(!empty($data)){
 					foreach($data as $k => $v){
-						$text .= (!in_array(trim($v), array(0, '0', '0px', ''), true)) ? $k.':'.$v.';' : '';
+						$text .= (!in_array(trim($v), array(0, '0', '0px', ''), true)) ? $k.':'.esc_attr($v).';' : '';
 					}
 				}
 			}
@@ -3129,7 +3132,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			
 			if(!empty($data)){
 				foreach($data as $k => $v){
-					$dim .= (!in_array(trim($v), array(-1, '-1', '', 'auto'), true)) ? $k.':'.$v.';' : '';
+					$dim .= (!in_array(trim($v), array(-1, '-1', '', 'auto'), true)) ? $k.':'.esc_attr($v).';' : '';
 				}
 			}
 		}
@@ -3154,7 +3157,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			if($break === 'mobile')		$break = '3';
 		}
 		
-		return ($break != '') ? 'data-cbreak="'.$break.'"' : '';
+		return ($break != '') ? 'data-cbreak="'.esc_attr($break).'"' : '';
 	}
 	
 	/**
@@ -3733,7 +3736,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer		= $this->get_layer();
 		$base_align	= $this->get_val($layer, array('behavior', 'baseAlign'), 'grid');
 		
-		return ($base_align !== 'grid') ? 'data-basealign="'.$base_align.'"' : '';
+		return ($base_align !== 'grid') ? 'data-basealign="'.esc_attr($base_align).'"' : '';
 	}
 	
 	/**
@@ -3752,7 +3755,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer		 = $this->get_layer();
 		$wrapper_ids = $this->get_val($layer, array('attributes', 'wrapperId'));
 		
-		return ($wrapper_ids !== '') ? 'data-wrpid="'.$wrapper_ids.'"' : '';
+		return ($wrapper_ids !== '') ? 'data-wrpid="'.$this->filter_class_name($wrapper_ids).'"' : '';
 	}
 	
 	/**
@@ -3762,7 +3765,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$layer = $this->get_layer();
 		$class = $this->get_val($layer, array('attributes', 'wrapperClasses'));
 		
-		return ($class !== '') ? 'data-wrpcls="'.$class.'"' : '';
+		return ($class !== '') ? 'data-wrpcls="'.implode(' ', $this->filter_class_name(explode(' ', $class))).'"' : '';
 	}
 	
 	/**
@@ -3800,7 +3803,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		}
 		
 		if(!in_array($so, array('0', 0, '0px'), true) && $sd === true){
-			$html .= 'so:'.$so;
+			$html .= 'so:'.esc_attr($so);
 		}
 		
 		$html .='"';
@@ -3828,8 +3831,8 @@ class RevSliderOutput extends RevSliderFunctions {
 		}
 		
 		//dont write if s is 0 and e ist the last slide
-		$html .= ($s !== 0 && $s !== '') ? 's:'.$s.';' : '';
-		$html .= ($e !== 'last') ? 'e:'.$e.';' : '';
+		$html .= ($s !== 0 && $s !== '') ? 's:'.esc_attr($s).';' : '';
+		$html .= ($e !== 'last') ? 'e:'.esc_attr($e).';' : '';
 		
 		$html .= '"';
 		
@@ -3849,7 +3852,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		$slp	= $static_slide->get_param(array('static', 'position'), 'front');
 		$staticZ = $this->get_val($layer, array('position', 'staticZ'), $slp);
-		$html .= ($staticZ !== $slp) ? $staticZ : '';
+		$html .= ($staticZ !== $slp) ? esc_attr($staticZ) : '';
 		
 		$html .= '"';
 		
@@ -3865,7 +3868,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$has_trigger	= $this->check_if_trigger_exists();
 		$trigger_memory	= ($has_trigger) ? $this->get_val($layer, array('actions', 'triggerMemory'), 'reset') : 'keep';
 		
-		return ($has_trigger && $trigger_memory !== 'reset') ? 'data-triggercache="'.$trigger_memory.'"' : '';
+		return ($has_trigger && $trigger_memory !== 'reset') ? 'data-triggercache="'.esc_attr($trigger_memory).'"' : '';
 	}
 	
 	/**
@@ -4512,8 +4515,8 @@ class RevSliderOutput extends RevSliderFunctions {
 			$type = $this->get_val($layer, array('timeline', 'clipPath', 'type'), 'rectangle');
 			$origin = $this->get_val($layer, array('timeline', 'clipPath', 'origin'), 'l');
 			
-			$html .= ($type !== 'rectangle') ? 't:'.$type.';' : '';
-			$html .= ($origin !== 'l') ? 'o:'.$origin.';' : '';
+			$html .= ($type !== 'rectangle') ? 't:'.esc_attr($type).';' : '';
+			$html .= ($origin !== 'l') ? 'o:'.esc_attr($origin).';' : '';
 		}
 		
 		$html .= '"';
@@ -4537,7 +4540,7 @@ class RevSliderOutput extends RevSliderFunctions {
 							if(is_bool($v)){
 								$v = ($v === true) ? 'true' : 'false';
 							}
-							$s .= ($v !== '') ? $k.':'.$v.';' : '';
+							$s .= ($v !== '') ? $k.':'.esc_attr($v).';' : '';
 						}
 						if($s !== ''){
 							$_base = ($_base === 'base') ? '' : '_'.$_base;
@@ -4558,7 +4561,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_blendmode(){
 		$layer = $this->get_layer();
 		$blendmode = $this->get_val($layer, array('idle', 'filter', 'blendMode'), 'normal');
-		return ($blendmode !== 'normal') ? 'data-blendmode="'.$blendmode.'"' : '';
+		return ($blendmode !== 'normal') ? 'data-blendmode="'.esc_attr($blendmode).'"' : '';
 	}
 	
 	/**
@@ -4574,10 +4577,10 @@ class RevSliderOutput extends RevSliderFunctions {
 			$r = $this->get_val($layer, array('idle', 'spikeRight'), 'none');
 			$lw = $this->get_val($layer, array('idle', 'spikeLeftWidth'), 10);
 			$rw = $this->get_val($layer, array('idle', 'spikeRightWidth'), 10);
-			if($l !== 'none') $html .= 'l:'.$l.';';
-			if($r !== 'none') $html .= 'r:'.$r.';';
-			if(!in_array($lw, array(10, '10', '10%'), true)) $html .= 'lw:'.$lw.';';
-			if(!in_array($rw, array(10, '10', '10%'), true)) $html .= 'rw:'.$rw.';';
+			if($l !== 'none') $html .= 'l:'.esc_attr($l).';';
+			if($r !== 'none') $html .= 'r:'.esc_attr($r).';';
+			if(!in_array($lw, array(10, '10', '10%'), true)) $html .= 'lw:'.esc_attr($lw).';';
+			if(!in_array($rw, array(10, '10', '10%'), true)) $html .= 'rw:'.esc_attr($rw).';';
 		}
 		
 		$html .= '"';
@@ -4600,8 +4603,8 @@ class RevSliderOutput extends RevSliderFunctions {
 				$w = $this->get_biggest_device_setting($this->get_val($layer, array('idle', 'textStroke', 'width')), $this->enabled_sizes, '1px');
 			}
 			$c = $this->get_val($layer, array('idle', 'textStroke', 'color'), 'rgba(0,0,0,0.25)');
-			if(!in_array(trim($w), array(1, '1', '1px', ''), true)) $html .= 'w:'.$w.';';
-			if($c !== 'rgba(0,0,0,0.25)') $html .= 'c:'.$c.';';
+			if(!in_array(trim($w), array(1, '1', '1px', ''), true)) $html .= 'w:'.esc_attr($w).';';
+			if($c !== 'rgba(0,0,0,0.25)') $html .= 'c:'.esc_attr($c).';';
 		}
 		
 		$html .= '"';
@@ -4622,7 +4625,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			}
 			$frameorder = $fo;
 		}
-		return ($frameorder === 'frame_1;frame_999;' || $frameorder === 'frame_0;frame_1;frame_999;' || $frameorder === '') ? '' : 'data-ford="'.$frameorder.'"';
+		return ($frameorder === 'frame_1;frame_999;' || $frameorder === 'frame_0;frame_1;frame_999;' || $frameorder === '') ? '' : 'data-ford="'.esc_attr($frameorder).'"';
 	}
 
 	/**
@@ -4905,7 +4908,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		}
 		if(in_array($type, array('column', 'group'), true)){
 			$va		= $this->get_val($layer, array('idle', 'verticalAlign'), 'top');
-			$data .= ($va !== 'top') ? 'a:'.$va.';' : '';
+			$data .= ($va !== 'top') ? 'a:'.esc_attr($va).';' : '';
 		}
 
 		$data .= '"';
@@ -4943,7 +4946,7 @@ class RevSliderOutput extends RevSliderFunctions {
 								$m = reset($rl_margin[$i]);
 								$mm = str_replace(array('%', 'px'), '', $m);
 								if($mm !== '0' && $mm !== ''){
-									$data .= $mnames[$i].':'.$m.';';
+									$data .= $mnames[$i].':'.esc_attr($m).';';
 								}
 							}else{
 								$data .= $mnames[$i].':'.implode(',', $rl_margin[$i]).';';
@@ -4951,7 +4954,7 @@ class RevSliderOutput extends RevSliderFunctions {
 						}else{
 							$mm = str_replace(array('%', 'px'), '', $rl_margin[$i]);
 							if($mm !== '0' && $mm !== ''){
-								$data .= $mnames[$i].':'.$rl_margin[$i].';';
+								$data .= $mnames[$i].':'.esc_attr($rl_margin[$i]).';';
 							}
 						}
 					}
@@ -4990,7 +4993,7 @@ class RevSliderOutput extends RevSliderFunctions {
 							$m = reset($rl_padding[$i]);
 							$mm = str_replace(array('%', 'px'), '', $m);
 							if($mm !== '0' && $mm !== ''){
-								$data .= $mnames[$i].':'.$m.';';
+								$data .= $mnames[$i].':'.esc_attr($m).';';
 							}
 						}else{
 							$data .= $mnames[$i].':'.implode(',', $rl_padding[$i]).';';
@@ -4998,7 +5001,7 @@ class RevSliderOutput extends RevSliderFunctions {
 					}else{
 						$mm = str_replace(array('%', 'px'), '', $rl_padding[$i]);
 						if($mm !== '0' && $mm !== ''){
-							$data .= $mnames[$i].':'.$rl_padding[$i].';';
+							$data .= $mnames[$i].':'.esc_attr($rl_padding[$i]).';';
 						}
 					}
 				}
@@ -5041,7 +5044,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		if(!empty($style)){
 			foreach($style as $k => $v){
 				if(trim($v) !== ''){
-					$data .= $k.':'.$v.';';
+					$data .= $k.':'.esc_attr($v).';';
 				}
 			}
 		}
@@ -5083,13 +5086,13 @@ class RevSliderOutput extends RevSliderFunctions {
 					}
 
 					$image .= "background: url('".$this->remove_http($url_image)."')";
-					$image .= ' '.$this->get_val($layer, array('idle', 'backgroundRepeat'), 'no-repeat');
-					$image .= ' '.$this->get_val($layer, array('idle', 'backgroundPosition'), 'center center');
+					$image .= ' '.esc_attr($this->get_val($layer, array('idle', 'backgroundRepeat'), 'no-repeat'));
+					$image .= ' '.esc_attr($this->get_val($layer, array('idle', 'backgroundPosition'), 'center center'));
 					$image .= ';';
 					$bgs	= $this->get_val($layer, array('idle', 'backgroundSize'), 'cover');
 					$bgs	= ($bgs === 'percentage') ? $this->get_val($layer, array('idle', 'backgroundSizePerc'), '100').'%' : $bgs;
 					$bgs	= ($bgs === 'pixel') ? $this->get_val($layer, array('idle', 'backgroundSizePix'), '100').'px' : $bgs;
-					$image .= ' background-size: '.$bgs.';';
+					$image .= ' background-size: '.esc_attr($bgs).';';
 				}
 			}
 		}
@@ -5961,10 +5964,10 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		if($force === true){
 			if($attribute === 'e' || $short === 'e') $this->easings[$result] = $result;
-			return ($result !== '') ? $short.':'. $result.';' : '';
+			return ($result !== '') ? $short.':'. esc_attr($result).';' : '';
 		}else{
 			if($attribute === 'e' || $short === 'e') $this->easings[$_result] = $_result;
-			return ($result !== '' && $result !== $default) ? $short.':'. $_result.';' : '';
+			return ($result !== '' && $result !== $default) ? $short.':'. esc_attr($_result).';' : '';
 		}
 	}
 
@@ -6034,7 +6037,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			}elseif($duration == '' && strpos($transition, 'slidingoverlay') !== false){				
 				$duration = 2000;
 			}
-			$anim .= ($duration === '') ? '' : 'ms:'.$duration.';';
+			$anim .= ($duration === '') ? '' : 'ms:'.esc_attr($duration).';';
 			$anim .= $this->get_html_slide_anim_rotation();
 			$anim .= $this->get_html_slide_anim_attribute($data, false, 'adpr', true, 'adpr', false);
 			$anim .= $this->get_html_slide_anim_attribute($data, false, 'd', 15, 'd', false);
@@ -6111,7 +6114,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		/* Animates In */
 		$anim_in = ' data-in="';
-		if(!empty($rnd_transition)) $anim_in .= 'prst:'.$preset.';';
+		if(!empty($rnd_transition)) $anim_in .= 'prst:'.esc_attr($preset).';';
 		$motion = (empty($data)) ? $slide->get_param(array('slideChange', 'in', 'mou'), false) : $this->get_val($data, array('in', 'mou'), false);
 		if($motion === true) $anim_in .= $this->get_html_slide_anim_attribute($data, 'in', 'mo', '80', 'mo', true);
 		if($motion === true) $anim_in .= $this->get_html_slide_anim_attribute($data, 'in', 'moo', 'none', 'moo', true);
@@ -6215,7 +6218,7 @@ class RevSliderOutput extends RevSliderFunctions {
 				$rot_string .= $rot;
 			}
 			if($rot_string !== ''){
-				$html_rotation = 'r:'.$rot_string.';';
+				$html_rotation = 'r:'.esc_attr($rot_string).';';
 			}
 		}
 		
@@ -6238,7 +6241,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		$easein = (!empty($easein) && (is_array($easein) || is_object($easein))) ? 'ei:'.implode(',', (array)$easein).';' : '';
 
-		return str_replace('default', 'd', $easein);
+		return str_replace('default', 'd', esc_attr($easein));
 	}
 	
 	/**
@@ -6257,7 +6260,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		
 		$easeout = (!empty($easeout) && (is_array($easeout) || is_object($easeout))) ? 'eo:'.implode(',', (array)$easeout).';' : '';
 		
-		return str_replace('default', 'd', $easeout);
+		return str_replace('default', 'd', esc_attr($easeout));
 	}
 	
 	/**
@@ -6303,7 +6306,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			$alt = (array)$slide->get_param(array('timeline', 'transition'), array());
 			if(!empty($alt)) array_shift($alt);
 		}
-		$alt_trans .= implode(',', $alt);
+		$alt_trans .= esc_attr(implode(',', $alt));
 		$alt_trans .= '"';
 		
 		$this->frontend_action = ($alt_trans !== ' data-alttrans=""') ? true : $this->frontend_action;
@@ -6327,7 +6330,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			if(!empty($rpt) && $rpt !== 'unlimited') $html .= 'r:'.$rpt.';';
 		}
 		
-		return ($html !== '') ? ' data-sloop="'.$html.'"' : '';
+		return ($html !== '') ? ' data-sloop="'.esc_attr($html).'"' : '';
 	}
 
 	/**
@@ -6385,7 +6388,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_media_filter(){
 		$slide	= $this->get_slide();
 		$filter = $slide->get_param(array('bg', 'mediaFilter'), 'none');
-		return ($filter != 'none') ? ' data-mediafilter="'.$filter.'"' : '';
+		return ($filter != 'none') ? ' data-mediafilter="'.esc_attr($filter).'"' : '';
 	}
 	
 	/**
@@ -6394,7 +6397,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_slide_class(){
 		$slide = $this->get_slide();
 		$class = $slide->get_param(array('attributes', 'class'), '');
-		return ($class != '') ? ' class="'.$class.'"' : '';
+		return ($class != '') ? ' class="'.esc_attr($class).'"' : '';
 	}
 	
 	/**
@@ -6403,7 +6406,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_slide_id(){
 		$slide	= $this->get_slide();
 		$id		= $slide->get_param(array('attributes', 'id'), '');
-		return ($id != '') ? ' id="'.$id.'"' : '';
+		return ($id != '') ? ' id="'.esc_attr($id).'"' : '';
 	}
 	
 	/**
@@ -6412,9 +6415,19 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_extra_data(){
 		$slide	= $this->get_slide();
 		$data	= stripslashes($slide->get_param(array('attributes', 'data'), ''));
+		if (!empty($data)) {
+			$result = '';
+			$count = preg_match_all('/\bdata-\w+=(["\'])(.*?)\1/i', $data, $matches);
+			if ($count) {
+				foreach ($matches[0] as $k => $v)
+					$result .= str_replace($matches[2][$k], esc_attr($matches[2][$k]), $matches[0][$k]) . ' ';
+			}
+			$data = $result;
+		}
+		
 		$deeplink = stripslashes($slide->get_param(array('attributes', 'deeplink'), ''));
 		if (!empty($deeplink)) {
-			$data = $data.' data-deeplink="'.$deeplink.'" ';
+			$data = $data.' data-deeplink="'.esc_attr($deeplink).'" ';
 		}
 
 		return ($data != '') ? ' '.$data : '';
@@ -6426,7 +6439,7 @@ class RevSliderOutput extends RevSliderFunctions {
 	public function get_html_hide_after_loop(){
 		$slide = $this->get_slide();
 		$hal = $slide->get_param(array('visibility', 'hideAfterLoop'), 0);
-		return ($hal !== 0) ? ' data-hal="'.$hal.'"' : '';
+		return ($hal !== 0) ? ' data-hal="'.esc_attr($hal).'"' : '';
 	}
 	
 	/**
@@ -7031,7 +7044,7 @@ class RevSliderOutput extends RevSliderFunctions {
 			$html .= "gw:[". $csizes['width'] ."],";
 			$html .= "gh:[". $csizes['height'] ."],";
 			$html .= "type:'";
-			$html .= $this->slider->get_param('type', 'standard');
+			$html .= esc_attr($this->slider->get_param('type', 'standard'));
 			$html .= "',";
 			$html .= "justify:'";
 			$html .= $jus;
@@ -7046,7 +7059,7 @@ class RevSliderOutput extends RevSliderFunctions {
 					$do = false;
 					if($this->slider->get_param(array('nav', $nav, 'set'), false) !== true) continue;
 					if($this->slider->get_param(array('nav', $nav, 'innerOuter'), 'inner') === 'outer-vertical'){
-						$html .= $nk.'w:"'.$this->slider->get_param(array('nav', $nav, 'widthMin'), 100).'",';
+						$html .= $nk.'w:"'.esc_attr($this->slider->get_param(array('nav', $nav, 'widthMin'), 100)).'",';
 						$do = true;
 					}
 					if($this->slider->get_param(array('nav', $nav, 'innerOuter'), 'inner') === 'outer-horizontal'){
@@ -7054,14 +7067,14 @@ class RevSliderOutput extends RevSliderFunctions {
 						$h = $this->slider->get_param(array('nav', $nav, 'height'), 50);
 						$h = ($wp > 0) ? $h + $wp * 2 : $h;
 						
-						$html .= $nk.'h:"'.$h.'",';
+						$html .= $nk.'h:"'.esc_attr($h).'",';
 						$do = true;
 					}
 					
 					if($do === false) continue;
 					if($this->slider->get_param(array('nav', $nav, 'hideUnder'), false) === false) continue;
 					
-					$html .= $nk.'hide:"'.$this->slider->get_param(array('nav', $nav, 'hideUnderLimit'), 0).'",';
+					$html .= $nk.'hide:"'.esc_attr($this->slider->get_param(array('nav', $nav, 'hideUnderLimit'), 0)).'",';
 				}
 			}
 			if($this->slider->get_param('layouttype') == 'fullscreen'){
@@ -7094,7 +7107,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$message = $this->slider->get_title().': '.$message;
 		$html = '';
 		$html .= '<script>';
-		$html .= 'console.log("'.esc_html($message).'")';
+		$html .= 'console.log("'.esc_js($message).'")';
 		$html .= '</script>'."\n";
 
 		echo $html;
@@ -7113,7 +7126,7 @@ class RevSliderOutput extends RevSliderFunctions {
 		$html = '';
 		
 		if(empty($html_id)){
-			$html_id = 'rev_slider_error_'.$SR_GLOBALS['serial'];
+			$html_id = 'rev_slider_error_'.esc_attr($SR_GLOBALS['serial']);
 		}else{
 			$slides = $this->slider->get_slides();
 			
@@ -7128,27 +7141,27 @@ class RevSliderOutput extends RevSliderFunctions {
 		$url = (empty($html_id) || !is_user_logged_in() || $id === '') ? '' : admin_url('admin.php?page=revslider&view=slide&id='.$id);
 		$page_url = ($open_page === true && is_user_logged_in()) ? get_edit_post_link() : '';
 		
-		$html .= ($this->rs_module_wrap_open === false) ? RS_T3.'<rs-module-wrap id="'.$html_id.'_wrapper">'."\n" : '';
-		$html .= ($this->rs_module_open === false) ? RS_T4.'<rs-module id="'.$html_id.'">'."\n" : '';
+		$html .= ($this->rs_module_wrap_open === false) ? RS_T3.'<rs-module-wrap id="'.esc_attr($html_id).'_wrapper">'."\n" : '';
+		$html .= ($this->rs_module_open === false) ? RS_T4.'<rs-module id="'.esc_attr($html_id).'">'."\n" : '';
 		$html .= RS_T5.'<div class="rs_error_message_box">'."\n";
 		$html .= RS_T6.'<div class="rs_error_message_oops">There is nothing to show here!</div>'."\n";
 		$html .= RS_T6.'<div class="rs_error_message_content">'.esc_html($message);
 		$html .= (!empty($url)) ? '<br>'.__('Please follow this link to edit the slider:', 'revslider') : '';
 		$html .= '</div>'."\n";
-		$html .= (!empty($url)) ? RS_T6.'<a href="'.$url.'" target="_blank" rel="noopener" class="rs_error_message_button">Edit Module : "'.$this->slider->get_alias().'"</a>'."\n" : '';
+		$html .= (!empty($url)) ? RS_T6.'<a href="'.$url.'" target="_blank" rel="noopener" class="rs_error_message_button">Edit Module : "'.esc_html($this->slider->get_alias()).'"</a>'."\n" : '';
 		$html .= (!empty($page_url)) ? RS_T6.'<a href="'.$page_url.'" target="_blank" rel="noopener" class="rs_error_message_button">Edit Page</a>'."\n" : '';
 		$html .= RS_T5.'</div>'."\n";
 		$html .= ($this->rs_module_wrap_closed === false) ? RS_T4.'</rs-module>'."\n" : '';
 		$html .= ($this->rs_module_closed === false) ? RS_T3.'</rs-module-wrap>'."\n" : '';
 		
 		$html .=  RS_T3.'<script>'."\n";
-		$html .=  RS_T4.'var rs_eslider = document.getElementById("'.$html_id.'");'."\n";
+		$html .=  RS_T4.'var rs_eslider = document.getElementById("'.esc_js($html_id).'");'."\n";
 		if(is_user_logged_in()){
 			$html .=  RS_T4.'rs_eslider.style.display = "block";'."\n";
 			$html .=  RS_T4.'rs_eslider.style.visibility = "visible";'."\n";
 		}else{
 			$html .=  RS_T4.'rs_eslider.style.display = "none";'."\n";
-			$html .=  RS_T4.'console.log("'.esc_html($message).'");'."\n";
+			$html .=  RS_T4.'console.log("'.esc_js($message).'");'."\n";
 		}
 		$html .=  RS_T3.'</script>'."\n";
 		
@@ -7394,12 +7407,12 @@ class RevSliderOutput extends RevSliderFunctions {
 		switch($spinner){
 			case '1':
 			case '2':
-				$css_html = "#".$this->get_html_id()."_wrapper rs-loader.spinner".$spinner."{ background-color: ". $color ." !important; }";
+				$css_html = "#".$this->get_html_id()."_wrapper rs-loader.spinner".esc_attr($spinner)."{ background-color: ". esc_attr($color) ." !important; }";
 				$html = $this->get_css_javascript($css_html);
 			break;
 			case '3':
 			case '4':
-				$css_html = "#".$this->get_html_id()."_wrapper rs-loader.spinner".$spinner." div { background-color: ". $color ." !important; }";
+				$css_html = "#".$this->get_html_id()."_wrapper rs-loader.spinner".esc_attr($spinner)." div { background-color: ". esc_attr($color) ." !important; }";
 				$html = $this->get_css_javascript($css_html);
 			break;
 			case '0':
@@ -8598,7 +8611,7 @@ class RevSliderOutput extends RevSliderFunctions {
 								}
 								$html .= "\n".$this->JTA . RS_T7.'}';
 							}else{
-								$html .= $this->write_js_var($v);
+								$html .= $k == 'tmp' ? '"'.$v.'"' : $this->write_js_var($v) ;
 							}
 							$f = false;
 						}
@@ -8897,8 +8910,15 @@ class RevSliderOutput extends RevSliderFunctions {
 	 * perform checks to see how to write a JavaScript variable
 	 **/
 	public function write_js_var($v, $pp = '"'){
-		if(is_bool($v)) $v = ($v) ? 'true' : 'false';
-
-		return (is_numeric($v) || substr($v, 0, 1) === '[' || in_array($v, array('true', 'false'))) ? $v : $pp.$v.$pp;
+		if(is_bool($v)) { $v = ($v) ? 'true' : 'false'; return $v;}
+		if(is_numeric($v) || in_array($v, array('true', 'false'))) return $v;
+		
+		if(substr($v, 0, 1) === '[') {
+			$arr = json_decode($v);
+			if(is_null($arr)) return $pp . $pp;
+			return json_encode($arr, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT);
+		}
+		
+		return $pp . esc_js($v) . $pp;
 	}
 }
