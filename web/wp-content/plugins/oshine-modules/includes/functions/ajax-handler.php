@@ -4,44 +4,92 @@
  */
 
 /* ---------------------------------------------  */
+// Function to sanitize array recursively
+/* ---------------------------------------------  */
+
+if ( ! function_exists( 'oshine_sanitize_array' ) ) {
+	function oshine_sanitize_array( $array, $esc_attr = true, $textarea_sanitize = false ) {
+		if ( ! empty( $array ) && is_array( $array ) ) {
+			foreach ( (array) $array as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$array[ $key ] = oshine_sanitize_array( $value );
+				} else if ( $esc_attr ) {
+						$array[ $key ] = esc_attr( $value );
+				} else {
+					$array[ $key ] = true === $textarea_sanitize ? sanitize_textarea_field( wp_unslash( $value ) )  : sanitize_text_field( wp_unslash( $value ) );
+				}
+			}
+		}
+		return $array;
+	}
+}
+
+/* ---------------------------------------------  */
+// Function to check if invalid nonce
+/* ---------------------------------------------  */
+
+if ( ! function_exists( 'oshine_has_invalid_nonce' ) ) {
+	function oshine_has_invalid_nonce( $nonce_name = 'oshine_module_nonce', $input_key = 'oshine_nonce' ) {
+		// verify nonce
+		if ( empty( $_POST[$input_key] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[$input_key] ) ), $nonce_name ) ) {
+			return array(
+				'status'  => 'error',
+				'data' => __( 'Missing or invalid nonce. Please clear the page cache.', 'oshine-modules'),
+			);
+		}
+		return false;
+	}
+}
+
+/* ---------------------------------------------  */
 // Function for processing contact form submission
 /* ---------------------------------------------  */
 
 if ( ! function_exists( 'be_themes_contact_authentication' ) ) :
 	function be_themes_contact_authentication() {
-		global $be_themes_data;
-		$contact_name = $_POST['contact_name'];
-		$contact_email = $_POST['contact_email'];
-		$contact_style = $_POST['contact_style'];
-		$contact_comment = $_POST['contact_comment'];
-		$contact_subject = $_POST['contact_subject'];
-		if(empty($contact_name) || empty($contact_email) || empty($contact_comment) || ( ( 'style1' == $contact_style ) && empty($contact_subject) ) ) {
-			$result['status']="error";
-			$result['data']= __('All fields are required','oshine-modules');
-		}
-		else if(!preg_match ('/^[\w.-]+@[\w.-]+\.[A-Za-z]{2,6}$/', $contact_email)) {
-			$result['status']="error";
-			$result['data']=__('Please enter a valid email address','oshine-modules');
-		}
-		else {
-			$contact_comment = "Name: ".$contact_name."\n\nMessage:\n".$_POST['contact_comment'];
-			if ( !empty( $be_themes_data['mail_id'] ) ) {
-				$to = $be_themes_data['mail_id'];
-			} else {
-				$to = get_option('admin_email');
-			}		
-			$subject= $contact_subject;
-			$from = $contact_name." <".$contact_email.">";
-			$headers = "From:" . $from . "\r\n" . 'Reply-To: '.$from;
-			$mail = wp_mail($to,$subject,$contact_comment,$headers);
-			if( $mail ) {
-				$result['status']="success";
-				$result['data']=__('Your message was sent successfully','oshine-modules');
-			} else {
+		
+		$result = oshine_has_invalid_nonce( 'oshine_contact' );
+		if ( false === $result ) {
+			global $be_themes_data;
+			$result = array();
+			$contact_name = $_POST['contact_name'];
+			$contact_email = $_POST['contact_email'];
+			$contact_style = $_POST['contact_style'];
+			$contact_comment = $_POST['contact_comment'];
+			$contact_subject = $_POST['contact_subject'];
+			if(empty($contact_name) || empty($contact_email) || empty($contact_comment) || ( ( 'style1' == $contact_style ) && empty($contact_subject) ) ) {
 				$result['status']="error";
-				$result['data']=__('Unable to send the message. Please try again later','oshine-modules');
+				$result['data']= __('All fields are required','oshine-modules');
+			} else if(!preg_match ('/^[\w.-]+@[\w.-]+\.[A-Za-z]{2,6}$/', $contact_email)) {
+				$result['status']="error";
+				$result['data']=__('Please enter a valid email address','oshine-modules');
+			} else {
+				$contact_name = sanitize_text_field( $contact_name );
+				$contact_email = sanitize_email( $contact_email );
+				$contact_style = sanitize_text_field( $contact_style );
+				$contact_comment = sanitize_textarea_field( $contact_comment );
+				$contact_subject = sanitize_text_field( $contact_subject );
+
+				$contact_comment = "Name: ".$contact_name."\n\nMessage:\n".$_POST['contact_comment'];
+				if ( !empty( $be_themes_data['mail_id'] ) ) {
+					$to = $be_themes_data['mail_id'];
+				} else {
+					$to = get_option('admin_email');
+				}		
+				$subject= $contact_subject;
+				$from = $contact_name." <".$contact_email.">";
+				$headers = "From:" . $from . "\r\n" . 'Reply-To: '.$from;
+				$mail = wp_mail($to,$subject,$contact_comment,$headers);
+				if( $mail ) {
+					$result['status']="success";
+					$result['data']=__('Your message was sent successfully','oshine-modules');
+				} else {
+					$result['status']="error";
+					$result['data']=__('Unable to send the message. Please try again later','oshine-modules');
+				}
 			}
 		}
+
 		header('Content-type: application/json');
 		echo json_encode($result);
 		die();
@@ -56,7 +104,14 @@ endif;
 //mymark
 if ( ! function_exists( 'be_themes_get_ajax_full_screen_gutter_portfolio' ) ) :
 	function be_themes_get_ajax_full_screen_gutter_portfolio() {
-		extract($_POST);
+
+		// Verify nonce
+		$invalid_nonce = oshine_has_invalid_nonce();
+		if ( false !== $invalid_nonce ) {
+			wp_send_json_error( $invalid_nonce );
+		}
+
+		extract( oshine_sanitize_array( $_POST ) );
 		$output='';
 		$overlay_color = '';
 		$prebuilt_hover_color_style1 = 'rgba(0, 0, 0, 0.5);';
@@ -388,8 +443,30 @@ endif;
 /* ---------------------------------------------  */
 if ( ! function_exists( 'be_themes_post_like' ) ) :
 	function be_themes_post_like() {
-		extract($_POST);
+		
+		// Verify nonce
+		$invalid_nonce = oshine_has_invalid_nonce();
+		if ( false !== $invalid_nonce ) {
+			wp_send_json_error( $invalid_nonce );
+		}
+
+		if ( empty( $_POST['post_id'] ) || 0 >= intval( wp_unslash( $_POST['post_id'] ) ) ) {
+			wp_send_json_error( 
+				array(
+				'status'  => 'error',
+				'type'	=> 'like',
+				'count'	=> 0,
+				'data' => __( 'Missing or incorrect post ID.', 'oshine-modules'),
+				) 
+			);
+		}
+
+		$post_id = intval( sanitize_key( wp_unslash( $_POST['post_id'] ) ) );
+
 		$post_like_count = get_post_meta( $post_id, "_post_like_count", true );
+
+		$post_like_count = intval( $post_like_count );
+
 		if (be_AlreadyLiked_post($post_id)) {
 			$post_like_count = $post_like_count - 1; 
 			unset($_COOKIE[$post_id."_liked"]);
@@ -409,7 +486,7 @@ if ( ! function_exists( 'be_themes_post_like' ) ) :
 			$result['data'] = "You Liked Successfully";
 			$result['count'] = $post_like_count;
 		}
-		// var_dump($result);
+		
 		header('Content-type: application/json');
 		echo json_encode($result);
 		die();
@@ -424,7 +501,13 @@ endif;
 if ( ! function_exists( 'be_themes_get_be_gallery_with_pagination' ) ) :
 	function be_themes_get_be_gallery_with_pagination(){
 
-		extract($_POST);
+		// Verify nonce
+		$invalid_nonce = oshine_has_invalid_nonce();
+		if ( false !== $invalid_nonce ) {
+			wp_send_json_error( $invalid_nonce );
+		}
+		
+		extract( oshine_sanitize_array( $_POST ) );
 		
 		if($paged != 0){
 			$images_offset = $paged * $items_per_load;
@@ -581,7 +664,13 @@ endif;
 if ( ! function_exists( 'be_themes_get_be_justified_gallery_with_pagination' ) ) :
 	function be_themes_get_be_justified_gallery_with_pagination(){
 		
-		extract($_POST);
+		// Verify nonce
+		$invalid_nonce = oshine_has_invalid_nonce();
+		if ( false !== $invalid_nonce ) {
+			wp_send_json_error( $invalid_nonce );
+		}
+
+		extract( oshine_sanitize_array( $_POST ) );
 
 		if($paged != 0){
 			$images_offset = $paged * $items_per_load;
@@ -703,28 +792,47 @@ endif;
  */
 if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) {
 	function be_themes_mailchimp_subscription() {
-		if( empty( $_POST['email'] ) ) {
+
+		// Verify nonce
+		$invalid_nonce = oshine_has_invalid_nonce( 'oshine_newsletter' );
+		if ( false !== $invalid_nonce ) {
+			wp_send_json( $invalid_nonce );
+		}
+
+		if( empty( $_POST['email'] ) || ! filter_var( $_POST['email'], FILTER_VALIDATE_EMAIL ) || ! preg_match ( '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[A-Za-z]{2,}$/', $_POST['email'] ) ) {
+			
 			wp_send_json( array(
 				'status'  => 'error',
-				'data' => __( 'Email Address is missing.', 'oshine-modules'),
+				'data' => __( 'Missing or invalid email Address.', 'oshine-modules'),
 			 ) );
 		}
-		if( empty($_POST['api_key']) || empty( $_POST['list_id'] ) ) {
+
+		if( empty( $_POST['api_key'] ) || empty( $_POST['list_id'] ) ) {
 			wp_send_json( array(
 				'status'  => 'error',
 				'data' => __( 'Api Key or List Id is missing.', 'oshine-modules'),
 			 ) );
 		}
 
-		$email = sanitize_email( $_POST['email'] );
-		$api_key = $_POST['api_key'];
-		$list_id = $_POST['list_id'];
+		$email = sanitize_email( wp_unslash( $_POST['email'] ) );
+		$api_key = sanitize_text_field( wp_unslash( $_POST['api_key'] ) );
+		$list_id = sanitize_text_field( wp_unslash( $_POST['list_id'] ) );
 
 		$success = empty( $_POST['success_text'] ) ? __( 'Thank you, you have been added to our mailing list.','oshine-modules' ) : sanitize_text_field( $_POST['success_text'] );
 
 		$phone = $fname = $lname = '';
 		$api_endpoint = 'https://<dc>.api.mailchimp.com/3.0/';
 		list( , $datacentre ) = explode( '-', $api_key );
+
+		// Check if the provided data center matches the pattern 
+		// Datacenter should be Start with string, Exactly two lowercase letters and One or more digits e.g us5
+		if ( ! preg_match( '/^[a-z]{2}[0-9]+$/', $datacentre)) {
+			wp_send_json( array(
+				'status'  => 'error',
+				'data' => __( 'Invalid Api Key.', 'oshine-modules'),
+			) );
+		}
+
 		$api_endpoint = str_replace( '<dc>', $datacentre, $api_endpoint );
 
 		$body = apply_filters( 'exponent_mailchimp_data', [
@@ -742,7 +850,7 @@ if ( ! function_exists( 'be_themes_mailchimp_subscription' ) ) {
 			'send_welcome'      => false,
 		] );
 
-		$response = wp_remote_post( $api_endpoint . '/lists/' . $list_id . '/members', [
+		$response = wp_safe_remote_post( esc_url( $api_endpoint . '/lists/' . $list_id . '/members' ), [
 			'headers'   => [
 				'Content-Type'  => 'application/json',
 				'Authorization' => 'Basic '. base64_encode( 'user:' . $api_key ),

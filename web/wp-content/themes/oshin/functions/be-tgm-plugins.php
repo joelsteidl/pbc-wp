@@ -35,7 +35,10 @@ add_action( 'tgmpa_register', 'my_theme_register_required_plugins' );
  * TGM_Plugin_Activation class constructor.
  */
 function my_theme_register_required_plugins() {
-
+	// Go to one click installation page
+	if ( ! empty( $_GET['page'] ) && 'install-required-plugins' == sanitize_key( $_GET['page'] ) && ! empty( $_GET['plugin_status'] ) && 'update' != sanitize_key( $_GET['plugin_status'] ) && function_exists( 'wp_safe_redirect' ) && wp_safe_redirect( admin_url( 'themes.php?page=be_register#be-plugins' ) ) ) {
+		exit;
+	}
 	$tgmData = be_get_theme_tgm_data(array(
 		'tatsu'=>array(
 			'download_url'=>'https://brandexponents.com/be-plugins/tatsu.zip',

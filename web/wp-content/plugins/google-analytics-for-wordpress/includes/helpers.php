@@ -1019,11 +1019,9 @@ function monsterinsights_perform_remote_request( $action, $body = array(), $head
             'tgm-updater-is-pro'     => monsterinsights_is_pro_version(),
         )
     );
-
     $args = [
         'headers' => $headers,
     ];
-
     // Perform the query and retrieve the response.
     $response      = wp_remote_get( add_query_arg( $query_params, monsterinsights_get_licensing_url() ), $args );
     $response_code = wp_remote_retrieve_response_code( $response );
@@ -1235,6 +1233,75 @@ if ( ! function_exists( 'wp_get_jed_locale_data' ) ) {
 
 		return $locale;
 	}
+}
+
+/**
+ * Get JED array of translatable text.
+ *
+ * @param $domain string Text domain.
+ *
+ * @return array
+ */
+function monsterinsights_get_jed_locale_data( $domain ) {
+	$translations = get_translations_for_domain( $domain );
+
+    $translations_entries = $translations->entries;
+
+	if ( empty( $translations_entries ) ) {
+        return;
+    }
+
+	$messages = array(
+		'' => array(
+			'domain'       => 'messages',
+			'lang'         => is_admin() && function_exists( 'get_user_locale' ) ? get_user_locale() : get_locale(),
+			'plural-forms' => 'nplurals=2; plural=(n != 1);',
+		)
+	);
+
+	foreach ( $translations_entries as $entry ) {
+		$messages[ $entry->singular ] = $entry->translations;
+	}
+
+	return array(
+		'domain'      => 'messages',
+		'locale_data' => array(
+			'messages' => $messages,
+		),
+	);
+}
+
+/**
+ * Get JED array of translatable text.
+ *
+ * @param $domain string Text domain.
+ *
+ * @return string
+ */
+function monsterinsights_get_printable_translations( $domain ) {
+	$locale = determine_locale();
+
+	if ( 'en_US' == $locale ) {
+		return '';
+	}
+
+    $locale_data = monsterinsights_get_jed_locale_data( $domain );
+
+    if ( ! $locale_data ) {
+	    return '';
+    }
+
+	$json_translations = wp_json_encode( $locale_data );
+
+	$output = <<<JS
+( function( domain, translations ) {
+	var localeData = translations.locale_data[ domain ] || translations.locale_data.messages;
+	localeData[""].domain = domain;
+	wp.i18n.setLocaleData( localeData, domain );
+} )( "{$domain}", {$json_translations} );
+JS;
+
+	return wp_get_inline_script_tag( $output );
 }
 
 function monsterinsights_get_inline_menu_icon() {
@@ -2352,3 +2419,5 @@ if ( ! function_exists( 'monsterinsights_is_authed' ) ) {
 		return isset($site_profile['key']);
 	}
 }
+// Prevents being redirected to Duplicator once plugin is installed through the onboarding wizard.
+add_filter( 'duplicator_disable_onboarding_redirect', '__return_true' );

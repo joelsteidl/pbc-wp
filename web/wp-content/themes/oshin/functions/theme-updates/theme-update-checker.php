@@ -259,7 +259,9 @@ class ThemeUpdate {
 	public $version;      //Version number.
 	public $details_url;  //The URL where the user can learn more about this version. 
 	public $download_url; //The download URL for this version of the theme. Optional.
-	
+	public $changelog_url; //The changelog URL for this version of the theme. Optional.
+	public $theme_message; //The theme message for this version of the theme. Optional.
+	public $status;       //The status of the update. Optional.
 	/**
 	 * Create a new instance of ThemeUpdate from its JSON-encoded representation.
 	 * 

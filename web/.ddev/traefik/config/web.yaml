@@ -1,0 +1,77 @@
+#ddev-generated
+# If you remove the ddev-generated line above you
+# are responsible for maintaining this file. DDEV will not then
+# update it, for example if you add `additional_hostnames`, etc.
+
+http:
+  routers:
+    web-web-80-http:
+      entrypoints:
+        - http-80
+      rule: HostRegexp(`^web\.ddev\.site$`)
+      
+      service: "web-web-80"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "web-redirectHttps"
+    web-web-8025-http:
+      entrypoints:
+        - http-8025
+      rule: HostRegexp(`^web\.ddev\.site$`)
+      
+      service: "web-web-8025"
+      ruleSyntax: v3
+      tls: false
+      # middlewares:
+      #   - "web-redirectHttps"
+    
+    
+    
+    web-web-80-https:
+      entrypoints:
+        - http-443
+      rule: HostRegexp(`^web\.ddev\.site$`)
+      
+      service: "web-web-80"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    web-web-8025-https:
+      entrypoints:
+        - http-8026
+      rule: HostRegexp(`^web\.ddev\.site$`)
+      
+      service: "web-web-8025"
+      ruleSyntax: v3
+      
+      tls: true
+      
+    
+
+  middlewares:
+    web-redirectHttps:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  services:
+    web-web-80:
+      loadbalancer:
+        servers:
+          - url: http://ddev-web-web:80
+        
+    web-web-8025:
+      loadbalancer:
+        servers:
+          - url: http://ddev-web-web:8025
+        
+    
+    
+    
+
+tls:
+  certificates:
+    - certFile: /mnt/ddev-global-cache/traefik/certs/web.crt
+      keyFile: /mnt/ddev-global-cache/traefik/certs/web.key

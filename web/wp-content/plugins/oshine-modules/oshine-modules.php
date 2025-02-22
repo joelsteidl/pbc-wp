@@ -3,7 +3,7 @@
  * Plugin Name:       Oshine Modules
  * Plugin URI:        http://oshine.wpengine.com
  * Description:       Shortcode Modules that come along with the OSHINE Theme, integrated with TATSU Page Builder plugin
- * Version:           3.3.6
+ * Version:           3.3.8
  * Author:            Brand Exponents
  * Author URI:        http://brandexponents.com
  * License:           GPL-2.0+

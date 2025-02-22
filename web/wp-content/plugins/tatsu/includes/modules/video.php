@@ -100,7 +100,7 @@ if ( !function_exists( 'tatsu_vimeo' ) ) {
 			// Handle app types of vimeo links
 			$response = wp_remote_get( 'https://vimeo.com/api/oembed.json?url=' . $url );
 
-			if ( is_array( $response ) && ! is_wp_error( $response ) ) {
+			if ( is_array( $response ) && ! is_wp_error( $response ) && 200 == wp_remote_retrieve_response_code( $response ) ) {
 				$response_body = wp_remote_retrieve_body( $response );
     			$data = json_decode( $response_body );
 

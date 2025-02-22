@@ -739,6 +739,7 @@
 				               // $options = $justified_gallery_wrap.data(),
 				                $paged = Number( $justified_gallery_wrap.attr('data-paged') ),
 				                $ajaxData = "action=" + $justified_gallery_wrap.attr('data-action') + 
+								            "&oshine_nonce=" + oshineModulesConfig.oshinonce + 
                                             //"&source=" + $justified_gallery_wrap.attr('data-source') + 
                                             "&images_arr=" + $justified_gallery_wrap.attr('data-images-array') + 
                                             "&items_per_load=" + $justified_gallery_wrap.attr('data-items-per-load') + 
@@ -809,7 +810,7 @@
 						type: "POST",
 						url: ajax_url,
 						dataType: 'json',
-						data: "action=post_like&post_id=" + $post_id,
+						data: "action=post_like&post_id=" + $post_id + "&oshine_nonce=" + oshineModulesConfig.oshinonce,
 						success : function (msg) {
 							if (msg.status === "success") {
 								if( msg.type === "like" ){
@@ -824,7 +825,7 @@
 							}
 						},
 						error: function (msg) {
-							alert(msg);
+							console.log( "error", msg );
 						}
 					});
 					return false;
@@ -2108,6 +2109,7 @@
 	                    case 'portfolio' : 
 
 	                        $ajaxData = "action=" + $this.attr("data-action") + 
+										"&oshine_nonce=" + oshineModulesConfig.oshinonce +
 	                                    "&category=" + $this.attr("data-category") + 
 	                                    "&masonry=" + $this.attr("data-enable-masonry") + 
 	                                    "&showposts=" + $this.attr("data-showposts") + 
@@ -2138,6 +2140,7 @@
 	                    case 'gallery' :
 
 	                        $ajaxData = "action=" + $this.attr("data-action") + 
+										"&oshine_nonce=" + oshineModulesConfig.oshinonce +
 	                                    "&masonry=" + $this.attr("data-enable-masonry") + 
 	                                    "&source=" + $this.attr("data-source") + 
 	                                    "&gutter_width=" + $this.attr("data-gutter-width") + 
@@ -2164,6 +2167,7 @@
 	                    case 'blog' :
 
 	                        $ajaxData = "action=" + $this.attr("data-action") + 
+							"&oshine_nonce=" + oshineModulesConfig.oshinonce +
 	                        "&showposts=" + $this.attr("data-showposts") + 
 	                        "&gutter_width=" + Number( $this.attr("data-gutter-width") ) + 
 							"&blog_style=" + ( portfolioParam.find( '.portfolio-container' ).hasClass( 'style3-blog' ) ? 'style3' : 'style8' ) + 
@@ -2672,7 +2676,7 @@
 	                        type: "POST",
 	                        url: ajax_url,
 	                        dataType: 'json',
-	                        data: "action=post_like&post_id=" + $post_id,
+	                        data: "action=post_like&post_id=" + $post_id + "&oshine_nonce=" + oshineModulesConfig.oshinonce,
 	                        success : function (msg) {
 								if (msg.status === "success") {
 									if( msg.type === "like" ){
@@ -2687,7 +2691,7 @@
 								}
 							},
 	                        error: function (msg) {
-								alert(msg);
+								console.log( "error", msg );
 	                        }
 	                    });
 	                    return false;

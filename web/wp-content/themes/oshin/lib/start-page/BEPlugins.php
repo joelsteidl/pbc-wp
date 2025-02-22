@@ -137,7 +137,7 @@
 		 */
 		public function plugin_sctipts(){
 			if(isset($_GET['page']) && $_GET['page'] == BEAdminMenu::$settings['menu-slug']) {
-				wp_enqueue_script( 'be-plugin-manager', get_template_directory_uri().'/lib/admin-tpl/assets/js/plugin-manager.js', array( 'jquery' ), false, false );
+				wp_enqueue_script( 'be-plugin-manager', get_template_directory_uri().'/lib/admin-tpl/assets/js/plugin-manager.js', array( 'jquery' ), OSHIN_THEME_VERSION, false );
 
 				wp_localize_script( 'be-plugin-manager', 'envato_setup_params', array(
 				'tgm_plugin_nonce' => array(

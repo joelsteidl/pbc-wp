@@ -54,6 +54,9 @@ class MonsterInsights_Rest_Routes {
 			$this,
 			'dismiss_first_time_notice'
 		) );
+		add_action( 'wp_ajax_monsterinsights_vue_update_included_metrics', array( $this, 'update_included_metrics' ) );
+		add_action( 'wp_ajax_monsterinsights_vue_get_user_included_metrics', array( $this, 'get_user_included_metrics' ) );
+
 	}
 
 	/**
@@ -114,6 +117,9 @@ class MonsterInsights_Rest_Routes {
 			'network_viewname'                    => $auth->get_network_viewname(),
 			'network_manual_v4'                   => $auth->get_network_manual_v4_id(),
 			'network_measurement_protocol_secret' => $auth->get_network_measurement_protocol_secret(),
+			//  Custom tracking fields (Gtag selector)
+			'gtag_selector_tracking_tag'          => monsterinsights_get_option( 'gtag_selector_tracking_tag', '' ),
+			'gtag_selector_tracking_mp'           => monsterinsights_get_option( 'gtag_selector_tracking_mp', '' ),
 		) );
 
 	}
@@ -1110,6 +1116,7 @@ class MonsterInsights_Rest_Routes {
 		if ( $isnetwork ) {
 			$args['network'] = true;
 		}
+		$args['included_metrics'] = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', true ) ?? 'sessions,pageviews';
 
 		if ( monsterinsights_is_pro_version() && ! MonsterInsights()->license->license_can( $report->level ) ) {
 			$data = array(
@@ -1119,7 +1126,6 @@ class MonsterInsights_Rest_Routes {
 		} else {
 			$data = apply_filters( 'monsterinsights_vue_reports_data', $report->get_data( $args ), $report_name, $report );
 		}
-
 		if ( ! empty( $data['success'] ) ) {
 			if ( empty( $data['data'] ) ) {
 				wp_send_json_success( new stdclass() );
@@ -1620,5 +1626,63 @@ class MonsterInsights_Rest_Routes {
 				'category'  => intval( ( ! empty( $category ) && ! empty( $category->term_id ) ) ? $category->term_id : 0 ),
 			) );
 		}
+	}
+	/**
+	 * Updates the selected metrics for the current user to be included into the overview reports.
+	 *
+	 * @since 9.2.3
+	 * @return void
+	 */
+	public function update_included_metrics() {
+		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+		if ( isset( $_POST['selected_metrics'] ) ) {
+			$current_metrics  = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', false );
+			$selected_metrics = sanitize_text_field( wp_unslash( $_POST['selected_metrics'] ) );
+			if ( $current_metrics !== $selected_metrics ) {
+				// If the metrics change, let's clear the cache so we can load the new metrics.
+				delete_transient( 'monsterinsights_report_data_overview' );
+				delete_site_option( 'monsterinsights_report_data_overview' );
+				delete_transient( 'monsterinsights_network_report_data_overview' );
+				delete_site_option( 'monsterinsights_network_report_data_overview' );
+				delete_site_option( 'monsterinsights_report_data_compare_overview' );
+				delete_transient( 'monsterinsights_report_data_compare_overview' );
+			}
+			update_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', $selected_metrics );
+		}
+		wp_send_json_success();
+	}
+	/**
+	 * Get's the user included metrics to visualize in the overview reports.
+	 *
+	 * @since 9.2.3
+	 * @return void
+	 */
+	public function get_user_included_metrics() {
+		check_ajax_referer( 'mi-admin-nonce', 'nonce' );
+		$user_included_metrics = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', true );
+		if ( false === $user_included_metrics || empty( $user_included_metrics ) ) {
+			$user_included_metrics = 'pageviews,sessions';
+		}
+		$user_included_metrics = $this->remove_premium_metrics( $user_included_metrics );
+		wp_send_json_success( $user_included_metrics );
+	}
+	/**
+	 * If license has expired, removes access to the premium metrics.
+	 *
+	 * @param string $included_metrics the current metrics provided by the user.
+	 * @return string
+	 */
+	public function remove_premium_metrics( $included_metrics ) {
+		$premium_metrics = [
+			'revenue_sales,',
+			'average_revenue_per_user,',
+			'average_revenue_per_session,',
+			'ecommerce_purchases,',
+		];
+		if ( MonsterInsights()->license->license_expired() || false === monsterinsights_is_pro_version() ) {
+			$included_metrics = str_replace( $premium_metrics, '', $included_metrics );
+			$included_metrics = str_replace( ',,', ',', $included_metrics ); // Clear the extra commas to avoid an empty iteration.
+		}
+		return $included_metrics;
 	}
 }

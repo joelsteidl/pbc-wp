@@ -128,6 +128,8 @@ final class MonsterInsights_API_Auth {
 
 		$sitei = $this->get_sitei();
 
+		$site_type = monsterinsights_get_option( 'site_type' );
+
         $auth_request_args = array(
             'tt'        => $this->get_tt(),
             'sitei'     => $sitei,
@@ -137,6 +139,7 @@ final class MonsterInsights_API_Auth {
             'siteurl'   => is_network_admin() ? network_admin_url() : home_url(),
             'return'    => is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' ),
             'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/',
+            'site_type' => $site_type ?: 'business',
         );
 
         $auth_request_args = apply_filters('monsterinsights_auth_request_body', $auth_request_args);
@@ -260,6 +263,9 @@ final class MonsterInsights_API_Auth {
 		$where = $this->is_network_admin() ? 'network' : 'site';
 		MonsterInsights()->reporting->delete_aggregate_data( $where );
 
+		// Check site and property timezone.
+		$this->check_property_timezone();
+
 		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' );
 		$url = add_query_arg( array(
 			'mi_action' => 'auth',
@@ -323,6 +329,8 @@ final class MonsterInsights_API_Auth {
 			wp_send_json_error( array( 'message' => $message ) );
 		}
 
+		$site_type = monsterinsights_get_option( 'site_type' );
+
         $auth_request_args = array(
             'tt'        => $this->get_tt(),
             'sitei'     => $this->get_sitei(),
@@ -334,6 +342,7 @@ final class MonsterInsights_API_Auth {
             'token'     => is_network_admin() ? MonsterInsights()->auth->get_network_token() : MonsterInsights()->auth->get_token(),
             'return'    => is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' ),
             'testurl'   => 'https://' . monsterinsights_get_api_url() . 'test/',
+            'site_type' => $site_type ?: 'business',
         );
 
         $auth_request_args = apply_filters('monsterinsights_auth_request_body', $auth_request_args);
@@ -413,6 +422,9 @@ final class MonsterInsights_API_Auth {
 		// Clear cache
 		$where = $this->is_network_admin() ? 'network' : 'site';
 		MonsterInsights()->reporting->delete_aggregate_data( $where );
+
+		// Check site and property timezone.
+		$this->check_property_timezone();
 
 		$url = $this->is_network_admin() ? network_admin_url( 'admin.php?page=monsterinsights_network' ) : admin_url( 'admin.php?page=monsterinsights_settings' );
 		$url = add_query_arg( array(
@@ -785,5 +797,45 @@ final class MonsterInsights_API_Auth {
 			$auth->set_measurement_protocol_secret( $mp_token );
 		}
 		wp_send_json_success();
+	}
+
+	/**
+	 * Check site and property timezone.
+	 *
+	 * @return void
+	 */
+	private function check_property_timezone() {
+		if ( empty( $_REQUEST['timezone'] ) ) {
+			return;
+		}
+
+		try {
+			$timezone_string = sanitize_text_field( $_REQUEST['timezone'] );
+			$prop_time_now   = new DateTime( "now", new DateTimeZone( $timezone_string ) );
+			$wp_time_now     = new DateTimeImmutable( "now", wp_timezone() );
+
+			// If there offset don't match it means they are not in same timezone.
+			if ( $wp_time_now->getOffset() != $prop_time_now->getOffset() ) {
+				$notification = array(
+					'id'       => 'monsterinsights_property_different_timezone',
+					'type'     => array( 'basic', 'lite', 'master', 'plus', 'pro' ),
+					'start'    => $wp_time_now->format( 'Y-m-d H:i:s' ),
+					'end'      => $wp_time_now->modify( "+1 month" )->format( 'Y-m-d' ),
+					'title'    => esc_html__( 'Website & Google Analytics Timezone Mismatch', 'google-analytics-for-wordpress' ),
+					// Translators: Placeholders add a link to the settings page.
+					'content'  => sprintf(
+						esc_html__( 'We detected your Google Analytics property is set to a different timezone than your website. This may slightly impact your stats, especially when comparing day over day performance. You may want to adjust your website\'s time zone %1$shere%2$s.', 'google-analytics-for-wordpress' ),
+						'<a href="' . admin_url( 'options-general.php' ) . '">',
+						'</a>'
+					),
+					'priority' => 1,
+				);
+
+				// Add the notification.
+				MonsterInsights()->notifications->add( $notification );
+			}
+		} catch ( Exception $e ) {
+			return;
+		}
 	}
 }

@@ -174,13 +174,15 @@ if( !function_exists( 'tatsu_img_slider' ) ) {
 									}else{
 										$img_srcset = wp_get_attachment_image_srcset( $image_id, 'full' );
 										$sizes = wp_calculate_image_sizes( 'full', null, null, $image_id );
+                                        if( ! empty( $sizes ) ) {
+                                            $img_attr[] = sprintf( 'sizes = "%s"', $sizes );
+                                        }
 										if( !empty( $lazy_load ) ) {
 											$img_attr[] = sprintf( 'data-srcset = "%s"', $img_srcset );
 										}else {
 											$img_attr[] = sprintf( 'srcset = "%s"', $img_srcset );
 										}
 									}
-                                    $img_attr[] = sprintf( 'sizes = "%s"', $sizes );
                                 }else {
                                     if( !empty( $lazy_load ) ) {
                                         $img_attr[] = sprintf( 'data-src = "%s"', $url );

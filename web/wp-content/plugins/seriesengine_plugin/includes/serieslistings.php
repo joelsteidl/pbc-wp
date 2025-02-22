@@ -364,7 +364,7 @@ if ( !defined('ENMSE_FIND_PAGE') ) { // Find current page for building URLs
 	<p class="enmse-poweredbytext"><?php echo $enmse_poweredbylink; ?></p>
 	<?php } ?>
 	<div style="clear: right"></div>
-	<!-- v2.8.7.080422 -->
+	<!-- v2.8.8.3.120924 -->
 	</div>
 </div>
 <?php // Deny access to sneaky people!

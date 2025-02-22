@@ -3,8 +3,8 @@ Contributors: chriscct7, smub
 Donate link: http://www.wpbeginner.com/wpbeginner-needs-your-help/
 Tags: WordPress analytics, google analytics, google analytics dashboard, google analytics widget, Website Analytics
 Requires at least: 5.6.0
-Tested up to: 6.6.1
-Stable tag: 9.0.1
+Tested up to: 6.7.1
+Stable tag: 9.3.0
 Requires PHP: 7.2
 License: GPL v3
 
@@ -83,7 +83,7 @@ We have even created customized reports to help you filter through the noise and
 
 * **Coupon Report** showcases your coupon usage, and shows important metrics like average order value and revenue.
 
-* **Funnel Report** visually shows you how many people view items in your store, add to cart, and make a purchase. You can easily breakdown the funnel and conversion report into channel, and customize your dates for in depth analysis. 
+* **Funnel Report** visually shows you how many people view items in your store, add to cart, and make a purchase. You can easily breakdown the funnel and conversion report into channel, and customize your dates for in depth analysis. Works automatically with WooCommerce analytics, and Easy Digital Downloads. 
 
 Our custom Google Analytics Dashboard reports are based on over 12+ years of online business experience. We built MonsterInsights to be the Google Analytics plugin that we wish we had.
 
@@ -119,6 +119,39 @@ MonsterInsights&reg; is a registered trademark of MonsterInsights LLC. When writ
 4. Want more features? <a href="https://www.monsterinsights.com/?utm_source=wprepo&utm_medium=link&utm_campaign=liteversion">Purchase MonsterInsights Pro</a>!
 
 == Changelog ==
+= 9.3.0: February 18, 2025 =
+- New: Overview Report Metrics
+- New: Cart Abandonment Report
+- Fixed: Minor updates and bug fixes
+
+= 9.2.4: December 13, 2024 =
+- Fixed: Minor updates and bug fixes
+
+= 9.2.3: December 11, 2024 =
+- Fixed: Minor updates and bug fixes
+
+= 9.2.2: November 13, 2024 =
+- New: Our Year In Review report is here. This report will automatically show up starting on January 1
+- Update: We'll now check to ensure your website time zone matches Google Analytics
+
+= 9.2.1: October 31, 2024 =
+- Fixed: Fixed a bug in the Headline Analyzer tool causing errors in WordPress versions lower than 6.6
+
+= 9.2.0: October 23, 2024 =
+- New: Country and region report to see where and how your visitors find your website
+- New: Advanced tracking options for users of Google Tag Manager
+- New: SEO & RankMath Integrations with our Custom Dimensions addon
+- Fixed: Minor updates and bug fixes
+
+= 9.1.1: September 24, 2024 =
+- Fix: We fixed a PHP issue related to translations.
+
+= 9.1.0: September 23, 2024 =
+- New: Stats at a Glance report shows you information about your website in a whole new way.
+- New: Google Ads Enhanced Conversion Support & Meta Conversion API Support (CAPI) for PPC Campaigns
+- Enhanced: Updated Google Analytics tag loading order to help increase Core Web Vital scores. 
+- Fixed: Lots of minor updates and bug fixes.
+
 = 9.0.1: August 21, 2024 =
 - Fix: We resolved an issue in the Onboarding Recommended Addons page.
 

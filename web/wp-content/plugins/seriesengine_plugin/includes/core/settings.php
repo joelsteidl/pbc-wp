@@ -3900,7 +3900,7 @@
 		} elseif ($id3 == "0" ) {
 			echo "<select id='id3' name='enm_seriesengine_options[id3]'><option value='1'>Yes</option><option value='0' selected='selected'>No</option></select>";
 		} else {
-			echo "<select id='id3' name='enm_seriesengine_options[id3]'><option value='1' selected='selected'>Yes</option><option value='0'>No</option></select>";
+			echo "<select id='id3' name='enm_seriesengine_options[id3]'><option value='1'>Yes</option><option value='0' selected='selected'>No</option></select>";
 		}
 	};
 

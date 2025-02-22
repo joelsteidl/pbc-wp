@@ -47,20 +47,23 @@ function wpcf7_admin_warnings_bulk_cv( $page, $action, $object ) {
 
 	$message = __( "Misconfiguration leads to mail delivery failure or other troubles. Validate your contact forms now.", 'contact-form-7' );
 
-	echo sprintf(
-		'<div class="notice notice-warning"><p>%1$s &raquo; %2$s</p></div>',
-		esc_html( $message ),
-		$link
+	wp_admin_notice(
+		sprintf(
+			'%1$s &raquo; %2$s',
+			esc_html( $message ),
+			$link
+		),
+		array( 'type' => 'warning' )
 	);
 }
 
 add_action( 'wpcf7_admin_load', 'wpcf7_load_bulk_validate_page', 10, 2 );
 
 function wpcf7_load_bulk_validate_page( $page, $action ) {
-	if ( 'wpcf7' != $page
-	or 'validate' != $action
+	if ( 'wpcf7' !== $page
+	or 'validate' !== $action
 	or ! wpcf7_validate_configuration()
-	or 'POST' != $_SERVER['REQUEST_METHOD'] ) {
+	or 'POST' !== $_SERVER['REQUEST_METHOD'] ) {
 		return;
 	}
 
@@ -109,8 +112,8 @@ function wpcf7_admin_bulk_validate_page() {
 	$count = WPCF7_ContactForm::count();
 
 	$submit_text = sprintf(
+		/* translators: %s: number of contact forms */
 		_n(
-			/* translators: %s: number of contact forms */
 			"Validate %s contact form now",
 			"Validate %s contact forms now",
 			$count, 'contact-form-7'

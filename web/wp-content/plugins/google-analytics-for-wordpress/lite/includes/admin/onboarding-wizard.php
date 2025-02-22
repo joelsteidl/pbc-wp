@@ -54,11 +54,14 @@ class MonsterInsights_Onboarding_Wizard {
 	 */
 	public function maybe_load_onboarding_wizard() {
 
-		// Check for wizard-specific parameter
-		// Allow plugins to disable the onboarding wizard
-		// Check if current user is allowed to save settings.
-		if ( ! ( isset( $_GET['page'] ) || 'monsterinsights-onboarding' !== $_GET['page'] || apply_filters( 'monsterinsights_enable_onboarding_wizard', true ) || ! current_user_can( 'monsterinsights_save_settings' ) ) ) { // WPCS: CSRF ok, input var ok.
-			return;
+		// Check if the page is not set, or if it's not the onboarding wizard page
+		if ( empty( $_GET['page'] ) || 'monsterinsights-onboarding' !== $_GET['page'] ) {
+		        return;
+		}
+
+		// Check if the current user is allowed to save settings
+		if ( ! current_user_can( 'monsterinsights_save_settings' ) ) {
+		        return;
 		}
 
 		// Don't load the interface if doing an ajax call.
@@ -108,11 +111,15 @@ class MonsterInsights_Onboarding_Wizard {
 		}
 
 		$app_js_url = MonsterInsights_Admin_Assets::get_js_url( 'src/modules/wizard-onboarding/wizard.js' );
-		wp_register_script( 'monsterinsights-vue-script', $app_js_url, array(), monsterinsights_get_asset_version(), true );
+		wp_register_script( 'monsterinsights-vue-script', $app_js_url, array( 'wp-i18n' ), monsterinsights_get_asset_version(), true );
 		wp_enqueue_script( 'monsterinsights-vue-script' );
 
-		$settings_page = is_network_admin() ? add_query_arg( 'page', 'monsterinsights_network', network_admin_url( 'admin.php' ) ) : add_query_arg( 'page', 'monsterinsights_settings', admin_url( 'admin.php' ) );
-
+		$settings_page        = is_network_admin() ? add_query_arg( 'page', 'monsterinsights_network', network_admin_url( 'admin.php' ) ) : add_query_arg( 'page', 'monsterinsights_settings', admin_url( 'admin.php' ) );
+		$is_file_edit_allowed = 1;
+		// Determine whether file modifications are allowed.
+		if ( function_exists( 'wp_is_file_mod_allowed' ) && ! wp_is_file_mod_allowed( 'monsterinsights_can_install' ) ) {
+			$is_file_edit_allowed = 0;
+		}
 		wp_localize_script(
 			'monsterinsights-vue-script',
 			'monsterinsights',
@@ -128,13 +135,14 @@ class MonsterInsights_Onboarding_Wizard {
 				'is_eu'                => $this->should_include_eu_addon(),
 				'activate_nonce'       => wp_create_nonce( 'monsterinsights-activate' ),
 				'install_nonce'        => wp_create_nonce( 'monsterinsights-install' ),
-				'exit_url'             => $settings_page,
+				'exit_url'             => add_query_arg( 'page', 'monsterinsights_reports', admin_url( 'admin.php' ) ),
 				'shareasale_id'        => monsterinsights_get_shareasale_id(),
 				'shareasale_url'       => monsterinsights_get_shareasale_url( monsterinsights_get_shareasale_id(), '' ),
 				// Used to add notices for future deprecations.
 				'versions'             => monsterinsights_get_php_wp_version_warning_data(),
 				'plugin_version'       => MONSTERINSIGHTS_VERSION,
 				'migrated'             => monsterinsights_get_option( 'gadwp_migrated', false ),
+				'allow_file_edit'      => $is_file_edit_allowed,
 			)
 		);
 

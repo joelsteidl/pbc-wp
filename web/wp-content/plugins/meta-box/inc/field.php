@@ -39,12 +39,13 @@ abstract class RWMB_Field {
 
 		$end = static::end_html( $field );
 		$end = self::filter( 'end_html', $end, $field, $meta );
-
 		$html = self::filter( 'wrapper_html', $begin . $field_html . $end, $field, $meta );
 
 		// Display label and input in DIV and allow user-defined classes to be appended.
 		$classes = "rwmb-field rwmb-{$field['type']}-wrapper " . $field['class'];
-		if ( ! empty( $field['required'] ) ) {
+		$required = $field['required'] || ! empty( $field['attributes']['required'] );
+
+		if ( $required ) {
 			$classes .= ' required';
 		}
 
@@ -74,20 +75,15 @@ abstract class RWMB_Field {
 	protected static function begin_html( array $field ): string {
 		$id       = $field['attributes']['id'] ?? $field['id'];
 		$required = $field['required'] || ! empty( $field['attributes']['required'] );
+		$required = $required ? '<span class="rwmb-required">*</span>' : '';
 
 		$label = $field['name'] ? sprintf(
-			'<label for="%s">%s%s</label>',
+			// Translators: %1$s - field ID, %2$s - field label, %3$s - required asterisk, %4$s - label description.
+			'<div class="rwmb-label" id="%1$s-label"><label for="%1$s">%2$s%3$s</label>%4$s</div>',
 			esc_attr( $id ),
 			$field['name'],
-			$required ? '<span class="rwmb-required">*</span>' : ''
-		) : '';
-
-		$label .= static::label_description( $field );
-
-		$label = $label ? sprintf(
-			'<div class="rwmb-label" id="%s-label">%s</div>',
-			esc_attr( $id ),
-			$label
+			$required,
+			static::label_description( $field )
 		) : '';
 
 		$data_min_clone   = is_numeric( $field['min_clone'] ) && $field['min_clone'] > 1 ? ' data-min-clone=' . $field['min_clone'] : '';
@@ -170,36 +166,32 @@ abstract class RWMB_Field {
 		if ( empty( $field['id'] ) ) {
 			return '';
 		}
-
 		// Get raw meta.
 		$raw_meta = self::call( $field, 'raw_meta', $post_id );
+		$single_std = self::call( 'get_single_std', $field );
+		$std = self::call( 'get_std', $field );
 
+		$saved = $saved && $field['save_field'];
 		// Use $field['std'] only when the meta box hasn't been saved (i.e. the first time we run).
-		$meta = ! $saved || ! $field['save_field'] ? $field['std'] : $raw_meta;
+		$meta = $saved ? $raw_meta : $std;
 
-		if ( $field['clone'] ) {
-			$meta = is_array( $raw_meta ) ? $raw_meta : [];
-
-			// If clone empty start = false (default),
-			// ensure $meta is an array with values so that the foreach loop in self::show() runs properly.
-			if ( ! $field['clone_empty_start'] && empty( $meta ) ) {
-				$meta = [ $field['std'] ];
-			}
-
-			// Always add the first item to the beginning of the array for the template.
-			// We will need to remove it later before saving.
-			array_unshift( $meta, $field['std'] );
-
-			if ( $field['multiple'] ) {
-				$first = reset( $meta );
-
-				// If users set std for a cloneable checkbox list field in the Builder, they can only set [value1, value2]. We need to transform it to [[value1, value2]].
-				// In other cases, make sure each value is an array.
-				$meta = is_array( $first ) ? array_map( 'MetaBox\Support\Arr::ensure', $meta ) : [ $meta ];
-			}
-		} elseif ( $field['multiple'] ) {
-			$meta = Arr::ensure( $meta );
+		if ( ! $field['clone'] ) {
+			return $meta;
 		}
+
+		// When a field is cloneable, it should always return an array.
+		$meta = is_array( $raw_meta ) ? $raw_meta : [];
+
+		if ( empty( $meta ) ) {
+			$empty_meta = empty( $raw_meta ) ? [null] : $raw_meta;
+			$std 		= $field['clone_empty_start'] ? [] : $std;
+			$empty_std  = $field['clone_empty_start'] ? [] : Arr::to_depth( $empty_meta, Arr::depth( $std ) );
+
+			$meta = $saved ? $empty_std : $std;
+		}
+
+		// 2. Always prepend a template
+		array_unshift( $meta, $single_std );
 
 		return $meta;
 	}
@@ -583,5 +575,29 @@ abstract class RWMB_Field {
 		}
 
 		return $value;
+	}
+
+	protected static function get_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		if ( $field['clone'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field['std'], $depth );
+	}
+
+	protected static function get_single_std( array $field ) {
+		$depth = 0;
+
+		if ( $field['multiple'] ) {
+			$depth++;
+		}
+
+		return Arr::to_depth( $field[ 'std' ], $depth );
 	}
 }

@@ -38,54 +38,76 @@ function monsterinsights_admin_menu()
 		$menu_notification_indicator = MonsterInsights()->notifications->get_license_expired_indicator();
 	}
 
-	if ($hook === 'monsterinsights_settings') {
-		// If dashboards disabled, first settings page
-		add_menu_page(__('MonsterInsights', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress') . $menu_notification_indicator, 'monsterinsights_save_settings', 'monsterinsights_settings', 'monsterinsights_settings_page', $menu_icon_inline, '100.00013467543');
-		$hook = 'monsterinsights_settings';
+	$parent_slug          = 'monsterinsights_reports';
+	$hide_reports_submenu = false;
+	$is_lite              = ! monsterinsights_is_pro_version();
 
-		add_submenu_page($hook, __('MonsterInsights', 'google-analytics-for-wordpress'), __('Settings', 'google-analytics-for-wordpress'), 'monsterinsights_save_settings', 'monsterinsights_settings');
-	} else {
-		// if dashboards enabled, first dashboard
-		add_menu_page(__('General:', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress') . $menu_notification_indicator, 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page', $menu_icon_inline, '100.00013467543');
+    // If user not dismissed setup checklist.
+	if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
+		$hide_reports_submenu = true;
+    }
 
-		if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
-			add_submenu_page( $hook, __( 'Setup Checklist', 'google-analytics-for-wordpress' ), __( 'Setup Checklist', 'google-analytics-for-wordpress' ) . MonsterInsights()->setup_checklist->get_menu_count(), 'monsterinsights_save_settings', 'monsterinsights_settings#/setup-checklist', 'monsterinsights_settings_page' );
-		}
+    // If user disabled report view, and it is a lite user.
+	if ( $hook === 'monsterinsights_settings' ) {
+		$hide_reports_submenu = true;
+    }
 
-		add_submenu_page( $hook, __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Reports', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page' );
+	add_menu_page(__('MonsterInsights', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress') . $menu_notification_indicator, 'monsterinsights_view_dashboard', $parent_slug, 'monsterinsights_reports_page', $menu_icon_inline, '100.00013467543');
 
-		// then settings page
-		add_submenu_page( $hook, __( 'MonsterInsights', 'google-analytics-for-wordpress' ), __( 'Settings', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', 'monsterinsights_settings', 'monsterinsights_settings_page' );
+    if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
+        add_submenu_page( $hook, __( 'Setup Checklist', 'google-analytics-for-wordpress' ), __( 'Setup Checklist', 'google-analytics-for-wordpress' ) . MonsterInsights()->setup_checklist->get_menu_count(), 'monsterinsights_save_settings', 'monsterinsights_settings#/setup-checklist', 'monsterinsights_settings_page' );
+    }
 
-		// Add dashboard submenu.
-		add_submenu_page( 'index.php', __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Insights', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports' );
-
-		// If the setup checklist is not dismissed, remove the own submenu of `Insights` main menu that we added on line 52.
-		// This way the Checklist will be the first submenu which is an important thing for onboarding.
-		if ( ! MonsterInsights()->setup_checklist->is_dismissed() ) {
-
-			// Check if the user has the capability to save settings and view dashboard.
-			// We should skip this for editors that have only view capability have only item in the submenu, removing that would break the menu.
-			if ( ! ( ! current_user_can( 'monsterinsights_save_settings' ) && current_user_can( 'monsterinsights_view_dashboard' ) ) ) {
-				// Remove own submenu of `Insights` main menu.
-				remove_submenu_page( 'monsterinsights_reports', 'monsterinsights_reports' );
-			}
-		}
+	if ( $hook === 'monsterinsights_reports' ) {
+		add_submenu_page( $parent_slug, __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Reports', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'monsterinsights_reports', 'monsterinsights_reports_page' );
 	}
+
+    // then settings page
+    add_submenu_page( $parent_slug, __( 'MonsterInsights', 'google-analytics-for-wordpress' ), __( 'Settings', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', 'monsterinsights_settings', 'monsterinsights_settings_page' );
+
+    // Add dashboard submenu.
+    add_submenu_page( 'index.php', __( 'General Reports:', 'google-analytics-for-wordpress' ), __( 'Insights', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports' );
+
+    // If the setup checklist is not dismissed, remove the own submenu of `Insights` main menu that we added on line 52.
+    // This way the Checklist will be the first submenu which is an important thing for onboarding.
+    if ( $hide_reports_submenu ) {
+
+        // Check if the user has the capability to save settings and view dashboard.
+        // We should skip this for editors that have only view capability have only item in the submenu, removing that would break the menu.
+        if ( ! ( ! current_user_can( 'monsterinsights_save_settings' ) && current_user_can( 'monsterinsights_view_dashboard' ) ) ) {
+            // Remove own submenu of `Insights` main menu.
+            remove_submenu_page( 'monsterinsights_reports', 'monsterinsights_reports' );
+        }
+    }
 
 	$submenu_base = add_query_arg('page', 'monsterinsights_settings', admin_url('admin.php'));
 
     //  Site Notes
-	add_submenu_page( $hook, __( 'Site Notes:', 'google-analytics-for-wordpress' ), __( 'Site Notes', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', $submenu_base . '#/site-notes' );
+	add_submenu_page( $parent_slug, __( 'Site Notes:', 'google-analytics-for-wordpress' ), __( 'Site Notes', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', $submenu_base . '#/site-notes' );
 
-    //  AI Insights
-    add_submenu_page( $hook, __( 'AI Insights:', 'google-analytics-for-wordpress' ), sprintf(__( '%s AI Insights', 'google-analytics-for-wordpress' ), monsterinsights_get_ai_menu_icon()), 'monsterinsights_save_settings', 'admin.php?page=monsterinsights_reports#/ai-insights' );
+    // If report disabled then remove this menu.
+    if ( $hook === 'monsterinsights_reports' || $is_lite ) {
+	    //  AI Insights
+	    // translators: Icon
+	    add_submenu_page( $parent_slug, __( 'AI Insights:', 'google-analytics-for-wordpress' ), sprintf( __( '%s AI Insights', 'google-analytics-for-wordpress' ), monsterinsights_get_ai_menu_icon() ), 'monsterinsights_save_settings', 'admin.php?page=monsterinsights_reports#/ai-insights' );
+    }
+
+	$license_type = MonsterInsights()->license->get_license_type();
+
+	//  AI Chat
+	if ( $is_lite || 'plus' === $license_type ) {
+		// translators: Placeholder adds a svg icon
+		add_submenu_page( $parent_slug, __( 'Conversations AI:', 'google-analytics-for-wordpress' ), sprintf( __( '%s Conversations AI', 'google-analytics-for-wordpress' ), monsterinsights_get_ai_menu_icon() ), 'monsterinsights_save_settings', 'admin.php?page=monsterinsights_reports#/ai-insights/chat' );
+	}
 
 	// Add Popular Posts menu item.
-	add_submenu_page($hook, __('Popular Posts:', 'google-analytics-for-wordpress'), __('Popular Posts', 'google-analytics-for-wordpress'), 'monsterinsights_save_settings', $submenu_base . '#/popular-posts');
+	add_submenu_page( $parent_slug, __( 'Popular Posts:', 'google-analytics-for-wordpress' ), __( 'Popular Posts', 'google-analytics-for-wordpress' ), 'monsterinsights_save_settings', $submenu_base . '#/popular-posts' );
 
-	// Add submenu under `Insights` main menu for user journey report.
-	add_submenu_page( $hook, __( 'User Journey:', 'google-analytics-for-wordpress' ), __( 'User Journey', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports#/user-journey-report' );
+	// If report disabled then remove this menu.
+	if ( $hook === 'monsterinsights_reports' || $is_lite ) {
+		// Add submenu under `Insights` main menu for user journey report.
+		add_submenu_page( $parent_slug, __( 'User Journey:', 'google-analytics-for-wordpress' ), __( 'User Journey', 'google-analytics-for-wordpress' ), 'monsterinsights_view_dashboard', 'admin.php?page=monsterinsights_reports#/user-journey-report' );
+	}
 
 	if ( function_exists( 'aioseo' ) ) {
 		$seo_url = monsterinsights_aioseo_dashboard_url();
@@ -93,19 +115,19 @@ function monsterinsights_admin_menu()
 		$seo_url = $submenu_base . '#/seo';
 	}
 	// then SEO
-	add_submenu_page($hook, __('SEO', 'google-analytics-for-wordpress'), __('SEO', 'google-analytics-for-wordpress'), 'manage_options', $seo_url);
+	add_submenu_page($parent_slug, __('SEO', 'google-analytics-for-wordpress'), __('SEO', 'google-analytics-for-wordpress'), 'manage_options', $seo_url);
 
 	// then tools
-	add_submenu_page($hook, __('Tools:', 'google-analytics-for-wordpress'), __('Tools', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/tools');
+	add_submenu_page($parent_slug, __('Tools:', 'google-analytics-for-wordpress'), __('Tools', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/tools');
 
 	// then addons
 	$network_key = monsterinsights_is_pro_version() ? MonsterInsights()->license->get_network_license_key() : '';
 	if (!monsterinsights_is_network_active() || (monsterinsights_is_network_active() && empty($network_key))) {
-		add_submenu_page($hook, __('Addons:', 'google-analytics-for-wordpress'), '<span style="color:' . monsterinsights_menu_highlight_color() . '"> ' . __('Addons', 'google-analytics-for-wordpress') . '</span>', 'monsterinsights_save_settings', $submenu_base . '#/addons');
+		add_submenu_page($parent_slug, __('Addons:', 'google-analytics-for-wordpress'), '<span style="color:' . monsterinsights_menu_highlight_color() . '"> ' . __('Addons', 'google-analytics-for-wordpress') . '</span>', 'monsterinsights_save_settings', $submenu_base . '#/addons');
 	}
 
 	add_submenu_page(
-		$hook,
+		$parent_slug,
 		__('UserFeedback:', 'google-analytics-for-wordpress'),
 		__('UserFeedback', 'google-analytics-for-wordpress') . $new_indicator,
 		'manage_options',
@@ -113,24 +135,24 @@ function monsterinsights_admin_menu()
 	);
 
 	// then About Us page.
-	add_submenu_page($hook, __('About Us:', 'google-analytics-for-wordpress'), __('About Us', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/about');
+	add_submenu_page($parent_slug, __('About Us:', 'google-analytics-for-wordpress'), __('About Us', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/about');
 
 	if (!monsterinsights_is_pro_version() && !strstr(plugin_basename(__FILE__), 'dashboard-for')) {
 		// automated promotion
 		monsterinsights_automated_menu($hook);
 	}
 
-	add_submenu_page($hook, __('Growth Tools:', 'google-analytics-for-wordpress'), __('Growth Tools', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/growth-tools');
+	add_submenu_page($parent_slug, __('Growth Tools:', 'google-analytics-for-wordpress'), __('Growth Tools', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/growth-tools');
 
 	// then Upgrade To Pro.
 	if (!monsterinsights_is_pro_version()) {
-		add_submenu_page($hook, __('Upgrade to Pro:', 'google-analytics-for-wordpress'), '<span class="monsterinsights-upgrade-submenu"> ' . __('Upgrade to Pro', 'google-analytics-for-wordpress') . '</span>', 'monsterinsights_save_settings', monsterinsights_get_upgrade_link('admin-menu', 'submenu', "https://www.monsterinsights.com/lite/"));
+		add_submenu_page($parent_slug, __('Upgrade to Pro:', 'google-analytics-for-wordpress'), '<span class="monsterinsights-upgrade-submenu"> ' . __('Upgrade to Pro', 'google-analytics-for-wordpress') . '</span>', 'monsterinsights_save_settings', monsterinsights_get_upgrade_link('admin-menu', 'submenu', "https://www.monsterinsights.com/lite/"));
 	}
 
 	if ( class_exists( 'WooCommerce' ) ) {
 		// Show the Payments submenu only when WooCommerce is active.
 		add_submenu_page(
-			$hook,
+			$parent_slug,
 			__('Payments:', 'google-analytics-for-wordpress'),
 			__('Payments', 'google-analytics-for-wordpress'),
 			'manage_options',
@@ -217,7 +239,7 @@ function monsterinsights_woocommerce_menu_item()
 		} else {
 			$submenu_base = add_query_arg('page', 'monsterinsights_settings', admin_url('admin.php'));
 			add_submenu_page('wc-admin&path=/analytics/overview', __('Insights', 'google-analytics-for-wordpress'), __('Insights', 'google-analytics-for-wordpress'), 'manage_options', $submenu_base . '#/woocommerce-insights', '', 1);
-		}		
+		}
 	}
 }
 add_action('admin_menu', 'monsterinsights_woocommerce_menu_item', 11);
@@ -437,7 +459,11 @@ function monsterinsights_load_admin_partial($template, $data = array())
 function monsterinsights_admin_footer($text)
 {
 	global $current_screen;
-	if (!empty($current_screen->id) && strpos($current_screen->id, 'monsterinsights') !== false) {
+	if (
+		! empty( $current_screen->id )
+		&& strpos( $current_screen->id, 'monsterinsights' ) !== false
+		&& ! monsterinsights_is_pro_version()
+	) {
 		$url = 'https://wordpress.org/support/view/plugin-reviews/google-analytics-for-wordpress?filter=5';
 		// Translators: Placeholders add a link to the wordpress.org repository.
 		$text = sprintf(esc_html__('Please rate %1$sMonsterInsights%2$s on %3$s %4$sWordPress.org%5$s to help us spread the word. Thank you from the MonsterInsights team!', 'google-analytics-for-wordpress'), '<strong>', '</strong>', '<a class="monsterinsights-no-text-decoration" href="' . $url . '" target="_blank" rel="noopener noreferrer"><i class="monstericon-star"></i><i class="monstericon-star"></i><i class="monstericon-star"></i><i class="monstericon-star"></i><i class="monstericon-star"></i></a>', '<a href="' . $url . '" target="_blank" rel="noopener noreferrer">', '</a>');

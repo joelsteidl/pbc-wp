@@ -353,27 +353,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						
 						if ( $enmsegetaudio != null ) {
 							if ( $enmseid3 == 1 ) { // if enabled
-								if (preg_match('/(.mp3)/', $enmsegetaudio)) {
-									$enmse_f = $enmsegetaudio;
-									$enmse_m = new mp3file($enmse_f);
-									$enmse_a = $enmse_m->get_metadata();
-							
-									if ( isset($enmse_a['Filesize']) ) {
-										if ($enmse_a['Encoding']=='Unknown') {
-											$enmse_audio_file_size = $enmse_a['Filesize'];
-											$enmse_length = null;
-										} elseif ($enmse_a['Encoding']=='VBR') {
-											$enmse_audio_file_size = $enmse_a['Filesize'];
-											$enmse_length = null;
-										} elseif ($enmse_a['Encoding']=='CBR') {
-											$enmse_audio_file_size = $enmse_a['Filesize'];
-											$enmse_length = $enmse_a['Length mm:ss'];
-										} 
-									} else {
-										$enmse_audio_file_size = $_POST['message_audio_file_size'];
-										$enmse_length = strip_tags($_POST['message_length']);
-									}
-								} else {
+								
 									$enmseaparts=parse_url($enmsegetaudio);
 									if (ini_get('open_basedir') == '' && isset($enmseaparts['host'])){
 										$ach = curl_init();
@@ -400,7 +380,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 											$enmse_length = null;
 										}
 									}
-								}
+								
 							} else { // if not enabled
 								$enmse_audio_file_size = $_POST['message_audio_file_size'];
 								$enmse_length = strip_tags($_POST['message_length']);
@@ -927,7 +907,7 @@ if ( $wp_version != null ) { // Verify that user is allowed to access this page
 						}
 						
 						if ( $enmsegetaudio != null ) {
-							if ( $enmseid3 == 1 ) { // if enabled
+							if ( $enmseid3 == 1 ) { // if enabled  REMOVE MP3FILE STUFF HERE TOO
 								if (preg_match('/(.mp3)/', $enmsegetaudio)) {
 									$enmse_f = $enmsegetaudio;
 									$enmse_m = new mp3file($enmse_f);

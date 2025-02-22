@@ -160,7 +160,6 @@ class MonsterInsights_Report {
 
 	// Get report data
 	public function get_data( $args = array() ) {
-
 		if ( ! empty( $args['default'] ) ) {
 			$args['start'] = $this->default_start_date();
 			$args['end']   = $this->default_end_date();
@@ -169,8 +168,12 @@ class MonsterInsights_Report {
 		$start = ! empty( $args['start'] ) && $this->is_valid_date( $args['start'] ) ? $args['start'] : '';
 		$end   = ! empty( $args['end'] ) && $this->is_valid_date( $args['end'] ) ? $args['end'] : '';
 
-		$compare_start = null;
-		$compare_end   = null;
+		$extra_params = [];
+		if ( ! empty( $args['included_metrics'] ) ) {
+			$extra_params['included_metrics'] = $args['included_metrics'];
+		}
+		$compare_start    = null;
+		$compare_end      = null;
 
 		if ( isset( $args['compare_start'] ) ) {
 			$compare_start = ! empty( $args['compare_start'] ) && $this->is_valid_date( $args['compare_start'] ) ? $args['compare_start'] : '';
@@ -233,8 +236,7 @@ class MonsterInsights_Report {
 		$current_timestamp = current_time( 'U' );
 		// Set to same time as MI cache. MI caches same day to 15 and others to 1 day, so there's no point pinging MI before then.
 		$expiration = apply_filters( 'monsterinsights_report_transient_expiration',
-			date( 'Y-m-d' ) === $end ? ( 15 * MINUTE_IN_SECONDS ) : ( strtotime( 'Tomorrow 12:05am', $current_timestamp ) - $current_timestamp ),
-			$this->name );
+			date( 'Y-m-d' ) === $end ? ( 15 * MINUTE_IN_SECONDS ) : ( strtotime( 'Tomorrow 12:05am', $current_timestamp ) - $current_timestamp ), $this->name );
 
 		// Default date range, check.
 		if ( $site_auth || $ms_auth ) {
@@ -255,20 +257,36 @@ class MonsterInsights_Report {
 				$data = ! $site_auth && $ms_auth ? get_site_transient( $transient ) : get_transient( $transient );
 			}
 
-			if ( ! empty( $data ) &&
-				 ! empty( $data['expires'] ) &&
-				 $data['expires'] >= time() &&
-				 ! empty( $data['data'] ) &&
-				 ! empty( $data['p'] ) &&
-				 $data['p'] === $p
-			) {
-				return $this->prepare_report_data( array(
-					'success' => true,
-					'data'    => $data['data'],
-				) );
+			$user_included_metrics = get_user_meta( get_current_user_id(), 'monsterinsights_included_metrics', true );
+			if ( $compare_start && $compare_end ) {
+				$previous_included_metrics = get_user_meta( get_current_user_id(), 'monsterinsights_previous_included_metrics_' . $start . '_' . $end . '_to_' . $compare_start . '_' . $compare_end, true );
+			} else {
+				$previous_included_metrics = get_user_meta( get_current_user_id(), 'monsterinsights_previous_included_metrics_' . $start . '_' . $end, true );
 			}
 
-			// Nothing in cache, either not saved before, expired or mismatch. Let's grab from API
+			if ( $user_included_metrics === $previous_included_metrics ) {
+				if ( ! empty( $data ) &&
+						! empty( $data['expires'] ) &&
+						$data['expires'] >= time() &&
+						! empty( $data['data'] ) &&
+						! empty( $data['p'] ) &&
+						$data['p'] === $p
+				) {
+					return $this->prepare_report_data( array(
+						'success' => true,
+						'data'    => $data['data'],
+					) );
+				}
+			} else {
+				// if the metrics has changed, then lets ignore the cache report and trigger a request.
+				if ( $compare_start && $compare_end ) {
+					update_user_meta( get_current_user_id(), 'monsterinsights_previous_included_metrics_' . $start . '_' . $end . '_to_' . $compare_start . '_' . $compare_end, $user_included_metrics );
+				} else {
+					update_user_meta( get_current_user_id(), 'monsterinsights_previous_included_metrics_' . $start . '_' . $end, $user_included_metrics );
+				}
+			}
+
+			// Nothing in cache, either not saved before, expired or mismatch. Let's grab from API.
 			$api_options = array( 'start' => $start, 'end' => $end );
 
 			if ( $compare_start && $compare_end ) {
@@ -297,8 +315,7 @@ class MonsterInsights_Report {
 			if ( ! empty( $additional_data ) ) {
 				$api->set_additional_data( $additional_data );
 			}
-
-			$ret = $api->request();
+			$ret = $api->request( $extra_params );
 
 			if ( is_wp_error( $ret ) ) {
 				return array(

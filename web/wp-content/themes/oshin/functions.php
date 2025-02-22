@@ -1,9 +1,8 @@
 <?php
 if ( ! defined( 'OSHIN_THEME_VERSION' ) ) {
-	define( 'OSHIN_THEME_VERSION', '7.2.1' );
+	define( 'OSHIN_THEME_VERSION', '7.2.6' );
 }
 
-load_theme_textdomain( 'oshin', get_template_directory() . '/languages' );
 add_filter( 'auto_update_theme', '__return_true' );
 add_filter( 'masterslider_disable_auto_update', '__return_true' );
 add_theme_support( 'title-tag' );
@@ -108,6 +107,9 @@ function be_functions_core() {
         $default_plugins->run();
         $redirect->run();
     }
+
+	// Load text domain
+	load_theme_textdomain( 'oshin', get_template_directory() . '/languages' );
 }
 add_action( 'init', 'be_functions_core', 10, 1 );
 
@@ -782,6 +784,9 @@ if ( ! function_exists( 'be_get_theme_tgm_data' ) ) {
 			$purchase_key = trim( $oshin_purchase_data['theme_purchase_code'] );
 		}
 		if ( empty( $purchase_key ) ) {
+			if ( ! empty( $_GET['page'] ) && 'install-required-plugins' == sanitize_key( $_GET['page'] ) && function_exists( 'wp_safe_redirect' ) && wp_safe_redirect( admin_url( 'themes.php?page=be_register#be-plugins' ) ) ) {
+				exit;
+			}
 			return $plugin_slugs;
 		}
 

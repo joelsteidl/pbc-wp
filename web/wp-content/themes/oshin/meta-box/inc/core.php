@@ -15,8 +15,6 @@ class RWMB_Core {
 	 * Initialization.
 	 */
 	public function init() {
-		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/languages/' );
-
 		add_filter( 'plugin_action_links_meta-box/meta-box.php', array( $this, 'plugin_links' ), 20 );
 
 		// Uses priority 20 to support custom port types registered using the default priority.
@@ -46,6 +44,9 @@ class RWMB_Core {
 	 * - no need to check for class existences.
 	 */
 	public function register_meta_boxes() {
+		// Load translations.
+		load_plugin_textdomain( 'meta-box', false, plugin_basename( RWMB_DIR ) . '/languages/' );
+		
 		$configs  = apply_filters( 'rwmb_meta_boxes', array() );
 		$registry = rwmb_get_registry( 'meta_box' );
 

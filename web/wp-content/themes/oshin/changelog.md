@@ -1,3 +1,25 @@
+v7.2.6 ( 23 December 2024 )
+======
+* Fixed: WordPress _load_textdomain_just_in_time notice
+
+v7.2.5 ( 1st October 2024 )
+======
+* Fixed: PHP Deprecated warnings
+
+v7.2.4 ( 26th September 2024 )
+======
+* Fixed: TGM navigation to one click bulk installation
+* Fixed: Cache busting for dashboard js files
+* Fixed: Dashboard tab navigation
+
+v7.2.3 ( 24th September 2024 )
+======
+* Updated: TGM plugins
+
+v7.2.2 ( 30th May 2024 )
+======
+* Fixed: Escaping attributes in ajax calls
+
 v7.2.1 ( 25th April 2024 )
 ======
 * Added: V59 Freelance Designer and V60 Oshine Restaurant demo

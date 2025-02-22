@@ -1,3 +1,17 @@
+v3.5.3 ( 02nd December 2024 )
+======
+* Removed: Rank Math content analysis API call
+* Fixed: Tatsu forms nonce
+
+v3.5.2 ( 16th August 2024 )
+======
+* Fixed: Tatsu shortcode displayed in Wordpress editor
+
+v3.5.1 ( 30th May 2024 )
+======
+* Fixed: Vimeo video 403 error
+* Fixed: Tatsu form validations
+
 v3.5.0 ( 25th April 2024 )
 ======
 * Fixed: Download Google Fonts

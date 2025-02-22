@@ -137,6 +137,7 @@ class Oshine_Modules_Public {
 				'pluginUrl' => plugins_url().'/'.$this->plugin_name.'/',
 				'vendorScriptsUrl' => ( isset( $be_themes_data[ 'cdn_address' ] ) && !empty( $be_themes_data[ 'cdn_address' ] ) ) ? ( trailingslashit( $be_themes_data[ 'cdn_address' ] ) . 'wp-content/plugins/'. $this->plugin_name.'/public/js/vendor/' ) : ( plugins_url().'/'.$this->plugin_name.'/public/js/vendor/' ),
 				'dependencies'     => $needed_scripts,
+				'oshinonce'	=> wp_create_nonce( 'oshine_module_nonce' ),
 			) 
 		);		
 

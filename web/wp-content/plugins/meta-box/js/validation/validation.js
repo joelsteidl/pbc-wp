@@ -38,7 +38,7 @@
 
 		if ( parts[ 1 ] && isNaN( parts[ 1 ] ) ) {
 			// Remove []
-			let words = name.match( /(\w+)|(\[\w+\])/g );
+			let words = name.match( /([\w-]+)|(\[\w+\])/g );
 			let resultArray = [ words.join( "" ) ];
 
 			// Remove characters "[" and "]".
@@ -125,6 +125,11 @@
 		for ( var i = 0, elements = ( this.currentElements = this.elements() ); elements[ i ]; i++ ) {
 			if ( this.findByName( elements[ i ].name ).length !== undefined && this.findByName( elements[ i ].name ).length > 1 ) {
 				for ( var cnt = 0; cnt < this.findByName( elements[ i ].name ).length; cnt++ ) {
+					const isTargetExists = this.validationTargetFor( this.clean( this.findByName( elements[ i ].name )[ cnt ] ) );
+					if ( typeof isTargetExists === 'undefined' ) {
+						continue;
+					}
+
 					this.check( this.findByName( elements[ i ].name )[ cnt ] );
 				}
 			} else {
@@ -174,6 +179,10 @@
 					if ( !$el.length ) {
 						$el = $( '[name*="[' + k + ']"]' ); // Subfields in groups.
 					}
+					if ( !$el.length ) {
+						$el = $( '[name*="' + k + '"]' ); // contains field ID.
+					}
+
 					if ( $el.length ) {
 						$el.closest( '.rwmb-input' ).siblings( '.rwmb-label' ).find( 'label' ).append( '<span class="rwmb-required">*</span>' );
 					}
@@ -183,7 +192,7 @@
 
 		getSettings() {
 			this.settings = {
-				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"])',
+				ignore: ':not(.rwmb-media,.rwmb-image_select,.rwmb-wysiwyg,.rwmb-color,.rwmb-map,.rwmb-osm,.rwmb-switch,[class|="rwmb"]), .rwmb-clone-template *',
 				errorPlacement: function ( error, element ) {
 					error.appendTo( element.closest( '.rwmb-input' ) );
 				},
@@ -225,8 +234,8 @@
 		init() {
 			var that = this,
 				editor = wp.data.dispatch( 'core/editor' );
-			
-			if ( ! editor || ! that.$form.length ) {
+
+			if ( !editor || !that.$form.length ) {
 				return false;
 			}
 
@@ -258,6 +267,25 @@
 		}
 	};
 
+	class TaxonomyValidation extends Validation {
+		init() {
+			const submitButton = $( '#submit' );
+
+			this.$form.validate( {
+				...this.settings,
+				invalidHandler: null,
+				onkeyup: () => {
+					submitButton.prop( 'disabled', !this.$form.valid() );
+				}
+			} );
+
+			submitButton.prop( 'disabled', !this.$form.valid() );
+			$( '#tag-name' ).on( 'blur', () => {
+				submitButton.prop( 'disabled', !this.$form.valid() );
+			} );
+		}
+	}
+
 	// Run on document ready.
 	function init() {
 		if ( rwmb.isGutenberg ) {
@@ -268,7 +296,7 @@
 			} );
 
 			new GutenbergValidation( `.mb-block-edit` ).init();
-			
+
 			return;
 		}
 
@@ -278,6 +306,14 @@
 			var form = new Validation( this );
 			form.init();
 		} );
+
+		const $addTag = $( '#addtag' );
+		if ( $addTag.length ) {
+			new TaxonomyValidation( '#addtag' ).init();
+			$( '#submit' ).on( 'click', function () {
+				new TaxonomyValidation( '#addtag' ).init();
+			} );
+		}
 	};
 
 	rwmb.$document

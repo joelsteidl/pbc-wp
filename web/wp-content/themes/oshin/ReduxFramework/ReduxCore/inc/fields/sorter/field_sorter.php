@@ -168,7 +168,8 @@
                                 echo '<input class="sorter-placebo" type="hidden" name="' . esc_attr($this->field['name']) . '[' . $group . '][placebo]' . esc_attr($this->field['name_suffix']) . '" value="placebo">';
 
                                 if ( $key != "placebo" ) {
-
+                                    $list = is_array( $list ) ? end( $list ) : $list;
+                                    $list = empty( $list ) ? '': $list;
                                     //echo '<li id="' . $key . '" class="sortee">';
                                     echo '<li id="sortee-' . esc_attr($key) . '" class="sortee" data-id="' . esc_attr($key) . '">';
                                     echo '<input class="position ' . esc_attr($this->field['class']) . '" type="hidden" name="' . esc_attr($this->field['name'] . '[' . $group . '][' . $key . ']' . $this->field['name_suffix']) . '" value="' . esc_attr($list) . '">';

@@ -63,7 +63,7 @@ var EnvatoWizard = (function($){
                 }
             }else{
                 // error - try again with next plugin
-                $current_node.find('span').text("ajax error");
+                //$current_node.find('span').text("ajax error");
                 find_next();
             }
         }

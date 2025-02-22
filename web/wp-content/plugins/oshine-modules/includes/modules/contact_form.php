@@ -59,6 +59,7 @@ if ( ! function_exists( 'be_contact_form' ) ) {
 
 		$output .= '<fieldset class="contact_fieldset submit-fieldset">
 								<input type = "hidden" name = "contact_style" value = "'. $form_style .'"/> 
+								<input type="hidden" name="oshine_nonce" value="' .wp_create_nonce( 'oshine_contact' ). '" />
 								<input type="submit" name="contact_submit" value="'.__('Submit','oshine-modules').'" class="contact_submit tatsu-button rounded '.$input_button_style.'btn" />
 								<div class="contact_loader"><div class="font-icon loader-style4-wrap loader-icon"></div></div>
 							</fieldset>';

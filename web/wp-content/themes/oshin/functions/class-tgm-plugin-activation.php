@@ -3618,7 +3618,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 						if ( empty( $title ) ) {
 							$title = esc_html( $this->plugin_names[ $this->i ] );
 						}
-						parent::before( $title );
+						parent::before( empty( $title ) ? '': $title );
 					}
 
 					/**
@@ -3635,7 +3635,7 @@ if ( ! function_exists( 'tgmpa_load_bulk_installer' ) ) {
 						if ( empty( $title ) ) {
 							$title = esc_html( $this->plugin_names[ $this->i ] );
 						}
-						parent::after( $title );
+						parent::after( empty( $title ) ? '': $title );
 
 						$this->i++;
 					}

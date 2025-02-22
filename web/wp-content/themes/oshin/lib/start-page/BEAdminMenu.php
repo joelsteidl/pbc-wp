@@ -48,7 +48,7 @@ class BEAdminMenu
 
 		wp_enqueue_script( 'notify', get_template_directory_uri().'/lib/admin-tpl/assets/js/notify.js', array( 'jquery' ), false, false );
 
-		wp_enqueue_script( 'be-start-scripts', get_template_directory_uri().'/lib/admin-tpl/assets/js/start-page.js', array( 'jquery' ), false, false );
+		wp_enqueue_script( 'be-start-scripts', get_template_directory_uri().'/lib/admin-tpl/assets/js/start-page.js', array( 'jquery' ), OSHIN_THEME_VERSION, false );
 		
 		wp_enqueue_style( 'be-admin-tabs', get_template_directory_uri().'/lib/admin-tpl/assets/stylesheets/start-page.css', false );
 

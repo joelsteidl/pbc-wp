@@ -56,79 +56,89 @@ class Tatsu_Forms_Process{
 
 	
 	public function tatsu_forms_save() {
-		$site_url = get_site_url();
-		$request_url = $_SERVER['HTTP_REFERER'];
-        if( stripos( $request_url, $site_url ) === false ){
-			$result['status']="error";
-			$result['data']=__('Cross Domain not allowed','tatsu');
-		}else if(!empty($_POST) && !empty($_POST['form_id'])) {
-			$tatsu_form_id = sanitize_text_field($_POST['form_id']);
-			$form_fields_name = extract_tatsu_forms_field_name_list($tatsu_form_id);
-			$form_settings = '';
-			if(!empty($_POST['formconfig'])){
-				//extract form settings 
-				$form_settings = json_decode(stripslashes($_POST['formconfig']),true);
-			}
-			
-			if($form_fields_name === false){
-				$result['status']="error";
-				$result['data']=__('Invalid Form','tatsu');
-			}else if($this->is_valid_recaptcha()){
-				global $wpdb;
-				//Generate submit form id
-				$tatsu_forms_submit_table = $wpdb->prefix.'tatsu_forms_submit';
-				$ip = get_IP_address();
-				$query_submit = $wpdb->prepare(
-					"
-					INSERT INTO $tatsu_forms_submit_table
-					( tatsu_form_id, ip)
-					VALUES ( %d, %s )
-					",
-					$tatsu_form_id,
-					$ip
-				);
-				$wpdb->query($query_submit);
-				$submit_id = $wpdb->insert_id;
-
-				//Saving Form Data
-				$tatsu_forms_data_table = $wpdb->prefix.'tatsu_forms_data';
-				$form_data = array();
-				$field_data = array();
-				foreach ($_POST as $field_name => $field_value) {
-					if(!empty($field_name) && in_array(trim($field_name),$form_fields_name)){
-						$field_name = sanitize_text_field($field_name);
-						$field_value = is_array($field_value)?implode(',',$field_value):$field_value;
-						$field_value = sanitize_textarea_field($field_value);
-						$form_data[] = $wpdb->prepare("(%d,%s,%s)",$submit_id,$field_name,$field_value);
-                        $field_data[$field_name]=$field_value;
-					}
-				}
-				$query_data = $wpdb->prepare(
-					"INSERT INTO $tatsu_forms_data_table (submit_id,field_name,field_value) VALUES "
-				);
-				$query_data .= implode(",\n",$form_data);
-				$wpdb->query($query_data);
-				
-				//Send Email
-				if(!empty($_POST['action_after_submit']) && !empty($form_settings) && !empty($form_settings['action_after_submit'])){
-					if('email'==trim($_POST['action_after_submit'])){
-                    $this->process_form_email($tatsu_form_id,$form_settings,$field_data);
-					}else if('mailchimp'==trim($_POST['action_after_submit']) && function_exists('spyro_mailchimp_subscription')){
-						spyro_mailchimp_subscription();
-					}
-				}
-
-				$result['status']="success";
-				$message = empty($_POST['success_text'])?'Thank You':$_POST['success_text'];
-				$result['data'] =__($message,'tatsu');
-		    }else{
-				$result['status']="error";
-				$result['data']=__('Invalid reCAPTCHA','tatsu');
-			}
+		$result = array();
+		// verify nonce
+		if ( empty( $_POST['tatsunonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['tatsunonce'] ) ), 'tatsu_module_nonce' ) ) {
+			$result = array(
+				'status'  => 'error',
+				'data' => __( 'Missing or invalid nonce. Please clear the page cache.', 'oshine-modules'),
+			);
 		} else {
-			$result['status']="error";
-			$result['data']=__('No input found','tatsu');
+			$site_url = get_site_url();
+			$request_url = $_SERVER['HTTP_REFERER'];
+			if( stripos( $request_url, $site_url ) === false ){
+				$result['status']="error";
+				$result['data']=__('Cross Domain not allowed','tatsu');
+			}else if(!empty($_POST) && !empty($_POST['form_id'])) {
+				$tatsu_form_id = sanitize_text_field($_POST['form_id']);
+				$form_fields_name = extract_tatsu_forms_field_name_list($tatsu_form_id);
+				$form_settings = '';
+				if(!empty($_POST['formconfig'])){
+					//extract form settings 
+					$form_settings = json_decode(stripslashes($_POST['formconfig']),true);
+				}
+				
+				if($form_fields_name === false){
+					$result['status']="error";
+					$result['data']=__('Invalid Form','tatsu');
+				}else if($this->is_valid_recaptcha()){
+					global $wpdb;
+					//Generate submit form id
+					$tatsu_forms_submit_table = $wpdb->prefix.'tatsu_forms_submit';
+					$ip = get_IP_address();
+					$query_submit = $wpdb->prepare(
+						"
+						INSERT INTO $tatsu_forms_submit_table
+						( tatsu_form_id, ip)
+						VALUES ( %d, %s )
+						",
+						$tatsu_form_id,
+						$ip
+					);
+					$wpdb->query($query_submit);
+					$submit_id = $wpdb->insert_id;
+	
+					//Saving Form Data
+					$tatsu_forms_data_table = $wpdb->prefix.'tatsu_forms_data';
+					$form_data = array();
+					$field_data = array();
+					foreach ($_POST as $field_name => $field_value) {
+						if(!empty($field_name) && in_array(trim($field_name),$form_fields_name)){
+							$field_name = sanitize_text_field($field_name);
+							$field_value = is_array($field_value)?implode(',',$field_value):$field_value;
+							$field_value = sanitize_textarea_field($field_value);
+							$form_data[] = $wpdb->prepare("(%d,%s,%s)",$submit_id,$field_name,$field_value);
+							$field_data[$field_name]=$field_value;
+						}
+					}
+					$query_data = $wpdb->prepare(
+						"INSERT INTO $tatsu_forms_data_table (submit_id,field_name,field_value) VALUES "
+					);
+					$query_data .= implode(",\n",$form_data);
+					$wpdb->query($query_data);
+					
+					//Send Email
+					if(!empty($_POST['action_after_submit']) && !empty($form_settings) && !empty($form_settings['action_after_submit'])){
+						if('email'==trim($_POST['action_after_submit'])){
+						$this->process_form_email($tatsu_form_id,$form_settings,$field_data);
+						}else if('mailchimp'==trim($_POST['action_after_submit']) && function_exists('spyro_mailchimp_subscription')){
+							spyro_mailchimp_subscription();
+						}
+					}
+	
+					$result['status']="success";
+					$message = empty($_POST['success_text'])?'Thank You':$_POST['success_text'];
+					$result['data'] =__($message,'tatsu');
+				}else{
+					$result['status']="error";
+					$result['data']=__('Invalid reCAPTCHA','tatsu');
+				}
+			} else {
+				$result['status']="error";
+				$result['data']=__('No input found','tatsu');
+			}	
 		}
+
 		wp_send_json($result);
 	}
 	

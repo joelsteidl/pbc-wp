@@ -103,7 +103,7 @@ class Tatsu_Integrations {
 	
 	public function enqueue_assets() {
 		$post_id = get_the_ID();
-		wp_enqueue_script( 'tatsu-gutenberg', TATSU_PLUGIN_URL . '/admin/js/tatsu-gutenberg.js', array( 'jquery' ), '1.0', true );
+		wp_enqueue_script( 'tatsu-gutenberg', TATSU_PLUGIN_URL . '/admin/js/tatsu-gutenberg.js', array( 'jquery' ), TATSU_VERSION, true );
 		$tatsu_settings = array (
 			'editedWithTatsu' => is_edited_with_tatsu($post_id),
 		);
@@ -156,25 +156,31 @@ class Tatsu_Integrations {
     }
 
 	//Wordpress editor js: works with both classic and gutenberg editor 
-	public function editor_scripts( $page_name ) {
-		if ( ! empty( $page_name ) && in_array( $page_name, array( 'post.php', 'post-new.php' ) ) ) {
-
-			//For Rank math Content Analysis API
-			if ( class_exists( 'RankMath' ) && function_exists('do_shortcode') && function_exists('get_the_content') ) {
-				global $post;
-				$post_content = empty( $post ) ? get_the_content(): $post->post_content;
-				if ( ! empty( $post_content ) ) {
-					$post_content = do_shortcode( $post_content );
-				}
-				wp_enqueue_script( 'tatsu-wordpress-editor', TATSU_PLUGIN_URL . '/admin/js/tatsu-wordpress-editor.js', array( 'wp-hooks' ), TATSU_VERSION, true );
-				wp_localize_script( 
-					'tatsu-wordpress-editor', 
-					'TatsuWordpressEditor', 
-					array (
-						'post_content'	=>  $post_content
-					)
-				);
+	public function editor_scripts() {
+		if ( empty( $_GET['post'] ) || ! is_numeric( $_GET['post'] ) || empty( $_GET['action'] ) || 'edit' !== sanitize_key( wp_unslash( $_GET['action'] ) ) ) {
+			return;
+		}
+		
+		$post = sanitize_key( wp_unslash( $_GET['post'] ) );
+		$post = intval( $post );
+		//For Rank math Content Analysis API
+		if ( 0 < $post && class_exists( 'RankMath' ) && function_exists('do_shortcode') && function_exists('is_edited_with_tatsu') && is_edited_with_tatsu( $post ) ) {
+			$post = get_post( $post );
+			if ( empty( $post ) ) {
+				return;
 			}
+			$post_content = $post->post_content;
+			if ( ! empty( $post_content ) ) {
+				$post_content = do_shortcode( $post_content );
+			}
+			wp_enqueue_script( 'tatsu-wordpress-editor', TATSU_PLUGIN_URL . '/admin/js/tatsu-wordpress-editor.js', array( 'wp-hooks' ), TATSU_VERSION, true );
+			wp_localize_script( 
+				'tatsu-wordpress-editor', 
+				'TatsuWordpressEditor', 
+				array (
+					'post_content'	=>  $post_content
+				)
+			);
 		}
 	}
 }

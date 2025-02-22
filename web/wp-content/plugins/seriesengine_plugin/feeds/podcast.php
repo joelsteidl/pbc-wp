@@ -313,7 +313,7 @@ echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>'; ?>
                   <itunes:name><?php echo htmlspecialchars(stripslashes($enmse_podcast->author)); ?></itunes:name>
                   <itunes:email><?php echo htmlspecialchars(stripslashes($enmse_podcast->email)); ?></itunes:email>
     </itunes:owner>
-    <itunes:explicit><?php if ( !isset($enmse_podcast->explicit) || $enmse_podcast->explicit == 0 ) { echo "no"; } else { echo "yes"; }; ?></itunes:explicit>
+    <itunes:explicit><?php if ( !isset($enmse_podcast->explicit) || $enmse_podcast->explicit == 0 ) { echo "false"; } else { echo "true"; }; ?></itunes:explicit>
     <itunes:image href="<?php echo $enmse_podcast->logo_url; ?>" />
     <itunes:category text="<?php echo htmlspecialchars(stripslashes($enmse_podcast->category)); ?>">
                   <itunes:category text="<?php echo htmlspecialchars(stripslashes($enmse_podcast->subcategory)); ?>" />

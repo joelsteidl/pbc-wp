@@ -343,7 +343,7 @@
                     $this->_default_cleanup();
 
                     // Internataionalization
-                    $this->_internationalization();
+                    add_action( 'init', array( $this, '_internationalization' ) );
 
                     $this->filesystem = Redux_Filesystem::get_instance( $this );
 
@@ -638,7 +638,7 @@
              *
              * @since    3.0.5
              */
-            private function _internationalization() {
+            public function _internationalization() {
 
                 /**
                  * Locale for text domain

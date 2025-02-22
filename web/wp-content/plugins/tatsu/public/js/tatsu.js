@@ -1621,6 +1621,7 @@
                         var tatsu_formData = new FormData(jQuery(this)[0]);
                         tatsu_formData.append('action', 'tatsu_forms_save');
                         tatsu_formData.append('form_id', form_id);
+                        tatsu_formData.append('tatsunonce', tatsuFrontendConfig.tatsunonce);
                         tatsu_formData.append('action_after_submit', action_after_submit);
                         if(action_after_submit=='mailchimp'){
                             var email_address = $this.find('input[data-map_field="email_address"]');

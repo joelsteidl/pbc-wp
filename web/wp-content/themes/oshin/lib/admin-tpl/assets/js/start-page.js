@@ -62,7 +62,7 @@
         if (window.location.hash) {
             tab = window.location.hash;
             tab = tab.replace('#', '');
-            //go_to_tab(tab);
+            go_to_tab(tab);
         }
     }
 
@@ -462,10 +462,13 @@
             $('.nav-content.current').removeClass('current');
             $('#' + goTO + '').addClass('current');
             tab_hash(goTO);
-        } else {
-            var goTO;
         }
+    }
 
+    function nav_tab_click() {
+        if ( 0 === $('a[data-tab]').length ) {
+            return false;
+        }
         $('a[data-tab]').each(function() {
             if ($(this).data('tab') !== 'undefined') {
                 $(this).on('click', function(e) {
@@ -479,7 +482,7 @@
                     tab_hash(goTO);
                 })
             }
-        })
+        });
     }
 
     function fix_button() {
@@ -640,7 +643,7 @@
         form_installer();
         radio_list();
         fix_button();
-        //go_to_tab();
+        nav_tab_click();
         tabs_url_navigation();
         copy_system_status();
         check_selected_data();

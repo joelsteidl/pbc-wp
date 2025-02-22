@@ -2,12 +2,42 @@
 /*
  * Ajax Request handler
  */
+
+/* ---------------------------------------------  */
+// Function to sanitize array recursively
+/* ---------------------------------------------  */
+
+if ( ! function_exists( 'oshin_sanitize_array' ) ) {
+	function oshin_sanitize_array( $array, $esc_attr = true, $textarea_sanitize = false ) {
+		if ( ! empty( $array ) && is_array( $array ) ) {
+			foreach ( (array) $array as $key => $value ) {
+				if ( is_array( $value ) ) {
+					$array[ $key ] = oshin_sanitize_array( $value );
+				} else if ( $esc_attr ) {
+					$array[ $key ] = esc_attr( $value );
+			    } else {
+					$array[ $key ] = true === $textarea_sanitize ? sanitize_textarea_field( wp_unslash( $value ) )  : sanitize_text_field( wp_unslash( $value ) );
+				}
+			}
+		}
+		return $array;
+	}
+}
+
 /* ---------------------------------------------------*/
 // Function for Post Load More / Infinite scroll
 /* ---------------------------------------------------*/
 if ( ! function_exists( 'be_themes_get_ajax_full_screen_gutter_post' ) ) :
 	function be_themes_get_ajax_full_screen_gutter_post() {
-		extract($_POST);
+		// verify nonce
+		if ( empty( $_POST['oshine_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['oshine_nonce'] ) ), 'oshine_module_nonce' ) ) {
+			wp_send_json_error( array(
+				'status'  => 'error',
+				'data' => __( 'Missing or invalid nonce. Please clear the page cache.', 'oshin'),
+			) );
+		}
+
+		extract( oshin_sanitize_array( $_POST ) );
 		$output='';
 		$overlay_color = '';
 		$prebuilt_hover_color_style1 = 'rgba(0, 0, 0, 0.5);';
@@ -345,7 +375,16 @@ endif;
 add_action( 'wp_ajax_nopriv_get_blog', 'be_themes_get_blog' );
 add_action( 'wp_ajax_get_blog', 'be_themes_get_blog' );
 function be_themes_get_blog() {
-	extract($_POST);
+	// verify nonce
+	if ( empty( $_POST['oshine_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['oshine_nonce'] ) ), 'oshine_module_nonce' ) ) {
+		wp_send_json_error( array(
+			'status'  => 'error',
+			'data' => __( 'Missing or invalid nonce. Please clear the page cache.', 'oshin'),
+		) );
+	}
+
+	extract( oshin_sanitize_array( $_POST ) );
+	
 	global $blog_attr;
 	$blog_attr['gutter_width'] = ((!isset($_POST['gutter_width'])) || empty($_POST['gutter_width'])) ? intval(40) : intval( $_POST['gutter_width'] );
 	$blog_attr['style'] = ( isset( $blog_style ) && !empty( $blog_style ) ) ? $blog_style : 'style3';
